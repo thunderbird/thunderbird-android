@@ -35,18 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Account implements BaseAccount
 {
-    /**
-     * @see Account#setLocalStoreMigrationListener(LocalStoreMigrationListener)
-     *
-     */
-    public interface LocalStoreMigrationListener
-    {
-
-        void onLocalStoreMigration(String oldStoreUri,
-                                   String newStoreUri) throws MessagingException;
-
-    }
-
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -89,7 +77,6 @@ public class Account implements BaseAccount
      * the moment.
      */
     private final boolean mIsInUse = false;
-    private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -1389,12 +1376,11 @@ public class Account implements BaseAccount
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public void switchLocalStorage(String newStorageProviderId) throws MessagingException
+    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException
     {
-        if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
+        if (!mLocalStorageProviderId.equals(newStorageProviderId))
         {
-            mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
-                    newStorageProviderId);
+            getLocalStore().switchLocalStorage(newStorageProviderId);
         }
     }
 
@@ -1553,19 +1539,6 @@ public class Account implements BaseAccount
     public boolean isInUse()
     {
         return mIsInUse;
-    }
-
-    /**
-     * Set a listener to be informed when the underlying {@link StorageProvider}
-     * of the {@link LocalStore} of this account changes. (e.g. via
-     * {@link #switchLocalStorage(Context, String)})
-     *
-     * @param listener
-     * @see #switchLocalStorage(Context, String)
-     */
-    public void setLocalStoreMigrationListener(LocalStoreMigrationListener listener)
-    {
-        this.mLocalStoreMigrationListener = listener;
     }
 
     public synchronized CryptoProvider getCryptoProvider()

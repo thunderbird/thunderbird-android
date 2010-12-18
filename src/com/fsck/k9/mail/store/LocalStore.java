@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,9 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
 
 import org.apache.commons.io.IOUtils;
@@ -35,7 +31,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
@@ -45,7 +40,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.Account.LocalStoreMigrationListener;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Regex;
@@ -57,10 +51,10 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -68,6 +62,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 
@@ -76,45 +72,8 @@ import com.fsck.k9.provider.AttachmentProvider;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store implements Serializable, LocalStoreMigrationListener
+public class LocalStore extends Store implements Serializable
 {
-
-    /**
-     * Callback interface for DB operations. Concept is similar to Spring
-     * HibernateCallback.
-     *
-     * @param <T>
-     *            Return value type for {@link #doDbWork(SQLiteDatabase)}
-     */
-    public static interface DbCallback<T>
-    {
-        /**
-         * @param db
-         *            The locked database on which the work should occur. Never
-         *            <code>null</code>.
-         * @return Any relevant data. Can be <code>null</code>.
-         * @throws WrappedException
-         * @throws UnavailableStorageException
-         */
-        T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
-    }
-
-    /**
-     * Workaround exception wrapper used to keep the inner exception generated
-     * in a {@link DbCallback}.
-     */
-    protected static class WrappedException extends RuntimeException
-    {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 8184421232587399369L;
-
-        public WrappedException(final Exception cause)
-        {
-            super(cause);
-        }
-    }
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
@@ -123,34 +82,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
-
-    private String mStorageProviderId;
-
-    private SQLiteDatabase mDb;
-
-    {
-        final ReadWriteLock lock = new ReentrantReadWriteLock(true);
-        mReadLock = lock.readLock();
-        mWriteLock = lock.writeLock();
-    }
-
-    /**
-     * Reentrant read lock
-     */
-    protected final Lock mReadLock;
-
-    /**
-     * Reentrant write lock (if you lock it 2x from the same thread, you have to
-     * unlock it 2x to release it)
-     */
-    protected final Lock mWriteLock;
-
-    private Application mApplication;
-    private String uUid = null;
 
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
@@ -173,458 +107,52 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-    private final StorageListener mStorageListener = new StorageListener();
+    protected static final int DB_VERSION = 39;
 
-    /**
-     * {@link ThreadLocal} to check whether a DB transaction is occuring in the
-     * current {@link Thread}.
-     *
-     * @see #execute(boolean, DbCallback)
-     */
-    private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
+    protected String uUid = null;
+
+    private final Application mApplication;
+
+    private LockableDatabase database;
 
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
-    public LocalStore(Account account, Application application) throws MessagingException
+    public LocalStore(final Account account, final Application application) throws MessagingException
     {
         super(account);
+        database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition());
+
         mApplication = application;
-        mStorageProviderId = account.getLocalStorageProviderId();
-        account.setLocalStoreMigrationListener(this);
+        database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
 
-        lockWrite();
-        try
-        {
-            openOrCreateDataspace(application);
-        }
-        finally
-        {
-            unlockWrite();
-        }
-
-        StorageManager.getInstance(application).addListener(mStorageListener);
+        database.open();
     }
 
-    /**
-     * Lock the storage for shared operations (concurrent threads are allowed to
-     * run simultaneously).
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available
-     */
-    protected void lockRead() throws UnavailableStorageException
+    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException
     {
-        mReadLock.lock();
-        try
-        {
-            StorageManager.getInstance(mApplication).lockProvider(mStorageProviderId);
-        }
-        catch (UnavailableStorageException e)
-        {
-            mReadLock.unlock();
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            mReadLock.unlock();
-            throw e;
-        }
+        database.switchProvider(newStorageProviderId);
     }
 
-    protected void unlockRead()
+    private class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition
     {
-        StorageManager.getInstance(mApplication).unlockProvider(mStorageProviderId);
-        mReadLock.unlock();
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite() throws UnavailableStorageException
-    {
-        lockWrite(mStorageProviderId);
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @param providerId
-     *            Never <code>null</code>.
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException
-    {
-        mWriteLock.lock();
-        try
+        @Override
+        public int getVersion()
         {
-            StorageManager.getInstance(mApplication).lockProvider(providerId);
+            return DB_VERSION;
         }
-        catch (UnavailableStorageException e)
+        
+        @Override
+        public void doDbUpgrade(final SQLiteDatabase db)
         {
-            mWriteLock.unlock();
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            mWriteLock.unlock();
-            throw e;
-        }
-    }
-
-    protected void unlockWrite()
-    {
-        unlockWrite(mStorageProviderId);
-    }
-
-    protected void unlockWrite(final String providerId)
-    {
-        StorageManager.getInstance(mApplication).unlockProvider(providerId);
-        mWriteLock.unlock();
-    }
-
-    /**
-     * Execute a DB callback in a shared context (doesn't prevent concurrent
-     * shared executions), taking care of locking the DB storage.
-     *
-     * <p>
-     * Can be instructed to start a transaction if none is currently active in
-     * the current thread. Callback will participe in any active transaction (no
-     * inner transaction created).
-     * </p>
-     *
-     * @param transactional
-     *            <code>true</code> the callback must be executed in a
-     *            transactional context.
-     * @param callback
-     *            Never <code>null</code>.
-     *
-     * @param <T>
-     * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
-     * @throws UnavailableStorageException
-     */
-    protected <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException
-    {
-        lockRead();
-        final boolean doTransaction = transactional && inTransaction.get() == null;
-        try
-        {
-
-            final boolean debug = K9.DEBUG;
-            if (doTransaction)
-            {
-                inTransaction.set(Boolean.TRUE);
-                mDb.beginTransaction();
-            }
-            try
-            {
-                final T result = callback.doDbWork(mDb);
-                if (doTransaction)
-                {
-                    mDb.setTransactionSuccessful();
-                }
-                return result;
-            }
-            finally
-            {
-                if (doTransaction)
-                {
-                    final long begin;
-                    if (debug)
-                    {
-                        begin = System.currentTimeMillis();
-                    }
-                    else
-                    {
-                        begin = 0l;
-                    }
-                    // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
-                    mDb.endTransaction();
-                    if (debug)
-                    {
-                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
-                    }
-                }
-            }
-        }
-        finally
-        {
-            if (doTransaction)
-            {
-                inTransaction.set(null);
-            }
-            unlockRead();
-        }
-    }
-
-    public void onLocalStoreMigration(final String oldProviderId,
-                                      final String newProviderId) throws MessagingException
-    {
-        lockWrite(oldProviderId);
-        try
-        {
-            lockWrite(newProviderId);
-            try
-            {
-                try
-                {
-                    mDb.close();
-                }
-                catch (Exception e)
-                {
-                    Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
-                }
-
-                final StorageManager storageManager = StorageManager.getInstance(mApplication);
-
-                // create new path
-                prepareStorage(newProviderId);
-
-                // move all database files
-                moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
-                // move all attachment files
-                moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
-
-                mStorageProviderId = newProviderId;
-
-                // re-initialize this class with the new Uri
-                openOrCreateDataspace(mApplication);
-            }
-            finally
-            {
-                unlockWrite(newProviderId);
-            }
-        }
-        finally
-        {
-            unlockWrite(oldProviderId);
-        }
-    }
-
-    private void moveRecursive(File fromDir, File toDir)
-    {
-        if (!fromDir.exists())
-        {
-            return;
-        }
-        if (!fromDir.isDirectory())
-        {
-            if (toDir.exists())
-            {
-                if (!toDir.delete())
-                {
-                    Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
-                }
-            }
-            if (!fromDir.renameTo(toDir))
-            {
-                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
-                move(fromDir, toDir);
-            }
-            return;
-        }
-        if (!toDir.exists() || !toDir.isDirectory())
-        {
-            if (toDir.exists() )
-            {
-                toDir.delete();
-            }
-            if (!toDir.mkdirs())
-            {
-                Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
-            }
-        }
-        File[] files = fromDir.listFiles();
-        for (File file : files)
-        {
-            if (file.isDirectory())
-            {
-                moveRecursive(file, new File(toDir, file.getName()));
-                file.delete();
-            }
-            else
-            {
-                File target = new File(toDir, file.getName());
-                if (!file.renameTo(target))
-                {
-                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
-                    move(file, target);
-                }
-            }
-        }
-        if (!fromDir.delete())
-        {
-            Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath() + " after migration to/from SD-card");
-        }
-    }
-    private boolean move(File from, File to)
-    {
-        if (to.exists())
-        {
-            to.delete();
-        }
-        to.getParentFile().mkdirs();
-
-        try
-        {
-            FileInputStream in = new FileInputStream(from);
-            FileOutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while ((count = in.read(buffer)) > 0)
-            {
-                out.write(buffer, 0, count);
-            }
-            out.close();
-            in.close();
-            from.delete();
-            return true;
-        }
-        catch (Exception e)
-        {
-            Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
-            return false;
-        }
-
-    }
-
-    /**
-     *
-     * @param application
-     * @throws UnavailableStorageException
-     */
-    void openOrCreateDataspace(final Application application) throws UnavailableStorageException
-    {
-
-        lockWrite();
-        try
-        {
-            final File databaseFile = prepareStorage(mStorageProviderId);
-            try
-            {
-                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-            }
-            catch (SQLiteException e)
-            {
-                // try to gracefully handle DB corruption - see issue 2537
-                Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
-                databaseFile.delete();
-                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-            }
-            if (mDb.getVersion() != DB_VERSION)
-            {
-                doDbUpgrade(mDb, application);
-            }
-        }
-        finally
-        {
-            unlockWrite();
-        }
-    }
-
-    /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return DB file.
-     * @throws UnavailableStorageException
-     */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException
-    {
-        final StorageManager storageManager = StorageManager.getInstance(mApplication);
-
-        final File databaseFile;
-        final File databaseParentDir;
-        databaseFile = storageManager.getDatabase(uUid, providerId);
-        databaseParentDir = databaseFile.getParentFile();
-        if (databaseParentDir.isFile())
-        {
-            // should be safe to inconditionally delete clashing file: user is not supposed to mess with our directory
-            databaseParentDir.delete();
-        }
-        if (!databaseParentDir.exists())
-        {
-            if (!databaseParentDir.mkdirs())
-            {
-                // Android seems to be unmounting the storage...
-                throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
-            }
-            touchFile(databaseParentDir, ".nomedia");
-        }
-
-        final File attachmentDir;
-        final File attachmentParentDir;
-        attachmentDir = storageManager
-                        .getAttachmentDirectory(uUid, providerId);
-        attachmentParentDir = attachmentDir.getParentFile();
-        if (!attachmentParentDir.exists())
-        {
-            attachmentParentDir.mkdirs();
-            touchFile(attachmentParentDir, ".nomedia");
-        }
-        if (!attachmentDir.exists())
-        {
-            attachmentDir.mkdirs();
-        }
-        return databaseFile;
-    }
-
-    /**
-     * @param parentDir
-     * @param name
-     *            Never <code>null</code>.
-     */
-    protected void touchFile(final File parentDir, String name)
-    {
-        final File file = new File(parentDir, name);
-        try
-        {
-            if (!file.exists())
-            {
-                file.createNewFile();
-            }
-            else
-            {
-                file.setLastModified(System.currentTimeMillis());
-            }
-        }
-        catch (Exception e)
-        {
-            Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
-        }
-    }
-
-    private void doDbUpgrade(final SQLiteDatabase db, final Application application)
-    {
         Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
                                         db.getVersion(), DB_VERSION));
 
 
-        AttachmentProvider.clear(application);
+        AttachmentProvider.clear(mApplication);
 
         try
         {
@@ -804,6 +332,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
         //}
     }
+    }
 
     public long getSize() throws UnavailableStorageException
     {
@@ -811,9 +340,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
         final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
-                                         mStorageProviderId);
+                                         database.getStorageProviderId());
 
-        return execute(false, new DbCallback<Long>()
+        return database.execute(false, new DbCallback<Long>()
         {
             @Override
             public Long doDbWork(final SQLiteDatabase db)
@@ -828,7 +357,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     }
                 }
 
-                final File dbFile = storageManager.getDatabase(uUid, mStorageProviderId);
+                final File dbFile = storageManager.getDatabase(uUid, database.getStorageProviderId());
                 return dbFile.length() + attachmentLength;
             }
         });
@@ -839,7 +368,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
 
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -871,7 +400,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         // don't delete messages that are Local, since there is no copy on the server.
         // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
         // been deleted locally.  They take up insignificant space
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db)
@@ -894,7 +423,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public int getMessageCount() throws MessagingException
     {
-        return execute(false, new DbCallback<Integer>()
+        return database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db)
@@ -920,7 +449,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public int getFolderCount() throws MessagingException
     {
-        return execute(false, new DbCallback<Integer>()
+        return database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db)
@@ -957,7 +486,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final List<LocalFolder> folders = new LinkedList<LocalFolder>();
         try
         {
-            execute(false, new DbCallback<List<? extends Folder>>()
+            database.execute(false, new DbCallback<List<? extends Folder>>()
             {
                 @Override
                 public List<? extends Folder> doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1002,108 +531,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
     }
 
-    /**
-     * Delete the entire Store and it's backing database.
-     * @throws UnavailableStorageException
-     */
     public void delete() throws UnavailableStorageException
     {
-        lockWrite();
-        try
-        {
-            try
-            {
-                mDb.close();
-            }
-            catch (Exception e)
-            {
-
-            }
-            final StorageManager storageManager = StorageManager.getInstance(mApplication);
-            try
-            {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
-                final File[] attachments = attachmentDirectory.listFiles();
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
-                        attachment.delete();
-                    }
-                }
-                if (attachmentDirectory.exists())
-                {
-                    attachmentDirectory.delete();
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            try
-            {
-                storageManager.getDatabase(uUid, mStorageProviderId).delete();
-            }
-            catch (Exception e)
-            {
-                Log.i(K9.LOG_TAG, "LocalStore: delete(): Unable to delete backing DB file", e);
-            }
-
-            // stop waiting for mount/unmount events
-            StorageManager.getInstance(mApplication).removeListener(mStorageListener);
-        }
-        finally
-        {
-            unlockWrite();
-        }
+        database.delete();
     }
 
     public void recreate() throws UnavailableStorageException
     {
-        lockWrite();
-        try
-        {
-            try
-            {
-                mDb.close();
-            }
-            catch (Exception e)
-            {
-
-            }
-            final StorageManager storageManager = StorageManager.getInstance(mApplication);
-            try
-            {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
-                final File[] attachments = attachmentDirectory.listFiles();
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
-                        attachment.delete();
-                    }
-                }
-                if (attachmentDirectory.exists())
-                {
-                    attachmentDirectory.delete();
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            try
-            {
-                storageManager.getDatabase(uUid, mStorageProviderId).delete();
-            }
-            catch (Exception e)
-            {
-
-            }
-            openOrCreateDataspace(mApplication);
-        }
-        finally
-        {
-            unlockWrite();
-        }
+        database.recreate();
     }
 
     public void pruneCachedAttachments() throws MessagingException
@@ -1116,7 +551,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     public void pruneCachedAttachments(final boolean force) throws MessagingException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1128,7 +563,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     db.update("attachments", cv, null, null);
                 }
                 final StorageManager storageManager = StorageManager.getInstance(mApplication);
-                File[] files = storageManager.getAttachmentDirectory(uUid, mStorageProviderId).listFiles();
+                File[] files = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId()).listFiles();
                 for (File file : files)
                 {
                     if (file.exists())
@@ -1204,7 +639,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         final ContentValues cv = new ContentValues();
         cv.put("visible_limit", Integer.toString(visibleLimit));
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1217,7 +652,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public ArrayList<PendingCommand> getPendingCommands() throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<ArrayList<PendingCommand>>()
+        return database.execute(false, new DbCallback<ArrayList<PendingCommand>>()
         {
             @Override
             public ArrayList<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1270,7 +705,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             final ContentValues cv = new ContentValues();
             cv.put("command", command.command);
             cv.put("arguments", Utility.combine(command.arguments, ','));
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1288,7 +723,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public void removePendingCommand(final PendingCommand command) throws UnavailableStorageException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1301,7 +736,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public void removePendingCommands() throws UnavailableStorageException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1310,66 +745,6 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 return null;
             }
         });
-    }
-
-    /**
-     * Open the DB on mount and close the DB on unmount
-     */
-    private class StorageListener implements StorageManager.StorageListener
-    {
-        @Override
-        public void onUnmount(final String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
-                return;
-            }
-
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "LocalStore: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
-            }
-
-            try
-            {
-                lockWrite();
-                try
-                {
-                    mDb.close();
-                }
-                finally
-                {
-                    unlockWrite();
-                }
-            }
-            catch (UnavailableStorageException e)
-            {
-                Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
-            }
-        }
-
-        @Override
-        public void onMount(String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
-                return;
-            }
-
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "LocalStore: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
-            }
-
-            try
-            {
-                openOrCreateDataspace(mApplication);
-            }
-            catch (UnavailableStorageException e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
-            }
-        }
     }
 
     public static class PendingCommand
@@ -1525,7 +900,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     ) throws MessagingException
     {
         final ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
-        final int j = execute(false, new DbCallback<Integer>()
+        final int j = database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1589,7 +964,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public String getAttachmentType(final String attachmentId) throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<String>()
+        return database.execute(false, new DbCallback<String>()
         {
             @Override
             public String doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1629,7 +1004,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<AttachmentInfo>()
+        return database.execute(false, new DbCallback<AttachmentInfo>()
         {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1726,7 +1101,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1817,7 +1192,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public boolean exists() throws MessagingException
         {
-            return execute(false, new DbCallback<Boolean>()
+            return database.execute(false, new DbCallback<Boolean>()
             {
                 @Override
                 public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1857,7 +1232,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1880,7 +1255,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1907,7 +1282,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Integer>()
+                return database.execute(false, new DbCallback<Integer>()
                 {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1966,7 +1341,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1996,7 +1371,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Integer>()
+                database.execute(false, new DbCallback<Integer>()
                 {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2027,7 +1402,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2058,7 +1433,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2112,7 +1487,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void setVisibleLimit(final int visibleLimit) throws MessagingException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2138,7 +1513,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2167,7 +1542,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2418,7 +1793,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2583,7 +1958,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         private void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2644,7 +2019,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Message>()
+                return database.execute(false, new DbCallback<Message>()
                 {
                     @Override
                     public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2704,7 +2079,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Message[]>()
+                return database.execute(false, new DbCallback<Message[]>()
                 {
                     @Override
                     public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2782,7 +2157,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2852,7 +2227,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         public Message storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException
         {
-            return execute(true, new DbCallback<Message>()
+            return database.execute(true, new DbCallback<Message>()
             {
                 @Override
                 public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2908,7 +2283,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3068,7 +2443,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3180,7 +2555,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         private void saveHeaders(final long id, final MimeMessage message) throws MessagingException
         {
-            execute(true, new DbCallback<Void>()
+            database.execute(true, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3228,7 +2603,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private void deleteHeaders(final long id) throws UnavailableStorageException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3252,7 +2627,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3269,7 +2644,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
                             }
 
-                            final File attachmentDirectory = StorageManager.getInstance(mApplication).getAttachmentDirectory(uUid, mStorageProviderId);
+                            final File attachmentDirectory = StorageManager.getInstance(mApplication).getAttachmentDirectory(uUid, database.getStorageProviderId());
                             if (attachment.getBody() != null)
                             {
                                 Body body = attachment.getBody();
@@ -3435,7 +2810,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             final ContentValues cv = new ContentValues();
             cv.put("uid", message.getUid());
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3488,7 +2863,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 deleteAttachments(message.getUid());
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3561,7 +2936,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3618,7 +2993,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private void deleteAttachments(final long messageId) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3630,7 +3005,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                                      { "id" }, "message_id = ?", new String[]
                                                      { Long.toString(messageId) }, null, null, null);
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
-                                                         .getAttachmentDirectory(uUid, mStorageProviderId);
+                                                         .getAttachmentDirectory(uUid, database.getStorageProviderId());
                         while (attachmentsCursor.moveToNext())
                         {
                             long attachmentId = attachmentsCursor.getLong(0);
@@ -3665,7 +3040,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -6257,7 +5632,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -6308,7 +5683,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
              */
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -6355,7 +5730,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
@@ -6365,7 +5740,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                             ((LocalFolder) mFolder).deleteAttachments(mId);
-                            mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
+                            db.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
                         }
                         catch (MessagingException e)
                         {
