@@ -3426,7 +3426,7 @@ public class MessagingController implements Runnable
 
         configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        notifMgr.notify(-1500 - account.getAccountNumber(), notif);
+        notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(), notif);
     }
 
 

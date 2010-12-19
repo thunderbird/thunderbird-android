@@ -275,6 +275,7 @@ public class K9 extends Application
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
+    public static final int SEND_FAILED_NOTIFICATION      = -1500;
     public static final int CONNECTIVITY_ID = -3;
 
 
