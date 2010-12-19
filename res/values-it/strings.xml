@@ -1,389 +1,1006 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<string name="app_authors">Google, The K-9 Dog Walkers.</string>
-	<string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-	<string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
-	<string name="app_revision_fmt">Informazioni versione: <xliff:g id="app_revision_url">%s</xliff:g></string>
-	<string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
-	<string name="about_title_fmt">A proposito <xliff:g id="app_name">%s</xliff:g></string>
-	<string name="choose_folder_title">Scegli cartella</string>
-	<string name="archive_action">Archivia</string>
-	<string name="delete_all_action">Svuota cartella</string>
-	<string name="move_action">Sposta</string>
-	<string name="check_mail_action">Controlla posta</string>
-	<string name="send_messages_action">Invia messaggi</string>
-	<string name="list_folders_action">Elenca cartelle</string>
-	<string name="refresh_folders_action">Aggiorna cartelle</string>
-	<string name="mark_all_as_read_action">Segna come letti</string>
-	<string name="folder_settings_action">Impostazioni cartella</string>
-	<string name="clear_pending_action">Cancella le operazioni pendenti (pericolo!)</string>
-	<string name="back_to_accounts_action">◀</string>
-	<string name="back_to_folder_list_action">◀</string>
-	<string name="send_alternate_action">Inoltra con altro programma</string>
-	<string name="send_alternate_chooser_title">Scegli mittente</string>
-	<string name="mark_all_as_read_dlg_title">Segna tutti i messaggi come letti</string>
-	<string name="mark_all_as_read_dlg_instructions_fmt">Segnare tutti i messaggi in \'<xliff:g id="folder">%s</xliff:g>\' come letti?</string>
-	<string name="flag_action">Spunta</string>
-	<string name="unflag_action">Togli spunta</string>
-	<string name="copy_action">Copia</string>
-	<string name="set_sort_action">Scegli ordinamento</string>
-	<string name="reverse_sort_action">Inverti ordinamento</string>
-	<string name="about_action">A proposito</string>
-	<string name="prefs_title">Preferenze</string>
-	<string name="folder_context_menu_title">Opzioni cartella</string>
-	<string name="load_more_messages_fmt">Scarica altri <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
-	<string name="abbrev_gigabytes">GB</string>
-	<string name="abbrev_megabytes">MB</string>
-	<string name="abbrev_kilobytes">KB</string>
-	<string name="abbrev_bytes">B</string>
-	<string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
-	<string name="compacting_account">Compattazione account "<xliff:g id="account">%s</xliff:g>"</string>
-	<string name="clearing_account">Rimuovi account "<xliff:g id="account">%s</xliff:g>"</string>
-	<string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> Nuovi Messaggi (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-	<string name="notification_bg_sync_ticker">Controllo la posta: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-	<string name="notification_bg_sync_title">Controllo la posta</string>
-	<string name="notification_bg_send_ticker">Invio la posta: <xliff:g id="account">%s</xliff:g></string>
-	<string name="notification_bg_send_title">Invio la posta</string>
-	<string name="notification_bg_title_separator">:</string>
-	<string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
-	<string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
-	<string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
-	<string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Posta inviata)</string>
-	<string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
-	<string name="send_failure_body_abbrev">Vedi nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
-	<string name="send_failure_body_fmt">K-9 ha incontrato un problema nell\'inviare qualchuno dei tuoi messaggi.
-		Comunque, a causa della natura del problema, K-9 non può essere certo se i messaggi
-		siano stati inviati o no.  I destinatari potrebbero già aver ricevuto copie dei messaggi.
-		\u000a\u000aI messaggi per i cui è occorso questo problema sono contrassegnati nella cartella "Posta in uscita".
-		Togli il segno di spunta per tenetare di inviare nuovamente.
-		Con un tocco prolungato sulla cartella "Posta in uscita" troverai l\'azione "Invia messaggi" per iniziare un nuovo tentativo di invio.\u000A\u000a
-		La cartella <xliff:g id="errorFolder">%s</xliff:g> potrebbe contenere messaggi riguardanti i problemi verificatisi.</string>
-	<string name="end_of_folder">Non vi sono altri messaggi</string>
-	<string name="message_header_mua">K-9 per Android <xliff:g id="version">%s</xliff:g></string>
-	<string name="message_compose_content_hint">Testo del messaggio</string>
-	<string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
-	<string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-	<string name="message_view_cc_label">Cc:</string>
-	<string name="message_delete_failed">Impossibile cancellare il messaggio</string>
-	<string name="about_header">A proposito di <xliff:g id="app_name">%s</xliff:g></string>
-	<string name="about_version">Versione: <xliff:g id="version">%s</xliff:g></string>
-	<string name="account_setup_check_settings_title"></string>
-	<string name="account_setup_account_type_webdav_action">WebDav(Exchange) account</string>
-	<string name="account_setup_incoming_webdav_server_label">WebDav(Exchange) server</string>
-	<string name="account_setup_incoming_delete_policy_markread_label">Segna come letto sul server</string>
-	<string name="drafts_folder_label">Nome cartella bozze</string>
-	<string name="sent_folder_label">Nome cartella Posta inviata</string>
-	<string name="trash_folder_label">Nome cartella Cestino</string>
-	<string name="outbox_folder_label">Nome cartella Posta in uscita</string>
-	<string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
-	<string name="account_setup_incoming_webdav_path_prefix_label">Percorso WebDav(Exchange)</string>
-	<string name="account_setup_incoming_webdav_path_prefix_hint">Opzionale</string>
-	<string name="account_setup_incoming_webdav_auth_path_label">Percorso Autenticazione</string>
-	<string name="account_setup_incoming_webdav_auth_path_hint">Opzionale</string>
-	<string name="account_setup_incoming_webdav_mailbox_path_label">Percorso Casella di Posta</string>
-	<string name="account_setup_incoming_webdav_mailbox_path_hint">Opzionale</string>
-	<string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDav(Exchange) prima di SMTP</string>
-	<string name="compact_action">Compatta</string>
-	<string name="clear_action">Elimina tutti i dati (Attenzione!)</string>
-	<string name="account_setup_options_mail_check_frequency_1min">Ogni minuto</string>
-	<string name="account_setup_options_notify_sync_label">Notificami mentre controlli la posta</string>
-    <string name="account_setup_options_mail_display_count_label">Numero di messaggi da mostrare</string>
-	<string name="account_setup_options_mail_display_count_10">10 messaggi</string>
-	<string name="account_setup_options_mail_display_count_25">25 messaggi</string>
-	<string name="account_setup_options_mail_display_count_50">50 messaggi</string>
-	<string name="account_setup_options_mail_display_count_100">100 messaggi</string>
-	<string name="move_copy_cannot_copy_unsynced_message">Non posso copiare o spostare un messaggio che non è sincronizzato con il server</string>
-	<string name="account_setup_failed_dlg_continue_action">Continua</string>
-	<string name="account_settings_default">Default account</string>
-	<string name="account_settings_notify_sync_label">Notifiche controllo Posta</string>
-	<string name="account_settings_email_label">Il tuo indirizzo di posta</string>
-	<string name="account_settings_notify_sync_summary">Notifica nella barra di stato quando viene controllata la posta</string>
-	<string name="account_settings_hide_buttons_label">Pulsanti di scorrimento</string>
-	<string name="account_settings_hide_buttons_never">Mai</string>
-	<string name="account_settings_hide_buttons_keyboard_avail">Quando è disponibile la tastiera</string>
-	<string name="account_settings_hide_buttons_always">Sempre</string>
-	<string name="account_settings_second_class_check_frequency_label">Frequenza controllo 2a classe</string>
-	<string name="account_settings_mail_display_count_label">Numero di messaggi da mostrare</string>
-	<string name="account_settings_folder_display_mode_label">Modalità visualizzazione cartella</string>
-	<string name="account_settings_folder_display_mode_all">Tutte</string>
-	<string name="account_settings_folder_display_mode_first_class">Solo cartelle di 1a classe</string>
-	<string name="account_settings_folder_display_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-	<string name="account_settings_folder_display_mode_not_second_class">Tutte tranne le cartelle di 2a classe</string>
-	<string name="account_settings_folder_sync_mode_label">Modalità sincronizzazione cartelle</string>
-	<string name="account_settings_folder_sync_mode_all">Tutte</string>
-	<string name="account_settings_folder_sync_mode_first_class">Solo cartelle di 1a classe</string>
-	<string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-	<string name="account_settings_folder_sync_mode_not_second_class">Tutte tranne le cartelle di 2a classe</string>
-	<string name="account_settings_folder_target_mode_label">Copia/Sposta cartelle di destinazione</string>
-	<string name="account_settings_folder_target_mode_all">Tutte</string>
-	<string name="account_settings_folder_target_mode_first_class">Solo cartelle di 1a classe</string>
-	<string name="account_settings_folder_target_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-	<string name="account_settings_folder_target_mode_not_second_class">Tutte tranne le cartelle di 2a classe</string>
-	<string name="folder_settings_title">Impostazioni cartella</string>
-	<string name="folder_settings_folder_display_mode_label">Classe di visualizzazione della cartella</string>
-	<string name="folder_settings_folder_display_mode_normal">Normale</string>
-	<string name="folder_settings_folder_display_mode_first_class">1a classe</string>
-	<string name="folder_settings_folder_display_mode_second_class">2a classe</string>
-	<string name="folder_settings_folder_sync_mode_label">Classe di sincronizzazione cartelle</string>
-	<string name="folder_settings_folder_sync_mode_normal">Uguale alla classe di visualizzazione</string>
-	<string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
-	<string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
-	<string name="notifications_title">Impostazioni notifiche</string>
-	<string name="account_settings_vibrate_enable">Vibra</string>
-	<string name="account_settings_vibrate_summary">Vibra quando un messaggio arriva</string>
-	<string name="account_settings_ringtone">Scegli suoneria</string>
-	<string name="account_settings_servers">Impostazioni server</string>
-	<string name="account_settings_composition_title">Opzioni scrittura messaggi</string>
-	<string name="account_settings_composition_label">Composizione messaggi</string>
-	<string name="account_settings_identities_label">Gestisci identità</string>
-	<string name="manage_identities_title">Gestisci identità</string>
-	<string name="manage_identities_context_menu_title">Gestisci identità</string>
-	<string name="edit_identity_title">Modifica identità</string>
-	<string name="new_identity_action">Crea nuova identità</string>
-	<string name="account_settings_always_bcc_label">Bcc tutti i messaggi a</string>
-	<string name="account_settings_always_bcc_summary">Manda a questo indirizzo una copia di ogni messaggio in uscita</string>
-	<string name="manage_identities_edit_action">Modifica</string>
-	<string name="manage_identities_move_up_action">Sposta su</string>
-	<string name="manage_identities_move_down_action">Sposta giù</string>
-	<string name="manage_identities_move_top_action">Sposta in cima / rendi predefinito</string>
-	<string name="manage_identities_remove_action">Rimuovi</string>
-	<string name="edit_identity_description_label">Descrizione identità</string>
-	<string name="edit_identity_description_hint">(Facoltativo)</string>
-	<string name="edit_identity_name_label">Il tuo nome</string>
-	<string name="edit_identity_name_hint">(Facoltativo)</string>
-	<string name="edit_identity_email_label">Indirizzo di posta</string>
-	<string name="edit_identity_email_hint">(Obbligatorio)</string>
-	<string name="edit_identity_signature_label">Firma</string>
-	<string name="edit_identity_signature_hint">(Facoltativol)</string>
-	<string name="account_settings_signature_label">Firma</string>
-	<string name="account_settings_signature_summary">Aggiungi la firma a ogni messaggio in uscita</string>
-	<string name="default_signature">--nInviato dal mio cellulare Android con K-9. Scusa la mia brevità.</string>
-	<string name="default_identity_description">Identità iniziale</string>
-	<string name="choose_identity">Scegli l\'identità</string>
-	<string name="choose_identity_title">Scegli l\'identità</string>
-	<string name="no_identities">Vai a impostazioni Account -&gt; Gestisci identità per creare identità</string>
-	<string name="no_removable_identity">Non posso rimuovere l\'unica identità</string>
-	<string name="identity_has_no_email">Non posso scegliere una identità senza indirizzo di posta</string>
-	<string name="identity_will_not_be_saved">L\'identità scelta e modifiche alla firma non vengono salvate in una bozza</string>
-	<string name="sort_earliest_first">Prima i messaggi più recenti</string>
-	<string name="sort_latest_first">Prima i messaggi più vecchi</string>
-	<string name="sort_sender_alpha">Mittente (A-Z)</string>
-	<string name="sort_sender_re_alpha">Mittente (Z-A)</string>
-	<string name="sort_subject_alpha">Oggetto (A-Z)</string>
-	<string name="sort_subject_re_alpha">Oggetto (Z-A)</string>
-	<string name="sort_flagged_first">Prima messaggi con spunta</string>
-	<string name="sort_flagged_last">Prima messaggi senza spunta</string>
-	<string name="sort_unread_first">Prima messaggi non letti</string>
-	<string name="sort_unread_last">Prima messaggi letti</string>
-	<string name="sort_attach_first">Prima messaggi con allegati</string>
-	<string name="sort_unattached_first">Prima messaggi senza allegati</string>
-	<string name="sort_by">Ordina per...</string>
-	<string name="sort_by_date">Data</string>
-	<string name="sort_by_sender">Mittente</string>
-	<string name="sort_by_subject">Oggetto</string>
-	<string name="sort_by_flag">Spunta</string>
-	<string name="sort_by_unread">Letto/non letto</string>
-	<string name="sort_by_attach">Allegati</string>
-	<string name="message_web_view_error">%s</string>
-	<string name="message_help_key">Del (or D) - Cancella\u000AR - Rispondi\u000AA - Rispondi a tutti\u000AF - Inoltra\u000AJ or P - Precedente\u000AK, N - Successivo\u000AM - Sposta\u000AY - Copia\u000AZ - Ingrandisci\u000AShift-Z - Rimpicciolisci\u000aG - Segna</string>
-	<string name="message_list_help_key">Del (or D) - Cancella\u000AR - Rispondi\u000AA - Rispondi a tutti\u000AC - Scrivi\u000AF - Inoltra\u000aM - Sposta\u000AY - Copia\u000AG - Segna\u000AO - Tipo ordinamento\u000AI - Verso ordinamento\u000AQ - Ritorna agli Account</string>
-	<string name="account_settings_signature__location_label">Posizione firma</string>
-	<string name="account_settings_signature__location_before_quoted_text">Prima del messaggio citato</string>
-	<string name="account_settings_signature__location_after_quoted_text">Dopo il messaggio citato</string>
-	<string name="setting_theme_dark">Scuro</string>
-	<string name="setting_theme_light">Chiaro</string>
-	<string name="display_preferences">Preferenze di visualizzazione</string>
-	<string name="settings_theme_label">Tema</string>
-	<string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" verrà rimosso dal programma e-mail.</string>
-	<string name="account_delete_dlg_title">Rimuovi</string>
-	<string name="account_settings_action">Impostazioni account</string>
-	<string name="account_settings_add_account_label">Aggiungi altro account</string>
-	<string name="account_settings_default_label">Account predefinito</string>
-	<string name="account_settings_default_summary">Invia messaggio e-mail da questo account per impostazione predefinita</string>
-	<string name="account_settings_description_label">Nome account</string>
-	<string name="account_settings_incoming_label">Configurazione posta in arrivo</string>
-	<string name="account_settings_incoming_summary">Configura il server di posta in arrivo</string>
-	<string name="account_settings_mail_check_frequency_label">Frequenza controllo e-mail</string>
-	<string name="account_settings_name_label">Nome</string>
-	<string name="account_settings_notify_label">Notifiche e-mail</string>
-	<string name="account_settings_notify_summary">Notifica nella barra di stato all\'arrivo di un messaggio e-mail</string>
-	<string name="account_settings_outgoing_label">Configurazione posta in uscita</string>
-	<string name="account_settings_outgoing_summary">Configura il server di posta in uscita</string>
-	<string name="account_settings_show_combined_label">Mostra Posta in arrivo combinata</string>
-	<string name="account_settings_title_fmt">Impostazioni account</string>
-	<string name="account_setup_account_type_imap_action">Account IMAP</string>
-	<string name="account_setup_account_type_instructions">Specificare il tipo di account.</string>
-	<string name="account_setup_account_type_pop_action">Account POP3</string>
-	<string name="account_setup_account_type_title">Aggiungi nuovo account e-mail</string>
-	<string name="account_setup_basics_default_label">Invia messaggio e-mail da questo account per impostazione predefinita.</string>
-	<string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> è già stato aggiunto.</string>
-	<string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> non è un indirizzo e-mail valido.</string>
-	<string name="account_setup_basics_email_hint">Indirizzo e-mail</string>
-	<string name="account_setup_basics_instructions">Digitare l\'indirizzo email dell\'account:</string>
-	<string name="account_setup_basics_instructions2_fmt">(È possibile aggiungere <xliff:g id="number_accounts">%d</xliff:g> ulteriori account.)</string>
-	<string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
-	<string name="account_setup_basics_password_hint">Password</string>
-	<string name="account_setup_basics_title">Configura e-mail</string>
-	<string name="account_setup_check_settings_canceling_msg">Annullamento in corso\u2026</string>
-	<string name="account_setup_check_settings_check_incoming_msg">Verifica in corso delle impostazioni del server di posta in arrivo\u2026</string>
-	<string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server di posta in uscita\u2026</string>
-	<string name="account_setup_check_settings_finishing_msg">Completamento in corso\u2026</string>
-	<string name="account_setup_check_settings_retr_info_msg">Recupero delle informazioni sull\'account in corso\u2026</string>
-	<string name="account_setup_failed_dlg_auth_message_fmt">Nome utente o password non corretta.\n(<xliff:g id="error">%s</xliff:g>)</string>
-	<string name="account_setup_failed_dlg_certificate_message_fmt">Impossibile connettersi in modo sicuro al server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-	<string name="account_setup_failed_dlg_edit_details_action">Modifica dettagli</string>
-	<string name="account_setup_failed_dlg_server_message_fmt">Impossibile connettersi al server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-	<string name="account_setup_failed_dlg_title">Impossibile completare la configurazione</string>
-	<string name="account_setup_finished_toast">Configurazione dell\'account completata.\n\nRecupero messaggi in corso\u2026</string>
-	<string name="account_setup_incoming_delete_policy_7days_label">Dopo 7 giorni</string>
-	<string name="account_setup_incoming_delete_policy_delete_label">All\'eliminazione dalla Posta in arrivo</string>
-	<string name="account_setup_incoming_delete_policy_label">Elimina messaggio dal server:</string>
-	<string name="account_setup_incoming_delete_policy_never_label">Mai</string>
-	<string name="account_setup_incoming_imap_path_prefix_hint">Opzionale</string>
-	<string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
-	<string name="account_setup_incoming_imap_server_label">Server IMAP</string>
-	<string name="account_setup_incoming_password_label">Password</string>
-	<string name="account_setup_incoming_pop_server_label">Server POP3</string>
-	<string name="account_setup_incoming_port_label">Porta</string>
-	<string name="account_setup_incoming_security_label">Tipo di protezione</string>
-	<string name="account_setup_incoming_security_none_label">Nessuno</string>
-	<string name="account_setup_incoming_security_ssl_label">SSL (sempre)</string>
-	<string name="account_setup_incoming_security_ssl_optional_label">SSL (se disponibile)</string>
-	<string name="account_setup_incoming_security_tls_label">TLS (sempre)</string>
-	<string name="account_setup_incoming_security_tls_optional_label">TLS (se disponibile)</string>
-	<string name="account_setup_incoming_title">Impostazioni server in arrivo</string>
-	<string name="account_setup_incoming_username_label">Nome utente</string>
-	<string name="account_setup_names_account_name_label">Assegnare un nome a questo account (opzionale):</string>
-	<string name="account_setup_names_instructions">L\'account è stato configurato e il messaggio inviato.</string>
-	<string name="account_setup_names_title">Configura e-mail</string>
-	<string name="account_setup_names_user_name_label">Digitare il nome (visualizzato su messaggi in uscita):</string>
-	<string name="account_setup_options_default_label">Invia messaggio da questo account per impostazione predefinita.</string>
-	<string name="account_setup_options_mail_check_frequency_10min">Ogni 10 minuti</string>
-	<string name="account_setup_options_mail_check_frequency_15min">Ogni 15 minuti</string>
-	<string name="account_setup_options_mail_check_frequency_1hour">Ogni ora</string>
-	<string name="account_setup_options_mail_check_frequency_30min">Ogni 30 minuti</string>
-	<string name="account_setup_options_mail_check_frequency_5min">Ogni 5 minuti</string>
-	<string name="account_setup_options_mail_check_frequency_label">Frequenza controllo e-mail</string>
-	<string name="account_setup_options_mail_check_frequency_never">Mai</string>
-	<string name="account_setup_options_notify_label">Notifica all\'arrivo di un messaggio.</string>
-	<string name="account_setup_options_title">Opzioni account</string>
-	<string name="account_setup_outgoing_authentication_basic_label">Nome utente e password</string>
-	<string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
-	<string name="account_setup_outgoing_authentication_basic_username_label">Nome utente</string>
-	<string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP prima di SMTP</string>
-	<string name="account_setup_outgoing_authentication_label">Tipo di autenticazione</string>
-	<string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP prima di SMTP</string>
-	<string name="account_setup_outgoing_password_label">Password</string>
-	<string name="account_setup_outgoing_port_label">Porta</string>
-	<string name="account_setup_outgoing_require_login_label">Richiedi accesso.</string>
-	<string name="account_setup_outgoing_security_label">Tipo di protezione</string>
-	<string name="account_setup_outgoing_security_none_label">Nessuno</string>
-	<string name="account_setup_outgoing_security_ssl_label">SSL</string>
-	<string name="account_setup_outgoing_security_tls_label">TLS (sempre)</string>
-	<string name="account_setup_outgoing_security_tls_optional_label">TLS (se disponibile)</string>
-	<string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
-	<string name="account_setup_outgoing_title">Configurazione server di posta in uscita</string>
-	<string name="account_setup_outgoing_username_label">Nome utente</string>
-	<string name="accounts_action">Account</string>
-	<string name="accounts_context_menu_title">Opzioni account</string>
-	<string name="accounts_title">Account personali</string>
-	<string name="accounts_welcome">Configurazione programma e-mail.\n\nUtilizzare un account e-mail con il programma.\n\nQuasi tutti i più noti account e-mail possono essere configurati in pochi passaggi.</string>
-	<string name="add_account_action">Aggiungi account</string>
-	<string name="add_attachment_action">Aggiungi allegato</string>
-	<string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
-	<string name="app_name">Posta</string>
-	<string name="cancel_action">Annulla</string>
-	<string name="combined_inbox_label">Messaggi recenti da tutti gli account</string>
-	<string name="combined_inbox_list_title">Tutta la Posta in arrivo</string>
-	<string name="combined_inbox_title">Tutta la posta</string>
-	<string name="compose_action">Componi</string>
-	<string name="compose_title">Componi</string>
-	<string name="continue_action">Continua</string>
-	<string name="debug_title">Debug</string>
-	<string name="debug_version_fmt">Versione: <xliff:g id="version">%s</xliff:g></string>
-	<string name="delete_action">Elimina</string>
-	<string name="discard_action">Ignora</string>
-	<string name="done_action">Completato</string>
-	<string name="dump_settings_action">Impostazioni dump</string>
-	<string name="edit_subject_action">Modifica oggetto</string>
-	<string name="empty_trash_action">Svuota Cestino</string>
-	<string name="folders_action">Cartelle</string>
-	<string name="forward_action">Inoltra</string>
-	<string name="general_no_subject">(Nessun oggetto)</string>
-	<string name="mailbox_select_dlg_new_mailbox_action">Nuova cartella</string>
-	<string name="mailbox_select_dlg_title">Cartelle</string>
-	<string name="mark_as_read_action">Segna come già letto</string>
-	<string name="mark_as_unread_action">Segna come da leggere</string>
-	<string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati poiché non sono stati scaricati.</string>
-	<string name="message_compose_bcc_hint">Ccn</string>
-	<string name="message_compose_cc_hint">Cc</string>
-	<string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima di inviare questo messaggio.</string>
-	<string name="message_compose_error_no_recipients">Aggiungere almeno un destinatario.</string>
-	<string name="message_compose_fwd_header_fmt">\n\n-------- Messaggio originale --------\nOggetto: <xliff:g id="subject">%s</xliff:g>\nDa: <xliff:g id="sender">%s</xliff:g>\nA: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-	<string name="message_compose_quoted_text_label">Testo tra virgolette</string>
-	<string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
-	<string name="message_compose_subject_hint">Oggetto</string>
-	<string name="message_compose_to_hint">A</string>
-	<string name="message_copied_toast">Messaggio copiato.</string>
-	<string name="message_deleted_toast">Messaggio eliminato.</string>
-	<string name="message_discarded_toast">Messaggio ignorato.</string>
-	<string name="message_list_load_more_messages_action">Carica altri messaggi</string>
-	<string name="message_list_title_fmt"><xliff:g id="mailbox">%s</xliff:g> (<xliff:g id="message_count">%d</xliff:g>)</string>
-	<string name="message_moved_toast">Messaggio spostato.</string>
-	<string name="message_saved_toast">Messaggio salvato come bozza.</string>
-	<string name="message_view_attachment_download_action">Salva</string>
-	<string name="message_view_attachment_view_action">Apri</string>
-	<string name="message_view_datetime_fmt">GGG mm aaaa hh:mm a</string>
-	<string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
-	<string name="message_view_prev_action">\u25BC</string>
-	<string name="message_view_next_action">\u25B2</string>
-	<string name="message_view_show_pictures_action">Mostra immagini</string>
-	<string name="message_view_show_pictures_instructions">Selezionare \"Mostra immagini\" per visualizzare le immagini incorporate.</string>
-	<string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
-	<string name="message_view_status_attachment_saved">Allegato salvato sulla scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
-	<string name="message_to_label">A:</string>
-	<string name="move_to_action">Sposta in</string>
-	<string name="new_mailbox_dlg_title">Nome della nuova cartella</string>
-	<string name="next_action">Avanti</string>
-	<string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> account</string>
-	<string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string>
-	<string name="notification_new_scrolling">Nuovo messaggio e-mail da <xliff:g id="sender">%s</xliff:g></string>
-	<string name="notification_new_title">Nuovo messaggio e-mail</string>
-	<string name="notification_unsent_title">Messaggio non inviato</string>
-	<string name="okay_action">OK</string>
-	<string name="open_action">Apri</string>
-	<string name="preferences_action">Preferenze</string>
-	<string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l\'accesso POP
-			consentendo il collegamento del programma. Se non è possibile accedere con
-			l\'indirizzo email e la password corretti, è possibile che non sia stato pagato un account
-			\"Plus\". Lanciare il browser Internet per accedere a questi
-			account email.</string>
-	<string name="read_action">Letto</string>
-	<string name="read_attachment_desc">Consente all\'applicazione di leggere gli allegati delle email.</string>
-	<string name="read_attachment_label">leggere allegati email</string>
-	<string name="refresh_action">Aggiorna</string>
-	<string name="remove_account_action">Rimuovi account</string>
-	<string name="remove_action">Rimuovi</string>
-	<string name="reply_action">Rispondi</string>
-	<string name="reply_all_action">Rispondi a tutti</string>
-	<string name="retry_action">Riprova</string>
-	<string name="save_draft_action">Salva come bozza</string>
-	<string name="search_action">Cerca</string>
-	<string name="send_action">Invia</string>
-	<string name="special_mailbox_name_drafts">Bozze</string>
-	<string name="special_mailbox_name_inbox">Posta in arrivo</string>
-	<string name="special_mailbox_name_outbox">Posta in uscita</string>
-	<string name="special_mailbox_name_sent">Inviata</string>
-	<string name="special_mailbox_name_trash">Cestino</string>
-	<string name="status_error">Errore</string>
-	<string name="status_loading">Caricamento in corso\u2026</string>
-	<string name="status_loading_more">Caricamento messaggio\u2026</string>
-	<string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
-	<string name="status_network_error">Errore di connessione</string>
-	<string name="status_sending">Invio in corso\u2026</string>
-	<string name="view_hide_details_action">Visualizza/Nascondi dettagli</string>
-	<string name="account_setup_failed_dlg_invalid_certificate_title">Certificato sconosciuto</string>
-	<string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta Chiave</string>
-	<string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta Chiave</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">K-9 Mail</string>
+    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
+    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
+    <string name="app_revision_fmt">Informazioni sulla versione: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+
+    <string name="read_attachment_label">Leggi gli allegati</string>
+    <string name="read_attachment_desc">Permetti all\'applicazione di leggere gli allegati.</string>
+    <string name="read_messages_label">Leggi la posta</string>
+    <string name="read_messages_desc">Permetti all\'applicazione di leggere la posta.</string>
+    <string name="delete_messages_label">Elimina la posta</string>
+    <string name="delete_messages_desc">Permetti all\'applicazione di eliminare la posta.</string>
+
+    <string name="about_title_fmt">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="accounts_title">Account</string>
+    <string name="advanced">Avanzate</string>
+    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
+    <string name="shortcuts_title">Account di K-9</string>
+
+    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+
+    <string name="compose_title">Componi</string>
+    <string name="debug_title">Debug</string>
+    <string name="choose_folder_title">Scegli la cartella</string>
+    <string name="choose_color_title">Scegli un colore</string>
+
+    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
+
+    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
+    <string name="status_loading_account_folder">\u0020(Verifica di <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder_headers">\u0020(Recupero intestazioni <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_sending_account">\u0020(Invio <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_processing_account">\u0020(Elab <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+
+    <string name="status_next_poll">\u0020(Prossima verifica @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_polling_off">\u0020(Verifica disattivata)</string>
+
+    <!-- Actions will be used as buttons and in menu items -->
+    <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Precedente</string> <!-- Used as part of a multi-step process -->
+    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="cancel_action">Annulla</string>
+    <string name="send_action">Invia</string>
+    <string name="send_again_action">Invia di nuovo</string>
+    <string name="select_action">Seleziona</string>
+    <string name="deselect_action">Deseleziona</string>
+    <string name="reply_action">Rispondi</string>
+    <string name="reply_all_action">Rispondi a tutti</string>
+    <string name="delete_action">Elimina</string>
+    <string name="archive_action">Archivia</string>
+    <string name="spam_action">Spam</string>
+    <string name="delete_all_action">Svuota cartella</string>
+    <string name="forward_action">Inoltra</string>
+    <string name="move_action">Muovi</string>
+    <string name="continue_action">Continua</string>
+    <string name="done_action">Fatto</string> <!--  Used to complete a multi-step process -->
+    <string name="remove_action">Rimuovi</string>
+    <string name="discard_action">Ignora</string>
+    <string name="save_draft_action">Salva come bozza</string>
+    <string name="retry_action">Riprova</string>
+    <string name="refresh_action">Aggiorna</string>
+    <string name="check_mail_action">Controlla posta</string>
+    <string name="send_messages_action">Invia messaggi</string>
+    <string name="list_folders_action">Elenca cartelle</string>
+    <string name="refresh_folders_action">Aggiorna cartelle</string>
+    <string name="mark_all_as_read_action">Segna tutti i messaggi come letti</string>
+    <string name="add_account_action">Aggiungi account</string>
+    <string name="compose_action">Componi</string>
+    <string name="search_action">Cerca</string>
+    <string name="search_results">Risultati della ricerca</string>
+    <string name="preferences_action">Impostazioni</string>
+    <string name="open_action">Apri</string>
+    <string name="account_settings_action">Impostazioni account</string>
+    <string name="folder_settings_action">Impostazioni cartella</string>
+    <string name="global_settings_action">Impostazioni generali</string>
+    <string name="remove_account_action">Rimuovi account</string>
+    <string name="clear_pending_action">Annulla tutte le azioni in corso (pericolo!)</string>
+
+
+
+    <string name="accounts_action">Account</string>
+    <string name="back_to_accounts_action">◀</string>
+    <string name="back_to_folder_list_action">◀</string>
+    <string name="read_action">Leggi</string>
+    <string name="mark_as_read_action">Segna come letto</string>
+    <string name="send_alternate_action">Inoltra con un\'altra applicazione</string>
+    <string name="send_alternate_chooser_title">Scegli il mittente</string>
+
+    <string name="mark_all_as_read_dlg_title">Segna tutti i messaggi come letti</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Segnare tutti i messaggi in \'<xliff:g id="folder">%s</xliff:g>\' come letti?  (compresi
+    i messaggi nella cartella che non vengono visualizzati in K-9)</string>
+
+    <string name="flag_action">Metti stella</string>
+    <string name="unflag_action">Togli stella</string>
+    <string name="copy_action">Copia</string>
+    <string name="show_full_header_action">Mostra intestazione completa</string>
+    <string name="hide_full_header_action">Nascondi intestazione completa</string>
+    <string name="select_text_action">Seleziona testo</string>
+
+    <string name="mark_as_unread_action">Segna come non letto</string>
+    <string name="move_to_action">Sposta in</string>
+    <string name="folders_action">Cartelle</string>
+    <string name="view_hide_details_action">Mostra/nascondi dettagli</string>
+    <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
+    <string name="edit_subject_action">Modifica oggetto</string>
+    <string name="add_attachment_action">Aggiungi allegato</string>
+    <string name="add_attachment_action_image">Aggiungi allegato (Immagine)</string>
+    <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
+    <string name="dump_settings_action">Elimina impostazioni</string>
+    <string name="empty_trash_action">Svuota cestino</string>
+    <string name="expunge_action">Rimuovi i messaggi eliminati</string>
+    <string name="clear_local_folder_action">Cancella messaggi locali</string>
+    <string name="set_sort_action">Scegli ordinamento</string>
+    <string name="reverse_sort_action">Inverti ordinamento</string>
+    <string name="about_action">Informazioni su</string>
+
+    <string name="prefs_title">Impostazioni</string>
+    <string name="accounts_context_menu_title">Opzioni account</string>
+    <string name="folder_context_menu_title">Opzioni cartella</string>
+
+    <string name="general_no_subject">(Nessun oggetto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+
+    <string name="general_no_sender">Nessun mittente</string>
+    <string name="status_loading">Recupero in corso</string>
+    <string name="status_loading_folder">(Verifica di <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_more">Caricamento dei messaggi in corso\u2026</string>
+    <string name="status_network_error">Errore di connessione</string>
+    <string name="status_invalid_id_error">Messaggio non trovato</string>
+    <string name="status_error">Errore</string> <!-- Used in Outbox when a message has failed to send -->
+    <string name="status_sending">Invio in corso</string> <!-- Used in Outbox when a message is currently sending -->
+
+    <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
+
+    <string name="load_more_messages_fmt">Scarica altri <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
+
+    <string name="abbrev_gigabytes">GB</string>
+    <string name="abbrev_megabytes">MB</string>
+    <string name="abbrev_kilobytes">KB</string>
+    <string name="abbrev_bytes">B</string>
+
+    <string name="account_size_changed">
+    Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da
+    <xliff:g id="oldSize">%s</xliff:g>
+    a
+    <xliff:g id="newSize">%s</xliff:g>
+    </string>
+
+    <string name="compacting_account">Compattazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="clearing_account">Rimozione account \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Ricreare account \"<xliff:g id="account">%s</xliff:g>\"</string>
+
+    <string name="notification_new_title">Nuova posta</string>
+    <string name="notification_new_scrolling">Nuova posta da <xliff:g id="sender">%s</xliff:g></string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
+    <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> account</string>
+    <string name="notification_unsent_title">Messaggio non inviato</string>
+
+    <string name="notification_bg_sync_ticker">Controllo posta in corso: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_title">Controllo posta</string>
+    <string name="notification_bg_send_ticker">Invio posta in corso: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Invio posta</string>
+    <string name="notification_bg_title_separator">:</string>
+
+    <string name="special_mailbox_name_inbox">Posta in arrivo</string>
+    <string name="special_mailbox_name_outbox">Posta in uscita</string>
+    <!-- The following mailbox names will be used if the user has not specified one from the server -->
+    <string name="special_mailbox_name_drafts">Bozze</string>
+    <string name="special_mailbox_name_trash">Cestino</string>
+    <string name="special_mailbox_name_sent">Posta inviata</string>
+    <string name="special_mailbox_name_archive">Archivio</string>
+    <string name="special_mailbox_name_spam">Spam</string>
+    <!-- Mailbox names displayed to user -->
+
+    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
+    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Posta inviata)</string>
+    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archivio)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
+
+    <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
+    <string name="send_failure_body_abbrev">Guarda nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
+    <string name="send_failure_body_fmt">K-9 ha riscontrato un problema nell\'invio di alcuni dei tuoi messaggi.
+     Tuttavia, a causa della natura del problema, K-9 non può essere certo se i messaggi
+    sono stati inviati o meno. I destinatari possono avere già ricevuto copie del messaggio.
+    \u000a\u000aI messaggi per i quali questo tipo di problema si è verificato ora sono tra i preferiti nella posta in uscita.
+    Se si rimuovono le stelle, K-9 proverà a inviare i messaggi di nuovo.
+    Premere a lungo la cartella Posta in uscita per visualizzare \"Invia messaggi \" al fine di avviare un nuovo tentativo di invio.\u000A\u000a
+    La cartella <xliff:g id="errorFolder">%s</xliff:g> potrebbe contenere messaggi di errore per quanto riguarda gli invii falliti.</string>
+
+    <string name="alert_header">Allarme di K-9</string>
+    <string name="no_connection_alert">La sincronizzazione e l\'invio sono sospesi per mancanza di rete.</string>
+
+    <string name="end_of_folder">Non ci sono nuovi messaggi</string>
+
+    <string name="accounts_welcome">
+Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta open source per Android originariamente basato sul client di posta standard di Android.
+\n
+\n\nLe funzionalità migliorate di K-9 includono:
+\n * Push mail utilizzando IMAP IDLE
+\n * Migliori prestazioni
+\n * Archiviazione dei messaggi
+\n * Firme nei messaggi
+\n * Ccn a se stessi
+\n * Sottoscrizioni delle cartelle
+\n * Sincronizzazione di tutte le cartelle
+\n * Configurazione dell\'indirizzo per le risposte
+\n * Tasti di scelta rapida 
+\n * Miglio supporto IMAP
+\n * Salvataggio degli allegati nella SD
+\n * Svuota cestino
+\n * Ordinamento dei messaggi
+\n * ...ed altro
+\n
+\nSi noti che K-9 non supporta gli account free di hotmail e, come molti client di posta, ha alcune bizzarrie quando si parla di Microsoft Exchange.
+\n
+\n Invia le tue segnalazioni, contribuisci a nuove funzionalità e poni domande a http://k9mail.googlecode.com/
+
+</string>
+
+    <string name="debug_version_fmt">Versione: <xliff:g id="version">%s</xliff:g></string>
+    <string name="debug_enable_debug_logging_title">Attivare la registrazione di debug</string>
+    <string name="debug_enable_debug_logging_summary">Registra informazioni diagnostiche extra</string>
+    <string name="debug_enable_sensitive_logging_title">Registra informazioni sensibili</string>
+    <string name="debug_enable_sensitive_logging_summary">Può mostrare le passwords nei files di logs.</string>
+
+    <string name="message_header_mua">K-9 Mail per Android</string>
+
+    <string name="combined_inbox_title">Tutti i messaggi</string>
+    <string name="combined_inbox_label">Messaggi recenti da tutti gli account</string>
+    <string name="combined_inbox_list_title">Tutti i messaggi in arrivo</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
+
+    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
+                       <xliff:g id="unread_count">%s</xliff:g>
+                       <xliff:g id="polling">%s</xliff:g>
+                       <xliff:g id="sending">%s</xliff:g>
+                       <xliff:g id="push">%s</xliff:g></string>
+    <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
+    <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_delete_action">Elimina</string>
+    <string name="message_list_mark_read_action">Segna come letto</string>
+    <string name="message_list_mark_unread_action">Segna come non letto</string>
+    <string name="message_list_flag_action">Metti stella</string>
+    <string name="message_list_unflag_action">Togli stella</string>
+
+    <string name="message_compose_to_hint">A</string>
+    <string name="message_compose_cc_hint">Cc</string>
+    <string name="message_compose_bcc_hint">Ccn</string>
+    <string name="message_compose_subject_hint">Oggetto</string>
+    <string name="message_compose_content_hint">Testo del messaggio</string>
+    <string name="message_compose_fwd_header_fmt">\n-------- Messaggio originale --------\nOggetto: <xliff:g id="subject">%s</xliff:g>\nDa: <xliff:g id="sender">%s</xliff:g>\nA: <xliff:g id="to">%s</xliff:g>\nCc: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
+    <string name="message_compose_quoted_text_label">Testo quotato</string>
+    <string name="message_compose_error_no_recipients">È necessario aggiungere almeno un destinatario.</string>
+    <string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima che questo messaggio venga inviato.</string>
+    <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
+
+
+
+    <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_to_label">A:</string>
+    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_attachment_view_action">Apri</string>
+    <string name="message_view_attachment_download_action">Salva</string>
+    <string name="message_view_prev_action">\u25BC</string>
+    <string name="message_view_next_action">\u25B2</string>
+    <string name="message_view_archive_action">Archivia</string>
+    <string name="message_view_move_action">Sposta</string>
+    <string name="message_view_spam_action">Spam</string>
+    <string name="message_view_datetime_fmt">gg MMM aaaa hh:mm a</string>
+    <string name="message_view_status_attachment_saved">Allegato salvato su scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
+    <string name="message_view_show_pictures_instructions">Seleziona \"Mostra immagini\" per visualizzare le immagini incorporate.</string>
+    <string name="message_view_show_pictures_action">Mostra immagini</string>
+    <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
+    <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
+
+
+    <string name="message_view_download_remainder">Scarica intero messaggio</string>
+
+    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrico dell\'account per abilitare questo per l futuro.</string>
+    <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, ma non ci sono intestazioni aggiuntive da mostrare.</string>
+    <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
+
+    <string name="mailbox_select_dlg_title">Cartelle</string>
+    <string name="mailbox_select_dlg_new_mailbox_action">Nuova cartella</string>
+
+    <string name="new_mailbox_dlg_title">Nome della nuova cartella</string>
+
+    <string name="folder_push_active_symbol">(Push)</string>
+
+    <string name="from_same_sender">Altri da questo mittente</string>
+
+    <string name="message_copied_toast">Messaggio copiato</string>
+    <string name="message_moved_toast">Message spostato</string>
+    <string name="message_deleted_toast">Message eliminato</string>
+    <string name="message_discarded_toast">Message scartato</string>
+    <string name="message_saved_toast">Messaggio salvato come bozza</string>
+    <string name="message_delete_failed">Il messaggio non può essere eliminato</string>
+
+    <string name="about_header">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_version">Versione: <xliff:g id="version">%s</xliff:g></string>
+
+
+    <string name="global_settings_flag_label">Mostra stelle</string>
+    <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
+    <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
+    <string name="global_settings_checkbox_summary">Mostra sempre caselle di selezione multipla</string>
+    <string name="global_settings_touchable_label">Anteprime messaggio</string>
+    <string name="global_settings_touchable_summary">Voci di elenco più ampie con anteprima messaggio</string>
+    <string name="global_settings_preview_lines_label">Linee di anteprima</string>
+    <string name="global_settings_show_contact_name_label">Mostra i nomi dei contatti</string>
+    <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla Rubrica quando disponibile</string>
+    <string name="global_settings_registered_name_color_label">Colora contatti</string>
+    <string name="global_settings_registered_name_color_default">Non colorare i nomi nella tua lista dei contatti</string>
+    <string name="global_settings_registered_name_color_changed">Colora i nomi nella tua lista dei contatti</string>
+
+    <string name="global_settings_messageview_fixedwidth_label">Font a larghezza fissa</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa font a larghezza fissa quando mostri i messaggi di testo</string>
+    <string name="global_settings_messageview_return_to_list_label">Torna alla lista dopo l\'eliminazione</string>
+    <string name="global_settings_messageview_return_to_list_summary">Ritorna alla lista dei messaggi dopo l\'eliminazione del messaggio</string>
+
+    <string name="global_settings_confirm_actions_title">Conferma azioni</string>
+    <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
+    <string name="global_settings_confirm_action_archive">Archivia</string>
+    <string name="global_settings_confirm_action_delete">Elimina (message view only)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_send">Invia</string>
+
+    <string name="global_settings_privacy_mode_title">Notifiche con blocco dello schermo</string>
+    <string name="global_settings_privacy_mode_summary">Non visualizzare l\'oggetto del messaggio nella barra di notifica quando il sistema è bloccato</string>
+
+
+    <string name="quiet_time">Periodo tranquillo</string>
+    <string name="quiet_time_description">Disabilita chiamata, ronzii e lampeggi di notte</string>
+    <string name="quiet_time_starts">Il periodo tranquillo inizia</string>
+    <string name="quiet_time_ends">Il periodo tranquillo finisce</string>
+
+
+    <string name="account_setup_basics_title">Configura un nuovo account</string>
+    <string name="account_setup_basics_instructions">Inserisci l\'indirizzo e-mail di questo account:</string>
+    <string name="account_setup_basics_instructions2_fmt">(Puoi aggiungere altri <xliff:g id="number_accounts">%d</xliff:g> account.)</string>
+    <string name="account_setup_basics_email_hint">Indirizzo e-mail</string>
+    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> non è un indirizzo e-mail valido.</string>
+    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> è già stato aggiunto.</string>
+    <string name="account_setup_basics_password_hint">Password</string>
+    <string name="account_setup_basics_default_label">Account predefinito per l\'invio della posta</string>
+    <string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
+
+    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_retr_info_msg">Recupero delle informazioni dell\'account in corso\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Verifica delle impostazioni del server della posta in arrivo in corso\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server della posta in uscita in corso\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Autenticazione in corso\u2026</string>
+    <string name="account_setup_check_settings_fetch">Recupero delle impostazioni dell\'account in corso\u2026</string>
+    <string name="account_setup_check_settings_finishing_msg">Completamento delle operazioni in corso\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">Annullamento delle operazioni in corso\u2026</string>
+
+    <string name="account_setup_names_title">Quasi fatto!</string>
+    <string name="account_setup_names_instructions">Il tuo account è stato impostato, e la posta è in viaggio!</string>
+    <string name="account_setup_names_account_name_label">Assegna un nome all\'account (opzionale):</string>
+    <string name="account_setup_names_user_name_label">Scrivi il tuo nome (visualizzato nei messaggi in uscita):</string>
+
+    <string name="account_setup_finished_toast">Il tuo account è stato impostato!\n\nRecupero messaggi in corso\u2026</string>
+
+    <string name="account_setup_account_type_title">Tipo di account</string>
+    <string name="account_setup_account_type_instructions">Che tipo di account è questo?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+
+    <string name="account_setup_incoming_title">Impostazioni del server della posta in arrivo</string>
+    <string name="account_setup_incoming_username_label">Nome utente</string>
+    <string name="account_setup_incoming_password_label">Password</string>
+    <string name="account_setup_incoming_pop_server_label">Server POP3</string>
+    <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
+    <string name="account_setup_incoming_webdav_server_label">Server WebDAV (Exchange)</string>
+    <string name="account_setup_incoming_port_label">Porta</string>
+    <string name="account_setup_incoming_security_label">Tipo di protezione</string>
+    <string name="account_setup_incoming_auth_type_label">Tipo di autenticazione</string>
+    <string name="account_setup_incoming_security_none_label">Nessuna</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL (se disponibile)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL (sempre)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">TLS (se disponibile)</string>
+    <string name="account_setup_incoming_security_tls_label">TLS (sempre)</string>
+
+    <string name="account_setup_incoming_delete_policy_label">Quando si elimina un messaggio</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>
+    <string name="account_setup_incoming_delete_policy_7days_label">Dopo 7 giorni</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Elimina dal server</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Segna come letto sul server</string>
+
+    <string name="account_setup_incoming_compression_label">Utilizzare la compressione sulla rete:</string>
+    <string name="account_setup_incoming_mobile_label">Mobile</string>
+    <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
+    <string name="account_setup_incoming_other_label">Altra</string>
+
+    <string name="account_setup_incoming_save_all_headers_title">Scarica intestazioni</string>
+    <string name="account_setup_incoming_save_all_headers_label">Salva tutte le intestazioni dei messaggi localmente</string>
+
+    <string name="local_storage_provider_external_label">Memoria esterna (SD card)</string>
+    <string name="local_storage_provider_internal_label">Memoria interna standard</string>
+    <string name="local_storage_provider_samsunggalaxy_label">Ulteriore memoria interna %1$s</string>
+    <string name="local_storage_provider_label">Posizione di memorizzazione</string>
+
+    <string name="account_setup_expunge_policy_label">Elimina i messaggi cancellati</string>
+    <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
+    <string name="account_setup_expunge_policy_on_poll">Nel corso di ogni recupero</string>
+    <string name="account_setup_expunge_policy_manual">Solo manualmente</string>
+
+    <string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
+    <string name="account_setup_incoming_imap_path_prefix_hint">(Automatico usando NAMESPACE se disponibile)</string>
+
+    <string name="drafts_folder_label">Cartella Bozze</string>
+    <string name="sent_folder_label">Cartella Messaggi inviati</string>
+    <string name="trash_folder_label">Cartella Cestino</string>
+    <string name="archive_folder_label">Cartella Archivio</string>
+    <string name="spam_folder_label">Cartella Spam</string>
+    <string name="outbox_folder_label">Cartella Posta in uscita</string>
+
+    <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
+    <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
+
+    <string name="account_setup_incoming_webdav_path_prefix_label">Percorso WebDAV (Exchange)</string>
+    <string name="account_setup_incoming_webdav_path_prefix_hint">Opzionale</string>
+
+    <string name="account_setup_incoming_webdav_auth_path_label">Percorso di autenticazione</string>
+    <string name="account_setup_incoming_webdav_auth_path_hint">Opzionale</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">Percorso della casella di posta</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_hint">Opzionale</string>
+
+    <string name="account_setup_outgoing_title">Impostazioni del server di posta in uscita</string>
+    <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
+    <string name="account_setup_outgoing_port_label">Porta</string>
+    <string name="account_setup_outgoing_security_label">Tipo di protezione</string>
+    <string name="account_setup_outgoing_security_none_label">Nessuna</string>
+    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
+    <string name="account_setup_outgoing_security_tls_optional_label">TLS (se disponibile)</string>
+    <string name="account_setup_outgoing_security_tls_label">TLS (sempre)</string>
+    <string name="account_setup_outgoing_require_login_label">Richiedi accesso.</string>
+    <string name="account_setup_outgoing_username_label">Nome utente</string>
+    <string name="account_setup_outgoing_password_label">Password</string>
+    <string name="account_setup_outgoing_authentication_label">Tipo di autenticazione</string>
+    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
+    <string name="account_setup_outgoing_authentication_basic_label">Nome utente &amp; password</string>
+    <string name="account_setup_outgoing_authentication_basic_username_label">Nome utente</string>
+    <string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
+    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP prima di SMTP</string>
+    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP prima di SMTP</string>
+    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) prima di SMTP</string>
+
+    <string name="account_setup_bad_uri">Impostazioni non valide: <xliff:g id="err_mess">%s</xliff:g></string>
+
+    <string name="account_setup_options_title">Opzioni dell\'account</string>
+
+    <string name="compact_action">Compatta</string>
+   <string name="clear_action">Cancella i messaggi (pericolo!)</string>
+   <string name="recreate_action">Ricrea dati (ultima risorsa!)</string>
+
+    <string name="account_setup_options_mail_check_frequency_label">Frequenza verifica posta</string>
+    <!-- Frequency also used in account_settings_* -->
+    <string name="account_setup_options_mail_check_frequency_never">Mai</string>
+    <string name="account_setup_options_mail_check_frequency_1min">Ogni minuto</string>
+    <string name="account_setup_options_mail_check_frequency_5min">Ogni 5 minuti</string>
+    <string name="account_setup_options_mail_check_frequency_10min">Ogni 10 minuti</string>
+    <string name="account_setup_options_mail_check_frequency_15min">Ogni 15 minuti</string>
+    <string name="account_setup_options_mail_check_frequency_30min">Ogni 30 minuti</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Ogni ora</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">Ogni 2 ore</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">Ogni 3 ore</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Ogni 6 ore</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">Ogni 12 ore</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Ogni 24 ore</string>
+
+    <string name="push_poll_on_connect_label">Controlla quando connesso per push</string>
+    <string name="account_setup_options_enable_push_label">Abilita push mail per questo account</string>
+    <string name="account_setup_options_enable_push_summary">Se il server lo supporta, i nuovi messaggi appariranno istantaneamente. Questa opzione può migliorare o peggiorare notevolmente le prestazioni.</string>
+    <string name="idle_refresh_period_label">Aggiorna connessione inattiva</string>
+    <string name="idle_refresh_period_1min">Ogni minuto</string>
+    <string name="idle_refresh_period_2min">Ogni 2 minuti</string>
+    <string name="idle_refresh_period_3min">Ogni 3 minuti</string>
+    <string name="idle_refresh_period_6min">Ogni 6 minuti</string>
+    <string name="idle_refresh_period_12min">Ogni 12 minuti</string>
+    <string name="idle_refresh_period_24min">Ogni 24 minuti</string>
+    <string name="idle_refresh_period_36min">Ogni 36 minuti</string>
+    <string name="idle_refresh_period_48min">Ogni 48 minuti</string>
+    <string name="idle_refresh_period_60min">Ogni 60 minuti</string>
+
+    <string name="account_setup_options_default_label">Invia mail da questo account per difetto</string>
+    <string name="account_setup_options_notify_label">Notifica l\'arrivo di nuovi messaggi</string>
+    <string name="account_setup_options_notify_sync_label">Notifica mentre controlli la posta</string>
+
+    <!-- Number of displayed messages, also used in account_settings_* -->
+    <string name="account_setup_options_mail_display_count_label">Numero di messaggi da visualizzare</string>
+    <string name="account_setup_options_mail_display_count_10">10 messaggi</string>
+    <string name="account_setup_options_mail_display_count_25">25 messaggi</string>
+    <string name="account_setup_options_mail_display_count_50">50 messaggi</string>
+    <string name="account_setup_options_mail_display_count_100">100 messaggi</string>
+    <string name="account_setup_options_mail_display_count_250">250 messaggi</string>
+    <string name="account_setup_options_mail_display_count_500">500 messaggi</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 messaggi</string>
+    <string name="account_setup_options_mail_display_count_all">tutti i messaggi</string>
+
+
+    <string name="move_copy_cannot_copy_unsynced_message">Non è possibile copiare o spostare un messaggio che non sia sincronizzato con il server</string>
+
+    <string name="account_setup_failed_dlg_title">Impossibile completare la configurazione</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nome utente o password errata.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Impossibile connettersi in modo sicuro al server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">Impossibile connettersi al server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_edit_details_action">Modifica i dettagli</string>
+    <string name="account_setup_failed_dlg_continue_action">Continua</string>
+
+    <string name="account_settings_push_advanced_title">Impostazioni avanzate</string>
+    <string name="account_settings_title_fmt">Impostazioni account</string>
+    <string name="account_settings_default">Account predefinito</string>
+    <string name="account_settings_default_label">Account predefinito</string>
+    <string name="account_settings_default_summary">Inviare mail da questo account per difetto</string>
+    <string name="account_settings_notify_label">Notifiche nuovo messaggio</string>
+    <string name="account_settings_notify_sync_label">Sincronizza notifiche</string>
+    <string name="account_settings_email_label">Il tuo indirizzo e-mail</string>
+    <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
+    <string name="account_settings_notify_sync_summary">Notifica nella barra di stato mentre la posta viene controllata</string>
+    <string name="account_settings_show_combined_label">Mostra Posta in arrivo combinata</string>
+    <string name="account_settings_notify_self_label">Includi la posta in uscita</string>
+    <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
+    <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
+    <string name="account_settings_notification_opens_unread_summary">Ricerca i messaggi non letti quando Notifiche è aperto</string>
+
+    <string name="account_settings_hide_buttons_label">Scorri pulsanti di navigazione</string>
+    <string name="account_settings_hide_buttons_never">Mai</string>
+    <string name="account_settings_hide_buttons_keyboard_avail">Quando la tastiera è disponibile</string>
+    <string name="account_settings_hide_buttons_always">Sempre</string>
+
+    <string name="account_settings_enable_move_buttons_label">Abilita i pulsanti di archiviazione</string>
+    <string name="account_settings_enable_move_buttons_summary">Mostra i pulsanti Archivia, Sposta e Spam.</string>
+    <string name="account_settings_hide_move_buttons_label">Scorri i pulsanti di archiviazione</string>
+
+    <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
+    <string name="account_settings_show_pictures_never">No</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Dai contatti</string>
+    <string name="account_settings_show_pictures_always">Da chiunque</string>
+
+    <string name="account_settings_composition">Composizione messaggio</string>
+
+    <string name="account_settings_reply_after_quote_label">Risposta dopo il testo quotato</string>
+    <string name="account_settings_reply_after_quote_summary">Quando si risponde ai messaggi, il messaggio originale viene visualizzato sopra la tua risposta.</string>
+
+    <string name="account_settings_general_title">Impostazioni generali</string>
+    <string name="account_settings_display_prefs_title">Preferenze di visualizzazione</string>
+    <string name="account_settings_sync">Sincrnizzazione messaggi</string>
+    <string name="account_settings_folders">Cartelle</string>
+    <string name="account_settings_message_lists">Elenco dei messaggi</string>
+    <string name="account_settings_message_view">Visualizzazione dei messaggi</string>
+    <string name="account_settings_quote_prefix_label">Prefisso del testo quotato</string>
+    <string name="account_settings_crypto">Crittografia</string>
+    <string name="account_settings_crypto_app">Provider OpenPGP</string>
+    <string name="account_settings_crypto_app_none">Nessuno</string>
+    <string name="account_settings_crypto_app_not_available">non disponibile</string>
+    <string name="account_settings_crypto_auto_signature">Accesso automatico</string>
+    <string name="account_settings_crypto_auto_signature_summary">Utilizzare l\'indirizzo email dell\'account per dedurre la chiave di firma.</string>
+
+    <string name="account_settings_mail_check_frequency_label">Frequenza di verifica delle cartelle</string>
+    <string name="account_settings_second_class_check_frequency_label">Frequenza di controllo di 2a classe</string>
+
+    <string name="account_settings_storage_title">Memorizzazione</string>
+
+
+    <string name="account_settings_color_label">Colore dell\'account</string>
+    <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nella lista delle cartelle e degli account</string>
+
+    <string name="account_settings_led_color_label">Colore del LED di notifica</string>
+    <string name="account_settings_led_color_summary">Scegli il colore del LED del telefono che dovrà lampeggiare per questo account</string>
+
+    <string name="account_settings_mail_display_count_label">Dimensione delle cartelle locali</string>
+
+    <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
+    <string name="account_settings_autodownload_message_size_1">1Kb</string>
+    <string name="account_settings_autodownload_message_size_2">2Kb</string>
+    <string name="account_settings_autodownload_message_size_4">4Kb</string>
+    <string name="account_settings_autodownload_message_size_8">8Kb</string>
+    <string name="account_settings_autodownload_message_size_16">16Kb</string>
+    <string name="account_settings_autodownload_message_size_32">32Kb</string>
+    <string name="account_settings_autodownload_message_size_64">64Kb</string>
+    <string name="account_settings_autodownload_message_size_128">128Kb</string>
+    <string name="account_settings_autodownload_message_size_256">256Kb</string>
+    <string name="account_settings_autodownload_message_size_512">512Kb</string>
+    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_any">qualsiasi dimensione (nessun limite)</string>
+
+    <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
+    <string name="account_settings_message_age_any">qualsiasi momento (senza limite)</string>
+    <string name="account_settings_message_age_0">oggi</string>
+    <string name="account_settings_message_age_1">gli ultimi 2 giorni</string>
+    <string name="account_settings_message_age_2">gli ultimi 3 giorni</string>
+    <string name="account_settings_message_age_7">l\'ultima settimana</string>
+    <string name="account_settings_message_age_14">le ultime 2 settimane</string>
+    <string name="account_settings_message_age_21">le ultime 3 settimane</string>
+    <string name="account_settings_message_age_1_month">l\'ultimo mese</string>
+    <string name="account_settings_message_age_2_months">gli ultimi 2 mesi</string>
+    <string name="account_settings_message_age_3_months">gli ultimi 3 mesi</string>
+    <string name="account_settings_message_age_6_months">gli ultimi 6 mesi</string>
+    <string name="account_settings_message_age_1_year">l\'ultimo anno</string>
+
+
+    <string name="account_settings_folder_display_mode_label">Visualizza cartelle</string>
+    <string name="account_settings_folder_display_mode_all">Tutte</string>
+    <string name="account_settings_folder_display_mode_first_class">Soltanto cartelle di 1a Classe</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
+    <string name="account_settings_folder_display_mode_not_second_class">Tutte eccetto le caltelle di 2a Classe</string>
+
+    <string name="account_settings_folder_sync_mode_label">Sinconizza cartelle</string>
+    <string name="account_settings_folder_sync_mode_all">Tutte</string>
+    <string name="account_settings_folder_sync_mode_first_class">Soltanto cartelle di 1a Classe</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Tutte eccetto le caltelle di 2a Classe</string>
+    <string name="account_settings_folder_sync_mode_none">Nessuna</string>
+
+    <string name="account_settings_folder_push_mode_label">Cartelle Push</string>
+    <string name="account_settings_folder_push_mode_all">Tutte</string>
+    <string name="account_settings_folder_push_mode_first_class">Soltanto cartelle di 1a Classe</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Tutte eccetto le caltelle di 2a Classe</string>
+    <string name="account_settings_folder_push_mode_none">Nessuna</string>
+
+    <string name="account_settings_folder_target_mode_label">Copia/Sposta cartelle di destinazione</string>
+    <string name="account_settings_folder_target_mode_all">Tutte</string>
+    <string name="account_settings_folder_target_mode_first_class">Soltanto cartelle di 1a Classe</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Tutte eccetto le caltelle di 2a Classe</string>
+
+    <string name="account_settings_sync_remote_deletetions_label">Sincronizza cancellazioni sul server</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi una volta cancellati sul server</string>
+
+    <string name="folder_settings_title">Impostazioni cartella</string>
+
+    <string name="folder_settings_in_top_group_label">Mostra nel gruppo superiore</string>
+    <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore della lista delle cartelle</string>
+
+    <string name="folder_settings_folder_display_mode_label">Classe di visualizzazione della cartella</string>
+    <string name="folder_settings_folder_display_mode_normal">Nessuna</string>
+    <string name="folder_settings_folder_display_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_display_mode_second_class">2a Classe</string>
+
+    <string name="folder_settings_folder_sync_mode_label">Classe di sincronizzazione cartelle</string>
+    <string name="folder_settings_folder_sync_mode_normal">Nessuna</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2a Classe</string>
+    <string name="folder_settings_folder_sync_mode_inherited">Uguale alla classe di visualizzazione</string>
+
+    <string name="folder_settings_folder_push_mode_label">Classe delle cartelle Push</string>
+    <string name="folder_settings_folder_push_mode_normal">Nessuna</string>
+    <string name="folder_settings_folder_push_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_push_mode_second_class">2a Classe</string>
+    <string name="folder_settings_folder_push_mode_inherited">Uguale alla classe di sincronizzazione</string>
+
+    <string name="account_settings_incoming_label">Configurazione posta in arrivo</string>
+    <string name="account_settings_incoming_summary">Configura il server della posta in arrivo</string>
+    <string name="account_settings_outgoing_label">Configurazione posta in uscita</string>
+    <string name="account_settings_outgoing_summary">Configura il server della posta in uscita (SMTP)</string>
+    <string name="account_settings_add_account_label">Aggiungi un altro account</string>
+    <string name="account_settings_description_label">Nome account</string>
+    <string name="account_settings_name_label">Il tuo nome</string>
+    <string name="notifications_title">Notifiche</string>
+    <string name="account_settings_ring_summary">Squilla quando arriva un messaggio</string>
+    <string name="account_settings_vibrate_enable">Vibrazione</string>
+    <string name="account_settings_vibrate_summary">Vibra quando arriva un messaggio</string>
+    <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
+    <string name="account_settings_vibrate_pattern_default">predefinito</string>
+    <string name="account_settings_vibrate_pattern_1">tipo 1</string>
+    <string name="account_settings_vibrate_pattern_2">tipo 2</string>
+    <string name="account_settings_vibrate_pattern_3">tipo 3</string>
+    <string name="account_settings_vibrate_pattern_4">tipo 4</string>
+    <string name="account_settings_vibrate_pattern_5">tipo 5</string>
+    <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
+    <string name="account_settings_ringtone">Suoneria novo messaggio</string>
+    <string name="account_settings_led_label">LED lampeggiante</string>
+    <string name="account_settings_led_summary">LED lampeggiante quando arriva un messaggio</string>
+
+
+    <string name="account_settings_servers">Impostazioni del server</string>
+
+    <string name="account_settings_composition_title">Opzioni composizione messaggi</string>
+    <string name="account_settings_composition_label">Opzioni predefinite</string>
+    <string name="account_settings_composition_summary">Imposta From, Bcc e firma predefiniti</string>
+
+    <string name="account_settings_identities_label">Gestione identità</string>
+    <string name="account_settings_identities_summary">Imposta indirizzo e firma alternativi \'Da\'</string>
+
+    <string name="manage_identities_title">Gestione identità</string>
+
+    <string name="manage_identities_context_menu_title">Gestione identità</string>
+
+    <string name="edit_identity_title">Modifica identità</string>
+    <string name="new_identity_action">Aggiungi identità</string>
+
+    <string name="account_settings_always_bcc_label">Invia in Ccn tutti i messaggi a</string>
+    <string name="account_settings_always_bcc_summary">Invia a questo indirizzo una copia di ogni messaggio in uscita</string>
+
+    <string name="manage_identities_edit_action">Modifica</string>
+    <string name="manage_identities_move_up_action">Sposta su</string>
+    <string name="manage_identities_move_down_action">Sposta giù</string>
+    <string name="manage_identities_move_top_action">Sposta in cima/rendi predefinito</string>
+    <string name="manage_identities_remove_action">Rimuovi</string>
+
+    <string name="edit_identity_description_label">Descrizione identità</string>
+    <string name="edit_identity_description_hint">(Opzionle)</string>
+    <string name="edit_identity_name_label">Il tuo nome</string>
+    <string name="edit_identity_name_hint">(Opzionle)</string>
+    <string name="edit_identity_email_label">Indirizzo e-mail</string>
+    <string name="edit_identity_email_hint">(Richiesto)</string>
+    <string name="edit_identity_reply_to_label">Indirizzo per le risposte</string>
+    <string name="edit_identity_reply_to_hint">(Opzionle)</string>
+    <string name="edit_identity_signature_label">Firma</string>
+    <string name="edit_identity_signature_hint">(Opzionle)</string>
+
+    <string name="account_settings_signature_use_label">Usa la firma</string>
+    <string name="account_settings_signature_label">Firma</string>
+    <string name="account_settings_signature_summary">Aggiungere la firma in ogni messaggio inviato</string>
+
+    <string name="default_signature">-- Inviato dal mio cellulare Android con K-9 Mail.</string>
+    <string name="default_identity_description">Identità iniziale</string>
+    <string name="choose_identity">Scegli identità</string>
+    <string name="choose_identity_title">Scegli identità</string>
+    <string name="choose_account_title">Scegli account/identità</string>
+    <string name="send_as">Invia come</string>
+
+
+    <string name="no_identities">Vai a Impostazioni account -&gt; Gestione identità per creare identità</string>
+    <string name="no_removable_identity">Non è possibile rimuovere la propria unica identità</string>
+    <string name="identity_has_no_email">Non è possibile utilizzare una identità senza un indirizzo e-mail</string>
+    <string name="identity_will_not_be_saved">L\'identità scelta e le modifiche alla firma non vengono salvate nelle bozze</string>
+
+    <string name="sort_earliest_first">Data messaggio (più recenti)</string>
+    <string name="sort_latest_first">Data messaggio (più vecchi)</string>
+    <string name="sort_sender_alpha">Mittente (A-Z)</string>
+    <string name="sort_sender_re_alpha">Mittente (Z-A)</string>
+    <string name="sort_subject_alpha">Oggetto (A-Z)</string>
+    <string name="sort_subject_re_alpha">Oggetto (Z-A)</string>
+    <string name="sort_flagged_first">Messaggi con stella</string>
+    <string name="sort_flagged_last">Messaggi senza stella</string>
+    <string name="sort_unread_first">Messaggi non letti</string>
+    <string name="sort_unread_last">Messaggi letti</string>
+    <string name="sort_attach_first">Messaggi con allegati</string>
+    <string name="sort_unattached_first">Messaggi senza allegati</string>
+
+    <string name="sort_by">Ordinato per...</string>
+    <string name="sort_by_date">Data</string>
+    <string name="sort_by_sender">Mittente</string>
+    <string name="sort_by_subject">Oggetto</string>
+    <string name="sort_by_flag">Stella</string>
+    <string name="sort_by_unread">Letto/non letto</string>
+    <string name="sort_by_attach">Allegati</string>
+    <string name="message_web_view_error">%s</string>
+
+    <string name="account_delete_dlg_title">Rimuovi Account</string>
+    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
+
+    <string name="account_recreate_dlg_title">Ricrea Account</string>
+    <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
+
+    <string name="account_clear_dlg_title">Cancella Account</string>
+    <string name="account_clear_dlg_instructions_fmt">Tutti i messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
+
+    <string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l\'accesso POP
+        consentendo il collegamento del programma. Se non è possibile accedere con
+        il tuo indirizzo email e password corretti, you may not have a paid
+        l\'indirizzo email e la password corretti, è possibile che non sia stato pagato un account
+        \"Plus\". Lanciare il browser Internet per accedere a questi
+        account e-mail.</string>
+
+    <string name="provider_note_yahoojp">Se si desidera utilizzare POP3 per questo provider, si deve consentire l\'utilizzo di POP3 sulla pagina delle impostazioni di Yahoo.</string>
+
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
+
+    <string name="message_help_key">Canc (o D) - Elimina\u000AR -
+    Rispondi\u000AA - Rispondi a tutti\u000AF - Inoltra\u000AJ o P - Messaggio
+    Precedente\u000AK, N - Messaggio successivo\u000AM - Sposta\u000AY - Copia\u000AZ - Ingrandisci\u000AShift-Z -
+    Rimpicciolisci\u000aG - Stella</string>
+    <string name="message_list_help_key">Canc (o D) - Elimina\u000AR -
+    Rispondi\u000AA - Rispondi a tutti\u000AC - Componi\u000AF - Inoltra\u000aM -
+    Sposta\u000AY - Copia\u000AG - Stella\u000AO - Tipo ordinamento\u000AI - Verso ordinamento\u000AQ
+    - Ritorna alle cartelle\u000AS - Seleziona/deseleziona</string>
+
+      <string name="folder_list_help_key">
+      1 - Visualizza soltanto cartelle di 1a Classe\u000A
+      2 - Visualizza cartelle di 1a e 2a Classe\u000A
+      3 - Visualizza tutte eccetto le cartelle di 2a Classe\u000A
+      4 - Visualizza tutte le cartelle\u000A
+      Q - Ritorna agli Account\u000A
+      S - Modifica le impostazioni dell\'account</string>
+
+    <string name="folder_list_display_mode_label">Cartelle</string>
+    <string name="folder_list_display_mode_all">Visualizza tutte le cartelle</string>
+    <string name="folder_list_display_mode_first_class">Visualizza soltanto le cartelle di 1a Classe</string>
+    <string name="folder_list_display_mode_first_and_second_class">Visualizza cartelle di 1a e 2a Classe</string>
+    <string name="folder_list_display_mode_not_second_class">Visualizza tutte eccetto le cartelle di 2a Classe</string>
+
+
+
+    <string name="account_settings_signature__location_label">Posizione della firma</string>
+    <string name="account_settings_signature__location_before_quoted_text">Prima del testo quotato</string>
+    <string name="account_settings_signature__location_after_quoted_text">Dopo il testo quotato</string>
+    <string name="setting_theme_dark">Scuro</string>
+    <string name="setting_theme_light">Chiaro</string>
+    <string name="display_preferences">Preferenze di visualizzazione</string>
+    <string name="global_preferences">Globali</string>
+    <string name="debug_preferences">Debug</string>
+    <string name="privacy_preferences">Privacy</string>
+    <string name="network_preferences">Rete</string>
+    <string name="interaction_preferences">Interazione</string>
+    <string name="accountlist_preferences">Lista account</string>
+    <string name="messagelist_preferences">Liste messaggi</string>
+    <string name="messageview_preferences">Messaggi</string>
+    <string name="settings_theme_label">Tema</string>
+    <string name="settings_language_label">Linguaggio</string>
+
+    <string name="settings_messageview_mobile_layout_label">Layout a colonna singola</string>
+    <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
+    <string name="settings_messageview_zoom_controls_label">Controlli dello zoom di sistema</string>
+    <string name="settings_messageview_zoom_controls_summary">Abilita widgets dello zoom o pinch-zoom se il dispositivo lo supporta</string>
+
+
+
+    <string name="setting_language_system">Impostazioni predefinite di sistema</string>
+
+    <string name="background_ops_label">Sincronizzazione in background</string>
+    <string name="background_ops_never">Mai</string>
+    <string name="background_ops_always">Sempre</string>
+    <string name="background_ops_enabled">Quando \'Dati in background\' è selezionato</string>
+    <string name="background_ops_auto_sync">Quando \'Dati in background\' &amp; \'Sincronizzazione automatica\' sono selezionati</string>
+
+    <string name="no_message_seletected_toast">Nessun messaggio selezionato</string>
+
+    <string name="date_format_label">Formato data</string>
+    <!--
+      The values of the date_format_* strings MUST be valid date format strings.
+      See Android SDK documentation for the class SimpleDateFormat.
+    -->
+    <string name="date_format_short">BREVE</string>
+    <string name="date_format_medium">MEDIO</string>
+    <string name="date_format_common">gg-MMM-aaaa</string>
+    <string name="date_format_iso8601">aaaa-MM-gg</string>
+
+    <string name="batch_ops">Operazioni Batch</string>
+    <string name="batch_delete_op">Elimina selezionati</string>
+    <string name="batch_mark_read_op">Segna selezionati come letti</string>
+    <string name="batch_mark_unread_op">Segna selezionati come non letti</string>
+    <string name="batch_flag_op">Aggiungi stella a selezionati</string>
+    <string name="batch_unflag_op">Rimuovi stella a selezionati</string>
+    <string name="batch_archive_op">Sposta selezionati in Archivio</string>
+    <string name="batch_spam_op">Sposta selezionati in Spam</string>
+    <string name="batch_move_op">Sposta selezionati</string>
+    <string name="batch_copy_op">Copia selezionati</string>
+    <string name="batch_flag_mode">Modalità stella</string>
+    <string name="batch_select_mode">Seleziona modalità</string>
+    <string name="batch_plain_mode">Modalità normale</string>
+    <string name="batch_select_all">Seleziona tutti</string>
+    <string name="batch_deselect_all">Cancella tutte le selezioni</string>
+
+    <string name="account_setup_push_limit_label">Numero max cartelle da controllare in Push</string>
+    <string name="account_setup_push_limit_10">10 cartelle</string>
+    <string name="account_setup_push_limit_25">25 cartelle</string>
+    <string name="account_setup_push_limit_50">50 cartelle</string>
+    <string name="account_setup_push_limit_100">100 cartelle</string>
+    <string name="account_setup_push_limit_250">250 cartelle</string>
+    <string name="account_setup_push_limit_500">500 cartelle</string>
+    <string name="account_setup_push_limit_1000">1000 cartelle</string>
+
+    <string name="animations_title">Animazione</string>
+    <string name="animations_summary">Utilizza effetti visivi vistosi</string>
+    <string name="gestures_title">Gestione con tocco</string>
+    <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
+
+    <string name="volume_navigation_title">Tasto volume per navigazione</string>
+    <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
+    <string name="volume_navigation_message">Visualizzazione messaggi</string>
+    <string name="volume_navigation_list">Diverse visualizzazioni di elenco</string>
+
+    <string name="manage_back_title">Gestisci il pulsante \"Indietro\"</string>
+    <string name="manage_back_summary">\"Indietro\" sale sempre di un livello</string>
+
+    <string name="start_integrated_inbox_title">Avvia in Posta In Arrivo Unificata</string>
+    <string name="start_integrated_inbox_summary">Visualizza la Posta In Arrivo Unificata dopo l\'avvio</string>
+
+    <string name="measure_accounts_title">Visualizza dimensione account</string>
+    <string name="measure_accounts_summary">Disattiva per una visualizzazione più veloce</string>
+
+    <string name="count_search_title">Conta i risultati della ricerca</string>
+    <string name="count_search_summary">Disattiva per una visualizzazione più veloce</string>
+
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+    <string name="flagged_modifier"> - Con stella</string>
+    <string name="unread_modifier"> - Non letto</string>
+
+    <string name="search_all_messages_title">Tutti i messaggi</string>
+    <string name="search_all_messages_detail">Tutti i messaggi nelle cartelle abilitate per la ricerca</string>
+
+    <string name="integrated_inbox_title">Posta In Arrivo Unificata</string>
+    <string name="integrated_inbox_detail">Tutti i messaggi nella Posta In Arrivo Unificata</string>
+
+    <string name="tap_hint">Tocca busta o stella per i messaggi non letti o con stella</string>
+
+    <string name="folder_settings_include_in_integrated_inbox_label">Posta In Arrivo Unificata</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaggi sono visualizzati nella Posta In Arrivo Unificata</string>
+
+    <string name="account_settings_searchable_label">Ricerca nelle cartelle</string>
+    <string name="account_settings_searchable_all">Tutte</string>
+    <string name="account_settings_searchable_displayable">Visibili</string>
+    <string name="account_settings_searchable_none">Nessuna</string>
+
+    <string name="remote_control_label">Controllo remoto di K-9 Mail</string>
+    <string name="remote_control_desc">Consenti a questa applicazione di controllare le attività e le impostazioni di K-9 Mail.</string>
+
+    <string name="font_size_settings_title">Dimensione carattere</string>
+    <string name="font_size_settings_description">Configura la dimensione dei caratteri</string>
+
+    <string name="font_size_account_list">Elenco account</string>
+    <string name="font_size_account_name">Nome account</string>
+    <string name="font_size_account_description">Descrizione account</string>
+
+    <string name="font_size_folder_list">Elenco cartelle</string>
+    <string name="font_size_folder_name">Nome cartella</string>
+    <string name="font_size_folder_status">Stato cartella</string>
+
+    <string name="font_size_message_list">Elenco Messaggi</string>
+    <string name="font_size_message_list_subject">Oggetto</string>
+    <string name="font_size_message_list_sender">Mittente</string>
+    <string name="font_size_message_list_date">Data</string>
+
+    <string name="font_size_message_view">Messaggi</string>
+    <string name="font_size_message_view_sender">Mittente</string>
+    <string name="font_size_message_view_to">A</string>
+    <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_additional_headers">Altre intestazioni</string>
+    <string name="font_size_message_view_subject">Oggetto</string>
+    <string name="font_size_message_view_time">Ora</string>
+    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_content">Corpo del messaggio</string>
+
+    <string name="font_size_tiniest">Piccolissimo</string>
+    <string name="font_size_tiny">Molto piccolo</string>
+    <string name="font_size_smaller">Più piccolo</string>
+    <string name="font_size_small">Piccolo</string>
+    <string name="font_size_medium">Medio</string>
+    <string name="font_size_large">Grande</string>
+    <string name="font_size_larger">Più grande</string>
+
+    <string name="font_size_webview_smaller">Più piccolo</string>
+    <string name="font_size_webview_small">Piccolo</string>
+    <string name="font_size_webview_normal">Normale</string>
+    <string name="font_size_webview_large">Grande</string>
+    <string name="font_size_webview_larger">Più grande</string>
+
+    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
+    <string name="message_compose_buggy_gallery">Controlla \"Impostazioni\" -&gt; \"Aggira il bug della Galleria Immagini\" per essere in grado di allegare immagini o video usando Galleria 3D.</string>
+
+    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
+    <string name="message_compose_use_workaround">Utilizza \"Aggiungi allegato (Immagini)\" or \"Aggiungi allegato (Video)\" per allegare immagini o video con Galleria 3D.</string>
+
+    <string name="miscellaneous_preferences">Altre impostazioni</string>
+    <string name="misc_preferences_attachment_title">Aggira il bug della Galleria Immagini</string>
+    <string name="misc_preferences_attachment_description">Visualizza i bottoni per allegare immagini/video (per aggirare il bug della Galleria 3D)</string>
+
+    <!-- APG related -->
+    <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
+    <string name="error_apg_version_not_supported">La vesione di APG installata non è supportata.</string>
+    <string name="btn_crypto_sign">Firma</string>
+    <string name="btn_encrypt">Cripta</string>
+    <string name="btn_decrypt">Decripta</string>
+    <string name="btn_verify">Verifica</string>
+    <string name="unknown_crypto_signature_user_id">&lt;sconosciuto&gt;</string>
+    <string name="key_id">id: %s</string>
+    <string name="insufficient_apg_permissions">K-9 non ha i permessi per accedere pienamento ad APG, si prega di reinstallare K-9 per risolvere il problema.</string>
+    <string name="pgp_mime_unsupported">I messaggi PGP/MIME non sono ancora supportati.</string>
+    <string name="attachment_encryption_unsupported">Attenzione: gli allegati non sono ancora firmati o crittografati.</string>
+    <string name="send_aborted">Invio abortito.</string>
+
+    <string name="save_or_discard_draft_message_dlg_title">Salva bozza?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Salva o Rifiuta questo messaggio?</string>
+
+    <string name="charset_not_found">Questo messaggio non può essere visualizzato perché il set di caratteri \"<xliff:g id="charset">%s</xliff:g>\" non è stato trovato.</string>
+
+    <string name="select_text_now">Seleziona il testo da copiare.</string>
+
+    <string name="dialog_confirm_delete_title">Conferma l\'eliminazione</string>
+    <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
+    <string name="dialog_confirm_delete_confirm_button">Elimina</string>
+    <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
+
+    <string name="debug_logging_enabled">Registrazione dei log per il debug di Android abilitata</string>
+
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
+    <string name="error_unable_to_connect">Impossibile connettersi.</string>
 </resources>
