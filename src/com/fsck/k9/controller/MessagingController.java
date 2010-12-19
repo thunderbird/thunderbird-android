@@ -3499,6 +3499,7 @@ public class MessagingController implements Runnable
     public void sendPendingMessagesSynchronous(final Account account)
     {
         Folder localFolder = null;
+        Exception lastFailure = null;
         try
         {
             Store localStore = account.getLocalStore();
@@ -3515,7 +3516,6 @@ public class MessagingController implements Runnable
             localFolder.open(OpenMode.READ_WRITE);
 
             Message[] localMessages = localFolder.getMessages(null);
-            Exception lastFailure = null;
             int progress = 0;
             int todo = localMessages.length;
             for (MessagingListener l : getListeners())
