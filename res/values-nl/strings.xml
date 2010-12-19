@@ -847,7 +847,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="manage_back_title">Beheer \"Terug\" knop</string>
     <string name="manage_back_summary">Laat \"Terug\" altijd 1 niveau omhoog gaan</string>
 
-    <string name="start_integrated_inbox_title">Geintegreerde Inbox bij start</string>
+    <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
     <string name="start_integrated_inbox_summary">Laat de geïntegreerde Inbox zien na opstarten</string>
 
     <string name="measure_accounts_title">Laat account grootte zien</string>
@@ -863,8 +863,8 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="search_all_messages_title">Alle berichten</string>
     <string name="search_all_messages_detail">Alle berichten in doorzoekbare mappen</string>
 
-    <string name="integrated_inbox_title">Geintegreerde Inbox</string>
-    <string name="integrated_inbox_detail">Alle berichten in geintergreerde mappen</string>
+    <string name="integrated_inbox_title">Geïntegreerde Inbox</string>
+    <string name="integrated_inbox_detail">Alle berichten in geïntegreerde mappen</string>
 
     <string name="tap_hint">Tik envelop of ster voor ongelezen of berichten met sterren</string>
 
