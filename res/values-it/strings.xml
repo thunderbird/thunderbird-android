@@ -846,11 +846,12 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
+      http://developer.android.com/reference/java/text/SimpleDateFormat.html
     -->
-    <string name="date_format_short">BREVE</string>
-    <string name="date_format_medium">MEDIO</string>
-    <string name="date_format_common">gg-MMM-aaaa</string>
-    <string name="date_format_iso8601">aaaa-MM-gg</string>
+    <string name="date_format_short">SHORT</string>
+    <string name="date_format_medium">MEDIUM</string>
+    <string name="date_format_common">dd-MMM-yyyy</string>
+    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Operazioni Batch</string>
     <string name="batch_delete_op">Elimina selezionati</string>
