@@ -122,6 +122,11 @@ public class MessagingController implements Runnable
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
 
+    /**
+     * Maximum number of unsynced messages to store at once
+     */
+    private static final int UNSYNC_CHUNK_SIZE = 5;
+
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
 
@@ -1636,9 +1641,16 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
+
+        /*
+         * Messages to be batch written
+         */
+        final List<Message> chunk = new ArrayList<Message>(UNSYNC_CHUNK_SIZE);
+
         remoteFolder.fetch(unsyncedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp,
                            new MessageRetrievalListener()
         {
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
                 try
@@ -1692,36 +1704,80 @@ public class MessagingController implements Runnable
                          */
                         if (!isMessageSuppressed(account, folder, message))
                         {
-                            // Store the new message locally
-                            localFolder.appendMessages(new Message[] { message });
+                            // keep message for delayed storing
+                            chunk.add(message);
 
-                            Message localMessage = localFolder.getMessage(message.getUid());
-                            syncFlags(localMessage, message);
-                            if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                      + account + ":" + folder + ":" + message.getUid());
-                            for (MessagingListener l : getListeners())
+                            if (chunk.size() >= UNSYNC_CHUNK_SIZE)
                             {
-                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                                writeUnsyncedMessages(chunk, localFolder, account, folder);
+                                chunk.clear();
                             }
-
-
                         }
-
                     }
-
                 }
                 catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
                     addErrorMessage(account, null, e);
-
                 }
             }
 
+            @Override
             public void messageStarted(String uid, int number, int ofTotal) {}
-            public void messagesFinished(int total) {}
+
+            @Override
+            public void messagesFinished(int total) {
+                // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
+            }
+
         });
+        if (chunk.size() > 0)
+        {
+            writeUnsyncedMessages(chunk, localFolder, account, folder);
+            chunk.clear();
+        }
+    }
+
+    /**
+     * Actual storing of messages
+     * 
+     * <br>
+     * FIXME: <strong>This method should really be moved in the above MessageRetrievalListener once {@link MessageRetrievalListener#messagesFinished(int)} is properly invoked by various stores</strong>
+     * 
+     * @param messages Never <code>null</code>.
+     * @param localFolder
+     * @param account
+     * @param folder
+     */
+    private void writeUnsyncedMessages(final List<Message> messages, final LocalFolder localFolder, final Account account, final String folder)
+    {
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "Batch writing " + Integer.toString(messages.size()) + " messages");
+        }
+        try
+        {
+            // Store the new message locally
+            localFolder.appendMessages(messages.toArray(new Message[messages.size()]));
+            
+            for (final Message message : messages)
+            {
+                final Message localMessage = localFolder.getMessage(message.getUid());
+                syncFlags(localMessage, message);
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                          + account + ":" + folder + ":" + message.getUid());
+                for (final MessagingListener l : getListeners())
+                {
+                    l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                }
+            }
+        }
+        catch (final Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
+            addErrorMessage(account, null, e);
+        }
     }
 
 

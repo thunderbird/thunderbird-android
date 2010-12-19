@@ -9,5 +9,10 @@ public interface MessageRetrievalListener
 
     public void messageFinished(Message message, int number, int ofTotal);
 
+    /**
+     * FIXME <strong>this method is almost never invoked by various Stores! Don't rely on it unless fixed!!</strong>
+     * 
+     * @param total
+     */
     public void messagesFinished(int total);
 }
