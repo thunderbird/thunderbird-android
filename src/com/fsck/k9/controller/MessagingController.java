@@ -1783,13 +1783,14 @@ public class MessagingController implements Runnable
                     }
 
                     // Store the updated message locally
-                    localFolder.appendMessages(new Message[] { message });
-
-                    Message localMessage = localFolder.getMessage(message.getUid());
-                    progress.incrementAndGet();
-
-                    // Set a flag indicating this message has now be fully downloaded
-                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    final Message localMessage = localFolder.storeSmallMessage(message, new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            progress.incrementAndGet();
+                        }
+                    });
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
                               + account + ":" + folder + ":" + message.getUid());

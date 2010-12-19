@@ -2843,6 +2843,39 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         /**
+         * Convenience transaction wrapper for storing a message and set it as fully downloaded. Implemented mainly to speed up DB transaction commit.
+         * 
+         * @param message Message to store. Never <code>null</code>.
+         * @param runnable What to do before setting {@link Flag#X_DOWNLOADED_FULL}. Never <code>null</code>.
+         * @return The local version of the message. Never <code>null</code>.
+         * @throws MessagingException
+         */
+        public Message storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException
+        {
+            return execute(true, new DbCallback<Message>()
+            {
+                @Override
+                public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
+                {
+                    try
+                    {
+                        appendMessages(new Message[] { message });
+                        final String uid = message.getUid();
+                        final Message result = getMessage(uid);
+                        runnable.run();
+                        // Set a flag indicating this message has now be fully downloaded
+                        result.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                        return result;
+                    }
+                    catch (MessagingException e)
+                    {
+                        throw new WrappedException(e);
+                    }
+                }
+            });
+        }
+
+        /**
          * The method differs slightly from the contract; If an incoming message already has a uid
          * assigned and it matches the uid of an existing message then this message will replace the
          * old message. It is implemented as a delete/insert. This functionality is used in saving
