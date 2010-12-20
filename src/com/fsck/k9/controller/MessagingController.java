@@ -277,6 +277,7 @@ public class MessagingController implements Runnable
         return mBusy;
     }
 
+    @Override
     public void run()
     {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
@@ -438,6 +439,7 @@ public class MessagingController implements Runnable
     {
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 listFoldersSynchronous(account, refreshRemote, listener);
@@ -521,6 +523,7 @@ public class MessagingController implements Runnable
     {
         put("doRefreshRemote", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 List<? extends Folder> localFolders = null;
@@ -613,6 +616,7 @@ public class MessagingController implements Runnable
     {
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 listLocalMessagesSynchronous(account, folder, listener);
@@ -647,7 +651,9 @@ public class MessagingController implements Runnable
             int totalDone = 0;
 
 
+            @Override
             public void messageStarted(String message, int number, int ofTotal) {}
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
 
@@ -669,6 +675,7 @@ public class MessagingController implements Runnable
                     }
                 }
             }
+            @Override
             public void messagesFinished(int number)
             {
                 addPendingMessages();
@@ -752,6 +759,7 @@ public class MessagingController implements Runnable
 
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 searchLocalMessagesSynchronous(accountUuids,folderNames, messages,  query, integrate, requiredFlags, forbiddenFlags, listener);
@@ -893,7 +901,9 @@ public class MessagingController implements Runnable
 
             MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
             {
+                @Override
                 public void messageStarted(String message, int number, int ofTotal) {}
+                @Override
                 public void messageFinished(Message message, int number, int ofTotal)
                 {
                     if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message))
@@ -910,6 +920,7 @@ public class MessagingController implements Runnable
                     }
 
                 }
+                @Override
                 public void messagesFinished(int number)
                 {
 
@@ -986,6 +997,7 @@ public class MessagingController implements Runnable
     {
         putBackground("synchronizeMailbox", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
@@ -1537,6 +1549,7 @@ public class MessagingController implements Runnable
 
         localFolder.purgeToVisibleLimit(new MessageRemovalListener()
         {
+            @Override
             public void messageRemoved(Message message)
             {
                 for (MessagingListener l : getListeners())
@@ -1826,6 +1839,7 @@ public class MessagingController implements Runnable
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
                            fp, new MessageRetrievalListener()
         {
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
                 try
@@ -1877,8 +1891,10 @@ public class MessagingController implements Runnable
                 }
             }
 
+            @Override
             public void messageStarted(String uid, int number, int ofTotal) {}
 
+            @Override
             public void messagesFinished(int total) {}
         });
 
@@ -2140,6 +2156,7 @@ public class MessagingController implements Runnable
     {
         putBackground("processPendingCommands", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -2559,6 +2576,7 @@ public class MessagingController implements Runnable
     {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
+            @Override
             public void run()
             {
                 PendingCommand command = new PendingCommand();
@@ -2689,6 +2707,7 @@ public class MessagingController implements Runnable
     {
         putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
+            @Override
             public void run()
             {
                 PendingCommand command = new PendingCommand();
@@ -3081,6 +3100,7 @@ public class MessagingController implements Runnable
     {
         put("loadMessageForViewRemote", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder remoteFolder = null;
@@ -3173,6 +3193,7 @@ public class MessagingController implements Runnable
         }
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -3287,6 +3308,7 @@ public class MessagingController implements Runnable
 
         put("loadAttachment", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder remoteFolder = null;
@@ -3404,6 +3426,7 @@ public class MessagingController implements Runnable
     {
         putBackground("sendPendingMessages", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 if (!account.isAvailable(mApplication))
@@ -3706,6 +3729,7 @@ public class MessagingController implements Runnable
     {
         Runnable unreadRunnable = new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -3730,6 +3754,7 @@ public class MessagingController implements Runnable
     {
         Runnable unreadRunnable = new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -3800,6 +3825,7 @@ public class MessagingController implements Runnable
         }
         putBackground("moveMessages", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false, listener);
@@ -3818,6 +3844,7 @@ public class MessagingController implements Runnable
     {
         putBackground("copyMessages", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true, listener);
@@ -3916,6 +3943,7 @@ public class MessagingController implements Runnable
     {
         putBackground("expunge", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 queueExpunge(account, folder);
@@ -3963,6 +3991,7 @@ public class MessagingController implements Runnable
 
                 putBackground("deleteMessages", null, new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         deleteMessagesSynchronous(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), listener);
@@ -4140,6 +4169,7 @@ public class MessagingController implements Runnable
     {
         putBackground("emptyTrash", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder localFolder = null;
@@ -4259,6 +4289,7 @@ public class MessagingController implements Runnable
         }
         putBackground("checkMail", listener, new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -4294,6 +4325,7 @@ public class MessagingController implements Runnable
                 }
                 putBackground("finalize sync", null, new Runnable()
                 {
+                    @Override
                     public void run()
                     {
 
@@ -4395,6 +4427,7 @@ public class MessagingController implements Runnable
         {
             putBackground("clear notification flag for " + account.getDescription(), null, new Runnable()
             {
+                @Override
                 public void run()
                 {
                     if (K9.DEBUG)
@@ -4446,6 +4479,7 @@ public class MessagingController implements Runnable
         }
         putBackground("sync" + folder.getName(), null, new Runnable()
         {
+            @Override
             public void run()
             {
                 LocalFolder tLocalFolder = null;
@@ -4500,6 +4534,7 @@ public class MessagingController implements Runnable
     {
         putBackground("compact:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -4534,6 +4569,7 @@ public class MessagingController implements Runnable
     {
         putBackground("clear:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -4575,6 +4611,7 @@ public class MessagingController implements Runnable
     {
         putBackground("recreate:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -5092,6 +5129,7 @@ public class MessagingController implements Runnable
         putBackground("Push messageArrived of account " + account.getDescription()
                       + ", folder " + remoteFolder.getName(), null, new Runnable()
         {
+            @Override
             public void run()
             {
                 LocalFolder localFolder = null;
