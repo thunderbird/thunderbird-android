@@ -37,7 +37,7 @@
     <string name="status_processing_account">\u0020(Elab <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Prossima verifica @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_next_poll">\u0020(Prossima verifica alle <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_polling_off">\u0020(Verifica disattivata)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -177,6 +177,7 @@
     <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
+    <string name="special_mailbox_name_inbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in arrivo)</string>
     <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
@@ -285,8 +286,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_view_download_remainder">Scarica intero messaggio</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrico dell\'account per abilitare questo per l futuro.</string>
-    <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, ma non ci sono intestazioni aggiuntive da mostrare.</string>
+    <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrico dell\'account per abilitare questo per il futuro.</string>
+    <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
     <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
 
     <string name="mailbox_select_dlg_title">Cartelle</string>
@@ -319,18 +320,18 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_show_contact_name_label">Mostra i nomi dei contatti</string>
     <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla Rubrica quando disponibile</string>
     <string name="global_settings_registered_name_color_label">Colora contatti</string>
-    <string name="global_settings_registered_name_color_default">Non colorare i nomi nella tua lista dei contatti</string>
-    <string name="global_settings_registered_name_color_changed">Colora i nomi nella tua lista dei contatti</string>
+    <string name="global_settings_registered_name_color_default">Non colorare i nomi nel tuo elenco dei contatti</string>
+    <string name="global_settings_registered_name_color_changed">Colora i nomi nel tuo elenco dei contatti</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Font a larghezza fissa</string>
     <string name="global_settings_messageview_fixedwidth_summary">Usa font a larghezza fissa quando mostri i messaggi di testo</string>
-    <string name="global_settings_messageview_return_to_list_label">Torna alla lista dopo l\'eliminazione</string>
-    <string name="global_settings_messageview_return_to_list_summary">Ritorna alla lista dei messaggi dopo l\'eliminazione del messaggio</string>
+    <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
+    <string name="global_settings_messageview_return_to_list_summary">Ritorna all\'elenco dei messaggi dopo l\'eliminazione del messaggio</string>
 
     <string name="global_settings_confirm_actions_title">Conferma azioni</string>
     <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
     <string name="global_settings_confirm_action_archive">Archivia</string>
-    <string name="global_settings_confirm_action_delete">Elimina (message view only)</string>
+    <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_send">Invia</string>
 
@@ -346,7 +347,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="account_setup_basics_title">Configura un nuovo account</string>
     <string name="account_setup_basics_instructions">Inserisci l\'indirizzo e-mail di questo account:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Puoi aggiungere altri <xliff:g id="number_accounts">%d</xliff:g> account.)</string>
+    <string name="account_setup_basics_instructions2_fmt">(Puoi aggiungere altri <xliff:g id="number_accounts">%d</xliff:g> account)</string>
     <string name="account_setup_basics_email_hint">Indirizzo e-mail</string>
     <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> non è un indirizzo e-mail valido.</string>
     <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> è già stato aggiunto.</string>
@@ -424,6 +425,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="archive_folder_label">Cartella Archivio</string>
     <string name="spam_folder_label">Cartella Spam</string>
     <string name="outbox_folder_label">Cartella Posta in uscita</string>
+    <string name="inbox_folder_label">Cartella Posta in arrivo</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
     <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
@@ -522,7 +524,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_title_fmt">Impostazioni account</string>
     <string name="account_settings_default">Account predefinito</string>
     <string name="account_settings_default_label">Account predefinito</string>
-    <string name="account_settings_default_summary">Inviare mail da questo account per difetto</string>
+    <string name="account_settings_default_summary">Invia mail da questo account per impostazione predefinita</string>
     <string name="account_settings_notify_label">Notifiche nuovo messaggio</string>
     <string name="account_settings_notify_sync_label">Sincronizza notifiche</string>
     <string name="account_settings_email_label">Il tuo indirizzo e-mail</string>
@@ -574,7 +576,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
 
     <string name="account_settings_color_label">Colore dell\'account</string>
-    <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nella lista delle cartelle e degli account</string>
+    <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nell\'elenco delle cartelle e degli account</string>
 
     <string name="account_settings_led_color_label">Colore del LED di notifica</string>
     <string name="account_settings_led_color_summary">Scegli il colore del LED del telefono che dovrà lampeggiare per questo account</string>
@@ -582,18 +584,18 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_mail_display_count_label">Dimensione delle cartelle locali</string>
 
     <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
-    <string name="account_settings_autodownload_message_size_1">1Kb</string>
-    <string name="account_settings_autodownload_message_size_2">2Kb</string>
-    <string name="account_settings_autodownload_message_size_4">4Kb</string>
-    <string name="account_settings_autodownload_message_size_8">8Kb</string>
-    <string name="account_settings_autodownload_message_size_16">16Kb</string>
-    <string name="account_settings_autodownload_message_size_32">32Kb</string>
-    <string name="account_settings_autodownload_message_size_64">64Kb</string>
-    <string name="account_settings_autodownload_message_size_128">128Kb</string>
-    <string name="account_settings_autodownload_message_size_256">256Kb</string>
-    <string name="account_settings_autodownload_message_size_512">512Kb</string>
-    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_1">1KB</string>
+    <string name="account_settings_autodownload_message_size_2">2KB</string>
+    <string name="account_settings_autodownload_message_size_4">4KB</string>
+    <string name="account_settings_autodownload_message_size_8">8KB</string>
+    <string name="account_settings_autodownload_message_size_16">16KB</string>
+    <string name="account_settings_autodownload_message_size_32">32KB</string>
+    <string name="account_settings_autodownload_message_size_64">64KB</string>
+    <string name="account_settings_autodownload_message_size_128">128KB</string>
+    <string name="account_settings_autodownload_message_size_256">256KB</string>
+    <string name="account_settings_autodownload_message_size_512">512KB</string>
+    <string name="account_settings_autodownload_message_size_1024">1MB</string>
+    <string name="account_settings_autodownload_message_size_2048">2MB</string>
     <string name="account_settings_autodownload_message_size_any">qualsiasi dimensione (nessun limite)</string>
 
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
@@ -643,7 +645,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="folder_settings_title">Impostazioni cartella</string>
 
     <string name="folder_settings_in_top_group_label">Mostra nel gruppo superiore</string>
-    <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore della lista delle cartelle</string>
+    <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore dell\'elenco delle cartelle</string>
 
     <string name="folder_settings_folder_display_mode_label">Classe di visualizzazione della cartella</string>
     <string name="folder_settings_folder_display_mode_normal">Nessuna</string>
@@ -819,8 +821,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="privacy_preferences">Privacy</string>
     <string name="network_preferences">Rete</string>
     <string name="interaction_preferences">Interazione</string>
-    <string name="accountlist_preferences">Lista account</string>
-    <string name="messagelist_preferences">Liste messaggi</string>
+    <string name="accountlist_preferences">Elenco account</string>
+    <string name="messagelist_preferences">Elenchi messaggi</string>
     <string name="messageview_preferences">Messaggi</string>
     <string name="settings_theme_label">Tema</string>
     <string name="settings_language_label">Linguaggio</string>
