@@ -327,8 +327,8 @@ public class Address
 
     /**
      * Unpacks an address list previously packed with packAddressList()
-     * @param list
-     * @return
+     * @param addressList Packed address list.
+     * @return Unpacked list.
      */
     public static Address[] unpack(String addressList)
     {
@@ -369,10 +369,10 @@ public class Address
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a "\u0000," seperated list of:
+     * The packed list is a "\u0000," separated list of:
      * address\u0000;personal
-     * @param list
-     * @return
+     * @param addresses Array of addresses to pack.
+     * @return Packed addresses.
      */
     public static String pack(Address[] addresses)
     {
@@ -390,7 +390,7 @@ public class Address
             {
                 sb.append(";\u0000");
                 // Escape quotes in the address part on the way in
-                personal.replaceAll("\"","\\\"");
+                personal = personal.replaceAll("\"","\\\"");
                 sb.append(personal);
             }
             if (i < count - 1)
