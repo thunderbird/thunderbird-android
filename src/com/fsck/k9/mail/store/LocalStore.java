@@ -1,16 +1,7 @@
 
 package com.fsck.k9.mail.store;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,6 +97,14 @@ public class LocalStore extends Store implements Serializable
     static private String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
+
+    /**
+     * When generating previews, Spannable objects that can't be converted into a String are
+     * represented as 0xfffc. When displayed, these show up as undisplayed squares. These constants
+     * define the object character and the replacement character.
+     */
+    private static final char PREVIEW_OBJECT_CHARACTER = (char)0xfffc;
+    private static final char PREVIEW_OBJECT_REPLACEMENT = (char)0x20;  // space
 
     protected static final int DB_VERSION = 39;
 
@@ -2362,7 +2361,7 @@ public class LocalStore extends Store implements Serializable
                                 // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                                 if (preview == null || preview.length() == 0)
                                 {
-                                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                    preview = calculateContentPreview(Html.fromHtml(html).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
                                 }
 
                                 try
@@ -2490,7 +2489,7 @@ public class LocalStore extends Store implements Serializable
                             // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
-                                preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                preview = calculateContentPreview(Html.fromHtml(html).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
                             }
                             try
                             {
@@ -2618,7 +2617,6 @@ public class LocalStore extends Store implements Serializable
         /**
          * @param messageId
          * @param attachment
-         * @param saveAsNew
          * @throws IOException
          * @throws MessagingException
          */
