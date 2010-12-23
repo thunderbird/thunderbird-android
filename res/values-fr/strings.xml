@@ -653,7 +653,7 @@
   <string name="account_settings_signature_use_label">Utiliser la signature</string>
   <string name="account_settings_signature_label">Signature</string>
   <string name="account_settings_signature_summary">Ajouter une signature à chaque message envoyé</string>
-  <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la bièveté.</string>
+  <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
   <string name="default_identity_description">Identité initiale</string>
   <string name="choose_identity">Choisir l\'identité</string>
   <string name="choose_identity_title">Choisir l\'identité</string>
