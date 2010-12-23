@@ -2,12 +2,12 @@
 package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.helper.Utility;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class MimeHeader {
@@ -37,6 +37,7 @@ public class MimeHeader {
     };
 
     protected ArrayList<Field> mFields = new ArrayList<Field>();
+    private String mCharset = null;
 
     public void clear() {
         mFields.clear();
@@ -100,10 +101,7 @@ public class MimeHeader {
                 String v = field.value;
 
                 if (hasToBeEncoded(v)) {
-                    v = EncoderUtil.encodeEncodedWord(
-                            field.value,
-                            EncoderUtil.Usage.WORD_ENTITY
-                        );
+                    v = EncoderUtil.encodeEncodedWord(field.value, Charset.forName(mCharset));
                 }
 
                 writer.write(field.name + ": " + v + "\r\n");
@@ -142,5 +140,10 @@ public class MimeHeader {
             sb.append(name).append('=').append(value).append(')');
             return sb.toString();
         }
+    }
+
+    public void setCharset(String charset)
+    {
+        mCharset = charset;
     }
 }

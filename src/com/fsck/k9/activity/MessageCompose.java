@@ -362,6 +362,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
         mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
         mSubjectView = (EditText)findViewById(R.id.subject);
+        mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
