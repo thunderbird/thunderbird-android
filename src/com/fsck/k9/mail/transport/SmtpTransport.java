@@ -196,6 +196,12 @@ public class SmtpTransport extends Transport
                 }
             }
 
+            // If we don't have a hostname for whatever reason, set a sane default (see issue 2750).
+            if (localHost.equals(""))
+            {
+                localHost = "android";
+            }
+
             List<String> results = executeSimpleCommand("EHLO " + localHost);
 
             m8bitEncodingAllowed = results.contains("8BITMIME");
