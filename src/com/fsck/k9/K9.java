@@ -89,6 +89,14 @@ public class K9 extends Application
     //public static final String logFile = Environment.getExternalStorageDirectory() + "/k9mail/debug.log";
 
     /**
+     * If this is enabled, various development settings will be enabled
+     * It should NEVER be on for Market builds
+     * Right now, it just governs strictmode
+     **/
+    public static boolean DEVELOPER_MODE = true;
+
+
+    /**
      * If this is enabled there will be additional logging information sent to
      * Log.d, including protocol dumps.
      * Controlled by Preferences at run-time
@@ -456,8 +464,10 @@ public class K9 extends Application
     @Override
     public void onCreate()
     {
+        maybeSetupStrictMode();
         super.onCreate();
         app = this;
+
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -590,6 +600,27 @@ public class K9 extends Application
 
         notifyObservers();
     }
+
+    private void maybeSetupStrictMode()
+    {
+        if (!K9.DEVELOPER_MODE)
+            return;
+
+        try
+        {
+            Class strictMode = Class.forName("android.os.StrictMode");
+            Method enableDefaults = strictMode.getMethod("enableDefaults");
+            enableDefaults.invoke(strictMode);
+        }
+
+        catch (Exception e)
+        {
+            // Discard , as it means we're not running on a device with strict mode
+            Log.v(K9.LOG_TAG, "Failed to turn on strict mode "+e);
+        }
+
+    }
+
 
     /**
      * since Android invokes Application.onCreate() only after invoking all
