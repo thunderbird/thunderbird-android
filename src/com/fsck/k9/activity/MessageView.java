@@ -916,9 +916,9 @@ public class MessageView extends K9Activity implements OnClickListener
 
         final WebSettings webSettings = mMessageContentView.getSettings();
 
-	webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setSupportZoom(true);
-	webSettings.setJavaScriptEnabled(false);
+        webSettings.setJavaScriptEnabled(false);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
