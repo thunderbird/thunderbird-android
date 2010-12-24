@@ -520,7 +520,6 @@ public class K9 extends Application
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvailableAccounts());
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
