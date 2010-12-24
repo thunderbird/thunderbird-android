@@ -592,8 +592,7 @@ public class Account implements BaseAccount
     {
         try
         {
-            LocalStore localStore = getLocalStore();
-            localStore.resetVisibleLimits(getDisplayCount());
+            getLocalStore().resetVisibleLimits(getDisplayCount());
         }
         catch (MessagingException e)
         {
