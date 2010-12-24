@@ -56,6 +56,12 @@ public class Editor implements android.content.SharedPreferences.Editor
         return this;
     }
 
+
+     // TODO Android 2.3 provides a sexy new "apply" method we need to implement
+     public void apply() { commit(); }
+
+
+
     /* This method is poorly defined.  It should throw an Exception on failure */
     //@Override
     public boolean commit()
