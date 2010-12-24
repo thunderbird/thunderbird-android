@@ -136,7 +136,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private Button mDownloadRemainder;
 
 
-   private static Drawable answeredIcon; 
+    private static Drawable answeredIcon;
 
 
     View next;

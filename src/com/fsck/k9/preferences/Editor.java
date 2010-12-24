@@ -57,8 +57,11 @@ public class Editor implements android.content.SharedPreferences.Editor
     }
 
 
-     // TODO Android 2.3 provides a sexy new "apply" method we need to implement
-     public void apply() { commit(); }
+    // TODO Android 2.3 provides a sexy new "apply" method we need to implement
+    public void apply()
+    {
+        commit();
+    }
 
 
 

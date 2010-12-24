@@ -57,7 +57,7 @@ public class LockableDatabase
          *
          */
         private static final long serialVersionUID = 8184421232587399369L;
-    
+
         public WrappedException(final Exception cause)
         {
             super(cause);
@@ -437,7 +437,7 @@ public class LockableDatabase
      */
     protected void openOrCreateDataspace(final Application application) throws UnavailableStorageException
     {
-    
+
         lockWrite();
         try
         {
@@ -473,7 +473,7 @@ public class LockableDatabase
     protected File prepareStorage(final String providerId) throws UnavailableStorageException
     {
         final StorageManager storageManager = getStorageManager();
-    
+
         final File databaseFile;
         final File databaseParentDir;
         databaseFile = storageManager.getDatabase(uUid, providerId);
@@ -492,7 +492,7 @@ public class LockableDatabase
             }
             Utility.touchFile(databaseParentDir, ".nomedia");
         }
-    
+
         final File attachmentDir;
         final File attachmentParentDir;
         attachmentDir = storageManager
@@ -512,7 +512,7 @@ public class LockableDatabase
 
     /**
      * Delete the backing database.
-     * 
+     *
      * @throws UnavailableStorageException
      */
     public void delete() throws UnavailableStorageException
@@ -541,7 +541,7 @@ public class LockableDatabase
             }
             catch (Exception e)
             {
-    
+
             }
             final StorageManager storageManager = getStorageManager();
             try
@@ -571,7 +571,7 @@ public class LockableDatabase
             {
                 Log.i(K9.LOG_TAG, "LockableDatabase: delete(): Unable to delete backing DB file", e);
             }
-    
+
             if (recreate)
             {
                 openOrCreateDataspace(mApplication);

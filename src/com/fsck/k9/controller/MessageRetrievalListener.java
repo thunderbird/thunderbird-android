@@ -11,7 +11,7 @@ public interface MessageRetrievalListener
 
     /**
      * FIXME <strong>this method is almost never invoked by various Stores! Don't rely on it unless fixed!!</strong>
-     * 
+     *
      * @param total
      */
     public void messagesFinished(int total);

@@ -391,7 +391,7 @@ public class WebDavStore extends Store
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=")
-                .append(messageState).append("\r\n");
+        .append(messageState).append("\r\n");
         buffer.append(" GROUP BY \"DAV:ishidden\"\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -540,11 +540,11 @@ public class WebDavStore extends Store
 
     /**
      * Determines which type of authentication Exchange is using and authenticates appropriately.
-     * 
+     *
      * @throws MessagingException
      */
     public boolean authenticate()
-            throws MessagingException
+    throws MessagingException
     {
         try
         {
@@ -573,7 +573,7 @@ public class WebDavStore extends Store
                     else
                     {
                         throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
-                                " during request processing: " + response.getStatusLine().toString());
+                                                     " during request processing: " + response.getStatusLine().toString());
                     }
                 }
                 else if (info.requiredAuthType == AUTH_TYPE_FORM_BASED)
@@ -604,11 +604,11 @@ public class WebDavStore extends Store
     /**
      * Makes the initial connection to Exchange for authentication. Determines the type of authentication necessary for
      * the server.
-     * 
+     *
      * @throws MessagingException
      */
     private ConnectionInfo doInitialConnection()
-            throws MessagingException
+    throws MessagingException
     {
         // For our initial connection we are sending an empty GET request to
         // the configured URL, which should be in the following form:
@@ -639,8 +639,8 @@ public class WebDavStore extends Store
                 info.requiredAuthType = AUTH_TYPE_BASIC;
             }
             else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
-                    (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
-                    (info.statusCode == 440)) // Unauthorized
+                     (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
+                     (info.statusCode == 440)) // Unauthorized
 
             {
                 // We will handle all 3 situations the same. First we take an educated
@@ -671,7 +671,7 @@ public class WebDavStore extends Store
             else
             {
                 throw new IOException("Error with code " + info.statusCode + " during request processing: " +
-                        response.getStatusLine().toString());
+                                      response.getStatusLine().toString());
             }
         }
         catch (IOException ioe)
@@ -685,11 +685,11 @@ public class WebDavStore extends Store
 
     /**
      * Performs form-based authentication.
-     * 
+     *
      * @throws MessagingException
      */
     public void doFBA(ConnectionInfo info)
-            throws IOException, MessagingException
+    throws IOException, MessagingException
     {
         // Clear out cookies from any previous authentication.
         mAuthCookies.clear();
@@ -777,12 +777,12 @@ public class WebDavStore extends Store
 
                         // Reconstruct the login URL based on the original login URL and the form action.
                         URI finalUri = new URI(loginUri.getScheme(),
-                                loginUri.getUserInfo(),
-                                loginUri.getHost(),
-                                loginUri.getPort(),
-                                urlPath,
-                                null,
-                                null);
+                                               loginUri.getUserInfo(),
+                                               loginUri.getHost(),
+                                               loginUri.getPort(),
+                                               urlPath,
+                                               null,
+                                               null);
                         loginUrl = finalUri.toString();
                     }
 
@@ -813,11 +813,11 @@ public class WebDavStore extends Store
 
     /**
      * Searches the specified stream for an HTML form and returns the form's action target.
-     * 
+     *
      * @throws IOException
      */
     private String findFormAction(InputStream istream)
-            throws IOException
+    throws IOException
     {
         String formAction = null;
 
@@ -901,8 +901,8 @@ public class WebDavStore extends Store
     }
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody,
-            HashMap<String, String> headers, boolean tryAuth)
-            throws MessagingException
+                                    HashMap<String, String> headers, boolean tryAuth)
+    throws MessagingException
     {
         InputStream istream = null;
 
@@ -971,7 +971,7 @@ public class WebDavStore extends Store
             else if (statusCode < 200 || statusCode >= 300)
             {
                 throw new IOException("Error with code " + statusCode + " during request processing: " +
-                        response.getStatusLine().toString());
+                                      response.getStatusLine().toString());
             }
 
             if (entity != null)
@@ -1004,20 +1004,20 @@ public class WebDavStore extends Store
      * response.
      */
     private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers)
-            throws MessagingException
+    throws MessagingException
     {
         return processRequest(url, method, messageBody, headers, true);
     }
 
     private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers,
-            boolean needsParsing)
-            throws MessagingException
+                                   boolean needsParsing)
+    throws MessagingException
     {
         DataSet dataset = new DataSet();
         if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
         {
             Log.v(K9.LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
-                    + messageBody + "'");
+                  + messageBody + "'");
         }
 
         if (url == null ||
@@ -1061,7 +1061,7 @@ public class WebDavStore extends Store
                 catch (ParserConfigurationException pce)
                 {
                     Log.e(K9.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
-                            + processException(pce));
+                          + processException(pce));
                     throw new MessagingException("ParserConfigurationException in processRequest() ", pce);
                 }
 
@@ -1237,7 +1237,7 @@ public class WebDavStore extends Store
         }
 
         private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
-                throws MessagingException
+        throws MessagingException
         {
             String[] uids = new String[messages.length];
 
@@ -1373,7 +1373,7 @@ public class WebDavStore extends Store
 
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
-                throws MessagingException
+        throws MessagingException
         {
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
@@ -1485,7 +1485,7 @@ public class WebDavStore extends Store
 
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
-                throws MessagingException
+        throws MessagingException
         {
             if (messages == null ||
                     messages.length == 0)
@@ -1522,7 +1522,7 @@ public class WebDavStore extends Store
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
-                throws MessagingException
+        throws MessagingException
         {
             WebDavHttpClient httpclient;
             httpclient = getHttpClient();
@@ -1555,7 +1555,7 @@ public class WebDavStore extends Store
                 {
                     wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
                     Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
-                            + wdMessage.getUrl() + "'");
+                          + wdMessage.getUrl() + "'");
                     if (wdMessage.getUrl().equals(""))
                     {
                         throw new MessagingException("Unable to get URL for message");
@@ -1565,7 +1565,7 @@ public class WebDavStore extends Store
                 try
                 {
                     Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
-                            + wdMessage.getUrl() + "'");
+                          + wdMessage.getUrl() + "'");
                     HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                     HttpResponse response;
                     HttpEntity entity;
@@ -1585,7 +1585,7 @@ public class WebDavStore extends Store
                             statusCode > 300)
                     {
                         throw new IOException("Error during with code " + statusCode + " during fetch: "
-                                + response.getStatusLine().toString());
+                                              + response.getStatusLine().toString());
                     }
 
                     if (entity != null)
@@ -1632,8 +1632,8 @@ public class WebDavStore extends Store
                 catch (IOException ioe)
                 {
                     Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode
-                            + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
-                            + processException(ioe));
+                          + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
+                          + processException(ioe));
                     throw new MessagingException("Failure code " + statusCode, ioe);
                 }
 
@@ -1731,7 +1731,7 @@ public class WebDavStore extends Store
          * Call it a happy balance
          */
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
-                throws MessagingException
+        throws MessagingException
         {
             HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
@@ -1813,7 +1813,7 @@ public class WebDavStore extends Store
 
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
-                throws MessagingException
+        throws MessagingException
         {
             String[] uids = new String[messages.length];
 
@@ -1918,7 +1918,7 @@ public class WebDavStore extends Store
 
                     open(OpenMode.READ_WRITE);
                     EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                            new BufferedOutputStream(out, 1024));
+                        new BufferedOutputStream(out, 1024));
                     message.writeTo(msgOut);
                     msgOut.flush();
 
@@ -1952,8 +1952,8 @@ public class WebDavStore extends Store
                             statusCode > 300)
                     {
                         throw new IOException("Error with status code " + statusCode
-                                + " while sending/appending message.  Response = "
-                                + response.getStatusLine().toString() + " for message " + messageURL);
+                                              + " while sending/appending message.  Response = "
+                                              + response.getStatusLine().toString() + " for message " + messageURL);
                     }
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
@@ -1984,8 +1984,8 @@ public class WebDavStore extends Store
         public String getUidFromMessageId(Message message) throws MessagingException
         {
             Log.e(K9.LOG_TAG,
-                    "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
-                            + " being uploaded to the Sent folder");
+                  "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
+                  + " being uploaded to the Sent folder");
             return null;
         }
 
@@ -1993,7 +1993,7 @@ public class WebDavStore extends Store
         public void setFlags(Flag[] flags, boolean value) throws MessagingException
         {
             Log.e(K9.LOG_TAG,
-                    "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
+                  "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
     }
@@ -2043,12 +2043,12 @@ public class WebDavStore extends Store
             catch (UnsupportedEncodingException uee)
             {
                 Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: "
-                        + processException(uee));
+                      + processException(uee));
             }
             catch (IllegalArgumentException iae)
             {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
-                        + processException(iae));
+                      + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++)
@@ -2154,7 +2154,7 @@ public class WebDavStore extends Store
 
         @Override
         public void startElement(String namespaceURI, String localName,
-                String qName, Attributes atts) throws SAXException
+                                 String qName, Attributes atts) throws SAXException
         {
             mOpenTags.push(localName);
         }
@@ -2190,7 +2190,7 @@ public class WebDavStore extends Store
          * Holds the mappings from the name returned from Exchange to the MIME format header name
          */
         private final HashMap<String, String> mHeaderMappings = new HashMap<String, String>()
-                        {
+        {
             {
                 put("mime-version", "MIME-Version");
                 put("content-type", "Content-Type");
@@ -2518,12 +2518,12 @@ public class WebDavStore extends Store
             catch (UnsupportedEncodingException uee)
             {
                 Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee
-                        + "\nTrace: " + processException(uee));
+                      + "\nTrace: " + processException(uee));
             }
             catch (IllegalArgumentException iae)
             {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
-                        + processException(iae));
+                      + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++)
@@ -2540,7 +2540,7 @@ public class WebDavStore extends Store
             if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
             {
                 Log.v(K9.LOG_TAG, "url = '" + url + "' length = " + url.length()
-                        + ", end = '" + end + "' length = " + end.length());
+                      + ", end = '" + end + "' length = " + end.length());
             }
             url = url + "/" + end;
 
@@ -2567,12 +2567,12 @@ public class WebDavStore extends Store
     {
         /*
          * Copyright (C) 2007 The Android Open Source Project
-         * 
+         *
          * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
          * compliance with the License. You may obtain a copy of the License at
-         * 
+         *
          * http://www.apache.org/licenses/LICENSE-2.0
-         * 
+         *
          * Unless required by applicable law or agreed to in writing, software distributed under the License is
          * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
          * the License for the specific language governing permissions and limitations under the License.
@@ -2584,7 +2584,7 @@ public class WebDavStore extends Store
         }
 
         public static InputStream getUngzippedContent(HttpEntity entity)
-                throws IOException
+        throws IOException
         {
             InputStream responseStream = entity.getContent();
             if (responseStream == null)
@@ -2604,7 +2604,7 @@ public class WebDavStore extends Store
         }
 
         public HttpResponse executeOverride(HttpUriRequest request, HttpContext context)
-                throws IOException
+        throws IOException
         {
             modifyRequestToAcceptGzipResponse(request);
             return super.execute(request, context);

@@ -1739,7 +1739,8 @@ public class MessagingController implements Runnable
             public void messageStarted(String uid, int number, int ofTotal) {}
 
             @Override
-            public void messagesFinished(int total) {
+            public void messagesFinished(int total)
+            {
                 // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
             }
 
@@ -1753,10 +1754,10 @@ public class MessagingController implements Runnable
 
     /**
      * Actual storing of messages
-     * 
+     *
      * <br>
      * FIXME: <strong>This method should really be moved in the above MessageRetrievalListener once {@link MessageRetrievalListener#messagesFinished(int)} is properly invoked by various stores</strong>
-     * 
+     *
      * @param messages Never <code>null</code>.
      * @param localFolder
      * @param account
@@ -1772,7 +1773,7 @@ public class MessagingController implements Runnable
         {
             // Store the new message locally
             localFolder.appendMessages(messages.toArray(new Message[messages.size()]));
-            
+
             for (final Message message : messages)
             {
                 final Message localMessage = localFolder.getMessage(message.getUid());
@@ -3717,7 +3718,8 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (lastFailure == null) {
+            if (lastFailure == null)
+            {
                 cancelNotification(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber());
             }
             closeFolder(localFolder);

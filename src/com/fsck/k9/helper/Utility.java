@@ -539,7 +539,7 @@ public class Utility
             to.delete();
         }
         to.getParentFile().mkdirs();
-    
+
         try
         {
             FileInputStream in = new FileInputStream(from);
@@ -560,7 +560,7 @@ public class Utility
             Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
             return false;
         }
-    
+
     }
 
     /**
