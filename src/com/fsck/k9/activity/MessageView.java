@@ -2018,12 +2018,12 @@ public class MessageView extends K9Activity implements OnClickListener
         return super.onPrepareOptionsMenu(menu);
     }
 
-    // XXX when switching to API version 8, override onCreateDialog(int, Bundle)
+    // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
     /**
      * @param id
      *            The id of the dialog.
      * @return The dialog. If you return null, the dialog will not be created.
-     * @see android.app.Activity#onCreateDialog(int, Bundle)
+     * @see android.app.Activity#onCreateDialog(int)
      */
     @Override
     protected Dialog onCreateDialog(final int id)
@@ -2291,9 +2291,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
                 else
                 {
+                    // First try and fetch an HTML part.
                     Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
                     if (part == null)
                     {
+                        // If that fails, try and get a text part.
                         part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
                         if (part == null)
                         {
@@ -2314,6 +2316,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     }
                     else
                     {
+                        // We successfully found an HTML part; do the necessary character set decoding.
                         text = MimeUtility.getTextFromPart(part);
                     }
                 }

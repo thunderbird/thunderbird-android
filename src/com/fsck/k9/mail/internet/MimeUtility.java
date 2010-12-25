@@ -1006,7 +1006,7 @@ public class MimeUtility
 
     /**
       * Reads the Part's body and returns a String based on any charset conversion that needed
-      * to be done.
+      * to be done.  Note, this <b>does not</b> return a text representation of HTML.
       * @param part The part containing a body
       * @return a String containing the converted text in the body, or null if there was no text
       * or an error during conversion.

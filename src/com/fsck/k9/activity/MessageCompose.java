@@ -319,7 +319,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Discard will delete the message from the given folder.
      * @param context
      * @param account
-     * @param folder
      * @param message
      */
     public static void actionEditDraft(Context context, Account account, Message message)
@@ -449,7 +448,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (savedInstanceState != null)
         {
             /*
-             * This data gets used in onCreate, so grab it here instead of onRestoreIntstanceState
+             * This data gets used in onCreate, so grab it here instead of onRestoreInstanceState
              */
             mSourceMessageProcessed = savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
         }
