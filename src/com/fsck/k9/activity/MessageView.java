@@ -471,22 +471,21 @@ public class MessageView extends K9Activity implements OnClickListener
         }
 
         public void setHeaders(
-            final   String subject,
-            final   CharSequence from,
-            final   String date,
-            final   String time,
-            final   CharSequence to,
-            final   CharSequence cc,
-            final   int accountColor,
-            final   boolean unread,
-            final   boolean hasAttachments,
-            final   boolean flagged,
-            final   boolean answered)
+                final Message message) throws MessagingException
         {
+            final Contacts contacts = K9.showContactName() ? mContacts : null;
+            final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
+            final String date = getDateFormat().format(message.getSentDate());
+            final String time = getTimeFormat().format(message.getSentDate());
+            final CharSequence to = Address.toFriendly(message.getRecipients(RecipientType.TO), contacts);
+            final CharSequence cc = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
+
+
             runOnUiThread(new Runnable()
             {
                 public void run()
                 {
+                    String subject = message.getSubject();
                     setTitle(subject);
                     if (subject == null || subject.equals(""))
                     {
@@ -515,21 +514,15 @@ public class MessageView extends K9Activity implements OnClickListener
                     mCcContainerView.setVisibility((cc != null && cc.length() > 0)? View.VISIBLE : View.GONE);
 
                     mCcView.setText(cc);
-                    mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
-                    mFlagged.setChecked(flagged);
-
+                    mAttachmentIcon.setVisibility(((LocalMessage) message).hasAttachments() ? View.VISIBLE : View.GONE);
+                    mFlagged.setChecked(message.isSet(Flag.FLAGGED));
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
-
-                    chip.setBackgroundColor(accountColor);
-                    chip.getBackground().setAlpha(unread ? 255 : 127);
-
-                    if (answered)
-                    {
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds( answeredIcon, null,null,null);
-                    }
-                    else
-                    {
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                    chip.setBackgroundColor(mAccount.getChipColor());
+                    chip.getBackground().setAlpha(!message.isSet(Flag.SEEN) ? 255 : 127);
+                    if (message.isSet(Flag.ANSWERED)) {
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(answeredIcon, null, null, null);
+                    } else {
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     }
 
                     if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
@@ -1527,7 +1520,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
-                setHeaders(mAccount, mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+                setHeaders(mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
                 prepareMenuItems();
             }
             catch (MessagingException me)
@@ -1730,7 +1723,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 mMessage.setFlag(Flag.SEEN, false);
-                setHeaders(mAccount, mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+                setHeaders(mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
             }
             catch (Exception e)
             {
@@ -2163,32 +2156,12 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void setHeaders(Account account, String folder, String uid,
+    private void setHeaders(String folder, String uid,
                             final Message message) throws MessagingException
     {
-        String subjectText = message.getSubject();
-        final Contacts contacts = K9.showContactName() ? mContacts : null;
-        CharSequence fromText = Address.toFriendly(message.getFrom(), contacts);
-        String dateText = getDateFormat().format(message.getSentDate());
-        String timeText = getTimeFormat().format(message.getSentDate());
-        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), contacts);
-        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
 
-        int color = mAccount.getChipColor();
-        boolean hasAttachments = ((LocalMessage) message).hasAttachments();
-        boolean unread = !message.isSet(Flag.SEEN);
 
-        mHandler.setHeaders(subjectText,
-                            fromText,
-                            dateText,
-                            timeText,
-                            toText,
-                            ccText,
-                            color,
-                            unread,
-                            hasAttachments,
-                            message.isSet(Flag.FLAGGED),
-                            message.isSet(Flag.ANSWERED));
+        mHandler.setHeaders(message);
 
         // Update additional headers display, if visible
         if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
@@ -2227,7 +2200,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             try
             {
-                setHeaders(account, folder, uid, message);
+                setHeaders(folder, uid, message);
                 mHandler.showHeaderContainer();
             }
             catch (MessagingException me)
@@ -2253,7 +2226,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
 
-                    setHeaders(account, folder, uid, message);
+                    setHeaders(folder, uid, message);
                     mHandler.showHeaderContainer();
                 }
 
