@@ -910,37 +910,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         });
 
-        mMessageContentView.setVerticalScrollBarEnabled(true);
-        mMessageContentView.setVerticalScrollbarOverlay(true);
-        mMessageContentView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        MessageView.configureMessageWebView(mMessageContentView);
 
-        final WebSettings webSettings = mMessageContentView.getSettings();
-
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setSupportZoom(true);
-        webSettings.setJavaScriptEnabled(false);
-        webSettings.setLoadsImagesAutomatically(true);
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-
-        if (K9.zoomControlsEnabled())
-        {
-            webSettings.setBuiltInZoomControls(true);
-        }
-
-        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
-        // administratively disable it
-        if (
-            ( Integer.parseInt(Build.VERSION.SDK)  > 7)
-            &&  K9.mobileOptimizedLayout())
-        {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        }
-        else
-        {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        }
-
-        webSettings.setTextSize(mFontSizes.getMessageViewContent());
 
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
@@ -2791,4 +2762,48 @@ public class MessageView extends K9Activity implements OnClickListener
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
         }
     }
+
+    /**
+     * Configure a {@link android.webkit.WebView} to display a Message. This method takes into account a user's
+     * preferences when configuring the view. This message is used to view a message and to display a message being
+     * replied to.
+     * @param view WebView to configure.
+     */
+    public static void configureMessageWebView(final WebView view)
+    {
+        view.setVerticalScrollBarEnabled(true);
+        view.setVerticalScrollbarOverlay(true);
+        view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+
+        final WebSettings webSettings = view.getSettings();
+
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setSupportZoom(true);
+        webSettings.setJavaScriptEnabled(false);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        if (K9.zoomControlsEnabled())
+        {
+            webSettings.setBuiltInZoomControls(true);
+        }
+
+        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
+        // administratively disable it
+        if (
+            ( Integer.parseInt(Build.VERSION.SDK)  > 7)
+            &&  K9.mobileOptimizedLayout())
+        {
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        }
+        else
+        {
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        }
+
+        webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
+
+    }
+
 }
