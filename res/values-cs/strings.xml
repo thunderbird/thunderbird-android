@@ -820,7 +820,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="setting_theme_dark">Tmavé</string>
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Zobrazení</string>
-    <string name="display_preferences">Globální možnosti</string>
     <string name="debug_preferences">Ladění</string>
     <string name="privacy_preferences">Soukromí</string>
     <string name="network_preferences">Síť</string>
