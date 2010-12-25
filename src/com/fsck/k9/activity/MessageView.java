@@ -149,17 +149,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
 
     View next;
-    View next_scrolling;
     View previous;
-    View previous_scrolling;
 
     private View mDelete;
     private View mArchive;
     private View mMove;
     private View mSpam;
-    private View mArchiveScrolling;
-    private View mMoveScrolling;
-    private View mSpamScrolling;
     private ToggleScrollView mToggleScrollView;
 
     private Account mAccount;
@@ -1026,21 +1021,8 @@ public class MessageView extends K9Activity implements OnClickListener
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
 
-        next = findViewById(R.id.next);
-        previous = findViewById(R.id.previous);
 
-        next_scrolling = findViewById(R.id.next_scrolling);
-        previous_scrolling = findViewById(R.id.previous_scrolling);
 
-        mDelete = findViewById(R.id.delete);
-
-        mArchive = findViewById(R.id.archive);
-        mMove = findViewById(R.id.move);
-        mSpam = findViewById(R.id.spam);
-
-        mArchiveScrolling = findViewById(R.id.archive_scrolling);
-        mMoveScrolling = findViewById(R.id.move_scrolling);
-        mSpamScrolling = findViewById(R.id.spam_scrolling);
 
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
         if (goNext)
@@ -1213,11 +1195,6 @@ public class MessageView extends K9Activity implements OnClickListener
         if (previous.isEnabled() != enablePrev)
             previous.setEnabled(enablePrev);
 
-        if (next_scrolling != null && (next_scrolling.isEnabled() != enableNext))
-            next_scrolling.setEnabled(enableNext);
-        if (previous_scrolling != null && (previous_scrolling.isEnabled() != enablePrev))
-            previous_scrolling.setEnabled(enablePrev);
-
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
 
@@ -1232,9 +1209,6 @@ public class MessageView extends K9Activity implements OnClickListener
             mArchive.setEnabled(enableArchive);
             mMove.setEnabled(enableMove);
             mSpam.setEnabled(enableSpam);
-            mArchiveScrolling.setEnabled(enableArchive);
-            mMoveScrolling.setEnabled(enableMove);
-            mSpamScrolling.setEnabled(enableSpam);
         }
         else
         {
@@ -1251,6 +1225,10 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             buttons.setVisibility(View.GONE);
         }
+
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
+        mDelete = findViewById(R.id.delete);
     }
 
     private void scrollButtons()
@@ -1260,6 +1238,10 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             buttons.setVisibility(View.GONE);
         }
+
+        next = findViewById(R.id.next_scrolling);
+        previous = findViewById(R.id.previous_scrolling);
+        mDelete = findViewById(R.id.delete_scrolling);
     }
 
     private void staticMoveButtons()
@@ -1269,6 +1251,10 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             buttons.setVisibility(View.GONE);
         }
+
+        mArchive = findViewById(R.id.archive);
+        mMove = findViewById(R.id.move);
+        mSpam = findViewById(R.id.spam);
     }
 
     private void scrollMoveButtons()
@@ -1278,6 +1264,12 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             buttons.setVisibility(View.GONE);
         }
+
+        mArchive = findViewById(R.id.archive_scrolling);
+        mMove = findViewById(R.id.move_scrolling);
+        mSpam = findViewById(R.id.spam_scrolling);
+
+
     }
 
     private void disableButtons()
@@ -1285,9 +1277,7 @@ public class MessageView extends K9Activity implements OnClickListener
         setLoadPictures(false);
         disableMoveButtons();
         next.setEnabled(false);
-        next_scrolling.setEnabled(false);
         previous.setEnabled(false);
-        previous_scrolling.setEnabled(false);
         mDelete.setEnabled(false);
     }
 
@@ -1296,9 +1286,6 @@ public class MessageView extends K9Activity implements OnClickListener
         mArchive.setEnabled(false);
         mMove.setEnabled(false);
         mSpam.setEnabled(false);
-        mArchiveScrolling.setEnabled(false);
-        mMoveScrolling.setEnabled(false);
-        mSpamScrolling.setEnabled(false);
     }
 
 
