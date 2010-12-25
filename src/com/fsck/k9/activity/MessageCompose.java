@@ -1670,7 +1670,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
-     * @param message
+     * @param message Source message
      */
     private void processSourceMessage(Message message)
     {
