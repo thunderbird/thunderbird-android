@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 import org.apache.commons.io.IOUtils;
 
@@ -34,7 +34,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -56,7 +55,6 @@ import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -90,6 +88,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.AccessibleWebView;
+import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.ToggleScrollView;
 
 public class MessageView extends K9Activity implements OnClickListener
@@ -100,14 +99,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
-
-    /**
-     * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
-     * bodies from loading external resources over the network. Unfortunately this method
-     * isn't exposed via the official Android API. That's why we use reflection to be able
-     * to call the method.
-     */
-    private static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -127,7 +118,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private ImageView mCryptoSignatureStatusImage = null;
     private TextView mCryptoSignatureUserId = null;
     private TextView mCryptoSignatureUserIdRest = null;
-    private WebView mMessageContentView;
+    private MessageWebView mMessageContentView;
 
     private boolean mScreenReaderEnabled;
 
@@ -845,7 +836,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
         mTopView = mToggleScrollView = (ToggleScrollView)findViewById(R.id.top_view);
-        mMessageContentView = (WebView)findViewById(R.id.message_content);
+        mMessageContentView = (MessageWebView)findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
 
         mScreenReaderEnabled = isScreenReaderActive();
@@ -914,7 +905,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         });
 
-        MessageView.configureMessageWebView(mMessageContentView);
+        mMessageContentView.configure();
 
 
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
@@ -1861,7 +1852,7 @@ public class MessageView extends K9Activity implements OnClickListener
      */
     private void setLoadPictures(boolean enable)
     {
-        blockNetworkDataInWebView(mMessageContentView, !enable);
+        mMessageContentView.blockNetworkData(!enable);
         mShowPictures = enable;
         mHandler.showShowPictures(false);
     }
@@ -2757,82 +2748,6 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
         }
-    }
-
-    /**
-     * Configure a {@link android.webkit.WebView} to display a Message. This method takes into account a user's
-     * preferences when configuring the view. This message is used to view a message and to display a message being
-     * replied to.
-     * @param view WebView to configure.
-     */
-    public static void configureMessageWebView(final WebView view)
-    {
-        view.setVerticalScrollBarEnabled(true);
-        view.setVerticalScrollbarOverlay(true);
-        view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-
-
-        final WebSettings webSettings = view.getSettings();
-
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setSupportZoom(true);
-        webSettings.setJavaScriptEnabled(false);
-        webSettings.setLoadsImagesAutomatically(true);
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-
-        if (K9.zoomControlsEnabled())
-        {
-            webSettings.setBuiltInZoomControls(true);
-        }
-
-        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
-        // administratively disable it
-        if (
-            ( Integer.parseInt(Build.VERSION.SDK)  > 7)
-            &&  K9.mobileOptimizedLayout())
-        {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        }
-        else
-        {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        }
-
-        webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
-
-        // Disable network images by default.  This is overriden by preferences.
-        blockNetworkDataInWebView(view, true);
-    }
-
-    /**
-     * Configure a web view to load or not load network data. A <b>true</b> setting here means that
-     * network data will be blocked.
-     * @param view {@link android.webkit.WebView} to adjust network data settings on.
-     * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
-     */
-    public static void blockNetworkDataInWebView(final WebView view, final boolean shouldBlockNetworkData)
-    {
-        // Sanity check to make sure we don't blow up.
-        if (view == null || view.getSettings() == null)
-        {
-            return;
-        }
-
-        // Block network loads.
-        if (mGetBlockNetworkLoads != null)
-        {
-            try
-            {
-                mGetBlockNetworkLoads.invoke(view.getSettings(), shouldBlockNetworkData);
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
-            }
-        }
-
-        // Block network images.
-        view.getSettings().setBlockNetworkImage(shouldBlockNetworkData);
     }
 
 }

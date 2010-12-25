@@ -247,7 +247,7 @@
 
     </LinearLayout>
     <!-- Content area -->
-    <WebView
+    <com.fsck.k9.view.MessageWebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
