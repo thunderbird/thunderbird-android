@@ -1047,51 +1047,51 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             next.requestFocus();
         }
-        // Perhaps the hideButtons should be global, instead of account-specific
+        // Perhaps the ScrollButtons should be global, instead of account-specific
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-        Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
+        Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
 
         //MessagingController.getInstance(getApplication()).addListener(mListener);
-        if (Account.HideButtons.ALWAYS == hideButtons)
+        if (Account.ScrollButtons.ALWAYS == scrollButtons)
         {
-            hideButtons();
+            scrollButtons();
         }
-        else if (Account.HideButtons.NEVER == hideButtons)
+        else if (Account.ScrollButtons.NEVER == scrollButtons)
         {
-            showButtons();
+            staticButtons();
         }
-        else   // Account.HideButtons.KEYBOARD_AVAIL
+        else   // Account.ScrollButtons.KEYBOARD_AVAIL
         {
             final Configuration config = this.getResources().getConfiguration();
             if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
             {
-                hideButtons();
+                scrollButtons();
             }
             else
             {
-                showButtons();
+                staticButtons();
             }
         }
 
-        Account.HideButtons hideMoveButtons = mAccount.getHideMessageViewMoveButtons();
-        if (Account.HideButtons.ALWAYS == hideMoveButtons)
+        Account.ScrollButtons scrollMoveButtons = mAccount.getScrollMessageViewMoveButtons();
+        if (Account.ScrollButtons.ALWAYS == scrollMoveButtons)
         {
-            hideMoveButtons();
+            scrollMoveButtons();
         }
-        else if (Account.HideButtons.NEVER == hideMoveButtons)
+        else if (Account.ScrollButtons.NEVER == scrollMoveButtons)
         {
-            showMoveButtons();
+            staticMoveButtons();
         }
-        else   // Account.HideButtons.KEYBOARD_AVAIL
+        else   // Account.ScrollButtons.KEYBOARD_AVAIL
         {
             final Configuration config = this.getResources().getConfiguration();
             if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
             {
-                hideMoveButtons();
+                scrollMoveButtons();
             }
             else
             {
-                showMoveButtons();
+                staticMoveButtons();
             }
         }
 
@@ -1246,7 +1246,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     }
 
-    private void showButtons()
+    private void staticButtons()
     {
         View buttons = findViewById(R.id.scrolling_buttons);
         if (buttons != null)
@@ -1255,7 +1255,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void hideButtons()
+    private void scrollButtons()
     {
         View buttons = findViewById(R.id.bottom_buttons);
         if (buttons != null)
@@ -1264,7 +1264,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void showMoveButtons()
+    private void staticMoveButtons()
     {
         View buttons = findViewById(R.id.scrolling_move_buttons);
         if (buttons != null)
@@ -1273,7 +1273,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void hideMoveButtons()
+    private void scrollMoveButtons()
     {
         View buttons = findViewById(R.id.move_buttons);
         if (buttons != null)

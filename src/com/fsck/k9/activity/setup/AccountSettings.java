@@ -116,8 +116,8 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
-    private ListPreference mAccountHideButtons;
-    private ListPreference mAccountHideMoveButtons;
+    private ListPreference mAccountScrollButtons;
+    private ListPreference mAccountScrollMoveButtons;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
@@ -396,17 +396,17 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
-        mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
-        mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
-        mAccountHideButtons.setSummary(mAccountHideButtons.getEntry());
-        mAccountHideButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        mAccountScrollButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
+        mAccountScrollButtons.setValue("" + mAccount.getScrollMessageViewButtons());
+        mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntry());
+        mAccountScrollButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 final String summary = newValue.toString();
-                int index = mAccountHideButtons.findIndexOfValue(summary);
-                mAccountHideButtons.setSummary(mAccountHideButtons.getEntries()[index]);
-                mAccountHideButtons.setValue(summary);
+                int index = mAccountScrollButtons.findIndexOfValue(summary);
+                mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntries()[index]);
+                mAccountScrollButtons.setValue(summary);
                 return false;
             }
         });
@@ -414,17 +414,17 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
 
-        mAccountHideMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
-        mAccountHideMoveButtons.setValue("" + mAccount.getHideMessageViewMoveButtons());
-        mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntry());
-        mAccountHideMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        mAccountScrollMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
+        mAccountScrollMoveButtons.setValue("" + mAccount.getScrollMessageViewMoveButtons());
+        mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntry());
+        mAccountScrollMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 final String summary = newValue.toString();
-                int index = mAccountHideMoveButtons.findIndexOfValue(summary);
-                mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntries()[index]);
-                mAccountHideMoveButtons.setValue(summary);
+                int index = mAccountScrollMoveButtons.findIndexOfValue(summary);
+                mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntries()[index]);
+                mAccountScrollMoveButtons.setValue(summary);
                 return false;
             }
         });
@@ -765,8 +765,8 @@ public class AccountSettings extends K9PreferenceActivity
             }
         }
 
-        mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
-        mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
+        mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
+        mAccount.setScrollMessageViewMoveButtons(Account.ScrollButtons.valueOf(mAccountScrollMoveButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.save(Preferences.getPreferences(this));

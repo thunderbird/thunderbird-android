@@ -101,8 +101,8 @@ public class Account implements BaseAccount
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
-    private HideButtons mHideMessageViewButtons;
-    private HideButtons mHideMessageViewMoveButtons;
+    private ScrollButtons mScrollMessageViewButtons;
+    private ScrollButtons mScrollMessageViewMoveButtons;
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -143,7 +143,7 @@ public class Account implements BaseAccount
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
-    public enum HideButtons
+    public enum ScrollButtons
     {
         NEVER, ALWAYS, KEYBOARD_AVAILABLE
     }
@@ -175,8 +175,8 @@ public class Account implements BaseAccount
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        mHideMessageViewButtons = HideButtons.NEVER;
-        mHideMessageViewMoveButtons = HideButtons.NEVER;
+        mScrollMessageViewButtons = ScrollButtons.NEVER;
+        mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -304,22 +304,22 @@ public class Account implements BaseAccount
 
         try
         {
-            mHideMessageViewButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
-                                      HideButtons.NEVER.name()));
+            mScrollMessageViewButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
+                                      ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
-            mHideMessageViewButtons = HideButtons.NEVER;
+            mScrollMessageViewButtons = ScrollButtons.NEVER;
         }
 
         try
         {
-            mHideMessageViewMoveButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                          HideButtons.NEVER.name()));
+            mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
+                                          ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
-            mHideMessageViewMoveButtons = HideButtons.NEVER;
+            mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         }
 
         try
@@ -543,8 +543,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
-        editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
-        editor.putString(mUuid + ".hideMoveButtonsEnum", mHideMessageViewMoveButtons.name());
+        editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
+        editor.putString(mUuid + ".hideMoveButtonsEnum", mScrollMessageViewMoveButtons.name());
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -1034,24 +1034,24 @@ public class Account implements BaseAccount
         this.mNotifySync = showOngoing;
     }
 
-    public synchronized HideButtons getHideMessageViewButtons()
+    public synchronized ScrollButtons getScrollMessageViewButtons()
     {
-        return mHideMessageViewButtons;
+        return mScrollMessageViewButtons;
     }
 
-    public synchronized void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
+    public synchronized void setScrollMessageViewButtons(ScrollButtons scrollMessageViewButtons)
     {
-        mHideMessageViewButtons = hideMessageViewButtons;
+        mScrollMessageViewButtons = scrollMessageViewButtons;
     }
 
-    public synchronized HideButtons getHideMessageViewMoveButtons()
+    public synchronized ScrollButtons getScrollMessageViewMoveButtons()
     {
-        return mHideMessageViewMoveButtons;
+        return mScrollMessageViewMoveButtons;
     }
 
-    public synchronized void setHideMessageViewMoveButtons(HideButtons hideMessageViewButtons)
+    public synchronized void setScrollMessageViewMoveButtons(ScrollButtons scrollMessageViewButtons)
     {
-        mHideMessageViewMoveButtons = hideMessageViewButtons;
+        mScrollMessageViewMoveButtons = scrollMessageViewButtons;
     }
 
     public synchronized ShowPictures getShowPictures()
