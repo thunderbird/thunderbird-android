@@ -1062,8 +1062,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         else   // Account.ScrollButtons.KEYBOARD_AVAIL
         {
-            final Configuration config = this.getResources().getConfiguration();
-            if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+            if (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
             {
                 scrollButtons();
             }
@@ -1084,8 +1083,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         else   // Account.ScrollButtons.KEYBOARD_AVAIL
         {
-            final Configuration config = this.getResources().getConfiguration();
-            if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+            if (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
             {
                 scrollMoveButtons();
             }
