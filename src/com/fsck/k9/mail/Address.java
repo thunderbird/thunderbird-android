@@ -207,7 +207,7 @@ public class Address
             sb.append(addresses[i].toString());
             if (i < addresses.length - 1)
             {
-                sb.append(',');
+                sb.append(", ");
             }
         }
         return sb.toString();
