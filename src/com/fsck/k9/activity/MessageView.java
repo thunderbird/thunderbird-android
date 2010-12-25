@@ -2590,28 +2590,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
 
-    private Animation inFromRightAnimation()
-    {
-        return slideAnimation(0.0f, +1.0f);
-    }
 
-    private Animation outToLeftAnimation()
-    {
-        return slideAnimation(0.0f, -1.0f);
-    }
-
-    private Animation slideAnimation(float right, float left)
-    {
-
-        Animation slide = new TranslateAnimation(
-            Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
-            Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f
-        );
-        slide.setDuration(125);
-        slide.setFillBefore(true);
-        slide.setInterpolator(new AccelerateInterpolator());
-        return slide;
-    }
 
     private void initializeCrypto()
     {
