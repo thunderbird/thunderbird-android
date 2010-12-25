@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -99,6 +100,14 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
+
+    /**
+     * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
+     * bodies from loading external resources over the network. Unfortunately this method
+     * isn't exposed via the official Android API. That's why we use reflection to be able
+     * to call the method.
+     */
+    private static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -1867,8 +1876,7 @@ public class MessageView extends K9Activity implements OnClickListener
      */
     private void setLoadPictures(boolean enable)
     {
-        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), !enable);
-        mMessageContentView.getSettings().setBlockNetworkImage(!enable);
+        blockNetworkDataInWebView(mMessageContentView, !enable);
         mShowPictures = enable;
         mHandler.showShowPictures(false);
     }
@@ -2807,6 +2815,39 @@ public class MessageView extends K9Activity implements OnClickListener
 
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
+        // Disable network images by default.  This is overriden by preferences.
+        blockNetworkDataInWebView(view, true);
+    }
+
+    /**
+     * Configure a web view to load or not load network data. A <b>true</b> setting here means that
+     * network data will be blocked.
+     * @param view {@link android.webkit.WebView} to adjust network data settings on.
+     * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
+     */
+    public static void blockNetworkDataInWebView(final WebView view, final boolean shouldBlockNetworkData)
+    {
+        // Sanity check to make sure we don't blow up.
+        if (view == null || view.getSettings() == null)
+        {
+            return;
+        }
+
+        // Block network loads.
+        if (mGetBlockNetworkLoads != null)
+        {
+            try
+            {
+                mGetBlockNetworkLoads.invoke(view.getSettings(), shouldBlockNetworkData);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
+            }
+        }
+
+        // Block network images.
+        view.getSettings().setBlockNetworkImage(shouldBlockNetworkData);
     }
 
 }
