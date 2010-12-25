@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 
 import java.lang.reflect.Method;
 
@@ -116,5 +119,25 @@ public class MessageWebView extends WebView {
 
         // Disable network images by default.  This is overriden by preferences.
         blockNetworkData(true);
+    }
+
+        /*
+     * Emulate the shift key being pressed to trigger the text selection mode
+     * of a WebView.
+     */
+    public void emulateShiftHeld()
+    {
+        try
+        {
+
+            KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
+                                                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
+            shiftPressEvent.dispatch(this);
+            Toast.makeText(getContext() , R.string.select_text_now, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
+        }
     }
 }

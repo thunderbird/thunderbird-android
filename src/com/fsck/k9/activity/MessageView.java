@@ -1948,7 +1948,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 onShowAdditionalHeaders();
                 break;
             case R.id.select_text:
-                emulateShiftHeld(mMessageContentView);
+                mToggleScrollView.setScrolling(false);
+                mMessageContentView.emulateShiftHeld();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -2677,25 +2678,6 @@ public class MessageView extends K9Activity implements OnClickListener
         updateDecryptLayout();
     }
 
-    /*
-     * Emulate the shift key being pressed to trigger the text selection mode
-     * of a WebView.
-     */
-    private void emulateShiftHeld(WebView view)
-    {
-        try
-        {
-            mToggleScrollView.setScrolling(false);
 
-            KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
-                                                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
-            shiftPressEvent.dispatch(view);
-            Toast.makeText(this, R.string.select_text_now, Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e)
-        {
-            Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
-        }
-    }
 
 }
