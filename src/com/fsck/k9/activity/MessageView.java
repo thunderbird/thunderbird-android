@@ -1138,31 +1138,21 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void setupDisplayMessageButtons()
     {
-
-        boolean enableNext = (mNextMessage != null);
-        boolean enablePrev = (mPreviousMessage != null);
-
         mDelete.setEnabled(true);
-
-        if (next.isEnabled() != enableNext)
-            next.setEnabled(enableNext);
-        if (previous.isEnabled() != enablePrev)
-            previous.setEnabled(enablePrev);
+        next.setEnabled(mNextMessage != null);
+        previous.setEnabled(mPreviousMessage != null);
 
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
 
         {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
-            boolean enableArchive = !mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName());
-            boolean enableMove = true;
+            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+                                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
             // Only enable the button if the Spam folder is not the current folder and not NONE.
-            boolean enableSpam = !mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName());
-            mArchive.setEnabled(enableArchive);
-            mMove.setEnabled(enableMove);
-            mSpam.setEnabled(enableSpam);
+            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+             mMove.setEnabled(true);
         }
         else
         {
