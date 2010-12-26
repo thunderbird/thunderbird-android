@@ -997,64 +997,38 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
             }
         }
-
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
-
-
-
-
-        boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
-        if (goNext)
+        if (intent.getBooleanExtra(EXTRA_NEXT, false))
         {
             next.requestFocus();
         }
         // Perhaps the ScrollButtons should be global, instead of account-specific
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
         Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
-
-        //MessagingController.getInstance(getApplication()).addListener(mListener);
-        if (Account.ScrollButtons.ALWAYS == scrollButtons)
+        if
+                ((Account.ScrollButtons.ALWAYS == scrollButtons)
+                 ||
+                 (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
+                  (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
         {
             scrollButtons();
         }
-        else if (Account.ScrollButtons.NEVER == scrollButtons)
+        else      // never or the keyboard is open
         {
             staticButtons();
         }
-        else   // Account.ScrollButtons.KEYBOARD_AVAIL
-        {
-            if (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
-            {
-                scrollButtons();
-            }
-            else
-            {
-                staticButtons();
-            }
-        }
-
         Account.ScrollButtons scrollMoveButtons = mAccount.getScrollMessageViewMoveButtons();
-        if (Account.ScrollButtons.ALWAYS == scrollMoveButtons)
+        if ((Account.ScrollButtons.ALWAYS == scrollMoveButtons)
+            || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollMoveButtons &&
+                (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
         {
             scrollMoveButtons();
         }
-        else if (Account.ScrollButtons.NEVER == scrollMoveButtons)
+        else
         {
             staticMoveButtons();
         }
-        else   // Account.ScrollButtons.KEYBOARD_AVAIL
-        {
-            if (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
-            {
-                scrollMoveButtons();
-            }
-            else
-            {
-                staticMoveButtons();
-            }
-        }
-
         if (!mAccount.getEnableMoveButtons())
         {
             View buttons = findViewById(R.id.move_buttons);
