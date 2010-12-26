@@ -741,40 +741,14 @@ public class MessageView extends K9Activity implements OnClickListener
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle, false);
-
         mContacts = Contacts.getInstance(this);
-
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.message_view);
-
-        mHeaderContainer = (LinearLayout)findViewById(R.id.header_container);
-
-        mFromView = (TextView)findViewById(R.id.from);
-        mToView = (TextView)findViewById(R.id.to);
-        mCcView = (TextView)findViewById(R.id.cc);
-        mToContainerView = (LinearLayout)findViewById(R.id.to_container);
-        mCcContainerView = (LinearLayout)findViewById(R.id.cc_container);
-        mSubjectView = (TextView)findViewById(R.id.subject);
-        defaultSubjectColor = mSubjectView.getCurrentTextColor();
-
-        mAdditionalHeadersView = (TextView)findViewById(R.id.additional_headers_view);
-
-        chip = findViewById(R.id.chip);
-
-        mDateView = (TextView)findViewById(R.id.date);
-        mTimeView = (TextView)findViewById(R.id.time);
-        mTopView = mToggleScrollView = (ToggleScrollView)findViewById(R.id.top_view);
-        mMessageContentView = (MessageWebView)findViewById(R.id.message_content);
+        mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
-
         mScreenReaderEnabled = isScreenReaderActive();
-
-
         answeredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
-
-
         if (mScreenReaderEnabled)
         {
             mAccessibleMessageContentView.setVisibility(View.VISIBLE);
@@ -786,8 +760,197 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageContentView.setVisibility(View.VISIBLE);
         }
 
-        mDecryptLayout = (View)findViewById(R.id.layout_decrypt);
-        mDecryptButton = (Button)findViewById(R.id.btn_decrypt);
+        setTitle("");
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (icicle != null)
+        {
+            mMessageReference = (MessageReference) icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
+            mMessageReferences = (ArrayList<MessageReference>) icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
+            mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
+            updateDecryptLayout();
+        }
+        else
+        {
+            if (uri == null)
+            {
+                mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+                mMessageReferences = (ArrayList<MessageReference>) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
+            }
+            else
+            {
+                List<String> segmentList = uri.getPathSegments();
+                if (segmentList.size() != 3)
+                {
+                    //TODO: Use ressource to externalize message
+                    Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                String accountId = segmentList.get(0);
+                Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
+                boolean found = false;
+                for (Account account : accounts)
+                {
+                    if (String.valueOf(account.getAccountNumber()).equals(accountId))
+                    {
+                        mAccount = account;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    //TODO: Use ressource to externalize message
+                    Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                mMessageReference = new MessageReference();
+                mMessageReference.accountUuid = mAccount.getUuid();
+                mMessageReference.folderName = segmentList.get(1);
+                mMessageReference.uid = segmentList.get(2);
+                mMessageReferences = new ArrayList<MessageReference>();
+            }
+        }
+
+        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+
+
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
+        if (intent.getBooleanExtra(EXTRA_NEXT, false))
+        {
+            next.requestFocus();
+        }
+
+
+        setupCryptoLayout();
+        setupHeaderLayout();
+        setupButtonViews();
+
+
+
+        displayMessage(mMessageReference);
+    }
+
+    private void setupButtonViews()
+    {
+        setOnClickListener(R.id.from);
+        setOnClickListener(R.id.reply);
+        setOnClickListener(R.id.reply_all);
+        setOnClickListener(R.id.delete);
+        setOnClickListener(R.id.forward);
+        setOnClickListener(R.id.next);
+        setOnClickListener(R.id.previous);
+        setOnClickListener(R.id.archive);
+        setOnClickListener(R.id.move);
+        setOnClickListener(R.id.spam);
+        // To show full header
+        setOnClickListener(R.id.header_container);
+        setOnClickListener(R.id.reply_scrolling);
+//       setOnClickListener(R.id.reply_all_scrolling);
+        setOnClickListener(R.id.delete_scrolling);
+        setOnClickListener(R.id.forward_scrolling);
+        setOnClickListener(R.id.next_scrolling);
+        setOnClickListener(R.id.previous_scrolling);
+        setOnClickListener(R.id.archive_scrolling);
+        setOnClickListener(R.id.move_scrolling);
+        setOnClickListener(R.id.spam_scrolling);
+        setOnClickListener(R.id.show_pictures);
+        setOnClickListener(R.id.download_remainder);
+
+
+        // Perhaps the ScrollButtons should be global, instead of account-specific
+        Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
+        if
+        ((Account.ScrollButtons.ALWAYS == scrollButtons)
+                ||
+                (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
+                 (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
+        {
+            scrollButtons();
+        }
+        else      // never or the keyboard is open
+        {
+            staticButtons();
+        }
+        Account.ScrollButtons scrollMoveButtons = mAccount.getScrollMessageViewMoveButtons();
+        if ((Account.ScrollButtons.ALWAYS == scrollMoveButtons)
+                || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollMoveButtons &&
+                    (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
+        {
+            scrollMoveButtons();
+        }
+        else
+        {
+            staticMoveButtons();
+        }
+        if (!mAccount.getEnableMoveButtons())
+        {
+            View buttons = findViewById(R.id.move_buttons);
+            if (buttons != null)
+            {
+                buttons.setVisibility(View.GONE);
+            }
+            buttons = findViewById(R.id.scrolling_move_buttons);
+            if (buttons != null)
+            {
+                buttons.setVisibility(View.GONE);
+            }
+        }
+
+
+
+    }
+
+    private void setupHeaderLayout()
+    {
+        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        mAttachmentIcon = findViewById(R.id.attachment);
+        mShowPicturesSection = findViewById(R.id.show_pictures_section);
+        mShowPictures = false;
+        mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
+        mMessageContentView.configure();
+        mHeaderContainer = (LinearLayout) findViewById(R.id.header_container);
+        mFromView = (TextView) findViewById(R.id.from);
+        mToView = (TextView) findViewById(R.id.to);
+        mCcView = (TextView) findViewById(R.id.cc);
+        mToContainerView = (LinearLayout) findViewById(R.id.to_container);
+        mCcContainerView = (LinearLayout) findViewById(R.id.cc_container);
+        mSubjectView = (TextView) findViewById(R.id.subject);
+        defaultSubjectColor = mSubjectView.getCurrentTextColor();
+        mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
+        chip = findViewById(R.id.chip);
+        mDateView = (TextView) findViewById(R.id.date);
+        mTimeView = (TextView) findViewById(R.id.time);
+        mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
+        mFlagged = (CheckBox) findViewById(R.id.flagged);
+        mFlagged.setOnClickListener(new OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                onFlag();
+            }
+        });
+        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
+        mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
+        ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
+        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
+        ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
+        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
+        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
+        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
+        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
+        mAdditionalHeadersView.setVisibility(View.GONE);
+        mAttachments.setVisibility(View.GONE);
+        mAttachmentIcon.setVisibility(View.GONE);
+    }
+
+    private void setupCryptoLayout()
+    {
+        mDecryptLayout = (View) findViewById(R.id.layout_decrypt);
+        mDecryptButton = (Button) findViewById(R.id.btn_decrypt);
         mDecryptButton.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -818,171 +981,6 @@ public class MessageView extends K9Activity implements OnClickListener
         mCryptoSignatureUserId = (TextView) findViewById(R.id.userId);
         mCryptoSignatureUserIdRest = (TextView) findViewById(R.id.userIdRest);
         mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
-
-        mAttachments = (LinearLayout)findViewById(R.id.attachments);
-        mAttachmentIcon = findViewById(R.id.attachment);
-        mShowPicturesSection = findViewById(R.id.show_pictures_section);
-        mShowPictures = false;
-
-        mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
-
-        mFlagged = (CheckBox)findViewById(R.id.flagged);
-        mFlagged.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                onFlag();
-            }
-        });
-
-        mMessageContentView.configure();
-
-
-        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
-        ((TextView)findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
-        ((TextView)findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
-        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
-        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
-        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
-        mAdditionalHeadersView.setVisibility(View.GONE);
-        mAttachments.setVisibility(View.GONE);
-        mAttachmentIcon.setVisibility(View.GONE);
-
-        setOnClickListener(R.id.from);
-        setOnClickListener(R.id.reply);
-        setOnClickListener(R.id.reply_all);
-        setOnClickListener(R.id.delete);
-        setOnClickListener(R.id.forward);
-        setOnClickListener(R.id.next);
-        setOnClickListener(R.id.previous);
-        setOnClickListener(R.id.archive);
-        setOnClickListener(R.id.move);
-        setOnClickListener(R.id.spam);
-        // To show full header
-        setOnClickListener(R.id.header_container);
-        setOnClickListener(R.id.reply_scrolling);
-//       setOnClickListener(R.id.reply_all_scrolling);
-        setOnClickListener(R.id.delete_scrolling);
-        setOnClickListener(R.id.forward_scrolling);
-        setOnClickListener(R.id.next_scrolling);
-        setOnClickListener(R.id.previous_scrolling);
-        setOnClickListener(R.id.archive_scrolling);
-        setOnClickListener(R.id.move_scrolling);
-        setOnClickListener(R.id.spam_scrolling);
-
-        setOnClickListener(R.id.show_pictures);
-
-        setOnClickListener(R.id.download_remainder);
-
-        setTitle("");
-
-        Intent intent = getIntent();
-        Uri uri = intent.getData();
-
-        if (icicle != null)
-        {
-            mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
-            mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
-
-            mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
-            updateDecryptLayout();
-        }
-        else
-        {
-            if (uri == null)
-            {
-                mMessageReference = (MessageReference)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
-                mMessageReferences = (ArrayList<MessageReference>)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
-            }
-            else
-            {
-                List<String> segmentList = uri.getPathSegments();
-                if (segmentList.size() == 3)
-                {
-                    String accountId = segmentList.get(0);
-                    Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
-                    boolean found = false;
-                    for (Account account : accounts)
-                    {
-                        if (String.valueOf(account.getAccountNumber()).equals(accountId))
-                        {
-                            mAccount = account;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        //TODO: Use ressource to externalize message
-                        Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    mMessageReference = new MessageReference();
-                    mMessageReference.accountUuid = mAccount.getUuid();
-                    mMessageReference.folderName = segmentList.get(1);
-                    mMessageReference.uid = segmentList.get(2);
-
-                    mMessageReferences = new ArrayList<MessageReference>();
-                }
-                else
-                {
-                    //TODO: Use ressource to externalize message
-                    Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-            }
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
-        if (intent.getBooleanExtra(EXTRA_NEXT, false))
-        {
-            next.requestFocus();
-        }
-        // Perhaps the ScrollButtons should be global, instead of account-specific
-        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-        Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
-        if
-                ((Account.ScrollButtons.ALWAYS == scrollButtons)
-                 ||
-                 (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
-                  (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
-        {
-            scrollButtons();
-        }
-        else      // never or the keyboard is open
-        {
-            staticButtons();
-        }
-        Account.ScrollButtons scrollMoveButtons = mAccount.getScrollMessageViewMoveButtons();
-        if ((Account.ScrollButtons.ALWAYS == scrollMoveButtons)
-            || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollMoveButtons &&
-                (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)))
-        {
-            scrollMoveButtons();
-        }
-        else
-        {
-            staticMoveButtons();
-        }
-        if (!mAccount.getEnableMoveButtons())
-        {
-            View buttons = findViewById(R.id.move_buttons);
-            if (buttons != null)
-            {
-                buttons.setVisibility(View.GONE);
-            }
-            buttons = findViewById(R.id.scrolling_move_buttons);
-            if (buttons != null)
-            {
-                buttons.setVisibility(View.GONE);
-            }
-        }
-
-        displayMessage(mMessageReference);
     }
 
     private boolean isScreenReaderActive()
