@@ -1507,18 +1507,14 @@ public class MessageView extends K9Activity implements OnClickListener
             toast.show();
             return;
         }
-        Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
-        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
+
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
     private void onCopy()
     {
         if ((!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
-                || (mMessage == null))
+            || (mMessage == null))
         {
             return;
         }
@@ -1528,18 +1524,27 @@ public class MessageView extends K9Activity implements OnClickListener
             toast.show();
             return;
         }
+
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+    }
+
+    private void startRefileActivity(int activity)
+    {
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
-        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
+        startActivityForResult(intent, activity);
+
+
+
     }
+
 
     private void onShowAdditionalHeaders()
     {
         int currentVisibility = mAdditionalHeadersView.getVisibility();
-
         if (currentVisibility == View.VISIBLE)
         {
             mHandler.hideAdditionalHeaders();
