@@ -379,7 +379,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 return true;
             }
         }
-        return super.onKeyUp(keyCode,event);
+        return super.onKeyUp(keyCode, event);
     }
 
     class MessageViewHandler extends Handler
@@ -438,7 +438,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
 
         public void setHeaders(
-                final Message message) throws MessagingException
+            final Message message) throws MessagingException
         {
             final Contacts contacts = K9.showContactName() ? mContacts : null;
             final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
@@ -509,7 +509,6 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
                     Toast.makeText(MessageView.this,
                                    R.string.status_network_error, Toast.LENGTH_LONG).show();
-
                 }
             });
         }
@@ -522,7 +521,6 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
                     Toast.makeText(MessageView.this,
                                    R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
-
                 }
             });
         }
@@ -536,8 +534,6 @@ public class MessageView extends K9Activity implements OnClickListener
                     Toast.makeText(MessageView.this, String.format(
                                        getString(R.string.message_view_status_attachment_saved), filename),
                                    Toast.LENGTH_LONG).show();
-
-
                 }
             });
         }
@@ -548,11 +544,9 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 public void run()
                 {
-
                     Toast.makeText(MessageView.this,
                                    getString(R.string.message_view_status_attachment_not_saved),
                                    Toast.LENGTH_LONG).show();
-
                 }
             });
         }
@@ -1053,22 +1047,18 @@ public class MessageView extends K9Activity implements OnClickListener
         mMessageReference = ref;
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
-
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
         mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
         mMessageContentView.scrollTo(0, 0);
-
         mHandler.hideHeaderContainer();
         mMessageContentView.clearView();
         setLoadPictures(false);
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
-
         // start with fresh, empty PGP data
         mPgpData = null;
         initializeCrypto();
-
         mTopView.setVisibility(View.VISIBLE);
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
@@ -1088,11 +1078,11 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
             mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
             // Only enable the button if the Spam folder is not the current folder and not NONE.
             mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
-             mMove.setEnabled(true);
+                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+            mMove.setEnabled(true);
         }
         else
         {
@@ -1254,7 +1244,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 dismissDialog(id);
             }
         });
-        return  builder.create();
+        return builder.create();
     }
 
     private void delete()
@@ -1267,8 +1257,8 @@ public class MessageView extends K9Activity implements OnClickListener
             Message messageToDelete = mMessage;
             showNextMessageOrReturn();
             MessagingController.getInstance(getApplication()).deleteMessages(
-                    new Message[]{messageToDelete},
-                    null);
+                new Message[] {messageToDelete},
+                null);
         }
     }
 
@@ -1292,7 +1282,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
-                           .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
 
@@ -1383,7 +1373,7 @@ public class MessageView extends K9Activity implements OnClickListener
         if (mMessage != null)
         {
             MessagingController.getInstance(getApplication()).setFlag(mAccount,
-                    mMessage.getFolder().getName(), new String[]{mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+                    mMessage.getFolder().getName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
             try
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
@@ -1628,16 +1618,12 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             return;
         }
-
-
-
         mDownloadRemainder.setEnabled(false);
         MessagingController.getInstance(getApplication()).loadMessageForViewRemote(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
             mListener);
-
     }
 
     private void onDownloadAttachment(Attachment attachment)
@@ -1659,7 +1645,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 mAccount,
                 mMessage,
                 attachment.part,
-                new Object[] { true, attachment },
+                new Object[] {true, attachment},
                 mListener);
         }
     }
@@ -1842,11 +1828,10 @@ public class MessageView extends K9Activity implements OnClickListener
         prepareMenuItems();
         return super.onPrepareOptionsMenu(menu);
     }
-
     // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
+
     /**
-     * @param id
-     *            The id of the dialog.
+     * @param id The id of the dialog.
      * @return The dialog. If you return null, the dialog will not be created.
      * @see android.app.Activity#onCreateDialog(int)
      */
@@ -1873,7 +1858,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
             }
-
             MenuItem additionalHeadersItem = menu.findItem(R.id.show_full_header);
             if (additionalHeadersItem != null)
             {
@@ -1908,18 +1892,14 @@ public class MessageView extends K9Activity implements OnClickListener
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
-
-
         // Inline parts with a content-id are almost certainly components of an HTML message
         // not attachments. Don't show attachment download buttons for them.
-
         if (contentDisposition != null &&
                 MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
                 && part.getHeader("Content-ID") != null)
         {
             return;
         }
-
         if (name == null)
         {
             name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
@@ -1940,16 +1920,13 @@ public class MessageView extends K9Activity implements OnClickListener
             attachment.contentType = mimeType;
             attachment.name = name;
             attachment.part = (LocalAttachmentBodyPart) part;
-
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(R.layout.message_view_attachment, null);
-
-            TextView attachmentName = (TextView)view.findViewById(R.id.attachment_name);
-            TextView attachmentInfo = (TextView)view.findViewById(R.id.attachment_info);
-            ImageView attachmentIcon = (ImageView)view.findViewById(R.id.attachment_icon);
-            Button attachmentView = (Button)view.findViewById(R.id.view);
-            Button attachmentDownload = (Button)view.findViewById(R.id.download);
-
+            TextView attachmentName = (TextView) view.findViewById(R.id.attachment_name);
+            TextView attachmentInfo = (TextView) view.findViewById(R.id.attachment_info);
+            ImageView attachmentIcon = (ImageView) view.findViewById(R.id.attachment_icon);
+            Button attachmentView = (Button) view.findViewById(R.id.view);
+            Button attachmentDownload = (Button) view.findViewById(R.id.download);
             if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
                                               K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
                     || (MimeUtility.mimeTypeMatches(attachment.contentType,
@@ -1964,26 +1941,21 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 attachmentDownload.setVisibility(View.GONE);
             }
-
             if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE)
             {
                 attachmentView.setVisibility(View.GONE);
                 attachmentDownload.setVisibility(View.GONE);
             }
-
             attachment.viewButton = attachmentView;
             attachment.downloadButton = attachmentDownload;
             attachment.iconView = attachmentIcon;
-
             view.setTag(attachment);
             attachmentView.setOnClickListener(this);
             attachmentView.setTag(attachment);
             attachmentDownload.setOnClickListener(this);
             attachmentDownload.setTag(attachment);
-
             attachmentName.setText(name);
-            attachmentInfo.setText(SizeFormatter.formatSize(getApplication(),size));
-
+            attachmentInfo.setText(SizeFormatter.formatSize(getApplication(), size));
             Bitmap previewIcon = getPreviewIcon(attachment);
             if (previewIcon != null)
             {
@@ -2018,7 +1990,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
     class Listener extends MessagingListener
     {
-
         @Override
         public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
                 final Message message)
@@ -2028,10 +1999,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-
             MessageView.this.mMessage = message;
-
-
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
                     && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
@@ -2064,23 +2032,17 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-
             try
             {
-                if (MessageView.this.mMessage!=null
+                if (MessageView.this.mMessage != null
                         && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
                         && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
-
                     setHeaders(folder, uid, message);
                     mHandler.showHeaderContainer();
                 }
-
                 MessageView.this.mMessage = message;
-
-
                 mHandler.removeAllAttachments();
-
                 String text;
                 String type = "text/html";
                 if (mPgpData.getDecryptedData() != null)
@@ -2102,7 +2064,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         }
                         else
                         {
-                            LocalTextBody body = (LocalTextBody)part.getBody();
+                            LocalTextBody body = (LocalTextBody) part.getBody();
                             if (body == null)
                             {
                                 text = null;
@@ -2119,7 +2081,6 @@ public class MessageView extends K9Activity implements OnClickListener
                         text = MimeUtility.getTextFromPart(part);
                     }
                 }
-
                 if (text != null)
                 {
                     final String emailText = text;
@@ -2142,7 +2103,6 @@ public class MessageView extends K9Activity implements OnClickListener
                             updateDecryptLayout();
                         }
                     });
-
                     // If the message contains external pictures and the "Show pictures"
                     // button wasn't already pressed, see if the user's preferences has us
                     // showing them anyway.
@@ -2171,7 +2131,6 @@ public class MessageView extends K9Activity implements OnClickListener
                         }
                     });
                 }
-
                 renderAttachments(mMessage, 0);
             }
             catch (Exception e)
@@ -2215,7 +2174,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-
             mHandler.post(new Runnable()
             {
                 public void run()
@@ -2248,7 +2206,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-
             mHandler.post(new Runnable()
             {
                 public void run()
@@ -2266,7 +2223,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-
             mHandler.post(new Runnable()
             {
                 public void run()
@@ -2281,11 +2237,10 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadAttachmentStarted(Account account, Message message,
                                           Part part, Object tag, boolean requiresDownload)
         {
-            if (mMessage!=message)
+            if (mMessage != message)
             {
                 return;
             }
-
             mHandler.setAttachmentsEnabled(false);
             mHandler.progress(true);
             if (requiresDownload)
@@ -2298,18 +2253,15 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadAttachmentFinished(Account account, Message message,
                                            Part part, Object tag)
         {
-            if (mMessage!=message)
+            if (mMessage != message)
             {
                 return;
             }
-
             mHandler.setAttachmentsEnabled(true);
             mHandler.progress(false);
-
             Object[] params = (Object[]) tag;
             boolean download = (Boolean) params[0];
             Attachment attachment = (Attachment) params[1];
-
             if (download)
             {
                 try
@@ -2358,11 +2310,10 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadAttachmentFailed(Account account, Message message, Part part,
                                          Object tag, String reason)
         {
-            if (mMessage!=message)
+            if (mMessage != message)
             {
                 return;
             }
-
             mHandler.setAttachmentsEnabled(true);
             mHandler.progress(false);
             mHandler.networkError();
@@ -2402,10 +2353,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 mConnection.disconnect();
             }
         }
+
     }
-
-
-
 
     private void initializeCrypto()
     {
