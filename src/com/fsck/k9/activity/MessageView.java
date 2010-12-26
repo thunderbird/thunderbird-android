@@ -293,12 +293,12 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             case KeyEvent.KEYCODE_S:
             {
-                onSpam();
+                onRefile(mAccount.getSpamFolderName());
                 return true;
             }
             case KeyEvent.KEYCODE_V:
             {
-                onArchive();
+                onRefile(mAccount.getArchiveFolderName());
                 return true;
             }
             case KeyEvent.KEYCODE_Y:
@@ -1265,16 +1265,14 @@ public class MessageView extends K9Activity implements OnClickListener
             // accidental clicks)
             disableButtons();
             Message messageToDelete = mMessage;
-
             showNextMessageOrReturn();
-
             MessagingController.getInstance(getApplication()).deleteMessages(
-                new Message[] { messageToDelete },
-                null);
+                    new Message[]{messageToDelete},
+                    null);
         }
     }
 
-    private void onArchive()
+    private void onRefile(String dstFolder)
     {
         if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
         {
@@ -1286,9 +1284,7 @@ public class MessageView extends K9Activity implements OnClickListener
             toast.show();
             return;
         }
-
         String srcFolder = mMessageReference.folderName;
-        String dstFolder = mAccount.getArchiveFolderName();
         Message messageToMove = mMessage;
         if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder))
         {
@@ -1296,33 +1292,10 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
-        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+                           .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
-    private void onSpam()
-    {
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
-        {
-            return;
-        }
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
-        {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
 
-        String srcFolder = mMessageReference.folderName;
-        String dstFolder = mAccount.getSpamFolderName();
-        Message messageToMove = mMessage;
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder))
-        {
-            return;
-        }
-        showNextMessageOrReturn();
-        MessagingController.getInstance(getApplication())
-        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
-    }
 
     private void showNextMessageOrReturn()
     {
@@ -1748,11 +1721,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.archive:
             case R.id.archive_scrolling:
-                onArchive();
+                onRefile(mAccount.getArchiveFolderName());
                 break;
             case R.id.spam:
             case R.id.spam_scrolling:
-                onSpam();
+                onRefile(mAccount.getSpamFolderName());
                 break;
             case R.id.move:
             case R.id.move_scrolling:
@@ -1811,10 +1784,10 @@ public class MessageView extends K9Activity implements OnClickListener
                 onFlag();
                 break;
             case R.id.archive:
-                onArchive();
+                onRefile(mAccount.getArchiveFolderName());
                 break;
             case R.id.spam:
-                onSpam();
+                onRefile(mAccount.getSpamFolderName());
                 break;
             case R.id.move:
                 onMove();
