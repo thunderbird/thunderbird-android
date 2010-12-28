@@ -432,8 +432,10 @@ public class LocalStore extends Store implements Serializable
                 {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
-                    int messageCount = cursor.getInt(0);
-                    return messageCount;
+                    return cursor.getInt(0);   // message count
+
+
+
                 }
                 finally
                 {
@@ -458,8 +460,7 @@ public class LocalStore extends Store implements Serializable
                 {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM folders", null);
                     cursor.moveToFirst();
-                    int messageCount = cursor.getInt(0);
-                    return messageCount;
+                    return cursor.getInt(0);        // folder count
                 }
                 finally
                 {
@@ -1297,14 +1298,13 @@ public class LocalStore extends Store implements Serializable
                         Cursor cursor = null;
                         try
                         {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE folder_id = ?",
                                                  new String[]
                                                  {
                                                      Long.toString(mFolderId)
                                                  });
                             cursor.moveToFirst();
-                            int messageCount = cursor.getInt(0);
-                            return messageCount;
+                            return cursor.getInt(0);   //messagecount
                         }
                         finally
                         {
