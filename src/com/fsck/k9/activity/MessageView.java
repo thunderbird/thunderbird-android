@@ -1839,84 +1839,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void renderAttachments(Part part, int depth) throws MessagingException
     {
-        String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
-        String name = MimeUtility.getHeaderParameter(contentType, "name");
-        // Inline parts with a content-id are almost certainly components of an HTML message
-        // not attachments. Don't show attachment download buttons for them.
-        if (contentDisposition != null &&
-                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
-                && part.getHeader("Content-ID") != null)
-        {
-            return;
-        }
-        if (name == null)
-        {
-            name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-        }
-        if (name != null)
-        {
-            /*
-             * We're guaranteed size because LocalStore.fetch puts it there.
-             */
-            int size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
-            AttachmentViewHolder attachment = new AttachmentViewHolder();
-            attachment.size = size;
-            String mimeType = part.getMimeType();
-            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(mimeType))
-            {
-                mimeType = MimeUtility.getMimeTypeByExtension(name);
-            }
-            attachment.contentType = mimeType;
-            attachment.name = name;
-            attachment.part = (LocalAttachmentBodyPart) part;
-            LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(R.layout.message_view_attachment, null);
-            TextView attachmentName = (TextView) view.findViewById(R.id.attachment_name);
-            TextView attachmentInfo = (TextView) view.findViewById(R.id.attachment_info);
-            ImageView attachmentIcon = (ImageView) view.findViewById(R.id.attachment_icon);
-            Button attachmentView = (Button) view.findViewById(R.id.view);
-            Button attachmentDownload = (Button) view.findViewById(R.id.download);
-            if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                                              K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
-                    || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                                                    K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
-            {
-                attachmentView.setVisibility(View.GONE);
-            }
-            if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                                              K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
-                    || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                                                    K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
-            {
-                attachmentDownload.setVisibility(View.GONE);
-            }
-            if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE)
-            {
-                attachmentView.setVisibility(View.GONE);
-                attachmentDownload.setVisibility(View.GONE);
-            }
-            attachment.viewButton = attachmentView;
-            attachment.downloadButton = attachmentDownload;
-            attachment.iconView = attachmentIcon;
-            view.setTag(attachment);
-            attachmentView.setOnClickListener(this);
-            attachmentView.setTag(attachment);
-            attachmentDownload.setOnClickListener(this);
-            attachmentDownload.setTag(attachment);
-            attachmentName.setText(name);
-            attachmentInfo.setText(SizeFormatter.formatSize(getApplication(), size));
-            Bitmap previewIcon = getPreviewIcon(attachment);
-            if (previewIcon != null)
-            {
-                attachmentIcon.setImageBitmap(previewIcon);
-            }
-            else
-            {
-                attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-            }
-            mHandler.addAttachment(view);
-        }
         if (part.getBody() instanceof Multipart)
         {
             Multipart mp = (Multipart) part.getBody();
@@ -1925,6 +1847,86 @@ public class MessageView extends K9Activity implements OnClickListener
                 renderAttachments(mp.getBodyPart(i), depth + 1);
             }
         }
+        else
+        {
+            String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+            // Inline parts with a content-id are almost certainly components of an HTML message
+            // not attachments. Don't show attachment download buttons for them.
+            if (contentDisposition != null &&
+                    MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
+                    && part.getHeader("Content-ID") != null)
+            {
+                return;
+            }
+            renderPartAsAttachment(part);
+        }
+    }
+
+    private void renderPartAsAttachment(Part part) throws MessagingException
+    {
+        String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+        String name = MimeUtility.getHeaderParameter(contentType, "name");
+        if (name == null)
+        {
+            name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+        }
+        if (name == null)
+        {
+            return;
+        }
+        AttachmentViewHolder attachment = new AttachmentViewHolder();
+        attachment.size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
+        attachment.contentType = part.getMimeType();
+        if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(attachment.contentType))
+        {
+            attachment.contentType = MimeUtility.getMimeTypeByExtension(name);
+        }
+        attachment.name = name;
+        attachment.part = (LocalAttachmentBodyPart) part;
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.message_view_attachment, null);
+        TextView attachmentName = (TextView) view.findViewById(R.id.attachment_name);
+        TextView attachmentInfo = (TextView) view.findViewById(R.id.attachment_info);
+        ImageView attachmentIcon = (ImageView) view.findViewById(R.id.attachment_icon);
+        Button attachmentView = (Button) view.findViewById(R.id.view);
+        Button attachmentDownload = (Button) view.findViewById(R.id.download);
+        if ((!MimeUtility.mimeTypeMatches(attachment.contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
+                || (MimeUtility.mimeTypeMatches(attachment.contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
+        {
+            attachmentView.setVisibility(View.GONE);
+        }
+        if ((!MimeUtility.mimeTypeMatches(attachment.contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
+                || (MimeUtility.mimeTypeMatches(attachment.contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
+        {
+            attachmentDownload.setVisibility(View.GONE);
+        }
+        if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE)
+        {
+            attachmentView.setVisibility(View.GONE);
+            attachmentDownload.setVisibility(View.GONE);
+        }
+        attachment.viewButton = attachmentView;
+        attachment.downloadButton = attachmentDownload;
+        attachment.iconView = attachmentIcon;
+        view.setTag(attachment);
+        attachmentView.setOnClickListener(this);
+        attachmentView.setTag(attachment);
+        attachmentDownload.setOnClickListener(this);
+        attachmentDownload.setTag(attachment);
+        attachmentName.setText(name);
+        attachmentInfo.setText(SizeFormatter.formatSize(getApplication(), attachment.size));
+        Bitmap previewIcon = getPreviewIcon(attachment);
+        if (previewIcon != null)
+        {
+            attachmentIcon.setImageBitmap(previewIcon);
+        }
+        else
+        {
+            attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
+        }
+        mHandler.addAttachment(view);
+        return;
     }
 
     class Listener extends MessagingListener
