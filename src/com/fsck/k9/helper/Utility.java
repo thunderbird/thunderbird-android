@@ -664,5 +664,35 @@ public class Utility
             Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath());
         }
     }
+     /**
+     *  Figure out if this part hsa images.
+     * TODO: should only return true if we're an html part
+     */
+
+
+    private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
+    private static final Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
+    public static boolean hasExternalImages(final String message)
+    {
+        Matcher imgMatches = mImgPattern.matcher(message);
+        while (imgMatches.find())
+        {
+            if (!imgMatches.group(1).equals("content"))
+            {
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "External images found");
+                }
+                return true;
+            }
+        }
+        if (K9.DEBUG)
+        {
+            Log.d(K9.LOG_TAG, "No external images.");
+        }
+        return false;
+    }
+
+
 
 }

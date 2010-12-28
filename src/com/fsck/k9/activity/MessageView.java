@@ -12,10 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.fsck.k9.mail.store.LocalStore;
 import org.apache.commons.io.IOUtils;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -80,11 +77,12 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.AccessibleWebView;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.ToggleScrollView;
+
+import static com.fsck.k9.helper.Utility.*;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -2040,7 +2038,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     // If the message contains external pictures and the "Show pictures"
                     // button wasn't already pressed, see if the user's preferences has us
                     // showing them anyway.
-                    if (hasExternalImages(text) && !mShowPictures)
+                    if (Utility.hasExternalImages(text) && !mShowPictures)
                     {
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
@@ -2076,28 +2074,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }//loadMessageForViewBodyAvailable
 
-        private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
-        private final Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
-        private boolean hasExternalImages(final String message)
-        {
-            Matcher imgMatches = mImgPattern.matcher(message);
-            while (imgMatches.find())
-            {
-                if (!imgMatches.group(1).equals("content"))
-                {
-                    if (K9.DEBUG)
-                    {
-                        Log.d(K9.LOG_TAG, "External images found");
-                    }
-                    return true;
-                }
-            }
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "No external images.");
-            }
-            return false;
-        }
+
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
