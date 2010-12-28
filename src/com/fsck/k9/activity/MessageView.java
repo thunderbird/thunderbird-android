@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.mail.store.LocalStore;
 import org.apache.commons.io.IOUtils;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -2012,34 +2013,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
                 else
                 {
-                    // First try and fetch an HTML part.
-                    Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-                    if (part == null)
-                    {
-                        // If that fails, try and get a text part.
-                        part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-                        if (part == null)
-                        {
-                            text = null;
-                        }
-                        else
-                        {
-                            LocalTextBody body = (LocalTextBody) part.getBody();
-                            if (body == null)
-                            {
-                                text = null;
-                            }
-                            else
-                            {
-                                text = body.getBodyForDisplay();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // We successfully found an HTML part; do the necessary character set decoding.
-                        text = MimeUtility.getTextFromPart(part);
-                    }
+                    text = ((LocalMessage)mMessage).getTextForDisplay();
                 }
                 if (text != null)
                 {
