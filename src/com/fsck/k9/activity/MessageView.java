@@ -1034,8 +1034,7 @@ public class MessageView extends K9Activity implements OnClickListener
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-        mShowPictures = savedInstanceState.getBoolean(SHOW_PICTURES);
-        setLoadPictures(mShowPictures);
+        setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         initializeCrypto();
         updateDecryptLayout();
