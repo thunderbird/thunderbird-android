@@ -528,6 +528,47 @@ public class Utility
     }
 
     /**
+     * Creates a unique file in the given directory by appending a hyphen
+     * and a number to the given filename.
+     *
+     * @param directory
+     * @param filename
+     * @return
+     */
+    public static File createUniqueFile(File directory, String filename)
+    {
+        File file = new File(directory, filename);
+        if (!file.exists())
+        {
+            return file;
+        }
+        // Get the extension of the file, if any.
+        int index = filename.lastIndexOf('.');
+        String format;
+        if (index != -1)
+        {
+            String name = filename.substring(0, index);
+            String extension = filename.substring(index);
+            format = name + "-%d" + extension;
+        }
+        else
+        {
+            format = filename + "-%d";
+        }
+        for (int i = 2; i < Integer.MAX_VALUE; i++)
+        {
+            file = new File(directory, String.format(format, i));
+            if (!file.exists())
+            {
+                return file;
+            }
+        }
+        return null;
+    }
+
+
+
+    /**
      * @param from
      * @param to
      * @return

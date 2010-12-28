@@ -67,6 +67,7 @@ import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -1571,44 +1572,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    /**
-     * Creates a unique file in the given directory by appending a hyphen
-     * and a number to the given filename.
-     *
-     * @param directory
-     * @param filename
-     * @return
-     */
-    private File createUniqueFile(File directory, String filename)
-    {
-        File file = new File(directory, filename);
-        if (!file.exists())
-        {
-            return file;
-        }
-        // Get the extension of the file, if any.
-        int index = filename.lastIndexOf('.');
-        String format;
-        if (index != -1)
-        {
-            String name = filename.substring(0, index);
-            String extension = filename.substring(index);
-            format = name + "-%d" + extension;
-        }
-        else
-        {
-            format = filename + "-%d";
-        }
-        for (int i = 2; i < Integer.MAX_VALUE; i++)
-        {
-            file = new File(directory, String.format(format, i));
-            if (!file.exists())
-            {
-                return file;
-            }
-        }
-        return null;
-    }
 
     private void onDownloadRemainder()
     {
@@ -2264,7 +2227,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 try
                 {
-                    File file = createUniqueFile(Environment.getExternalStorageDirectory(),
+                    File file = Utility.createUniqueFile(Environment.getExternalStorageDirectory(),
                                                  attachment.name);
                     Uri uri = AttachmentProvider.getAttachmentUri(
                                   mAccount,
