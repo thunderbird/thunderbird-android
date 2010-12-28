@@ -751,6 +751,8 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageContentView.setVisibility(View.VISIBLE);
         }
 
+        setupDecryptLayout();
+
         setTitle("");
         Intent intent = getIntent();
         Uri uri = intent.getData();
@@ -815,12 +817,8 @@ public class MessageView extends K9Activity implements OnClickListener
             next.requestFocus();
         }
 
-
-        setupCryptoLayout();
         setupHeaderLayout();
         setupButtonViews();
-
-
 
         displayMessage(mMessageReference);
     }
@@ -938,7 +936,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachmentIcon.setVisibility(View.GONE);
     }
 
-    private void setupCryptoLayout()
+    private void setupDecryptLayout()
     {
         mDecryptLayout = (View) findViewById(R.id.layout_decrypt);
         mDecryptButton = (Button) findViewById(R.id.btn_decrypt);
@@ -1025,8 +1023,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         super.onRestoreInstanceState(savedInstanceState);
         setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
-        initializeCrypto((PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA)
-                        );
+        initializeCrypto((PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA));
         updateDecryptLayout();
     }
 
