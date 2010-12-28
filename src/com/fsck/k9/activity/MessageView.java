@@ -612,8 +612,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         /**
          * Set up and then show the additional headers view. Called by
-         * {@link #onShowAdditionalHeaders()} and
-         * {@link #setHeadersString, String, Message)}
+         * {@link #onShowAdditionalHeaders()}
          * (when switching between messages).
          */
         public void showAdditionalHeaders()

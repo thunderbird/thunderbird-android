@@ -117,6 +117,8 @@ public class LocalStore extends Store implements Serializable
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
+     * @param account
+     * @param application
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public LocalStore(final Account account, final Application application) throws MessagingException
@@ -548,8 +550,10 @@ public class LocalStore extends Store implements Serializable
 
     /**
      * Deletes all cached attachments for the entire store.
+     * @param force
+     * @throws com.fsck.k9.mail.MessagingException
      */
-    public void pruneCachedAttachments(final boolean force) throws MessagingException
+    private void pruneCachedAttachments(final boolean force) throws MessagingException
     {
         database.execute(false, new DbCallback<Void>()
         {
@@ -1009,8 +1013,8 @@ public class LocalStore extends Store implements Serializable
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                String name = null;
-                int size = -1;
+                String name;
+                int size;
                 Cursor cursor = null;
                 try
                 {
@@ -2276,6 +2280,8 @@ public class LocalStore extends Store implements Serializable
          * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
          * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
          * message, retrieve the appropriate local message instance first (if it already exists).
+         * @param messages
+         * @param copy
          */
         private void appendMessages(final Message[] messages, final boolean copy) throws MessagingException
         {
@@ -2551,6 +2557,9 @@ public class LocalStore extends Store implements Serializable
         /**
          * Save the headers of the given message. Note that the message is not
          * necessarily a {@link LocalMessage} instance.
+         * @param id
+         * @param message
+         * @throws com.fsck.k9.mail.MessagingException
          */
         private void saveHeaders(final long id, final MimeMessage message) throws MessagingException
         {
@@ -2617,6 +2626,7 @@ public class LocalStore extends Store implements Serializable
         /**
          * @param messageId
          * @param attachment
+         * @param saveAsNew
          * @throws IOException
          * @throws MessagingException
          */
@@ -2738,8 +2748,7 @@ public class LocalStore extends Store implements Serializable
                             /* The message has attachment with Content-ID */
                             if (contentId != null && contentUri != null)
                             {
-                                Cursor cursor = null;
-                                cursor = db.query("messages", new String[]
+                                Cursor cursor = db.query("messages", new String[]
                                                   { "html_content" }, "id = ?", new String[]
                                                   { Long.toString(messageId) }, null, null, null);
                                 try
@@ -2802,6 +2811,7 @@ public class LocalStore extends Store implements Serializable
          * Changes the stored uid of the given message (using it's internal id as a key) to
          * the uid in the message.
          * @param message
+         * @throws com.fsck.k9.mail.MessagingException
          */
         public void changeUid(final LocalMessage message) throws MessagingException
         {
@@ -3151,7 +3161,7 @@ public class LocalStore extends Store implements Serializable
             }
             StringReader reader = new StringReader(text);
             StringBuilder buff = new StringBuilder(text.length() + 512);
-            int c = 0;
+            int c;
             try
             {
                 while ((c = reader.read()) != -1)
@@ -3249,7 +3259,7 @@ public class LocalStore extends Store implements Serializable
         {
             StringReader reader = new StringReader(html);
             StringBuilder buff = new StringBuilder(html.length() + 512);
-            int c = 0;
+            int c;
             try
             {
                 while ((c = reader.read()) != -1)
