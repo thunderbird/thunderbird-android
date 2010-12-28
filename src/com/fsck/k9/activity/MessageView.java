@@ -1034,8 +1034,8 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         super.onRestoreInstanceState(savedInstanceState);
         setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
-        mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
-        initializeCrypto();
+        initializeCrypto((PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA)
+                        );
         updateDecryptLayout();
     }
 
@@ -1054,8 +1054,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
         // start with fresh, empty PGP data
-        mPgpData = null;
-        initializeCrypto();
+        initializeCrypto(null);
         mTopView.setVisibility(View.VISIBLE);
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
@@ -2264,20 +2263,22 @@ public class MessageView extends K9Activity implements OnClickListener
                 mConnection.disconnect();
             }
         }
-
     }
 
-    private void initializeCrypto()
+    private void initializeCrypto(PgpData data)
     {
-        if (mPgpData != null)
+        if (data == null)
         {
-            return;
+            if (mAccount == null)
+            {
+                mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+            }
+            mPgpData = new PgpData();
         }
-        if (mAccount == null)
+        else
         {
-            mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+            mPgpData = data;
         }
-        mPgpData = new PgpData();
     }
 
     /**
