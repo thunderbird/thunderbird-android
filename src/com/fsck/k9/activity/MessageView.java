@@ -497,13 +497,13 @@ public class MessageView extends K9Activity implements OnClickListener
                         mDownloadRemainder.setEnabled(true);
                         mDownloadRemainder.setVisibility(View.VISIBLE);
                     }
+                    mHeaderContainer.setVisibility(View.VISIBLE);
+                    if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
+                    {
+                        showAdditionalHeaders();
+                    }
                 }
             });
-            if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
-            {
-                showAdditionalHeaders();
-            }
-
         }
 
         public void networkError()
@@ -578,19 +578,6 @@ public class MessageView extends K9Activity implements OnClickListener
                     mShowPicturesSection.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
-        }
-
-        private void showHeaderContainer()
-        {
-            {
-                runOnUiThread(new Runnable()
-                {
-                    public void run()
-                    {
-                        mHeaderContainer.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
         }
 
         private void hideHeaderContainer()
@@ -1967,7 +1954,6 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 mHandler.setHeaders(message);
-                mHandler.showHeaderContainer();
             }
             catch (MessagingException me)
             {
@@ -1977,21 +1963,20 @@ public class MessageView extends K9Activity implements OnClickListener
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                Message message)
+                                                    Message message)
         {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid()))
+                || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
             try
             {
                 if (MessageView.this.mMessage != null
-                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                        && message.isSet(Flag.X_DOWNLOADED_FULL))
+                    && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                    && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
                     mHandler.setHeaders(message);
-                    mHandler.showHeaderContainer();
                 }
                 MessageView.this.mMessage = message;
                 mHandler.removeAllAttachments();
