@@ -2177,8 +2177,8 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 try
                 {
-                    File file = Utility.createUniqueFile(Environment.getExternalStorageDirectory(),
-                                                 attachment.name);
+                    File file = createUniqueFile(Environment.getExternalStorageDirectory(),
+                            attachment.name);
                     Uri uri = AttachmentProvider.getAttachmentUri(
                                   mAccount,
                                   attachment.part.getAttachmentId());
