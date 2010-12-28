@@ -429,7 +429,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
                     for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
                     {
-                        Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
+                        AttachmentViewHolder attachment = (AttachmentViewHolder) mAttachments.getChildAt(i).getTag();
                         attachment.viewButton.setEnabled(enabled);
                         attachment.downloadButton.setEnabled(enabled);
                     }
@@ -709,7 +709,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    static class Attachment
+    static class AttachmentViewHolder
     {
         public String name;
         public String contentType;
@@ -1585,7 +1585,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mListener);
     }
 
-    private void onDownloadAttachment(Attachment attachment)
+    private void onDownloadAttachment(AttachmentViewHolder attachment)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
@@ -1609,7 +1609,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void onViewAttachment(Attachment attachment)
+    private void onViewAttachment(AttachmentViewHolder attachment)
     {
         if (mMessage != null)
         {
@@ -1685,10 +1685,10 @@ public class MessageView extends K9Activity implements OnClickListener
                 onPrevious();
                 break;
             case R.id.download:
-                onDownloadAttachment((Attachment) view.getTag());
+                onDownloadAttachment((AttachmentViewHolder) view.getTag());
                 break;
             case R.id.view:
-                onViewAttachment((Attachment) view.getTag());
+                onViewAttachment((AttachmentViewHolder) view.getTag());
                 break;
             case R.id.show_pictures:
                 onShowPictures();
@@ -1826,7 +1826,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private Bitmap getPreviewIcon(Attachment attachment)
+    private Bitmap getPreviewIcon(AttachmentViewHolder attachment)
     {
         try
         {
@@ -1869,7 +1869,7 @@ public class MessageView extends K9Activity implements OnClickListener
              * We're guaranteed size because LocalStore.fetch puts it there.
              */
             int size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
-            Attachment attachment = new Attachment();
+            AttachmentViewHolder attachment = new AttachmentViewHolder();
             attachment.size = size;
             String mimeType = part.getMimeType();
             if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(mimeType))
@@ -2172,7 +2172,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mHandler.progress(false);
             Object[] params = (Object[]) tag;
             boolean download = (Boolean) params[0];
-            Attachment attachment = (Attachment) params[1];
+            AttachmentViewHolder attachment = (AttachmentViewHolder) params[1];
             if (download)
             {
                 try
