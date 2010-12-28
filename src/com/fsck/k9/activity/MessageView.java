@@ -478,7 +478,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     mAttachmentIcon.setVisibility(((LocalMessage) message).hasAttachments() ? View.VISIBLE : View.GONE);
                     mFlagged.setChecked(message.isSet(Flag.FLAGGED));
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
-                    chip.setBackgroundColor(mAccount.getChipColor());
+                    chip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
                     chip.getBackground().setAlpha(!message.isSet(Flag.SEEN) ? 255 : 127);
                     if (message.isSet(Flag.ANSWERED))
                     {

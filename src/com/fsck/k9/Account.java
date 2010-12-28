@@ -18,6 +18,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.view.ColorChip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -688,6 +689,11 @@ public class Account implements BaseAccount
     public synchronized int getChipColor()
     {
         return mChipColor;
+    }
+
+
+    public ColorChip generateColorChip() {
+        return new ColorChip( mChipColor);
     }
 
 

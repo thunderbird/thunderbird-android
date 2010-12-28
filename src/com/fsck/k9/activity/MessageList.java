@@ -74,6 +74,8 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.view.ColorChip;
+
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -2749,7 +2751,9 @@ public class MessageList
                 holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
             }
 
-            holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
+
+
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
