@@ -499,6 +499,11 @@ public class MessageView extends K9Activity implements OnClickListener
                     }
                 }
             });
+            if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
+            {
+                showAdditionalHeaders();
+            }
+
         }
 
         public void networkError()
@@ -1373,7 +1378,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
-                setHeaders(mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+                mHandler.setHeaders( mMessage);
                 prepareMenuItems();
             }
             catch (MessagingException me)
@@ -1560,7 +1565,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 mMessage.setFlag(Flag.SEEN, false);
-                setHeaders(mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+                mHandler.setHeaders(mMessage);
             }
             catch (Exception e)
             {
@@ -1935,17 +1940,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void setHeaders(String folder, String uid,
-                            final Message message) throws MessagingException
-    {
-        mHandler.setHeaders(message);
-        // Update additional headers display, if visible
-        if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
-        {
-            mHandler.showAdditionalHeaders();
-        }
-    }
-
     class Listener extends MessagingListener
     {
         @Override
@@ -1972,7 +1966,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             try
             {
-                setHeaders(folder, uid, message);
+                mHandler.setHeaders(message);
                 mHandler.showHeaderContainer();
             }
             catch (MessagingException me)
@@ -1996,7 +1990,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
                         && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
-                    setHeaders(folder, uid, message);
+                    mHandler.setHeaders(message);
                     mHandler.showHeaderContainer();
                 }
                 MessageView.this.mMessage = message;
