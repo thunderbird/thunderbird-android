@@ -2572,6 +2572,7 @@ public class LocalStore extends Store implements Serializable {
             setPushState(null);
             setLastPush(0);
             setLastChecked(0);
+            setVisibleLimit(mAccount.getDisplayCount());
         }
 
         private void resetUnreadAndFlaggedCounts() {
