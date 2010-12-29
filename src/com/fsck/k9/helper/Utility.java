@@ -664,17 +664,18 @@ public class Utility
             Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath());
         }
     }
-     /**
-     *  Figure out if this part hsa images.
-     * TODO: should only return true if we're an html part
-     */
-
 
     private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
-    private static final Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
+    private static final Pattern IMG_PATTERN = Pattern.compile(IMG_SRC_REGEX);
+    /**
+     * Figure out if this part has images.
+     * TODO: should only return true if we're an html part
+     * @param message Content to evaluate
+     * @return True if it has external images; false otherwise.
+     */
     public static boolean hasExternalImages(final String message)
     {
-        Matcher imgMatches = mImgPattern.matcher(message);
+        Matcher imgMatches = IMG_PATTERN.matcher(message);
         while (imgMatches.find())
         {
             if (!imgMatches.group(1).equals("content"))
@@ -692,7 +693,4 @@ public class Utility
         }
         return false;
     }
-
-
-
 }
