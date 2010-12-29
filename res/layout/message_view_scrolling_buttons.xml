@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+            <LinearLayout
+                android:id="@+id/extra_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/reply"
+                    android:text="@string/reply_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/reply_all"
+                    android:text="@string/reply_all_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/forward"
+                    android:text="@string/forward_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/scrolling_move_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/archive_scrolling"
+                    android:text="@string/message_view_archive_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/move_scrolling"
+                    android:text="@string/message_view_move_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/spam_scrolling"
+                    android:text="@string/message_view_spam_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/scrolling_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/previous_scrolling"
+                    android:text="@string/message_view_prev_action"
+                    android:contentDescription="@string/previous_action"
+                    android:textSize="35dip"
+                    android:padding="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/delete_scrolling"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_button_delete"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+               <Button
+                    android:id="@+id/next_scrolling"
+                    android:padding="0dip"
+                    android:text="@string/message_view_next_action"
+                    android:textSize="35dip"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
+</merge>

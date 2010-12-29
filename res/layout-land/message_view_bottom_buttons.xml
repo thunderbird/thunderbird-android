@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+        android:id="@+id/bottom_buttons"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="57dip"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/previous"
+            android:text="@string/message_view_prev_action"
+            android:contentDescription="@string/previous_action"
+            android:textSize="35dip"
+            android:layout_height="wrap_content"
+            android:padding="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/reply"
+            android:text="@string/reply_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/delete"
+            android:text="@string/delete_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/forward"
+            android:text="@string/forward_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+         <Button
+            android:id="@+id/next"
+            android:text="@string/message_view_next_action"
+            android:contentDescription="@string/next_action"
+            android:textSize="35dip"
+            android:padding="0dip"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+</merge>

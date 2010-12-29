@@ -600,22 +600,22 @@ public class Pop3Store extends Store
                 // Ignore messages without a unique-id
                 if (uidParts.length >= 2)
                 {
-	                Integer msgNum = Integer.valueOf(uidParts[0]);
-	                String msgUid = uidParts[1];
-	                if (unindexedUids.contains(msgUid))
-	                {
-	                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
-	                    {
-	                        Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
-	                    }
+                    Integer msgNum = Integer.valueOf(uidParts[0]);
+                    String msgUid = uidParts[1];
+                    if (unindexedUids.contains(msgUid))
+                    {
+                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
+                        {
+                            Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
+                        }
 
-	                    Pop3Message message = mUidToMsgMap.get(msgUid);
-	                    if (message == null)
-	                    {
-	                        message = new Pop3Message(msgUid, this);
-	                    }
-	                    indexMessage(msgNum, message);
-	                }
+                        Pop3Message message = mUidToMsgMap.get(msgUid);
+                        if (message == null)
+                        {
+                            message = new Pop3Message(msgUid, this);
+                        }
+                        indexMessage(msgNum, message);
+                    }
                 }
             }
         }
@@ -1106,7 +1106,7 @@ public class Pop3Store extends Store
 
     }//Pop3Folder
 
-    class Pop3Message extends MimeMessage
+    static class Pop3Message extends MimeMessage
     {
         public Pop3Message(String uid, Pop3Folder folder)
         {
@@ -1148,7 +1148,7 @@ public class Pop3Store extends Store
         }
     }
 
-    class Pop3Capabilities
+    static class Pop3Capabilities
     {
         public boolean stls;
         public boolean top;
@@ -1168,7 +1168,7 @@ public class Pop3Store extends Store
         }
     }
 
-    class Pop3ResponseInputStream extends InputStream
+    static class Pop3ResponseInputStream extends InputStream
     {
         InputStream mIn;
         boolean mStartOfLine = true;

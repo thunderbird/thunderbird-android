@@ -122,6 +122,11 @@ public class MessagingController implements Runnable
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
 
+    /**
+     * Maximum number of unsynced messages to store at once
+     */
+    private static final int UNSYNC_CHUNK_SIZE = 5;
+
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
 
@@ -272,6 +277,7 @@ public class MessagingController implements Runnable
         return mBusy;
     }
 
+    @Override
     public void run()
     {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
@@ -433,6 +439,7 @@ public class MessagingController implements Runnable
     {
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 listFoldersSynchronous(account, refreshRemote, listener);
@@ -516,6 +523,7 @@ public class MessagingController implements Runnable
     {
         put("doRefreshRemote", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 List<? extends Folder> localFolders = null;
@@ -608,6 +616,7 @@ public class MessagingController implements Runnable
     {
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 listLocalMessagesSynchronous(account, folder, listener);
@@ -642,7 +651,9 @@ public class MessagingController implements Runnable
             int totalDone = 0;
 
 
+            @Override
             public void messageStarted(String message, int number, int ofTotal) {}
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
 
@@ -664,6 +675,7 @@ public class MessagingController implements Runnable
                     }
                 }
             }
+            @Override
             public void messagesFinished(int number)
             {
                 addPendingMessages();
@@ -747,6 +759,7 @@ public class MessagingController implements Runnable
 
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
                 searchLocalMessagesSynchronous(accountUuids,folderNames, messages,  query, integrate, requiredFlags, forbiddenFlags, listener);
@@ -888,7 +901,9 @@ public class MessagingController implements Runnable
 
             MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
             {
+                @Override
                 public void messageStarted(String message, int number, int ofTotal) {}
+                @Override
                 public void messageFinished(Message message, int number, int ofTotal)
                 {
                     if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message))
@@ -905,6 +920,7 @@ public class MessagingController implements Runnable
                     }
 
                 }
+                @Override
                 public void messagesFinished(int number)
                 {
 
@@ -981,6 +997,7 @@ public class MessagingController implements Runnable
     {
         putBackground("synchronizeMailbox", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
@@ -1532,6 +1549,7 @@ public class MessagingController implements Runnable
 
         localFolder.purgeToVisibleLimit(new MessageRemovalListener()
         {
+            @Override
             public void messageRemoved(Message message)
             {
                 for (MessagingListener l : getListeners())
@@ -1636,9 +1654,16 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
+
+        /*
+         * Messages to be batch written
+         */
+        final List<Message> chunk = new ArrayList<Message>(UNSYNC_CHUNK_SIZE);
+
         remoteFolder.fetch(unsyncedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp,
                            new MessageRetrievalListener()
         {
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
                 try
@@ -1692,36 +1717,81 @@ public class MessagingController implements Runnable
                          */
                         if (!isMessageSuppressed(account, folder, message))
                         {
-                            // Store the new message locally
-                            localFolder.appendMessages(new Message[] { message });
+                            // keep message for delayed storing
+                            chunk.add(message);
 
-                            Message localMessage = localFolder.getMessage(message.getUid());
-                            syncFlags(localMessage, message);
-                            if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                      + account + ":" + folder + ":" + message.getUid());
-                            for (MessagingListener l : getListeners())
+                            if (chunk.size() >= UNSYNC_CHUNK_SIZE)
                             {
-                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                                writeUnsyncedMessages(chunk, localFolder, account, folder);
+                                chunk.clear();
                             }
-
-
                         }
-
                     }
-
                 }
                 catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
                     addErrorMessage(account, null, e);
-
                 }
             }
 
+            @Override
             public void messageStarted(String uid, int number, int ofTotal) {}
-            public void messagesFinished(int total) {}
+
+            @Override
+            public void messagesFinished(int total)
+            {
+                // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
+            }
+
         });
+        if (chunk.size() > 0)
+        {
+            writeUnsyncedMessages(chunk, localFolder, account, folder);
+            chunk.clear();
+        }
+    }
+
+    /**
+     * Actual storing of messages
+     *
+     * <br>
+     * FIXME: <strong>This method should really be moved in the above MessageRetrievalListener once {@link MessageRetrievalListener#messagesFinished(int)} is properly invoked by various stores</strong>
+     *
+     * @param messages Never <code>null</code>.
+     * @param localFolder
+     * @param account
+     * @param folder
+     */
+    private void writeUnsyncedMessages(final List<Message> messages, final LocalFolder localFolder, final Account account, final String folder)
+    {
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "Batch writing " + Integer.toString(messages.size()) + " messages");
+        }
+        try
+        {
+            // Store the new message locally
+            localFolder.appendMessages(messages.toArray(new Message[messages.size()]));
+
+            for (final Message message : messages)
+            {
+                final Message localMessage = localFolder.getMessage(message.getUid());
+                syncFlags(localMessage, message);
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                          + account + ":" + folder + ":" + message.getUid());
+                for (final MessagingListener l : getListeners())
+                {
+                    l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                }
+            }
+        }
+        catch (final Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
+            addErrorMessage(account, null, e);
+        }
     }
 
 
@@ -1770,6 +1840,7 @@ public class MessagingController implements Runnable
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
                            fp, new MessageRetrievalListener()
         {
+            @Override
             public void messageFinished(Message message, int number, int ofTotal)
             {
                 try
@@ -1783,13 +1854,14 @@ public class MessagingController implements Runnable
                     }
 
                     // Store the updated message locally
-                    localFolder.appendMessages(new Message[] { message });
-
-                    Message localMessage = localFolder.getMessage(message.getUid());
-                    progress.incrementAndGet();
-
-                    // Set a flag indicating this message has now be fully downloaded
-                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    final Message localMessage = localFolder.storeSmallMessage(message, new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            progress.incrementAndGet();
+                        }
+                    });
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
                               + account + ":" + folder + ":" + message.getUid());
@@ -1820,8 +1892,10 @@ public class MessagingController implements Runnable
                 }
             }
 
+            @Override
             public void messageStarted(String uid, int number, int ofTotal) {}
 
+            @Override
             public void messagesFinished(int total) {}
         });
 
@@ -2083,6 +2157,7 @@ public class MessagingController implements Runnable
     {
         putBackground("processPendingCommands", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -2502,6 +2577,7 @@ public class MessagingController implements Runnable
     {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
+            @Override
             public void run()
             {
                 PendingCommand command = new PendingCommand();
@@ -2632,6 +2708,7 @@ public class MessagingController implements Runnable
     {
         putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
+            @Override
             public void run()
             {
                 PendingCommand command = new PendingCommand();
@@ -3024,6 +3101,7 @@ public class MessagingController implements Runnable
     {
         put("loadMessageForViewRemote", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder remoteFolder = null;
@@ -3116,6 +3194,7 @@ public class MessagingController implements Runnable
         }
         threadPool.execute(new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -3230,6 +3309,7 @@ public class MessagingController implements Runnable
 
         put("loadAttachment", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder remoteFolder = null;
@@ -3347,6 +3427,7 @@ public class MessagingController implements Runnable
     {
         putBackground("sendPendingMessages", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 if (!account.isAvailable(mApplication))
@@ -3425,7 +3506,7 @@ public class MessagingController implements Runnable
 
         configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        notifMgr.notify(-1500 - account.getAccountNumber(), notif);
+        notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(), notif);
     }
 
 
@@ -3498,6 +3579,7 @@ public class MessagingController implements Runnable
     public void sendPendingMessagesSynchronous(final Account account)
     {
         Folder localFolder = null;
+        Exception lastFailure = null;
         try
         {
             Store localStore = account.getLocalStore();
@@ -3514,7 +3596,6 @@ public class MessagingController implements Runnable
             localFolder.open(OpenMode.READ_WRITE);
 
             Message[] localMessages = localFolder.getMessages(null);
-            Exception lastFailure = null;
             int progress = 0;
             int todo = localMessages.length;
             for (MessagingListener l : getListeners())
@@ -3612,13 +3693,6 @@ public class MessagingController implements Runnable
                     lastFailure = e;
                 }
             }
-            if (localFolder.getMessageCount() == 0)
-            {
-                // No longer delete the empty local outbox every time we finish sending mail
-                // There's no real win to it and it makes the folder selection UI extra stupid
-                // (We'd need a textentry widget to set the Outbox folder rather than a folder select widget)
-                // localFolder.delete(false);
-            }
             for (MessagingListener l : getListeners())
             {
                 l.sendPendingMessagesCompleted(account);
@@ -3644,6 +3718,10 @@ public class MessagingController implements Runnable
         }
         finally
         {
+            if (lastFailure == null)
+            {
+                cancelNotification(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber());
+            }
             closeFolder(localFolder);
         }
     }
@@ -3653,6 +3731,7 @@ public class MessagingController implements Runnable
     {
         Runnable unreadRunnable = new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -3677,6 +3756,7 @@ public class MessagingController implements Runnable
     {
         Runnable unreadRunnable = new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -3747,6 +3827,7 @@ public class MessagingController implements Runnable
         }
         putBackground("moveMessages", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false, listener);
@@ -3765,6 +3846,7 @@ public class MessagingController implements Runnable
     {
         putBackground("copyMessages", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true, listener);
@@ -3863,6 +3945,7 @@ public class MessagingController implements Runnable
     {
         putBackground("expunge", null, new Runnable()
         {
+            @Override
             public void run()
             {
                 queueExpunge(account, folder);
@@ -3910,6 +3993,7 @@ public class MessagingController implements Runnable
 
                 putBackground("deleteMessages", null, new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         deleteMessagesSynchronous(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), listener);
@@ -4087,6 +4171,7 @@ public class MessagingController implements Runnable
     {
         putBackground("emptyTrash", listener, new Runnable()
         {
+            @Override
             public void run()
             {
                 Folder localFolder = null;
@@ -4206,6 +4291,7 @@ public class MessagingController implements Runnable
         }
         putBackground("checkMail", listener, new Runnable()
         {
+            @Override
             public void run()
             {
 
@@ -4241,6 +4327,7 @@ public class MessagingController implements Runnable
                 }
                 putBackground("finalize sync", null, new Runnable()
                 {
+                    @Override
                     public void run()
                     {
 
@@ -4342,6 +4429,7 @@ public class MessagingController implements Runnable
         {
             putBackground("clear notification flag for " + account.getDescription(), null, new Runnable()
             {
+                @Override
                 public void run()
                 {
                     if (K9.DEBUG)
@@ -4393,6 +4481,7 @@ public class MessagingController implements Runnable
         }
         putBackground("sync" + folder.getName(), null, new Runnable()
         {
+            @Override
             public void run()
             {
                 LocalFolder tLocalFolder = null;
@@ -4447,6 +4536,7 @@ public class MessagingController implements Runnable
     {
         putBackground("compact:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -4481,6 +4571,7 @@ public class MessagingController implements Runnable
     {
         putBackground("clear:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -4522,6 +4613,7 @@ public class MessagingController implements Runnable
     {
         putBackground("recreate:" + account.getDescription(), ml, new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -4815,7 +4907,7 @@ public class MessagingController implements Runnable
     }
 
     static AtomicInteger sequencing = new AtomicInteger(0);
-    class Command implements Comparable<Command>
+    static class Command implements Comparable<Command>
     {
         public Runnable runnable;
 
@@ -5039,6 +5131,7 @@ public class MessagingController implements Runnable
         putBackground("Push messageArrived of account " + account.getDescription()
                       + ", folder " + remoteFolder.getName(), null, new Runnable()
         {
+            @Override
             public void run()
             {
                 LocalFolder localFolder = null;
@@ -5110,7 +5203,7 @@ public class MessagingController implements Runnable
     }
     enum MemorizingState { STARTED, FINISHED, FAILED }
 
-    class Memory
+    static class Memory
     {
         Account account;
         String folderName;
@@ -5144,7 +5237,7 @@ public class MessagingController implements Runnable
     {
         return taccount.getDescription() + ":" + tfolderName;
     }
-    class MemorizingListener extends MessagingListener
+    static class MemorizingListener extends MessagingListener
     {
         HashMap<String, Memory> memories = new HashMap<String, Memory>(31);
 

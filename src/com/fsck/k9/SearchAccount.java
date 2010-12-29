@@ -18,7 +18,7 @@ public class SearchAccount implements BaseAccount, SearchSpecification, Serializ
     private String description = null;
     private String query = "";
     private boolean integrate = false;
-    private String mUuid = UUID.randomUUID().toString();
+    private String mUuid = null;
     private boolean builtin = false;
     private String[] accountUuids = null;
     private String[] folderNames = null;
@@ -93,6 +93,10 @@ public class SearchAccount implements BaseAccount, SearchSpecification, Serializ
     }
     public String getUuid()
     {
+        if(mUuid == null )
+        {
+            setUuid( UUID.randomUUID().toString());
+        }
         return mUuid;
     }
     public void setUuid(String nUuid)

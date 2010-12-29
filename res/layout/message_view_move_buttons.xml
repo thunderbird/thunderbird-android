@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/move_buttons"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="6dip"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/archive"
+            android:text="@string/message_view_archive_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/move"
+            android:text="@string/message_view_move_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/spam"
+            android:text="@string/message_view_spam_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+</merge>

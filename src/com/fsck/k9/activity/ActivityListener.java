@@ -73,7 +73,7 @@ public class ActivityListener extends MessagingListener
             }
             else
             {
-                operation = context.getString(R.string.status_polling_off);
+                 operation = ""; // context.getString(R.string.status_polling_off);
             }
         }
 

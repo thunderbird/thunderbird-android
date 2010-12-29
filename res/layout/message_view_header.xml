@@ -9,6 +9,8 @@
         >
         <View
             android:id="@+id/chip"
+            android:layout_marginTop="1dip"
+            android:layout_marginBottom="1dip"
             android:layout_width="6dip"
             android:layout_height="fill_parent" />
         <LinearLayout
@@ -247,11 +249,11 @@
 
     </LinearLayout>
     <!-- Content area -->
-    <WebView
+    <com.fsck.k9.view.MessageWebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
-    <com.fsck.k9.web.AccessibleWebView
+    <com.fsck.k9.view.AccessibleWebView
         android:id="@+id/accessible_message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />

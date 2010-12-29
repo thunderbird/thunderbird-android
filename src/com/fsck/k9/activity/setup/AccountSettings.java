@@ -4,6 +4,7 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.CheckBoxPreference;
@@ -115,8 +116,8 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
-    private ListPreference mAccountHideButtons;
-    private ListPreference mAccountHideMoveButtons;
+    private ListPreference mAccountScrollButtons;
+    private ListPreference mAccountScrollMoveButtons;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
@@ -395,17 +396,17 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
-        mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
-        mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
-        mAccountHideButtons.setSummary(mAccountHideButtons.getEntry());
-        mAccountHideButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        mAccountScrollButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
+        mAccountScrollButtons.setValue("" + mAccount.getScrollMessageViewButtons());
+        mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntry());
+        mAccountScrollButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 final String summary = newValue.toString();
-                int index = mAccountHideButtons.findIndexOfValue(summary);
-                mAccountHideButtons.setSummary(mAccountHideButtons.getEntries()[index]);
-                mAccountHideButtons.setValue(summary);
+                int index = mAccountScrollButtons.findIndexOfValue(summary);
+                mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntries()[index]);
+                mAccountScrollButtons.setValue(summary);
                 return false;
             }
         });
@@ -413,17 +414,17 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
 
-        mAccountHideMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
-        mAccountHideMoveButtons.setValue("" + mAccount.getHideMessageViewMoveButtons());
-        mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntry());
-        mAccountHideMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        mAccountScrollMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
+        mAccountScrollMoveButtons.setValue("" + mAccount.getScrollMessageViewMoveButtons());
+        mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntry());
+        mAccountScrollMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 final String summary = newValue.toString();
-                int index = mAccountHideMoveButtons.findIndexOfValue(summary);
-                mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntries()[index]);
-                mAccountHideMoveButtons.setValue(summary);
+                int index = mAccountScrollMoveButtons.findIndexOfValue(summary);
+                mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntries()[index]);
+                mAccountScrollMoveButtons.setValue(summary);
                 return false;
             }
         });
@@ -573,57 +574,7 @@ public class AccountSettings extends K9PreferenceActivity
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-
-
-        List<? extends Folder> folders = new LinkedList<LocalFolder>();
-        try
-        {
-            folders = mAccount.getLocalStore().getPersonalNamespaces(false);
-        }
-        catch (Exception e)
-        {
-            /// this can't be checked in
-        }
-        final String[] allFolderValues = new String[folders.size()+2];
-        final String[] allFolderLabels = new String[folders.size()+2];
-        allFolderValues[0] = K9.FOLDER_NONE;
-        allFolderLabels[0] = K9.FOLDER_NONE;
-
-        // There's a non-zero chance that "outbox" won't actually exist, so we force it into the list
-        allFolderValues[1] = mAccount.getOutboxFolderName();
-        allFolderLabels[1] = mAccount.getOutboxFolderName();
-
-
-        int i =2;
-        for (Folder folder : folders)
-        {
-            allFolderLabels[i] = folder.getName();
-            allFolderValues[i] = folder.getName();
-            i++;
-        }
-
-        mAutoExpandFolder = (ListPreference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
-        initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels,allFolderValues);
-
-        mArchiveFolder = (ListPreference)findPreference(PREFERENCE_ARCHIVE_FOLDER);
-        initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels,allFolderValues);
-
-        mDraftsFolder = (ListPreference)findPreference(PREFERENCE_DRAFTS_FOLDER);
-        initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels,allFolderValues);
-
-        mOutboxFolder = (ListPreference)findPreference(PREFERENCE_OUTBOX_FOLDER);
-        initListPreference(mOutboxFolder, mAccount.getOutboxFolderName(), allFolderLabels,allFolderValues);
-
-        mSentFolder = (ListPreference)findPreference(PREFERENCE_SENT_FOLDER);
-        initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels,allFolderValues);
-
-        mSpamFolder = (ListPreference)findPreference(PREFERENCE_SPAM_FOLDER);
-        initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels,allFolderValues);
-
-        mTrashFolder = (ListPreference)findPreference(PREFERENCE_TRASH_FOLDER);
-        initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels,allFolderValues);
-
-
+        new PopulateFolderPrefsTask().execute();
 
         mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
         mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
@@ -814,8 +765,8 @@ public class AccountSettings extends K9PreferenceActivity
             }
         }
 
-        mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
-        mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
+        mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
+        mAccount.setScrollMessageViewMoveButtons(Account.ScrollButtons.valueOf(mAccountScrollMoveButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.save(Preferences.getPreferences(this));
@@ -950,4 +901,82 @@ public class AccountSettings extends K9PreferenceActivity
                             Integer.parseInt(mAccountVibratePattern.getValue()),
                             Integer.parseInt(mAccountVibrateTimes.getValue())), -1);
     }
+
+    private class PopulateFolderPrefsTask extends AsyncTask<Void, Void, Void>
+    {
+        List<? extends Folder> folders = new LinkedList<LocalFolder>();
+        String[] allFolderValues;
+        String[] allFolderLabels;
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                folders = mAccount.getLocalStore().getPersonalNamespaces(false);
+            }
+            catch (Exception e)
+            {
+                /// this can't be checked in
+            }
+            allFolderValues = new String[folders.size()+2];
+            allFolderLabels = new String[folders.size()+2];
+
+            allFolderValues[0] = K9.FOLDER_NONE;
+            allFolderLabels[0] = K9.FOLDER_NONE;
+
+            // There's a non-zero chance that "outbox" won't actually exist, so we force it into the list
+            allFolderValues[1] = mAccount.getOutboxFolderName();
+            allFolderLabels[1] = mAccount.getOutboxFolderName();
+
+
+            int i =2;
+            for (Folder folder : folders)
+            {
+                allFolderLabels[i] = folder.getName();
+                allFolderValues[i] = folder.getName();
+                i++;
+            }
+            return null;
+        }
+
+
+        protected void onPreExecute()
+        {
+            mAutoExpandFolder = (ListPreference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
+            mAutoExpandFolder.setEnabled(false);
+            mArchiveFolder = (ListPreference)findPreference(PREFERENCE_ARCHIVE_FOLDER);
+            mArchiveFolder.setEnabled(false);
+            mDraftsFolder = (ListPreference)findPreference(PREFERENCE_DRAFTS_FOLDER);
+            mDraftsFolder.setEnabled(false);
+            mOutboxFolder = (ListPreference)findPreference(PREFERENCE_OUTBOX_FOLDER);
+            mOutboxFolder.setEnabled(false);
+            mSentFolder = (ListPreference)findPreference(PREFERENCE_SENT_FOLDER);
+            mSentFolder.setEnabled(false);
+            mSpamFolder = (ListPreference)findPreference(PREFERENCE_SPAM_FOLDER);
+            mSpamFolder.setEnabled(false);
+            mTrashFolder = (ListPreference)findPreference(PREFERENCE_TRASH_FOLDER);
+            mTrashFolder.setEnabled(false);
+
+        }
+        protected void onPostExecute(Void res)
+        {
+            initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mOutboxFolder, mAccount.getOutboxFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels,allFolderValues);
+            initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels,allFolderValues);
+            mAutoExpandFolder.setEnabled(true);
+            mArchiveFolder.setEnabled(true);
+            mDraftsFolder.setEnabled(true);
+            mOutboxFolder.setEnabled(true);
+            mSentFolder.setEnabled(true);
+            mSpamFolder.setEnabled(true);
+            mTrashFolder.setEnabled(true);
+
+        }
+
+    }
+
+
 }

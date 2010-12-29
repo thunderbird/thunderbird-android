@@ -11,6 +11,9 @@ import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
 import com.fsck.k9.K9;
@@ -98,12 +101,36 @@ public class K9Activity extends Activity
     {
         return mDateFormat;
     }
-    protected void onNext(boolean animate)
+    protected void onNext()
     {
 
     }
-    protected void onPrevious(boolean animate)
+    protected void onPrevious()
     {
+    }
+
+
+    protected Animation inFromRightAnimation()
+    {
+        return slideAnimation(0.0f, +1.0f);
+    }
+
+    protected Animation outToLeftAnimation()
+    {
+        return slideAnimation(0.0f, -1.0f);
+    }
+
+    private Animation slideAnimation(float right, float left)
+    {
+
+        Animation slide = new TranslateAnimation(
+            Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
+            Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f
+        );
+        slide.setDuration(125);
+        slide.setFillBefore(true);
+        slide.setInterpolator(new AccelerateInterpolator());
+        return slide;
     }
 
     class MyGestureDetector extends SimpleOnGestureListener
@@ -153,11 +180,11 @@ public class K9Activity extends Activity
                     // right to left swipe
                     if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity)
                     {
-                        onNext(true);
+                        onNext();
                     }
                     else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity)
                     {
-                        onPrevious(true);
+                        onPrevious();
                     }
                 }
                 catch (Exception e)
@@ -168,5 +195,6 @@ public class K9Activity extends Activity
             return false;
         }
     }
+
 
 }

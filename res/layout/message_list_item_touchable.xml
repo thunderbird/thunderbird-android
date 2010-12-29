@@ -16,17 +16,18 @@
         android:layout_alignBottom="@+id/preview"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="2dip"
+        android:layout_marginRight="4dip"
         android:paddingLeft="6dip"
         android:background="@android:color/transparent" >
 
 
         <CheckBox
             android:id="@+id/selected_checkbox"
-            android:layout_width="24dip"
+            android:layout_width="30dip"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
+            android:paddingRight="4dip"
             android:button="@drawable/checkbox"
             android:focusable="false"
             android:visibility="gone" />

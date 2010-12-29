@@ -462,7 +462,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         }
     }
 
-    private void onNext()
+    protected void onNext()
     {
         try
         {

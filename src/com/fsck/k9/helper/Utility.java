@@ -2,10 +2,16 @@
 package com.fsck.k9.helper;
 
 import android.text.Editable;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.Base64;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -496,4 +502,195 @@ public class Utility
         }
     }
 
+    /**
+     * @param parentDir
+     * @param name
+     *            Never <code>null</code>.
+     */
+    public static void touchFile(final File parentDir, final String name)
+    {
+        final File file = new File(parentDir, name);
+        try
+        {
+            if (!file.exists())
+            {
+                file.createNewFile();
+            }
+            else
+            {
+                file.setLastModified(System.currentTimeMillis());
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
+        }
+    }
+
+    /**
+     * Creates a unique file in the given directory by appending a hyphen
+     * and a number to the given filename.
+     *
+     * @param directory
+     * @param filename
+     * @return
+     */
+    public static File createUniqueFile(File directory, String filename)
+    {
+        File file = new File(directory, filename);
+        if (!file.exists())
+        {
+            return file;
+        }
+        // Get the extension of the file, if any.
+        int index = filename.lastIndexOf('.');
+        String format;
+        if (index != -1)
+        {
+            String name = filename.substring(0, index);
+            String extension = filename.substring(index);
+            format = name + "-%d" + extension;
+        }
+        else
+        {
+            format = filename + "-%d";
+        }
+        for (int i = 2; i < Integer.MAX_VALUE; i++)
+        {
+            file = new File(directory, String.format(format, i));
+            if (!file.exists())
+            {
+                return file;
+            }
+        }
+        return null;
+    }
+
+
+
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    public static boolean move(final File from, final File to)
+    {
+        if (to.exists())
+        {
+            to.delete();
+        }
+        to.getParentFile().mkdirs();
+
+        try
+        {
+            FileInputStream in = new FileInputStream(from);
+            FileOutputStream out = new FileOutputStream(to);
+            byte[] buffer = new byte[1024];
+            int count = -1;
+            while ((count = in.read(buffer)) > 0)
+            {
+                out.write(buffer, 0, count);
+            }
+            out.close();
+            in.close();
+            from.delete();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
+            return false;
+        }
+
+    }
+
+    /**
+     * @param fromDir
+     * @param toDir
+     */
+    public static void moveRecursive(final File fromDir, final File toDir)
+    {
+        if (!fromDir.exists())
+        {
+            return;
+        }
+        if (!fromDir.isDirectory())
+        {
+            if (toDir.exists())
+            {
+                if (!toDir.delete())
+                {
+                    Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath());
+                }
+            }
+            if (!fromDir.renameTo(toDir))
+            {
+                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
+                move(fromDir, toDir);
+            }
+            return;
+        }
+        if (!toDir.exists() || !toDir.isDirectory())
+        {
+            if (toDir.exists() )
+            {
+                toDir.delete();
+            }
+            if (!toDir.mkdirs())
+            {
+                Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath());
+            }
+        }
+        File[] files = fromDir.listFiles();
+        for (File file : files)
+        {
+            if (file.isDirectory())
+            {
+                moveRecursive(file, new File(toDir, file.getName()));
+                file.delete();
+            }
+            else
+            {
+                File target = new File(toDir, file.getName());
+                if (!file.renameTo(target))
+                {
+                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
+                    move(file, target);
+                }
+            }
+        }
+        if (!fromDir.delete())
+        {
+            Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath());
+        }
+    }
+
+    private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
+    private static final Pattern IMG_PATTERN = Pattern.compile(IMG_SRC_REGEX);
+    /**
+     * Figure out if this part has images.
+     * TODO: should only return true if we're an html part
+     * @param message Content to evaluate
+     * @return True if it has external images; false otherwise.
+     */
+    public static boolean hasExternalImages(final String message)
+    {
+        Matcher imgMatches = IMG_PATTERN.matcher(message);
+        while (imgMatches.find())
+        {
+            if (!imgMatches.group(1).equals("content"))
+            {
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "External images found");
+                }
+                return true;
+            }
+        }
+        if (K9.DEBUG)
+        {
+            Log.d(K9.LOG_TAG, "No external images.");
+        }
+        return false;
+    }
 }

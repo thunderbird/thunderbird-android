@@ -182,17 +182,25 @@ public class SmtpTransport extends Transport
             String localHost = localAddress.getHostName();
             String ipAddr = localAddress.getHostAddress();
 
-            if (localHost.equals(ipAddr) || localHost.contains("_"))
+            if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_"))
             {
                 // We don't have a FQDN or the hostname contains invalid
                 // characters (see issue 2143), so use IP address.
-                if (localAddress instanceof Inet6Address)
+                if (!ipAddr.equals(""))
                 {
-                    localHost = "[IPV6:" + ipAddr + "]";
+                    if (localAddress instanceof Inet6Address)
+                    {
+                        localHost = "[IPV6:" + ipAddr + "]";
+                    }
+                    else
+                    {
+                        localHost = "[" + ipAddr + "]";
+                    }
                 }
                 else
                 {
-                    localHost = "[" + ipAddr + "]";
+                    // If the IP address is no good, set a sane default (see issue 2750).
+                    localHost = "android";
                 }
             }
 

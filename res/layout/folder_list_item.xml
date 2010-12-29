@@ -12,6 +12,8 @@
     <View
         android:id="@+id/chip"
         android:layout_width="6dip"
+        android:layout_marginTop="2dip"
+        android:layout_marginBottom="1dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true" />

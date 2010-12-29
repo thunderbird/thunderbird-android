@@ -237,7 +237,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private Validator mAddressValidator;
 
 
-    class Attachment implements Serializable
+    static class Attachment implements Serializable
     {
         public String name;
         public String contentType;
@@ -319,7 +319,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Discard will delete the message from the given folder.
      * @param context
      * @param account
-     * @param folder
      * @param message
      */
     public static void actionEditDraft(Context context, Account account, Message message)
@@ -449,7 +448,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (savedInstanceState != null)
         {
             /*
-             * This data gets used in onCreate, so grab it here instead of onRestoreIntstanceState
+             * This data gets used in onCreate, so grab it here instead of onRestoreInstanceState
              */
             mSourceMessageProcessed = savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
         }
@@ -1670,7 +1669,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
-     * @param message
+     * @param message Source message
      */
     private void processSourceMessage(Message message)
     {

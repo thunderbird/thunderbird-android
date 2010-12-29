@@ -152,7 +152,7 @@ public class MimeHeader
         return false;
     }
 
-    class Field
+    static class Field
     {
         String name;
 

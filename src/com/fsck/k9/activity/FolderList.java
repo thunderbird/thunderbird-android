@@ -26,6 +26,7 @@ import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Flag;
@@ -1416,7 +1417,7 @@ public class FolderList extends K9ListActivity
             }
                                                  );
 
-            holder.chip.setBackgroundColor(mAccount.getChipColor());
+            holder.chip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
             holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderName());
@@ -1439,7 +1440,7 @@ public class FolderList extends K9ListActivity
 
     }
 
-    class FolderViewHolder
+    static class FolderViewHolder
     {
         public TextView folderName;
 
