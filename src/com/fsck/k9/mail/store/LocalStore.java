@@ -5305,6 +5305,9 @@ public class LocalStore extends Store implements Serializable
 
     public static class LocalTextBody extends TextBody
     {
+        /**
+         * This is an HTML-ified version of the message for display purposes.
+         */
         private String mBodyForDisplay;
 
         public LocalTextBody(String body)
@@ -5412,11 +5415,15 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-
-
-     public String getTextForDisplay() throws MessagingException
+        /**
+         * Fetch the message text for display. This always returns an HTML-ified version of the
+         * message, even if it was originally a text-only message.
+         * @return HTML version of message for display purposes.
+         * @throws MessagingException
+         */
+        public String getTextForDisplay() throws MessagingException
         {
-            String text;// First try and fetch an HTML part.
+            String text;    // First try and fetch an HTML part.
             Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
             if (part == null)
             {

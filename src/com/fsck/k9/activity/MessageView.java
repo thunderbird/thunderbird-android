@@ -1978,8 +1978,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
                 MessageView.this.mMessage = message;
                 mHandler.removeAllAttachments();
-                String text;
-                String type = "text/html";
+                String text, type;
                 if (mPgpData.getDecryptedData() != null)
                 {
                     text = mPgpData.getDecryptedData();
@@ -1987,11 +1986,14 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
                 else
                 {
+                    // getTextForDisplay() always returns HTML-ified content.
                     text = ((LocalMessage)mMessage).getTextForDisplay();
+                    type = "text/html";
                 }
                 if (text != null)
                 {
                     final String emailText = text;
+                    final String contentType = type;
                     mHandler.post(new Runnable()
                     {
                         public void run()
@@ -2000,12 +2002,12 @@ public class MessageView extends K9Activity implements OnClickListener
                             if (mScreenReaderEnabled)
                             {
                                 mAccessibleMessageContentView.loadDataWithBaseURL("http://",
-                                        emailText, "text/html", "utf-8", null);
+                                        emailText, contentType, "utf-8", null);
                             }
                             else
                             {
                                 mMessageContentView.loadDataWithBaseURL("http://", emailText,
-                                                                        "text/html", "utf-8", null);
+                                                                        contentType, "utf-8", null);
                                 mMessageContentView.scrollTo(0, 0);
                             }
                             updateDecryptLayout();
