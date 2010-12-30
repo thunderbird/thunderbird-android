@@ -124,7 +124,7 @@
     <string name="folder_context_menu_title">Folder options</string>
 
     <string name="general_no_subject">(No subject)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-
+    <string name="general_no_date">No date</string>
     <string name="general_no_sender">No sender</string>
     <string name="status_loading">Polling</string>
     <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -937,6 +937,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="font_size_message_list_subject">Subject</string>
     <string name="font_size_message_list_sender">Sender</string>
     <string name="font_size_message_list_date">Date</string>
+    <string name="font_size_message_list_preview">Preview</string>
 
     <string name="font_size_message_view">Messages</string>
     <string name="font_size_message_view_sender">Sender</string>

@@ -80,6 +80,14 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_list_date" />
 
+        <ListPreference
+            android:persistent="false"
+            android:key="message_list_preview_font"
+            android:title="@string/font_size_message_list_preview"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_list_preview" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -134,7 +142,7 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_view_date" />
 
-  		<ListPreference
+          <ListPreference
             android:persistent="false"
             android:key="message_view_additional_headers_font"
             android:title="@string/font_size_message_view_additional_headers"
