@@ -1,41 +1,21 @@
 
 package com.fsck.k9.mail.store;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.PowerManager;
-import android.util.Log;
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
-import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.helper.power.TracingPowerManager;
-import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.filter.CountingOutputStream;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.filter.FixedLengthInputStream;
-import com.fsck.k9.mail.filter.PeekableInputStream;
-import com.fsck.k9.mail.internet.*;
-import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
-import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZInputStream;
-import com.jcraft.jzlib.ZOutputStream;
-import com.beetstra.jutf7.CharsetProvider;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
-
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
-
-import java.io.*;
-import java.net.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -45,10 +25,72 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.PowerManager;
+import android.util.Log;
+
+import com.beetstra.jutf7.CharsetProvider;
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.Pusher;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.filter.CountingOutputStream;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.filter.FixedLengthInputStream;
+import com.fsck.k9.mail.filter.PeekableInputStream;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
+import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
+import com.fsck.k9.mail.transport.imap.ImapSettings;
+import com.jcraft.jzlib.JZlib;
+import com.jcraft.jzlib.ZInputStream;
+import com.jcraft.jzlib.ZOutputStream;
 
 /**
  * <pre>
@@ -64,7 +106,7 @@ public class ImapStore extends Store
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    private enum AuthType { PLAIN, CRAM_MD5 }
+    public enum AuthType { PLAIN, CRAM_MD5 }
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
@@ -99,6 +141,89 @@ public class ImapStore extends Store
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
     private volatile String mPathDelimeter = null;
+
+    public class StoreImapSettings implements ImapSettings
+    {
+
+        @Override
+        public String getHost()
+        {
+            return mHost;
+        }
+
+        @Override
+        public int getPort()
+        {
+            return mPort;
+        }
+
+        @Override
+        public int getConnectionSecurity()
+        {
+            return mConnectionSecurity;
+        }
+
+        @Override
+        public AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+
+        @Override
+        public String getUsername()
+        {
+            return mUsername;
+        }
+
+        @Override
+        public String getPassword()
+        {
+            return mPassword;
+        }
+
+        @Override
+        public boolean useCompression(final int type)
+        {
+            return mAccount.useCompression(type);
+        }
+
+        @Override
+        public String getPathPrefix()
+        {
+            return mPathPrefix;
+        }
+
+        @Override
+        public void setPathPrefix(String prefix)
+        {
+            mPathPrefix = prefix;
+        }
+
+        @Override
+        public String getPathDelimeter()
+        {
+            return mPathDelimeter;
+        }
+
+        @Override
+        public void setPathDelimeter(String delimeter)
+        {
+            mPathDelimeter = delimeter;
+        }
+
+        @Override
+        public String getCombinedPrefix()
+        {
+            return mCombinedPrefix;
+        }
+
+        @Override
+        public void setCombinedPrefix(String prefix)
+        {
+            mCombinedPrefix = prefix;
+        }
+        
+    }
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
@@ -375,7 +500,7 @@ public class ImapStore extends Store
     {
         try
         {
-            ImapConnection connection = new ImapConnection();
+            ImapConnection connection = new ImapConnection(new StoreImapSettings());
             connection.open();
             connection.close();
         }
@@ -408,7 +533,7 @@ public class ImapStore extends Store
             }
             if (connection == null)
             {
-                connection = new ImapConnection();
+                connection = new ImapConnection(new StoreImapSettings());
             }
             return connection;
         }
@@ -2061,16 +2186,23 @@ public class ImapStore extends Store
     /**
      * A cacheable class that stores the details for a single IMAP connection.
      */
-    class ImapConnection
+    public static class ImapConnection
     {
-        private Socket mSocket;
-        private PeekableInputStream mIn;
-        private OutputStream mOut;
-        private ImapResponseParser mParser;
-        private int mNextCommandTag;
+        protected Socket mSocket;
+        protected PeekableInputStream mIn;
+        protected OutputStream mOut;
+        protected ImapResponseParser mParser;
+        protected int mNextCommandTag;
         protected Set<String> capabilities = new HashSet<String>();
 
-        private String getLogId()
+        private ImapSettings mSettings;
+
+        public ImapConnection(final ImapSettings settings)
+        {
+            this.mSettings = settings;
+        }
+
+        protected String getLogId()
         {
             return "conn" + hashCode();
         }
@@ -2126,7 +2258,6 @@ public class ImapStore extends Store
             return responses;
         }
 
-
         public void open() throws IOException, MessagingException
         {
             if (isOpen())
@@ -2161,19 +2292,19 @@ public class ImapStore extends Store
             try
             {
 
-                SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
+                SocketAddress socketAddress = new InetSocketAddress(mSettings.getHost(), mSettings.getPort());
 
                 if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "Connection " + getLogId() + " connecting to " + mHost + " @ IP addr " + socketAddress);
+                    Log.i(K9.LOG_TAG, "Connection " + getLogId() + " connecting to " + mSettings.getHost() + " @ IP addr " + socketAddress);
 
-                if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                        mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
+                if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_SSL_REQUIRED ||
+                        mSettings.getConnectionSecurity() == CONNECTION_SECURITY_SSL_OPTIONAL)
                 {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                    final boolean secure = mSettings.getConnectionSecurity() == CONNECTION_SECURITY_SSL_REQUIRED;
                     sslContext.init(null, new TrustManager[]
                                     {
-                                        TrustManagerFactory.get(mHost, secure)
+                                        TrustManagerFactory.get(mSettings.getHost(), secure)
                                     }, new SecureRandom());
                     mSocket = sslContext.getSocketFactory().createSocket();
                     mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -2211,8 +2342,8 @@ public class ImapStore extends Store
                     }
                 }
 
-                if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                        || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
+                if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_OPTIONAL
+                        || mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED)
                 {
 
                     if (hasCapability("STARTTLS"))
@@ -2221,12 +2352,12 @@ public class ImapStore extends Store
                         executeSimpleCommand("STARTTLS");
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
+                        boolean secure = mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED;
                         sslContext.init(null, new TrustManager[]
                                         {
-                                            TrustManagerFactory.get(mHost, secure)
+                                            TrustManagerFactory.get(mSettings.getHost(), secure)
                                         }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
+                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mSettings.getHost(), mSettings.getPort(),
                                   true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
@@ -2234,7 +2365,7 @@ public class ImapStore extends Store
                         mParser = new ImapResponseParser(mIn);
                         mOut = mSocket.getOutputStream();
                     }
-                    else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
+                    else if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED)
                     {
                         throw new MessagingException("TLS not supported but required");
                     }
@@ -2245,13 +2376,13 @@ public class ImapStore extends Store
                 try
                 {
                     // Yahoo! requires a custom IMAP command to work right over a non-3G network
-                    if (mHost.endsWith("yahoo.com"))
+                    if (mSettings.getHost().endsWith("yahoo.com"))
                     {
                         if (K9.DEBUG)
                             Log.v(K9.LOG_TAG, "Found Yahoo! account.  Sending proprietary commands.");
                         executeSimpleCommand("ID (\"GUID\" \"1\")");
                     }
-                    if (mAuthType == AuthType.CRAM_MD5)
+                    if (mSettings.getAuthType() == AuthType.CRAM_MD5)
                     {
                         authCramMD5();
                         // The authCramMD5 method called on the previous line does not allow for handling updated capabilities
@@ -2266,9 +2397,9 @@ public class ImapStore extends Store
                         }
 
                     }
-                    else if (mAuthType == AuthType.PLAIN)
+                    else if (mSettings.getAuthType() == AuthType.PLAIN)
                     {
-                        receiveCapabilities(executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true));
+                        receiveCapabilities(executeSimpleCommand("LOGIN \"" + escapeString(mSettings.getUsername()) + "\" \"" + escapeString(mSettings.getPassword()) + "\"", true));
                     }
                     authSuccess = true;
                 }
@@ -2296,7 +2427,7 @@ public class ImapStore extends Store
                         int type = netInfo.getType();
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "On network type " + type);
-                        useCompression = mAccount.useCompression(type);
+                        useCompression = mSettings.useCompression(type);
 
                     }
                     if (K9.DEBUG)
@@ -2328,9 +2459,9 @@ public class ImapStore extends Store
 
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
-                          + ", mPathPrefix = " + mPathPrefix);
+                          + ", mPathPrefix = " + mSettings.getPathPrefix());
 
-                if (mPathPrefix == null)
+                if (mSettings.getPathPrefix() == null)
                 {
                     if (hasCapability(CAPABILITY_NAMESPACE))
                     {
@@ -2357,11 +2488,11 @@ public class ImapStore extends Store
                                         if (K9.DEBUG)
                                             Log.d(K9.LOG_TAG, "Got first personal namespaces: " + firstNamespace);
                                         bracketed = (ImapList)firstNamespace;
-                                        mPathPrefix = bracketed.getString(0);
-                                        mPathDelimeter = bracketed.getString(1);
-                                        mCombinedPrefix = null;
+                                        mSettings.setPathPrefix(bracketed.getString(0));
+                                        mSettings.setPathDelimeter(bracketed.getString(1));
+                                        mSettings.setCombinedPrefix(null);
                                         if (K9.DEBUG)
-                                            Log.d(K9.LOG_TAG, "Got path '" + mPathPrefix + "' and separator '" + mPathDelimeter + "'");
+                                            Log.d(K9.LOG_TAG, "Got path '" + mSettings.getPathPrefix() + "' and separator '" + mSettings.getPathDelimeter() + "'");
                                     }
                                 }
                             }
@@ -2371,10 +2502,10 @@ public class ImapStore extends Store
                     {
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "mPathPrefix is unset but server does not have NAMESPACE capability");
-                        mPathPrefix = "";
+                        mSettings.setPathPrefix("");
                     }
                 }
-                if (mPathDelimeter == null)
+                if (mSettings.getPathDelimeter() == null)
                 {
                     try
                     {
@@ -2384,10 +2515,10 @@ public class ImapStore extends Store
                         {
                             if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST"))
                             {
-                                mPathDelimeter = response.getString(2);
-                                mCombinedPrefix = null;
+                                mSettings.setPathDelimeter(response.getString(2));
+                                mSettings.setCombinedPrefix(null);
                                 if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "' for " + getLogId());
+                                    Log.d(K9.LOG_TAG, "Got path delimeter '" + mSettings.getPathDelimeter() + "' for " + getLogId());
                             }
                         }
                     }
@@ -2463,7 +2594,7 @@ public class ImapStore extends Store
 
                 byte[] ipad = new byte[64];
                 byte[] opad = new byte[64];
-                byte[] secretBytes = mPassword.getBytes("US-ASCII");
+                byte[] secretBytes = mSettings.getPassword().getBytes("US-ASCII");
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 if (secretBytes.length > 64)
                 {
@@ -2477,11 +2608,11 @@ public class ImapStore extends Store
                 byte[] firstPass = md.digest(nonce);
                 md.update(opad);
                 byte[] result = md.digest(firstPass);
-                String plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
+                String plainCRAM = mSettings.getUsername() + " " + new String(Hex.encodeHex(result));
                 byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
                 if (K9.DEBUG)
                 {
-                    Log.d(K9.LOG_TAG, "Username == " + mUsername);
+                    Log.d(K9.LOG_TAG, "Username == " + mSettings.getUsername());
                     Log.d(K9.LOG_TAG, "plainCRAM: " + plainCRAM);
                     Log.d(K9.LOG_TAG, "b64CRAM: " + new String(b64CRAM, "US-ASCII"));
                 }
@@ -2538,12 +2669,12 @@ public class ImapStore extends Store
             return capabilities.contains(capability.toUpperCase());
         }
 
-        private boolean isOpen()
+        public boolean isOpen()
         {
             return (mIn != null && mOut != null && mSocket != null && mSocket.isConnected() && !mSocket.isClosed());
         }
 
-        private void close()
+        public void close()
         {
 //            if (isOpen()) {
 //                try {
@@ -2581,12 +2712,12 @@ public class ImapStore extends Store
             mSocket = null;
         }
 
-        private ImapResponse readResponse() throws IOException, MessagingException
+        public ImapResponse readResponse() throws IOException, MessagingException
         {
             return readResponse(null);
         }
 
-        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException
+        public ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException
         {
             try
             {
@@ -2614,7 +2745,7 @@ public class ImapStore extends Store
             return out;
         }
 
-        private void sendContinuation(String continuation) throws IOException
+        public void sendContinuation(String continuation) throws IOException
         {
             mOut.write(continuation.getBytes());
             mOut.write('\r');
@@ -2683,7 +2814,7 @@ public class ImapStore extends Store
             return executeSimpleCommand(command, sensitive, null);
         }
 
-        private List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
+        public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException
         {
             String commandToLog = command;
