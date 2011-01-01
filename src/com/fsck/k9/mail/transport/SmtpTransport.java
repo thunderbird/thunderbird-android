@@ -496,27 +496,32 @@ public class SmtpTransport extends Transport
             writeLine(command, sensitive);
         }
 
-        boolean cont = false;
-        do
+        /*
+         * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
+         * Shorter lines are either errors of contain only a reply code. Those cases will
+         * be handled by checkLine() below.
+         */
+        String line = readLine();
+        while (line.length() >= 4)
         {
-            String line = readLine();
-            checkLine(line);
             if (line.length() > 4)
             {
+                // Everything after the first four characters goes into the results array.
                 results.add(line.substring(4));
-                if (line.charAt(3) == '-')
-                {
-                    cont = true;
-                }
-                else
-                {
-                    cont = false;
-                }
             }
-        }
-        while (cont);
-        return results;
 
+            if (line.charAt(3) != '-')
+            {
+                // If the fourth character isn't "-" this is the last line of the response.
+                break;
+            }
+            line = readLine();
+        }
+
+        // Check if the reply code indicates an error.
+        checkLine(line);
+
+        return results;
     }
 
 
