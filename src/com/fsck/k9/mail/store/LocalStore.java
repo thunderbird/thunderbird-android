@@ -1068,7 +1068,9 @@ public class LocalStore extends Store implements Serializable
         private String prefId = null;
         private String mPushState = null;
         private boolean mIntegrate = false;
-
+        // mLastUid is used during syncs. It holds the highest UID within the local folder so we
+        // know whether or not an unread message added to the local folder is actually "new" or not.
+        private Integer mLastUid = null;
 
         public LocalFolder(String name)
         {
@@ -5300,6 +5302,48 @@ public class LocalStore extends Store implements Serializable
         public void setInTopGroup(boolean inTopGroup)
         {
             this.inTopGroup = inTopGroup;
+        }
+
+        public Integer getLastUid()
+        {
+            return mLastUid;
+        }
+
+        public void updateLastUid() throws MessagingException
+        {
+            Integer lastUid = database.execute(false, new DbCallback<Integer>()
+            {
+                @Override
+                public Integer doDbWork(final SQLiteDatabase db)
+                {
+                    Cursor cursor = null;
+                    try
+                    {
+                        open(OpenMode.READ_ONLY);
+                        cursor = db.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
+                        if (cursor.getCount() > 0)
+                        {
+                            cursor.moveToFirst();
+                            return cursor.getInt(0);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to updateLastUid: ", e);
+                    }
+                    finally
+                    {
+                        if (cursor != null)
+                        {
+                            cursor.close();
+                        }
+                    }
+                    return null;
+                }
+            });
+            if(K9.DEBUG)
+                Log.d(K9.LOG_TAG, "Updated last UID for folder " + mName + " to " + lastUid);
+            mLastUid = lastUid;
         }
     }
 
