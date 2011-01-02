@@ -170,7 +170,17 @@
         <incoming uri="pop3://incoming.verizon.net" username="$user" />
         <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
     </provider>
+
+    <!-- Yahoo! Mail Variants -->
     <provider id="yahoo" label="Yahoo" domain="yahoo.com">
+        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
+    </provider>
+    <provider id="ymail" label="YMail" domain="ymail.com">
+        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
+    </provider>
+    <provider id="rocketmail" label="Rocketmail" domain="rocketmail.com">
         <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
         <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
     </provider>
