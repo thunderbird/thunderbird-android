@@ -177,12 +177,12 @@
         <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
     </provider>
     <provider id="ymail" label="YMail" domain="ymail.com">
-        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
-        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
+        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$email" />
     </provider>
     <provider id="rocketmail" label="Rocketmail" domain="rocketmail.com">
-        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
-        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
+        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$email" />
     </provider>
 
 
