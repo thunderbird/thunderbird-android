@@ -266,6 +266,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
                 mAccountPorts = popPorts;
                 mAccountSchemes = popSchemes;
+                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
@@ -285,7 +287,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
-                
+
+                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);

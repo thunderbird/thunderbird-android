@@ -123,6 +123,20 @@
             />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/webdav_advanced_header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/account_setup_incoming_webdav_advanced_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"
+                android:layout_marginTop="4px" />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/webdav_mailbox_alias_section"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
