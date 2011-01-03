@@ -917,7 +917,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
 
-    <string name="font_size_settings_title">Tamanho da fornte</string>
+    <string name="font_size_settings_title">Tamanho da fonte</string>
     <string name="font_size_settings_description">Configurar tamanho da fonte</string>
 
     <string name="font_size_account_list">Lista de contas</string>
