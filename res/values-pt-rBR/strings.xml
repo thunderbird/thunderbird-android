@@ -844,8 +844,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">CURTO</string>
-    <string name="date_format_medium">MÉDIO</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
     <string name="date_format_iso8601">yyyy-MM-dd</string>
 
