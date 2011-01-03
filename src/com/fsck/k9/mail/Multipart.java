@@ -17,11 +17,13 @@ public abstract class Multipart implements Body
     public void addBodyPart(BodyPart part)
     {
         mParts.add(part);
+        part.setParent(this);
     }
 
     public void addBodyPart(BodyPart part, int index)
     {
         mParts.add(index, part);
+        part.setParent(this);
     }
 
     public BodyPart getBodyPart(int index)
@@ -41,11 +43,13 @@ public abstract class Multipart implements Body
 
     public boolean removeBodyPart(BodyPart part)
     {
+        part.setParent(null);
         return mParts.remove(part);
     }
 
     public void removeBodyPart(int index)
     {
+        mParts.get(index).setParent(null);
         mParts.remove(index);
     }
 
