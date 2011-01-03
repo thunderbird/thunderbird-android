@@ -1364,7 +1364,7 @@ public class MimeUtility
         if (mailerHeaders == null || mailerHeaders.length == 0)
             return null;
 
-        if (mailerHeaders[0].startsWith("iPhone Mail "))
+        if (mailerHeaders[0].startsWith("iPhone Mail ") || mailerHeaders[0].startsWith("iPad Mail "))
             return "iphone";
 
         return null;
