@@ -5309,6 +5309,22 @@ public class LocalStore extends Store implements Serializable
             return mLastUid;
         }
 
+        /**
+         * <p>Fetches the most recent <b>numeric</b> UID value in this folder.  This is used by
+         * {@link com.fsck.k9.controller.MessagingController#shouldNotifyForMessage} to see if messages being
+         * fetched are new and unread.  Messages are "new" if they have a UID higher than the most recent UID prior
+         * to synchronization.</p>
+         *
+         * <p>This only works for protocols with numeric UIDs (like IMAP). For protocols with
+         * alphanumeric UIDs (like POP), this method quietly fails and shouldNotifyForMessage() will
+         * always notify for unread messages.</p>
+         *
+         * <p>Once Issue 1072 has been fixed, this method and shouldNotifyForMessage() should be
+         * updated to use internal dates rather than UIDs to determine new-ness. While this doesn't
+         * solve things for POP (which doesn't have internal dates), we can likely use this as a
+         * framework to examine send date in lieu of internal date.</p>
+         * @throws MessagingException
+         */
         public void updateLastUid() throws MessagingException
         {
             Integer lastUid = database.execute(false, new DbCallback<Integer>()
