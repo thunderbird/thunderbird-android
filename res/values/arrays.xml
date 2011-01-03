@@ -369,6 +369,7 @@
         <item>O\'zbek</item>
         <item>Polski</item>
         <item>Português</item>
+        <item>Português (Brasil)</item>
         <item>Shqip</item>
         <item>Suomi</item>
         <item>Svenska</item>
@@ -448,6 +449,7 @@
         <item>uz</item>
         <item>pl</item>
         <item>pt</item>
+        <item>pt_BR</item>
         <item>sq</item>
         <item>fi</item>
         <item>sv</item>
@@ -491,6 +493,7 @@
         <item>ja</item>
         <item>nl</item>
         <item>pl</item>
+        <item>pt_BR</item>
         <item>ru</item>
         <item>zh_TW</item>
         <item>zh_CN</item>
