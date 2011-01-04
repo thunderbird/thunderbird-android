@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
+import com.fsck.k9.helper.HtmlToTextTagHandler;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
@@ -2369,7 +2370,7 @@ public class LocalStore extends Store implements Serializable
                                 // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                                 if (preview == null || preview.length() == 0)
                                 {
-                                    preview = calculateContentPreview(Html.fromHtml(html).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
+                                    preview = calculateContentPreview(Html.fromHtml(html, null, new HtmlToTextTagHandler()).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
                                 }
 
                                 try
@@ -2497,7 +2498,7 @@ public class LocalStore extends Store implements Serializable
                             // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
-                                preview = calculateContentPreview(Html.fromHtml(html).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
+                                preview = calculateContentPreview(Html.fromHtml(html, null, new HtmlToTextTagHandler()).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
                             }
                             try
                             {
