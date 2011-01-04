@@ -1211,6 +1211,18 @@ public class MimeUtility
         }
     }
 
+    public static String getCharsetFromAddress(String address)
+    {
+        String variant = getJisVariantFromAddress(address);
+        if (variant != null)
+        {
+            String charset = "x-" + variant + "-shift_jis-2007";
+            if (Charset.isSupported(charset))
+                return charset;
+        }
+
+        return "UTF-8";
+    }
 
     public static String getMimeTypeByExtension(String filename)
     {
@@ -1916,5 +1928,20 @@ public class MimeUtility
         case 0xE53E: return 0xFEE76;
         default: return codePoint;
         }
+    }
+
+    public static void setCharset(String charset, Part part) throws MessagingException
+    {
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                       part.getMimeType() + ";\n charset=" + getExternalCharset(charset));
+    }
+
+    public static String getExternalCharset(String charset)
+    {
+        if (charset.length() > 17 && charset.startsWith("x-") &&
+            charset.endsWith("-shift_jis-2007"))
+            return "shift_jis";
+
+        return charset;
     }
 }

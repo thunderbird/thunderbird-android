@@ -377,10 +377,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
+        mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
         mQuotedText = (EditText)findViewById(R.id.quoted_text);
+        mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         TextWatcher watcher = new TextWatcher()
         {
