@@ -89,7 +89,7 @@ public class LocalStore extends Store implements Serializable
         HEADERS_TO_SAVE.add("References");
         HEADERS_TO_SAVE.add("Content-ID");
         HEADERS_TO_SAVE.add("Content-Disposition");
-        HEADERS_TO_SAVE.add("X-User-Agent");
+        HEADERS_TO_SAVE.add("User-Agent");
     }
     /*
      * a String containing the columns getMessages expects to work with
