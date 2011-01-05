@@ -554,6 +554,7 @@ public class ImapStore extends Store
     {
         try
         {
+            name = name.replace("\\","\\\\"); // backslashs in folder names must be escaped
             ByteBuffer bb = mModifiedUtf7Charset.encode(name);
             byte[] b = new byte[bb.limit()];
             bb.get(b);
