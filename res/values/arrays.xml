@@ -615,6 +615,7 @@
     </string-array>
 
     <string-array name="account_settings_vibrate_times_label">
+        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
