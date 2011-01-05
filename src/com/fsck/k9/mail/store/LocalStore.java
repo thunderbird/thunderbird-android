@@ -13,9 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
 
-import com.fsck.k9.helper.HtmlToTextTagHandler;
+import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
@@ -26,7 +25,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.text.Html;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -34,7 +32,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.Regex;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -76,8 +73,6 @@ public class LocalStore extends Store implements Serializable
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
-    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
-
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
     {
@@ -98,14 +93,6 @@ public class LocalStore extends Store implements Serializable
     static private String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
-
-    /**
-     * When generating previews, Spannable objects that can't be converted into a String are
-     * represented as 0xfffc. When displayed, these show up as undisplayed squares. These constants
-     * define the object character and the replacement character.
-     */
-    private static final char PREVIEW_OBJECT_CHARACTER = (char)0xfffc;
-    private static final char PREVIEW_OBJECT_REPLACEMENT = (char)0x20;  // space
 
     protected static final int DB_VERSION = 39;
 
@@ -2370,7 +2357,7 @@ public class LocalStore extends Store implements Serializable
                                 // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                                 if (preview == null || preview.length() == 0)
                                 {
-                                    preview = calculateContentPreview(Html.fromHtml(html, null, new HtmlToTextTagHandler()).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
+                                    preview = calculateContentPreview(HtmlConverter.htmlToText(html));
                                 }
 
                                 try
@@ -2498,7 +2485,7 @@ public class LocalStore extends Store implements Serializable
                             // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
-                                preview = calculateContentPreview(Html.fromHtml(html, null, new HtmlToTextTagHandler()).toString().replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT));
+                                preview = calculateContentPreview(HtmlConverter.htmlToText(html));
                             }
                             try
                             {
@@ -3140,122 +3127,12 @@ public class LocalStore extends Store implements Serializable
         {
             if (text.length() > 0 && html.length() == 0)
             {
-                html = htmlifyString(text);
+                html = HtmlConverter.textToHtml(text);
             }
 
             html = convertEmoji2Img(html);
 
             return html;
-        }
-
-        public String htmlifyString(String text)
-        {
-            // Our HTMLification code is somewhat memory intensive
-            // and was causing lots of OOM errors on the market
-            // if the message is big and plain text, just do
-            // a trivial htmlification
-            if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH)
-            {
-                return "<html><head/><body>" +
-                       htmlifyMessageHeader() +
-                       text +
-                       htmlifyMessageFooter() +
-                       "</body></html>";
-            }
-            StringReader reader = new StringReader(text);
-            StringBuilder buff = new StringBuilder(text.length() + 512);
-            int c;
-            try
-            {
-                while ((c = reader.read()) != -1)
-                {
-                    switch (c)
-                    {
-                        case '&':
-                            buff.append("&amp;");
-                            break;
-                        case '<':
-                            buff.append("&lt;");
-                            break;
-                        case '>':
-                            buff.append("&gt;");
-                            break;
-                        case '\r':
-                            break;
-                        default:
-                            buff.append((char)c);
-                    }//switch
-                }
-            }
-            catch (IOException e)
-            {
-                //Should never happen
-                Log.e(K9.LOG_TAG, null, e);
-            }
-            text = buff.toString();
-            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*","<hr />");
-            text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])","$1 ");
-            text = text.replaceAll("(?m)(\r\n|\n|\r){4,}","\n\n");
-
-
-            Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-            StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><head></head><body>");
-            sb.append(htmlifyMessageHeader());
-            while (m.find())
-            {
-                int start = m.start();
-                if (start == 0 || (start != 0 && text.charAt(start - 1) != '@'))
-                {
-                    if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
-                    {
-                        m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                    }
-                    else
-                    {
-                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
-                    }
-                }
-                else
-                {
-                    m.appendReplacement(sb, "$0");
-                }
-            }
-
-
-
-
-            m.appendTail(sb);
-            sb.append(htmlifyMessageFooter());
-            sb.append("</body></html>");
-            text = sb.toString();
-
-            return text;
-        }
-
-        private String htmlifyMessageHeader()
-        {
-            if (K9.messageViewFixedWidthFont())
-            {
-                return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-            }
-            else
-            {
-                return "<div style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-            }
-        }
-
-
-        private String htmlifyMessageFooter()
-        {
-            if (K9.messageViewFixedWidthFont())
-            {
-                return "</pre>";
-            }
-            else
-            {
-                return "</div>";
-            }
         }
 
         public String convertEmoji2Img(String html)
