@@ -501,6 +501,19 @@ public class MimeMessage extends Message
         }
     }
 
+    public void setCharset(String charset) throws MessagingException
+    {
+        if (mBody instanceof Multipart)
+        {
+            ((Multipart)mBody).setCharset(charset);
+        }
+        else if (mBody instanceof TextBody)
+        {
+            MimeUtility.setCharset(charset, this);
+            ((TextBody)mBody).setCharset(charset);
+        }
+    }
+
     class MimeMessageBuilder implements ContentHandler
     {
         private Stack<Object> stack = new Stack<Object>();

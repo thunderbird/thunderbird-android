@@ -29,6 +29,7 @@ public class FontSizeSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_LIST_SUBJECT_FONT = "message_list_subject_font";
     private static final String PREFERENCE_MESSAGE_LIST_SENDER_FONT = "message_list_sender_font";
     private static final String PREFERENCE_MESSAGE_LIST_DATE_FONT = "message_list_date_font";
+    private static final String PREFERENCE_MESSAGE_LIST_PREVIEW_FONT = "message_list_preview_font";
     private static final String PREFERENCE_MESSAGE_VIEW_SENDER_FONT = "message_view_sender_font";
     private static final String PREFERENCE_MESSAGE_VIEW_TO_FONT = "message_view_to_font";
     private static final String PREFERENCE_MESSAGE_VIEW_CC_FONT = "message_view_cc_font";
@@ -45,6 +46,7 @@ public class FontSizeSettings extends K9PreferenceActivity
     private ListPreference mMessageListSubject;
     private ListPreference mMessageListSender;
     private ListPreference mMessageListDate;
+    private ListPreference mMessageListPreview;
     private ListPreference mMessageViewSender;
     private ListPreference mMessageViewTo;
     private ListPreference mMessageViewCC;
@@ -97,6 +99,9 @@ public class FontSizeSettings extends K9PreferenceActivity
         mMessageListDate = setupListPreference(
                                PREFERENCE_MESSAGE_LIST_DATE_FONT,
                                Integer.toString(fontSizes.getMessageListDate()));
+        mMessageListPreview = setupListPreference(
+                PREFERENCE_MESSAGE_LIST_PREVIEW_FONT,
+                Integer.toString(fontSizes.getMessageListPreview()));
 
         mMessageViewSender = setupListPreference(
                                  PREFERENCE_MESSAGE_VIEW_SENDER_FONT,
@@ -141,6 +146,7 @@ public class FontSizeSettings extends K9PreferenceActivity
         fontSizes.setMessageListSubject(Integer.parseInt(mMessageListSubject.getValue()));
         fontSizes.setMessageListSender(Integer.parseInt(mMessageListSender.getValue()));
         fontSizes.setMessageListDate(Integer.parseInt(mMessageListDate.getValue()));
+        fontSizes.setMessageListPreview(Integer.parseInt(mMessageListPreview.getValue()));
 
         fontSizes.setMessageViewSender(Integer.parseInt(mMessageViewSender.getValue()));
         fontSizes.setMessageViewTo(Integer.parseInt(mMessageViewTo.getValue()));

@@ -124,7 +124,8 @@
 
     <string name="general_no_subject">(件名なし)</string>
 
-    <string name="general_no_sender">送信無し</string>
+    <string name="general_no_date">日付なし</string>
+    <string name="general_no_sender">送信者なし</string>
     <string name="status_loading">取込中</string>
     <string name="status_loading_folder">(取込中 <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">メール取込中\u2026</string>
@@ -338,8 +339,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="quiet_time">夜間時間帯</string>
     <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定します．</string>
-    <string name="quiet_time_starts">開始時間</string>
-    <string name="quiet_time_ends">終了時間</string>
+    <string name="quiet_time_starts">開始時刻</string>
+    <string name="quiet_time_ends">終了時刻</string>
 
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
@@ -925,6 +926,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="font_size_message_list_subject">件名</string>
     <string name="font_size_message_list_sender">送信者</string>
     <string name="font_size_message_list_date">日付</string>
+    <string name="font_size_message_list_preview">プレビュー</string>
 
     <string name="font_size_message_view">メッセージ表示</string>
     <string name="font_size_message_view_sender">送信者</string>

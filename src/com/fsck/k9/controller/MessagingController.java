@@ -431,7 +431,6 @@ public class MessagingController implements Runnable
      * TODO this needs to cache the remote folder list
      *
      * @param account
-     * @param includeRemote
      * @param listener
      * @throws MessagingException
      */
@@ -456,7 +455,6 @@ public class MessagingController implements Runnable
      * TODO this needs to cache the remote folder list
      *
      * @param account
-     * @param includeRemote
      * @param listener
      * @throws MessagingException
      */
@@ -733,12 +731,6 @@ public class MessagingController implements Runnable
 
     /**
      * Find all messages in any local account which match the query 'query'
-     * @param folderNames TODO
-     * @param query
-     * @param listener
-     * @param searchAccounts TODO
-     * @param account TODO
-     * @param account
      * @throws MessagingException
      */
     public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate,
@@ -1069,6 +1061,7 @@ public class MessagingController implements Runnable
             tLocalFolder = localStore.getFolder(folder);
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(OpenMode.READ_WRITE);
+            localFolder.updateLastUid();
             Message[] localMessages = localFolder.getMessages(null);
             HashMap<String, Message> localUidMap = new HashMap<String, Message>();
             for (Message message : localMessages)
@@ -1878,7 +1871,7 @@ public class MessagingController implements Runnable
                     }
                     // Send a notification of this message
 
-                    if (shouldNotifyForMessage(account, message))
+                    if (shouldNotifyForMessage(account, localFolder, message))
                     {
                         newMessages.incrementAndGet();
                         notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
@@ -2023,7 +2016,7 @@ public class MessagingController implements Runnable
             }
 
             // Send a notification of this message
-            if (shouldNotifyForMessage(account, message))
+            if (shouldNotifyForMessage(account, localFolder, message))
             {
                 newMessages.incrementAndGet();
                 notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
@@ -3574,7 +3567,6 @@ public class MessagingController implements Runnable
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      * @param account
-     * @param listener
      */
     public void sendPendingMessagesSynchronous(final Account account)
     {
@@ -4652,7 +4644,7 @@ public class MessagingController implements Runnable
     }
 
 
-    private boolean shouldNotifyForMessage(Account account, Message message)
+    private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message)
     {
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
@@ -4660,7 +4652,6 @@ public class MessagingController implements Runnable
         {
             return false;
         }
-
 
         Folder folder = message.getFolder();
         if (folder != null)
@@ -4674,6 +4665,24 @@ public class MessagingController implements Runnable
                      || account.getSentFolderName().equals(folderName)))
             {
                 return false;
+            }
+        }
+
+        if (message.getUid() != null && localFolder.getLastUid() != null)
+        {
+            try
+            {
+                Integer messageUid = Integer.parseInt(message.getUid());
+                if (messageUid <= localFolder.getLastUid())
+                {
+                    if(K9.DEBUG)
+                        Log.d(K9.LOG_TAG, "Message uid is " + messageUid + ", max message uid is " + localFolder.getLastUid() + ".  Skipping notification.");
+                    return false;
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                // Nothing to be done here.
             }
         }
 
@@ -4786,7 +4795,7 @@ public class MessagingController implements Runnable
     /**
      * @param notification
      *            Object to configure. Never <code>null</code>.
-     * @param rintone
+     * @param ringtone
      *          String name of ringtone. <code>null</code> if no ringtone should be played
      * @param vibrationPattern
      *         <code>long[]</code> vibration pattern. <code>null</code> if no vibration should be played
@@ -4852,7 +4861,12 @@ public class MessagingController implements Runnable
         notifMgr.cancel(-1000 - account.getAccountNumber());
     }
 
-
+    /**
+     * Save a draft message.
+     * @param account Account we are saving for.
+     * @param message Message to save.
+     * @return Message representing the entry in the local store.
+     */
     public Message saveDraft(final Account account, final Message message)
     {
         Message localMessage = null;
@@ -4861,10 +4875,12 @@ public class MessagingController implements Runnable
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
+            // Save the message to the store.
             localFolder.appendMessages(new Message[]
                                        {
                                            message
                                        });
+            // Fetch the message back from the store.  This is the Message that's returned to the caller.
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
 

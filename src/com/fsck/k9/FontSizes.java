@@ -19,6 +19,7 @@ public class FontSizes
     private static final String MESSAGE_LIST_SUBJECT = "fontSizeMessageListSubject";
     private static final String MESSAGE_LIST_SENDER = "fontSizeMessageListSender";
     private static final String MESSAGE_LIST_DATE = "fontSizeMessageListDate";
+    private static final String MESSAGE_LIST_PREVIEW = "fontSizeMessageListPreview";
     private static final String MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender";
     private static final String MESSAGE_VIEW_TO = "fontSizeMessageViewTo";
     private static final String MESSAGE_VIEW_CC = "fontSizeMessageViewCC";
@@ -76,6 +77,11 @@ public class FontSizes
     private int messageListDate;
 
     /**
+     * Font size of message preview in the message list activity.
+     */
+    private int messageListPreview;
+
+    /**
      * Font size of the message sender in the message view activity.
      */
     private int messageViewSender;
@@ -131,6 +137,7 @@ public class FontSizes
         messageListSubject = SMALL;
         messageListSender = SMALL;
         messageListDate = SMALL;
+        messageListPreview = SMALL;
 
         messageViewSender = SMALL;
         messageViewTo = FONT_12DIP;
@@ -157,6 +164,7 @@ public class FontSizes
         editor.putInt(MESSAGE_LIST_SUBJECT, messageListSubject);
         editor.putInt(MESSAGE_LIST_SENDER, messageListSender);
         editor.putInt(MESSAGE_LIST_DATE, messageListDate);
+        editor.putInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
         editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
         editor.putInt(MESSAGE_VIEW_TO, messageViewTo);
@@ -184,6 +192,7 @@ public class FontSizes
         messageListSubject = prefs.getInt(MESSAGE_LIST_SUBJECT, messageListSubject);
         messageListSender = prefs.getInt(MESSAGE_LIST_SENDER, messageListSender);
         messageListDate = prefs.getInt(MESSAGE_LIST_DATE, messageListDate);
+        messageListPreview = prefs.getInt(MESSAGE_LIST_PREVIEW, messageListPreview);
 
         messageViewSender = prefs.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
         messageViewTo = prefs.getInt(MESSAGE_VIEW_TO, messageViewTo);
@@ -263,6 +272,16 @@ public class FontSizes
     public void setMessageListDate(int messageListDate)
     {
         this.messageListDate = messageListDate;
+    }
+
+    public int getMessageListPreview()
+    {
+        return messageListPreview;
+    }
+
+    public void setMessageListPreview(int messageListPreview)
+    {
+        this.messageListPreview = messageListPreview;
     }
 
     public int getMessageViewSender()

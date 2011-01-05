@@ -48,7 +48,6 @@ public class MessageWebView extends WebView {
     /**
      * Configure a web view to load or not load network data. A <b>true</b> setting here means that
      * network data will be blocked.
-     * @param view {@link android.webkit.WebView} to adjust network data settings on.
      * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
      */
     public void blockNetworkData(final boolean shouldBlockNetworkData)
@@ -121,7 +120,7 @@ public class MessageWebView extends WebView {
         blockNetworkData(true);
     }
 
-        /*
+    /*
      * Emulate the shift key being pressed to trigger the text selection mode
      * of a WebView.
      */

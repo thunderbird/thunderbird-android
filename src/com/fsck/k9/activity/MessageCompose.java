@@ -377,10 +377,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
+        mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
         mQuotedText = (EditText)findViewById(R.id.quoted_text);
+        mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         TextWatcher watcher = new TextWatcher()
         {
@@ -952,7 +954,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         message.setRecipients(RecipientType.CC, getAddresses(mCcView));
         message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
         message.setSubject(mSubjectView.getText().toString());
-        message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
+        message.setHeader("User-Agent", getString(R.string.message_header_mua));
 
         final String replyTo = mIdentity.getReplyTo();
         if (replyTo != null)

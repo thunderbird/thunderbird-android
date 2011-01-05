@@ -10,6 +10,7 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 
 import javax.net.ssl.SSLContext;
@@ -27,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Hex;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class SmtpTransport extends Transport
@@ -308,13 +311,45 @@ public class SmtpTransport extends Transport
     @Override
     public void sendMessage(Message message) throws MessagingException
     {
+        ArrayList<Address> addresses = new ArrayList<Address>();
+        {
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.BCC)));
+        }
+        message.setRecipients(RecipientType.BCC, null);
+
+        HashMap<String, ArrayList<String>> charsetAddressesMap =
+                new HashMap<String, ArrayList<String>>();
+        for (Address address : addresses)
+        {
+            String addressString = address.getAddress();
+            String charset = MimeUtility.getCharsetFromAddress(addressString);
+            ArrayList<String> addressesOfCharset = charsetAddressesMap.get(charset);
+            if (addressesOfCharset == null)
+            {
+                addressesOfCharset = new ArrayList<String>();
+                charsetAddressesMap.put(charset, addressesOfCharset);
+            }
+            addressesOfCharset.add(addressString);
+        }
+
+        for (HashMap.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
+                     charsetAddressesMap.entrySet())
+        {
+            String charset = charsetAddressesMapEntry.getKey();
+            ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
+            message.setCharset(charset);
+            sendMessageTo(addressesOfCharset, message);
+        }
+    }
+
+    private void sendMessageTo(ArrayList<String> addresses, Message message)
+            throws MessagingException{
         close();
         open();
 
-        if (m8bitEncodingAllowed)
-        {
-            message.setEncoding("8bit");
-        }
+        message.setEncoding(m8bitEncodingAllowed ? "8bit" : null);
 
         Address[] from = message.getFrom();
         boolean possibleSend = false;
@@ -322,19 +357,10 @@ public class SmtpTransport extends Transport
         {
             //TODO: Add BODY=8BITMIME parameter if appropriate?
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
-            for (Address address : message.getRecipients(RecipientType.TO))
+            for (String address : addresses)
             {
-                executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
+                executeSimpleCommand("RCPT TO: " + "<" + address + ">");
             }
-            for (Address address : message.getRecipients(RecipientType.CC))
-            {
-                executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
-            }
-            for (Address address : message.getRecipients(RecipientType.BCC))
-            {
-                executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
-            }
-            message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
@@ -496,27 +522,32 @@ public class SmtpTransport extends Transport
             writeLine(command, sensitive);
         }
 
-        boolean cont = false;
-        do
+        /*
+         * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
+         * Shorter lines are either errors of contain only a reply code. Those cases will
+         * be handled by checkLine() below.
+         */
+        String line = readLine();
+        while (line.length() >= 4)
         {
-            String line = readLine();
-            checkLine(line);
             if (line.length() > 4)
             {
+                // Everything after the first four characters goes into the results array.
                 results.add(line.substring(4));
-                if (line.charAt(3) == '-')
-                {
-                    cont = true;
-                }
-                else
-                {
-                    cont = false;
-                }
             }
-        }
-        while (cont);
-        return results;
 
+            if (line.charAt(3) != '-')
+            {
+                // If the fourth character isn't "-" this is the last line of the response.
+                break;
+            }
+            line = readLine();
+        }
+
+        // Check if the reply code indicates an error.
+        checkLine(line);
+
+        return results;
     }
 
 

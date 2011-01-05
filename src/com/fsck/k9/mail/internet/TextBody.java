@@ -18,6 +18,7 @@ public class TextBody implements Body
 
     private String mBody;
     private String mEncoding;
+    private String mCharset = "UTF-8";
 
     public TextBody(String body)
     {
@@ -28,7 +29,7 @@ public class TextBody implements Body
     {
         if (mBody != null)
         {
-            byte[] bytes = mBody.getBytes("UTF-8");
+            byte[] bytes = mBody.getBytes(mCharset);
             if ("8bit".equals(mEncoding))
             {
                 out.write(bytes);
@@ -52,7 +53,7 @@ public class TextBody implements Body
     }
 
     /**
-     * Returns an InputStream that reads this body's text in UTF-8 format.
+     * Returns an InputStream that reads this body's text.
      */
     public InputStream getInputStream() throws MessagingException
     {
@@ -61,7 +62,7 @@ public class TextBody implements Body
             byte[] b;
             if (mBody!=null)
             {
-                b = mBody.getBytes("UTF-8");
+                b = mBody.getBytes(mCharset);
             }
             else
             {
@@ -78,5 +79,10 @@ public class TextBody implements Body
     public void setEncoding(String encoding)
     {
         mEncoding = encoding;
+    }
+
+    public void setCharset(String charset)
+    {
+        mCharset = charset;
     }
 }

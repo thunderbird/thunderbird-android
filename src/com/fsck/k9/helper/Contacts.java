@@ -46,11 +46,15 @@ public abstract class Contacts
             int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
 
             String className = null;
-            if (sdkVersion <= Build.VERSION_CODES.DONUT)
+            /*
+             * The new API appeared in Eclair, but it supported phonetic names in Froyo.
+             * Therefore we employ the old API in Eclair.
+             */
+            if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1)
             {
                 className = "com.fsck.k9.helper.ContactsSdk3_4";
             }
-            else if (sdkVersion >= Build.VERSION_CODES.ECLAIR)
+            else
             {
                 className = "com.fsck.k9.helper.ContactsSdk5";
             }
