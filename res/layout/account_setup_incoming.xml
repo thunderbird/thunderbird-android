@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="@string/account_setup_incoming_webdav_advanced_label"
+                android:text="@string/advanced"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
