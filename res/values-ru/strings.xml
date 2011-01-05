@@ -229,7 +229,11 @@
     <string name="message_compose_bcc_hint">СК</string>
     <string name="message_compose_subject_hint">Тема</string>
     <string name="message_compose_content_hint">Текст сообщения</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Исходное сообщение --------\nТема: <xliff:g id="subject">%s</xliff:g>\nОт: <xliff:g id="sender">%s</xliff:g>\nДля: <xliff:g id="to">%s</xliff:g>\nКопия: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Исходное сообщение --------</string>
+    <string name="message_compose_quote_header_subject">Тема:</string>
+    <string name="message_compose_quote_header_from">От:</string>
+    <string name="message_compose_quote_header_to">Для:</string>
+    <string name="message_compose_quote_header_cc">Копия:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написал(а):\n\n</string>
     <string name="message_compose_quoted_text_label">Цитированный текст</string>
     <string name="message_compose_error_no_recipients">Необходимо добавить хотя бы одного адресата.</string>

@@ -255,7 +255,11 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_compose_bcc_hint">Ccn</string>
     <string name="message_compose_subject_hint">Oggetto</string>
     <string name="message_compose_content_hint">Testo del messaggio</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Messaggio originale --------\nOggetto: <xliff:g id="subject">%s</xliff:g>\nDa: <xliff:g id="sender">%s</xliff:g>\nA: <xliff:g id="to">%s</xliff:g>\nCc: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Messaggio originale --------</string>
+    <string name="message_compose_quote_header_subject">Oggetto:</string>
+    <string name="message_compose_quote_header_from">Da:</string>
+    <string name="message_compose_quote_header_to">A:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
     <string name="message_compose_quoted_text_label">Testo quotato</string>
     <string name="message_compose_error_no_recipients">È necessario aggiungere almeno un destinatario.</string>

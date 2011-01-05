@@ -251,7 +251,11 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Onderwerp</string>
     <string name="message_compose_content_hint">Bericht tekst</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Origineel bericht --------\nSubject: <xliff:g id="subject">%s</xliff:g>\nFrom: <xliff:g id="sender">%s</xliff:g>\nTo: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Origineel bericht --------</string>
+    <string name="message_compose_quote_header_subject">Subject:</string>
+    <string name="message_compose_quote_header_from">From:</string>
+    <string name="message_compose_quote_header_to">To:</string>
+    <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">Ge-quote tekst</string>
     <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>

@@ -653,7 +653,14 @@
         <item>6</item>
     </string-array>
 
+    <string-array name="account_settings_quote_style_entries">
+        <item>@string/account_settings_quote_style_prefix</item>
+        <item>@string/account_settings_quote_style_header</item>
+    </string-array>
 
-
+    <string-array name="account_settings_quote_style_values">
+        <item>PREFIX</item>
+        <item>HEADER</item>
+    </string-array>
 
 </resources>

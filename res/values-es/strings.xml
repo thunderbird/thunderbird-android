@@ -253,7 +253,11 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="message_compose_bcc_hint">CCo</string>
     <string name="message_compose_subject_hint">Asunto</string>
     <string name="message_compose_content_hint">Texto del Mensaje</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Mensaje Origianl --------\nAsunto: <xliff:g id="subject">%s</xliff:g>\nDesde: <xliff:g id="sender">%s</xliff:g>\nPara: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Mensaje Origianl --------</string>
+    <string name="message_compose_quote_header_subject">Asunto:</string>
+    <string name="message_compose_quote_header_from">Desde:</string>
+    <string name="message_compose_quote_header_to">Para:</string>
+    <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribió:\n\n</string>
     <string name="message_compose_quoted_text_label">Citado</string>
     <string name="message_compose_error_no_recipients">Debes Añadir un destinatario</string>

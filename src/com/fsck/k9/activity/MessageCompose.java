@@ -79,7 +79,6 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
-    private static final int REPLY_WRAP_LINE_WIDTH = 72;
 
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
@@ -1751,25 +1750,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             "text/plain");
                 if (part != null || mSourceMessageBody != null)
                 {
-                    String quotedText = String.format(
-                                            getString(R.string.message_compose_reply_header_fmt),
-                                            Address.toString(mSourceMessage.getFrom()));
-
-                    final String prefix = mAccount.getQuotePrefix();
-                    // "$" and "\" in the quote prefix have to be escaped for
-                    // the replaceAll() invocation.
-                    final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-
                     final String text = (mSourceMessageBody != null) ?
                                         mSourceMessageBody :
                                         MimeUtility.getTextFromPart(part);
 
-                    final String wrappedText = Utility.wrap(text, REPLY_WRAP_LINE_WIDTH - prefix.length());
-
-                    quotedText += wrappedText.replaceAll("(?m)^", escapedPrefix);
-
-                    quotedText = quotedText.replaceAll("\\\r", "");
-                    mQuotedText.setText(quotedText);
+                    mQuotedText.setText(quoteOriginalMessage(mSourceMessage, text, mAccount.getQuoteStyle()));
 
                     mQuotedTextBar.setVisibility(View.VISIBLE);
                     mQuotedText.setVisibility(View.VISIBLE);
@@ -1889,20 +1874,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 if (quotedText != null)
                 {
-                    String text = String.format(
-                                      getString(R.string.message_compose_fwd_header_fmt),
-                                      mSourceMessage.getSubject(),
-                                      Address.toString(mSourceMessage.getFrom()),
-                                      Address.toString(
-                                          mSourceMessage.getRecipients(RecipientType.TO)),
-                                      Address.toString(
-                                          mSourceMessage.getRecipients(RecipientType.CC)));
+                    // Forwards always use the HEADER quote style.
+                    // Not sure we have the replaceAll() at the end there -- achen.code 20110105
+                    String text = quoteOriginalMessage(mSourceMessage, quotedText, Account.QuoteStyle.HEADER).replaceAll("\\\r", "");
                     if (quotedText != null)
                     {
-
-                        quotedText = quotedText.replaceAll("\\\r", "");
                         mQuotedText.setText(text);
-                        mQuotedText.append(quotedText);
                     }
                     mQuotedTextBar.setVisibility(View.VISIBLE);
                     mQuotedText.setVisibility(View.VISIBLE);
@@ -2339,6 +2316,78 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
             }
             return null;
+        }
+    }
+
+    private static final int REPLY_WRAP_LINE_WIDTH = 72;
+    private static final int QUOTE_BUFFER_LENGTH = 512; // amount of extra buffer to allocate to accommodate quoting headers or prefixes
+
+    /**
+     * Add quoting markup to a message.
+     * @param originalMessage Metadata for message being quoted.
+     * @param body Text of the message to be quoted.
+     * @param quoteStyle Style of quoting.
+     * @return Quoted text.
+     * @throws MessagingException
+     */
+    private String quoteOriginalMessage(final Message originalMessage, final String body, final Account.QuoteStyle quoteStyle) throws MessagingException
+    {
+        if (quoteStyle == Account.QuoteStyle.PREFIX)
+        {
+            StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
+            quotedText.append(String.format(
+                    getString(R.string.message_compose_reply_header_fmt),
+                    Address.toString(originalMessage.getFrom()))
+            );
+
+            final String prefix = mAccount.getQuotePrefix();
+            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
+
+            // "$" and "\" in the quote prefix have to be escaped for
+            // the replaceAll() invocation.
+            final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
+            quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
+
+            return quotedText.toString().replaceAll("\\\r", "");
+        }
+        else if (quoteStyle == Account.QuoteStyle.HEADER)
+        {
+            StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
+            quotedText.append("\n");
+            quotedText.append(getString(R.string.message_compose_quote_header_separator)).append("\n");
+            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0)
+            {
+                quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\n");
+            }
+            if (originalMessage.getSentDate() != null)
+            {
+                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(originalMessage.getSentDate()).append("\n");
+            }
+            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0)
+            {
+                quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\n");
+            }
+            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0)
+            {
+                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(": ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\n");
+            }
+            if (originalMessage.getSubject() != null)
+            {
+                quotedText.append(getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\n");
+            }
+            quotedText.append("\n");
+
+            if (body != null)
+            {
+                quotedText.append(body);
+            }
+
+            return quotedText.toString();
+        }
+        else
+        {
+            // Shouldn't ever happen.
+            return body;
         }
     }
 

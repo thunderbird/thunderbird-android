@@ -7,11 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.RingtonePreference;
+import android.preference.*;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -21,6 +17,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -48,6 +45,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
+
+    private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
@@ -87,6 +86,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
@@ -107,6 +107,8 @@ public class AccountSettings extends K9PreferenceActivity
     private Account mAccount;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
+
+    private PreferenceScreen mComposingScreen;
 
     private EditTextPreference mAccountDescription;
     private ListPreference mCheckFrequency;
@@ -138,6 +140,7 @@ public class AccountSettings extends K9PreferenceActivity
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
+    private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
@@ -218,6 +221,33 @@ public class AccountSettings extends K9PreferenceActivity
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
+
+        mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
+
+        mQuoteStyle = (ListPreference) findPreference(PREFERENCE_QUOTE_STYLE);
+        mQuoteStyle.setValue(mAccount.getQuoteStyle().name());
+        mQuoteStyle.setSummary(mQuoteStyle.getEntry());
+        mQuoteStyle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final QuoteStyle style = QuoteStyle.valueOf(newValue.toString());
+                int index = mQuoteStyle.findIndexOfValue(newValue.toString());
+                mQuoteStyle.setSummary(mQuoteStyle.getEntries()[index]);
+                if (style == QuoteStyle.PREFIX)
+                {
+                    mComposingScreen.addPreference(mAccountQuotePrefix);
+                    mComposingScreen.addPreference(mReplyAfterQuote);
+                }
+                else if (style == QuoteStyle.HEADER)
+                {
+                    mComposingScreen.removePreference(mAccountQuotePrefix);
+                    mComposingScreen.removePreference(mReplyAfterQuote);
+                }
+                return true;
+            }
+        });
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
@@ -716,6 +746,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());

@@ -50,8 +50,8 @@ public class Account implements BaseAccount
     public static final String TYPE_OTHER = "OTHER";
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
+    private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
-
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     /**
@@ -119,6 +119,7 @@ public class Account implements BaseAccount
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
+    private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
@@ -159,6 +160,11 @@ public class Account implements BaseAccount
         ALL, DISPLAYABLE, NONE
     }
 
+    public enum QuoteStyle
+    {
+        PREFIX, HEADER
+    }
+
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
@@ -189,6 +195,7 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
+        mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
@@ -281,6 +288,7 @@ public class Account implements BaseAccount
                                                + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
+        mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes)
@@ -467,6 +475,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
+        editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
@@ -562,6 +571,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
+        editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
@@ -1468,6 +1478,16 @@ public class Account implements BaseAccount
         {
             return null;
         }
+    }
+
+    public QuoteStyle getQuoteStyle()
+    {
+        return mQuoteStyle;
+    }
+
+    public void setQuoteStyle(QuoteStyle quoteStyle)
+    {
+        this.mQuoteStyle = quoteStyle;
     }
 
     public synchronized String getQuotePrefix()

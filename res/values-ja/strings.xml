@@ -255,7 +255,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">件名</string>
     <string name="message_compose_content_hint">本文</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- 元メール --------\n件名: <xliff:g id="subject">%s</xliff:g>\n送信者: <xliff:g id="sender">%s</xliff:g>\n宛先: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- 元メール --------</string>
+    <string name="message_compose_quote_header_subject">件名:</string>
+    <string name="message_compose_quote_header_from">送信者:</string>
+    <string name="message_compose_quote_header_to">宛先:</string>
+    <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">テキスト引用</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
