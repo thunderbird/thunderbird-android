@@ -2370,7 +2370,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0)
             {
-                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(": ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\n");
             }
             if (originalMessage.getSubject() != null)
             {
