@@ -1484,30 +1484,6 @@ public class MessageView extends K9Activity implements OnClickListener
             mListener);
     }
 
-    private void onDownloadAttachment(AttachmentView attachment)
-    {
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-        {
-            /*
-             * Abort early if there's no place to save the attachment. We don't want to spend
-             * the time downloading it and then abort.
-             */
-            Toast.makeText(this,
-                           getString(R.string.message_view_status_attachment_not_saved),
-                           Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (mMessage != null)
-        {
-            mController.loadAttachment(
-                mAccount,
-                mMessage,
-                attachment.part,
-                new Object[] {true, attachment},
-                mListener);
-        }
-    }
-
     private void onShowPictures()
     {
         // TODO: Download attachments that are used as inline image
@@ -1571,7 +1547,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 onPrevious();
                 break;
             case R.id.download:
-                onDownloadAttachment((AttachmentView) view);
+                ((AttachmentView)view).saveFile();
                 break;
             case R.id.show_pictures:
                 onShowPictures();
@@ -1974,7 +1950,7 @@ public class MessageView extends K9Activity implements OnClickListener
             AttachmentView attachment = (AttachmentView) params[1];
             if (download)
             {
-                attachment.saveFile();
+                attachment.writeFile();
 
             }
             else

@@ -185,13 +185,10 @@ public class AttachmentView extends FrameLayout
 
     private void onSaveButtonClicked()
     {
-        if (mMessage != null)
-        {
-            mController.loadAttachment( mAccount, mMessage, part, new Object[] { true, this }, mListener);
-        }
+        saveFile();
     }
 
-    public void saveFile ()
+    public void writeFile ()
     {
         try
         {
@@ -211,6 +208,26 @@ public class AttachmentView extends FrameLayout
             attachmentNotSaved();
         }
     }
+
+    public void saveFile()
+    {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            /*
+             * Abort early if there's no place to save the attachment. We don't want to spend
+             * the time downloading it and then abort.
+             */
+            Toast.makeText(mContext,
+                           mContext.getString(R.string.message_view_status_attachment_not_saved),
+                           Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mMessage != null)
+        {
+            mController.loadAttachment( mAccount, mMessage, part, new Object[] {true, this}, mListener);
+        }
+    }
+
 
     public void showFile()
     {
