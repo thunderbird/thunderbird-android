@@ -150,24 +150,22 @@ public class MessageView extends K9Activity implements OnClickListener
         @Override
         public void onUnmount(String providerId)
         {
-            if (providerId.equals(mAccount.getLocalStorageProviderId()))
+            if (!providerId.equals(mAccount.getLocalStorageProviderId()))
             {
-                runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        onAccountUnavailable();
-                    }
-                });
+                return;
             }
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    onAccountUnavailable();
+                }
+            });
         }
 
         @Override
-        public void onMount(String providerId)
-        {
-            // no-op
-        }
+        public void onMount(String providerId) {} // no-op
     }
 
     /**

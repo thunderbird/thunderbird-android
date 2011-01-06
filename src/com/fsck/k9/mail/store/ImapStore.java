@@ -555,7 +555,7 @@ public class ImapStore extends Store
      *
      * "A quoted string is a sequence of zero or more 7-bit characters,
      *  excluding CR and LF, with double quote (<">) characters at each
-     *  end." - § 4.3, RFC 3501
+     *  end." - Section 4.3, RFC 3501
      *
      * Double quotes and backslash are escaped by prepending a backslash.
      *
