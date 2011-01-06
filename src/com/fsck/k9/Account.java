@@ -314,7 +314,7 @@ public class Account implements BaseAccount
         try
         {
             mScrollMessageViewButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
-                                      ScrollButtons.NEVER.name()));
+                                        ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
@@ -324,7 +324,7 @@ public class Account implements BaseAccount
         try
         {
             mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                          ScrollButtons.NEVER.name()));
+                                            ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
@@ -702,7 +702,8 @@ public class Account implements BaseAccount
     }
 
 
-    public ColorChip generateColorChip() {
+    public ColorChip generateColorChip()
+    {
         return new ColorChip( mChipColor);
     }
 

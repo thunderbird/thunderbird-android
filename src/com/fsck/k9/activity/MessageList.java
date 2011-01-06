@@ -2693,10 +2693,10 @@ public class MessageList
                     ColorStateList color = holder.subject.getTextColors();
                     ColorStateList linkColor = holder.subject.getLinkTextColors();
                     str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
-                            0,
-                            noSender.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                           );
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                               );
                 }
                 else
                 {
@@ -2782,18 +2782,18 @@ public class MessageList
                  */
 
                 holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                    .append(message.sender).append(" ").append(message.message.getPreview()),
-                    TextView.BufferType.SPANNABLE);
+                                       .append(message.sender).append(" ").append(message.message.getPreview()),
+                                       TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
                 ColorStateList color = holder.subject.getTextColors();
                 ColorStateList linkColor = holder.subject.getLinkTextColors();
                 str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
-                        0,
-                        message.sender.length() + 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                       );
+                            0,
+                            message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                           );
             }
             else
             {

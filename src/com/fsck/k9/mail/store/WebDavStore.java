@@ -638,7 +638,7 @@ public class WebDavStore extends Store
                 // an authentication header for basic authentication.
                 info.requiredAuthType = AUTH_TYPE_BASIC;
             }
-            else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
+            else if ((info.statusCode >= 200 && info.statusCode < 300) ||   // Success
                      (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
                      (info.statusCode == 440)) // Unauthorized
 

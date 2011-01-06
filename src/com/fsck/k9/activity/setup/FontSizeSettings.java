@@ -100,8 +100,8 @@ public class FontSizeSettings extends K9PreferenceActivity
                                PREFERENCE_MESSAGE_LIST_DATE_FONT,
                                Integer.toString(fontSizes.getMessageListDate()));
         mMessageListPreview = setupListPreference(
-                PREFERENCE_MESSAGE_LIST_PREVIEW_FONT,
-                Integer.toString(fontSizes.getMessageListPreview()));
+                                  PREFERENCE_MESSAGE_LIST_PREVIEW_FONT,
+                                  Integer.toString(fontSizes.getMessageListPreview()));
 
         mMessageViewSender = setupListPreference(
                                  PREFERENCE_MESSAGE_VIEW_SENDER_FONT,

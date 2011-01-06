@@ -20,7 +20,8 @@ import java.lang.reflect.Method;
  * Time: 3:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MessageWebView extends WebView {
+public class MessageWebView extends WebView
+{
 
     /**
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email

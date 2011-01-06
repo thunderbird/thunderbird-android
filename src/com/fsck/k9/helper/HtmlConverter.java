@@ -44,8 +44,8 @@ public class HtmlConverter
     public static String htmlToText(final String html)
     {
         return Html.fromHtml(html, null, new HtmlToTextTagHandler()).toString()
-            .replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT)
-            .replace(NBSP_CHARACTER, NBSP_REPLACEMENT);
+               .replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT)
+               .replace(NBSP_CHARACTER, NBSP_REPLACEMENT);
     }
 
     /**
@@ -56,12 +56,15 @@ public class HtmlConverter
     private static class HtmlToTextTagHandler implements Html.TagHandler
     {
         // List of tags whose content should be ignored.
-        private static final Set<String> TAGS_WITH_IGNORED_CONTENT = Collections.unmodifiableSet(new HashSet<String>() {{
-            add("style");
-            add("script");
-            add("title");
-            add("!");   // comments
-        }});
+        private static final Set<String> TAGS_WITH_IGNORED_CONTENT = Collections.unmodifiableSet(new HashSet<String>()
+        {
+            {
+                add("style");
+                add("script");
+                add("title");
+                add("!");   // comments
+            }
+        });
 
         @Override
         public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
@@ -96,7 +99,7 @@ public class HtmlConverter
             if (opening)
             {
                 output.setSpan(new Annotation(IGNORED_ANNOTATION_KEY, IGNORED_ANNOTATION_VALUE), len,
-                        len, Spannable.SPAN_MARK_MARK);
+                               len, Spannable.SPAN_MARK_MARK);
             }
             else
             {

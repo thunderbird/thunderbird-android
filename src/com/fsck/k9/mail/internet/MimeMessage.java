@@ -330,7 +330,7 @@ public class MimeMessage extends Message
         {
             mMessageId = getFirstHeader("Message-ID");
         }
-        if (mMessageId == null) //  even after checking the header
+        if (mMessageId == null)   //  even after checking the header
         {
             setMessageId(generateMessageId());
         }

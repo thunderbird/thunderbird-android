@@ -1391,7 +1391,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private void onCopy()
     {
         if ((!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
-            || (mMessage == null))
+                || (mMessage == null))
         {
             return;
         }
@@ -1964,15 +1964,15 @@ public class MessageView extends K9Activity implements OnClickListener
                                                     Message message)
         {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                || !mMessageReference.accountUuid.equals(account.getUuid()))
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
             try
             {
                 if (MessageView.this.mMessage != null
-                    && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                    && message.isSet(Flag.X_DOWNLOADED_FULL))
+                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                        && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
                     mHandler.setHeaders(message);
                 }
@@ -2156,7 +2156,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 try
                 {
                     File file = createUniqueFile(Environment.getExternalStorageDirectory(),
-                            attachment.name);
+                                                 attachment.name);
                     Uri uri = AttachmentProvider.getAttachmentUri(
                                   mAccount,
                                   attachment.part.getAttachmentId());

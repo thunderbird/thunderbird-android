@@ -320,7 +320,7 @@ public class SmtpTransport extends Transport
         message.setRecipients(RecipientType.BCC, null);
 
         HashMap<String, ArrayList<String>> charsetAddressesMap =
-                new HashMap<String, ArrayList<String>>();
+            new HashMap<String, ArrayList<String>>();
         for (Address address : addresses)
         {
             String addressString = address.getAddress();
@@ -335,7 +335,7 @@ public class SmtpTransport extends Transport
         }
 
         for (HashMap.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
-                     charsetAddressesMap.entrySet())
+                charsetAddressesMap.entrySet())
         {
             String charset = charsetAddressesMapEntry.getKey();
             ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
@@ -345,7 +345,8 @@ public class SmtpTransport extends Transport
     }
 
     private void sendMessageTo(ArrayList<String> addresses, Message message)
-            throws MessagingException{
+    throws MessagingException
+    {
         close();
         open();
 

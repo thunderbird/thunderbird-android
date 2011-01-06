@@ -2337,9 +2337,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
             quotedText.append(String.format(
-                    getString(R.string.message_compose_reply_header_fmt),
-                    Address.toString(originalMessage.getFrom()))
-            );
+                                  getString(R.string.message_compose_reply_header_fmt),
+                                  Address.toString(originalMessage.getFrom()))
+                             );
 
             final String prefix = mAccount.getQuotePrefix();
             final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
