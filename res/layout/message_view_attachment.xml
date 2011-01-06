@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<com.fsck.k9.view.AttachmentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -82,4 +82,4 @@
             android:src="@drawable/ic_email_attachment"
             android:layout_alignParentLeft="true" />
     </LinearLayout>
-</FrameLayout>
+</com.fsck.k9.view.AttachmentView>

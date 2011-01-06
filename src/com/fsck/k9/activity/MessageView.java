@@ -1,19 +1,5 @@
 package com.fsck.k9.activity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.io.IOUtils;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -23,12 +9,8 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
-import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,50 +21,29 @@ import android.text.style.StyleSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.fsck.k9.Account;
-import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
+import android.widget.*;
+import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AccessibleWebView;
+import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.ToggleScrollView;
 
-import static com.fsck.k9.helper.Utility.*;
+import java.io.Serializable;
+import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -415,7 +376,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
                     for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
                     {
-                        AttachmentViewHolder attachment = (AttachmentViewHolder) mAttachments.getChildAt(i).getTag();
+                        AttachmentView attachment = (AttachmentView) mAttachments.getChildAt(i);
                         attachment.viewButton.setEnabled(enabled);
                         attachment.downloadButton.setEnabled(enabled);
                     }
@@ -516,31 +477,6 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
-        public void attachmentSaved(final String filename)
-        {
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    Toast.makeText(MessageView.this, String.format(
-                                       getString(R.string.message_view_status_attachment_saved), filename),
-                                   Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-        public void attachmentNotSaved()
-        {
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    Toast.makeText(MessageView.this,
-                                   getString(R.string.message_view_status_attachment_not_saved),
-                                   Toast.LENGTH_LONG).show();
-                }
-            });
-        }
 
         public void fetchingAttachment()
         {
@@ -686,16 +622,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    static class AttachmentViewHolder
-    {
-        public String name;
-        public String contentType;
-        public long size;
-        public LocalAttachmentBodyPart part;
-        public Button viewButton;
-        public Button downloadButton;
-        public ImageView iconView;
-    }
 
     public static void actionView(Context context, MessageReference messRef, List<MessageReference> messReferences)
     {
@@ -1558,7 +1484,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mListener);
     }
 
-    private void onDownloadAttachment(AttachmentViewHolder attachment)
+    private void onDownloadAttachment(AttachmentView attachment)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
@@ -1578,19 +1504,6 @@ public class MessageView extends K9Activity implements OnClickListener
                 mMessage,
                 attachment.part,
                 new Object[] {true, attachment},
-                mListener);
-        }
-    }
-
-    private void onViewAttachment(AttachmentViewHolder attachment)
-    {
-        if (mMessage != null)
-        {
-            MessagingController.getInstance(getApplication()).loadAttachment(
-                mAccount,
-                mMessage,
-                attachment.part,
-                new Object[] { false, attachment },
                 mListener);
         }
     }
@@ -1658,10 +1571,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 onPrevious();
                 break;
             case R.id.download:
-                onDownloadAttachment((AttachmentViewHolder) view.getTag());
-                break;
-            case R.id.view:
-                onViewAttachment((AttachmentViewHolder) view.getTag());
+                onDownloadAttachment((AttachmentView) view);
                 break;
             case R.id.show_pictures:
                 onShowPictures();
@@ -1799,25 +1709,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private Bitmap getPreviewIcon(AttachmentViewHolder attachment)
-    {
-        try
-        {
-            return BitmapFactory.decodeStream(
-                       getContentResolver().openInputStream(
-                           AttachmentProvider.getAttachmentThumbnailUri(mAccount,
-                                   attachment.part.getAttachmentId(),
-                                   62,
-                                   62)));
-        }
-        catch (Exception e)
-        {
-            /*
-             * We don't care what happened, we just return null for the preview icon.
-             */
-            return null;
-        }
-    }
 
     private void renderAttachments(Part part, int depth) throws MessagingException
     {
@@ -1829,7 +1720,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 renderAttachments(mp.getBodyPart(i), depth + 1);
             }
         }
-        else
+        else if (part instanceof LocalAttachmentBodyPart)
         {
             String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
             // Inline parts with a content-id are almost certainly components of an HTML message
@@ -1846,68 +1737,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void renderPartAsAttachment(Part part) throws MessagingException
     {
-        String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
-        String name = MimeUtility.getHeaderParameter(contentType, "name");
-        if (name == null)
-        {
-            name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-        }
-        if (name == null)
-        {
-            return;
-        }
-        AttachmentViewHolder attachment = new AttachmentViewHolder();
-        attachment.size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
-        attachment.contentType = part.getMimeType();
-        if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(attachment.contentType))
-        {
-            attachment.contentType = MimeUtility.getMimeTypeByExtension(name);
-        }
-        attachment.name = name;
-        attachment.part = (LocalAttachmentBodyPart) part;
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.message_view_attachment, null);
-        TextView attachmentName = (TextView) view.findViewById(R.id.attachment_name);
-        TextView attachmentInfo = (TextView) view.findViewById(R.id.attachment_info);
-        ImageView attachmentIcon = (ImageView) view.findViewById(R.id.attachment_icon);
-        Button attachmentView = (Button) view.findViewById(R.id.view);
-        Button attachmentDownload = (Button) view.findViewById(R.id.download);
-        if ((!MimeUtility.mimeTypeMatches(attachment.contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
-                || (MimeUtility.mimeTypeMatches(attachment.contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
+        AttachmentView view = (AttachmentView)inflater.inflate(R.layout.message_view_attachment, null);
+        if (view.populateFromPart(part, mMessage, mAccount, mController, mListener))
         {
-            attachmentView.setVisibility(View.GONE);
+            mHandler.addAttachment((View)view);
         }
-        if ((!MimeUtility.mimeTypeMatches(attachment.contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
-                || (MimeUtility.mimeTypeMatches(attachment.contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
-        {
-            attachmentDownload.setVisibility(View.GONE);
-        }
-        if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE)
-        {
-            attachmentView.setVisibility(View.GONE);
-            attachmentDownload.setVisibility(View.GONE);
-        }
-        attachment.viewButton = attachmentView;
-        attachment.downloadButton = attachmentDownload;
-        attachment.iconView = attachmentIcon;
-        view.setTag(attachment);
-        attachmentView.setOnClickListener(this);
-        attachmentView.setTag(attachment);
-        attachmentDownload.setOnClickListener(this);
-        attachmentDownload.setTag(attachment);
-        attachmentName.setText(name);
-        attachmentInfo.setText(SizeFormatter.formatSize(getApplication(), attachment.size));
-        Bitmap previewIcon = getPreviewIcon(attachment);
-        if (previewIcon != null)
-        {
-            attachmentIcon.setImageBitmap(previewIcon);
-        }
-        else
-        {
-            attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-        }
-        mHandler.addAttachment(view);
         return;
     }
 
@@ -1947,7 +1782,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                                                    Message message)
+                Message message)
         {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
@@ -2136,48 +1971,15 @@ public class MessageView extends K9Activity implements OnClickListener
             mHandler.progress(false);
             Object[] params = (Object[]) tag;
             boolean download = (Boolean) params[0];
-            AttachmentViewHolder attachment = (AttachmentViewHolder) params[1];
+            AttachmentView attachment = (AttachmentView) params[1];
             if (download)
             {
-                try
-                {
-                    File file = createUniqueFile(Environment.getExternalStorageDirectory(),
-                                                 attachment.name);
-                    Uri uri = AttachmentProvider.getAttachmentUri(
-                                  mAccount,
-                                  attachment.part.getAttachmentId());
-                    InputStream in = getContentResolver().openInputStream(uri);
-                    OutputStream out = new FileOutputStream(file);
-                    IOUtils.copy(in, out);
-                    out.flush();
-                    out.close();
-                    in.close();
-                    mHandler.attachmentSaved(file.getName());
-                    new MediaScannerNotifier(MessageView.this, file);
-                }
-                catch (IOException ioe)
-                {
-                    mHandler.attachmentNotSaved();
-                }
+                attachment.saveFile();
+
             }
             else
             {
-                Uri uri = AttachmentProvider.getAttachmentUri(
-                              mAccount,
-                              attachment.part.getAttachmentId());
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(uri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                try
-                {
-                    startActivity(intent);
-                }
-                catch (Exception e)
-                {
-                    Log.e(K9.LOG_TAG, "Could not display attachment of type " + attachment.contentType, e);
-                    Toast toast = Toast.makeText(MessageView.this, getString(R.string.message_view_no_viewer, attachment.contentType), Toast.LENGTH_LONG);
-                    toast.show();
-                }
+                attachment.showFile();
             }
         }
 
@@ -2195,40 +1997,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    class MediaScannerNotifier implements MediaScannerConnectionClient
-    {
-        private MediaScannerConnection mConnection;
-        private File mFile;
-
-        public MediaScannerNotifier(Context context, File file)
-        {
-            mFile = file;
-            mConnection = new MediaScannerConnection(context, this);
-            mConnection.connect();
-        }
-
-        public void onMediaScannerConnected()
-        {
-            mConnection.scanFile(mFile.getAbsolutePath(), null);
-        }
-
-        public void onScanCompleted(String path, Uri uri)
-        {
-            try
-            {
-                if (uri != null)
-                {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(uri);
-                    startActivity(intent);
-                }
-            }
-            finally
-            {
-                mConnection.disconnect();
-            }
-        }
-    }
 
     private void initializeCrypto(PgpData data)
     {
