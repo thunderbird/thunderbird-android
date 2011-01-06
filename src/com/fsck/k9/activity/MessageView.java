@@ -224,7 +224,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
+    public boolean onKeyDown(final int keyCode, final KeyEvent event)
     {
         switch (keyCode)
         {
@@ -318,40 +318,27 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             case KeyEvent.KEYCODE_Z:
             {
-                if (event.isShiftPressed())
+                mHandler.post(new Runnable()
                 {
-                    mHandler.post(new Runnable()
+                    public void run()
                     {
-                        public void run()
+                        if (mScreenReaderEnabled)
                         {
-                            if (mScreenReaderEnabled)
-                            {
-                                mAccessibleMessageContentView.zoomIn();
-                            }
-                            else
+                            mAccessibleMessageContentView.zoomIn();
+                        }
+                        else
+                        {
+                            if (event.isShiftPressed())
                             {
                                 mMessageContentView.zoomIn();
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    mHandler.post(new Runnable()
-                    {
-                        public void run()
-                        {
-                            if (mScreenReaderEnabled)
-                            {
-                                mAccessibleMessageContentView.zoomIn();
                             }
                             else
                             {
                                 mMessageContentView.zoomOut();
                             }
                         }
-                    });
-                }
+                    }
+                });
                 return true;
             }
             case KeyEvent.KEYCODE_H:
