@@ -1685,6 +1685,91 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
+    public void displayMessage(Account account, String folder, String uid, Message message)
+    {
+        try
+        {
+            if (MessageView.this.mMessage != null
+                    && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                    && message.isSet(Flag.X_DOWNLOADED_FULL))
+            {
+                mHandler.setHeaders(message);
+            }
+            MessageView.this.mMessage = message;
+            mHandler.removeAllAttachments();
+            String text, type;
+            if (mPgpData.getDecryptedData() != null)
+            {
+                text = mPgpData.getDecryptedData();
+                type = "text/plain";
+            }
+            else
+            {
+                // getTextForDisplay() always returns HTML-ified content.
+                text = ((LocalMessage) mMessage).getTextForDisplay();
+                type = "text/html";
+            }
+            if (text != null)
+            {
+                final String emailText = text;
+                final String contentType = type;
+                mHandler.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        mTopView.scrollTo(0, 0);
+                        if (mScreenReaderEnabled)
+                        {
+                            mAccessibleMessageContentView.loadDataWithBaseURL("http://",
+                                    emailText, contentType, "utf-8", null);
+                        }
+                        else
+                        {
+                            mMessageContentView.loadDataWithBaseURL("http://", emailText,
+                                                                    contentType, "utf-8", null);
+                            mMessageContentView.scrollTo(0, 0);
+                        }
+                        updateDecryptLayout();
+                    }
+                });
+                // If the message contains external pictures and the "Show pictures"
+                // button wasn't already pressed, see if the user's preferences has us
+                // showing them anyway.
+                if (Utility.hasExternalImages(text) && !mShowPictures)
+                {
+                    if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
+                            ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
+                             mContacts.isInContacts(message.getFrom()[0].getAddress())))
+                    {
+                        onShowPictures();
+                    }
+                    else
+                    {
+                        mHandler.showShowPictures(true);
+                    }
+                }
+            }
+            else
+            {
+                mHandler.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                        updateDecryptLayout();
+                    }
+                });
+            }
+            renderAttachments(mMessage, 0);
+        }
+        catch (Exception e)
+        {
+            if (Config.LOGV)
+            {
+                Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+            }
+        }
+    }
 
     private void renderAttachments(Part part, int depth) throws MessagingException
     {
@@ -1765,88 +1850,8 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 return;
             }
-            try
-            {
-                if (MessageView.this.mMessage != null
-                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                        && message.isSet(Flag.X_DOWNLOADED_FULL))
-                {
-                    mHandler.setHeaders(message);
-                }
-                MessageView.this.mMessage = message;
-                mHandler.removeAllAttachments();
-                String text, type;
-                if (mPgpData.getDecryptedData() != null)
-                {
-                    text = mPgpData.getDecryptedData();
-                    type = "text/plain";
-                }
-                else
-                {
-                    // getTextForDisplay() always returns HTML-ified content.
-                    text = ((LocalMessage)mMessage).getTextForDisplay();
-                    type = "text/html";
-                }
-                if (text != null)
-                {
-                    final String emailText = text;
-                    final String contentType = type;
-                    mHandler.post(new Runnable()
-                    {
-                        public void run()
-                        {
-                            mTopView.scrollTo(0, 0);
-                            if (mScreenReaderEnabled)
-                            {
-                                mAccessibleMessageContentView.loadDataWithBaseURL("http://",
-                                        emailText, contentType, "utf-8", null);
-                            }
-                            else
-                            {
-                                mMessageContentView.loadDataWithBaseURL("http://", emailText,
-                                                                        contentType, "utf-8", null);
-                                mMessageContentView.scrollTo(0, 0);
-                            }
-                            updateDecryptLayout();
-                        }
-                    });
-                    // If the message contains external pictures and the "Show pictures"
-                    // button wasn't already pressed, see if the user's preferences has us
-                    // showing them anyway.
-                    if (Utility.hasExternalImages(text) && !mShowPictures)
-                    {
-                        if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
-                                ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
-                                 mContacts.isInContacts(message.getFrom()[0].getAddress())))
-                        {
-                            onShowPictures();
-                        }
-                        else
-                        {
-                            mHandler.showShowPictures(true);
-                        }
-                    }
-                }
-                else
-                {
-                    mHandler.post(new Runnable()
-                    {
-                        public void run()
-                        {
-                            mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                            updateDecryptLayout();
-                        }
-                    });
-                }
-                renderAttachments(mMessage, 0);
-            }
-            catch (Exception e)
-            {
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
-                }
-            }
+
+            displayMessage(account, folder, uid, message);
         }//loadMessageForViewBodyAvailable
 
 
