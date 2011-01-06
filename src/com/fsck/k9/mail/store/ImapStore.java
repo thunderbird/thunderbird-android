@@ -222,7 +222,7 @@ public class ImapStore extends Store
         {
             mCombinedPrefix = prefix;
         }
-        
+
     }
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
@@ -439,8 +439,8 @@ public class ImapStore extends Store
         LinkedList<Folder> folders = new LinkedList<Folder>();
 
         List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format(commandResponse + " \"\" \"%s*\"",
-                                            getCombinedPrefix()));
+            connection.executeSimpleCommand(String.format(commandResponse + " \"\" %s",
+                                            encodeString(getCombinedPrefix() + "*")));
 
         for (ImapResponse response : responses)
         {
@@ -550,11 +550,29 @@ public class ImapStore extends Store
         }
     }
 
+    /**
+     * Encode a string to be able to use it in an IMAP command.
+     *
+     * "A quoted string is a sequence of zero or more 7-bit characters,
+     *  excluding CR and LF, with double quote (<">) characters at each
+     *  end." - § 4.3, RFC 3501
+     *
+     * Double quotes and backslash are escaped by prepending a backslash.
+     *
+     * @param str
+     *     The input string (only 7-bit characters allowed).
+     * @return
+     *     The string encoded as quoted (IMAP) string.
+     */
+    private static String encodeString(String str)
+    {
+        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    }
+
     private String encodeFolderName(String name)
     {
         try
         {
-            name = name.replace("\\","\\\\"); // backslashs in folder names must be escaped
             ByteBuffer bb = mModifiedUtf7Charset.encode(name);
             byte[] b = new byte[bb.limit()];
             bb.get(b);
@@ -729,8 +747,8 @@ public class ImapStore extends Store
             try
             {
                 msgSeqUidMap.clear();
-                String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " \"%s\"",
-                                               encodeFolderName(getPrefixedName()));
+                String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " %s",
+                                               encodeString(encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
 
@@ -823,6 +841,16 @@ public class ImapStore extends Store
             return mName;
         }
 
+        /**
+         * Check if a given folder exists on the server.
+         *
+         * @param folderName
+         *     The name of the folder encoded as quoted string.
+         *     See {@link ImapStore#encodeString}
+         *
+         * @return
+         *     {@code True}, if the folder exists. {@code False}, otherwise.
+         */
         private boolean exists(String folderName) throws MessagingException
         {
             try
@@ -830,7 +858,7 @@ public class ImapStore extends Store
                 // Since we don't care about RECENT, we'll use that for the check, because we're checking
                 // a folder other than ourself, and don't want any untagged responses to cause a change
                 // in our own fields
-                mConnection.executeSimpleCommand(String.format("STATUS \"%s\" (RECENT)", folderName));
+                mConnection.executeSimpleCommand(String.format("STATUS %s (RECENT)", folderName));
                 return true;
             }
             catch (IOException ioe)
@@ -869,8 +897,8 @@ public class ImapStore extends Store
             }
             try
             {
-                connection.executeSimpleCommand(String.format("STATUS \"%s\" (UIDVALIDITY)",
-                                                encodeFolderName(getPrefixedName())));
+                connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)",
+                                                encodeString(encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
             }
@@ -913,8 +941,8 @@ public class ImapStore extends Store
             }
             try
             {
-                connection.executeSimpleCommand(String.format("CREATE \"%s\"",
-                                                encodeFolderName(getPrefixedName())));
+                connection.executeSimpleCommand(String.format("CREATE %s",
+                                                encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
             }
             catch (MessagingException me)
@@ -954,7 +982,7 @@ public class ImapStore extends Store
             }
             try
             {
-                String remoteDestName = encodeFolderName(iFolder.getPrefixedName());
+                String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
                 if (!exists(remoteDestName))
                 {
@@ -968,9 +996,9 @@ public class ImapStore extends Store
 
                 if (exists(remoteDestName))
                 {
-                    executeSimpleCommand(String.format("UID COPY %s \"%s\"",
+                    executeSimpleCommand(String.format("UID COPY %s %s",
                                                        Utility.combine(uids, ','),
-                                                       encodeFolderName(iFolder.getPrefixedName())));
+                                                       remoteDestName));
                 }
                 else
                 {
@@ -1007,7 +1035,7 @@ public class ImapStore extends Store
             else
             {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
-                String remoteTrashName = encodeFolderName(remoteTrashFolder.getPrefixedName());
+                String remoteTrashName = encodeString(encodeFolderName(remoteTrashFolder.getPrefixedName()));
 
                 if (!exists(remoteTrashName))
                 {
@@ -1924,8 +1952,8 @@ public class ImapStore extends Store
                     eolOut.flush();
 
                     mConnection.sendCommand(
-                        String.format("APPEND \"%s\" (%s) {%d}",
-                                      encodeFolderName(getPrefixedName()),
+                        String.format("APPEND %s (%s) {%d}",
+                                      encodeString(encodeFolderName(getPrefixedName())),
                                       combineFlags(message.getFlags()),
                                       out.getCount()), false);
                     ImapResponse response;
@@ -2400,7 +2428,7 @@ public class ImapStore extends Store
                     }
                     else if (mSettings.getAuthType() == AuthType.PLAIN)
                     {
-                        receiveCapabilities(executeSimpleCommand("LOGIN \"" + escapeString(mSettings.getUsername()) + "\" \"" + escapeString(mSettings.getPassword()) + "\"", true));
+                        receiveCapabilities(executeSimpleCommand(String.format("LOGIN %s %s", ImapStore.encodeString(mSettings.getUsername()), ImapStore.encodeString(mSettings.getPassword())), true));
                     }
                     authSuccess = true;
                 }
@@ -2733,17 +2761,6 @@ public class ImapStore extends Store
                 close();
                 throw ioe;
             }
-        }
-
-        private String escapeString(String in)
-        {
-            if (in == null)
-            {
-                return null;
-            }
-            String out = in.replaceAll("\\\\", "\\\\\\\\");
-            out = out.replaceAll("\"", "\\\\\"");
-            return out;
         }
 
         public void sendContinuation(String continuation) throws IOException
