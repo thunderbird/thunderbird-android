@@ -2325,13 +2325,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Add quoting markup to a message.
      * @param originalMessage Metadata for message being quoted.
-     * @param body Text of the message to be quoted.
+     * @param messageBody Text of the message to be quoted.
      * @param quoteStyle Style of quoting.
      * @return Quoted text.
      * @throws MessagingException
      */
-    private String quoteOriginalMessage(final Message originalMessage, final String body, final Account.QuoteStyle quoteStyle) throws MessagingException
+    private String quoteOriginalMessage(final Message originalMessage, final String messageBody, final Account.QuoteStyle quoteStyle) throws MessagingException
     {
+        String body = messageBody == null ? "" : messageBody;
         if (quoteStyle == Account.QuoteStyle.PREFIX)
         {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
@@ -2377,10 +2378,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             quotedText.append("\n");
 
-            if (body != null)
-            {
-                quotedText.append(body);
-            }
+            quotedText.append(body);
 
             return quotedText.toString();
         }
