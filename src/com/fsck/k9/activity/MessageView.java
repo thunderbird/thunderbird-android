@@ -136,6 +136,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
     private int mLastDirection = PREVIOUS;
+    private MessagingController mController = MessagingController.getInstance(getApplication());
     private MessageReference mNextMessage = null;
     private MessageReference mPreviousMessage = null;
     private Menu optionsMenu = null;
@@ -1029,7 +1030,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // start with fresh, empty PGP data
         initializeCrypto(null);
         mTopView.setVisibility(View.VISIBLE);
-        MessagingController.getInstance(getApplication()).loadMessageForView(
+        mController.loadMessageForView(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
@@ -1043,7 +1044,7 @@ public class MessageView extends K9Activity implements OnClickListener
         next.setEnabled(mNextMessage != null);
         previous.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
+        if (mController.isMoveCapable(mAccount))
         {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
             mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
@@ -1225,7 +1226,7 @@ public class MessageView extends K9Activity implements OnClickListener
             disableButtons();
             Message messageToDelete = mMessage;
             showNextMessageOrReturn();
-            MessagingController.getInstance(getApplication()).deleteMessages(
+            mController.deleteMessages(
                 new Message[] {messageToDelete},
                 null);
         }
@@ -1233,11 +1234,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onRefile(String dstFolder)
     {
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
+        if (!mController.isMoveCapable(mAccount))
         {
             return;
         }
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
+        if (!mController.isMoveCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1250,7 +1251,7 @@ public class MessageView extends K9Activity implements OnClickListener
             return;
         }
         showNextMessageOrReturn();
-        MessagingController.getInstance(getApplication())
+        mController
         .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
@@ -1341,8 +1342,8 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).setFlag(mAccount,
-                    mMessage.getFolder().getName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+            mController.setFlag(mAccount,
+                                mMessage.getFolder().getName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
             try
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
@@ -1358,12 +1359,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onMove()
     {
-        if ((!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
+        if ((!mController.isMoveCapable(mAccount))
                 || (mMessage == null))
         {
             return;
         }
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
+        if (!mController.isMoveCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1375,12 +1376,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onCopy()
     {
-        if ((!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
+        if ((!mController.isCopyCapable(mAccount))
                 || (mMessage == null))
         {
             return;
         }
-        if (!MessagingController.getInstance(getApplication()).isCopyCapable(mMessage))
+        if (!mController.isCopyCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1463,12 +1464,12 @@ public class MessageView extends K9Activity implements OnClickListener
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
                             Message messageToMove = mMessage;
                             showNextMessageOrReturn();
-                            MessagingController.getInstance(getApplication()).moveMessage(mAccount,
-                                    srcFolderName, messageToMove, destFolderName, null);
+                            mController.moveMessage(mAccount,
+                                                    srcFolderName, messageToMove, destFolderName, null);
                             break;
                         case ACTIVITY_CHOOSE_FOLDER_COPY:
-                            MessagingController.getInstance(getApplication()).copyMessage(mAccount,
-                                    srcFolderName, mMessage, destFolderName, null);
+                            mController.copyMessage(mAccount,
+                                                    srcFolderName, mMessage, destFolderName, null);
                             break;
                     }
                 }
@@ -1480,7 +1481,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).sendAlternate(this, mAccount, mMessage);
+            mController.sendAlternate(this, mAccount, mMessage);
         }
     }
 
@@ -1524,7 +1525,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).setFlag(
+            mController.setFlag(
                 mAccount,
                 mMessageReference.folderName,
                 new String[] { mMessage.getUid() },
@@ -1550,7 +1551,7 @@ public class MessageView extends K9Activity implements OnClickListener
             return;
         }
         mDownloadRemainder.setEnabled(false);
-        MessagingController.getInstance(getApplication()).loadMessageForViewRemote(
+        mController.loadMessageForViewRemote(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
@@ -1572,7 +1573,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).loadAttachment(
+            mController.loadAttachment(
                 mAccount,
                 mMessage,
                 attachment.part,
@@ -1732,11 +1733,11 @@ public class MessageView extends K9Activity implements OnClickListener
         getMenuInflater().inflate(R.menu.message_view_option, menu);
         optionsMenu = menu;
         prepareMenuItems();
-        if (!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
+        if (!mController.isCopyCapable(mAccount))
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
+        if (!mController.isMoveCapable(mAccount))
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
