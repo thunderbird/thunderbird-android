@@ -224,10 +224,7 @@ public class AccountSettings extends K9PreferenceActivity
 
         mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
 
-        mQuoteStyle = (ListPreference) findPreference(PREFERENCE_QUOTE_STYLE);
-        mQuoteStyle.setValue(mAccount.getQuoteStyle().name());
-        mQuoteStyle.setSummary(mQuoteStyle.getEntry());
-        mQuoteStyle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        Preference.OnPreferenceChangeListener quoteStyleListener = new Preference.OnPreferenceChangeListener()
         {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
@@ -247,7 +244,14 @@ public class AccountSettings extends K9PreferenceActivity
                 }
                 return true;
             }
-        });
+        };
+        mQuoteStyle = (ListPreference) findPreference(PREFERENCE_QUOTE_STYLE);
+        mQuoteStyle.setValue(mAccount.getQuoteStyle().name());
+        mQuoteStyle.setSummary(mQuoteStyle.getEntry());
+        mQuoteStyle.setOnPreferenceChangeListener(quoteStyleListener);
+        // Call the onPreferenceChange() handler on startup to update the Preference dialogue based
+        // upon the existing quote style setting.
+        quoteStyleListener.onPreferenceChange(mQuoteStyle, mAccount.getQuoteStyle().name());
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
