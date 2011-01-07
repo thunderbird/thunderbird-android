@@ -72,12 +72,6 @@ public class Account implements BaseAccount
      * storage
      */
     private String mLocalStorageProviderId;
-
-    /**
-     * True if {@link #mLocalStoreUri} may be in use at
-     * the moment.
-     */
-    private final boolean mIsInUse = false;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -1560,11 +1554,6 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
-    }
-
-    public boolean isInUse()
-    {
-        return mIsInUse;
     }
 
     public synchronized CryptoProvider getCryptoProvider()
