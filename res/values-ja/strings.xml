@@ -554,6 +554,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_reply_after_quote_label">引用テキストの後に返信を書く</string>
     <string name="account_settings_reply_after_quote_summary">返信するときに元のメッセージを返信の上に表示</string>
 
+    <string name="account_settings_quote_style_label">返信の引用スタイル</string>
+    <string name="account_settings_quote_style_prefix">引用記号 (Gmail, Pine形式)</string>
+    <string name="account_settings_quote_style_header">ヘッダ (Outlook, Yahoo!, Hotmail形式)</string>
+
     <string name="account_settings_general_title">一般設定</string>
     <string name="account_settings_display_prefs_title">表示</string>
     <string name="account_settings_sync">メール受信</string>
