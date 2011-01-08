@@ -481,7 +481,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_options_mail_check_frequency_12hour">１２時間毎</string>
     <string name="account_setup_options_mail_check_frequency_24hour">２４時間毎</string>
 
-    <string name="push_poll_on_connect_label">プッシュ接続時の取込</string>
+    <string name="push_poll_on_connect_label">プッシュ接続時の同期</string>
     <string name="account_setup_options_enable_push_label">このアカウントにプッシュメールを有効化</string>
     <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます．当オプションはパフォーマンスが改善もしくは低下します．</string>
     <string name="idle_refresh_period_label">IMAP IDLE（プッシュ）接続のリフレッシュ</string>
@@ -565,7 +565,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_message_lists">メッセージ一覧</string>
     <string name="account_settings_message_view">メッセージ表示</string>
     <string name="account_settings_quote_prefix_label">引用記号</string>
-    <string name="account_settings_crypto">暗号化方法</string>
+    <string name="account_settings_crypto">暗号化</string>
     <string name="account_settings_crypto_app">OpenPGPの利用</string>
     <string name="account_settings_crypto_app_none">なし</string>
     <string name="account_settings_crypto_app_not_available">利用不可</string>
@@ -586,7 +586,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
 
-    <string name="account_settings_autodownload_message_size_label">メッセージをダウンロードする上限</string>
+    <string name="account_settings_autodownload_message_size_label">ダウンロードするメッセージの上限</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
