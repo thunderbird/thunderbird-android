@@ -1675,9 +1675,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void processSourceMessage(Message message)
     {
         String action = getIntent().getAction();
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))
+        try
         {
-            try
+            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))
             {
                 if (message.getSubject() != null)
                 {
@@ -1821,17 +1821,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             }
-            catch (MessagingException me)
-            {
-                /*
-                 * This really should not happen at this point but if it does it's okay.
-                 * The user can continue composing their message.
-                 */
-            }
-        }
-        else if (ACTION_FORWARD.equals(action))
-        {
-            try
+            else if (ACTION_FORWARD.equals(action))
             {
                 if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:"))
                 {
@@ -1892,17 +1882,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             }
-            catch (MessagingException me)
-            {
-                /*
-                 * This really should not happen at this point but if it does it's okay.
-                 * The user can continue composing their message.
-                 */
-            }
-        }
-        else if (ACTION_EDIT_DRAFT.equals(action))
-        {
-            try
+            else if (ACTION_EDIT_DRAFT.equals(action))
             {
                 mDraftUid = message.getUid();
                 mSubjectView.setText(message.getSubject());
@@ -2039,10 +2019,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             }
-            catch (MessagingException me)
-            {
-                // TODO
-            }
+        }
+        catch (MessagingException me)
+        {
+            /**
+             * Let the user continue composing their message even if we have a problem processing
+             * the source message. Log it as an error, though.
+             */
+            Log.e(K9.LOG_TAG, "Error while processing source message: ", me);
         }
         mSourceMessageProcessed = true;
         mDraftNeedsSaving = false;
