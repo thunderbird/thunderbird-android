@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/body_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <!-- Content area -->
+    <com.fsck.k9.view.MessageWebView
+        android:id="@+id/message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <com.fsck.k9.view.AccessibleWebView
+        android:id="@+id/accessible_message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <!-- Attachments area -->
+    <LinearLayout
+        android:id="@+id/attachments"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dip" />
+    <Button android:id="@+id/download_remainder"
+        android:text="@string/message_view_download_remainder"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_width="fill_parent" />
+</LinearLayout>
