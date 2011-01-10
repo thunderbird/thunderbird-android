@@ -2,7 +2,6 @@ package com.fsck.k9.helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -131,7 +130,7 @@ public abstract class Contacts
      *              the instance also contains the (display) name of that
      *              entity.
      */
-    public abstract void createContact(Activity activity, Address email);
+    public abstract void createContact(Address email);
 
     /**
      * Check whether the provided email address belongs to one of the contacts.
