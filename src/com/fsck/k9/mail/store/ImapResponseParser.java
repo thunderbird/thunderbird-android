@@ -56,6 +56,7 @@ public class ImapResponseParser
             {
                 response.mCommandContinuationRequested =
                     parseCommandContinuationRequest();
+                //TODO: Add special "resp-text" parsing
                 readTokens(response);
             }
             else
@@ -89,8 +90,17 @@ public class ImapResponseParser
             {
                 response.add(token);
             }
+
+            /*
+             * TODO: Check for responses ("OK", "PREAUTH", "BYE", "NO", "BAD")
+             * that can contain resp-text tokens. If found, hand over to a special
+             * method that parses a resp-text token. There's no need to use
+             * readToken()/parseToken() on that data.
+             *
+             * See RFC 3501, §9 Formal Syntax (resp-text)
+             */
         }
-        response.mCompleted = token == null;
+        response.mCompleted = (token == null);
     }
 
     /**
@@ -204,7 +214,7 @@ public class ImapResponseParser
             token = parseToken(list);
             if (token == null)
             {
-                break;
+                return null;
             }
             else if (token.equals(")"))
             {
@@ -233,7 +243,7 @@ public class ImapResponseParser
             token = parseToken(list);
             if (token == null)
             {
-                break;
+                return null;
             }
             else if (token.equals("]"))
             {
