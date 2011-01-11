@@ -1,6 +1,5 @@
 package com.fsck.k9.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
