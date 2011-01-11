@@ -330,7 +330,7 @@ public class MimeMessage extends Message
         {
             mMessageId = getFirstHeader("Message-ID");
         }
-        if (mMessageId == null) //  even after checking the header
+        if (mMessageId == null)   //  even after checking the header
         {
             setMessageId(generateMessageId());
         }
@@ -498,6 +498,19 @@ public class MimeMessage extends Message
         {
             setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
             ((TextBody)mBody).setEncoding(encoding);
+        }
+    }
+
+    public void setCharset(String charset) throws MessagingException
+    {
+        if (mBody instanceof Multipart)
+        {
+            ((Multipart)mBody).setCharset(charset);
+        }
+        else if (mBody instanceof TextBody)
+        {
+            MimeUtility.setCharset(charset, this);
+            ((TextBody)mBody).setCharset(charset);
         }
     }
 

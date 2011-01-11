@@ -225,6 +225,13 @@
             android:title="@string/account_settings_identities_label"
             android:summary="@string/account_settings_identities_summary" />
 
+        <ListPreference
+            android:persistent="false"
+            android:key="quote_style"
+            android:title="@string/account_settings_quote_style_label"
+            android:entries="@array/account_settings_quote_style_entries"
+            android:entryValues="@array/account_settings_quote_style_values" />
+
         <CheckBoxPreference
             android:persistent="false"
             android:key="reply_after_quote"

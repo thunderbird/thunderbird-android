@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
-import android.webkit.WebSettings;
 
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
@@ -87,6 +86,14 @@ public class K9 extends Application
      */
     public static final String logFile = null;
     //public static final String logFile = Environment.getExternalStorageDirectory() + "/k9mail/debug.log";
+
+    /**
+     * If this is enabled, various development settings will be enabled
+     * It should NEVER be on for Market builds
+     * Right now, it just governs strictmode
+     **/
+    public static boolean DEVELOPER_MODE = true;
+
 
     /**
      * If this is enabled there will be additional logging information sent to
@@ -172,13 +179,6 @@ public class K9 extends Application
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
 
-    /**
-     * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
-     * bodies from loading external resources over the network. Unfortunately this method
-     * isn't exposed via the official Android API. That's why we use reflection to be able
-     * to call the method.
-     */
-    private static final Method mGetBlockNetworkLoads = getMethod(WebSettings.class, "setBlockNetworkLoads");
 
     /**
      * The MIME type(s) of attachments we're willing to view.
@@ -275,6 +275,7 @@ public class K9 extends Application
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
+    public static final int SEND_FAILED_NOTIFICATION      = -1500;
     public static final int CONNECTIVITY_ID = -3;
 
 
@@ -455,8 +456,10 @@ public class K9 extends Application
     @Override
     public void onCreate()
     {
+        maybeSetupStrictMode();
         super.onCreate();
         app = this;
+
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -509,7 +512,6 @@ public class K9 extends Application
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvailableAccounts());
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
@@ -589,6 +591,27 @@ public class K9 extends Application
 
         notifyObservers();
     }
+
+    private void maybeSetupStrictMode()
+    {
+        if (!K9.DEVELOPER_MODE)
+            return;
+
+        try
+        {
+            Class strictMode = Class.forName("android.os.StrictMode");
+            Method enableDefaults = strictMode.getMethod("enableDefaults");
+            enableDefaults.invoke(strictMode);
+        }
+
+        catch (Exception e)
+        {
+            // Discard , as it means we're not running on a device with strict mode
+            Log.v(K9.LOG_TAG, "Failed to turn on strict mode "+e);
+        }
+
+    }
+
 
     /**
      * since Android invokes Application.onCreate() only after invoking all
@@ -917,12 +940,11 @@ public class K9 extends Application
         mMessageViewReturnToList = messageViewReturnToList;
     }
 
-    private static Method getMethod(Class<?> classObject, String methodName)
+    public static Method getMethod(Class<?> classObject, String methodName)
     {
         try
         {
-            Method method = classObject.getMethod(methodName, boolean.class);
-            return method;
+            return classObject.getMethod(methodName, boolean.class);
         }
         catch (NoSuchMethodException e)
         {
@@ -935,21 +957,6 @@ public class K9 extends Application
                   classObject.toString() + "." + methodName, e);
         }
         return null;
-    }
-
-    public static void setBlockNetworkLoads(WebSettings webSettings, boolean state)
-    {
-        if (mGetBlockNetworkLoads != null)
-        {
-            try
-            {
-                mGetBlockNetworkLoads.invoke(webSettings, state);
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
-            }
-        }
     }
 
     public static FontSizes getFontSizes()

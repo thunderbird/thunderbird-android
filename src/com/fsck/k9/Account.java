@@ -18,6 +18,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.view.ColorChip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,18 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Account implements BaseAccount
 {
-    /**
-     * @see Account#setLocalStoreMigrationListener(LocalStoreMigrationListener)
-     *
-     */
-    public interface LocalStoreMigrationListener
-    {
-
-        void onLocalStoreMigration(String oldStoreUri,
-                                   String newStoreUri) throws MessagingException;
-
-    }
-
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -61,8 +50,8 @@ public class Account implements BaseAccount
     public static final String TYPE_OTHER = "OTHER";
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
+    private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
-
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     /**
@@ -83,13 +72,6 @@ public class Account implements BaseAccount
      * storage
      */
     private String mLocalStorageProviderId;
-
-    /**
-     * True if {@link #mLocalStoreUri} may be in use at
-     * the moment.
-     */
-    private final boolean mIsInUse = false;
-    private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -114,8 +96,8 @@ public class Account implements BaseAccount
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
-    private HideButtons mHideMessageViewButtons;
-    private HideButtons mHideMessageViewMoveButtons;
+    private ScrollButtons mScrollMessageViewButtons;
+    private ScrollButtons mScrollMessageViewMoveButtons;
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -131,6 +113,7 @@ public class Account implements BaseAccount
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
+    private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
@@ -156,7 +139,7 @@ public class Account implements BaseAccount
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
-    public enum HideButtons
+    public enum ScrollButtons
     {
         NEVER, ALWAYS, KEYBOARD_AVAILABLE
     }
@@ -169,6 +152,11 @@ public class Account implements BaseAccount
     public enum Searchable
     {
         ALL, DISPLAYABLE, NONE
+    }
+
+    public enum QuoteStyle
+    {
+        PREFIX, HEADER
     }
 
     protected Account(Context context)
@@ -188,8 +176,8 @@ public class Account implements BaseAccount
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        mHideMessageViewButtons = HideButtons.NEVER;
-        mHideMessageViewMoveButtons = HideButtons.NEVER;
+        mScrollMessageViewButtons = ScrollButtons.NEVER;
+        mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -201,6 +189,7 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
+        mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
@@ -293,6 +282,7 @@ public class Account implements BaseAccount
                                                + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
+        mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes)
@@ -317,22 +307,22 @@ public class Account implements BaseAccount
 
         try
         {
-            mHideMessageViewButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
-                                      HideButtons.NEVER.name()));
+            mScrollMessageViewButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
+                                        ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
-            mHideMessageViewButtons = HideButtons.NEVER;
+            mScrollMessageViewButtons = ScrollButtons.NEVER;
         }
 
         try
         {
-            mHideMessageViewMoveButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                          HideButtons.NEVER.name()));
+            mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
+                                            ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
-            mHideMessageViewMoveButtons = HideButtons.NEVER;
+            mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         }
 
         try
@@ -479,6 +469,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
+        editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
@@ -556,8 +547,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
-        editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
-        editor.putString(mUuid + ".hideMoveButtonsEnum", mHideMessageViewMoveButtons.name());
+        editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
+        editor.putString(mUuid + ".hideMoveButtonsEnum", mScrollMessageViewMoveButtons.name());
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -574,6 +565,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
+        editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
@@ -605,8 +597,7 @@ public class Account implements BaseAccount
     {
         try
         {
-            LocalStore localStore = getLocalStore();
-            localStore.resetVisibleLimits(getDisplayCount());
+            getLocalStore().resetVisibleLimits(getDisplayCount());
         }
         catch (MessagingException e)
         {
@@ -702,6 +693,12 @@ public class Account implements BaseAccount
     public synchronized int getChipColor()
     {
         return mChipColor;
+    }
+
+
+    public ColorChip generateColorChip()
+    {
+        return new ColorChip( mChipColor);
     }
 
 
@@ -1048,24 +1045,24 @@ public class Account implements BaseAccount
         this.mNotifySync = showOngoing;
     }
 
-    public synchronized HideButtons getHideMessageViewButtons()
+    public synchronized ScrollButtons getScrollMessageViewButtons()
     {
-        return mHideMessageViewButtons;
+        return mScrollMessageViewButtons;
     }
 
-    public synchronized void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
+    public synchronized void setScrollMessageViewButtons(ScrollButtons scrollMessageViewButtons)
     {
-        mHideMessageViewButtons = hideMessageViewButtons;
+        mScrollMessageViewButtons = scrollMessageViewButtons;
     }
 
-    public synchronized HideButtons getHideMessageViewMoveButtons()
+    public synchronized ScrollButtons getScrollMessageViewMoveButtons()
     {
-        return mHideMessageViewMoveButtons;
+        return mScrollMessageViewMoveButtons;
     }
 
-    public synchronized void setHideMessageViewMoveButtons(HideButtons hideMessageViewButtons)
+    public synchronized void setScrollMessageViewMoveButtons(ScrollButtons scrollMessageViewButtons)
     {
-        mHideMessageViewMoveButtons = hideMessageViewButtons;
+        mScrollMessageViewMoveButtons = scrollMessageViewButtons;
     }
 
     public synchronized ShowPictures getShowPictures()
@@ -1389,12 +1386,11 @@ public class Account implements BaseAccount
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public void switchLocalStorage(String newStorageProviderId) throws MessagingException
+    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException
     {
-        if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
+        if (!mLocalStorageProviderId.equals(newStorageProviderId))
         {
-            mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
-                    newStorageProviderId);
+            getLocalStore().switchLocalStorage(newStorageProviderId);
         }
     }
 
@@ -1479,6 +1475,16 @@ public class Account implements BaseAccount
         }
     }
 
+    public QuoteStyle getQuoteStyle()
+    {
+        return mQuoteStyle;
+    }
+
+    public void setQuoteStyle(QuoteStyle quoteStyle)
+    {
+        this.mQuoteStyle = quoteStyle;
+    }
+
     public synchronized String getQuotePrefix()
     {
         return mQuotePrefix;
@@ -1548,24 +1554,6 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
-    }
-
-    public boolean isInUse()
-    {
-        return mIsInUse;
-    }
-
-    /**
-     * Set a listener to be informed when the underlying {@link StorageProvider}
-     * of the {@link LocalStore} of this account changes. (e.g. via
-     * {@link #switchLocalStorage(Context, String)})
-     *
-     * @param listener
-     * @see #switchLocalStorage(Context, String)
-     */
-    public void setLocalStoreMigrationListener(LocalStoreMigrationListener listener)
-    {
-        this.mLocalStoreMigrationListener = listener;
     }
 
     public synchronized CryptoProvider getCryptoProvider()

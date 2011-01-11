@@ -2,7 +2,6 @@ package com.fsck.k9.helper;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -69,7 +68,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public void createContact(final Activity activity, final Address email)
+    public void createContact(final Address email)
     {
         final Uri contactUri = Uri.fromParts("mailto", email.getAddress(), null);
 
@@ -87,7 +86,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
             contactIntent.putExtra(Intents.Insert.NAME, senderPersonal);
         }
 
-        activity.startActivity(contactIntent);
+        mContext.startActivity(contactIntent);
     }
 
     @Override

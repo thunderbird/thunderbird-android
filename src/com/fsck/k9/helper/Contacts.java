@@ -2,7 +2,6 @@ package com.fsck.k9.helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -46,11 +45,15 @@ public abstract class Contacts
             int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
 
             String className = null;
-            if (sdkVersion <= Build.VERSION_CODES.DONUT)
+            /*
+             * The new API appeared in Eclair, but it supported phonetic names in Froyo.
+             * Therefore we employ the old API in Eclair.
+             */
+            if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1)
             {
                 className = "com.fsck.k9.helper.ContactsSdk3_4";
             }
-            else if (sdkVersion >= Build.VERSION_CODES.ECLAIR)
+            else
             {
                 className = "com.fsck.k9.helper.ContactsSdk5";
             }
@@ -121,13 +124,12 @@ public abstract class Contacts
      * Start the activity to add information to an existing contact or add a
      * new one.
      *
-     * @param activity Object of the currently active activity.
      * @param email An {@link Address} instance containing the email address
      *              of the entity you want to add to the contacts. Optionally
      *              the instance also contains the (display) name of that
      *              entity.
      */
-    public abstract void createContact(Activity activity, Address email);
+    public abstract void createContact(Address email);
 
     /**
      * Check whether the provided email address belongs to one of the contacts.

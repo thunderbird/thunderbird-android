@@ -10,7 +10,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.mail.Address;
@@ -19,6 +18,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.helper.DateFormatter;
 
 public class MessageHelper
 {

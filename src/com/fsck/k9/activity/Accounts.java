@@ -27,6 +27,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.view.ColorChip;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1010,7 +1011,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             {
                 Account realAccount = (Account)account;
 
-                holder.chip.setBackgroundColor(realAccount.getChipColor());
+                holder.chip.setBackgroundDrawable(realAccount.generateColorChip().drawable());
                 if (unreadMessageCount == null)
                 {
                     holder.chip.getBackground().setAlpha(0);
@@ -1027,7 +1028,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             else
             {
-                holder.chip.setBackgroundColor(0x00000000);
+                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999).drawable());
             }
 
 

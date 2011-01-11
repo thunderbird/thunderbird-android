@@ -11,9 +11,12 @@ import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
-
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.DateFormatter;
 
 
 public class K9Activity extends Activity
@@ -106,6 +109,30 @@ public class K9Activity extends Activity
     {
     }
 
+
+    protected Animation inFromRightAnimation()
+    {
+        return slideAnimation(0.0f, +1.0f);
+    }
+
+    protected Animation outToLeftAnimation()
+    {
+        return slideAnimation(0.0f, -1.0f);
+    }
+
+    private Animation slideAnimation(float right, float left)
+    {
+
+        Animation slide = new TranslateAnimation(
+            Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
+            Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f
+        );
+        slide.setDuration(125);
+        slide.setFillBefore(true);
+        slide.setInterpolator(new AccelerateInterpolator());
+        return slide;
+    }
+
     class MyGestureDetector extends SimpleOnGestureListener
     {
 
@@ -168,5 +195,6 @@ public class K9Activity extends Activity
             return false;
         }
     }
+
 
 }

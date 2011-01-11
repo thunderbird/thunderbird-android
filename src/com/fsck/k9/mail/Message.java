@@ -207,6 +207,8 @@ public abstract class Message implements Part, Body
 
     public abstract void setEncoding(String encoding) throws UnavailableStorageException;
 
+    public abstract void setCharset(String charset) throws MessagingException;
+
     public MessageReference makeMessageReference()
     {
         if (mReference == null)

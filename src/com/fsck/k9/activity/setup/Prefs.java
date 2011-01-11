@@ -22,12 +22,13 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
-import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
+
 
 public class Prefs extends K9PreferenceActivity
 {

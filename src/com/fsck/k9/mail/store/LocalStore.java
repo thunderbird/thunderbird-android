@@ -1,17 +1,7 @@
 
 package com.fsck.k9.mail.store;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Matcher;
 
+import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
@@ -35,20 +22,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.text.Html;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.Account.LocalStoreMigrationListener;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.Regex;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -57,10 +40,10 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -68,6 +51,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 
@@ -76,45 +61,8 @@ import com.fsck.k9.provider.AttachmentProvider;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store implements Serializable, LocalStoreMigrationListener
+public class LocalStore extends Store implements Serializable
 {
-
-    /**
-     * Callback interface for DB operations. Concept is similar to Spring
-     * HibernateCallback.
-     *
-     * @param <T>
-     *            Return value type for {@link #doDbWork(SQLiteDatabase)}
-     */
-    public static interface DbCallback<T>
-    {
-        /**
-         * @param db
-         *            The locked database on which the work should occur. Never
-         *            <code>null</code>.
-         * @return Any relevant data. Can be <code>null</code>.
-         * @throws WrappedException
-         * @throws UnavailableStorageException
-         */
-        T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
-    }
-
-    /**
-     * Workaround exception wrapper used to keep the inner exception generated
-     * in a {@link DbCallback}.
-     */
-    protected static class WrappedException extends RuntimeException
-    {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 8184421232587399369L;
-
-        public WrappedException(final Exception cause)
-        {
-            super(cause);
-        }
-    }
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
@@ -123,34 +71,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
-
-    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
-
-    private String mStorageProviderId;
-
-    private SQLiteDatabase mDb;
-
-    {
-        final ReadWriteLock lock = new ReentrantReadWriteLock(true);
-        mReadLock = lock.readLock();
-        mWriteLock = lock.writeLock();
-    }
-
-    /**
-     * Reentrant read lock
-     */
-    protected final Lock mReadLock;
-
-    /**
-     * Reentrant write lock (if you lock it 2x from the same thread, you have to
-     * unlock it 2x to release it)
-     */
-    protected final Lock mWriteLock;
-
-    private Application mApplication;
-    private String uUid = null;
 
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
@@ -163,7 +84,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         HEADERS_TO_SAVE.add("References");
         HEADERS_TO_SAVE.add("Content-ID");
         HEADERS_TO_SAVE.add("Content-Disposition");
-        HEADERS_TO_SAVE.add("X-User-Agent");
+        HEADERS_TO_SAVE.add("User-Agent");
     }
     /*
      * a String containing the columns getMessages expects to work with
@@ -173,636 +94,233 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-    private final StorageListener mStorageListener = new StorageListener();
+    protected static final int DB_VERSION = 39;
 
-    /**
-     * {@link ThreadLocal} to check whether a DB transaction is occuring in the
-     * current {@link Thread}.
-     *
-     * @see #execute(boolean, DbCallback)
-     */
-    private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
+    protected String uUid = null;
+
+    private final Application mApplication;
+
+    private LockableDatabase database;
 
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
+     * @param account
+     * @param application
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
-    public LocalStore(Account account, Application application) throws MessagingException
+    public LocalStore(final Account account, final Application application) throws MessagingException
     {
         super(account);
+        database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition());
+
         mApplication = application;
-        mStorageProviderId = account.getLocalStorageProviderId();
-        account.setLocalStoreMigrationListener(this);
+        database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
 
-        lockWrite();
-        try
-        {
-            openOrCreateDataspace(application);
-        }
-        finally
-        {
-            unlockWrite();
-        }
-
-        StorageManager.getInstance(application).addListener(mStorageListener);
+        database.open();
     }
 
-    /**
-     * Lock the storage for shared operations (concurrent threads are allowed to
-     * run simultaneously).
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available
-     */
-    protected void lockRead() throws UnavailableStorageException
+    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException
     {
-        mReadLock.lock();
-        try
-        {
-            StorageManager.getInstance(mApplication).lockProvider(mStorageProviderId);
-        }
-        catch (UnavailableStorageException e)
-        {
-            mReadLock.unlock();
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            mReadLock.unlock();
-            throw e;
-        }
+        database.switchProvider(newStorageProviderId);
     }
 
-    protected void unlockRead()
+    private class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition
     {
-        StorageManager.getInstance(mApplication).unlockProvider(mStorageProviderId);
-        mReadLock.unlock();
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite() throws UnavailableStorageException
-    {
-        lockWrite(mStorageProviderId);
-    }
-
-    /**
-     * Lock the storage for exclusive access (other threads aren't allowed to
-     * run simultaneously)
-     *
-     * <p>
-     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
-     * done with the storage.
-     * </p>
-     *
-     * @param providerId
-     *            Never <code>null</code>.
-     *
-     * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available.
-     */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException
-    {
-        mWriteLock.lock();
-        try
+        @Override
+        public int getVersion()
         {
-            StorageManager.getInstance(mApplication).lockProvider(providerId);
+            return DB_VERSION;
         }
-        catch (UnavailableStorageException e)
+
+        @Override
+        public void doDbUpgrade(final SQLiteDatabase db)
         {
-            mWriteLock.unlock();
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            mWriteLock.unlock();
-            throw e;
-        }
-    }
+            Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
+                                            db.getVersion(), DB_VERSION));
 
-    protected void unlockWrite()
-    {
-        unlockWrite(mStorageProviderId);
-    }
 
-    protected void unlockWrite(final String providerId)
-    {
-        StorageManager.getInstance(mApplication).unlockProvider(providerId);
-        mWriteLock.unlock();
-    }
+            AttachmentProvider.clear(mApplication);
 
-    /**
-     * Execute a DB callback in a shared context (doesn't prevent concurrent
-     * shared executions), taking care of locking the DB storage.
-     *
-     * <p>
-     * Can be instructed to start a transaction if none is currently active in
-     * the current thread. Callback will participe in any active transaction (no
-     * inner transaction created).
-     * </p>
-     *
-     * @param transactional
-     *            <code>true</code> the callback must be executed in a
-     *            transactional context.
-     * @param callback
-     *            Never <code>null</code>.
-     *
-     * @param <T>
-     * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
-     * @throws UnavailableStorageException
-     */
-    protected <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException
-    {
-        lockRead();
-        final boolean doTransaction = transactional && inTransaction.get() == null;
-        try
-        {
-
-            final boolean debug = K9.DEBUG;
-            if (doTransaction)
-            {
-                inTransaction.set(Boolean.TRUE);
-                mDb.beginTransaction();
-            }
             try
             {
-                final T result = callback.doDbWork(mDb);
-                if (doTransaction)
+                // schema version 29 was when we moved to incremental updates
+                // in the case of a new db or a < v29 db, we blow away and start from scratch
+                if (db.getVersion() < 29)
                 {
-                    mDb.setTransactionSuccessful();
+
+                    db.execSQL("DROP TABLE IF EXISTS folders");
+                    db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
+
+                    db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+                    db.execSQL("DROP TABLE IF EXISTS messages");
+                    db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
+                               + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
+                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
+
+                    db.execSQL("DROP TABLE IF EXISTS headers");
+                    db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                    db.execSQL("DROP TABLE IF EXISTS attachments");
+                    db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                               + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                               + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
+
+                    db.execSQL("DROP TABLE IF EXISTS pending_commands");
+                    db.execSQL("CREATE TABLE pending_commands " +
+                               "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+
+                    db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+                    db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+                    db.execSQL("DROP TRIGGER IF EXISTS delete_message");
+                    db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                               + "DELETE FROM headers where old.id = message_id; END;");
                 }
-                return result;
-            }
-            finally
-            {
-                if (doTransaction)
+                else
                 {
-                    final long begin;
-                    if (debug)
+                    // in the case that we're starting out at 29 or newer, run all the needed updates
+
+                    if (db.getVersion() < 30)
                     {
-                        begin = System.currentTimeMillis();
+                        try
+                        {
+                            db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            if (! e.toString().startsWith("duplicate column name: deleted"))
+                            {
+                                throw e;
+                            }
+                        }
                     }
-                    else
+                    if (db.getVersion() < 31)
                     {
-                        begin = 0l;
+                        db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
                     }
-                    // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
-                    mDb.endTransaction();
-                    if (debug)
+                    if (db.getVersion() < 32)
                     {
-                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
+                        db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
                     }
+                    if (db.getVersion() < 33)
+                    {
+
+                        try
+                        {
+                            db.execSQL("ALTER TABLE messages ADD preview TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            if (! e.toString().startsWith("duplicate column name: preview"))
+                            {
+                                throw e;
+                            }
+                        }
+
+                    }
+                    if (db.getVersion() < 34)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            if (! e.getMessage().startsWith("duplicate column name: flagged_count"))
+                            {
+                                throw e;
+                            }
+                        }
+                    }
+                    if (db.getVersion() < 35)
+                    {
+                        try
+                        {
+                            db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
+                        }
+                    }
+                    if (db.getVersion() < 36)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
+                        }
+                    }
+                    if (db.getVersion() < 37)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
+                        }
+                    }
+
+
+                    // Database version 38 is solely to prune cached attachments now that we clear them better
+                    if (db.getVersion() < 39)
+                    {
+                        try
+                        {
+                            db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                        }
+                    }
+
+
+
                 }
-            }
-        }
-        finally
-        {
-            if (doTransaction)
-            {
-                inTransaction.set(null);
-            }
-            unlockRead();
-        }
-    }
 
-    public void onLocalStoreMigration(final String oldProviderId,
-                                      final String newProviderId) throws MessagingException
-    {
-        lockWrite(oldProviderId);
-        try
-        {
-            lockWrite(newProviderId);
-            try
-            {
-                try
-                {
-                    mDb.close();
-                }
-                catch (Exception e)
-                {
-                    Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
-                }
-
-                final StorageManager storageManager = StorageManager.getInstance(mApplication);
-
-                // create new path
-                prepareStorage(newProviderId);
-
-                // move all database files
-                moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
-                // move all attachment files
-                moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
-
-                mStorageProviderId = newProviderId;
-
-                // re-initialize this class with the new Uri
-                openOrCreateDataspace(mApplication);
-            }
-            finally
-            {
-                unlockWrite(newProviderId);
-            }
-        }
-        finally
-        {
-            unlockWrite(oldProviderId);
-        }
-    }
-
-    private void moveRecursive(File fromDir, File toDir)
-    {
-        if (!fromDir.exists())
-        {
-            return;
-        }
-        if (!fromDir.isDirectory())
-        {
-            if (toDir.exists())
-            {
-                if (!toDir.delete())
-                {
-                    Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
-                }
-            }
-            if (!fromDir.renameTo(toDir))
-            {
-                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
-                move(fromDir, toDir);
-            }
-            return;
-        }
-        if (!toDir.exists() || !toDir.isDirectory())
-        {
-            if (toDir.exists() )
-            {
-                toDir.delete();
-            }
-            if (!toDir.mkdirs())
-            {
-                Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
-            }
-        }
-        File[] files = fromDir.listFiles();
-        for (File file : files)
-        {
-            if (file.isDirectory())
-            {
-                moveRecursive(file, new File(toDir, file.getName()));
-                file.delete();
-            }
-            else
-            {
-                File target = new File(toDir, file.getName());
-                if (!file.renameTo(target))
-                {
-                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
-                    move(file, target);
-                }
-            }
-        }
-        if (!fromDir.delete())
-        {
-            Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath() + " after migration to/from SD-card");
-        }
-    }
-    private boolean move(File from, File to)
-    {
-        if (to.exists())
-        {
-            to.delete();
-        }
-        to.getParentFile().mkdirs();
-
-        try
-        {
-            FileInputStream in = new FileInputStream(from);
-            FileOutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while ((count = in.read(buffer)) > 0)
-            {
-                out.write(buffer, 0, count);
-            }
-            out.close();
-            in.close();
-            from.delete();
-            return true;
-        }
-        catch (Exception e)
-        {
-            Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
-            return false;
-        }
-
-    }
-
-    /**
-     *
-     * @param application
-     * @throws UnavailableStorageException
-     */
-    void openOrCreateDataspace(final Application application) throws UnavailableStorageException
-    {
-
-        lockWrite();
-        try
-        {
-            final File databaseFile = prepareStorage(mStorageProviderId);
-            try
-            {
-                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
             }
             catch (SQLiteException e)
             {
-                // try to gracefully handle DB corruption - see issue 2537
-                Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
-                databaseFile.delete();
-                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
+                Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
+                db.setVersion(0);
+                throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
             }
-            if (mDb.getVersion() != DB_VERSION)
+
+
+
+            db.setVersion(DB_VERSION);
+
+            if (db.getVersion() != DB_VERSION)
             {
-                doDbUpgrade(mDb, application);
-            }
-        }
-        finally
-        {
-            unlockWrite();
-        }
-    }
-
-    /**
-     * @param providerId
-     *            Never <code>null</code>.
-     * @return DB file.
-     * @throws UnavailableStorageException
-     */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException
-    {
-        final StorageManager storageManager = StorageManager.getInstance(mApplication);
-
-        final File databaseFile;
-        final File databaseParentDir;
-        databaseFile = storageManager.getDatabase(uUid, providerId);
-        databaseParentDir = databaseFile.getParentFile();
-        if (databaseParentDir.isFile())
-        {
-            // should be safe to inconditionally delete clashing file: user is not supposed to mess with our directory
-            databaseParentDir.delete();
-        }
-        if (!databaseParentDir.exists())
-        {
-            if (!databaseParentDir.mkdirs())
-            {
-                // Android seems to be unmounting the storage...
-                throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
-            }
-            touchFile(databaseParentDir, ".nomedia");
-        }
-
-        final File attachmentDir;
-        final File attachmentParentDir;
-        attachmentDir = storageManager
-                        .getAttachmentDirectory(uUid, providerId);
-        attachmentParentDir = attachmentDir.getParentFile();
-        if (!attachmentParentDir.exists())
-        {
-            attachmentParentDir.mkdirs();
-            touchFile(attachmentParentDir, ".nomedia");
-        }
-        if (!attachmentDir.exists())
-        {
-            attachmentDir.mkdirs();
-        }
-        return databaseFile;
-    }
-
-    /**
-     * @param parentDir
-     * @param name
-     *            Never <code>null</code>.
-     */
-    protected void touchFile(final File parentDir, String name)
-    {
-        final File file = new File(parentDir, name);
-        try
-        {
-            if (!file.exists())
-            {
-                file.createNewFile();
-            }
-            else
-            {
-                file.setLastModified(System.currentTimeMillis());
-            }
-        }
-        catch (Exception e)
-        {
-            Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
-        }
-    }
-
-    private void doDbUpgrade(final SQLiteDatabase db, final Application application)
-    {
-        Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
-                                        db.getVersion(), DB_VERSION));
-
-
-        AttachmentProvider.clear(application);
-
-        try
-        {
-            // schema version 29 was when we moved to incremental updates
-            // in the case of a new db or a < v29 db, we blow away and start from scratch
-            if (db.getVersion() < 29)
-            {
-
-                db.execSQL("DROP TABLE IF EXISTS folders");
-                db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                           + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
-
-                db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
-                db.execSQL("DROP TABLE IF EXISTS messages");
-                db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
-                           + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                           + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
-
-                db.execSQL("DROP TABLE IF EXISTS headers");
-                db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
-
-                db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-                db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
-                db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                db.execSQL("DROP TABLE IF EXISTS attachments");
-                db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                           + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                           + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
-
-                db.execSQL("DROP TABLE IF EXISTS pending_commands");
-                db.execSQL("CREATE TABLE pending_commands " +
-                           "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-                db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-                db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
-                db.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                           + "DELETE FROM headers where old.id = message_id; END;");
-            }
-            else
-            {
-                // in the case that we're starting out at 29 or newer, run all the needed updates
-
-                if (db.getVersion() < 30)
-                {
-                    try
-                    {
-                        db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        if (! e.toString().startsWith("duplicate column name: deleted"))
-                        {
-                            throw e;
-                        }
-                    }
-                }
-                if (db.getVersion() < 31)
-                {
-                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                }
-                if (db.getVersion() < 32)
-                {
-                    db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
-                }
-                if (db.getVersion() < 33)
-                {
-
-                    try
-                    {
-                        db.execSQL("ALTER TABLE messages ADD preview TEXT");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        if (! e.toString().startsWith("duplicate column name: preview"))
-                        {
-                            throw e;
-                        }
-                    }
-
-                }
-                if (db.getVersion() < 34)
-                {
-                    try
-                    {
-                        db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        if (! e.getMessage().startsWith("duplicate column name: flagged_count"))
-                        {
-                            throw e;
-                        }
-                    }
-                }
-                if (db.getVersion() < 35)
-                {
-                    try
-                    {
-                        db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
-                    }
-                }
-                if (db.getVersion() < 36)
-                {
-                    try
-                    {
-                        db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
-                    }
-                }
-                if (db.getVersion() < 37)
-                {
-                    try
-                    {
-                        db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
-                    }
-                }
-
-
-                // Database version 38 is solely to prune cached attachments now that we clear them better
-                if (db.getVersion() < 39)
-                {
-                    try
-                    {
-                        db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
-                    }
-                    catch (SQLiteException e)
-                    {
-                        Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
-                    }
-                }
-
-
-
+                throw new Error("Database upgrade failed!");
             }
 
+            // Unless we're blowing away the whole data store, there's no reason to prune attachments
+            // every time the user upgrades. it'll just cost them money and pain.
+            // try
+            //{
+            //        pruneCachedAttachments(true);
+            //}
+            //catch (Exception me)
+            //{
+            //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
+            //}
         }
-        catch (SQLiteException e)
-        {
-            Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
-            db.setVersion(0);
-            throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
-        }
-
-
-
-        db.setVersion(DB_VERSION);
-
-        if (db.getVersion() != DB_VERSION)
-        {
-            throw new Error("Database upgrade failed!");
-        }
-
-        // Unless we're blowing away the whole data store, there's no reason to prune attachments
-        // every time the user upgrades. it'll just cost them money and pain.
-        // try
-        //{
-        //        pruneCachedAttachments(true);
-        //}
-        //catch (Exception me)
-        //{
-        //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
-        //}
     }
 
     public long getSize() throws UnavailableStorageException
@@ -811,9 +329,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
         final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
-                                         mStorageProviderId);
+                                         database.getStorageProviderId());
 
-        return execute(false, new DbCallback<Long>()
+        return database.execute(false, new DbCallback<Long>()
         {
             @Override
             public Long doDbWork(final SQLiteDatabase db)
@@ -828,7 +346,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     }
                 }
 
-                final File dbFile = storageManager.getDatabase(uUid, mStorageProviderId);
+                final File dbFile = storageManager.getDatabase(uUid, database.getStorageProviderId());
                 return dbFile.length() + attachmentLength;
             }
         });
@@ -839,7 +357,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
 
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -871,7 +389,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         // don't delete messages that are Local, since there is no copy on the server.
         // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
         // been deleted locally.  They take up insignificant space
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db)
@@ -894,7 +412,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public int getMessageCount() throws MessagingException
     {
-        return execute(false, new DbCallback<Integer>()
+        return database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db)
@@ -904,8 +422,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
-                    int messageCount = cursor.getInt(0);
-                    return messageCount;
+                    return cursor.getInt(0);   // message count
+
+
+
                 }
                 finally
                 {
@@ -920,7 +440,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public int getFolderCount() throws MessagingException
     {
-        return execute(false, new DbCallback<Integer>()
+        return database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db)
@@ -930,8 +450,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM folders", null);
                     cursor.moveToFirst();
-                    int messageCount = cursor.getInt(0);
-                    return messageCount;
+                    return cursor.getInt(0);        // folder count
                 }
                 finally
                 {
@@ -957,7 +476,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final List<LocalFolder> folders = new LinkedList<LocalFolder>();
         try
         {
-            execute(false, new DbCallback<List<? extends Folder>>()
+            database.execute(false, new DbCallback<List<? extends Folder>>()
             {
                 @Override
                 public List<? extends Folder> doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1002,108 +521,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
     }
 
-    /**
-     * Delete the entire Store and it's backing database.
-     * @throws UnavailableStorageException
-     */
     public void delete() throws UnavailableStorageException
     {
-        lockWrite();
-        try
-        {
-            try
-            {
-                mDb.close();
-            }
-            catch (Exception e)
-            {
-
-            }
-            final StorageManager storageManager = StorageManager.getInstance(mApplication);
-            try
-            {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
-                final File[] attachments = attachmentDirectory.listFiles();
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
-                        attachment.delete();
-                    }
-                }
-                if (attachmentDirectory.exists())
-                {
-                    attachmentDirectory.delete();
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            try
-            {
-                storageManager.getDatabase(uUid, mStorageProviderId).delete();
-            }
-            catch (Exception e)
-            {
-                Log.i(K9.LOG_TAG, "LocalStore: delete(): Unable to delete backing DB file", e);
-            }
-
-            // stop waiting for mount/unmount events
-            StorageManager.getInstance(mApplication).removeListener(mStorageListener);
-        }
-        finally
-        {
-            unlockWrite();
-        }
+        database.delete();
     }
 
     public void recreate() throws UnavailableStorageException
     {
-        lockWrite();
-        try
-        {
-            try
-            {
-                mDb.close();
-            }
-            catch (Exception e)
-            {
-
-            }
-            final StorageManager storageManager = StorageManager.getInstance(mApplication);
-            try
-            {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
-                final File[] attachments = attachmentDirectory.listFiles();
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
-                        attachment.delete();
-                    }
-                }
-                if (attachmentDirectory.exists())
-                {
-                    attachmentDirectory.delete();
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            try
-            {
-                storageManager.getDatabase(uUid, mStorageProviderId).delete();
-            }
-            catch (Exception e)
-            {
-
-            }
-            openOrCreateDataspace(mApplication);
-        }
-        finally
-        {
-            unlockWrite();
-        }
+        database.recreate();
     }
 
     public void pruneCachedAttachments() throws MessagingException
@@ -1113,10 +538,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     /**
      * Deletes all cached attachments for the entire store.
+     * @param force
+     * @throws com.fsck.k9.mail.MessagingException
      */
-    public void pruneCachedAttachments(final boolean force) throws MessagingException
+    private void pruneCachedAttachments(final boolean force) throws MessagingException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1128,7 +555,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     db.update("attachments", cv, null, null);
                 }
                 final StorageManager storageManager = StorageManager.getInstance(mApplication);
-                File[] files = storageManager.getAttachmentDirectory(uUid, mStorageProviderId).listFiles();
+                File[] files = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId()).listFiles();
                 for (File file : files)
                 {
                     if (file.exists())
@@ -1204,7 +631,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         final ContentValues cv = new ContentValues();
         cv.put("visible_limit", Integer.toString(visibleLimit));
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1217,7 +644,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public ArrayList<PendingCommand> getPendingCommands() throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<ArrayList<PendingCommand>>()
+        return database.execute(false, new DbCallback<ArrayList<PendingCommand>>()
         {
             @Override
             public ArrayList<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1270,7 +697,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             final ContentValues cv = new ContentValues();
             cv.put("command", command.command);
             cv.put("arguments", Utility.combine(command.arguments, ','));
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1288,7 +715,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public void removePendingCommand(final PendingCommand command) throws UnavailableStorageException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1301,7 +728,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public void removePendingCommands() throws UnavailableStorageException
     {
-        execute(false, new DbCallback<Void>()
+        database.execute(false, new DbCallback<Void>()
         {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1310,66 +737,6 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 return null;
             }
         });
-    }
-
-    /**
-     * Open the DB on mount and close the DB on unmount
-     */
-    private class StorageListener implements StorageManager.StorageListener
-    {
-        @Override
-        public void onUnmount(final String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
-                return;
-            }
-
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "LocalStore: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
-            }
-
-            try
-            {
-                lockWrite();
-                try
-                {
-                    mDb.close();
-                }
-                finally
-                {
-                    unlockWrite();
-                }
-            }
-            catch (UnavailableStorageException e)
-            {
-                Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
-            }
-        }
-
-        @Override
-        public void onMount(String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
-                return;
-            }
-
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "LocalStore: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
-            }
-
-            try
-            {
-                openOrCreateDataspace(mApplication);
-            }
-            catch (UnavailableStorageException e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
-            }
-        }
     }
 
     public static class PendingCommand
@@ -1525,7 +892,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     ) throws MessagingException
     {
         final ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
-        final int j = execute(false, new DbCallback<Integer>()
+        final int j = database.execute(false, new DbCallback<Integer>()
         {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1589,7 +956,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public String getAttachmentType(final String attachmentId) throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<String>()
+        return database.execute(false, new DbCallback<String>()
         {
             @Override
             public String doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1629,13 +996,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException
     {
-        return execute(false, new DbCallback<AttachmentInfo>()
+        return database.execute(false, new DbCallback<AttachmentInfo>()
         {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                String name = null;
-                int size = -1;
+                String name;
+                int size;
                 Cursor cursor = null;
                 try
                 {
@@ -1689,7 +1056,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private String prefId = null;
         private String mPushState = null;
         private boolean mIntegrate = false;
-
+        // mLastUid is used during syncs. It holds the highest UID within the local folder so we
+        // know whether or not an unread message added to the local folder is actually "new" or not.
+        private Integer mLastUid = null;
 
         public LocalFolder(String name)
         {
@@ -1726,7 +1095,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1817,7 +1186,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public boolean exists() throws MessagingException
         {
-            return execute(false, new DbCallback<Boolean>()
+            return database.execute(false, new DbCallback<Boolean>()
             {
                 @Override
                 public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1857,7 +1226,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1880,7 +1249,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1907,7 +1276,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Integer>()
+                return database.execute(false, new DbCallback<Integer>()
                 {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1923,14 +1292,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         Cursor cursor = null;
                         try
                         {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE folder_id = ?",
                                                  new String[]
                                                  {
                                                      Long.toString(mFolderId)
                                                  });
                             cursor.moveToFirst();
-                            int messageCount = cursor.getInt(0);
-                            return messageCount;
+                            return cursor.getInt(0);   //messagecount
                         }
                         finally
                         {
@@ -1966,7 +1334,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -1996,7 +1364,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Integer>()
+                database.execute(false, new DbCallback<Integer>()
                 {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2027,7 +1395,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2058,7 +1426,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2112,7 +1480,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void setVisibleLimit(final int visibleLimit) throws MessagingException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2138,7 +1506,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2167,7 +1535,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2418,7 +1786,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
@@ -2583,7 +1951,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         private void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2644,7 +2012,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Message>()
+                return database.execute(false, new DbCallback<Message>()
                 {
                     @Override
                     public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2704,7 +2072,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                return execute(false, new DbCallback<Message[]>()
+                return database.execute(false, new DbCallback<Message[]>()
                 {
                     @Override
                     public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2782,7 +2150,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2843,6 +2211,39 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         /**
+         * Convenience transaction wrapper for storing a message and set it as fully downloaded. Implemented mainly to speed up DB transaction commit.
+         *
+         * @param message Message to store. Never <code>null</code>.
+         * @param runnable What to do before setting {@link Flag#X_DOWNLOADED_FULL}. Never <code>null</code>.
+         * @return The local version of the message. Never <code>null</code>.
+         * @throws MessagingException
+         */
+        public Message storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException
+        {
+            return database.execute(true, new DbCallback<Message>()
+            {
+                @Override
+                public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
+                {
+                    try
+                    {
+                        appendMessages(new Message[] { message });
+                        final String uid = message.getUid();
+                        final Message result = getMessage(uid);
+                        runnable.run();
+                        // Set a flag indicating this message has now be fully downloaded
+                        result.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                        return result;
+                    }
+                    catch (MessagingException e)
+                    {
+                        throw new WrappedException(e);
+                    }
+                }
+            });
+        }
+
+        /**
          * The method differs slightly from the contract; If an incoming message already has a uid
          * assigned and it matches the uid of an existing message then this message will replace the
          * old message. It is implemented as a delete/insert. This functionality is used in saving
@@ -2869,13 +2270,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
          * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
          * message, retrieve the appropriate local message instance first (if it already exists).
+         * @param messages
+         * @param copy
          */
         private void appendMessages(final Message[] messages, final boolean copy) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -2954,7 +2357,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                                 if (preview == null || preview.length() == 0)
                                 {
-                                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                    preview = calculateContentPreview(HtmlConverter.htmlToText(html));
                                 }
 
                                 try
@@ -3035,7 +2438,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3082,7 +2485,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
-                                preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                preview = calculateContentPreview(HtmlConverter.htmlToText(html));
                             }
                             try
                             {
@@ -3144,10 +2547,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         /**
          * Save the headers of the given message. Note that the message is not
          * necessarily a {@link LocalMessage} instance.
+         * @param id
+         * @param message
+         * @throws com.fsck.k9.mail.MessagingException
          */
         private void saveHeaders(final long id, final MimeMessage message) throws MessagingException
         {
-            execute(true, new DbCallback<Void>()
+            database.execute(true, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3195,7 +2601,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private void deleteHeaders(final long id) throws UnavailableStorageException
         {
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3219,7 +2625,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3236,7 +2642,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
                             }
 
-                            final File attachmentDirectory = StorageManager.getInstance(mApplication).getAttachmentDirectory(uUid, mStorageProviderId);
+                            final File attachmentDirectory = StorageManager.getInstance(mApplication).getAttachmentDirectory(uUid, database.getStorageProviderId());
                             if (attachment.getBody() != null)
                             {
                                 Body body = attachment.getBody();
@@ -3332,10 +2738,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             /* The message has attachment with Content-ID */
                             if (contentId != null && contentUri != null)
                             {
-                                Cursor cursor = null;
-                                cursor = db.query("messages", new String[]
-                                                  { "html_content" }, "id = ?", new String[]
-                                                  { Long.toString(messageId) }, null, null, null);
+                                Cursor cursor = db.query("messages", new String[]
+                                                         { "html_content" }, "id = ?", new String[]
+                                                         { Long.toString(messageId) }, null, null, null);
                                 try
                                 {
                                     if (cursor.moveToNext())
@@ -3396,13 +2801,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          * Changes the stored uid of the given message (using it's internal id as a key) to
          * the uid in the message.
          * @param message
+         * @throws com.fsck.k9.mail.MessagingException
          */
         public void changeUid(final LocalMessage message) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
             final ContentValues cv = new ContentValues();
             cv.put("uid", message.getUid());
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3455,7 +2861,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 deleteAttachments(message.getUid());
             }
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3528,7 +2934,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3585,7 +2991,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private void deleteAttachments(final long messageId) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
-            execute(false, new DbCallback<Void>()
+            database.execute(false, new DbCallback<Void>()
             {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3597,7 +3003,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                                      { "id" }, "message_id = ?", new String[]
                                                      { Long.toString(messageId) }, null, null, null);
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
-                                                         .getAttachmentDirectory(uUid, mStorageProviderId);
+                                                         .getAttachmentDirectory(uUid, database.getStorageProviderId());
                         while (attachmentsCursor.moveToNext())
                         {
                             long attachmentId = attachmentsCursor.getLong(0);
@@ -3632,7 +3038,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             try
             {
-                execute(false, new DbCallback<Void>()
+                database.execute(false, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -3721,2158 +3127,862 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             if (text.length() > 0 && html.length() == 0)
             {
-                html = htmlifyString(text);
+                html = HtmlConverter.textToHtml(text);
             }
 
-            html = convertEmoji2ImgForDocomo(html);
+            html = convertEmoji2Img(html);
 
             return html;
         }
 
-        public String htmlifyString(String text)
+        public String convertEmoji2Img(String html)
         {
-            // Our HTMLification code is somewhat memory intensive
-            // and was causing lots of OOM errors on the market
-            // if the message is big and plain text, just do
-            // a trivial htmlification
-            if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH)
-            {
-                return "<html><head/><body>" +
-                       htmlifyMessageHeader() +
-                       text +
-                       htmlifyMessageFooter() +
-                       "</body></html>";
-            }
-            StringReader reader = new StringReader(text);
-            StringBuilder buff = new StringBuilder(text.length() + 512);
-            int c = 0;
-            try
-            {
-                while ((c = reader.read()) != -1)
-                {
-                    switch (c)
-                    {
-                        case '&':
-                            buff.append("&amp;");
-                            break;
-                        case '<':
-                            buff.append("&lt;");
-                            break;
-                        case '>':
-                            buff.append("&gt;");
-                            break;
-                        case '\r':
-                            break;
-                        default:
-                            buff.append((char)c);
-                    }//switch
-                }
-            }
-            catch (IOException e)
-            {
-                //Should never happen
-                Log.e(K9.LOG_TAG, null, e);
-            }
-            text = buff.toString();
-            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*","<hr />");
-            text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])","$1 ");
-            text = text.replaceAll("(?m)(\r\n|\n|\r){4,}","\n\n");
-
-
-            Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-            StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><head></head><body>");
-            sb.append(htmlifyMessageHeader());
-            while (m.find())
-            {
-                int start = m.start();
-                if (start == 0 || (start != 0 && text.charAt(start - 1) != '@'))
-                {
-                    if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
-                    {
-                        m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                    }
-                    else
-                    {
-                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
-                    }
-                }
-                else
-                {
-                    m.appendReplacement(sb, "$0");
-                }
-            }
-
-
-
-
-            m.appendTail(sb);
-            sb.append(htmlifyMessageFooter());
-            sb.append("</body></html>");
-            text = sb.toString();
-
-            return text;
-        }
-
-        private String htmlifyMessageHeader()
-        {
-            if (K9.messageViewFixedWidthFont())
-            {
-                return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-            }
-            else
-            {
-                return "<div style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-            }
-        }
-
-
-        private String htmlifyMessageFooter()
-        {
-            if (K9.messageViewFixedWidthFont())
-            {
-                return "</pre>";
-            }
-            else
-            {
-                return "</div>";
-            }
-        }
-
-        public String convertEmoji2ImgForDocomo(String html)
-        {
-            StringReader reader = new StringReader(html);
             StringBuilder buff = new StringBuilder(html.length() + 512);
-            int c = 0;
-            try
+            for (int i = 0; i < html.length(); i = html.offsetByCodePoints(i, 1))
             {
-                while ((c = reader.read()) != -1)
-                {
-                    switch (c)
-                    {
-                            // These emoji codepoints are generated by tools/make_emoji in the K-9 source tree
+                int codePoint = html.codePointAt(i);
+                String emoji = getEmojiForCodePoint(codePoint);
+                if (emoji != null)
+                    buff.append("<img src=\"file:///android_asset/emoticons/" + emoji + ".gif\" alt=\"" + emoji + "\" />");
+                else
+                    buff.appendCodePoint(codePoint);
 
-                        case 0xE6F9: //docomo kissmark
-                            buff.append("<img src=\"file:///android_asset/emoticons/kissmark.gif\" alt=\"kissmark\" />");
-                            break;
-                        case 0xE729: //docomo wink
-                            buff.append("<img src=\"file:///android_asset/emoticons/wink.gif\" alt=\"wink\" />");
-                            break;
-                        case 0xE6D2: //docomo info02
-                            buff.append("<img src=\"file:///android_asset/emoticons/info02.gif\" alt=\"info02\" />");
-                            break;
-                        case 0xE753: //docomo smile
-                            buff.append("<img src=\"file:///android_asset/emoticons/smile.gif\" alt=\"smile\" />");
-                            break;
-                        case 0xE68D: //docomo heart
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart.gif\" alt=\"heart\" />");
-                            break;
-                        case 0xE6A5: //docomo downwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardleft.gif\" alt=\"downwardleft\" />");
-                            break;
-                        case 0xE6AD: //docomo pouch
-                            buff.append("<img src=\"file:///android_asset/emoticons/pouch.gif\" alt=\"pouch\" />");
-                            break;
-                        case 0xE6D4: //docomo by-d
-                            buff.append("<img src=\"file:///android_asset/emoticons/by-d.gif\" alt=\"by-d\" />");
-                            break;
-                        case 0xE6D7: //docomo free
-                            buff.append("<img src=\"file:///android_asset/emoticons/free.gif\" alt=\"free\" />");
-                            break;
-                        case 0xE6E8: //docomo seven
-                            buff.append("<img src=\"file:///android_asset/emoticons/seven.gif\" alt=\"seven\" />");
-                            break;
-                        case 0xE74E: //docomo snail
-                            buff.append("<img src=\"file:///android_asset/emoticons/snail.gif\" alt=\"snail\" />");
-                            break;
-                        case 0xE658: //docomo basketball
-                            buff.append("<img src=\"file:///android_asset/emoticons/basketball.gif\" alt=\"basketball\" />");
-                            break;
-                        case 0xE65A: //docomo pocketbell
-                            buff.append("<img src=\"file:///android_asset/emoticons/pocketbell.gif\" alt=\"pocketbell\" />");
-                            break;
-                        case 0xE6E3: //docomo two
-                            buff.append("<img src=\"file:///android_asset/emoticons/two.gif\" alt=\"two\" />");
-                            break;
-                        case 0xE74A: //docomo cake
-                            buff.append("<img src=\"file:///android_asset/emoticons/cake.gif\" alt=\"cake\" />");
-                            break;
-                        case 0xE6D0: //docomo faxto
-                            buff.append("<img src=\"file:///android_asset/emoticons/faxto.gif\" alt=\"faxto\" />");
-                            break;
-                        case 0xE661: //docomo ship
-                            buff.append("<img src=\"file:///android_asset/emoticons/ship.gif\" alt=\"ship\" />");
-                            break;
-                        case 0xE64B: //docomo virgo
-                            buff.append("<img src=\"file:///android_asset/emoticons/virgo.gif\" alt=\"virgo\" />");
-                            break;
-                        case 0xE67E: //docomo ticket
-                            buff.append("<img src=\"file:///android_asset/emoticons/ticket.gif\" alt=\"ticket\" />");
-                            break;
-                        case 0xE6D6: //docomo yen
-                            buff.append("<img src=\"file:///android_asset/emoticons/yen.gif\" alt=\"yen\" />");
-                            break;
-                        case 0xE6E0: //docomo sharp
-                            buff.append("<img src=\"file:///android_asset/emoticons/sharp.gif\" alt=\"sharp\" />");
-                            break;
-                        case 0xE6FE: //docomo bomb
-                            buff.append("<img src=\"file:///android_asset/emoticons/bomb.gif\" alt=\"bomb\" />");
-                            break;
-                        case 0xE6E1: //docomo mobaq
-                            buff.append("<img src=\"file:///android_asset/emoticons/mobaq.gif\" alt=\"mobaq\" />");
-                            break;
-                        case 0xE70A: //docomo sign05
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign05.gif\" alt=\"sign05\" />");
-                            break;
-                        case 0xE667: //docomo bank
-                            buff.append("<img src=\"file:///android_asset/emoticons/bank.gif\" alt=\"bank\" />");
-                            break;
-                        case 0xE731: //docomo copyright
-                            buff.append("<img src=\"file:///android_asset/emoticons/copyright.gif\" alt=\"copyright\" />");
-                            break;
-                        case 0xE678: //docomo upwardright
-                            buff.append("<img src=\"file:///android_asset/emoticons/upwardright.gif\" alt=\"upwardright\" />");
-                            break;
-                        case 0xE694: //docomo scissors
-                            buff.append("<img src=\"file:///android_asset/emoticons/scissors.gif\" alt=\"scissors\" />");
-                            break;
-                        case 0xE682: //docomo bag
-                            buff.append("<img src=\"file:///android_asset/emoticons/bag.gif\" alt=\"bag\" />");
-                            break;
-                        case 0xE64D: //docomo scorpius
-                            buff.append("<img src=\"file:///android_asset/emoticons/scorpius.gif\" alt=\"scorpius\" />");
-                            break;
-                        case 0xE6D9: //docomo key
-                            buff.append("<img src=\"file:///android_asset/emoticons/key.gif\" alt=\"key\" />");
-                            break;
-                        case 0xE734: //docomo secret
-                            buff.append("<img src=\"file:///android_asset/emoticons/secret.gif\" alt=\"secret\" />");
-                            break;
-                        case 0xE74F: //docomo chick
-                            buff.append("<img src=\"file:///android_asset/emoticons/chick.gif\" alt=\"chick\" />");
-                            break;
-                        case 0xE691: //docomo eye
-                            buff.append("<img src=\"file:///android_asset/emoticons/eye.gif\" alt=\"eye\" />");
-                            break;
-                        case 0xE70B: //docomo ok
-                            buff.append("<img src=\"file:///android_asset/emoticons/ok.gif\" alt=\"ok\" />");
-                            break;
-                        case 0xE714: //docomo door
-                            buff.append("<img src=\"file:///android_asset/emoticons/door.gif\" alt=\"door\" />");
-                            break;
-                        case 0xE64F: //docomo capricornus
-                            buff.append("<img src=\"file:///android_asset/emoticons/capricornus.gif\" alt=\"capricornus\" />");
-                            break;
-                        case 0xE674: //docomo boutique
-                            buff.append("<img src=\"file:///android_asset/emoticons/boutique.gif\" alt=\"boutique\" />");
-                            break;
-                        case 0xE726: //docomo lovely
-                            buff.append("<img src=\"file:///android_asset/emoticons/lovely.gif\" alt=\"lovely\" />");
-                            break;
-                        case 0xE68F: //docomo diamond
-                            buff.append("<img src=\"file:///android_asset/emoticons/diamond.gif\" alt=\"diamond\" />");
-                            break;
-                        case 0xE69B: //docomo wheelchair
-                            buff.append("<img src=\"file:///android_asset/emoticons/wheelchair.gif\" alt=\"wheelchair\" />");
-                            break;
-                        case 0xE747: //docomo maple
-                            buff.append("<img src=\"file:///android_asset/emoticons/maple.gif\" alt=\"maple\" />");
-                            break;
-                        case 0xE64C: //docomo libra
-                            buff.append("<img src=\"file:///android_asset/emoticons/libra.gif\" alt=\"libra\" />");
-                            break;
-                        case 0xE647: //docomo taurus
-                            buff.append("<img src=\"file:///android_asset/emoticons/taurus.gif\" alt=\"taurus\" />");
-                            break;
-                        case 0xE645: //docomo sprinkle
-                            buff.append("<img src=\"file:///android_asset/emoticons/sprinkle.gif\" alt=\"sprinkle\" />");
-                            break;
-                        case 0xE6FC: //docomo annoy
-                            buff.append("<img src=\"file:///android_asset/emoticons/annoy.gif\" alt=\"annoy\" />");
-                            break;
-                        case 0xE6E6: //docomo five
-                            buff.append("<img src=\"file:///android_asset/emoticons/five.gif\" alt=\"five\" />");
-                            break;
-                        case 0xE676: //docomo karaoke
-                            buff.append("<img src=\"file:///android_asset/emoticons/karaoke.gif\" alt=\"karaoke\" />");
-                            break;
-                        case 0xE69D: //docomo moon1
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon1.gif\" alt=\"moon1\" />");
-                            break;
-                        case 0xE709: //docomo sign04
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign04.gif\" alt=\"sign04\" />");
-                            break;
-                        case 0xE72A: //docomo happy02
-                            buff.append("<img src=\"file:///android_asset/emoticons/happy02.gif\" alt=\"happy02\" />");
-                            break;
-                        case 0xE669: //docomo hotel
-                            buff.append("<img src=\"file:///android_asset/emoticons/hotel.gif\" alt=\"hotel\" />");
-                            break;
-                        case 0xE71B: //docomo ring
-                            buff.append("<img src=\"file:///android_asset/emoticons/ring.gif\" alt=\"ring\" />");
-                            break;
-                        case 0xE644: //docomo mist
-                            buff.append("<img src=\"file:///android_asset/emoticons/mist.gif\" alt=\"mist\" />");
-                            break;
-                        case 0xE73B: //docomo full
-                            buff.append("<img src=\"file:///android_asset/emoticons/full.gif\" alt=\"full\" />");
-                            break;
-                        case 0xE683: //docomo book
-                            buff.append("<img src=\"file:///android_asset/emoticons/book.gif\" alt=\"book\" />");
-                            break;
-                        case 0xE707: //docomo sweat02
-                            buff.append("<img src=\"file:///android_asset/emoticons/sweat02.gif\" alt=\"sweat02\" />");
-                            break;
-                        case 0xE716: //docomo pc
-                            buff.append("<img src=\"file:///android_asset/emoticons/pc.gif\" alt=\"pc\" />");
-                            break;
-                        case 0xE671: //docomo bar
-                            buff.append("<img src=\"file:///android_asset/emoticons/bar.gif\" alt=\"bar\" />");
-                            break;
-                        case 0xE72B: //docomo bearing
-                            buff.append("<img src=\"file:///android_asset/emoticons/bearing.gif\" alt=\"bearing\" />");
-                            break;
-                        case 0xE65C: //docomo subway
-                            buff.append("<img src=\"file:///android_asset/emoticons/subway.gif\" alt=\"subway\" />");
-                            break;
-                        case 0xE725: //docomo gawk
-                            buff.append("<img src=\"file:///android_asset/emoticons/gawk.gif\" alt=\"gawk\" />");
-                            break;
-                        case 0xE745: //docomo apple
-                            buff.append("<img src=\"file:///android_asset/emoticons/apple.gif\" alt=\"apple\" />");
-                            break;
-                        case 0xE65F: //docomo rvcar
-                            buff.append("<img src=\"file:///android_asset/emoticons/rvcar.gif\" alt=\"rvcar\" />");
-                            break;
-                        case 0xE664: //docomo building
-                            buff.append("<img src=\"file:///android_asset/emoticons/building.gif\" alt=\"building\" />");
-                            break;
-                        case 0xE737: //docomo danger
-                            buff.append("<img src=\"file:///android_asset/emoticons/danger.gif\" alt=\"danger\" />");
-                            break;
-                        case 0xE702: //docomo sign01
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign01.gif\" alt=\"sign01\" />");
-                            break;
-                        case 0xE6EC: //docomo heart01
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart01.gif\" alt=\"heart01\" />");
-                            break;
-                        case 0xE660: //docomo bus
-                            buff.append("<img src=\"file:///android_asset/emoticons/bus.gif\" alt=\"bus\" />");
-                            break;
-                        case 0xE72D: //docomo crying
-                            buff.append("<img src=\"file:///android_asset/emoticons/crying.gif\" alt=\"crying\" />");
-                            break;
-                        case 0xE652: //docomo sports
-                            buff.append("<img src=\"file:///android_asset/emoticons/sports.gif\" alt=\"sports\" />");
-                            break;
-                        case 0xE6B8: //docomo on
-                            buff.append("<img src=\"file:///android_asset/emoticons/on.gif\" alt=\"on\" />");
-                            break;
-                        case 0xE73C: //docomo leftright
-                            buff.append("<img src=\"file:///android_asset/emoticons/leftright.gif\" alt=\"leftright\" />");
-                            break;
-                        case 0xE6BA: //docomo clock
-                            buff.append("<img src=\"file:///android_asset/emoticons/clock.gif\" alt=\"clock\" />");
-                            break;
-                        case 0xE6F0: //docomo happy01
-                            buff.append("<img src=\"file:///android_asset/emoticons/happy01.gif\" alt=\"happy01\" />");
-                            break;
-                        case 0xE701: //docomo sleepy
-                            buff.append("<img src=\"file:///android_asset/emoticons/sleepy.gif\" alt=\"sleepy\" />");
-                            break;
-                        case 0xE63E: //docomo sun
-                            buff.append("<img src=\"file:///android_asset/emoticons/sun.gif\" alt=\"sun\" />");
-                            break;
-                        case 0xE67D: //docomo event
-                            buff.append("<img src=\"file:///android_asset/emoticons/event.gif\" alt=\"event\" />");
-                            break;
-                        case 0xE689: //docomo memo
-                            buff.append("<img src=\"file:///android_asset/emoticons/memo.gif\" alt=\"memo\" />");
-                            break;
-                        case 0xE68B: //docomo game
-                            buff.append("<img src=\"file:///android_asset/emoticons/game.gif\" alt=\"game\" />");
-                            break;
-                        case 0xE718: //docomo wrench
-                            buff.append("<img src=\"file:///android_asset/emoticons/wrench.gif\" alt=\"wrench\" />");
-                            break;
-                        case 0xE741: //docomo clover
-                            buff.append("<img src=\"file:///android_asset/emoticons/clover.gif\" alt=\"clover\" />");
-                            break;
-                        case 0xE693: //docomo rock
-                            buff.append("<img src=\"file:///android_asset/emoticons/rock.gif\" alt=\"rock\" />");
-                            break;
-                        case 0xE6F6: //docomo note
-                            buff.append("<img src=\"file:///android_asset/emoticons/note.gif\" alt=\"note\" />");
-                            break;
-                        case 0xE67A: //docomo music
-                            buff.append("<img src=\"file:///android_asset/emoticons/music.gif\" alt=\"music\" />");
-                            break;
-                        case 0xE743: //docomo tulip
-                            buff.append("<img src=\"file:///android_asset/emoticons/tulip.gif\" alt=\"tulip\" />");
-                            break;
-                        case 0xE656: //docomo soccer
-                            buff.append("<img src=\"file:///android_asset/emoticons/soccer.gif\" alt=\"soccer\" />");
-                            break;
-                        case 0xE69C: //docomo newmoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/newmoon.gif\" alt=\"newmoon\" />");
-                            break;
-                        case 0xE73E: //docomo school
-                            buff.append("<img src=\"file:///android_asset/emoticons/school.gif\" alt=\"school\" />");
-                            break;
-                        case 0xE750: //docomo penguin
-                            buff.append("<img src=\"file:///android_asset/emoticons/penguin.gif\" alt=\"penguin\" />");
-                            break;
-                        case 0xE696: //docomo downwardright
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardright.gif\" alt=\"downwardright\" />");
-                            break;
-                        case 0xE6CE: //docomo phoneto
-                            buff.append("<img src=\"file:///android_asset/emoticons/phoneto.gif\" alt=\"phoneto\" />");
-                            break;
-                        case 0xE728: //docomo bleah
-                            buff.append("<img src=\"file:///android_asset/emoticons/bleah.gif\" alt=\"bleah\" />");
-                            break;
-                        case 0xE662: //docomo airplane
-                            buff.append("<img src=\"file:///android_asset/emoticons/airplane.gif\" alt=\"airplane\" />");
-                            break;
-                        case 0xE74C: //docomo noodle
-                            buff.append("<img src=\"file:///android_asset/emoticons/noodle.gif\" alt=\"noodle\" />");
-                            break;
-                        case 0xE704: //docomo sign03
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign03.gif\" alt=\"sign03\" />");
-                            break;
-                        case 0xE68E: //docomo spade
-                            buff.append("<img src=\"file:///android_asset/emoticons/spade.gif\" alt=\"spade\" />");
-                            break;
-                        case 0xE698: //docomo foot
-                            buff.append("<img src=\"file:///android_asset/emoticons/foot.gif\" alt=\"foot\" />");
-                            break;
-                        case 0xE712: //docomo snowboard
-                            buff.append("<img src=\"file:///android_asset/emoticons/snowboard.gif\" alt=\"snowboard\" />");
-                            break;
-                        case 0xE684: //docomo ribbon
-                            buff.append("<img src=\"file:///android_asset/emoticons/ribbon.gif\" alt=\"ribbon\" />");
-                            break;
-                        case 0xE6DA: //docomo enter
-                            buff.append("<img src=\"file:///android_asset/emoticons/enter.gif\" alt=\"enter\" />");
-                            break;
-                        case 0xE6EA: //docomo nine
-                            buff.append("<img src=\"file:///android_asset/emoticons/nine.gif\" alt=\"nine\" />");
-                            break;
-                        case 0xE722: //docomo coldsweats01
-                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats01.gif\" alt=\"coldsweats01\" />");
-                            break;
-                        case 0xE6F7: //docomo spa
-                            buff.append("<img src=\"file:///android_asset/emoticons/spa.gif\" alt=\"spa\" />");
-                            break;
-                        case 0xE710: //docomo rouge
-                            buff.append("<img src=\"file:///android_asset/emoticons/rouge.gif\" alt=\"rouge\" />");
-                            break;
-                        case 0xE73F: //docomo wave
-                            buff.append("<img src=\"file:///android_asset/emoticons/wave.gif\" alt=\"wave\" />");
-                            break;
-                        case 0xE686: //docomo birthday
-                            buff.append("<img src=\"file:///android_asset/emoticons/birthday.gif\" alt=\"birthday\" />");
-                            break;
-                        case 0xE721: //docomo confident
-                            buff.append("<img src=\"file:///android_asset/emoticons/confident.gif\" alt=\"confident\" />");
-                            break;
-                        case 0xE6FF: //docomo notes
-                            buff.append("<img src=\"file:///android_asset/emoticons/notes.gif\" alt=\"notes\" />");
-                            break;
-                        case 0xE724: //docomo pout
-                            buff.append("<img src=\"file:///android_asset/emoticons/pout.gif\" alt=\"pout\" />");
-                            break;
-                        case 0xE6A4: //docomo xmas
-                            buff.append("<img src=\"file:///android_asset/emoticons/xmas.gif\" alt=\"xmas\" />");
-                            break;
-                        case 0xE6FB: //docomo flair
-                            buff.append("<img src=\"file:///android_asset/emoticons/flair.gif\" alt=\"flair\" />");
-                            break;
-                        case 0xE71D: //docomo bicycle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bicycle.gif\" alt=\"bicycle\" />");
-                            break;
-                        case 0xE6DC: //docomo search
-                            buff.append("<img src=\"file:///android_asset/emoticons/search.gif\" alt=\"search\" />");
-                            break;
-                        case 0xE757: //docomo shock
-                            buff.append("<img src=\"file:///android_asset/emoticons/shock.gif\" alt=\"shock\" />");
-                            break;
-                        case 0xE680: //docomo nosmoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/nosmoking.gif\" alt=\"nosmoking\" />");
-                            break;
-                        case 0xE66D: //docomo signaler
-                            buff.append("<img src=\"file:///android_asset/emoticons/signaler.gif\" alt=\"signaler\" />");
-                            break;
-                        case 0xE66A: //docomo 24hours
-                            buff.append("<img src=\"file:///android_asset/emoticons/24hours.gif\" alt=\"24hours\" />");
-                            break;
-                        case 0xE6F4: //docomo wobbly
-                            buff.append("<img src=\"file:///android_asset/emoticons/wobbly.gif\" alt=\"wobbly\" />");
-                            break;
-                        case 0xE641: //docomo snow
-                            buff.append("<img src=\"file:///android_asset/emoticons/snow.gif\" alt=\"snow\" />");
-                            break;
-                        case 0xE6AE: //docomo pen
-                            buff.append("<img src=\"file:///android_asset/emoticons/pen.gif\" alt=\"pen\" />");
-                            break;
-                        case 0xE70D: //docomo appli02
-                            buff.append("<img src=\"file:///android_asset/emoticons/appli02.gif\" alt=\"appli02\" />");
-                            break;
-                        case 0xE732: //docomo tm
-                            buff.append("<img src=\"file:///android_asset/emoticons/tm.gif\" alt=\"tm\" />");
-                            break;
-                        case 0xE755: //docomo pig
-                            buff.append("<img src=\"file:///android_asset/emoticons/pig.gif\" alt=\"pig\" />");
-                            break;
-                        case 0xE648: //docomo gemini
-                            buff.append("<img src=\"file:///android_asset/emoticons/gemini.gif\" alt=\"gemini\" />");
-                            break;
-                        case 0xE6DE: //docomo flag
-                            buff.append("<img src=\"file:///android_asset/emoticons/flag.gif\" alt=\"flag\" />");
-                            break;
-                        case 0xE6A1: //docomo dog
-                            buff.append("<img src=\"file:///android_asset/emoticons/dog.gif\" alt=\"dog\" />");
-                            break;
-                        case 0xE6EF: //docomo heart04
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart04.gif\" alt=\"heart04\" />");
-                            break;
-                        case 0xE643: //docomo typhoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/typhoon.gif\" alt=\"typhoon\" />");
-                            break;
-                        case 0xE65B: //docomo train
-                            buff.append("<img src=\"file:///android_asset/emoticons/train.gif\" alt=\"train\" />");
-                            break;
-                        case 0xE746: //docomo bud
-                            buff.append("<img src=\"file:///android_asset/emoticons/bud.gif\" alt=\"bud\" />");
-                            break;
-                        case 0xE653: //docomo baseball
-                            buff.append("<img src=\"file:///android_asset/emoticons/baseball.gif\" alt=\"baseball\" />");
-                            break;
-                        case 0xE6B2: //docomo chair
-                            buff.append("<img src=\"file:///android_asset/emoticons/chair.gif\" alt=\"chair\" />");
-                            break;
-                        case 0xE64A: //docomo leo
-                            buff.append("<img src=\"file:///android_asset/emoticons/leo.gif\" alt=\"leo\" />");
-                            break;
-                        case 0xE6E7: //docomo six
-                            buff.append("<img src=\"file:///android_asset/emoticons/six.gif\" alt=\"six\" />");
-                            break;
-                        case 0xE6E4: //docomo three
-                            buff.append("<img src=\"file:///android_asset/emoticons/three.gif\" alt=\"three\" />");
-                            break;
-                        case 0xE6DF: //docomo freedial
-                            buff.append("<img src=\"file:///android_asset/emoticons/freedial.gif\" alt=\"freedial\" />");
-                            break;
-                        case 0xE744: //docomo banana
-                            buff.append("<img src=\"file:///android_asset/emoticons/banana.gif\" alt=\"banana\" />");
-                            break;
-                        case 0xE6DB: //docomo clear
-                            buff.append("<img src=\"file:///android_asset/emoticons/clear.gif\" alt=\"clear\" />");
-                            break;
-                        case 0xE6AC: //docomo slate
-                            buff.append("<img src=\"file:///android_asset/emoticons/slate.gif\" alt=\"slate\" />");
-                            break;
-                        case 0xE666: //docomo hospital
-                            buff.append("<img src=\"file:///android_asset/emoticons/hospital.gif\" alt=\"hospital\" />");
-                            break;
-                        case 0xE663: //docomo house
-                            buff.append("<img src=\"file:///android_asset/emoticons/house.gif\" alt=\"house\" />");
-                            break;
-                        case 0xE695: //docomo paper
-                            buff.append("<img src=\"file:///android_asset/emoticons/paper.gif\" alt=\"paper\" />");
-                            break;
-                        case 0xE67F: //docomo smoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/smoking.gif\" alt=\"smoking\" />");
-                            break;
-                        case 0xE65D: //docomo bullettrain
-                            buff.append("<img src=\"file:///android_asset/emoticons/bullettrain.gif\" alt=\"bullettrain\" />");
-                            break;
-                        case 0xE6B1: //docomo shadow
-                            buff.append("<img src=\"file:///android_asset/emoticons/shadow.gif\" alt=\"shadow\" />");
-                            break;
-                        case 0xE670: //docomo cafe
-                            buff.append("<img src=\"file:///android_asset/emoticons/cafe.gif\" alt=\"cafe\" />");
-                            break;
-                        case 0xE654: //docomo golf
-                            buff.append("<img src=\"file:///android_asset/emoticons/golf.gif\" alt=\"golf\" />");
-                            break;
-                        case 0xE708: //docomo dash
-                            buff.append("<img src=\"file:///android_asset/emoticons/dash.gif\" alt=\"dash\" />");
-                            break;
-                        case 0xE748: //docomo cherryblossom
-                            buff.append("<img src=\"file:///android_asset/emoticons/cherryblossom.gif\" alt=\"cherryblossom\" />");
-                            break;
-                        case 0xE6F1: //docomo angry
-                            buff.append("<img src=\"file:///android_asset/emoticons/angry.gif\" alt=\"angry\" />");
-                            break;
-                        case 0xE736: //docomo r-mark
-                            buff.append("<img src=\"file:///android_asset/emoticons/r-mark.gif\" alt=\"r-mark\" />");
-                            break;
-                        case 0xE6A2: //docomo cat
-                            buff.append("<img src=\"file:///android_asset/emoticons/cat.gif\" alt=\"cat\" />");
-                            break;
-                        case 0xE6D1: //docomo info01
-                            buff.append("<img src=\"file:///android_asset/emoticons/info01.gif\" alt=\"info01\" />");
-                            break;
-                        case 0xE687: //docomo telephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/telephone.gif\" alt=\"telephone\" />");
-                            break;
-                        case 0xE68C: //docomo cd
-                            buff.append("<img src=\"file:///android_asset/emoticons/cd.gif\" alt=\"cd\" />");
-                            break;
-                        case 0xE70E: //docomo t-shirt
-                            buff.append("<img src=\"file:///android_asset/emoticons/t-shirt.gif\" alt=\"t-shirt\" />");
-                            break;
-                        case 0xE733: //docomo run
-                            buff.append("<img src=\"file:///android_asset/emoticons/run.gif\" alt=\"run\" />");
-                            break;
-                        case 0xE679: //docomo carouselpony
-                            buff.append("<img src=\"file:///android_asset/emoticons/carouselpony.gif\" alt=\"carouselpony\" />");
-                            break;
-                        case 0xE646: //docomo aries
-                            buff.append("<img src=\"file:///android_asset/emoticons/aries.gif\" alt=\"aries\" />");
-                            break;
-                        case 0xE690: //docomo club
-                            buff.append("<img src=\"file:///android_asset/emoticons/club.gif\" alt=\"club\" />");
-                            break;
-                        case 0xE64E: //docomo sagittarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/sagittarius.gif\" alt=\"sagittarius\" />");
-                            break;
-                        case 0xE6F5: //docomo up
-                            buff.append("<img src=\"file:///android_asset/emoticons/up.gif\" alt=\"up\" />");
-                            break;
-                        case 0xE720: //docomo think
-                            buff.append("<img src=\"file:///android_asset/emoticons/think.gif\" alt=\"think\" />");
-                            break;
-                        case 0xE6E2: //docomo one
-                            buff.append("<img src=\"file:///android_asset/emoticons/one.gif\" alt=\"one\" />");
-                            break;
-                        case 0xE6D8: //docomo id
-                            buff.append("<img src=\"file:///android_asset/emoticons/id.gif\" alt=\"id\" />");
-                            break;
-                        case 0xE675: //docomo hairsalon
-                            buff.append("<img src=\"file:///android_asset/emoticons/hairsalon.gif\" alt=\"hairsalon\" />");
-                            break;
-                        case 0xE6B7: //docomo soon
-                            buff.append("<img src=\"file:///android_asset/emoticons/soon.gif\" alt=\"soon\" />");
-                            break;
-                        case 0xE717: //docomo loveletter
-                            buff.append("<img src=\"file:///android_asset/emoticons/loveletter.gif\" alt=\"loveletter\" />");
-                            break;
-                        case 0xE673: //docomo fastfood
-                            buff.append("<img src=\"file:///android_asset/emoticons/fastfood.gif\" alt=\"fastfood\" />");
-                            break;
-                        case 0xE719: //docomo pencil
-                            buff.append("<img src=\"file:///android_asset/emoticons/pencil.gif\" alt=\"pencil\" />");
-                            break;
-                        case 0xE697: //docomo upwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/upwardleft.gif\" alt=\"upwardleft\" />");
-                            break;
-                        case 0xE730: //docomo clip
-                            buff.append("<img src=\"file:///android_asset/emoticons/clip.gif\" alt=\"clip\" />");
-                            break;
-                        case 0xE6ED: //docomo heart02
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart02.gif\" alt=\"heart02\" />");
-                            break;
-                        case 0xE69A: //docomo eyeglass
-                            buff.append("<img src=\"file:///android_asset/emoticons/eyeglass.gif\" alt=\"eyeglass\" />");
-                            break;
-                        case 0xE65E: //docomo car
-                            buff.append("<img src=\"file:///android_asset/emoticons/car.gif\" alt=\"car\" />");
-                            break;
-                        case 0xE742: //docomo cherry
-                            buff.append("<img src=\"file:///android_asset/emoticons/cherry.gif\" alt=\"cherry\" />");
-                            break;
-                        case 0xE71C: //docomo sandclock
-                            buff.append("<img src=\"file:///android_asset/emoticons/sandclock.gif\" alt=\"sandclock\" />");
-                            break;
-                        case 0xE735: //docomo recycle
-                            buff.append("<img src=\"file:///android_asset/emoticons/recycle.gif\" alt=\"recycle\" />");
-                            break;
-                        case 0xE752: //docomo delicious
-                            buff.append("<img src=\"file:///android_asset/emoticons/delicious.gif\" alt=\"delicious\" />");
-                            break;
-                        case 0xE69E: //docomo moon2
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon2.gif\" alt=\"moon2\" />");
-                            break;
-                        case 0xE68A: //docomo tv
-                            buff.append("<img src=\"file:///android_asset/emoticons/tv.gif\" alt=\"tv\" />");
-                            break;
-                        case 0xE706: //docomo sweat01
-                            buff.append("<img src=\"file:///android_asset/emoticons/sweat01.gif\" alt=\"sweat01\" />");
-                            break;
-                        case 0xE738: //docomo ban
-                            buff.append("<img src=\"file:///android_asset/emoticons/ban.gif\" alt=\"ban\" />");
-                            break;
-                        case 0xE672: //docomo beer
-                            buff.append("<img src=\"file:///android_asset/emoticons/beer.gif\" alt=\"beer\" />");
-                            break;
-                        case 0xE640: //docomo rain
-                            buff.append("<img src=\"file:///android_asset/emoticons/rain.gif\" alt=\"rain\" />");
-                            break;
-                        case 0xE69F: //docomo moon3
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon3.gif\" alt=\"moon3\" />");
-                            break;
-                        case 0xE657: //docomo ski
-                            buff.append("<img src=\"file:///android_asset/emoticons/ski.gif\" alt=\"ski\" />");
-                            break;
-                        case 0xE70C: //docomo appli01
-                            buff.append("<img src=\"file:///android_asset/emoticons/appli01.gif\" alt=\"appli01\" />");
-                            break;
-                        case 0xE6E5: //docomo four
-                            buff.append("<img src=\"file:///android_asset/emoticons/four.gif\" alt=\"four\" />");
-                            break;
-                        case 0xE699: //docomo shoe
-                            buff.append("<img src=\"file:///android_asset/emoticons/shoe.gif\" alt=\"shoe\" />");
-                            break;
-                        case 0xE63F: //docomo cloud
-                            buff.append("<img src=\"file:///android_asset/emoticons/cloud.gif\" alt=\"cloud\" />");
-                            break;
-                        case 0xE72F: //docomo ng
-                            buff.append("<img src=\"file:///android_asset/emoticons/ng.gif\" alt=\"ng\" />");
-                            break;
-                        case 0xE6A3: //docomo yacht
-                            buff.append("<img src=\"file:///android_asset/emoticons/yacht.gif\" alt=\"yacht\" />");
-                            break;
-                        case 0xE73A: //docomo pass
-                            buff.append("<img src=\"file:///android_asset/emoticons/pass.gif\" alt=\"pass\" />");
-                            break;
-                        case 0xE67C: //docomo drama
-                            buff.append("<img src=\"file:///android_asset/emoticons/drama.gif\" alt=\"drama\" />");
-                            break;
-                        case 0xE727: //docomo good
-                            buff.append("<img src=\"file:///android_asset/emoticons/good.gif\" alt=\"good\" />");
-                            break;
-                        case 0xE6EB: //docomo zero
-                            buff.append("<img src=\"file:///android_asset/emoticons/zero.gif\" alt=\"zero\" />");
-                            break;
-                        case 0xE72C: //docomo catface
-                            buff.append("<img src=\"file:///android_asset/emoticons/catface.gif\" alt=\"catface\" />");
-                            break;
-                        case 0xE6D5: //docomo d-point
-                            buff.append("<img src=\"file:///android_asset/emoticons/d-point.gif\" alt=\"d-point\" />");
-                            break;
-                        case 0xE6F2: //docomo despair
-                            buff.append("<img src=\"file:///android_asset/emoticons/despair.gif\" alt=\"despair\" />");
-                            break;
-                        case 0xE700: //docomo down
-                            buff.append("<img src=\"file:///android_asset/emoticons/down.gif\" alt=\"down\" />");
-                            break;
-                        case 0xE655: //docomo tennis
-                            buff.append("<img src=\"file:///android_asset/emoticons/tennis.gif\" alt=\"tennis\" />");
-                            break;
-                        case 0xE703: //docomo sign02
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign02.gif\" alt=\"sign02\" />");
-                            break;
-                        case 0xE711: //docomo denim
-                            buff.append("<img src=\"file:///android_asset/emoticons/denim.gif\" alt=\"denim\" />");
-                            break;
-                        case 0xE705: //docomo impact
-                            buff.append("<img src=\"file:///android_asset/emoticons/impact.gif\" alt=\"impact\" />");
-                            break;
-                        case 0xE642: //docomo thunder
-                            buff.append("<img src=\"file:///android_asset/emoticons/thunder.gif\" alt=\"thunder\" />");
-                            break;
-                        case 0xE66C: //docomo parking
-                            buff.append("<img src=\"file:///android_asset/emoticons/parking.gif\" alt=\"parking\" />");
-                            break;
-                        case 0xE6F3: //docomo sad
-                            buff.append("<img src=\"file:///android_asset/emoticons/sad.gif\" alt=\"sad\" />");
-                            break;
-                        case 0xE71E: //docomo japanesetea
-                            buff.append("<img src=\"file:///android_asset/emoticons/japanesetea.gif\" alt=\"japanesetea\" />");
-                            break;
-                        case 0xE6FD: //docomo punch
-                            buff.append("<img src=\"file:///android_asset/emoticons/punch.gif\" alt=\"punch\" />");
-                            break;
-                        case 0xE73D: //docomo updown
-                            buff.append("<img src=\"file:///android_asset/emoticons/updown.gif\" alt=\"updown\" />");
-                            break;
-                        case 0xE66F: //docomo restaurant
-                            buff.append("<img src=\"file:///android_asset/emoticons/restaurant.gif\" alt=\"restaurant\" />");
-                            break;
-                        case 0xE66E: //docomo toilet
-                            buff.append("<img src=\"file:///android_asset/emoticons/toilet.gif\" alt=\"toilet\" />");
-                            break;
-                        case 0xE739: //docomo empty
-                            buff.append("<img src=\"file:///android_asset/emoticons/empty.gif\" alt=\"empty\" />");
-                            break;
-                        case 0xE723: //docomo coldsweats02
-                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats02.gif\" alt=\"coldsweats02\" />");
-                            break;
-                        case 0xE6B9: //docomo end
-                            buff.append("<img src=\"file:///android_asset/emoticons/end.gif\" alt=\"end\" />");
-                            break;
-                        case 0xE67B: //docomo art
-                            buff.append("<img src=\"file:///android_asset/emoticons/art.gif\" alt=\"art\" />");
-                            break;
-                        case 0xE72E: //docomo weep
-                            buff.append("<img src=\"file:///android_asset/emoticons/weep.gif\" alt=\"weep\" />");
-                            break;
-                        case 0xE715: //docomo dollar
-                            buff.append("<img src=\"file:///android_asset/emoticons/dollar.gif\" alt=\"dollar\" />");
-                            break;
-                        case 0xE6CF: //docomo mailto
-                            buff.append("<img src=\"file:///android_asset/emoticons/mailto.gif\" alt=\"mailto\" />");
-                            break;
-                        case 0xE6F8: //docomo cute
-                            buff.append("<img src=\"file:///android_asset/emoticons/cute.gif\" alt=\"cute\" />");
-                            break;
-                        case 0xE6DD: //docomo new
-                            buff.append("<img src=\"file:///android_asset/emoticons/new.gif\" alt=\"new\" />");
-                            break;
-                        case 0xE651: //docomo pisces
-                            buff.append("<img src=\"file:///android_asset/emoticons/pisces.gif\" alt=\"pisces\" />");
-                            break;
-                        case 0xE756: //docomo wine
-                            buff.append("<img src=\"file:///android_asset/emoticons/wine.gif\" alt=\"wine\" />");
-                            break;
-                        case 0xE649: //docomo cancer
-                            buff.append("<img src=\"file:///android_asset/emoticons/cancer.gif\" alt=\"cancer\" />");
-                            break;
-                        case 0xE650: //docomo aquarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/aquarius.gif\" alt=\"aquarius\" />");
-                            break;
-                        case 0xE740: //docomo fuji
-                            buff.append("<img src=\"file:///android_asset/emoticons/fuji.gif\" alt=\"fuji\" />");
-                            break;
-                        case 0xE681: //docomo camera
-                            buff.append("<img src=\"file:///android_asset/emoticons/camera.gif\" alt=\"camera\" />");
-                            break;
-                        case 0xE71F: //docomo watch
-                            buff.append("<img src=\"file:///android_asset/emoticons/watch.gif\" alt=\"watch\" />");
-                            break;
-                        case 0xE6EE: //docomo heart03
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart03.gif\" alt=\"heart03\" />");
-                            break;
-                        case 0xE71A: //docomo crown
-                            buff.append("<img src=\"file:///android_asset/emoticons/crown.gif\" alt=\"crown\" />");
-                            break;
-                        case 0xE6B3: //docomo night
-                            buff.append("<img src=\"file:///android_asset/emoticons/night.gif\" alt=\"night\" />");
-                            break;
-                        case 0xE66B: //docomo gasstation
-                            buff.append("<img src=\"file:///android_asset/emoticons/gasstation.gif\" alt=\"gasstation\" />");
-                            break;
-                        case 0xE692: //docomo ear
-                            buff.append("<img src=\"file:///android_asset/emoticons/ear.gif\" alt=\"ear\" />");
-                            break;
-                        case 0xE685: //docomo present
-                            buff.append("<img src=\"file:///android_asset/emoticons/present.gif\" alt=\"present\" />");
-                            break;
-                        case 0xE6E9: //docomo eight
-                            buff.append("<img src=\"file:///android_asset/emoticons/eight.gif\" alt=\"eight\" />");
-                            break;
-                        case 0xE70F: //docomo moneybag
-                            buff.append("<img src=\"file:///android_asset/emoticons/moneybag.gif\" alt=\"moneybag\" />");
-                            break;
-                        case 0xE749: //docomo riceball
-                            buff.append("<img src=\"file:///android_asset/emoticons/riceball.gif\" alt=\"riceball\" />");
-                            break;
-                        case 0xE6A0: //docomo fullmoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/fullmoon.gif\" alt=\"fullmoon\" />");
-                            break;
-                        case 0xE74D: //docomo bread
-                            buff.append("<img src=\"file:///android_asset/emoticons/bread.gif\" alt=\"bread\" />");
-                            break;
-                        case 0xE665: //docomo postoffice
-                            buff.append("<img src=\"file:///android_asset/emoticons/postoffice.gif\" alt=\"postoffice\" />");
-                            break;
-                        case 0xE677: //docomo movie
-                            buff.append("<img src=\"file:///android_asset/emoticons/movie.gif\" alt=\"movie\" />");
-                            break;
-                        case 0xE668: //docomo atm
-                            buff.append("<img src=\"file:///android_asset/emoticons/atm.gif\" alt=\"atm\" />");
-                            break;
-                        case 0xE688: //docomo mobilephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/mobilephone.gif\" alt=\"mobilephone\" />");
-                            break;
-                        case 0xE6FA: //docomo shine
-                            buff.append("<img src=\"file:///android_asset/emoticons/shine.gif\" alt=\"shine\" />");
-                            break;
-                        case 0xE713: //docomo bell
-                            buff.append("<img src=\"file:///android_asset/emoticons/bell.gif\" alt=\"bell\" />");
-                            break;
-                        case 0xE74B: //docomo bottle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bottle.gif\" alt=\"bottle\" />");
-                            break;
-                        case 0xE754: //docomo horse
-                            buff.append("<img src=\"file:///android_asset/emoticons/horse.gif\" alt=\"horse\" />");
-                            break;
-                        case 0xE751: //docomo fish
-                            buff.append("<img src=\"file:///android_asset/emoticons/fish.gif\" alt=\"fish\" />");
-                            break;
-                        case 0xE659: //docomo motorsports
-                            buff.append("<img src=\"file:///android_asset/emoticons/motorsports.gif\" alt=\"motorsports\" />");
-                            break;
-                        case 0xE6D3: //docomo mail
-                            buff.append("<img src=\"file:///android_asset/emoticons/mail.gif\" alt=\"mail\" />");
-                            break;
-                            // These emoji codepoints are generated by tools/make_emoji in the K-9 source tree
-                            // The spaces between the < and the img are a hack to avoid triggering
-                            // K-9's 'load images' button
-
-                        case 0xE223: //softbank eight
-                            buff.append("<img src=\"file:///android_asset/emoticons/eight.gif\" alt=\"eight\" />");
-                            break;
-                        case 0xE415: //softbank coldsweats01
-                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats01.gif\" alt=\"coldsweats01\" />");
-                            break;
-                        case 0xE21F: //softbank four
-                            buff.append("<img src=\"file:///android_asset/emoticons/four.gif\" alt=\"four\" />");
-                            break;
-                        case 0xE125: //softbank ticket
-                            buff.append("<img src=\"file:///android_asset/emoticons/ticket.gif\" alt=\"ticket\" />");
-                            break;
-                        case 0xE148: //softbank book
-                            buff.append("<img src=\"file:///android_asset/emoticons/book.gif\" alt=\"book\" />");
-                            break;
-                        case 0xE242: //softbank cancer
-                            buff.append("<img src=\"file:///android_asset/emoticons/cancer.gif\" alt=\"cancer\" />");
-                            break;
-                        case 0xE31C: //softbank rouge
-                            buff.append("<img src=\"file:///android_asset/emoticons/rouge.gif\" alt=\"rouge\" />");
-                            break;
-                        case 0xE252: //softbank danger
-                            buff.append("<img src=\"file:///android_asset/emoticons/danger.gif\" alt=\"danger\" />");
-                            break;
-                        case 0xE011: //softbank scissors
-                            buff.append("<img src=\"file:///android_asset/emoticons/scissors.gif\" alt=\"scissors\" />");
-                            break;
-                        case 0xE342: //softbank riceball
-                            buff.append("<img src=\"file:///android_asset/emoticons/riceball.gif\" alt=\"riceball\" />");
-                            break;
-                        case 0xE04B: //softbank rain
-                            buff.append("<img src=\"file:///android_asset/emoticons/rain.gif\" alt=\"rain\" />");
-                            break;
-                        case 0xE03E: //softbank note
-                            buff.append("<img src=\"file:///android_asset/emoticons/note.gif\" alt=\"note\" />");
-                            break;
-                        case 0xE43C: //softbank sprinkle
-                            buff.append("<img src=\"file:///android_asset/emoticons/sprinkle.gif\" alt=\"sprinkle\" />");
-                            break;
-                        case 0xE20A: //softbank wheelchair
-                            buff.append("<img src=\"file:///android_asset/emoticons/wheelchair.gif\" alt=\"wheelchair\" />");
-                            break;
-                        case 0xE42A: //softbank basketball
-                            buff.append("<img src=\"file:///android_asset/emoticons/basketball.gif\" alt=\"basketball\" />");
-                            break;
-                        case 0xE03D: //softbank movie
-                            buff.append("<img src=\"file:///android_asset/emoticons/movie.gif\" alt=\"movie\" />");
-                            break;
-                        case 0xE30E: //softbank smoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/smoking.gif\" alt=\"smoking\" />");
-                            break;
-                        case 0xE003: //softbank kissmark
-                            buff.append("<img src=\"file:///android_asset/emoticons/kissmark.gif\" alt=\"kissmark\" />");
-                            break;
-                        case 0xE21C: //softbank one
-                            buff.append("<img src=\"file:///android_asset/emoticons/one.gif\" alt=\"one\" />");
-                            break;
-                        case 0xE237: //softbank upwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/upwardleft.gif\" alt=\"upwardleft\" />");
-                            break;
-                        case 0xE407: //softbank sad
-                            buff.append("<img src=\"file:///android_asset/emoticons/sad.gif\" alt=\"sad\" />");
-                            break;
-                        case 0xE03B: //softbank fuji
-                            buff.append("<img src=\"file:///android_asset/emoticons/fuji.gif\" alt=\"fuji\" />");
-                            break;
-                        case 0xE40E: //softbank gawk
-                            buff.append("<img src=\"file:///android_asset/emoticons/gawk.gif\" alt=\"gawk\" />");
-                            break;
-                        case 0xE245: //softbank libra
-                            buff.append("<img src=\"file:///android_asset/emoticons/libra.gif\" alt=\"libra\" />");
-                            break;
-                        case 0xE24A: //softbank pisces
-                            buff.append("<img src=\"file:///android_asset/emoticons/pisces.gif\" alt=\"pisces\" />");
-                            break;
-                        case 0xE443: //softbank typhoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/typhoon.gif\" alt=\"typhoon\" />");
-                            break;
-                        case 0xE052: //softbank dog
-                            buff.append("<img src=\"file:///android_asset/emoticons/dog.gif\" alt=\"dog\" />");
-                            break;
-                        case 0xE244: //softbank virgo
-                            buff.append("<img src=\"file:///android_asset/emoticons/virgo.gif\" alt=\"virgo\" />");
-                            break;
-                        case 0xE523: //softbank chick
-                            buff.append("<img src=\"file:///android_asset/emoticons/chick.gif\" alt=\"chick\" />");
-                            break;
-                        case 0xE023: //softbank heart03
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart03.gif\" alt=\"heart03\" />");
-                            break;
-                        case 0xE325: //softbank bell
-                            buff.append("<img src=\"file:///android_asset/emoticons/bell.gif\" alt=\"bell\" />");
-                            break;
-                        case 0xE239: //softbank downwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardleft.gif\" alt=\"downwardleft\" />");
-                            break;
-                        case 0xE20C: //softbank heart
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart.gif\" alt=\"heart\" />");
-                            break;
-                        case 0xE211: //softbank freedial
-                            buff.append("<img src=\"file:///android_asset/emoticons/freedial.gif\" alt=\"freedial\" />");
-                            break;
-                        case 0xE11F: //softbank chair
-                            buff.append("<img src=\"file:///android_asset/emoticons/chair.gif\" alt=\"chair\" />");
-                            break;
-                        case 0xE108: //softbank coldsweats02
-                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats02.gif\" alt=\"coldsweats02\" />");
-                            break;
-                        case 0xE330: //softbank dash
-                            buff.append("<img src=\"file:///android_asset/emoticons/dash.gif\" alt=\"dash\" />");
-                            break;
-                        case 0xE404: //softbank smile
-                            buff.append("<img src=\"file:///android_asset/emoticons/smile.gif\" alt=\"smile\" />");
-                            break;
-                        case 0xE304: //softbank tulip
-                            buff.append("<img src=\"file:///android_asset/emoticons/tulip.gif\" alt=\"tulip\" />");
-                            break;
-                        case 0xE419: //softbank eye
-                            buff.append("<img src=\"file:///android_asset/emoticons/eye.gif\" alt=\"eye\" />");
-                            break;
-                        case 0xE13D: //softbank thunder
-                            buff.append("<img src=\"file:///android_asset/emoticons/thunder.gif\" alt=\"thunder\" />");
-                            break;
-                        case 0xE013: //softbank ski
-                            buff.append("<img src=\"file:///android_asset/emoticons/ski.gif\" alt=\"ski\" />");
-                            break;
-                        case 0xE136: //softbank bicycle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bicycle.gif\" alt=\"bicycle\" />");
-                            break;
-                        case 0xE059: //softbank angry
-                            buff.append("<img src=\"file:///android_asset/emoticons/angry.gif\" alt=\"angry\" />");
-                            break;
-                        case 0xE01D: //softbank airplane
-                            buff.append("<img src=\"file:///android_asset/emoticons/airplane.gif\" alt=\"airplane\" />");
-                            break;
-                        case 0xE048: //softbank snow
-                            buff.append("<img src=\"file:///android_asset/emoticons/snow.gif\" alt=\"snow\" />");
-                            break;
-                        case 0xE435: //softbank bullettrain
-                            buff.append("<img src=\"file:///android_asset/emoticons/bullettrain.gif\" alt=\"bullettrain\" />");
-                            break;
-                        case 0xE20E: //softbank spade
-                            buff.append("<img src=\"file:///android_asset/emoticons/spade.gif\" alt=\"spade\" />");
-                            break;
-                        case 0xE247: //softbank sagittarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/sagittarius.gif\" alt=\"sagittarius\" />");
-                            break;
-                        case 0xE157: //softbank school
-                            buff.append("<img src=\"file:///android_asset/emoticons/school.gif\" alt=\"school\" />");
-                            break;
-                        case 0xE10F: //softbank flair
-                            buff.append("<img src=\"file:///android_asset/emoticons/flair.gif\" alt=\"flair\" />");
-                            break;
-                        case 0xE502: //softbank art
-                            buff.append("<img src=\"file:///android_asset/emoticons/art.gif\" alt=\"art\" />");
-                            break;
-                        case 0xE338: //softbank japanesetea
-                            buff.append("<img src=\"file:///android_asset/emoticons/japanesetea.gif\" alt=\"japanesetea\" />");
-                            break;
-                        case 0xE34B: //softbank birthday
-                            buff.append("<img src=\"file:///android_asset/emoticons/birthday.gif\" alt=\"birthday\" />");
-                            break;
-                        case 0xE22B: //softbank empty
-                            buff.append("<img src=\"file:///android_asset/emoticons/empty.gif\" alt=\"empty\" />");
-                            break;
-                        case 0xE311: //softbank bomb
-                            buff.append("<img src=\"file:///android_asset/emoticons/bomb.gif\" alt=\"bomb\" />");
-                            break;
-                        case 0xE012: //softbank paper
-                            buff.append("<img src=\"file:///android_asset/emoticons/paper.gif\" alt=\"paper\" />");
-                            break;
-                        case 0xE151: //softbank toilet
-                            buff.append("<img src=\"file:///android_asset/emoticons/toilet.gif\" alt=\"toilet\" />");
-                            break;
-                        case 0xE01A: //softbank horse
-                            buff.append("<img src=\"file:///android_asset/emoticons/horse.gif\" alt=\"horse\" />");
-                            break;
-                        case 0xE03A: //softbank gasstation
-                            buff.append("<img src=\"file:///android_asset/emoticons/gasstation.gif\" alt=\"gasstation\" />");
-                            break;
-                        case 0xE03F: //softbank key
-                            buff.append("<img src=\"file:///android_asset/emoticons/key.gif\" alt=\"key\" />");
-                            break;
-                        case 0xE00D: //softbank punch
-                            buff.append("<img src=\"file:///android_asset/emoticons/punch.gif\" alt=\"punch\" />");
-                            break;
-                        case 0xE24D: //softbank ok
-                            buff.append("<img src=\"file:///android_asset/emoticons/ok.gif\" alt=\"ok\" />");
-                            break;
-                        case 0xE105: //softbank bleah
-                            buff.append("<img src=\"file:///android_asset/emoticons/bleah.gif\" alt=\"bleah\" />");
-                            break;
-                        case 0xE00E: //softbank good
-                            buff.append("<img src=\"file:///android_asset/emoticons/good.gif\" alt=\"good\" />");
-                            break;
-                        case 0xE154: //softbank atm
-                            buff.append("<img src=\"file:///android_asset/emoticons/atm.gif\" alt=\"atm\" />");
-                            break;
-                        case 0xE405: //softbank wink
-                            buff.append("<img src=\"file:///android_asset/emoticons/wink.gif\" alt=\"wink\" />");
-                            break;
-                        case 0xE030: //softbank cherryblossom
-                            buff.append("<img src=\"file:///android_asset/emoticons/cherryblossom.gif\" alt=\"cherryblossom\" />");
-                            break;
-                        case 0xE057: //softbank happy01
-                            buff.append("<img src=\"file:///android_asset/emoticons/happy01.gif\" alt=\"happy01\" />");
-                            break;
-                        case 0xE229: //softbank id
-                            buff.append("<img src=\"file:///android_asset/emoticons/id.gif\" alt=\"id\" />");
-                            break;
-                        case 0xE016: //softbank baseball
-                            buff.append("<img src=\"file:///android_asset/emoticons/baseball.gif\" alt=\"baseball\" />");
-                            break;
-                        case 0xE044: //softbank wine
-                            buff.append("<img src=\"file:///android_asset/emoticons/wine.gif\" alt=\"wine\" />");
-                            break;
-                        case 0xE115: //softbank run
-                            buff.append("<img src=\"file:///android_asset/emoticons/run.gif\" alt=\"run\" />");
-                            break;
-                        case 0xE14F: //softbank parking
-                            buff.append("<img src=\"file:///android_asset/emoticons/parking.gif\" alt=\"parking\" />");
-                            break;
-                        case 0xE327: //softbank heart04
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart04.gif\" alt=\"heart04\" />");
-                            break;
-                        case 0xE014: //softbank golf
-                            buff.append("<img src=\"file:///android_asset/emoticons/golf.gif\" alt=\"golf\" />");
-                            break;
-                        case 0xE021: //softbank sign01
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign01.gif\" alt=\"sign01\" />");
-                            break;
-                        case 0xE30A: //softbank music
-                            buff.append("<img src=\"file:///android_asset/emoticons/music.gif\" alt=\"music\" />");
-                            break;
-                        case 0xE411: //softbank crying
-                            buff.append("<img src=\"file:///android_asset/emoticons/crying.gif\" alt=\"crying\" />");
-                            break;
-                        case 0xE536: //softbank foot
-                            buff.append("<img src=\"file:///android_asset/emoticons/foot.gif\" alt=\"foot\" />");
-                            break;
-                        case 0xE047: //softbank beer
-                            buff.append("<img src=\"file:///android_asset/emoticons/beer.gif\" alt=\"beer\" />");
-                            break;
-                        case 0xE43E: //softbank wave
-                            buff.append("<img src=\"file:///android_asset/emoticons/wave.gif\" alt=\"wave\" />");
-                            break;
-                        case 0xE022: //softbank heart01
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart01.gif\" alt=\"heart01\" />");
-                            break;
-                        case 0xE007: //softbank shoe
-                            buff.append("<img src=\"file:///android_asset/emoticons/shoe.gif\" alt=\"shoe\" />");
-                            break;
-                        case 0xE010: //softbank rock
-                            buff.append("<img src=\"file:///android_asset/emoticons/rock.gif\" alt=\"rock\" />");
-                            break;
-                        case 0xE32E: //softbank shine
-                            buff.append("<img src=\"file:///android_asset/emoticons/shine.gif\" alt=\"shine\" />");
-                            break;
-                        case 0xE055: //softbank penguin
-                            buff.append("<img src=\"file:///android_asset/emoticons/penguin.gif\" alt=\"penguin\" />");
-                            break;
-                        case 0xE03C: //softbank karaoke
-                            buff.append("<img src=\"file:///android_asset/emoticons/karaoke.gif\" alt=\"karaoke\" />");
-                            break;
-                        case 0xE018: //softbank soccer
-                            buff.append("<img src=\"file:///android_asset/emoticons/soccer.gif\" alt=\"soccer\" />");
-                            break;
-                        case 0xE159: //softbank bus
-                            buff.append("<img src=\"file:///android_asset/emoticons/bus.gif\" alt=\"bus\" />");
-                            break;
-                        case 0xE107: //softbank shock
-                            buff.append("<img src=\"file:///android_asset/emoticons/shock.gif\" alt=\"shock\" />");
-                            break;
-                        case 0xE04A: //softbank sun
-                            buff.append("<img src=\"file:///android_asset/emoticons/sun.gif\" alt=\"sun\" />");
-                            break;
-                        case 0xE156: //softbank 24hours
-                            buff.append("<img src=\"file:///android_asset/emoticons/24hours.gif\" alt=\"24hours\" />");
-                            break;
-                        case 0xE110: //softbank clover
-                            buff.append("<img src=\"file:///android_asset/emoticons/clover.gif\" alt=\"clover\" />");
-                            break;
-                        case 0xE034: //softbank ring
-                            buff.append("<img src=\"file:///android_asset/emoticons/ring.gif\" alt=\"ring\" />");
-                            break;
-                        case 0xE24F: //softbank r-mark
-                            buff.append("<img src=\"file:///android_asset/emoticons/r-mark.gif\" alt=\"r-mark\" />");
-                            break;
-                        case 0xE112: //softbank present
-                            buff.append("<img src=\"file:///android_asset/emoticons/present.gif\" alt=\"present\" />");
-                            break;
-                        case 0xE14D: //softbank bank
-                            buff.append("<img src=\"file:///android_asset/emoticons/bank.gif\" alt=\"bank\" />");
-                            break;
-                        case 0xE42E: //softbank rvcar
-                            buff.append("<img src=\"file:///android_asset/emoticons/rvcar.gif\" alt=\"rvcar\" />");
-                            break;
-                        case 0xE13E: //softbank boutique
-                            buff.append("<img src=\"file:///android_asset/emoticons/boutique.gif\" alt=\"boutique\" />");
-                            break;
-                        case 0xE413: //softbank weep
-                            buff.append("<img src=\"file:///android_asset/emoticons/weep.gif\" alt=\"weep\" />");
-                            break;
-                        case 0xE241: //softbank gemini
-                            buff.append("<img src=\"file:///android_asset/emoticons/gemini.gif\" alt=\"gemini\" />");
-                            break;
-                        case 0xE212: //softbank new
-                            buff.append("<img src=\"file:///android_asset/emoticons/new.gif\" alt=\"new\" />");
-                            break;
-                        case 0xE324: //softbank slate
-                            buff.append("<img src=\"file:///android_asset/emoticons/slate.gif\" alt=\"slate\" />");
-                            break;
-                        case 0xE220: //softbank five
-                            buff.append("<img src=\"file:///android_asset/emoticons/five.gif\" alt=\"five\" />");
-                            break;
-                        case 0xE503: //softbank drama
-                            buff.append("<img src=\"file:///android_asset/emoticons/drama.gif\" alt=\"drama\" />");
-                            break;
-                        case 0xE248: //softbank capricornus
-                            buff.append("<img src=\"file:///android_asset/emoticons/capricornus.gif\" alt=\"capricornus\" />");
-                            break;
-                        case 0xE049: //softbank cloud
-                            buff.append("<img src=\"file:///android_asset/emoticons/cloud.gif\" alt=\"cloud\" />");
-                            break;
-                        case 0xE243: //softbank leo
-                            buff.append("<img src=\"file:///android_asset/emoticons/leo.gif\" alt=\"leo\" />");
-                            break;
-                        case 0xE326: //softbank notes
-                            buff.append("<img src=\"file:///android_asset/emoticons/notes.gif\" alt=\"notes\" />");
-                            break;
-                        case 0xE00B: //softbank faxto
-                            buff.append("<img src=\"file:///android_asset/emoticons/faxto.gif\" alt=\"faxto\" />");
-                            break;
-                        case 0xE221: //softbank six
-                            buff.append("<img src=\"file:///android_asset/emoticons/six.gif\" alt=\"six\" />");
-                            break;
-                        case 0xE240: //softbank taurus
-                            buff.append("<img src=\"file:///android_asset/emoticons/taurus.gif\" alt=\"taurus\" />");
-                            break;
-                        case 0xE24E: //softbank copyright
-                            buff.append("<img src=\"file:///android_asset/emoticons/copyright.gif\" alt=\"copyright\" />");
-                            break;
-                        case 0xE224: //softbank nine
-                            buff.append("<img src=\"file:///android_asset/emoticons/nine.gif\" alt=\"nine\" />");
-                            break;
-                        case 0xE008: //softbank camera
-                            buff.append("<img src=\"file:///android_asset/emoticons/camera.gif\" alt=\"camera\" />");
-                            break;
-                        case 0xE01E: //softbank train
-                            buff.append("<img src=\"file:///android_asset/emoticons/train.gif\" alt=\"train\" />");
-                            break;
-                        case 0xE20D: //softbank diamond
-                            buff.append("<img src=\"file:///android_asset/emoticons/diamond.gif\" alt=\"diamond\" />");
-                            break;
-                        case 0xE009: //softbank telephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/telephone.gif\" alt=\"telephone\" />");
-                            break;
-                        case 0xE019: //softbank fish
-                            buff.append("<img src=\"file:///android_asset/emoticons/fish.gif\" alt=\"fish\" />");
-                            break;
-                        case 0xE01C: //softbank yacht
-                            buff.append("<img src=\"file:///android_asset/emoticons/yacht.gif\" alt=\"yacht\" />");
-                            break;
-                        case 0xE40A: //softbank confident
-                            buff.append("<img src=\"file:///android_asset/emoticons/confident.gif\" alt=\"confident\" />");
-                            break;
-                        case 0xE246: //softbank scorpius
-                            buff.append("<img src=\"file:///android_asset/emoticons/scorpius.gif\" alt=\"scorpius\" />");
-                            break;
-                        case 0xE120: //softbank fastfood
-                            buff.append("<img src=\"file:///android_asset/emoticons/fastfood.gif\" alt=\"fastfood\" />");
-                            break;
-                        case 0xE323: //softbank bag
-                            buff.append("<img src=\"file:///android_asset/emoticons/bag.gif\" alt=\"bag\" />");
-                            break;
-                        case 0xE345: //softbank apple
-                            buff.append("<img src=\"file:///android_asset/emoticons/apple.gif\" alt=\"apple\" />");
-                            break;
-                        case 0xE339: //softbank bread
-                            buff.append("<img src=\"file:///android_asset/emoticons/bread.gif\" alt=\"bread\" />");
-                            break;
-                        case 0xE13C: //softbank sleepy
-                            buff.append("<img src=\"file:///android_asset/emoticons/sleepy.gif\" alt=\"sleepy\" />");
-                            break;
-                        case 0xE106: //softbank lovely
-                            buff.append("<img src=\"file:///android_asset/emoticons/lovely.gif\" alt=\"lovely\" />");
-                            break;
-                        case 0xE340: //softbank noodle
-                            buff.append("<img src=\"file:///android_asset/emoticons/noodle.gif\" alt=\"noodle\" />");
-                            break;
-                        case 0xE20F: //softbank club
-                            buff.append("<img src=\"file:///android_asset/emoticons/club.gif\" alt=\"club\" />");
-                            break;
-                        case 0xE114: //softbank search
-                            buff.append("<img src=\"file:///android_asset/emoticons/search.gif\" alt=\"search\" />");
-                            break;
-                        case 0xE10E: //softbank crown
-                            buff.append("<img src=\"file:///android_asset/emoticons/crown.gif\" alt=\"crown\" />");
-                            break;
-                        case 0xE406: //softbank wobbly
-                            buff.append("<img src=\"file:///android_asset/emoticons/wobbly.gif\" alt=\"wobbly\" />");
-                            break;
-                        case 0xE331: //softbank sweat02
-                            buff.append("<img src=\"file:///android_asset/emoticons/sweat02.gif\" alt=\"sweat02\" />");
-                            break;
-                        case 0xE04F: //softbank cat
-                            buff.append("<img src=\"file:///android_asset/emoticons/cat.gif\" alt=\"cat\" />");
-                            break;
-                        case 0xE301: //softbank memo
-                            buff.append("<img src=\"file:///android_asset/emoticons/memo.gif\" alt=\"memo\" />");
-                            break;
-                        case 0xE01B: //softbank car
-                            buff.append("<img src=\"file:///android_asset/emoticons/car.gif\" alt=\"car\" />");
-                            break;
-                        case 0xE314: //softbank ribbon
-                            buff.append("<img src=\"file:///android_asset/emoticons/ribbon.gif\" alt=\"ribbon\" />");
-                            break;
-                        case 0xE315: //softbank secret
-                            buff.append("<img src=\"file:///android_asset/emoticons/secret.gif\" alt=\"secret\" />");
-                            break;
-                        case 0xE236: //softbank up
-                            buff.append("<img src=\"file:///android_asset/emoticons/up.gif\" alt=\"up\" />");
-                            break;
-                        case 0xE208: //softbank nosmoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/nosmoking.gif\" alt=\"nosmoking\" />");
-                            break;
-                        case 0xE006: //softbank t-shirt
-                            buff.append("<img src=\"file:///android_asset/emoticons/t-shirt.gif\" alt=\"t-shirt\" />");
-                            break;
-                        case 0xE12A: //softbank tv
-                            buff.append("<img src=\"file:///android_asset/emoticons/tv.gif\" alt=\"tv\" />");
-                            break;
-                        case 0xE238: //softbank downwardright
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardright.gif\" alt=\"downwardright\" />");
-                            break;
-                        case 0xE10B: //softbank pig
-                            buff.append("<img src=\"file:///android_asset/emoticons/pig.gif\" alt=\"pig\" />");
-                            break;
-                        case 0xE126: //softbank cd
-                            buff.append("<img src=\"file:///android_asset/emoticons/cd.gif\" alt=\"cd\" />");
-                            break;
-                        case 0xE402: //softbank catface
-                            buff.append("<img src=\"file:///android_asset/emoticons/catface.gif\" alt=\"catface\" />");
-                            break;
-                        case 0xE416: //softbank pout
-                            buff.append("<img src=\"file:///android_asset/emoticons/pout.gif\" alt=\"pout\" />");
-                            break;
-                        case 0xE045: //softbank cafe
-                            buff.append("<img src=\"file:///android_asset/emoticons/cafe.gif\" alt=\"cafe\" />");
-                            break;
-                        case 0xE41B: //softbank ear
-                            buff.append("<img src=\"file:///android_asset/emoticons/ear.gif\" alt=\"ear\" />");
-                            break;
-                        case 0xE23F: //softbank aries
-                            buff.append("<img src=\"file:///android_asset/emoticons/aries.gif\" alt=\"aries\" />");
-                            break;
-                        case 0xE21E: //softbank three
-                            buff.append("<img src=\"file:///android_asset/emoticons/three.gif\" alt=\"three\" />");
-                            break;
-                        case 0xE056: //softbank delicious
-                            buff.append("<img src=\"file:///android_asset/emoticons/delicious.gif\" alt=\"delicious\" />");
-                            break;
-                        case 0xE14E: //softbank signaler
-                            buff.append("<img src=\"file:///android_asset/emoticons/signaler.gif\" alt=\"signaler\" />");
-                            break;
-                        case 0xE155: //softbank hospital
-                            buff.append("<img src=\"file:///android_asset/emoticons/hospital.gif\" alt=\"hospital\" />");
-                            break;
-                        case 0xE033: //softbank xmas
-                            buff.append("<img src=\"file:///android_asset/emoticons/xmas.gif\" alt=\"xmas\" />");
-                            break;
-                        case 0xE22A: //softbank full
-                            buff.append("<img src=\"file:///android_asset/emoticons/full.gif\" alt=\"full\" />");
-                            break;
-                        case 0xE123: //softbank spa
-                            buff.append("<img src=\"file:///android_asset/emoticons/spa.gif\" alt=\"spa\" />");
-                            break;
-                        case 0xE132: //softbank motorsports
-                            buff.append("<img src=\"file:///android_asset/emoticons/motorsports.gif\" alt=\"motorsports\" />");
-                            break;
-                        case 0xE434: //softbank subway
-                            buff.append("<img src=\"file:///android_asset/emoticons/subway.gif\" alt=\"subway\" />");
-                            break;
-                        case 0xE403: //softbank think
-                            buff.append("<img src=\"file:///android_asset/emoticons/think.gif\" alt=\"think\" />");
-                            break;
-                        case 0xE043: //softbank restaurant
-                            buff.append("<img src=\"file:///android_asset/emoticons/restaurant.gif\" alt=\"restaurant\" />");
-                            break;
-                        case 0xE537: //softbank tm
-                            buff.append("<img src=\"file:///android_asset/emoticons/tm.gif\" alt=\"tm\" />");
-                            break;
-                        case 0xE058: //softbank despair
-                            buff.append("<img src=\"file:///android_asset/emoticons/despair.gif\" alt=\"despair\" />");
-                            break;
-                        case 0xE04C: //softbank moon3
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon3.gif\" alt=\"moon3\" />");
-                            break;
-                        case 0xE21D: //softbank two
-                            buff.append("<img src=\"file:///android_asset/emoticons/two.gif\" alt=\"two\" />");
-                            break;
-                        case 0xE202: //softbank ship
-                            buff.append("<img src=\"file:///android_asset/emoticons/ship.gif\" alt=\"ship\" />");
-                            break;
-                        case 0xE30B: //softbank bottle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bottle.gif\" alt=\"bottle\" />");
-                            break;
-                        case 0xE118: //softbank maple
-                            buff.append("<img src=\"file:///android_asset/emoticons/maple.gif\" alt=\"maple\" />");
-                            break;
-                        case 0xE103: //softbank loveletter
-                            buff.append("<img src=\"file:///android_asset/emoticons/loveletter.gif\" alt=\"loveletter\" />");
-                            break;
-                        case 0xE225: //softbank zero
-                            buff.append("<img src=\"file:///android_asset/emoticons/zero.gif\" alt=\"zero\" />");
-                            break;
-                        case 0xE00C: //softbank pc
-                            buff.append("<img src=\"file:///android_asset/emoticons/pc.gif\" alt=\"pc\" />");
-                            break;
-                        case 0xE210: //softbank sharp
-                            buff.append("<img src=\"file:///android_asset/emoticons/sharp.gif\" alt=\"sharp\" />");
-                            break;
-                        case 0xE015: //softbank tennis
-                            buff.append("<img src=\"file:///android_asset/emoticons/tennis.gif\" alt=\"tennis\" />");
-                            break;
-                        case 0xE038: //softbank building
-                            buff.append("<img src=\"file:///android_asset/emoticons/building.gif\" alt=\"building\" />");
-                            break;
-                        case 0xE02D: //softbank clock
-                            buff.append("<img src=\"file:///android_asset/emoticons/clock.gif\" alt=\"clock\" />");
-                            break;
-                        case 0xE334: //softbank annoy
-                            buff.append("<img src=\"file:///android_asset/emoticons/annoy.gif\" alt=\"annoy\" />");
-                            break;
-                        case 0xE153: //softbank postoffice
-                            buff.append("<img src=\"file:///android_asset/emoticons/postoffice.gif\" alt=\"postoffice\" />");
-                            break;
-                        case 0xE222: //softbank seven
-                            buff.append("<img src=\"file:///android_asset/emoticons/seven.gif\" alt=\"seven\" />");
-                            break;
-                        case 0xE12F: //softbank dollar
-                            buff.append("<img src=\"file:///android_asset/emoticons/dollar.gif\" alt=\"dollar\" />");
-                            break;
-                        case 0xE00A: //softbank mobilephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/mobilephone.gif\" alt=\"mobilephone\" />");
-                            break;
-                        case 0xE158: //softbank hotel
-                            buff.append("<img src=\"file:///android_asset/emoticons/hotel.gif\" alt=\"hotel\" />");
-                            break;
-                        case 0xE249: //softbank aquarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/aquarius.gif\" alt=\"aquarius\" />");
-                            break;
-                        case 0xE036: //softbank house
-                            buff.append("<img src=\"file:///android_asset/emoticons/house.gif\" alt=\"house\" />");
-                            break;
-                        case 0xE046: //softbank cake
-                            buff.append("<img src=\"file:///android_asset/emoticons/cake.gif\" alt=\"cake\" />");
-                            break;
-                        case 0xE104: //softbank phoneto
-                            buff.append("<img src=\"file:///android_asset/emoticons/phoneto.gif\" alt=\"phoneto\" />");
-                            break;
-                        case 0xE44B: //softbank night
-                            buff.append("<img src=\"file:///android_asset/emoticons/night.gif\" alt=\"night\" />");
-                            break;
-                        case 0xE313: //softbank hairsalon
-                            buff.append("<img src=\"file:///android_asset/emoticons/hairsalon.gif\" alt=\"hairsalon\" />");
-                            break;
-                            // These emoji codepoints are generated by tools/make_emoji in the K-9 source tree
-                            // The spaces between the < and the img are a hack to avoid triggering
-                            // K-9's 'load images' button
-
-                        case 0xE488: //kddi sun
-                            buff.append("<img src=\"file:///android_asset/emoticons/sun.gif\" alt=\"sun\" />");
-                            break;
-                        case 0xEA88: //kddi id
-                            buff.append("<img src=\"file:///android_asset/emoticons/id.gif\" alt=\"id\" />");
-                            break;
-                        case 0xE4BA: //kddi baseball
-                            buff.append("<img src=\"file:///android_asset/emoticons/baseball.gif\" alt=\"baseball\" />");
-                            break;
-                        case 0xE525: //kddi four
-                            buff.append("<img src=\"file:///android_asset/emoticons/four.gif\" alt=\"four\" />");
-                            break;
-                        case 0xE578: //kddi free
-                            buff.append("<img src=\"file:///android_asset/emoticons/free.gif\" alt=\"free\" />");
-                            break;
-                        case 0xE4C1: //kddi wine
-                            buff.append("<img src=\"file:///android_asset/emoticons/wine.gif\" alt=\"wine\" />");
-                            break;
-                        case 0xE512: //kddi bell
-                            buff.append("<img src=\"file:///android_asset/emoticons/bell.gif\" alt=\"bell\" />");
-                            break;
-                        case 0xEB83: //kddi rock
-                            buff.append("<img src=\"file:///android_asset/emoticons/rock.gif\" alt=\"rock\" />");
-                            break;
-                        case 0xE4D0: //kddi cake
-                            buff.append("<img src=\"file:///android_asset/emoticons/cake.gif\" alt=\"cake\" />");
-                            break;
-                        case 0xE473: //kddi crying
-                            buff.append("<img src=\"file:///android_asset/emoticons/crying.gif\" alt=\"crying\" />");
-                            break;
-                        case 0xE48C: //kddi rain
-                            buff.append("<img src=\"file:///android_asset/emoticons/rain.gif\" alt=\"rain\" />");
-                            break;
-                        case 0xEAC2: //kddi bearing
-                            buff.append("<img src=\"file:///android_asset/emoticons/bearing.gif\" alt=\"bearing\" />");
-                            break;
-                        case 0xE47E: //kddi nosmoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/nosmoking.gif\" alt=\"nosmoking\" />");
-                            break;
-                        case 0xEAC0: //kddi despair
-                            buff.append("<img src=\"file:///android_asset/emoticons/despair.gif\" alt=\"despair\" />");
-                            break;
-                        case 0xE559: //kddi r-mark
-                            buff.append("<img src=\"file:///android_asset/emoticons/r-mark.gif\" alt=\"r-mark\" />");
-                            break;
-                        case 0xEB2D: //kddi up
-                            buff.append("<img src=\"file:///android_asset/emoticons/up.gif\" alt=\"up\" />");
-                            break;
-                        case 0xEA89: //kddi full
-                            buff.append("<img src=\"file:///android_asset/emoticons/full.gif\" alt=\"full\" />");
-                            break;
-                        case 0xEAC9: //kddi gawk
-                            buff.append("<img src=\"file:///android_asset/emoticons/gawk.gif\" alt=\"gawk\" />");
-                            break;
-                        case 0xEB79: //kddi recycle
-                            buff.append("<img src=\"file:///android_asset/emoticons/recycle.gif\" alt=\"recycle\" />");
-                            break;
-                        case 0xE5AC: //kddi zero
-                            buff.append("<img src=\"file:///android_asset/emoticons/zero.gif\" alt=\"zero\" />");
-                            break;
-                        case 0xEAAE: //kddi japanesetea
-                            buff.append("<img src=\"file:///android_asset/emoticons/japanesetea.gif\" alt=\"japanesetea\" />");
-                            break;
-                        case 0xEB30: //kddi sign03
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign03.gif\" alt=\"sign03\" />");
-                            break;
-                        case 0xE4B6: //kddi soccer
-                            buff.append("<img src=\"file:///android_asset/emoticons/soccer.gif\" alt=\"soccer\" />");
-                            break;
-                        case 0xE556: //kddi downwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardleft.gif\" alt=\"downwardleft\" />");
-                            break;
-                        case 0xE4BE: //kddi slate
-                            buff.append("<img src=\"file:///android_asset/emoticons/slate.gif\" alt=\"slate\" />");
-                            break;
-                        case 0xE4A5: //kddi toilet
-                            buff.append("<img src=\"file:///android_asset/emoticons/toilet.gif\" alt=\"toilet\" />");
-                            break;
-                            // Skipping kddi codepoint E523 two
-                            // It conflicts with an earlier definition from another carrier:
-                            // softbank chick
-
-                        case 0xE496: //kddi scorpius
-                            buff.append("<img src=\"file:///android_asset/emoticons/scorpius.gif\" alt=\"scorpius\" />");
-                            break;
-                        case 0xE4C6: //kddi game
-                            buff.append("<img src=\"file:///android_asset/emoticons/game.gif\" alt=\"game\" />");
-                            break;
-                        case 0xE5A0: //kddi birthday
-                            buff.append("<img src=\"file:///android_asset/emoticons/birthday.gif\" alt=\"birthday\" />");
-                            break;
-                        case 0xE5B8: //kddi pc
-                            buff.append("<img src=\"file:///android_asset/emoticons/pc.gif\" alt=\"pc\" />");
-                            break;
-                        case 0xE516: //kddi hairsalon
-                            buff.append("<img src=\"file:///android_asset/emoticons/hairsalon.gif\" alt=\"hairsalon\" />");
-                            break;
-                        case 0xE475: //kddi sleepy
-                            buff.append("<img src=\"file:///android_asset/emoticons/sleepy.gif\" alt=\"sleepy\" />");
-                            break;
-                        case 0xE4A3: //kddi atm
-                            buff.append("<img src=\"file:///android_asset/emoticons/atm.gif\" alt=\"atm\" />");
-                            break;
-                        case 0xE59A: //kddi basketball
-                            buff.append("<img src=\"file:///android_asset/emoticons/basketball.gif\" alt=\"basketball\" />");
-                            break;
-                        case 0xE497: //kddi sagittarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/sagittarius.gif\" alt=\"sagittarius\" />");
-                            break;
-                        case 0xEACD: //kddi delicious
-                            buff.append("<img src=\"file:///android_asset/emoticons/delicious.gif\" alt=\"delicious\" />");
-                            break;
-                        case 0xE5A8: //kddi newmoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/newmoon.gif\" alt=\"newmoon\" />");
-                            break;
-                        case 0xE49E: //kddi ticket
-                            buff.append("<img src=\"file:///android_asset/emoticons/ticket.gif\" alt=\"ticket\" />");
-                            break;
-                        case 0xE5AE: //kddi wobbly
-                            buff.append("<img src=\"file:///android_asset/emoticons/wobbly.gif\" alt=\"wobbly\" />");
-                            break;
-                        case 0xE4E6: //kddi sweat02
-                            buff.append("<img src=\"file:///android_asset/emoticons/sweat02.gif\" alt=\"sweat02\" />");
-                            break;
-                        case 0xE59E: //kddi event
-                            buff.append("<img src=\"file:///android_asset/emoticons/event.gif\" alt=\"event\" />");
-                            break;
-                        case 0xE4AB: //kddi house
-                            buff.append("<img src=\"file:///android_asset/emoticons/house.gif\" alt=\"house\" />");
-                            break;
-                        case 0xE491: //kddi gemini
-                            buff.append("<img src=\"file:///android_asset/emoticons/gemini.gif\" alt=\"gemini\" />");
-                            break;
-                        case 0xE4C9: //kddi xmas
-                            buff.append("<img src=\"file:///android_asset/emoticons/xmas.gif\" alt=\"xmas\" />");
-                            break;
-                        case 0xE5BE: //kddi note
-                            buff.append("<img src=\"file:///android_asset/emoticons/note.gif\" alt=\"note\" />");
-                            break;
-                        case 0xEB2F: //kddi sign02
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign02.gif\" alt=\"sign02\" />");
-                            break;
-                        case 0xE508: //kddi music
-                            buff.append("<img src=\"file:///android_asset/emoticons/music.gif\" alt=\"music\" />");
-                            break;
-                        case 0xE5DF: //kddi hospital
-                            buff.append("<img src=\"file:///android_asset/emoticons/hospital.gif\" alt=\"hospital\" />");
-                            break;
-                        case 0xE5BC: //kddi subway
-                            buff.append("<img src=\"file:///android_asset/emoticons/subway.gif\" alt=\"subway\" />");
-                            break;
-                        case 0xE5C9: //kddi crown
-                            buff.append("<img src=\"file:///android_asset/emoticons/crown.gif\" alt=\"crown\" />");
-                            break;
-                        case 0xE4BC: //kddi spa
-                            buff.append("<img src=\"file:///android_asset/emoticons/spa.gif\" alt=\"spa\" />");
-                            break;
-                        case 0xE514: //kddi ring
-                            buff.append("<img src=\"file:///android_asset/emoticons/ring.gif\" alt=\"ring\" />");
-                            break;
-                            // Skipping kddi codepoint E502 tv
-                            // It conflicts with an earlier definition from another carrier:
-                            // softbank art
-
-                        case 0xE4AC: //kddi restaurant
-                            buff.append("<img src=\"file:///android_asset/emoticons/restaurant.gif\" alt=\"restaurant\" />");
-                            break;
-                        case 0xE529: //kddi eight
-                            buff.append("<img src=\"file:///android_asset/emoticons/eight.gif\" alt=\"eight\" />");
-                            break;
-                        case 0xE518: //kddi search
-                            buff.append("<img src=\"file:///android_asset/emoticons/search.gif\" alt=\"search\" />");
-                            break;
-                        case 0xE505: //kddi notes
-                            buff.append("<img src=\"file:///android_asset/emoticons/notes.gif\" alt=\"notes\" />");
-                            break;
-                        case 0xE498: //kddi capricornus
-                            buff.append("<img src=\"file:///android_asset/emoticons/capricornus.gif\" alt=\"capricornus\" />");
-                            break;
-                        case 0xEB7E: //kddi snail
-                            buff.append("<img src=\"file:///android_asset/emoticons/snail.gif\" alt=\"snail\" />");
-                            break;
-                        case 0xEA97: //kddi bottle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bottle.gif\" alt=\"bottle\" />");
-                            break;
-                        case 0xEB08: //kddi phoneto
-                            buff.append("<img src=\"file:///android_asset/emoticons/phoneto.gif\" alt=\"phoneto\" />");
-                            break;
-                        case 0xE4D2: //kddi cherry
-                            buff.append("<img src=\"file:///android_asset/emoticons/cherry.gif\" alt=\"cherry\" />");
-                            break;
-                        case 0xE54D: //kddi downwardright
-                            buff.append("<img src=\"file:///android_asset/emoticons/downwardright.gif\" alt=\"downwardright\" />");
-                            break;
-                        case 0xE5C3: //kddi wink
-                            buff.append("<img src=\"file:///android_asset/emoticons/wink.gif\" alt=\"wink\" />");
-                            break;
-                        case 0xEAAC: //kddi ski
-                            buff.append("<img src=\"file:///android_asset/emoticons/ski.gif\" alt=\"ski\" />");
-                            break;
-                        case 0xE515: //kddi camera
-                            buff.append("<img src=\"file:///android_asset/emoticons/camera.gif\" alt=\"camera\" />");
-                            break;
-                        case 0xE5B6: //kddi t-shirt
-                            buff.append("<img src=\"file:///android_asset/emoticons/t-shirt.gif\" alt=\"t-shirt\" />");
-                            break;
-                        case 0xE5C4: //kddi lovely
-                            buff.append("<img src=\"file:///android_asset/emoticons/lovely.gif\" alt=\"lovely\" />");
-                            break;
-                        case 0xE4AD: //kddi building
-                            buff.append("<img src=\"file:///android_asset/emoticons/building.gif\" alt=\"building\" />");
-                            break;
-                        case 0xE4CE: //kddi maple
-                            buff.append("<img src=\"file:///android_asset/emoticons/maple.gif\" alt=\"maple\" />");
-                            break;
-                        case 0xE5AA: //kddi moon2
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon2.gif\" alt=\"moon2\" />");
-                            break;
-                        case 0xE5B4: //kddi noodle
-                            buff.append("<img src=\"file:///android_asset/emoticons/noodle.gif\" alt=\"noodle\" />");
-                            break;
-                        case 0xE5A6: //kddi scissors
-                            buff.append("<img src=\"file:///android_asset/emoticons/scissors.gif\" alt=\"scissors\" />");
-                            break;
-                        case 0xE4AA: //kddi bank
-                            buff.append("<img src=\"file:///android_asset/emoticons/bank.gif\" alt=\"bank\" />");
-                            break;
-                        case 0xE4B5: //kddi train
-                            buff.append("<img src=\"file:///android_asset/emoticons/train.gif\" alt=\"train\" />");
-                            break;
-                        case 0xE477: //kddi heart03
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart03.gif\" alt=\"heart03\" />");
-                            break;
-                        case 0xE481: //kddi danger
-                            buff.append("<img src=\"file:///android_asset/emoticons/danger.gif\" alt=\"danger\" />");
-                            break;
-                        case 0xE597: //kddi cafe
-                            buff.append("<img src=\"file:///android_asset/emoticons/cafe.gif\" alt=\"cafe\" />");
-                            break;
-                        case 0xEB2B: //kddi shoe
-                            buff.append("<img src=\"file:///android_asset/emoticons/shoe.gif\" alt=\"shoe\" />");
-                            break;
-                        case 0xEB7C: //kddi wave
-                            buff.append("<img src=\"file:///android_asset/emoticons/wave.gif\" alt=\"wave\" />");
-                            break;
-                        case 0xE471: //kddi happy01
-                            buff.append("<img src=\"file:///android_asset/emoticons/happy01.gif\" alt=\"happy01\" />");
-                            break;
-                        case 0xE4CA: //kddi cherryblossom
-                            buff.append("<img src=\"file:///android_asset/emoticons/cherryblossom.gif\" alt=\"cherryblossom\" />");
-                            break;
-                        case 0xE4D5: //kddi riceball
-                            buff.append("<img src=\"file:///android_asset/emoticons/riceball.gif\" alt=\"riceball\" />");
-                            break;
-                        case 0xE587: //kddi wrench
-                            buff.append("<img src=\"file:///android_asset/emoticons/wrench.gif\" alt=\"wrench\" />");
-                            break;
-                        case 0xEB2A: //kddi foot
-                            buff.append("<img src=\"file:///android_asset/emoticons/foot.gif\" alt=\"foot\" />");
-                            break;
-                        case 0xE47D: //kddi smoking
-                            buff.append("<img src=\"file:///android_asset/emoticons/smoking.gif\" alt=\"smoking\" />");
-                            break;
-                        case 0xE4DC: //kddi penguin
-                            buff.append("<img src=\"file:///android_asset/emoticons/penguin.gif\" alt=\"penguin\" />");
-                            break;
-                        case 0xE4B3: //kddi airplane
-                            buff.append("<img src=\"file:///android_asset/emoticons/airplane.gif\" alt=\"airplane\" />");
-                            break;
-                        case 0xE4DE: //kddi pig
-                            buff.append("<img src=\"file:///android_asset/emoticons/pig.gif\" alt=\"pig\" />");
-                            break;
-                        case 0xE59B: //kddi pocketbell
-                            buff.append("<img src=\"file:///android_asset/emoticons/pocketbell.gif\" alt=\"pocketbell\" />");
-                            break;
-                        case 0xE4AF: //kddi bus
-                            buff.append("<img src=\"file:///android_asset/emoticons/bus.gif\" alt=\"bus\" />");
-                            break;
-                        case 0xE4A6: //kddi parking
-                            buff.append("<img src=\"file:///android_asset/emoticons/parking.gif\" alt=\"parking\" />");
-                            break;
-                        case 0xE486: //kddi moon3
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon3.gif\" alt=\"moon3\" />");
-                            break;
-                        case 0xE5A4: //kddi eye
-                            buff.append("<img src=\"file:///android_asset/emoticons/eye.gif\" alt=\"eye\" />");
-                            break;
-                        case 0xE50C: //kddi cd
-                            buff.append("<img src=\"file:///android_asset/emoticons/cd.gif\" alt=\"cd\" />");
-                            break;
-                        case 0xE54C: //kddi upwardleft
-                            buff.append("<img src=\"file:///android_asset/emoticons/upwardleft.gif\" alt=\"upwardleft\" />");
-                            break;
-                        case 0xEA82: //kddi ship
-                            buff.append("<img src=\"file:///android_asset/emoticons/ship.gif\" alt=\"ship\" />");
-                            break;
-                        case 0xE4B1: //kddi car
-                            buff.append("<img src=\"file:///android_asset/emoticons/car.gif\" alt=\"car\" />");
-                            break;
-                        case 0xEB80: //kddi smile
-                            buff.append("<img src=\"file:///android_asset/emoticons/smile.gif\" alt=\"smile\" />");
-                            break;
-                        case 0xE5B0: //kddi impact
-                            buff.append("<img src=\"file:///android_asset/emoticons/impact.gif\" alt=\"impact\" />");
-                            break;
-                        case 0xE504: //kddi moneybag
-                            buff.append("<img src=\"file:///android_asset/emoticons/moneybag.gif\" alt=\"moneybag\" />");
-                            break;
-                        case 0xE4B9: //kddi motorsports
-                            buff.append("<img src=\"file:///android_asset/emoticons/motorsports.gif\" alt=\"motorsports\" />");
-                            break;
-                        case 0xE494: //kddi virgo
-                            buff.append("<img src=\"file:///android_asset/emoticons/virgo.gif\" alt=\"virgo\" />");
-                            break;
-                        case 0xE595: //kddi heart01
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart01.gif\" alt=\"heart01\" />");
-                            break;
-                        case 0xEB03: //kddi pen
-                            buff.append("<img src=\"file:///android_asset/emoticons/pen.gif\" alt=\"pen\" />");
-                            break;
-                        case 0xE57D: //kddi yen
-                            buff.append("<img src=\"file:///android_asset/emoticons/yen.gif\" alt=\"yen\" />");
-                            break;
-                        case 0xE598: //kddi mist
-                            buff.append("<img src=\"file:///android_asset/emoticons/mist.gif\" alt=\"mist\" />");
-                            break;
-                        case 0xE5A2: //kddi diamond
-                            buff.append("<img src=\"file:///android_asset/emoticons/diamond.gif\" alt=\"diamond\" />");
-                            break;
-                        case 0xE4A4: //kddi 24hours
-                            buff.append("<img src=\"file:///android_asset/emoticons/24hours.gif\" alt=\"24hours\" />");
-                            break;
-                        case 0xE524: //kddi three
-                            buff.append("<img src=\"file:///android_asset/emoticons/three.gif\" alt=\"three\" />");
-                            break;
-                        case 0xEB7B: //kddi updown
-                            buff.append("<img src=\"file:///android_asset/emoticons/updown.gif\" alt=\"updown\" />");
-                            break;
-                        case 0xE5A1: //kddi spade
-                            buff.append("<img src=\"file:///android_asset/emoticons/spade.gif\" alt=\"spade\" />");
-                            break;
-                        case 0xE495: //kddi libra
-                            buff.append("<img src=\"file:///android_asset/emoticons/libra.gif\" alt=\"libra\" />");
-                            break;
-                        case 0xE588: //kddi mobilephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/mobilephone.gif\" alt=\"mobilephone\" />");
-                            break;
-                        case 0xE599: //kddi golf
-                            buff.append("<img src=\"file:///android_asset/emoticons/golf.gif\" alt=\"golf\" />");
-                            break;
-                        case 0xE520: //kddi faxto
-                            buff.append("<img src=\"file:///android_asset/emoticons/faxto.gif\" alt=\"faxto\" />");
-                            break;
-                            // Skipping kddi codepoint E503 karaoke
-                            // It conflicts with an earlier definition from another carrier:
-                            // softbank drama
-
-                        case 0xE4D6: //kddi fastfood
-                            buff.append("<img src=\"file:///android_asset/emoticons/fastfood.gif\" alt=\"fastfood\" />");
-                            break;
-                        case 0xE4A1: //kddi pencil
-                            buff.append("<img src=\"file:///android_asset/emoticons/pencil.gif\" alt=\"pencil\" />");
-                            break;
-                        case 0xE522: //kddi one
-                            buff.append("<img src=\"file:///android_asset/emoticons/one.gif\" alt=\"one\" />");
-                            break;
-                        case 0xEB84: //kddi sharp
-                            buff.append("<img src=\"file:///android_asset/emoticons/sharp.gif\" alt=\"sharp\" />");
-                            break;
-                        case 0xE476: //kddi flair
-                            buff.append("<img src=\"file:///android_asset/emoticons/flair.gif\" alt=\"flair\" />");
-                            break;
-                        case 0xE46B: //kddi run
-                            buff.append("<img src=\"file:///android_asset/emoticons/run.gif\" alt=\"run\" />");
-                            break;
-                        case 0xEAF5: //kddi drama
-                            buff.append("<img src=\"file:///android_asset/emoticons/drama.gif\" alt=\"drama\" />");
-                            break;
-                        case 0xEAB9: //kddi apple
-                            buff.append("<img src=\"file:///android_asset/emoticons/apple.gif\" alt=\"apple\" />");
-                            break;
-                        case 0xE4EB: //kddi kissmark
-                            buff.append("<img src=\"file:///android_asset/emoticons/kissmark.gif\" alt=\"kissmark\" />");
-                            break;
-                        case 0xE55D: //kddi enter
-                            buff.append("<img src=\"file:///android_asset/emoticons/enter.gif\" alt=\"enter\" />");
-                            break;
-                        case 0xE59F: //kddi ribbon
-                            buff.append("<img src=\"file:///android_asset/emoticons/ribbon.gif\" alt=\"ribbon\" />");
-                            break;
-                        case 0xE526: //kddi five
-                            buff.append("<img src=\"file:///android_asset/emoticons/five.gif\" alt=\"five\" />");
-                            break;
-                        case 0xE571: //kddi gasstation
-                            buff.append("<img src=\"file:///android_asset/emoticons/gasstation.gif\" alt=\"gasstation\" />");
-                            break;
-                        case 0xE517: //kddi movie
-                            buff.append("<img src=\"file:///android_asset/emoticons/movie.gif\" alt=\"movie\" />");
-                            break;
-                        case 0xE4B8: //kddi snowboard
-                            buff.append("<img src=\"file:///android_asset/emoticons/snowboard.gif\" alt=\"snowboard\" />");
-                            break;
-                        case 0xEAE8: //kddi sprinkle
-                            buff.append("<img src=\"file:///android_asset/emoticons/sprinkle.gif\" alt=\"sprinkle\" />");
-                            break;
-                        case 0xEA80: //kddi school
-                            buff.append("<img src=\"file:///android_asset/emoticons/school.gif\" alt=\"school\" />");
-                            break;
-                        case 0xE47C: //kddi sandclock
-                            buff.append("<img src=\"file:///android_asset/emoticons/sandclock.gif\" alt=\"sandclock\" />");
-                            break;
-                        case 0xEB31: //kddi sign05
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign05.gif\" alt=\"sign05\" />");
-                            break;
-                        case 0xE5AB: //kddi clear
-                            buff.append("<img src=\"file:///android_asset/emoticons/clear.gif\" alt=\"clear\" />");
-                            break;
-                        case 0xE5DE: //kddi postoffice
-                            buff.append("<img src=\"file:///android_asset/emoticons/postoffice.gif\" alt=\"postoffice\" />");
-                            break;
-                        case 0xEB62: //kddi mailto
-                            buff.append("<img src=\"file:///android_asset/emoticons/mailto.gif\" alt=\"mailto\" />");
-                            break;
-                        case 0xE528: //kddi seven
-                            buff.append("<img src=\"file:///android_asset/emoticons/seven.gif\" alt=\"seven\" />");
-                            break;
-                        case 0xE4C2: //kddi bar
-                            buff.append("<img src=\"file:///android_asset/emoticons/bar.gif\" alt=\"bar\" />");
-                            break;
-                        case 0xE487: //kddi thunder
-                            buff.append("<img src=\"file:///android_asset/emoticons/thunder.gif\" alt=\"thunder\" />");
-                            break;
-                        case 0xE5A9: //kddi moon1
-                            buff.append("<img src=\"file:///android_asset/emoticons/moon1.gif\" alt=\"moon1\" />");
-                            break;
-                        case 0xEB7A: //kddi leftright
-                            buff.append("<img src=\"file:///android_asset/emoticons/leftright.gif\" alt=\"leftright\" />");
-                            break;
-                        case 0xE513: //kddi clover
-                            buff.append("<img src=\"file:///android_asset/emoticons/clover.gif\" alt=\"clover\" />");
-                            break;
-                        case 0xE492: //kddi cancer
-                            buff.append("<img src=\"file:///android_asset/emoticons/cancer.gif\" alt=\"cancer\" />");
-                            break;
-                        case 0xEB78: //kddi loveletter
-                            buff.append("<img src=\"file:///android_asset/emoticons/loveletter.gif\" alt=\"loveletter\" />");
-                            break;
-                        case 0xE4E0: //kddi chick
-                            buff.append("<img src=\"file:///android_asset/emoticons/chick.gif\" alt=\"chick\" />");
-                            break;
-                        case 0xE4CF: //kddi present
-                            buff.append("<img src=\"file:///android_asset/emoticons/present.gif\" alt=\"present\" />");
-                            break;
-                        case 0xE478: //kddi heart04
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart04.gif\" alt=\"heart04\" />");
-                            break;
-                        case 0xEAC3: //kddi sad
-                            buff.append("<img src=\"file:///android_asset/emoticons/sad.gif\" alt=\"sad\" />");
-                            break;
-                        case 0xE52A: //kddi nine
-                            buff.append("<img src=\"file:///android_asset/emoticons/nine.gif\" alt=\"nine\" />");
-                            break;
-                        case 0xE482: //kddi sign01
-                            buff.append("<img src=\"file:///android_asset/emoticons/sign01.gif\" alt=\"sign01\" />");
-                            break;
-                        case 0xEABF: //kddi catface
-                            buff.append("<img src=\"file:///android_asset/emoticons/catface.gif\" alt=\"catface\" />");
-                            break;
-                        case 0xE527: //kddi six
-                            buff.append("<img src=\"file:///android_asset/emoticons/six.gif\" alt=\"six\" />");
-                            break;
-                        case 0xE52C: //kddi mobaq
-                            buff.append("<img src=\"file:///android_asset/emoticons/mobaq.gif\" alt=\"mobaq\" />");
-                            break;
-                        case 0xE485: //kddi snow
-                            buff.append("<img src=\"file:///android_asset/emoticons/snow.gif\" alt=\"snow\" />");
-                            break;
-                        case 0xE4B7: //kddi tennis
-                            buff.append("<img src=\"file:///android_asset/emoticons/tennis.gif\" alt=\"tennis\" />");
-                            break;
-                        case 0xE5BD: //kddi fuji
-                            buff.append("<img src=\"file:///android_asset/emoticons/fuji.gif\" alt=\"fuji\" />");
-                            break;
-                        case 0xE558: //kddi copyright
-                            buff.append("<img src=\"file:///android_asset/emoticons/copyright.gif\" alt=\"copyright\" />");
-                            break;
-                        case 0xE4D8: //kddi horse
-                            buff.append("<img src=\"file:///android_asset/emoticons/horse.gif\" alt=\"horse\" />");
-                            break;
-                        case 0xE4B0: //kddi bullettrain
-                            buff.append("<img src=\"file:///android_asset/emoticons/bullettrain.gif\" alt=\"bullettrain\" />");
-                            break;
-                        case 0xE596: //kddi telephone
-                            buff.append("<img src=\"file:///android_asset/emoticons/telephone.gif\" alt=\"telephone\" />");
-                            break;
-                        case 0xE48F: //kddi aries
-                            buff.append("<img src=\"file:///android_asset/emoticons/aries.gif\" alt=\"aries\" />");
-                            break;
-                        case 0xE46A: //kddi signaler
-                            buff.append("<img src=\"file:///android_asset/emoticons/signaler.gif\" alt=\"signaler\" />");
-                            break;
-                        case 0xE472: //kddi angry
-                            buff.append("<img src=\"file:///android_asset/emoticons/angry.gif\" alt=\"angry\" />");
-                            break;
-                        case 0xE54E: //kddi tm
-                            buff.append("<img src=\"file:///android_asset/emoticons/tm.gif\" alt=\"tm\" />");
-                            break;
-                        case 0xE51A: //kddi boutique
-                            buff.append("<img src=\"file:///android_asset/emoticons/boutique.gif\" alt=\"boutique\" />");
-                            break;
-                        case 0xE493: //kddi leo
-                            buff.append("<img src=\"file:///android_asset/emoticons/leo.gif\" alt=\"leo\" />");
-                            break;
-                        case 0xE5A3: //kddi club
-                            buff.append("<img src=\"file:///android_asset/emoticons/club.gif\" alt=\"club\" />");
-                            break;
-                        case 0xE499: //kddi aquarius
-                            buff.append("<img src=\"file:///android_asset/emoticons/aquarius.gif\" alt=\"aquarius\" />");
-                            break;
-                        case 0xE4AE: //kddi bicycle
-                            buff.append("<img src=\"file:///android_asset/emoticons/bicycle.gif\" alt=\"bicycle\" />");
-                            break;
-                        case 0xE4E7: //kddi bleah
-                            buff.append("<img src=\"file:///android_asset/emoticons/bleah.gif\" alt=\"bleah\" />");
-                            break;
-                        case 0xE49F: //kddi book
-                            buff.append("<img src=\"file:///android_asset/emoticons/book.gif\" alt=\"book\" />");
-                            break;
-                        case 0xE5AD: //kddi ok
-                            buff.append("<img src=\"file:///android_asset/emoticons/ok.gif\" alt=\"ok\" />");
-                            break;
-                        case 0xE5A7: //kddi paper
-                            buff.append("<img src=\"file:///android_asset/emoticons/paper.gif\" alt=\"paper\" />");
-                            break;
-                        case 0xE4E5: //kddi annoy
-                            buff.append("<img src=\"file:///android_asset/emoticons/annoy.gif\" alt=\"annoy\" />");
-                            break;
-                        case 0xE4A0: //kddi clip
-                            buff.append("<img src=\"file:///android_asset/emoticons/clip.gif\" alt=\"clip\" />");
-                            break;
-                        case 0xE509: //kddi rouge
-                            buff.append("<img src=\"file:///android_asset/emoticons/rouge.gif\" alt=\"rouge\" />");
-                            break;
-                        case 0xEAAF: //kddi bread
-                            buff.append("<img src=\"file:///android_asset/emoticons/bread.gif\" alt=\"bread\" />");
-                            break;
-                        case 0xE519: //kddi key
-                            buff.append("<img src=\"file:///android_asset/emoticons/key.gif\" alt=\"key\" />");
-                            break;
-                        case 0xE594: //kddi clock
-                            buff.append("<img src=\"file:///android_asset/emoticons/clock.gif\" alt=\"clock\" />");
-                            break;
-                        case 0xEB7D: //kddi bud
-                            buff.append("<img src=\"file:///android_asset/emoticons/bud.gif\" alt=\"bud\" />");
-                            break;
-                        case 0xEA8A: //kddi empty
-                            buff.append("<img src=\"file:///android_asset/emoticons/empty.gif\" alt=\"empty\" />");
-                            break;
-                        case 0xE5B5: //kddi new
-                            buff.append("<img src=\"file:///android_asset/emoticons/new.gif\" alt=\"new\" />");
-                            break;
-                        case 0xE47A: //kddi bomb
-                            buff.append("<img src=\"file:///android_asset/emoticons/bomb.gif\" alt=\"bomb\" />");
-                            break;
-                        case 0xE5C6: //kddi coldsweats02
-                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats02.gif\" alt=\"coldsweats02\" />");
-                            break;
-                        case 0xE49A: //kddi pisces
-                            buff.append("<img src=\"file:///android_asset/emoticons/pisces.gif\" alt=\"pisces\" />");
-                            break;
-                        case 0xE4F3: //kddi punch
-                            buff.append("<img src=\"file:///android_asset/emoticons/punch.gif\" alt=\"punch\" />");
-                            break;
-                        case 0xEB5D: //kddi pout
-                            buff.append("<img src=\"file:///android_asset/emoticons/pout.gif\" alt=\"pout\" />");
-                            break;
-                        case 0xE469: //kddi typhoon
-                            buff.append("<img src=\"file:///android_asset/emoticons/typhoon.gif\" alt=\"typhoon\" />");
-                            break;
-                        case 0xE5B1: //kddi sweat01
-                            buff.append("<img src=\"file:///android_asset/emoticons/sweat01.gif\" alt=\"sweat01\" />");
-                            break;
-                        case 0xE4C7: //kddi dollar
-                            buff.append("<img src=\"file:///android_asset/emoticons/dollar.gif\" alt=\"dollar\" />");
-                            break;
-                        case 0xE5C5: //kddi shock
-                            buff.append("<img src=\"file:///android_asset/emoticons/shock.gif\" alt=\"shock\" />");
-                            break;
-                        case 0xE4F9: //kddi good
-                            buff.append("<img src=\"file:///android_asset/emoticons/good.gif\" alt=\"good\" />");
-                            break;
-                        case 0xE4F1: //kddi secret
-                            buff.append("<img src=\"file:///android_asset/emoticons/secret.gif\" alt=\"secret\" />");
-                            break;
-                        case 0xE4E4: //kddi tulip
-                            buff.append("<img src=\"file:///android_asset/emoticons/tulip.gif\" alt=\"tulip\" />");
-                            break;
-                        case 0xEA81: //kddi hotel
-                            buff.append("<img src=\"file:///android_asset/emoticons/hotel.gif\" alt=\"hotel\" />");
-                            break;
-                        case 0xE4FE: //kddi eyeglass
-                            buff.append("<img src=\"file:///android_asset/emoticons/eyeglass.gif\" alt=\"eyeglass\" />");
-                            break;
-                        case 0xEAF1: //kddi night
-                            buff.append("<img src=\"file:///android_asset/emoticons/night.gif\" alt=\"night\" />");
-                            break;
-                        case 0xE555: //kddi upwardright
-                            buff.append("<img src=\"file:///android_asset/emoticons/upwardright.gif\" alt=\"upwardright\" />");
-                            break;
-                        case 0xEB2E: //kddi down
-                            buff.append("<img src=\"file:///android_asset/emoticons/down.gif\" alt=\"down\" />");
-                            break;
-                        case 0xE4DB: //kddi cat
-                            buff.append("<img src=\"file:///android_asset/emoticons/cat.gif\" alt=\"cat\" />");
-                            break;
-                        case 0xE59C: //kddi art
-                            buff.append("<img src=\"file:///android_asset/emoticons/art.gif\" alt=\"art\" />");
-                            break;
-                        case 0xEB69: //kddi weep
-                            buff.append("<img src=\"file:///android_asset/emoticons/weep.gif\" alt=\"weep\" />");
-                            break;
-                        case 0xE4F4: //kddi dash
-                            buff.append("<img src=\"file:///android_asset/emoticons/dash.gif\" alt=\"dash\" />");
-                            break;
-                        case 0xE490: //kddi taurus
-                            buff.append("<img src=\"file:///android_asset/emoticons/taurus.gif\" alt=\"taurus\" />");
-                            break;
-                        case 0xE57A: //kddi watch
-                            buff.append("<img src=\"file:///android_asset/emoticons/watch.gif\" alt=\"watch\" />");
-                            break;
-                        case 0xEB2C: //kddi flag
-                            buff.append("<img src=\"file:///android_asset/emoticons/flag.gif\" alt=\"flag\" />");
-                            break;
-                        case 0xEB77: //kddi denim
-                            buff.append("<img src=\"file:///android_asset/emoticons/denim.gif\" alt=\"denim\" />");
-                            break;
-                        case 0xEAC5: //kddi confident
-                            buff.append("<img src=\"file:///android_asset/emoticons/confident.gif\" alt=\"confident\" />");
-                            break;
-                        case 0xE4B4: //kddi yacht
-                            buff.append("<img src=\"file:///android_asset/emoticons/yacht.gif\" alt=\"yacht\" />");
-                            break;
-                        case 0xE49C: //kddi bag
-                            buff.append("<img src=\"file:///android_asset/emoticons/bag.gif\" alt=\"bag\" />");
-                            break;
-                        case 0xE5A5: //kddi ear
-                            buff.append("<img src=\"file:///android_asset/emoticons/ear.gif\" alt=\"ear\" />");
-                            break;
-                        case 0xE4E1: //kddi dog
-                            buff.append("<img src=\"file:///android_asset/emoticons/dog.gif\" alt=\"dog\" />");
-                            break;
-                        case 0xE521: //kddi mail
-                            buff.append("<img src=\"file:///android_asset/emoticons/mail.gif\" alt=\"mail\" />");
-                            break;
-                        case 0xEB35: //kddi banana
-                            buff.append("<img src=\"file:///android_asset/emoticons/banana.gif\" alt=\"banana\" />");
-                            break;
-                        case 0xEAA5: //kddi heart
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart.gif\" alt=\"heart\" />");
-                            break;
-                        case 0xE47F: //kddi wheelchair
-                            buff.append("<img src=\"file:///android_asset/emoticons/wheelchair.gif\" alt=\"wheelchair\" />");
-                            break;
-                        case 0xEB75: //kddi heart02
-                            buff.append("<img src=\"file:///android_asset/emoticons/heart02.gif\" alt=\"heart02\" />");
-                            break;
-                        case 0xE48D: //kddi cloud
-                            buff.append("<img src=\"file:///android_asset/emoticons/cloud.gif\" alt=\"cloud\" />");
-                            break;
-                        case 0xE4C3: //kddi beer
-                            buff.append("<img src=\"file:///android_asset/emoticons/beer.gif\" alt=\"beer\" />");
-                            break;
-                        case 0xEAAB: //kddi shine
-                            buff.append("<img src=\"file:///android_asset/emoticons/shine.gif\" alt=\"shine\" />");
-                            break;
-                        case 0xEA92: //kddi memo
-                            buff.append("<img src=\"file:///android_asset/emoticons/memo.gif\" alt=\"memo\" />");
-                            break;
-                        default:
-                            buff.append((char)c);
-                    }//switch
-                }
             }
-            catch (IOException e)
-            {
-                //Should never happen
-                Log.e(K9.LOG_TAG, null, e);
-            }
-
             return buff.toString();
+        }
+        private String getEmojiForCodePoint(int codePoint)
+        {
+            // Derived from http://code.google.com/p/emoji4unicode/source/browse/trunk/data/emoji4unicode.xml
+            // XXX: This doesn't cover all the characters.  More emoticons are wanted.
+            switch (codePoint)
+            {
+                case 0xFE000:
+                    return "sun";
+                case 0xFE001:
+                    return "cloud";
+                case 0xFE002:
+                    return "rain";
+                case 0xFE003:
+                    return "snow";
+                case 0xFE004:
+                    return "thunder";
+                case 0xFE005:
+                    return "typhoon";
+                case 0xFE006:
+                    return "mist";
+                case 0xFE007:
+                    return "sprinkle";
+                case 0xFE008:
+                    return "night";
+                case 0xFE009:
+                    return "sun";
+                case 0xFE00A:
+                    return "sun";
+                case 0xFE00C:
+                    return "sun";
+                case 0xFE010:
+                    return "night";
+                case 0xFE011:
+                    return "newmoon";
+                case 0xFE012:
+                    return "moon1";
+                case 0xFE013:
+                    return "moon2";
+                case 0xFE014:
+                    return "moon3";
+                case 0xFE015:
+                    return "fullmoon";
+                case 0xFE016:
+                    return "moon2";
+                case 0xFE018:
+                    return "soon";
+                case 0xFE019:
+                    return "on";
+                case 0xFE01A:
+                    return "end";
+                case 0xFE01B:
+                    return "sandclock";
+                case 0xFE01C:
+                    return "sandclock";
+                case 0xFE01D:
+                    return "watch";
+                case 0xFE01E:
+                    return "clock";
+                case 0xFE01F:
+                    return "clock";
+                case 0xFE020:
+                    return "clock";
+                case 0xFE021:
+                    return "clock";
+                case 0xFE022:
+                    return "clock";
+                case 0xFE023:
+                    return "clock";
+                case 0xFE024:
+                    return "clock";
+                case 0xFE025:
+                    return "clock";
+                case 0xFE026:
+                    return "clock";
+                case 0xFE027:
+                    return "clock";
+                case 0xFE028:
+                    return "clock";
+                case 0xFE029:
+                    return "clock";
+                case 0xFE02A:
+                    return "clock";
+                case 0xFE02B:
+                    return "aries";
+                case 0xFE02C:
+                    return "taurus";
+                case 0xFE02D:
+                    return "gemini";
+                case 0xFE02E:
+                    return "cancer";
+                case 0xFE02F:
+                    return "leo";
+                case 0xFE030:
+                    return "virgo";
+                case 0xFE031:
+                    return "libra";
+                case 0xFE032:
+                    return "scorpius";
+                case 0xFE033:
+                    return "sagittarius";
+                case 0xFE034:
+                    return "capricornus";
+                case 0xFE035:
+                    return "aquarius";
+                case 0xFE036:
+                    return "pisces";
+                case 0xFE038:
+                    return "wave";
+                case 0xFE03B:
+                    return "night";
+                case 0xFE03C:
+                    return "clover";
+                case 0xFE03D:
+                    return "tulip";
+                case 0xFE03E:
+                    return "bud";
+                case 0xFE03F:
+                    return "maple";
+                case 0xFE040:
+                    return "cherryblossom";
+                case 0xFE042:
+                    return "maple";
+                case 0xFE04E:
+                    return "clover";
+                case 0xFE04F:
+                    return "cherry";
+                case 0xFE050:
+                    return "banana";
+                case 0xFE051:
+                    return "apple";
+                case 0xFE05B:
+                    return "apple";
+                case 0xFE190:
+                    return "eye";
+                case 0xFE191:
+                    return "ear";
+                case 0xFE193:
+                    return "kissmark";
+                case 0xFE194:
+                    return "bleah";
+                case 0xFE195:
+                    return "rouge";
+                case 0xFE198:
+                    return "hairsalon";
+                case 0xFE19A:
+                    return "shadow";
+                case 0xFE19B:
+                    return "happy01";
+                case 0xFE19C:
+                    return "happy01";
+                case 0xFE19D:
+                    return "happy01";
+                case 0xFE19E:
+                    return "happy01";
+                case 0xFE1B7:
+                    return "dog";
+                case 0xFE1B8:
+                    return "cat";
+                case 0xFE1B9:
+                    return "snail";
+                case 0xFE1BA:
+                    return "chick";
+                case 0xFE1BB:
+                    return "chick";
+                case 0xFE1BC:
+                    return "penguin";
+                case 0xFE1BD:
+                    return "fish";
+                case 0xFE1BE:
+                    return "horse";
+                case 0xFE1BF:
+                    return "pig";
+                case 0xFE1C8:
+                    return "chick";
+                case 0xFE1C9:
+                    return "fish";
+                case 0xFE1CF:
+                    return "aries";
+                case 0xFE1D0:
+                    return "dog";
+                case 0xFE1D8:
+                    return "dog";
+                case 0xFE1D9:
+                    return "fish";
+                case 0xFE1DB:
+                    return "foot";
+                case 0xFE1DD:
+                    return "chick";
+                case 0xFE1E0:
+                    return "pig";
+                case 0xFE1E3:
+                    return "cancer";
+                case 0xFE320:
+                    return "angry";
+                case 0xFE321:
+                    return "sad";
+                case 0xFE322:
+                    return "wobbly";
+                case 0xFE323:
+                    return "despair";
+                case 0xFE324:
+                    return "wobbly";
+                case 0xFE325:
+                    return "coldsweats02";
+                case 0xFE326:
+                    return "gawk";
+                case 0xFE327:
+                    return "lovely";
+                case 0xFE328:
+                    return "smile";
+                case 0xFE329:
+                    return "bleah";
+                case 0xFE32A:
+                    return "bleah";
+                case 0xFE32B:
+                    return "delicious";
+                case 0xFE32C:
+                    return "lovely";
+                case 0xFE32D:
+                    return "lovely";
+                case 0xFE32F:
+                    return "happy02";
+                case 0xFE330:
+                    return "happy01";
+                case 0xFE331:
+                    return "coldsweats01";
+                case 0xFE332:
+                    return "happy02";
+                case 0xFE333:
+                    return "smile";
+                case 0xFE334:
+                    return "happy02";
+                case 0xFE335:
+                    return "delicious";
+                case 0xFE336:
+                    return "happy01";
+                case 0xFE337:
+                    return "happy01";
+                case 0xFE338:
+                    return "coldsweats01";
+                case 0xFE339:
+                    return "weep";
+                case 0xFE33A:
+                    return "crying";
+                case 0xFE33B:
+                    return "shock";
+                case 0xFE33C:
+                    return "bearing";
+                case 0xFE33D:
+                    return "pout";
+                case 0xFE33E:
+                    return "confident";
+                case 0xFE33F:
+                    return "sad";
+                case 0xFE340:
+                    return "think";
+                case 0xFE341:
+                    return "shock";
+                case 0xFE342:
+                    return "sleepy";
+                case 0xFE343:
+                    return "catface";
+                case 0xFE344:
+                    return "coldsweats02";
+                case 0xFE345:
+                    return "coldsweats02";
+                case 0xFE346:
+                    return "bearing";
+                case 0xFE347:
+                    return "wink";
+                case 0xFE348:
+                    return "happy01";
+                case 0xFE349:
+                    return "smile";
+                case 0xFE34A:
+                    return "happy02";
+                case 0xFE34B:
+                    return "lovely";
+                case 0xFE34C:
+                    return "lovely";
+                case 0xFE34D:
+                    return "weep";
+                case 0xFE34E:
+                    return "pout";
+                case 0xFE34F:
+                    return "smile";
+                case 0xFE350:
+                    return "sad";
+                case 0xFE351:
+                    return "ng";
+                case 0xFE352:
+                    return "ok";
+                case 0xFE357:
+                    return "paper";
+                case 0xFE359:
+                    return "sad";
+                case 0xFE35A:
+                    return "angry";
+                case 0xFE4B0:
+                    return "house";
+                case 0xFE4B1:
+                    return "house";
+                case 0xFE4B2:
+                    return "building";
+                case 0xFE4B3:
+                    return "postoffice";
+                case 0xFE4B4:
+                    return "hospital";
+                case 0xFE4B5:
+                    return "bank";
+                case 0xFE4B6:
+                    return "atm";
+                case 0xFE4B7:
+                    return "hotel";
+                case 0xFE4B9:
+                    return "24hours";
+                case 0xFE4BA:
+                    return "school";
+                case 0xFE4C1:
+                    return "ship";
+                case 0xFE4C2:
+                    return "bottle";
+                case 0xFE4C3:
+                    return "fuji";
+                case 0xFE4C9:
+                    return "wrench";
+                case 0xFE4CC:
+                    return "shoe";
+                case 0xFE4CD:
+                    return "shoe";
+                case 0xFE4CE:
+                    return "eyeglass";
+                case 0xFE4CF:
+                    return "t-shirt";
+                case 0xFE4D0:
+                    return "denim";
+                case 0xFE4D1:
+                    return "crown";
+                case 0xFE4D2:
+                    return "crown";
+                case 0xFE4D6:
+                    return "boutique";
+                case 0xFE4D7:
+                    return "boutique";
+                case 0xFE4DB:
+                    return "t-shirt";
+                case 0xFE4DC:
+                    return "moneybag";
+                case 0xFE4DD:
+                    return "dollar";
+                case 0xFE4E0:
+                    return "dollar";
+                case 0xFE4E2:
+                    return "yen";
+                case 0xFE4E3:
+                    return "dollar";
+                case 0xFE4EF:
+                    return "camera";
+                case 0xFE4F0:
+                    return "bag";
+                case 0xFE4F1:
+                    return "pouch";
+                case 0xFE4F2:
+                    return "bell";
+                case 0xFE4F3:
+                    return "door";
+                case 0xFE4F9:
+                    return "movie";
+                case 0xFE4FB:
+                    return "flair";
+                case 0xFE4FD:
+                    return "sign05";
+                case 0xFE4FF:
+                    return "book";
+                case 0xFE500:
+                    return "book";
+                case 0xFE501:
+                    return "book";
+                case 0xFE502:
+                    return "book";
+                case 0xFE503:
+                    return "book";
+                case 0xFE505:
+                    return "spa";
+                case 0xFE506:
+                    return "toilet";
+                case 0xFE507:
+                    return "toilet";
+                case 0xFE508:
+                    return "toilet";
+                case 0xFE50F:
+                    return "ribbon";
+                case 0xFE510:
+                    return "present";
+                case 0xFE511:
+                    return "birthday";
+                case 0xFE512:
+                    return "xmas";
+                case 0xFE522:
+                    return "pocketbell";
+                case 0xFE523:
+                    return "telephone";
+                case 0xFE524:
+                    return "telephone";
+                case 0xFE525:
+                    return "mobilephone";
+                case 0xFE526:
+                    return "phoneto";
+                case 0xFE527:
+                    return "memo";
+                case 0xFE528:
+                    return "faxto";
+                case 0xFE529:
+                    return "mail";
+                case 0xFE52A:
+                    return "mailto";
+                case 0xFE52B:
+                    return "mailto";
+                case 0xFE52C:
+                    return "postoffice";
+                case 0xFE52D:
+                    return "postoffice";
+                case 0xFE52E:
+                    return "postoffice";
+                case 0xFE535:
+                    return "present";
+                case 0xFE536:
+                    return "pen";
+                case 0xFE537:
+                    return "chair";
+                case 0xFE538:
+                    return "pc";
+                case 0xFE539:
+                    return "pencil";
+                case 0xFE53A:
+                    return "clip";
+                case 0xFE53B:
+                    return "bag";
+                case 0xFE53E:
+                    return "hairsalon";
+                case 0xFE540:
+                    return "memo";
+                case 0xFE541:
+                    return "memo";
+                case 0xFE545:
+                    return "book";
+                case 0xFE546:
+                    return "book";
+                case 0xFE547:
+                    return "book";
+                case 0xFE548:
+                    return "memo";
+                case 0xFE54D:
+                    return "book";
+                case 0xFE54F:
+                    return "book";
+                case 0xFE552:
+                    return "memo";
+                case 0xFE553:
+                    return "foot";
+                case 0xFE7D0:
+                    return "sports";
+                case 0xFE7D1:
+                    return "baseball";
+                case 0xFE7D2:
+                    return "golf";
+                case 0xFE7D3:
+                    return "tennis";
+                case 0xFE7D4:
+                    return "soccer";
+                case 0xFE7D5:
+                    return "ski";
+                case 0xFE7D6:
+                    return "basketball";
+                case 0xFE7D7:
+                    return "motorsports";
+                case 0xFE7D8:
+                    return "snowboard";
+                case 0xFE7D9:
+                    return "run";
+                case 0xFE7DA:
+                    return "snowboard";
+                case 0xFE7DC:
+                    return "horse";
+                case 0xFE7DF:
+                    return "train";
+                case 0xFE7E0:
+                    return "subway";
+                case 0xFE7E1:
+                    return "subway";
+                case 0xFE7E2:
+                    return "bullettrain";
+                case 0xFE7E3:
+                    return "bullettrain";
+                case 0xFE7E4:
+                    return "car";
+                case 0xFE7E5:
+                    return "rvcar";
+                case 0xFE7E6:
+                    return "bus";
+                case 0xFE7E8:
+                    return "ship";
+                case 0xFE7E9:
+                    return "airplane";
+                case 0xFE7EA:
+                    return "yacht";
+                case 0xFE7EB:
+                    return "bicycle";
+                case 0xFE7EE:
+                    return "yacht";
+                case 0xFE7EF:
+                    return "car";
+                case 0xFE7F0:
+                    return "run";
+                case 0xFE7F5:
+                    return "gasstation";
+                case 0xFE7F6:
+                    return "parking";
+                case 0xFE7F7:
+                    return "signaler";
+                case 0xFE7FA:
+                    return "spa";
+                case 0xFE7FC:
+                    return "carouselpony";
+                case 0xFE7FF:
+                    return "fish";
+                case 0xFE800:
+                    return "karaoke";
+                case 0xFE801:
+                    return "movie";
+                case 0xFE802:
+                    return "movie";
+                case 0xFE803:
+                    return "music";
+                case 0xFE804:
+                    return "art";
+                case 0xFE805:
+                    return "drama";
+                case 0xFE806:
+                    return "event";
+                case 0xFE807:
+                    return "ticket";
+                case 0xFE808:
+                    return "slate";
+                case 0xFE809:
+                    return "drama";
+                case 0xFE80A:
+                    return "game";
+                case 0xFE813:
+                    return "note";
+                case 0xFE814:
+                    return "notes";
+                case 0xFE81A:
+                    return "notes";
+                case 0xFE81C:
+                    return "tv";
+                case 0xFE81D:
+                    return "cd";
+                case 0xFE81E:
+                    return "cd";
+                case 0xFE823:
+                    return "kissmark";
+                case 0xFE824:
+                    return "loveletter";
+                case 0xFE825:
+                    return "ring";
+                case 0xFE826:
+                    return "ring";
+                case 0xFE827:
+                    return "kissmark";
+                case 0xFE829:
+                    return "heart02";
+                case 0xFE82B:
+                    return "freedial";
+                case 0xFE82C:
+                    return "sharp";
+                case 0xFE82D:
+                    return "mobaq";
+                case 0xFE82E:
+                    return "one";
+                case 0xFE82F:
+                    return "two";
+                case 0xFE830:
+                    return "three";
+                case 0xFE831:
+                    return "four";
+                case 0xFE832:
+                    return "five";
+                case 0xFE833:
+                    return "six";
+                case 0xFE834:
+                    return "seven";
+                case 0xFE835:
+                    return "eight";
+                case 0xFE836:
+                    return "nine";
+                case 0xFE837:
+                    return "zero";
+                case 0xFE960:
+                    return "fastfood";
+                case 0xFE961:
+                    return "riceball";
+                case 0xFE962:
+                    return "cake";
+                case 0xFE963:
+                    return "noodle";
+                case 0xFE964:
+                    return "bread";
+                case 0xFE96A:
+                    return "noodle";
+                case 0xFE973:
+                    return "typhoon";
+                case 0xFE980:
+                    return "restaurant";
+                case 0xFE981:
+                    return "cafe";
+                case 0xFE982:
+                    return "bar";
+                case 0xFE983:
+                    return "beer";
+                case 0xFE984:
+                    return "japanesetea";
+                case 0xFE985:
+                    return "bottle";
+                case 0xFE986:
+                    return "wine";
+                case 0xFE987:
+                    return "beer";
+                case 0xFE988:
+                    return "bar";
+                case 0xFEAF0:
+                    return "upwardright";
+                case 0xFEAF1:
+                    return "downwardright";
+                case 0xFEAF2:
+                    return "upwardleft";
+                case 0xFEAF3:
+                    return "downwardleft";
+                case 0xFEAF4:
+                    return "up";
+                case 0xFEAF5:
+                    return "down";
+                case 0xFEAF6:
+                    return "leftright";
+                case 0xFEAF7:
+                    return "updown";
+                case 0xFEB04:
+                    return "sign01";
+                case 0xFEB05:
+                    return "sign02";
+                case 0xFEB06:
+                    return "sign03";
+                case 0xFEB07:
+                    return "sign04";
+                case 0xFEB08:
+                    return "sign05";
+                case 0xFEB0B:
+                    return "sign01";
+                case 0xFEB0C:
+                    return "heart01";
+                case 0xFEB0D:
+                    return "heart02";
+                case 0xFEB0E:
+                    return "heart03";
+                case 0xFEB0F:
+                    return "heart04";
+                case 0xFEB10:
+                    return "heart01";
+                case 0xFEB11:
+                    return "heart02";
+                case 0xFEB12:
+                    return "heart01";
+                case 0xFEB13:
+                    return "heart01";
+                case 0xFEB14:
+                    return "heart01";
+                case 0xFEB15:
+                    return "heart01";
+                case 0xFEB16:
+                    return "heart01";
+                case 0xFEB17:
+                    return "heart01";
+                case 0xFEB18:
+                    return "heart02";
+                case 0xFEB19:
+                    return "cute";
+                case 0xFEB1A:
+                    return "heart";
+                case 0xFEB1B:
+                    return "spade";
+                case 0xFEB1C:
+                    return "diamond";
+                case 0xFEB1D:
+                    return "club";
+                case 0xFEB1E:
+                    return "smoking";
+                case 0xFEB1F:
+                    return "nosmoking";
+                case 0xFEB20:
+                    return "wheelchair";
+                case 0xFEB21:
+                    return "free";
+                case 0xFEB22:
+                    return "flag";
+                case 0xFEB23:
+                    return "danger";
+                case 0xFEB26:
+                    return "ng";
+                case 0xFEB27:
+                    return "ok";
+                case 0xFEB28:
+                    return "ng";
+                case 0xFEB29:
+                    return "copyright";
+                case 0xFEB2A:
+                    return "tm";
+                case 0xFEB2B:
+                    return "secret";
+                case 0xFEB2C:
+                    return "recycle";
+                case 0xFEB2D:
+                    return "r-mark";
+                case 0xFEB2E:
+                    return "ban";
+                case 0xFEB2F:
+                    return "empty";
+                case 0xFEB30:
+                    return "pass";
+                case 0xFEB31:
+                    return "full";
+                case 0xFEB36:
+                    return "new";
+                case 0xFEB44:
+                    return "fullmoon";
+                case 0xFEB48:
+                    return "ban";
+                case 0xFEB55:
+                    return "cute";
+                case 0xFEB56:
+                    return "flair";
+                case 0xFEB57:
+                    return "annoy";
+                case 0xFEB58:
+                    return "bomb";
+                case 0xFEB59:
+                    return "sleepy";
+                case 0xFEB5A:
+                    return "impact";
+                case 0xFEB5B:
+                    return "sweat01";
+                case 0xFEB5C:
+                    return "sweat02";
+                case 0xFEB5D:
+                    return "dash";
+                case 0xFEB5F:
+                    return "sad";
+                case 0xFEB60:
+                    return "shine";
+                case 0xFEB61:
+                    return "cute";
+                case 0xFEB62:
+                    return "cute";
+                case 0xFEB63:
+                    return "newmoon";
+                case 0xFEB64:
+                    return "newmoon";
+                case 0xFEB65:
+                    return "newmoon";
+                case 0xFEB66:
+                    return "newmoon";
+                case 0xFEB67:
+                    return "newmoon";
+                case 0xFEB77:
+                    return "shine";
+                case 0xFEB81:
+                    return "id";
+                case 0xFEB82:
+                    return "key";
+                case 0xFEB83:
+                    return "enter";
+                case 0xFEB84:
+                    return "clear";
+                case 0xFEB85:
+                    return "search";
+                case 0xFEB86:
+                    return "key";
+                case 0xFEB87:
+                    return "key";
+                case 0xFEB8A:
+                    return "key";
+                case 0xFEB8D:
+                    return "search";
+                case 0xFEB90:
+                    return "key";
+                case 0xFEB91:
+                    return "recycle";
+                case 0xFEB92:
+                    return "mail";
+                case 0xFEB93:
+                    return "rock";
+                case 0xFEB94:
+                    return "scissors";
+                case 0xFEB95:
+                    return "paper";
+                case 0xFEB96:
+                    return "punch";
+                case 0xFEB97:
+                    return "good";
+                case 0xFEB9D:
+                    return "paper";
+                case 0xFEB9F:
+                    return "ok";
+                case 0xFEBA0:
+                    return "down";
+                case 0xFEBA1:
+                    return "paper";
+                case 0xFEE10:
+                    return "info01";
+                case 0xFEE11:
+                    return "info02";
+                case 0xFEE12:
+                    return "by-d";
+                case 0xFEE13:
+                    return "d-point";
+                case 0xFEE14:
+                    return "appli01";
+                case 0xFEE15:
+                    return "appli02";
+                case 0xFEE1C:
+                    return "movie";
+                default:
+                    return null;
+            }
         }
 
         @Override
@@ -5885,10 +3995,71 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             this.inTopGroup = inTopGroup;
         }
+
+        public Integer getLastUid()
+        {
+            return mLastUid;
+        }
+
+        /**
+         * <p>Fetches the most recent <b>numeric</b> UID value in this folder.  This is used by
+         * {@link com.fsck.k9.controller.MessagingController#shouldNotifyForMessage} to see if messages being
+         * fetched are new and unread.  Messages are "new" if they have a UID higher than the most recent UID prior
+         * to synchronization.</p>
+         *
+         * <p>This only works for protocols with numeric UIDs (like IMAP). For protocols with
+         * alphanumeric UIDs (like POP), this method quietly fails and shouldNotifyForMessage() will
+         * always notify for unread messages.</p>
+         *
+         * <p>Once Issue 1072 has been fixed, this method and shouldNotifyForMessage() should be
+         * updated to use internal dates rather than UIDs to determine new-ness. While this doesn't
+         * solve things for POP (which doesn't have internal dates), we can likely use this as a
+         * framework to examine send date in lieu of internal date.</p>
+         * @throws MessagingException
+         */
+        public void updateLastUid() throws MessagingException
+        {
+            Integer lastUid = database.execute(false, new DbCallback<Integer>()
+            {
+                @Override
+                public Integer doDbWork(final SQLiteDatabase db)
+                {
+                    Cursor cursor = null;
+                    try
+                    {
+                        open(OpenMode.READ_ONLY);
+                        cursor = db.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
+                        if (cursor.getCount() > 0)
+                        {
+                            cursor.moveToFirst();
+                            return cursor.getInt(0);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to updateLastUid: ", e);
+                    }
+                    finally
+                    {
+                        if (cursor != null)
+                        {
+                            cursor.close();
+                        }
+                    }
+                    return null;
+                }
+            });
+            if(K9.DEBUG)
+                Log.d(K9.LOG_TAG, "Updated last UID for folder " + mName + " to " + lastUid);
+            mLastUid = lastUid;
+        }
     }
 
     public static class LocalTextBody extends TextBody
     {
+        /**
+         * This is an HTML-ified version of the message for display purposes.
+         */
         private String mBodyForDisplay;
 
         public LocalTextBody(String body)
@@ -5994,6 +4165,45 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 f.open(LocalFolder.OpenMode.READ_WRITE);
                 this.mFolder = f;
             }
+        }
+
+        /**
+         * Fetch the message text for display. This always returns an HTML-ified version of the
+         * message, even if it was originally a text-only message.
+         * @return HTML version of message for display purposes.
+         * @throws MessagingException
+         */
+        public String getTextForDisplay() throws MessagingException
+        {
+            String text;    // First try and fetch an HTML part.
+            Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+            if (part == null)
+            {
+                // If that fails, try and get a text part.
+                part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+                if (part == null)
+                {
+                    text = null;
+                }
+                else
+                {
+                    LocalStore.LocalTextBody body = (LocalStore.LocalTextBody) part.getBody();
+                    if (body == null)
+                    {
+                        text = null;
+                    }
+                    else
+                    {
+                        text = body.getBodyForDisplay();
+                    }
+                }
+            }
+            else
+            {
+                // We successfully found an HTML part; do the necessary character set decoding.
+                text = MimeUtility.getTextFromPart(part);
+            }
+            return text;
         }
 
 
@@ -6224,7 +4434,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -6275,7 +4485,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
              */
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
@@ -6322,7 +4532,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(true, new DbCallback<Void>()
+                database.execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
@@ -6332,7 +4542,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                             ((LocalFolder) mFolder).deleteAttachments(mId);
-                            mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
+                            db.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
                         }
                         catch (MessagingException e)
                         {

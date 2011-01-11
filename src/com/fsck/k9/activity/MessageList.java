@@ -24,7 +24,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.graphics.Path;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -33,8 +33,8 @@ import android.graphics.drawable.shapes.PathShape;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -94,9 +94,10 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -3209,7 +3210,7 @@ public class MessageList
                 if (mTouchView)
                 {
                     holder.preview.setLines(mPreviewLines);
-                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListPreview());
 
                 }
                 else
@@ -3230,22 +3231,30 @@ public class MessageList
                 // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
-                holder.subject.setText("No subject");
+                holder.subject.setText(getString(R.string.general_no_subject));
                 holder.subject.setTypeface(null, Typeface.NORMAL);
+                String noSender = getString(R.string.general_no_sender);
                 if (holder.preview != null)
                 {
-                    holder.preview.setText("No sender");
-                    holder.preview.setTypeface(null, Typeface.NORMAL);
-                    holder.preview.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
+                    Spannable str = (Spannable) holder.preview.getText();
+
+                    ColorStateList color = holder.subject.getTextColors();
+                    ColorStateList linkColor = holder.subject.getLinkTextColors();
+                    str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                               );
                 }
                 else
                 {
-                    holder.from.setText("No sender");
+                    holder.from.setText(noSender);
                     holder.from.setTypeface(null, Typeface.NORMAL);
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 }
 
-                holder.date.setText("No date");
+                holder.date.setText(getString(R.string.general_no_date));
 
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
@@ -3334,19 +3343,17 @@ public class MessageList
                  * from.
                  */
 
-                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.message.getPreview()),
+                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
+                                       .append(message.sender).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
-                // Create our span sections, and assign a format to each.
-                str.setSpan(new StyleSpan(senderTypeface),
+                // Create a span section for the sender, and assign the correct font size and weight.
+                ColorStateList color = holder.subject.getTextColors();
+                ColorStateList linkColor = holder.subject.getLinkTextColors();
+                str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
                             0,
-                            (message.sender.length()+1),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            );
-                str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                            (message.sender.length()+1),
-                            str.length(),
+                            message.sender.length() + 1,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                             );
             }
