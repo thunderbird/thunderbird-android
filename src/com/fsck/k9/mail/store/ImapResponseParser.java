@@ -342,7 +342,10 @@ public class ImapResponseParser
             if ((available > 0) && (available != size))
             {
                 // If so, skip the rest
-                fixed.skip(fixed.available());
+                while (fixed.available() > 0)
+                {
+                    fixed.skip(fixed.available());
+                }
             }
 
             if (result != null)
