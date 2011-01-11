@@ -34,9 +34,6 @@ public class ImapResponseParser
     /**
      * Reads the next response available on the stream and returns an
      * ImapResponse object that represents it.
-     *
-     * @return
-     * @throws IOException
      */
     public ImapResponse readResponse(IImapResponseCallback callback) throws IOException
     {
@@ -105,14 +102,12 @@ public class ImapResponseParser
 
     /**
      * Reads the next token of the response. The token can be one of: String -
-     * for NIL, QUOTED, NUMBER, ATOM. InputStream - for LITERAL.
-     * InputStream.available() returns the total length of the stream.
-     * ImapResponseList - for PARENTHESIZED LIST. Can contain any of the above
+     * for NIL, QUOTED, NUMBER, ATOM. Object - for LITERAL.
+     * ImapList - for PARENTHESIZED LIST. Can contain any of the above
      * elements including List.
      *
      * @return The next token in the response or null if there are no more
      *         tokens.
-     * @throws IOException
      */
     private Object readToken(ImapResponse response) throws IOException
     {
@@ -298,11 +293,8 @@ public class ImapResponseParser
     }
 
     /**
-     * A { has been read, read the rest of the size string, the space and then
-     * notify the listener with an InputStream.
-     *
-     * @param mListener
-     * @throws IOException
+     * A "{" has been read. Read the rest of the size string, the space and then
+     * notify the callback with an InputStream.
      */
     private Object parseLiteral() throws IOException
     {
@@ -369,13 +361,6 @@ public class ImapResponseParser
         return new String(data, "US-ASCII");
     }
 
-    /**
-     * A " has been read, read to the end of the quoted string and notify the
-     * listener.
-     *
-     * @param mListener
-     * @throws IOException
-     */
     private String parseQuoted() throws IOException
     {
         expect('"');
@@ -433,7 +418,7 @@ public class ImapResponseParser
     }
 
     /**
-     * Represents an IMAP LIST response and is also the base class for the
+     * Represents an IMAP list response and is also the base class for the
      * ImapResponse.
      */
     public class ImapList extends ArrayList<Object>
@@ -581,9 +566,7 @@ public class ImapResponseParser
                     }
                 }
             }
-
         }
-
     }
 
     /**
@@ -637,6 +620,7 @@ public class ImapResponseParser
             return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
         }
     }
+
     public static boolean equalsIgnoreCase(Object o1, Object o2)
     {
         if (o1 != null && o2 != null && o1 instanceof String && o2 instanceof String)
