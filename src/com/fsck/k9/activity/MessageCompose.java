@@ -1892,10 +1892,21 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     addAddresses(mCcView, message.getRecipients(RecipientType.CC));
                     mCcView.setVisibility(View.VISIBLE);
                 }
-                if (message.getRecipients(RecipientType.BCC).length > 0)
+
+                Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
+                if (bccRecipients.length > 0)
                 {
-                    addAddresses(mBccView, message.getRecipients(RecipientType.BCC));
-                    mBccView.setVisibility(View.VISIBLE);
+                    addAddresses(mBccView, bccRecipients);
+                    String bccAddress = mAccount.getAlwaysBcc();
+                    if (bccRecipients.length == 1 && bccAddress != null && bccAddress.equals(bccRecipients[0].toString()))
+                    {
+                        // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
+                        mBccView.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        mBccView.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 // Read In-Reply-To header from draft
