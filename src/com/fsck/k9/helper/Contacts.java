@@ -124,7 +124,6 @@ public abstract class Contacts
      * Start the activity to add information to an existing contact or add a
      * new one.
      *
-     * @param activity Object of the currently active activity.
      * @param email An {@link Address} instance containing the email address
      *              of the entity you want to add to the contacts. Optionally
      *              the instance also contains the (display) name of that
