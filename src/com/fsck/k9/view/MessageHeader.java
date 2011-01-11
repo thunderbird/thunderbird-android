@@ -150,7 +150,7 @@ public class MessageHeader extends LinearLayout
 
     public boolean additionalHeadersVisible()
     {
-        if ( mAdditionalHeadersView.getVisibility() == View.VISIBLE )
+        if ( mAdditionalHeadersView != null && mAdditionalHeadersView.getVisibility() == View.VISIBLE )
         {
             return true;
         }
