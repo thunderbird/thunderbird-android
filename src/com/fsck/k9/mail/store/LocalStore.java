@@ -76,7 +76,7 @@ public class LocalStore extends Store implements Serializable
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
     {
-        HEADERS_TO_SAVE.add(K9.K9MAIL_IDENTITY);
+        HEADERS_TO_SAVE.add(K9.IDENTITY_HEADER);
         HEADERS_TO_SAVE.add("To");
         HEADERS_TO_SAVE.add("Cc");
         HEADERS_TO_SAVE.add("From");
@@ -94,7 +94,7 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-    protected static final int DB_VERSION = 39;
+    protected static final int DB_VERSION = 40;
 
     protected String uUid = null;
 
@@ -158,7 +158,8 @@ public class LocalStore extends Store implements Serializable
                     db.execSQL("DROP TABLE IF EXISTS messages");
                     db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
                                + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
+                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT, "
+                               + "mime_type TEXT)");
 
                     db.execSQL("DROP TABLE IF EXISTS headers");
                     db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -275,7 +276,6 @@ public class LocalStore extends Store implements Serializable
                         }
                     }
 
-
                     // Database version 38 is solely to prune cached attachments now that we clear them better
                     if (db.getVersion() < 39)
                     {
@@ -289,6 +289,18 @@ public class LocalStore extends Store implements Serializable
                         }
                     }
 
+                    // V40: Store the MIME type for a message.
+                    if (db.getVersion() < 40)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
+                        }
+                    }
 
 
                 }
@@ -1804,25 +1816,90 @@ public class LocalStore extends Store implements Serializable
                                     mp.setSubType("mixed");
                                     try
                                     {
-                                        cursor = db.rawQuery("SELECT html_content, text_content FROM messages "
+                                        cursor = db.rawQuery("SELECT html_content, text_content, mime_type FROM messages "
                                                              + "WHERE id = ?",
                                                              new String[] { Long.toString(localMessage.mId) });
                                         cursor.moveToNext();
                                         String htmlContent = cursor.getString(0);
                                         String textContent = cursor.getString(1);
-
-                                        if (textContent != null)
+                                        String mimeType = cursor.getString(2);
+                                        if (mimeType != null && mimeType.toLowerCase().startsWith("multipart/"))
                                         {
-                                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
-                                            mp.addBodyPart(bp);
+                                            // If this is a multipart message, preserve both text
+                                            // and html parts, as well as the subtype.
+                                            mp.setSubType(mimeType.toLowerCase().replaceFirst("^multipart/", ""));
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                            if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
+
+                                            // If we have both text and html content and our MIME type
+                                            // isn't multipart/alternative, then corral them into a new
+                                            // multipart/alternative part and put that into the parent.
+                                            // If it turns out that this is the only part in the parent
+                                            // MimeMultipart, it'll get fixed below before we attach to
+                                            // the message.
+                                            if (textContent != null && htmlContent != null && !mimeType.equalsIgnoreCase("multipart/alternative"))
+                                            {
+                                                MimeMultipart alternativeParts = mp;
+                                                alternativeParts.setSubType("alternative");
+                                                mp = new MimeMultipart();
+                                                mp.addBodyPart(new MimeBodyPart(alternativeParts));
+                                            }
+                                        }
+                                        else if (mimeType != null && mimeType.equalsIgnoreCase("text/plain"))
+                                        {
+                                            // If it's text, add only the plain part. The MIME
+                                            // container will drop away below.
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                        }
+                                        else if (mimeType != null && mimeType.equalsIgnoreCase("text/html"))
+                                        {
+                                            // If it's html, add only the html part. The MIME
+                                            // container will drop away below.
+                                            if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
                                         }
                                         else
                                         {
-                                            TextBody body = new TextBody(htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                            mp.addBodyPart(bp);
+                                            // MIME type not set. Grab whatever part we can get,
+                                            // with Text taking precedence. This preserves pre-HTML
+                                            // composition behaviour.
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                            else if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
                                         }
+
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.e(K9.LOG_TAG, "Exception fetching message:", e);
                                     }
                                     finally
                                     {
@@ -1889,7 +1966,7 @@ public class LocalStore extends Store implements Serializable
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                                             /*
                                              * HEADER_ANDROID_ATTACHMENT_STORE_DATA is a custom header we add to that
-                                             * we can later pull the attachment from the remote store if neccesary.
+                                             * we can later pull the attachment from the remote store if necessary.
                                              */
                                             bp.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, storeData);
 
@@ -1904,15 +1981,25 @@ public class LocalStore extends Store implements Serializable
                                         }
                                     }
 
-                                    if (mp.getCount() == 1)
+                                    if (mp.getCount() == 0)
                                     {
+                                        // If we have no body, remove the container and create a
+                                        // dummy plain text body. This check helps prevents us from
+                                        // triggering T_MIME_NO_TEXT and T_TVD_MIME_NO_HEADERS
+                                        // SpamAssassin rules.
+                                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
+                                        localMessage.setBody(new TextBody(""));
+                                    }
+                                    else if (mp.getCount() == 1)
+                                    {
+                                        // If we have only one part, drop the MimeMultipart container.
                                         BodyPart part = mp.getBodyPart(0);
                                         localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, part.getContentType());
                                         localMessage.setBody(part.getBody());
                                     }
                                     else
                                     {
-                                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/mixed");
+                                        // Otherwise, attach the MimeMultipart to the message.
                                         localMessage.setBody(mp);
                                     }
                                 }
@@ -2381,6 +2468,7 @@ public class LocalStore extends Store implements Serializable
                                     cv.put("attachment_count", attachments.size());
                                     cv.put("internal_date",  message.getInternalDate() == null
                                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
+                                    cv.put("mime_type", message.getMimeType());
 
                                     String messageId = message.getMessageId();
                                     if (messageId != null)

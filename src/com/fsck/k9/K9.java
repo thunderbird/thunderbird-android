@@ -225,7 +225,7 @@ public class K9 extends Application
 
     public static final String REMOTE_UID_PREFIX = "K9REMOTE:";
 
-    public static final String K9MAIL_IDENTITY = "X-K9mail-Identity";
+    public static final String IDENTITY_HEADER = "X-K9mail-Identity";
 
     /**
      * Specifies how many messages will be shown in a folder by default. This number is set

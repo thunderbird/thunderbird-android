@@ -1,9 +1,6 @@
 package com.fsck.k9.helper;
 
-import android.text.Annotation;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spannable;
+import android.text.*;
 import android.util.Log;
 import com.fsck.k9.K9;
 import org.xml.sax.XMLReader;
@@ -142,7 +139,8 @@ public class HtmlConverter
 
     /**
      * Convert a text string into an HTML document. Attempts to do smart replacement for large
-     * documents to prevent OOM errors.
+     * documents to prevent OOM errors. This method adds headers and footers to create a proper HTML
+     * document. To convert to a fragment, use {@link #textToHtmlFragment(String)}.
      * @param text Plain text string.
      * @return HTML string.
      */
@@ -251,4 +249,18 @@ public class HtmlConverter
         }
     }
 
+    /**
+     * Convert a plain text string into an HTML fragment.
+     * @param text Plain text.
+     * @return HTML fragment.
+     */
+    public static String textToHtmlFragment(final String text)
+    {
+        // Escape the entities and add newlines.
+        // TODO - Perhaps use LocalStore.htmlifyString?
+        String result = TextUtils.htmlEncode(text).replace("\n", "<br>\n");
+        // For some reason, TextUtils.htmlEncode escapes ' into &apos;, which is technically part of the XHTML 1.0
+        // standard, but Gmail doesn't recognize it as an HTML entity. We unescape that here.
+        return result.replace("&apos;", "&#39;");
+    }
 }

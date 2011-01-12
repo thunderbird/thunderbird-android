@@ -1343,7 +1343,7 @@ public class ImapStore extends Store
                 fetchFields.add("INTERNALDATE");
                 fetchFields.add("RFC822.SIZE");
                 fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc reply-to "
-                                + K9.K9MAIL_IDENTITY + ")]");
+                                + K9.IDENTITY_HEADER + ")]");
             }
             if (fp.contains(FetchProfile.Item.STRUCTURE))
             {

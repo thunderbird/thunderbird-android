@@ -561,6 +561,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
     <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will appear above your reply.</string>
 
+    <string name="account_settings_message_format_label">Message Format</string>
+    <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>
+    <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>
+
     <string name="account_settings_quote_style_label">Reply quoting style</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>
     <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>

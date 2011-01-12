@@ -86,6 +86,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
+    private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
@@ -142,6 +143,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private CheckBoxPreference mNotificationUnreadCount;
+    private ListPreference mMessageFormat;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mReplyAfterQuote;
@@ -202,6 +204,21 @@ public class AccountSettings extends K9PreferenceActivity
                 final String summary = newValue.toString();
                 mAccountDescription.setSummary(summary);
                 mAccountDescription.setText(summary);
+                return false;
+            }
+        });
+
+        mMessageFormat = (ListPreference) findPreference(PREFERENCE_MESSAGE_FORMAT);
+        mMessageFormat.setValue(mAccount.getMessageFormat().name());
+        mMessageFormat.setSummary(mMessageFormat.getEntry());
+        mMessageFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageFormat.findIndexOfValue(summary);
+                mMessageFormat.setSummary(mMessageFormat.getEntries()[index]);
+                mMessageFormat.setValue(summary);
                 return false;
             }
         });
@@ -756,6 +773,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());

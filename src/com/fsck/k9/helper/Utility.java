@@ -141,6 +141,27 @@ public class Utility
         return false;
     }
 
+    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
+
+    /**
+     * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
+     * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
+     * left unquoted; anything else is returned as a quoted string.
+     * @param text String to quote.
+     * @return Possibly quoted string.
+     */
+    public static String quoteAtoms(final String text)
+    {
+        if (ATOM.matcher(text).matches())
+        {
+            return text;
+        }
+        else
+        {
+            return quoteString(text);
+        }
+    }
+
     /**
      * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
      * double quote character to start and end if it's not already there.

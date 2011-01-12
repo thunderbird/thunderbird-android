@@ -187,7 +187,7 @@ public class Address
     {
         if (mPersonal != null)
         {
-            return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
+            return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
         }
         else
         {

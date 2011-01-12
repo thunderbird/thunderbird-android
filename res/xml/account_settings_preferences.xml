@@ -227,6 +227,13 @@
 
         <ListPreference
             android:persistent="false"
+            android:key="message_format"
+            android:title="@string/account_settings_message_format_label"
+            android:entries="@array/account_settings_message_format_entries"
+            android:entryValues="@array/account_settings_message_format_values" />
+
+        <ListPreference
+            android:persistent="false"
             android:key="quote_style"
             android:title="@string/account_settings_quote_style_label"
             android:entries="@array/account_settings_quote_style_entries"

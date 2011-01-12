@@ -50,6 +50,7 @@ public class Account implements BaseAccount
     public static final String TYPE_OTHER = "OTHER";
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
+    private static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
     private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
@@ -114,6 +115,7 @@ public class Account implements BaseAccount
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
+    private MessageFormat mMessageFormat;
     private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mReplyAfterQuote;
@@ -160,6 +162,11 @@ public class Account implements BaseAccount
         PREFIX, HEADER
     }
 
+    public enum MessageFormat
+    {
+        TEXT, HTML
+    }
+
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
@@ -191,6 +198,7 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
+        mMessageFormat = DEFAULT_MESSAGE_FORMAT;
         mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
@@ -282,9 +290,10 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
                                 false);
         maximumPolledMessageAge = prefs.getInt(mUuid
-                                               + ".maximumPolledMessageAge", -1);
+                + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
+        mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
@@ -570,6 +579,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
+        editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
         editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
@@ -1488,6 +1498,16 @@ public class Account implements BaseAccount
         {
             return null;
         }
+    }
+
+    public MessageFormat getMessageFormat()
+    {
+        return mMessageFormat;
+    }
+
+    public void setMessageFormat(MessageFormat messageFormat)
+    {
+        this.mMessageFormat = messageFormat;
     }
 
     public QuoteStyle getQuoteStyle()

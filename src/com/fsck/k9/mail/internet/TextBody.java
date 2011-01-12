@@ -19,6 +19,11 @@ public class TextBody implements Body
     private String mBody;
     private String mEncoding;
     private String mCharset = "UTF-8";
+    // Length of the message composed (as opposed to quoted). I don't like the name of this variable and am open to
+    // suggestions as to what it should otherwise be. -achen 20101207
+    private Integer mComposedMessageLength;
+    // Offset from position 0 where the composed message begins.
+    private Integer mComposedMessageOffset;
 
     public TextBody(String body)
     {
@@ -84,5 +89,25 @@ public class TextBody implements Body
     public void setCharset(String charset)
     {
         mCharset = charset;
+    }
+    
+    public Integer getComposedMessageLength()
+    {
+        return mComposedMessageLength;
+    }
+
+    public void setComposedMessageLength(Integer composedMessageLength)
+    {
+        this.mComposedMessageLength = composedMessageLength;
+    }
+
+    public Integer getComposedMessageOffset()
+    {
+        return mComposedMessageOffset;
+    }
+
+    public void setComposedMessageOffset(Integer composedMessageOffset)
+    {
+        this.mComposedMessageOffset = composedMessageOffset;
     }
 }
