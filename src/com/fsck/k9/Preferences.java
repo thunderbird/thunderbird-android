@@ -92,7 +92,6 @@ public class Preferences
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
-     * @param context
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
     public synchronized Collection<Account> getAvailableAccounts()
