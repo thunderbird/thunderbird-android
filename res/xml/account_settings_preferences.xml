@@ -424,6 +424,13 @@
             android:defaultValue="true"
             android:summary="@string/account_settings_notification_opens_unread_summary" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="notification_unread_count"
+            android:title="@string/account_settings_notification_unread_count_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notification_unread_count_summary" />
+
     </PreferenceScreen>
 
     <PreferenceScreen

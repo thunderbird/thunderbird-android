@@ -82,6 +82,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
+    private static final String PREFERENCE_NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
@@ -140,6 +141,7 @@ public class AccountSettings extends K9PreferenceActivity
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
+    private CheckBoxPreference mNotificationUnreadCount;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mReplyAfterQuote;
@@ -608,6 +610,9 @@ public class AccountSettings extends K9PreferenceActivity
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
+        mNotificationUnreadCount = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
+        mNotificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
+
         new PopulateFolderPrefsTask().execute();
 
         mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
@@ -744,6 +749,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
+        mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());

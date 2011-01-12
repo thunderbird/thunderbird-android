@@ -4767,12 +4767,16 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = previousUnreadMessageCount + newMessageCount.get();
+        final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
+        if (account.isNotificationShowsUnreadCount())
+        {
+            notif.number = unreadCount;
+        }
 
         Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, notif.number, account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
