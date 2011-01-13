@@ -94,7 +94,7 @@ public class ImapResponseParser
              * method that parses a resp-text token. There's no need to use
              * readToken()/parseToken() on that data.
              *
-             * See RFC 3501, §9 Formal Syntax (resp-text)
+             * See RFC 3501, Section 9 Formal Syntax (resp-text)
              */
         }
         response.mCompleted = (token == null);
