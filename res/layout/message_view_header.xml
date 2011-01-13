@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Header area -->
     <com.fsck.k9.view.MessageHeader
         android:id="@+id/header_container"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -155,3 +157,50 @@
             </LinearLayout>
         </LinearLayout>
     </com.fsck.k9.view.MessageHeader>
+    <LinearLayout
+        android:id="@+id/show_pictures_section"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        android:paddingLeft="6dip"
+        android:paddingRight="3dip"
+        android:paddingTop="4dip"
+        android:paddingBottom="4dip"
+        android:baselineAligned="false"
+        android:visibility="gone">
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            android:text="@string/message_view_show_pictures_instructions"
+            android:layout_gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" />
+     <Button android:id="@+id/show_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_view_show_pictures_action" />
+    </LinearLayout>
+    <include layout="@layout/message_view_crypto_layout"/>
+    <!-- Content area -->
+    <com.fsck.k9.view.MessageWebView
+        android:id="@+id/message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <com.fsck.k9.view.AccessibleWebView
+        android:id="@+id/accessible_message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <!-- Attachments area -->
+    <LinearLayout
+        android:id="@+id/attachments"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dip" />
+    <Button android:id="@+id/download_remainder"
+        android:text="@string/message_view_download_remainder"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_width="fill_parent" />
+</merge>

@@ -21,7 +21,6 @@
             android:layout_height="0dip"
             android:layout_weight="1">
             <include layout="@layout/message_view_header" />
-            <include layout="@layout/message_view_body" />
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"
