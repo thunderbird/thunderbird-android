@@ -285,12 +285,12 @@ public class Account implements BaseAccount
 
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch",
-                false);
+                                  false);
         mNotificationShowsUnreadCount = prefs.getBoolean(mUuid + ".notificationUnreadCount", true);
         subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
                                 false);
         maximumPolledMessageAge = prefs.getInt(mUuid
-                + ".maximumPolledMessageAge", -1);
+                                               + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));

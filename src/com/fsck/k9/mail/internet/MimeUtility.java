@@ -1398,7 +1398,7 @@ public class MimeUtility
 
         // iso-2022-jp variants are supported by no versions as of Dec 2010.
         if (charset.length() > 19 && charset.startsWith("x-") &&
-            charset.endsWith("-iso-2022-jp-2007") && !Charset.isSupported(charset))
+        charset.endsWith("-iso-2022-jp-2007") && !Charset.isSupported(charset))
         {
             in = new Iso2022JpToShiftJisInputStream(in);
             charset = "x-" + charset.substring(2, charset.length() - 17) + "-shift_jis-2007";
@@ -1406,7 +1406,7 @@ public class MimeUtility
 
         // shift_jis variants are supported by Eclair and later.
         if (charset.length() > 17 && charset.startsWith("x-") &&
-            charset.endsWith("-shift_jis-2007") && !Charset.isSupported(charset))
+        charset.endsWith("-shift_jis-2007") && !Charset.isSupported(charset))
         {
             // If the JIS variant is iPhone, map the Unicode private use area in iPhone to the one in Android after
             // converting the character set from the standard Shift JIS to Unicode.
@@ -1422,7 +1422,7 @@ public class MimeUtility
         if (!Charset.isSupported(charset))
         {
             Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-                  ". Falling back to US-ASCII");
+            ". Falling back to US-ASCII");
             charset = "US-ASCII";
         }
 

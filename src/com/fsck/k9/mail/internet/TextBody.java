@@ -90,7 +90,7 @@ public class TextBody implements Body
     {
         mCharset = charset;
     }
-    
+
     public Integer getComposedMessageLength()
     {
         return mComposedMessageLength;

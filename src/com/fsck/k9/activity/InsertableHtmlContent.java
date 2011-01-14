@@ -78,7 +78,8 @@ class InsertableHtmlContent implements Serializable
     /**
      * Remove all quoted content.
      */
-    public void clearQuotedContent() {
+    public void clearQuotedContent()
+    {
         quotedContent.setLength(0);
         footerInsertionPoint = 0;
         headerInsertionPoint = 0;
@@ -89,7 +90,8 @@ class InsertableHtmlContent implements Serializable
      * inserted content buffer.
      * @param content
      */
-    public void setUserContent(final String content) {
+    public void setUserContent(final String content)
+    {
         userContent = new StringBuilder(content);
     }
 
@@ -114,11 +116,11 @@ class InsertableHtmlContent implements Serializable
     public String toDebugString()
     {
         return "InsertableHtmlContent{" +
-                "headerInsertionPoint=" + headerInsertionPoint +
-                ", footerInsertionPoint=" + footerInsertionPoint +
-                ", quotedContent=" + quotedContent +
-                ", userContent=" + userContent +
-                ", compiledResult=" + toString() +
-                '}';
+               "headerInsertionPoint=" + headerInsertionPoint +
+               ", footerInsertionPoint=" + footerInsertionPoint +
+               ", quotedContent=" + quotedContent +
+               ", userContent=" + userContent +
+               ", compiledResult=" + toString() +
+               '}';
     }
 }

@@ -1193,7 +1193,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     // FYI, there's nothing in the code that requires these variables to one letter. They're one
     // letter simply to save space.  This name sucks.  It's too similar to Account.Identity.
-    private enum IdentityField {
+    private enum IdentityField
+    {
         LENGTH("l"),
         OFFSET("o"),
         MESSAGE_FORMAT("f"),
@@ -1205,11 +1206,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         private final String value;
 
-        IdentityField(String value) {
+        IdentityField(String value)
+        {
             this.value = value;
         }
 
-        public String value() {
+        public String value()
+        {
             return value;
         }
 
@@ -1218,7 +1221,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * checked for integer-ness during decoding.
          * @return
          */
-        public static IdentityField[] getIntegerFields() {
+        public static IdentityField[] getIntegerFields()
+        {
             return new IdentityField[] { LENGTH, OFFSET };
         }
     }
@@ -1232,13 +1236,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param body {@link TextBody} to analyze for body length and offset.
      * @return Identity string.
      */
-    private String buildIdentityHeader(final TextBody body) {
+    private String buildIdentityHeader(final TextBody body)
+    {
         Uri.Builder uri = new Uri.Builder();
-        if(body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null) {
+        if(body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null)
+        {
             // See if the message body length is already in the TextBody.
             uri.appendQueryParameter(IdentityField.LENGTH.value(), body.getComposedMessageLength().toString());
             uri.appendQueryParameter(IdentityField.OFFSET.value(), body.getComposedMessageOffset().toString());
-        } else {
+        }
+        else
+        {
             // If not, calculate it now.
             uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
@@ -1312,7 +1320,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     try
                     {
                         Integer.parseInt(identity.get(key));
-                    } catch (NumberFormatException e)
+                    }
+                    catch (NumberFormatException e)
                     {
                         Log.e(K9.LOG_TAG, "Invalid " + key.name() + " field in identity: " + identity.get(key));
                     }
@@ -1334,7 +1343,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 try
                 {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
                 }
@@ -2235,11 +2245,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 updateFrom();
 
                 Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                        ? Integer.parseInt(k9identity.get(IdentityField.LENGTH))
-                        : 0;
+                                     ? Integer.parseInt(k9identity.get(IdentityField.LENGTH))
+                                     : 0;
                 Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                        ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
-                        : 0;
+                                     ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
+                                     : 0;
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
                 // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
@@ -2253,7 +2263,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         // composition window. If that's the case, try and convert it to text to
                         // match the behavior in text mode.
                         mMessageContentView.setText(getBodyTextFromMessage(message, MessageFormat.TEXT));
-                    } else {
+                    }
+                    else
+                    {
                         Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                         if (part != null)   // Shouldn't happen if we were the one who saved it.
                         {
@@ -2286,8 +2298,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 else if (mAccount.getMessageFormat() == MessageFormat.TEXT)
                 {
                     MessageFormat format = k9identity.get(IdentityField.MESSAGE_FORMAT) != null
-                            ? MessageFormat.valueOf(k9identity.get(IdentityField.MESSAGE_FORMAT))
-                            : null;
+                                           ? MessageFormat.valueOf(k9identity.get(IdentityField.MESSAGE_FORMAT))
+                                           : null;
                     if (format == null)
                     {
                         mMessageContentView.setText(getBodyTextFromMessage(message, MessageFormat.TEXT));
@@ -2379,8 +2391,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // Handle the original message in the reply
         // If we already have mSourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
         String content = mSourceMessageBody != null
-                ? mSourceMessageBody
-                : getBodyTextFromMessage(mSourceMessage, mAccount.getMessageFormat());
+                         ? mSourceMessageBody
+                         : getBodyTextFromMessage(mSourceMessage, mAccount.getMessageFormat());
         if (mAccount.getMessageFormat() == MessageFormat.HTML)
         {
             // Add the HTML reply header to the top of the content.
@@ -2860,9 +2872,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
             quotedText.append(String.format(
-                    getString(R.string.message_compose_reply_header_fmt),
-                    Address.toString(originalMessage.getFrom()))
-            );
+                                  getString(R.string.message_compose_reply_header_fmt),
+                                  Address.toString(originalMessage.getFrom()))
+                             );
 
             final String prefix = mAccount.getQuotePrefix();
             final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
@@ -2932,11 +2944,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             header.append("<br><div class=\"gmail_quote\">");
             // Remove all trailing newlines so that the quote starts immediately after the header.  "Be like Gmail!"
             header.append(HtmlConverter.textToHtmlFragment(String.format(
-                    getString(R.string.message_compose_reply_header_fmt).replaceAll("\n$", ""),
-                    Address.toString(originalMessage.getFrom()))
-            ));
+                              getString(R.string.message_compose_reply_header_fmt).replaceAll("\n$", ""),
+                              Address.toString(originalMessage.getFrom()))
+                                                          ));
             header.append("<blockquote class=\"gmail_quote\" " +
-                    "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n");
+                          "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n");
 
             String footer = "</blockquote></div>";
 
