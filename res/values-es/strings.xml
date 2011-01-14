@@ -170,7 +170,7 @@
     <string name="special_mailbox_name_outbox">Salida</string>
     <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Borradores</string>
-    <string name="special_mailbox_name_trash">Papelara</string>
+    <string name="special_mailbox_name_trash">Papelera</string>
     <string name="special_mailbox_name_sent">Enviados</string>
     <string name="special_mailbox_name_archive">Archivo</string>
     <string name="special_mailbox_name_spam">Spam</string>
