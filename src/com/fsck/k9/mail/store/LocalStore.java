@@ -3218,9 +3218,26 @@ public class LocalStore extends Store implements Serializable
                 html = HtmlConverter.textToHtml(text);
             }
 
-            html = convertEmoji2Img(html);
+            if (hasEmoji(html))
+                html = convertEmoji2Img(html);
 
             return html;
+        }
+
+        /*
+         * Lightweight method to check whether the message contains emoji or not.
+         * Useful to avoid calling the heavyweight convertEmoji2Img method.
+         * We don't use String.codePointAt here for performance reasons.
+         */
+        private boolean hasEmoji(String html)
+        {
+            for (int i = 0; i < html.length(); ++i)
+            {
+                char c = html.charAt(i);
+                if (c >= 0xDBB8 && c < 0xDBBC)
+                    return true;
+            }
+            return false;
         }
 
         public String convertEmoji2Img(String html)
