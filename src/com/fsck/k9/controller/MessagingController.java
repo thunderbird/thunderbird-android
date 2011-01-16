@@ -551,16 +551,7 @@ public class MessagingController implements Runnable
                     for (Folder localFolder : localFolders)
                     {
                         String localFolderName = localFolder.getName();
-                        if (localFolderName.equalsIgnoreCase(K9.INBOX) ||
-                                localFolderName.equals(account.getTrashFolderName()) ||
-                                localFolderName.equals(account.getOutboxFolderName()) ||
-                                localFolderName.equals(account.getDraftsFolderName()) ||
-                                localFolderName.equals(account.getSentFolderName()) ||
-                                localFolderName.equals(account.getErrorFolderName()))
-                        {
-                            continue;
-                        }
-                        if (!remoteFolderNames.contains(localFolder.getName()))
+                        if (!account.isSpecialFolder(localFolderName) && !remoteFolderNames.contains(localFolderName))
                         {
                             localFolder.delete(false);
                         }
