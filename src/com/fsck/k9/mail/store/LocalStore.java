@@ -94,7 +94,7 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-    protected static final int DB_VERSION = 40;
+    protected static final int DB_VERSION = 41;
 
     protected String uUid = null;
 
@@ -152,7 +152,10 @@ public class LocalStore extends Store implements Serializable
 
                     db.execSQL("DROP TABLE IF EXISTS folders");
                     db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
+                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                               + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
+                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
+                               +")");
 
                     db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                     db.execSQL("DROP TABLE IF EXISTS messages");
@@ -302,10 +305,63 @@ public class LocalStore extends Store implements Serializable
                         }
                     }
 
+                    if (db.getVersion() < 41)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD push_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD display_class TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            if (! e.getMessage().startsWith("duplicate column name:"))
+                            {
+                                throw e;
+                            }
+                        }
+                        Cursor cursor = null;
 
+                        try
+                        {
+
+                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
+                            while (cursor.moveToNext())
+                            {
+                                try
+                                {
+                                    int id = cursor.getInt(0);
+                                    String name = cursor.getString(1);
+                                    update41Metadata(db,id, name);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.e(K9.LOG_TAG," error trying to ugpgrade a folder class: " +e);
+                                }
+                            }
+
+
+                        }
+
+
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished "+e);
+
+                        }
+                        finally
+                        {
+                            if (cursor != null)
+                            {
+                                cursor.close();
+                            }
+                        }
+                    }
                 }
-
             }
+
             catch (SQLiteException e)
             {
                 Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
@@ -333,7 +389,70 @@ public class LocalStore extends Store implements Serializable
             //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
             //}
         }
+
+
+        private void update41Metadata(final SQLiteDatabase  db,int id, String name)
+        {
+
+            SharedPreferences prefs = Preferences.getPreferences(mApplication).getPreferences();
+
+            Folder.FolderClass displayClass = Folder.FolderClass.NO_CLASS;
+            Folder.FolderClass syncClass = Folder.FolderClass.INHERITED;
+            Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
+            boolean inTopGroup = false;
+            boolean integrate = false;
+            if (K9.INBOX.equals(name))
+            {
+                displayClass = Folder.FolderClass.FIRST_CLASS;
+                syncClass =  Folder.FolderClass.FIRST_CLASS;
+                pushClass =  Folder.FolderClass.FIRST_CLASS;
+                inTopGroup = true;
+                integrate = true;
+            }
+
+            try
+            {
+                displayClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".displayMode", displayClass.name()));
+                syncClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".syncMode", syncClass.name()));
+                pushClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".pushMode", pushClass.name()));
+                inTopGroup = prefs.getBoolean(uUid + "."+ name + ".inTopGroup",inTopGroup);
+                integrate = prefs.getBoolean(uUid + "."+ name + ".integrate", integrate);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG," Throwing away an error while trying to upgrade folder metadata: "+e);
+            }
+
+            if (displayClass == Folder.FolderClass.NONE)
+            {
+                displayClass = Folder.FolderClass.NO_CLASS;
+            }
+            if (syncClass == Folder.FolderClass.NONE)
+            {
+                syncClass = Folder.FolderClass.INHERITED;
+            }
+            if (pushClass == Folder.FolderClass.NONE)
+            {
+                pushClass = Folder.FolderClass.INHERITED;
+            }
+
+            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
+                       new Object[] { integrate, inTopGroup,syncClass,pushClass,displayClass, id });
+
+            // now that we managed to update this folder, obliterate the old data
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.remove(uUid+"."+name + ".displayMode");
+            editor.remove(uUid+"."+name + ".syncMode");
+            editor.remove(uUid+"."+name + ".pushMode");
+            editor.remove(uUid+"."+name + ".inTopGroup");
+            editor.remove(uUid+"."+name + ".integrate");
+
+            editor.commit();
+
+        }
     }
+
 
     public long getSize() throws UnavailableStorageException
     {
@@ -497,11 +616,11 @@ public class LocalStore extends Store implements Serializable
 
                     try
                     {
-                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ORDER BY name ASC", null);
+                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
+                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
 
                             folders.add(folder);
                         }
@@ -1061,10 +1180,10 @@ public class LocalStore extends Store implements Serializable
         private int mUnreadMessageCount = -1;
         private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
-        private FolderClass displayClass = FolderClass.NO_CLASS;
-        private FolderClass syncClass = FolderClass.INHERITED;
-        private FolderClass pushClass = FolderClass.SECOND_CLASS;
-        private boolean inTopGroup = false;
+        private FolderClass mDisplayClass = FolderClass.NO_CLASS;
+        private FolderClass mSyncClass = FolderClass.INHERITED;
+        private FolderClass mPushClass = FolderClass.SECOND_CLASS;
+        private boolean mInTopGroup = false;
         private String prefId = null;
         private String mPushState = null;
         private boolean mIntegrate = false;
@@ -1079,9 +1198,9 @@ public class LocalStore extends Store implements Serializable
 
             if (K9.INBOX.equals(getName()))
             {
-                syncClass =  FolderClass.FIRST_CLASS;
-                pushClass =  FolderClass.FIRST_CLASS;
-                inTopGroup = true;
+                mSyncClass =  FolderClass.FIRST_CLASS;
+                mPushClass =  FolderClass.FIRST_CLASS;
+                mInTopGroup = true;
             }
 
 
@@ -1116,7 +1235,8 @@ public class LocalStore extends Store implements Serializable
                         try
                         {
                             String baseQuery =
-                                "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ";
+                                "SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class FROM folders ";
+
                             if (mName != null)
                             {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -1131,7 +1251,7 @@ public class LocalStore extends Store implements Serializable
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0)
                                 {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
+                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
                                 }
                             }
                             else
@@ -1162,7 +1282,7 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount) throws MessagingException
+        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException
         {
             mFolderId = id;
             mName = name;
@@ -1175,6 +1295,12 @@ public class LocalStore extends Store implements Serializable
             // does a DB update on setLastChecked
             super.setLastChecked(lastChecked);
             super.setLastPush(lastPushed);
+            mInTopGroup = topGroup ==1  ? true : false;
+            mIntegrate = integrate == 1 ? true : false;
+            mDisplayClass = Folder.FolderClass.valueOf(displayClass);
+            mPushClass = Folder.FolderClass.valueOf(pushClass);
+            mSyncClass = Folder.FolderClass.valueOf(syncClass);
+
         }
 
         @Override
@@ -1461,218 +1587,80 @@ public class LocalStore extends Store implements Serializable
         @Override
         public FolderClass getDisplayClass()
         {
-            return displayClass;
+            return mDisplayClass;
         }
 
         @Override
         public FolderClass getSyncClass()
         {
-            if (FolderClass.INHERITED == syncClass)
+            if (FolderClass.INHERITED == mSyncClass)
             {
                 return getDisplayClass();
             }
             else
             {
-                return syncClass;
+                return mSyncClass;
             }
         }
 
         public FolderClass getRawSyncClass()
         {
-            return syncClass;
+            return mSyncClass;
 
         }
 
         @Override
         public FolderClass getPushClass()
         {
-            if (FolderClass.INHERITED == pushClass)
+            if (FolderClass.INHERITED == mPushClass)
             {
                 return getSyncClass();
             }
             else
             {
-                return pushClass;
+                return mPushClass;
             }
         }
 
         public FolderClass getRawPushClass()
         {
-            return pushClass;
+            return mPushClass;
 
         }
 
-        public void setDisplayClass(FolderClass displayClass)
+        public void setDisplayClass(FolderClass displayClass) throws MessagingException
         {
-            this.displayClass = displayClass;
+            mDisplayClass = displayClass;
+            updateFolderColumn( "display_class", mDisplayClass.name());
+
         }
 
-        public void setSyncClass(FolderClass syncClass)
+        public void setSyncClass(FolderClass syncClass) throws MessagingException
         {
-            this.syncClass = syncClass;
+            mSyncClass = syncClass;
+            updateFolderColumn( "poll_class", mSyncClass.name());
         }
-        public void setPushClass(FolderClass pushClass)
+        public void setPushClass(FolderClass pushClass) throws MessagingException
         {
-            this.pushClass = pushClass;
+            mPushClass = pushClass;
+            updateFolderColumn( "push_class", mPushClass.name());
         }
 
         public boolean isIntegrate()
         {
             return mIntegrate;
         }
-        public void setIntegrate(boolean integrate)
+        public void setIntegrate(boolean integrate) throws MessagingException
         {
             mIntegrate = integrate;
+            updateFolderColumn( "integrate", mIntegrate ? 1 : 0 );
         }
-
-        private String getPrefId() throws MessagingException
-        {
-            open(OpenMode.READ_WRITE);
-
-            if (prefId == null)
-            {
-                prefId = uUid + "." + mName;
-            }
-
-            return prefId;
-        }
-
-        public void delete(Preferences preferences) throws MessagingException
-        {
-            String id = getPrefId();
-
-            SharedPreferences.Editor editor = preferences.getPreferences().edit();
-
-            editor.remove(id + ".displayMode");
-            editor.remove(id + ".syncMode");
-            editor.remove(id + ".pushMode");
-            editor.remove(id + ".inTopGroup");
-            editor.remove(id + ".integrate");
-
-            editor.commit();
-        }
-
-        public void save(Preferences preferences) throws MessagingException
-        {
-            String id = getPrefId();
-
-            SharedPreferences.Editor editor = preferences.getPreferences().edit();
-            // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-            if (displayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".displayMode");
-            }
-            else
-            {
-                editor.putString(id + ".displayMode", displayClass.name());
-            }
-
-            if (syncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".syncMode");
-            }
-            else
-            {
-                editor.putString(id + ".syncMode", syncClass.name());
-            }
-
-            if (pushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".pushMode");
-            }
-            else
-            {
-                editor.putString(id + ".pushMode", pushClass.name());
-            }
-            editor.putBoolean(id + ".inTopGroup", inTopGroup);
-
-            editor.putBoolean(id + ".integrate", mIntegrate);
-
-            editor.commit();
-        }
-
 
         public FolderClass getDisplayClass(Preferences preferences) throws MessagingException
         {
-            String id = getPrefId();
-            return FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
-                                       FolderClass.NO_CLASS.name()));
+            return mDisplayClass;
         }
 
-        @Override
-        public void refresh(Preferences preferences) throws MessagingException
-        {
-
-            String id = getPrefId();
-
-            try
-            {
-                displayClass = FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
-                                                   FolderClass.NO_CLASS.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load displayMode for " + getName(), e);
-
-                displayClass = FolderClass.NO_CLASS;
-            }
-            if (displayClass == FolderClass.NONE)
-            {
-                displayClass = FolderClass.NO_CLASS;
-            }
-
-
-            FolderClass defSyncClass = FolderClass.INHERITED;
-            if (K9.INBOX.equals(getName()))
-            {
-                defSyncClass =  FolderClass.FIRST_CLASS;
-            }
-
-            try
-            {
-                syncClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".syncMode",
-                                                defSyncClass.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load syncMode for " + getName(), e);
-
-                syncClass = defSyncClass;
-            }
-            if (syncClass == FolderClass.NONE)
-            {
-                syncClass = FolderClass.INHERITED;
-            }
-
-            FolderClass defPushClass = FolderClass.SECOND_CLASS;
-            boolean defInTopGroup = false;
-            boolean defIntegrate = false;
-            if (K9.INBOX.equals(getName()))
-            {
-                defPushClass =  FolderClass.FIRST_CLASS;
-                defInTopGroup = true;
-                defIntegrate = true;
-            }
-
-            try
-            {
-                pushClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".pushMode",
-                                                defPushClass.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load pushMode for " + getName(), e);
-
-                pushClass = defPushClass;
-            }
-            if (pushClass == FolderClass.NONE)
-            {
-                pushClass = FolderClass.INHERITED;
-            }
-            inTopGroup = preferences.getPreferences().getBoolean(id + ".inTopGroup", defInTopGroup);
-            mIntegrate = preferences.getPreferences().getBoolean(id + ".integrate", defIntegrate);
-
-        }
 
         @Override
         public void fetch(final Message[] messages, final FetchProfile fp, final MessageRetrievalListener listener)
@@ -3109,12 +3097,13 @@ public class LocalStore extends Store implements Serializable
         @Override
         public boolean isInTopGroup()
         {
-            return inTopGroup;
+            return mInTopGroup;
         }
 
-        public void setInTopGroup(boolean inTopGroup)
+        public void setInTopGroup(boolean inTopGroup) throws MessagingException
         {
-            this.inTopGroup = inTopGroup;
+            mInTopGroup = inTopGroup;
+            updateFolderColumn( "top_group", mInTopGroup ? 1 : 0 );
         }
 
         public Integer getLastUid()
