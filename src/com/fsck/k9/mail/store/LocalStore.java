@@ -3088,7 +3088,7 @@ public class LocalStore extends Store implements Serializable
                 html = HtmlConverter.textToHtml(text);
             }
 
-                html = HtmlConverter.convertEmoji2Img(html);
+            html = HtmlConverter.convertEmoji2Img(html);
 
             return html;
         }
