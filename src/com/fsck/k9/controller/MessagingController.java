@@ -4643,12 +4643,13 @@ public class MessagingController implements Runnable
         Folder folder = message.getFolder();
         if (folder != null)
         {
-            // No notification for new messages in Trash, Drafts, or Sent folder.
+            // No notification for new messages in Trash, Drafts, Spam or Sent folder.
             // But do notify if it's the INBOX (see issue 1817).
             String folderName = folder.getName();
             if (!K9.INBOX.equals(folderName) &&
                     (account.getTrashFolderName().equals(folderName)
                      || account.getDraftsFolderName().equals(folderName)
+                     || account.getSpamFolderName().equals(folderName)
                      || account.getSentFolderName().equals(folderName)))
             {
                 return false;
