@@ -924,6 +924,29 @@ public class Account implements BaseAccount
         this.mDeletePolicy = deletePolicy;
     }
 
+
+    public boolean isSpecialFolder(String folderName)
+    {
+        if ( folderName != null && (folderName.equalsIgnoreCase(K9.INBOX) ||
+                                    folderName.equals(getTrashFolderName()) ||
+                                    folderName.equals(getDraftsFolderName()) ||
+                                    folderName.equals(getArchiveFolderName()) ||
+                                    folderName.equals(getSpamFolderName()) ||
+                                    folderName.equals(getOutboxFolderName()) ||
+                                    folderName.equals(getSentFolderName()) ||
+                                    folderName.equals(getErrorFolderName())))
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+
     public synchronized String getDraftsFolderName()
     {
         return mDraftsFolderName;
