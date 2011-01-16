@@ -848,12 +848,8 @@ public class MessagingController implements Runnable
                                 }
                             }
                             // Never exclude the INBOX (see issue 1817)
-                            else if (noSpecialFolders && !localFolderName.equals(K9.INBOX) && (
-                                         localFolderName.equals(account.getTrashFolderName()) ||
-                                         localFolderName.equals(account.getOutboxFolderName()) ||
-                                         localFolderName.equals(account.getDraftsFolderName()) ||
-                                         localFolderName.equals(account.getSentFolderName()) ||
-                                         localFolderName.equals(account.getErrorFolderName())))
+                            else if (noSpecialFolders && !localFolderName.equalsIgnoreCase(K9.INBOX) &&
+                                     !localFolderName.equals(account.getArchiveFolderName()) && account.isSpecialFolder(localFolderName))
                             {
                                 include = false;
                             }
