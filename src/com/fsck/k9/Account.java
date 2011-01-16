@@ -651,7 +651,7 @@ public class Account implements BaseAccount
         {
             LocalFolder localFolder = (LocalFolder)folder;
             //folder.refresh(prefs);
-            Folder.FolderClass fMode = localFolder.getDisplayClass(prefs);
+            Folder.FolderClass fMode = localFolder.getDisplayClass();
 
             // Always get stats about the INBOX (see issue 1817)
             if (folder.getName().equals(K9.INBOX) || (

@@ -1656,11 +1656,6 @@ public class LocalStore extends Store implements Serializable
             updateFolderColumn( "integrate", mIntegrate ? 1 : 0 );
         }
 
-        public FolderClass getDisplayClass(Preferences preferences) throws MessagingException
-        {
-            return mDisplayClass;
-        }
-
 
         @Override
         public void fetch(final Message[] messages, final FetchProfile fp, final MessageRetrievalListener listener)
