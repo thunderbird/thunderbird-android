@@ -654,39 +654,33 @@ public class Account implements BaseAccount
             Folder.FolderClass fMode = localFolder.getDisplayClass();
 
             // Always get stats about the INBOX (see issue 1817)
-            if (folder.getName().equals(K9.INBOX) || (
-                        !folder.getName().equals(getTrashFolderName()) &&
-                        !folder.getName().equals(getDraftsFolderName()) &&
-                        !folder.getName().equals(getArchiveFolderName()) &&
-                        !folder.getName().equals(getSpamFolderName()) &&
-                        !folder.getName().equals(getOutboxFolderName()) &&
-                        !folder.getName().equals(getSentFolderName()) &&
-                        !folder.getName().equals(getErrorFolderName())))
+            if (!folder.getName().equals(K9.INBOX) && isSpecialFolder(folder.getName()) )
             {
-                if (aMode == Account.FolderMode.NONE)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.FIRST_CLASS &&
-                        fMode != Folder.FolderClass.FIRST_CLASS)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                        fMode != Folder.FolderClass.FIRST_CLASS &&
-                        fMode != Folder.FolderClass.SECOND_CLASS)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                        fMode == Folder.FolderClass.SECOND_CLASS)
-                {
-                    continue;
-                }
-                unreadMessageCount += folder.getUnreadMessageCount();
-                flaggedMessageCount += folder.getFlaggedMessageCount();
-
+                continue;
             }
+            if (aMode == Account.FolderMode.NONE)
+            {
+                continue;
+            }
+            if (aMode == Account.FolderMode.FIRST_CLASS &&
+                    fMode != Folder.FolderClass.FIRST_CLASS)
+            {
+                continue;
+            }
+            if (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+                    fMode != Folder.FolderClass.FIRST_CLASS &&
+                    fMode != Folder.FolderClass.SECOND_CLASS)
+            {
+                continue;
+            }
+            if (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
+                    fMode == Folder.FolderClass.SECOND_CLASS)
+            {
+                continue;
+            }
+            unreadMessageCount += folder.getUnreadMessageCount();
+            flaggedMessageCount += folder.getFlaggedMessageCount();
+
         }
         long folderEvalEnd = System.currentTimeMillis();
         stats.unreadMessageCount = unreadMessageCount;
