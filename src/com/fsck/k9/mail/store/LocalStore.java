@@ -327,6 +327,8 @@ public class LocalStore extends Store implements Serializable
                         try
                         {
 
+                            SharedPreferences prefs = Preferences.getPreferences(mApplication).getPreferences();
+                            SharedPreferences.Editor editor = prefs.edit();
                             cursor = db.rawQuery("SELECT id, name FROM folders", null);
                             while (cursor.moveToNext())
                             {
@@ -334,13 +336,14 @@ public class LocalStore extends Store implements Serializable
                                 {
                                     int id = cursor.getInt(0);
                                     String name = cursor.getString(1);
-                                    update41Metadata(db,id, name);
+                                    update41Metadata(db, prefs, editor, id, name);
                                 }
                                 catch (Exception e)
                                 {
                                     Log.e(K9.LOG_TAG," error trying to ugpgrade a folder class: " +e);
                                 }
                             }
+                            editor.commit();
 
 
                         }
@@ -391,10 +394,9 @@ public class LocalStore extends Store implements Serializable
         }
 
 
-        private void update41Metadata(final SQLiteDatabase  db,int id, String name)
+        private void update41Metadata(final SQLiteDatabase  db, SharedPreferences prefs, SharedPreferences.Editor editor, int id, String name)
         {
 
-            SharedPreferences prefs = Preferences.getPreferences(mApplication).getPreferences();
 
             Folder.FolderClass displayClass = Folder.FolderClass.NO_CLASS;
             Folder.FolderClass syncClass = Folder.FolderClass.INHERITED;
@@ -440,7 +442,6 @@ public class LocalStore extends Store implements Serializable
                        new Object[] { integrate, inTopGroup,syncClass,pushClass,displayClass, id });
 
             // now that we managed to update this folder, obliterate the old data
-            SharedPreferences.Editor editor = prefs.edit();
 
             editor.remove(uUid+"."+name + ".displayMode");
             editor.remove(uUid+"."+name + ".syncMode");
@@ -448,7 +449,6 @@ public class LocalStore extends Store implements Serializable
             editor.remove(uUid+"."+name + ".inTopGroup");
             editor.remove(uUid+"."+name + ".integrate");
 
-            editor.commit();
 
         }
     }
