@@ -1344,62 +1344,14 @@ public class LocalStore extends Store implements Serializable
 
         public void setUnreadMessageCount(final int unreadMessageCount) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        mUnreadMessageCount = Math.max(0, unreadMessageCount);
-                        db.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
-                                   new Object[] { mUnreadMessageCount, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            mUnreadMessageCount = Math.max(0, unreadMessageCount);
+            updateFolderColumn( "unread_count", mUnreadMessageCount);
         }
 
         public void setFlaggedMessageCount(final int flaggedMessageCount) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Integer>()
-                {
-                    @Override
-                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
-                        db.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
-                                   { mFlaggedMessageCount, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
+            updateFolderColumn( "flagged_count", mFlaggedMessageCount);
         }
 
         @Override
@@ -1407,30 +1359,14 @@ public class LocalStore extends Store implements Serializable
         {
             try
             {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setLastChecked(lastChecked);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
-                                   { lastChecked, mFolderId });
-                        return null;
-                    }
-                });
+                open(OpenMode.READ_WRITE);
+                LocalFolder.super.setLastChecked(lastChecked);
             }
-            catch (WrappedException e)
+            catch (MessagingException e)
             {
-                throw (MessagingException) e.getCause();
+                throw new WrappedException(e);
             }
+            updateFolderColumn( "last_updated", lastChecked);
         }
 
         @Override
@@ -1438,30 +1374,14 @@ public class LocalStore extends Store implements Serializable
         {
             try
             {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setLastPush(lastChecked);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
-                                   { lastChecked, mFolderId });
-                        return null;
-                    }
-                });
+                open(OpenMode.READ_WRITE);
+                LocalFolder.super.setLastPush(lastChecked);
             }
-            catch (WrappedException e)
+            catch (MessagingException e)
             {
-                throw (MessagingException) e.getCause();
+                throw new WrappedException(e);
             }
+            updateFolderColumn( "last_pushed", lastChecked);
         }
 
         public int getVisibleLimit() throws MessagingException
@@ -1492,58 +1412,22 @@ public class LocalStore extends Store implements Serializable
 
         public void setVisibleLimit(final int visibleLimit) throws MessagingException
         {
-            database.execute(false, new DbCallback<Void>()
-            {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                {
-                    try
-                    {
-                        open(OpenMode.READ_WRITE);
-                    }
-                    catch (MessagingException e)
-                    {
-                        throw new WrappedException(e);
-                    }
-                    mVisibleLimit = visibleLimit;
-                    db.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
-                               new Object[] { mVisibleLimit, mFolderId });
-                    return null;
-                }
-            });
+            mVisibleLimit = visibleLimit;
+            updateFolderColumn( "visible_limit", mVisibleLimit);
         }
 
         @Override
         public void setStatus(final String status) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setStatus(status);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
-                                   { status, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            updateFolderColumn( "status", status);
         }
         public void setPushState(final String pushState) throws MessagingException
+        {
+            mPushState = pushState;
+            updateFolderColumn("push_state", pushState);
+        }
+
+        private void updateFolderColumn(final String column, final Object value) throws MessagingException
         {
             try
             {
@@ -1560,9 +1444,7 @@ public class LocalStore extends Store implements Serializable
                         {
                             throw new WrappedException(e);
                         }
-                        mPushState = pushState;
-                        db.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
-                                   { pushState, mFolderId });
+                        db.execSQL("UPDATE folders SET "+column+" = ? WHERE id = ?", new Object[] { value, mFolderId });
                         return null;
                     }
                 });
