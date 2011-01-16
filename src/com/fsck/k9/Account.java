@@ -642,54 +642,11 @@ public class Account implements BaseAccount
         {
             stats.size = localStore.getSize();
         }
-        Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
-        long folderLoadStart = System.currentTimeMillis();
-        List<? extends Folder> folders = localStore.getPersonalNamespaces(false);
-        long folderLoadEnd = System.currentTimeMillis();
-        for (Folder folder : folders)
-        {
-            LocalFolder localFolder = (LocalFolder)folder;
-            //folder.refresh(prefs);
-            Folder.FolderClass fMode = localFolder.getDisplayClass();
-
-            // Always get stats about the INBOX (see issue 1817)
-            if (!folder.getName().equals(K9.INBOX) && isSpecialFolder(folder.getName()) )
-            {
-                continue;
-            }
-            if (aMode == Account.FolderMode.NONE)
-            {
-                continue;
-            }
-            if (aMode == Account.FolderMode.FIRST_CLASS &&
-                    fMode != Folder.FolderClass.FIRST_CLASS)
-            {
-                continue;
-            }
-            if (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                    fMode != Folder.FolderClass.FIRST_CLASS &&
-                    fMode != Folder.FolderClass.SECOND_CLASS)
-            {
-                continue;
-            }
-            if (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                    fMode == Folder.FolderClass.SECOND_CLASS)
-            {
-                continue;
-            }
-            unreadMessageCount += folder.getUnreadMessageCount();
-            flaggedMessageCount += folder.getFlaggedMessageCount();
-
-        }
-        long folderEvalEnd = System.currentTimeMillis();
-        stats.unreadMessageCount = unreadMessageCount;
-        stats.flaggedMessageCount = flaggedMessageCount;
+        localStore.getMessageCounts(stats);
         long endTime = System.currentTimeMillis();
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
-                  + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
-                  + " evaluating took " + (folderEvalEnd - folderLoadEnd) + " ms");
+            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;");
         return stats;
     }
 

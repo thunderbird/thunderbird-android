@@ -28,6 +28,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRemovalListener;
@@ -39,6 +41,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -568,6 +571,64 @@ public class LocalStore extends Store implements Serializable
             }
         });
     }
+
+
+
+    public void getMessageCounts(final AccountStats stats) throws MessagingException
+    {
+        final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
+
+        database.execute(false, new DbCallback<Integer>()
+        {
+            @Override
+            public Integer doDbWork(final SQLiteDatabase db)
+            {
+                Cursor cursor = null;
+                try
+                {
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM FOLDERS WHERE name = ?";
+
+
+                    if (displayMode == Account.FolderMode.NONE)
+                    {
+                        cursor = db.rawQuery(baseQuery, new String[] { K9.INBOX});
+                    }
+                    else if (displayMode == Account.FolderMode.FIRST_CLASS )
+                    {
+                        cursor = db.rawQuery(baseQuery + " OR display_class = ?", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()});
+
+
+                    }
+                    else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS)
+                    {
+                        cursor = db.rawQuery(baseQuery + " OR display_class = ? OR display_class = ? ", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()});
+                    }
+                    else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS)
+                    {
+                        cursor = db.rawQuery(baseQuery + " OR display_class != ?", new String[] { K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()});
+                    }
+                    else
+                    {
+                        Log.e(K9.LOG_TAG,"asked to compute account statistics for an impossible folder mode "+displayMode);
+                    }
+                    cursor.moveToFirst();
+                    stats.unreadMessageCount =  cursor.getInt(0);   // message count
+                    stats.flaggedMessageCount =  cursor.getInt(1);   // message count
+                    return null;
+
+
+                }
+                finally
+                {
+                    if (cursor != null)
+                    {
+                        cursor.close();
+                    }
+                }
+            }
+        });
+    }
+
 
     public int getFolderCount() throws MessagingException
     {
