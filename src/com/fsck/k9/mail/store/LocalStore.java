@@ -586,7 +586,7 @@ public class LocalStore extends Store implements Serializable
                 Cursor cursor = null;
                 try
                 {
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM FOLDERS WHERE name = ?";
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders";
 
 
                     if (displayMode == Account.FolderMode.NONE)
@@ -595,17 +595,21 @@ public class LocalStore extends Store implements Serializable
                     }
                     else if (displayMode == Account.FolderMode.FIRST_CLASS )
                     {
-                        cursor = db.rawQuery(baseQuery + " OR display_class = ?", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class = ?", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()});
 
 
                     }
                     else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS)
                     {
-                        cursor = db.rawQuery(baseQuery + " OR display_class = ? OR display_class = ? ", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class = ? OR display_class = ? ", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()});
                     }
                     else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS)
                     {
-                        cursor = db.rawQuery(baseQuery + " OR display_class != ?", new String[] { K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class != ?", new String[] { K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()});
+                    }
+                    else if (displayMode == Account.FolderMode.ALL)
+                    {
+                        cursor = db.rawQuery(baseQuery,  new String[] { });
                     }
                     else
                     {
