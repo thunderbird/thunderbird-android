@@ -586,30 +586,76 @@ public class LocalStore extends Store implements Serializable
                 Cursor cursor = null;
                 try
                 {
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders";
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
+
 
 
                     if (displayMode == Account.FolderMode.NONE)
                     {
-                        cursor = db.rawQuery(baseQuery, new String[] { K9.INBOX});
+                        cursor = db.rawQuery(baseQuery+ "AND (name = ? )", new String[]
+                                             {
+                                                 mAccount.getTrashFolderName(),
+                                                 mAccount.getDraftsFolderName(),
+                                                 mAccount.getSpamFolderName(),
+                                                 mAccount.getOutboxFolderName(),
+                                                 mAccount.getSentFolderName(),
+
+
+                                                 K9.INBOX
+                                             });
                     }
                     else if (displayMode == Account.FolderMode.FIRST_CLASS )
                     {
-                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class = ?", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ?)", new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName(),
+                                                 mAccount.getDraftsFolderName(),
+                                                 mAccount.getSpamFolderName(),
+                                                 mAccount.getOutboxFolderName(),
+                                                 mAccount.getSentFolderName(),
+                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
+                                             });
 
 
                     }
                     else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS)
                     {
-                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class = ? OR display_class = ? ", new String[] { K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ? OR display_class = ? )", new String[]
+                                             {
+                                                 mAccount.getTrashFolderName(),
+                                                 mAccount.getDraftsFolderName(),
+                                                 mAccount.getSpamFolderName(),
+                                                 mAccount.getOutboxFolderName(),
+                                                 mAccount.getSentFolderName(),
+                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
+                                             });
                     }
                     else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS)
                     {
-                        cursor = db.rawQuery(baseQuery + " WHERE name = ? OR display_class != ?", new String[] { K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()});
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName(),
+                                                 mAccount.getDraftsFolderName(),
+                                                 mAccount.getSpamFolderName(),
+                                                 mAccount.getOutboxFolderName(),
+                                                 mAccount.getSentFolderName(),
+                                                 K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
+                                             });
                     }
                     else if (displayMode == Account.FolderMode.ALL)
                     {
-                        cursor = db.rawQuery(baseQuery,  new String[] { });
+                        cursor = db.rawQuery(baseQuery,  new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName(),
+                                                 mAccount.getDraftsFolderName(),
+                                                 mAccount.getSpamFolderName(),
+                                                 mAccount.getOutboxFolderName(),
+                                                 mAccount.getSentFolderName()
+
+                                             });
                     }
                     else
                     {
