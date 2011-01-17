@@ -37,7 +37,7 @@
     <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Próxima verificação às @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_next_poll">\u0020(Nova verif. às @ <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_polling_off">\u0020(Verificação desligada)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -50,7 +50,7 @@
     <string name="select_action">Selecionar</string>
     <string name="deselect_action">Desselecionar</string>
     <string name="reply_action">Responder</string>
-    <string name="reply_all_action">Reponder a todos</string>
+    <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Excluir</string>
     <string name="archive_action">Arquivar</string>
     <string name="spam_action">Spam</string>
@@ -84,6 +84,8 @@
 
 
     <string name="accounts_action">Contas</string>
+    <string name="back_to_accounts_action">â—€</string>
+    <string name="back_to_folder_list_action">â—€</string>
     <string name="read_action">Ler</string>
     <string name="mark_as_read_action">Marcar como lido</string>
     <string name="send_alternate_action">Compartilhar</string>
@@ -100,7 +102,7 @@
     <string name="hide_full_header_action">Esconder cabeçalho inteiro</string>
     <string name="select_text_action">Selecionar texto</string>
 
-    <string name="mark_as_unread_action">Marcar como não lido</string>
+    <string name="mark_as_unread_action">Marcar como não lida</string>
     <string name="move_to_action">Mover para</string>
     <string name="folders_action">Pastas</string>
     <string name="view_hide_details_action">Ver/esconder detalhes</string>
@@ -134,8 +136,7 @@
 
     <string name="status_loading_more_failed">Repetindo carregamento de mensagens</string>
 
-    <string name="load_more_messages_fmt">Coloque-se
-    para <xliff:g id="messages_to_load">%d</xliff:g> mais</string>
+    <string name="load_more_messages_fmt">Toque para ver mais<xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -143,10 +144,7 @@
     <string name="abbrev_bytes">B</string>
 
     <string name="account_size_changed">
-    Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de
-    <xliff:g id="oldSize">%s</xliff:g>
-    para
-    <xliff:g id="newSize">%s</xliff:g>
+    Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g>
     </string>
 
     <string name="compacting_account">Compactando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -253,11 +251,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
-    <string name="message_compose_quote_header_separator">-------- Mensagem original --------</string>
-    <string name="message_compose_quote_header_subject">Assunto:</string>
-    <string name="message_compose_quote_header_from">De:</string>
-    <string name="message_compose_quote_header_to">Para:</string>
-    <string name="message_compose_quote_header_cc">CC:</string>
+    <string name="message_compose_fwd_header_fmt">\n-------- Mensagem original --------\nAssunto: <xliff:g id="subject">%s</xliff:g>\nDe: <xliff:g id="sender">%s</xliff:g>\nPara: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n\n</string>
     <string name="message_compose_quoted_text_label">Texto citado</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
@@ -921,7 +915,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
 
-    <string name="font_size_settings_title">Tamanho da fonte</string>
+    <string name="font_size_settings_title">Tamanho da fornte</string>
     <string name="font_size_settings_description">Configurar tamanho da fonte</string>
 
     <string name="font_size_account_list">Lista de contas</string>
