@@ -56,7 +56,7 @@
     <string name="spam_action">Spam</string>
     <string name="delete_all_action">Svuota cartella</string>
     <string name="forward_action">Inoltra</string>
-    <string name="move_action">Muovi</string>
+    <string name="move_action">Sposta</string>
     <string name="continue_action">Continua</string>
     <string name="done_action">Fatto</string> <!--  Used to complete a multi-step process -->
     <string name="remove_action">Rimuovi</string>
@@ -188,11 +188,11 @@
     <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
     <string name="send_failure_body_abbrev">Guarda nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
     <string name="send_failure_body_fmt">K-9 ha riscontrato un problema nell\'invio di alcuni dei tuoi messaggi.
-     Tuttavia, a causa della natura del problema, K-9 non può essere certo se i messaggi
-    sono stati inviati o meno. I destinatari possono avere già ricevuto copie del messaggio.
-    \u000a\u000aI messaggi per i quali questo tipo di problema si è verificato ora sono tra i preferiti nella posta in uscita.
-    Se si rimuovono le stelle, K-9 proverà a inviare i messaggi di nuovo.
-    Premere a lungo la cartella Posta in uscita per visualizzare \"Invia messaggi \" al fine di avviare un nuovo tentativo di invio.\u000A\u000a
+     Tuttavia, a causa della natura del problema, K-9 non può essere certo che i messaggi siano
+    stati realmente inviati. I destinatari potrebbero aver già ricevuto una copia del messaggio.
+    \u000a\u000aI messaggi per i quali è stato riscontrato questo problema sono marcati con una stella nella Posta in Uscita.
+    Rimuovendo le stelle K-9 proverà a inviare i messaggi di nuovo.
+    Premere a lungo la cartella Posta in uscita per visualizzare l\'opzione \"Invia messaggi \" e avviare un nuovo tentativo di invio.\u000A\u000a
     La cartella <xliff:g id="errorFolder">%s</xliff:g> potrebbe contenere messaggi di errore per quanto riguarda gli invii falliti.</string>
 
     <string name="alert_header">Allarme di K-9</string>
@@ -213,15 +213,15 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 \n * Sincronizzazione di tutte le cartelle
 \n * Configurazione dell\'indirizzo per le risposte
 \n * Tasti di scelta rapida 
-\n * Miglio supporto IMAP
+\n * Miglior supporto IMAP
 \n * Salvataggio degli allegati nella SD
-\n * Svuota cestino
+\n * Possibilità di svuotare il cestino
 \n * Ordinamento dei messaggi
 \n * ...ed altro
 \n
 \nSi noti che K-9 non supporta gli account free di hotmail e, come molti client di posta, ha alcune bizzarrie quando si parla di Microsoft Exchange.
 \n
-\n Invia le tue segnalazioni, contribuisci a nuove funzionalità e poni domande a http://k9mail.googlecode.com/
+\n Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni su http://k9mail.googlecode.com/
 
 </string>
 
@@ -262,7 +262,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
     <string name="message_compose_quoted_text_label">Testo quotato</string>
-    <string name="message_compose_error_no_recipients">È necessario aggiungere almeno un destinatario.</string>
+    <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
     <string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima che questo messaggio venga inviato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
 
@@ -290,7 +290,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_view_download_remainder">Scarica intero messaggio</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrico dell\'account per abilitare questo per il futuro.</string>
+    <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrivo per abilitare questa funzionalità.</string>
     <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
     <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
 
@@ -318,10 +318,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
     <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
     <string name="global_settings_checkbox_summary">Mostra sempre caselle di selezione multipla</string>
-    <string name="global_settings_touchable_label">Anteprime messaggio</string>
+    <string name="global_settings_touchable_label">Anteprima messaggi</string>
     <string name="global_settings_touchable_summary">Voci di elenco più ampie con anteprima messaggio</string>
-    <string name="global_settings_preview_lines_label">Linee di anteprima</string>
-    <string name="global_settings_show_contact_name_label">Mostra i nomi dei contatti</string>
+    <string name="global_settings_preview_lines_label">Righe di anteprima</string>
+    <string name="global_settings_show_contact_name_label">Mostra nomi dei contatti</string>
     <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla Rubrica quando disponibile</string>
     <string name="global_settings_registered_name_color_label">Colora contatti</string>
     <string name="global_settings_registered_name_color_default">Non colorare i nomi nel tuo elenco dei contatti</string>
@@ -343,10 +343,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_privacy_mode_summary">Non visualizzare l\'oggetto del messaggio nella barra di notifica quando il sistema è bloccato</string>
 
 
-    <string name="quiet_time">Periodo tranquillo</string>
-    <string name="quiet_time_description">Disabilita chiamata, ronzii e lampeggi di notte</string>
-    <string name="quiet_time_starts">Il periodo tranquillo inizia</string>
-    <string name="quiet_time_ends">Il periodo tranquillo finisce</string>
+    <string name="quiet_time">Silenzioso a tempo</string>
+    <string name="quiet_time_description">Disabilita chiamata, vibrazione e lampeggi di notte</string>
+    <string name="quiet_time_starts">Attiva alle</string>
+    <string name="quiet_time_ends">Disattiva alle</string>
 
 
     <string name="account_setup_basics_title">Configura un nuovo account</string>
@@ -424,7 +424,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automatico usando NAMESPACE se disponibile)</string>
 
     <string name="drafts_folder_label">Cartella Bozze</string>
-    <string name="sent_folder_label">Cartella Messaggi inviati</string>
+    <string name="sent_folder_label">Cartella Posta inviata</string>
     <string name="trash_folder_label">Cartella Cestino</string>
     <string name="archive_folder_label">Cartella Archivio</string>
     <string name="spam_folder_label">Cartella Spam</string>
@@ -468,7 +468,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="compact_action">Compatta</string>
    <string name="clear_action">Cancella i messaggi (pericolo!)</string>
-   <string name="recreate_action">Ricrea dati (ultima risorsa!)</string>
+   <string name="recreate_action">Ricrea dati (ultima spiaggia!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frequenza verifica posta</string>
     <!-- Frequency also used in account_settings_* -->
@@ -485,7 +485,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_setup_options_mail_check_frequency_12hour">Ogni 12 ore</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Ogni 24 ore</string>
 
-    <string name="push_poll_on_connect_label">Controlla quando connesso per push</string>
+    <string name="push_poll_on_connect_label">Controlla quando connesso per il push</string>
     <string name="account_setup_options_enable_push_label">Abilita push mail per questo account</string>
     <string name="account_setup_options_enable_push_summary">Se il server lo supporta, i nuovi messaggi appariranno istantaneamente. Questa opzione può migliorare o peggiorare notevolmente le prestazioni.</string>
     <string name="idle_refresh_period_label">Aggiorna connessione inattiva</string>
@@ -499,7 +499,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="idle_refresh_period_48min">Ogni 48 minuti</string>
     <string name="idle_refresh_period_60min">Ogni 60 minuti</string>
 
-    <string name="account_setup_options_default_label">Invia mail da questo account per difetto</string>
+    <string name="account_setup_options_default_label">Usa questo account come predefinito per l\'invio dei messaggi</string>
     <string name="account_setup_options_notify_label">Notifica l\'arrivo di nuovi messaggi</string>
     <string name="account_setup_options_notify_sync_label">Notifica mentre controlli la posta</string>
 
@@ -535,19 +535,21 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
     <string name="account_settings_notify_sync_summary">Notifica nella barra di stato mentre la posta viene controllata</string>
     <string name="account_settings_show_combined_label">Mostra Posta in arrivo combinata</string>
-    <string name="account_settings_notify_self_label">Includi la posta in uscita</string>
+    <string name="account_settings_notify_self_label">Includi la Posta in uscita</string>
     <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
     <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
     <string name="account_settings_notification_opens_unread_summary">Ricerca i messaggi non letti quando Notifiche è aperto</string>
+    <string name="account_settings_notification_unread_count_label">Mostra numero messaggi non letti</string>
+    <string name="account_settings_notification_unread_count_summary">Mostra il numero dei messaggi non letti nella barra di notifica.</string>
 
-    <string name="account_settings_hide_buttons_label">Scorri pulsanti di navigazione</string>
+    <string name="account_settings_hide_buttons_label">Scorri pulsanti navigazione</string>
     <string name="account_settings_hide_buttons_never">Mai</string>
     <string name="account_settings_hide_buttons_keyboard_avail">Quando la tastiera è disponibile</string>
     <string name="account_settings_hide_buttons_always">Sempre</string>
 
-    <string name="account_settings_enable_move_buttons_label">Abilita i pulsanti di archiviazione</string>
+    <string name="account_settings_enable_move_buttons_label">Abilita pulsanti archiviazione</string>
     <string name="account_settings_enable_move_buttons_summary">Mostra i pulsanti Archivia, Sposta e Spam.</string>
-    <string name="account_settings_hide_move_buttons_label">Scorri i pulsanti di archiviazione</string>
+    <string name="account_settings_hide_move_buttons_label">Scorri pulsanti archiviazione</string>
 
     <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
     <string name="account_settings_show_pictures_never">No</string>
@@ -559,13 +561,21 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_reply_after_quote_label">Risposta dopo il testo quotato</string>
     <string name="account_settings_reply_after_quote_summary">Quando si risponde ai messaggi, il messaggio originale viene visualizzato sopra la tua risposta.</string>
 
+    <string name="account_settings_message_format_label">Formato messaggio</string>
+    <string name="account_settings_message_format_text">Plain Text (verranno rimosse immagini e formattazione)</string>
+    <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
+
+    <string name="account_settings_quote_style_label">Aspetto testo citato nelle risposte</string>
+    <string name="account_settings_quote_style_prefix">Prefisso (come Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">Intestazione (come Outlook, Yahoo!, Hotmail)</string>
+
     <string name="account_settings_general_title">Impostazioni generali</string>
     <string name="account_settings_display_prefs_title">Preferenze di visualizzazione</string>
-    <string name="account_settings_sync">Sincrnizzazione messaggi</string>
+    <string name="account_settings_sync">Sincronizzazione messaggi</string>
     <string name="account_settings_folders">Cartelle</string>
     <string name="account_settings_message_lists">Elenco dei messaggi</string>
     <string name="account_settings_message_view">Visualizzazione dei messaggi</string>
-    <string name="account_settings_quote_prefix_label">Prefisso del testo quotato</string>
+    <string name="account_settings_quote_prefix_label">Prefisso testo quotato</string>
     <string name="account_settings_crypto">Crittografia</string>
     <string name="account_settings_crypto_app">Provider OpenPGP</string>
     <string name="account_settings_crypto_app_none">Nessuno</string>
@@ -573,7 +583,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_crypto_auto_signature">Accesso automatico</string>
     <string name="account_settings_crypto_auto_signature_summary">Utilizzare l\'indirizzo email dell\'account per dedurre la chiave di firma.</string>
 
-    <string name="account_settings_mail_check_frequency_label">Frequenza di verifica delle cartelle</string>
+    <string name="account_settings_mail_check_frequency_label">Frequenza verifica delle cartelle</string>
     <string name="account_settings_second_class_check_frequency_label">Frequenza di controllo di 2a classe</string>
 
     <string name="account_settings_storage_title">Memorizzazione</string>
@@ -623,7 +633,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_folder_display_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
     <string name="account_settings_folder_display_mode_not_second_class">Tutte eccetto le caltelle di 2a Classe</string>
 
-    <string name="account_settings_folder_sync_mode_label">Sinconizza cartelle</string>
+    <string name="account_settings_folder_sync_mode_label">Sincronizza cartelle</string>
     <string name="account_settings_folder_sync_mode_all">Tutte</string>
     <string name="account_settings_folder_sync_mode_first_class">Soltanto cartelle di 1a Classe</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a Classe</string>
@@ -687,7 +697,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_vibrate_pattern_4">tipo 4</string>
     <string name="account_settings_vibrate_pattern_5">tipo 5</string>
     <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
-    <string name="account_settings_ringtone">Suoneria novo messaggio</string>
+    <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
     <string name="account_settings_led_label">LED lampeggiante</string>
     <string name="account_settings_led_summary">LED lampeggiante quando arriva un messaggio</string>
 
@@ -718,15 +728,15 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="manage_identities_remove_action">Rimuovi</string>
 
     <string name="edit_identity_description_label">Descrizione identità</string>
-    <string name="edit_identity_description_hint">(Opzionle)</string>
+    <string name="edit_identity_description_hint">(Opzionale)</string>
     <string name="edit_identity_name_label">Il tuo nome</string>
-    <string name="edit_identity_name_hint">(Opzionle)</string>
+    <string name="edit_identity_name_hint">(Opzionale)</string>
     <string name="edit_identity_email_label">Indirizzo e-mail</string>
     <string name="edit_identity_email_hint">(Richiesto)</string>
     <string name="edit_identity_reply_to_label">Indirizzo per le risposte</string>
-    <string name="edit_identity_reply_to_hint">(Opzionle)</string>
+    <string name="edit_identity_reply_to_hint">(Opzionale)</string>
     <string name="edit_identity_signature_label">Firma</string>
-    <string name="edit_identity_signature_hint">(Opzionle)</string>
+    <string name="edit_identity_signature_hint">(Opzionale)</string>
 
     <string name="account_settings_signature_use_label">Usa la firma</string>
     <string name="account_settings_signature_label">Firma</string>
@@ -777,11 +787,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_clear_dlg_instructions_fmt">Tutti i messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
 
     <string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l\'accesso POP
-        consentendo il collegamento del programma. Se non è possibile accedere con
-        il tuo indirizzo email e password corretti, you may not have a paid
-        l\'indirizzo email e la password corretti, è possibile che non sia stato pagato un account
-        \"Plus\". Lanciare il browser Internet per accedere a questi
-        account e-mail.</string>
+        consentendo il collegamento del programma. Se non riesci ad accedere con
+        indirizzo email e password corretti, è possibile che non sia stato pagato un account
+        \"Plus\". Esegui il browser Internet per acquistare l\'accesso a questo
+        genere di account e-mail.</string>
 
     <string name="provider_note_yahoojp">Se si desidera utilizzare POP3 per questo provider, si deve consentire l\'utilizzo di POP3 sulla pagina delle impostazioni di Yahoo.</string>
 
@@ -833,7 +842,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="settings_messageview_mobile_layout_label">Layout a colonna singola</string>
     <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
-    <string name="settings_messageview_zoom_controls_label">Controlli dello zoom di sistema</string>
+    <string name="settings_messageview_zoom_controls_label">Controlli zoom di sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Abilita widgets dello zoom o pinch-zoom se il dispositivo lo supporta</string>
 
 
@@ -875,7 +884,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="batch_select_all">Seleziona tutti</string>
     <string name="batch_deselect_all">Cancella tutte le selezioni</string>
 
-    <string name="account_setup_push_limit_label">Numero max cartelle da controllare in Push</string>
+    <string name="account_setup_push_limit_label">Numero max cartelle Push</string>
     <string name="account_setup_push_limit_10">10 cartelle</string>
     <string name="account_setup_push_limit_25">25 cartelle</string>
     <string name="account_setup_push_limit_50">50 cartelle</string>
@@ -944,6 +953,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="font_size_message_list_subject">Oggetto</string>
     <string name="font_size_message_list_sender">Mittente</string>
     <string name="font_size_message_list_date">Data</string>
+	<string name="font_size_message_list_preview">Anteprima</string>
 
     <string name="font_size_message_view">Messaggi</string>
     <string name="font_size_message_view_sender">Mittente</string>
@@ -970,14 +980,14 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="font_size_webview_larger">Più grande</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Controlla \"Impostazioni\" -&gt; \"Aggira il bug della Galleria Immagini\" per essere in grado di allegare immagini o video usando Galleria 3D.</string>
+    <string name="message_compose_buggy_gallery">Controlla \"Impostazioni\" -&gt; \"Aggira bug Galleria Immagini\" per allegare immagini o video usando Galleria 3D.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
     <string name="message_compose_use_workaround">Utilizza \"Aggiungi allegato (Immagini)\" or \"Aggiungi allegato (Video)\" per allegare immagini o video con Galleria 3D.</string>
 
     <string name="miscellaneous_preferences">Altre impostazioni</string>
-    <string name="misc_preferences_attachment_title">Aggira il bug della Galleria Immagini</string>
-    <string name="misc_preferences_attachment_description">Visualizza i bottoni per allegare immagini/video (per aggirare il bug della Galleria 3D)</string>
+    <string name="misc_preferences_attachment_title">Aggira bug Galleria Immagini</string>
+    <string name="misc_preferences_attachment_description">Visualizza i bottoni per allegare immagini/video (evita bug della Galleria 3D)</string>
 
     <!-- APG related -->
     <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
@@ -991,7 +1001,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="insufficient_apg_permissions">K-9 non ha i permessi per accedere pienamento ad APG, si prega di reinstallare K-9 per risolvere il problema.</string>
     <string name="pgp_mime_unsupported">I messaggi PGP/MIME non sono ancora supportati.</string>
     <string name="attachment_encryption_unsupported">Attenzione: gli allegati non sono ancora firmati o crittografati.</string>
-    <string name="send_aborted">Invio abortito.</string>
+    <string name="send_aborted">Invio interrotto.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Salva bozza?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Salva o Rifiuta questo messaggio?</string>
