@@ -1408,9 +1408,9 @@ public class LocalStore extends Store implements Serializable
             super.setLastPush(lastPushed);
             mInTopGroup = topGroup ==1  ? true : false;
             mIntegrate = integrate == 1 ? true : false;
-            mDisplayClass = Folder.FolderClass.valueOf(displayClass);
-            mPushClass = Folder.FolderClass.valueOf(pushClass);
-            mSyncClass = Folder.FolderClass.valueOf(syncClass);
+            mDisplayClass = Folder.FolderClass.valueOf(displayClass == null?"NO_CLASS":displayClass);
+            mPushClass = Folder.FolderClass.valueOf(pushClass == null?"NO_CLASS":pushClass);
+            mSyncClass = Folder.FolderClass.valueOf(syncClass == null?"NO_CLASS":syncClass);
 
         }
 
