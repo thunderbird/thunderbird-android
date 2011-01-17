@@ -5,6 +5,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="2dip"
                 android:gravity="center_vertical">
                 <Button
                     android:id="@+id/reply"
@@ -30,6 +31,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="2dip"
                 android:gravity="center_vertical">
                 <Button
                     android:id="@+id/archive_scrolling"
