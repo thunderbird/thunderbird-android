@@ -2331,8 +2331,8 @@ public class MessageList
 
         MessageListAdapter()
         {
-            mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
-            mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+            mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
+            mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
         }
 
         public void markAllMessagesAsDirty()

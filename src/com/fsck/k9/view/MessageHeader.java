@@ -51,7 +51,7 @@ public class MessageHeader extends LinearLayout
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
-    private static Drawable answeredIcon;
+    private View mAnsweredIcon;
     private Message mMessage;
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -85,6 +85,7 @@ public class MessageHeader extends LinearLayout
     private void initializeLayout()
     {
         mAttachmentIcon = findViewById(R.id.attachment);
+        mAnsweredIcon = findViewById(R.id.answered);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
         mCcView = (TextView) findViewById(R.id.cc);
@@ -98,13 +99,13 @@ public class MessageHeader extends LinearLayout
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        answeredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
         mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
         mAdditionalHeadersView.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
+        mAnsweredIcon.setVisibility(View.GONE);
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
         mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
@@ -263,18 +264,10 @@ public class MessageHeader extends LinearLayout
         mCcContainerView.setVisibility((cc != null && cc.length() > 0) ? View.VISIBLE : View.GONE);
         mCcView.setText(cc);
         mAttachmentIcon.setVisibility(((LocalStore.LocalMessage) message).hasAttachments() ? View.VISIBLE : View.GONE);
+        mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
         mChip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
         mChip.getBackground().setAlpha(!message.isSet(Flag.SEEN) ? 255 : 127);
-
-        if (message.isSet(Flag.ANSWERED))
-        {
-            mSubjectView.setCompoundDrawablesWithIntrinsicBounds(answeredIcon, null, null, null);
-        }
-        else
-        {
-            mSubjectView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
         setVisibility(View.VISIBLE);
         if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
         {

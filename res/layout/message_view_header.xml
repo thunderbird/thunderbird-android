@@ -6,6 +6,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="2dip"
+        android:paddingRight="2dip"
         >
         <View
             android:id="@+id/chip"
@@ -18,6 +20,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="2dip"
+            android:paddingLeft="4dip"
             >
         <LinearLayout
           android:layout_width="fill_parent"
@@ -119,12 +123,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 >
-             <CheckBox android:id="@+id/flagged"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:focusable="false"
-               android:layout_alignParentRight="true"
-               style="?android:attr/starStyle" />
              <TextView android:id="@+id/date"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -147,11 +145,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:baselineAligned="true">
+            android:paddingTop="4dip"
+            >
+             <View android:id="@+id/answered"
+                 android:layout_width="22sp"
+                 android:layout_height="22sp"
+                 android:layout_centerVertical="true"
+                android:paddingRight="4dip"
+                 android:background="@drawable/ic_email_answered_small" />
              <View android:id="@+id/attachment"
                  android:layout_width="22sp"
                  android:layout_height="22sp"
+                 android:layout_centerVertical="true"
+                android:paddingRight="4dip"
                  android:background="@drawable/ic_email_attachment_small" />
+             <CheckBox android:id="@+id/flagged"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:focusable="false"
+               android:layout_alignParentRight="true"
+               style="?android:attr/starStyle" />
            </LinearLayout>
            </LinearLayout>
             </LinearLayout>
