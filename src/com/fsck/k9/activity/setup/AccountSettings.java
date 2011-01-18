@@ -32,10 +32,8 @@ import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
 
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 
 
 public class AccountSettings extends K9PreferenceActivity
@@ -966,6 +964,8 @@ public class AccountSettings extends K9PreferenceActivity
         List<? extends Folder> folders = new LinkedList<LocalFolder>();
         String[] allFolderValues;
         String[] allFolderLabels;
+
+        @Override
         protected Void doInBackground(Void... params)
         {
             try
@@ -997,7 +997,7 @@ public class AccountSettings extends K9PreferenceActivity
             return null;
         }
 
-
+        @Override
         protected void onPreExecute()
         {
             mAutoExpandFolder = (ListPreference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
@@ -1016,6 +1016,8 @@ public class AccountSettings extends K9PreferenceActivity
             mTrashFolder.setEnabled(false);
 
         }
+
+        @Override
         protected void onPostExecute(Void res)
         {
             initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels,allFolderValues);
@@ -1032,10 +1034,6 @@ public class AccountSettings extends K9PreferenceActivity
             mSentFolder.setEnabled(true);
             mSpamFolder.setEnabled(true);
             mTrashFolder.setEnabled(true);
-
         }
-
     }
-
-
 }

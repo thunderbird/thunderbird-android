@@ -28,7 +28,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -41,7 +40,6 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -1295,7 +1293,6 @@ public class LocalStore extends Store implements Serializable
         private FolderClass mSyncClass = FolderClass.INHERITED;
         private FolderClass mPushClass = FolderClass.SECOND_CLASS;
         private boolean mInTopGroup = false;
-        private String prefId = null;
         private String mPushState = null;
         private boolean mIntegrate = false;
         // mLastUid is used during syncs. It holds the highest UID within the local folder so we

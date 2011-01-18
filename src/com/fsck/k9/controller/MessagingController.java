@@ -1546,8 +1546,8 @@ public class MessagingController implements Runnable
                                             final LocalFolder localFolder,
                                             final Folder remoteFolder,
                                             final Account account,
-                                            final List unsyncedMessages,
-                                            final ArrayList syncFlagMessages,
+                                            final List<Message> unsyncedMessages,
+                                            final ArrayList<Message> syncFlagMessages,
                                             boolean flagSyncOnly) throws MessagingException
     {
         if (message.isSet(Flag.DELETED))

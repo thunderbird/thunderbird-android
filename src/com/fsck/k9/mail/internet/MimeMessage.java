@@ -501,6 +501,7 @@ public class MimeMessage extends Message
         }
     }
 
+    @Override
     public void setCharset(String charset) throws MessagingException
     {
         if (mBody instanceof Multipart)

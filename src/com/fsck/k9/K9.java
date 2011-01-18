@@ -599,7 +599,7 @@ public class K9 extends Application
 
         try
         {
-            Class strictMode = Class.forName("android.os.StrictMode");
+            Class<?> strictMode = Class.forName("android.os.StrictMode");
             Method enableDefaults = strictMode.getMethod("enableDefaults");
             enableDefaults.invoke(strictMode);
         }

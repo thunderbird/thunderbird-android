@@ -3,7 +3,6 @@ package com.fsck.k9;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;

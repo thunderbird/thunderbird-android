@@ -2,7 +2,6 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -32,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.text.DateFormat;
+
 public class MessageHeader extends LinearLayout
 {
     private Context mContext;

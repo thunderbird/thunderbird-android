@@ -15,7 +15,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
 import android.widget.Toast;
-import android.widget.TimePicker;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;

@@ -2934,8 +2934,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private InsertableHtmlContent quoteOriginalHtmlMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException
     {
-        String body = messageBody == null ? "" : messageBody;
-
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
         if (quoteStyle == QuoteStyle.PREFIX)

@@ -11,7 +11,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Config;
 import android.util.Log;
@@ -83,7 +82,6 @@ public class MessageView extends K9Activity implements OnClickListener
     private Menu optionsMenu = null;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
-    private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
 

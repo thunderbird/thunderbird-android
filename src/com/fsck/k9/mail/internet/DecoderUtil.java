@@ -6,7 +6,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import org.apache.james.mime4j.decoder.Base64InputStream;

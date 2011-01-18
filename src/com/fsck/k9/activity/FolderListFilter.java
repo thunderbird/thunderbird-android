@@ -77,7 +77,6 @@ public class FolderListFilter<T> extends Filter
             final int wordCount = words.length;
 
             final ArrayList<T> values = mOriginalValues;
-            final int count = values.size();
 
             final ArrayList<T> newValues = new ArrayList<T>();
 

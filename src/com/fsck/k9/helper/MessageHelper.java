@@ -40,13 +40,10 @@ public class MessageHelper
 
     private DateFormat mDateFormat;
 
-    private DateFormat mTimeFormat;
-
     private MessageHelper(final Context context)
     {
         mContext = context;
         mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
         mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
 
@@ -58,7 +55,6 @@ public class MessageHelper
         {
             LocalMessage message = (LocalMessage) m;
             target.message = message;
-            Date date = message.getSentDate();
             target.compareDate = message.getSentDate();
             if (target.compareDate == null)
             {

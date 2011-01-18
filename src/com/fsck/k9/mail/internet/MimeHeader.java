@@ -2,7 +2,6 @@
 package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.MessagingException;
 import org.apache.james.mime4j.codec.EncoderUtil;
 
 import java.io.BufferedWriter;

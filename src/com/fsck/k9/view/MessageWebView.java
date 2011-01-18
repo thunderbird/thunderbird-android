@@ -13,13 +13,6 @@ import com.fsck.k9.R;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by IntelliJ IDEA.
- * User: jesse
- * Date: 12/25/10
- * Time: 3:57 PM
- * To change this template use File | Settings | File Templates.
- */
 public class MessageWebView extends WebView
 {
 
@@ -125,6 +118,7 @@ public class MessageWebView extends WebView
      * Emulate the shift key being pressed to trigger the text selection mode
      * of a WebView.
      */
+    @Override
     public void emulateShiftHeld()
     {
         try

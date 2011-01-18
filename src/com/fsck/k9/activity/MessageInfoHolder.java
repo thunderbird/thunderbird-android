@@ -1,8 +1,7 @@
 package com.fsck.k9.activity;
-import com.fsck.k9.helper.MessageHelper;
-import java.util.Date;
 
-import com.fsck.k9.mail.Message;
+import java.util.Date;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class MessageInfoHolder
