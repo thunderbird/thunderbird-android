@@ -383,8 +383,9 @@ public class MessageView extends K9Activity implements OnClickListener
                         attachment.viewButton.setEnabled(enabled);
                         attachment.downloadButton.setEnabled(enabled);
 
-                        if (enabled) {
-                        	attachment.checkViewable();
+                        if (enabled)
+                        {
+                            attachment.checkViewable();
                         }
                     }
                 }

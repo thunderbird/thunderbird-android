@@ -101,8 +101,10 @@ public class AttachmentView extends FrameLayout
                     || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
             {
                 viewButton.setVisibility(View.GONE);
-            } else {
-            	checkViewable();
+            }
+            else
+            {
+                checkViewable();
             }
             if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
                     || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
@@ -258,28 +260,35 @@ public class AttachmentView extends FrameLayout
      * attachment.viewButton.setEnabled(enabled); is called.
      * This method is safe to be called from the UI-thread.
      */
-	public void checkViewable() {
-		if (viewButton.getVisibility() == View.GONE) {
-			// nothing to do
-			return;
-		}
-		if (!viewButton.isEnabled()) {
-			// nothing to do
-			return;
-		}
-		try {
-			Uri uri = AttachmentProvider.getAttachmentUri( mAccount, part.getAttachmentId());
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setData(uri);
-			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-			if (intent.resolveActivity(mContext.getPackageManager()) == null) {
-				viewButton.setEnabled(false);
-			}
-			// currently we do not cache re result.
-		} catch (Exception e) {
-			Log.e(K9.LOG_TAG, "Cannot resolve activity to determine if we shall show the 'view'-button for an attachment", e);
-		}
-	}
+    public void checkViewable()
+    {
+        if (viewButton.getVisibility() == View.GONE)
+        {
+            // nothing to do
+            return;
+        }
+        if (!viewButton.isEnabled())
+        {
+            // nothing to do
+            return;
+        }
+        try
+        {
+            Uri uri = AttachmentProvider.getAttachmentUri( mAccount, part.getAttachmentId());
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (intent.resolveActivity(mContext.getPackageManager()) == null)
+            {
+                viewButton.setEnabled(false);
+            }
+            // currently we do not cache re result.
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Cannot resolve activity to determine if we shall show the 'view'-button for an attachment", e);
+        }
+    }
 
     public void attachmentSaved(final String filename)
     {
