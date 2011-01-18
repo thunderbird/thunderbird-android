@@ -1471,24 +1471,7 @@ public class LocalStore extends Store implements Serializable
         @Override
         public boolean create(FolderType type) throws MessagingException
         {
-            if (exists())
-            {
-                throw new MessagingException("Folder " + mName + " already exists.");
-            }
-            database.execute(false, new DbCallback<Void>()
-            {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                {
-                    db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                               {
-                                   mName,
-                                   mAccount.getDisplayCount()
-                               });
-                    return null;
-                }
-            });
-            return true;
+            return create(type, mAccount.getDisplayCount());
         }
 
         @Override
