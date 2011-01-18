@@ -11,12 +11,10 @@ import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
 
@@ -635,14 +633,11 @@ public class Account implements BaseAccount
         }
         long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
-        int unreadMessageCount = 0;
-        int flaggedMessageCount = 0;
         LocalStore localStore = getLocalStore();
         if (K9.measureAccounts())
         {
             stats.size = localStore.getSize();
         }
-        Preferences prefs = Preferences.getPreferences(context);
         localStore.getMessageCounts(stats);
         long endTime = System.currentTimeMillis();
         if (K9.DEBUG)
