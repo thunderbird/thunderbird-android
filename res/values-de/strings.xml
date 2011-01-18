@@ -114,7 +114,7 @@
     <string name="dump_settings_action">Einstellungen ausgeben (Dump)</string>
     <string name="empty_trash_action">Papierkorb leeren</string>
     <string name="expunge_action">Bereinigen (Expunge)</string>
-    <string name="clear_local_folder_action">Lösche lokale Nachrichten</string>	
+    <string name="clear_local_folder_action">Lösche lokale Nachrichten</string>
     <string name="set_sort_action">Sortierung wählen</string>
     <string name="reverse_sort_action">Sortierung umkehren</string>
     <string name="about_action">Info</string>
@@ -326,7 +326,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
     <string name="global_settings_registered_name_color_default">Standardfarbe</string>
     <string name="global_settings_registered_name_color_changed">Farbe wählen</string>
-		
+
     <string name="global_settings_messageview_fixedwidth_label">Monotype Schriftart</string>
     <string name="global_settings_messageview_fixedwidth_summary">Verwende Schriftart mit gleicher Zeichenbreite für Plain-Text Nachrichten</string>
     <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
@@ -513,7 +513,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_options_mail_display_count_1000">1000 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_all">alle Nachrichten</string>
 
-	
+
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
 
     <string name="account_setup_failed_dlg_title">Setup konnte nicht abgeschlossen werden</string>
@@ -538,6 +538,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen.</string>
     <string name="account_settings_notification_opens_unread_label">Benachrichtigung öffnet ungelesene Nachrichten</string>
     <string name="account_settings_notification_opens_unread_summary">Zeigt beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten an</string>
+    <string name="account_settings_notification_unread_count_label">Anzahl ungelesener Nachrichten anzeigen</string>
+    <string name="account_settings_notification_unread_count_summary">Zeigt die Anzahl der ungelesenen Nachrichten in der Statuszeile.</string>
 
     <string name="account_settings_hide_buttons_label">Scrolle Navigationsleiste</string>
     <string name="account_settings_hide_buttons_never">Leiste bleibt eingeblendet</string>
@@ -576,8 +578,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
 
 	<string name="account_settings_storage_title">Speicher</string>
-    
-	
+
+
 	<string name="account_settings_color_label">Farbe des Kontos</string>
     <string name="account_settings_color_summary">Wählen Sie die Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
 
@@ -688,9 +690,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_vibrate_times">Anzahl der Vibrationen</string>
     <string name="account_settings_ringtone">Klingelton</string>
     <string name="account_settings_led_label">LED Blinken</string>
-    <string name="account_settings_led_summary">LED blinkt bei neuer Nachricht</string>	
-	
-	
+    <string name="account_settings_led_summary">LED blinkt bei neuer Nachricht</string>
+
+
     <string name="account_settings_servers">Servereinstellungen</string>
 
     <string name="account_settings_composition_title">Optionen für das Verfassen von Nachrichten</string>
@@ -738,7 +740,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="choose_account_title">Konto/Identität auswählen</string>
 	<string name="send_as">Sende als</string>
 
-	
+
     <string name="no_identities">Gehen Sie zu \"Kontoeinstellungen\" -&gt; \"Identitäten verwalten\" um Identitäten zu erstellen</string>
     <string name="no_removable_identity">Sie können Ihre einzige Identität nicht löschen</string>
     <string name="identity_has_no_email">Sie können keine Identität ohne E-Mail-Adresse verwenden</string>
@@ -782,7 +784,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
         diese Mailkonten zuzugreifen.</string>
 
     <string name="provider_note_yahoojp">Wenn Sie für diesen Provider POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Enstellungen POP3 aktivieren.</string>
-		
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
