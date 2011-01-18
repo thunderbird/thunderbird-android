@@ -1491,9 +1491,42 @@ public class LocalStore extends Store implements Serializable
                                    mName,
                                    visibleLimit
                                });
+
+
                     return null;
                 }
             });
+
+            // When created, special folders should always be displayed
+            // inbox should be integrated
+            // and the inbox and drafts folders should be syncced by default
+            if (mAccount.isSpecialFolder(mName))
+            {
+                LocalFolder f = new LocalFolder(mName);
+                f.open(OpenMode.READ_WRITE);
+                f.setInTopGroup(true);
+                f.setDisplayClass(FolderClass.FIRST_CLASS);
+                if (mName.equalsIgnoreCase(K9.INBOX))
+                {
+                    f.setIntegrate(true);
+                    f.setPushClass(FolderClass.FIRST_CLASS);
+                }
+                else
+                {
+                    f.setPushClass(FolderClass.INHERITED);
+
+                }
+                if ( mName.equalsIgnoreCase(K9.INBOX) ||
+                        mName.equalsIgnoreCase(mAccount.getDraftsFolderName()) )
+                {
+                    f.setSyncClass(FolderClass.FIRST_CLASS);
+                }
+                else
+                {
+                    f.setSyncClass(FolderClass.NO_CLASS);
+                }
+            }
+
             return true;
         }
 
