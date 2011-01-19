@@ -13,11 +13,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.field.address.AddressList;
-import org.apache.james.mime4j.field.address.Mailbox;
-import org.apache.james.mime4j.field.address.MailboxList;
-import org.apache.james.mime4j.field.address.NamedMailbox;
-import org.apache.james.mime4j.field.address.parser.ParseException;
+import org.apache.james.mime4j.dom.address.AddressList;
+import org.apache.james.mime4j.dom.address.Mailbox;
+import org.apache.james.mime4j.dom.address.MailboxList;
+import org.apache.james.mime4j.field.DefaultFieldParser;
+import org.apache.james.mime4j.field.address.parser.AddressBuilder;
+import org.apache.james.mime4j.MimeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,20 +138,20 @@ public class Address
         }
         try
         {
-            MailboxList parsedList = AddressList.parse(addressList).flatten();
+            MailboxList parsedList = (MailboxList) AddressBuilder.parseAddressList(addressList).flatten();
             for (int i = 0, count = parsedList.size(); i < count; i++)
             {
-                org.apache.james.mime4j.field.address.Address address = parsedList.get(i);
-                if (address instanceof NamedMailbox)
-                {
-                    NamedMailbox namedMailbox = (NamedMailbox)address;
-                    addresses.add(new Address(namedMailbox.getLocalPart() + "@"
-                                              + namedMailbox.getDomain(), namedMailbox.getName()));
-                }
-                else if (address instanceof Mailbox)
+                org.apache.james.mime4j.dom.address.Address address = parsedList.get(i);
+                if (address instanceof Mailbox)
                 {
                     Mailbox mailbox = (Mailbox)address;
+                    if (mailbox.getName() != null )
+                    {
+                    addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName()));
+                } else
+                {
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
+                }
                 }
                 else
                 {
@@ -160,7 +161,7 @@ public class Address
 
             }
         }
-        catch (ParseException pe)
+        catch (MimeException pe)
         {
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);

@@ -8,8 +8,8 @@ import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import org.apache.james.mime4j.decoder.Base64InputStream;
-import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.CharsetUtil;
 
 

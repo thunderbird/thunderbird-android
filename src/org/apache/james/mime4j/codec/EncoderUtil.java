@@ -27,30 +27,13 @@ import java.util.Locale;
 import org.apache.james.mime4j.util.CharsetUtil;
 
 /**
- * ANDROID:  THIS CLASS IS COPIED FROM A NEWER VERSION OF MIME4J
- */
-
-/**
  * Static methods for encoding header field values. This includes encoded-words
  * as defined in <a href='http://www.faqs.org/rfcs/rfc2047.html'>RFC 2047</a>
  * or display-names of an e-mail address, for example.
- * 
  */
 public class EncoderUtil {
-
-    // This array is a lookup table that translates 6-bit positive integer index
-    // values into their "Base64 Alphabet" equivalents as specified in Table 1
-    // of RFC 2045.
-    // ANDROID:  THIS TABLE IS COPIED FROM BASE64OUTPUTSTREAM
-    static final byte[] BASE64_TABLE = { 'A', 'B', 'C', 'D', 'E', 'F',
-            'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-            'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-            'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-            't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5',
-            '6', '7', '8', '9', '+', '/' };
-
-    // Byte used to pad output.
-    private static final byte BASE64_PAD = '=';
+    private static final byte[] BASE64_TABLE = Base64OutputStream.BASE64_TABLE;
+    private static final char BASE64_PAD = '=';
 
     private static final BitSet Q_REGULAR_CHARS = initChars("=_?");
 
@@ -374,14 +357,14 @@ public class EncoderUtil {
             sb.append((char) BASE64_TABLE[data >> 18 & 0x3f]);
             sb.append((char) BASE64_TABLE[data >> 12 & 0x3f]);
             sb.append((char) BASE64_TABLE[data >> 6 & 0x3f]);
-            sb.append((char) BASE64_PAD);
+            sb.append(BASE64_PAD);
 
         } else if (idx == end - 1) {
             int data = (bytes[idx] & 0xff) << 16;
             sb.append((char) BASE64_TABLE[data >> 18 & 0x3f]);
             sb.append((char) BASE64_TABLE[data >> 12 & 0x3f]);
-            sb.append((char) BASE64_PAD);
-            sb.append((char) BASE64_PAD);
+            sb.append(BASE64_PAD);
+            sb.append(BASE64_PAD);
         }
 
         return sb.toString();
@@ -518,14 +501,12 @@ public class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH - usedCharacters) {
             return prefix + encodeB(bytes) + ENC_WORD_SUFFIX;
         } else {
-            int splitOffset = text.offsetByCodePoints(text.length() / 2, -1);
-                                                         
-            String part1 = text.substring(0, splitOffset);
+            String part1 = text.substring(0, text.length() / 2);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeB(prefix, part1, usedCharacters, charset,
                     bytes1);
 
-            String part2 = text.substring(splitOffset);
+            String part2 = text.substring(text.length() / 2);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeB(prefix, part2, 0, charset, bytes2);
 
@@ -546,14 +527,12 @@ public class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH - usedCharacters) {
             return prefix + encodeQ(bytes, usage) + ENC_WORD_SUFFIX;
         } else {
-            int splitOffset = text.offsetByCodePoints(text.length() / 2, -1);
-
-            String part1 = text.substring(0, splitOffset);
+            String part1 = text.substring(0, text.length() / 2);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeQ(prefix, part1, usage, usedCharacters,
                     charset, bytes1);
 
-            String part2 = text.substring(splitOffset);
+            String part2 = text.substring(text.length() / 2);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeQ(prefix, part2, usage, 0, charset, bytes2);
 
