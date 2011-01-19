@@ -78,10 +78,13 @@ public class MimeMessage extends Message
 
         MimeStreamParser parser = new MimeStreamParser();
         parser.setContentHandler(new MimeMessageBuilder());
-        try {
+        try
+        {
             parser.parse(new EOLConvertingInputStream(in));
-        } catch (MimeException me) {
-                    throw new Error(me);
+        }
+        catch (MimeException me)
+        {
+            throw new Error(me);
 
         }
     }
@@ -576,12 +579,18 @@ public class MimeMessage extends Message
 
         public void field(RawField field)
         {
-            try {
-                            Field parsedField = DefaultFieldParser.parse(field.getRaw(), null);
-                ((Part)stack.peek()).addHeader(parsedField.getName(), field.getBody().trim());
-            } catch (MessagingException me) {
+            expect(Part.class);
+            try
+            {
+                Field parsedField = DefaultFieldParser.parse(field.getRaw(), null);
+                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
-            } catch (MimeException me) {
+            }
+            catch (MimeException me)
+            {
                 throw new Error(me);
             }
         }

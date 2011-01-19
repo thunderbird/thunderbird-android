@@ -131,8 +131,7 @@ public class Address
     public static Address[] parse(String addressList)
     {
         ArrayList<Address> addresses = new ArrayList<Address>();
-        if (addressList == null
-                && !"".equals(addressList))
+        if (addressList == null && !"".equals(addressList))
         {
             return EMPTY_ADDRESS_ARRAY;
         }
@@ -147,11 +146,12 @@ public class Address
                     Mailbox mailbox = (Mailbox)address;
                     if (mailbox.getName() != null )
                     {
-                    addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName()));
-                } else
-                {
-                    addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
-                }
+                        addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName()));
+                    }
+                    else
+                    {
+                        addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
+                    }
                 }
                 else
                 {
