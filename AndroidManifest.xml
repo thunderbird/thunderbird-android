@@ -266,7 +266,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fsck.k9.web.AccessibleEmailContentActivity"
+            android:name="com.fsck.k9.activity.AccessibleEmailContentActivity"
             >
         </activity>
 
