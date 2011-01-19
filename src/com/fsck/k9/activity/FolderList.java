@@ -348,19 +348,23 @@ public class FolderList extends K9ListActivity
     private void initializeActivityView()
     {
         mAdapter = new FolderListAdapter();
-
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null)
-        {
-            //noinspection unchecked
-            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-        }
+        restorePreviousData();
 
         setListAdapter(mAdapter);
 
         setTitle(mAccount.getDescription());
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restorePreviousData()
+    {
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null)
+        {
+            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+        }
     }
 
 

@@ -739,13 +739,7 @@ public class MessageList
         }
 
         mAdapter = new MessageListAdapter();
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null)
-        {
-            //noinspection unchecked
-            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
-        }
+        restorePreviousData();
 
         if (mFolderName != null)
         {
@@ -754,6 +748,17 @@ public class MessageList
 
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restorePreviousData()
+    {
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null)
+        {
+            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
+        }
     }
 
     @Override

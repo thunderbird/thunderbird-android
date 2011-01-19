@@ -493,8 +493,7 @@ public class MessageView extends K9Activity implements OnClickListener
         Uri uri = intent.getData();
         if (icicle != null)
         {
-            mMessageReference = (MessageReference) icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
-            mMessageReferences = (ArrayList<MessageReference>) icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
+            restoreMessageReferences(icicle);
             mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
             updateDecryptLayout();
         }
@@ -502,8 +501,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             if (uri == null)
             {
-                mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
-                mMessageReferences = (ArrayList<MessageReference>) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
+                restoreMessageReferences(icicle);
             }
             else
             {
@@ -556,6 +554,13 @@ public class MessageView extends K9Activity implements OnClickListener
         setupButtonViews();
 
         displayMessage(mMessageReference);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restoreMessageReferences(Bundle icicle)
+    {
+        mMessageReference = (MessageReference) icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
+        mMessageReferences = (ArrayList<MessageReference>) icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
     }
 
     private void setupButtonViews()
