@@ -128,7 +128,7 @@ public class MessageProvider extends ContentProvider
         @Override
         public Long getField(final MessageInfoHolder source)
         {
-            return ((LocalStore.LocalMessage) source.message).getId();
+            return source.message.getId();
         }
     }
     public static class CountExtractor<T> implements FieldExtractor<T, Integer>
