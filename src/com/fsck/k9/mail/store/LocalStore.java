@@ -657,14 +657,16 @@ public class LocalStore extends Store implements Serializable
                     }
                     else
                     {
-                        Log.e(K9.LOG_TAG,"asked to compute account statistics for an impossible folder mode "+displayMode);
+                        Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
+                        stats.unreadMessageCount = 0;
+                        stats.flaggedMessageCount = 0;
+                        return null;
                     }
+
                     cursor.moveToFirst();
-                    stats.unreadMessageCount =  cursor.getInt(0);   // message count
-                    stats.flaggedMessageCount =  cursor.getInt(1);   // message count
+                    stats.unreadMessageCount = cursor.getInt(0);
+                    stats.flaggedMessageCount = cursor.getInt(1);
                     return null;
-
-
                 }
                 finally
                 {
