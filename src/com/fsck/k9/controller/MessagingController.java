@@ -4698,7 +4698,7 @@ public class MessagingController implements Runnable
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         try
         {
-            if (message != null && message.getFrom() != null)
+            if (message.getFrom() != null)
             {
                 Address[] fromAddrs = message.getFrom();
                 String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
@@ -5146,7 +5146,7 @@ public class MessagingController implements Runnable
                 try
                 {
                     LocalStore localStore = account.getLocalStore();
-                    localFolder= localStore.getFolder(remoteFolder.getName());
+                    localFolder = localStore.getFolder(remoteFolder.getName());
                     localFolder.open(OpenMode.READ_WRITE);
 
                     account.setRingNotified(false);
@@ -5178,7 +5178,10 @@ public class MessagingController implements Runnable
                     String errorMessage = "Push failed: " + rootMessage;
                     try
                     {
-                        localFolder.setStatus(errorMessage);
+                        // Oddly enough, using a local variable gets rid of a
+                        // potential null pointer access warning with Eclipse.
+                        LocalFolder folder = localFolder;
+                        folder.setStatus(errorMessage);
                     }
                     catch (Exception se)
                     {
