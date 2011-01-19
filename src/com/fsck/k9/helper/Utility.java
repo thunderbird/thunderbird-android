@@ -508,7 +508,8 @@ public class Utility
                 }
             }
         }
-        if (tagStripped)
+        // Null pointer check is to make the static analysis component of Eclipse happy.
+        if (tagStripped && (tag != null))
         {
             // restore the last tag
             lastPrefix -= tag.length();
