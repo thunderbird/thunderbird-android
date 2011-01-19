@@ -558,10 +558,7 @@ public class FolderList extends K9ListActivity
             }
             localFolder = account.getLocalStore().getFolder(folderName);
             localFolder.open(Folder.OpenMode.READ_WRITE);
-            if (localFolder != null)
-            {
-                localFolder.clearAllMessages();
-            }
+            localFolder.clearAllMessages();
         }
         catch (Exception e)
         {
@@ -1093,14 +1090,11 @@ public class FolderList extends K9ListActivity
                         }
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
-                        if (localFolder != null)
+                        FolderInfoHolder folderHolder = getFolder(folderName);
+                        if (folderHolder != null)
                         {
-                            FolderInfoHolder folderHolder = getFolder(folderName);
-                            if (folderHolder != null)
-                            {
-                                folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
-                                mHandler.dataChanged();
-                            }
+                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
+                            mHandler.dataChanged();
                         }
                     }
                 }

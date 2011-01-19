@@ -2456,10 +2456,7 @@ public class WebDavStore extends Store
                     }
                 }
 
-                if (envelope != null)
-                {
-                    envelopes.put(uid, envelope);
-                }
+                envelopes.put(uid, envelope);
             }
 
             return envelopes;

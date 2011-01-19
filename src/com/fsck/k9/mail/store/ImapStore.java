@@ -3146,10 +3146,6 @@ public class ImapStore extends Store
                                 idling.set(true);
                                 doneSent.set(false);
 
-                                if (conn == null)
-                                {
-                                    throw new MessagingException("No connection available for idling");
-                                }
                                 conn.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
                                 untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);

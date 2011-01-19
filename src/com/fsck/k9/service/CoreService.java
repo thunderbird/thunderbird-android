@@ -96,12 +96,8 @@ public abstract class CoreService extends Service
         }
         finally
         {
-            if (wakeLock != null)
-            {
-                wakeLock.release();
-            }
+            wakeLock.release();
         }
-
     }
 
     public void execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId)

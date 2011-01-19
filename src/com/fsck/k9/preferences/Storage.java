@@ -314,10 +314,7 @@ public class Storage implements SharedPreferences
             workingStorage.remove();
             workingChangedKeys.remove();
             mDb.endTransaction();
-            if (mDb != null)
-            {
-                mDb.close();
-            }
+            mDb.close();
         }
     }
 

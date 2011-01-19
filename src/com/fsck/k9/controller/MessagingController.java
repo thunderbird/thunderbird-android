@@ -478,7 +478,7 @@ public class MessagingController implements Runnable
 
                 Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
-                if (refreshRemote || localFolders == null || localFolders.size() == 0)
+                if (refreshRemote || localFolders.size() == 0)
                 {
                     doRefreshRemote(account, listener);
                     return;

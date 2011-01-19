@@ -97,7 +97,7 @@ public class ImapResponseParser
              * See RFC 3501, Section 9 Formal Syntax (resp-text)
              */
         }
-        response.mCompleted = (token == null);
+        response.mCompleted = true;
     }
 
     /**
@@ -639,7 +639,8 @@ public class ImapResponseParser
         }
         else
         {
-            return o1 == o2;
+            // Both o1 and o2 are null
+            return true;
         }
     }
 
