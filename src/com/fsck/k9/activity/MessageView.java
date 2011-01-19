@@ -501,7 +501,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             if (uri == null)
             {
-                restoreMessageReferences(icicle);
+                restoreMessageReferencesExtra(intent);
             }
             else
             {
@@ -561,6 +561,13 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         mMessageReference = (MessageReference) icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
         mMessageReferences = (ArrayList<MessageReference>) icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restoreMessageReferencesExtra(Intent intent)
+    {
+        mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+        mMessageReferences = (ArrayList<MessageReference>) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
     }
 
     private void setupButtonViews()
