@@ -84,35 +84,37 @@ public class DomainNameChecker
      */
     private static boolean isIpAddress(String domain)
     {
-        boolean rval = ((domain != null) && (domain.length() != 0));
-        if (rval)
+        if ((domain == null) || (domain.length() == 0))
         {
-            try
-            {
-                // do a quick-dirty IP match first to avoid DNS lookup
-                rval = QUICK_IP_PATTERN.matcher(domain).matches();
-                if (rval)
-                {
-                    rval = domain.equals(InetAddress.getByName(domain)
-                                         .getHostAddress());
-                }
-            }
-            catch (UnknownHostException e)
-            {
-                String errorMessage = e.getMessage();
-                if (errorMessage == null)
-                {
-                    errorMessage = "unknown host exception";
-                }
+            return false;
+        }
 
-                if (K9.DEBUG)
-                {
-                    Log.v(K9.LOG_TAG, "DomainNameChecker.isIpAddress(): "
-                          + errorMessage);
-                }
-
-                rval = false;
+        boolean rval;
+        try
+        {
+            // do a quick-dirty IP match first to avoid DNS lookup
+            rval = QUICK_IP_PATTERN.matcher(domain).matches();
+            if (rval)
+            {
+                rval = domain.equals(InetAddress.getByName(domain)
+                                     .getHostAddress());
             }
+        }
+        catch (UnknownHostException e)
+        {
+            String errorMessage = e.getMessage();
+            if (errorMessage == null)
+            {
+                errorMessage = "unknown host exception";
+            }
+
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "DomainNameChecker.isIpAddress(): "
+                      + errorMessage);
+            }
+
+            rval = false;
         }
 
         return rval;
