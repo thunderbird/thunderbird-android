@@ -2030,7 +2030,7 @@ public class MessageList
 
         getMenuInflater().inflate(R.menu.message_list_context, menu);
 
-        menu.setHeaderTitle((CharSequence) message.message.getSubject());
+        menu.setHeaderTitle(message.message.getSubject());
 
         if (message.read)
         {
@@ -2518,7 +2518,7 @@ public class MessageList
             {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(context, (Folder)local_folder, account);
+                return new FolderInfoHolder(context, local_folder, account);
             }
             catch (Exception e)
             {
@@ -2560,7 +2560,7 @@ public class MessageList
                 MessageInfoHolder messageHolder =(MessageInfoHolder) getItem(position);
                 if (messageHolder != null)
                 {
-                    return ((LocalStore.LocalMessage)  messageHolder.message).getId();
+                    return messageHolder.message.getId();
                 }
             }
             catch (Exception e)
@@ -2748,7 +2748,7 @@ public class MessageList
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.flagged.setTag((Integer)position);
+            holder.flagged.setTag(position);
             holder.flagged.setChecked(message.flagged);
 
             // So that the mSelectedCount is only incremented/decremented

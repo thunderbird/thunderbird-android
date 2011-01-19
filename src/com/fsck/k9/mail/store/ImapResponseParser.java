@@ -281,7 +281,7 @@ public class ImapResponseParser
             {
                 if (sb.length() == 0)
                 {
-                    throw new IOException(String.format("parseAtom(): (%04x %c)", (int)ch, ch));
+                    throw new IOException(String.format("parseAtom(): (%04x %c)", ch, ch));
                 }
                 return sb.toString();
             }

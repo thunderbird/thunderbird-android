@@ -512,7 +512,7 @@ public class AccountSettings extends K9PreferenceActivity
             mLocalStorageProvider.setEntryValues(providerIds);
             mLocalStorageProvider.setEntries(providerLabels);
             mLocalStorageProvider.setValue(mAccount.getLocalStorageProviderId());
-            mLocalStorageProvider.setSummary(providers.get((Object)mAccount.getLocalStorageProviderId()));
+            mLocalStorageProvider.setSummary(providers.get(mAccount.getLocalStorageProviderId()));
 
             mLocalStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
             {

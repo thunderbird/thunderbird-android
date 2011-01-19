@@ -650,7 +650,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void setupDecryptLayout()
     {
-        mDecryptLayout = (View) findViewById(R.id.layout_decrypt);
+        mDecryptLayout = findViewById(R.id.layout_decrypt);
         mDecryptButton = (Button) findViewById(R.id.btn_decrypt);
         mDecryptButton.setOnClickListener(new OnClickListener()
         {
@@ -1554,7 +1554,7 @@ public class MessageView extends K9Activity implements OnClickListener
         AttachmentView view = (AttachmentView)inflater.inflate(R.layout.message_view_attachment, null);
         if (view.populateFromPart(part, mMessage, mAccount, mController, mListener))
         {
-            mHandler.addAttachment((View)view);
+            mHandler.addAttachment(view);
         }
         return;
     }

@@ -336,7 +336,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         final Intent intent = getIntent();
 
         mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
-        mSourceMessageBody = (String) intent.getStringExtra(EXTRA_MESSAGE_BODY);
+        mSourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
 
         if(K9.DEBUG && mSourceMessageBody != null)
             Log.d(K9.LOG_TAG, "Composing message with explicitly specified message body.");
@@ -559,7 +559,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mMessageContentView.requestFocus();
         }
 
-        mEncryptLayout = (View)findViewById(R.id.layout_encrypt);
+        mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
         mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
         mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
@@ -844,7 +844,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-        ArrayList<Parcelable> attachments = (ArrayList<Parcelable>) savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+        ArrayList<Parcelable> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         mAttachments.removeAllViews();
         for (Parcelable p : attachments)
         {

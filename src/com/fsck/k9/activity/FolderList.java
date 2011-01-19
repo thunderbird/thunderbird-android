@@ -815,7 +815,7 @@ public class FolderList extends K9ListActivity
 
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
-        menu.setHeaderTitle((CharSequence) folder.displayName);
+        menu.setHeaderTitle(folder.displayName);
 
         if (!folder.name.equals(mAccount.getTrashFolderName()))
             menu.findItem(R.id.empty_trash).setVisible(false);
@@ -1285,7 +1285,7 @@ public class FolderList extends K9ListActivity
         {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.name = folder;
-            return   mFolders.indexOf((Object) searchHolder);
+            return   mFolders.indexOf(searchHolder);
         }
 
         public FolderInfoHolder getFolder(String folder)

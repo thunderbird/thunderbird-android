@@ -92,7 +92,7 @@ public class MimeMultipart extends Multipart
 
         for (int i = 0, count = mParts.size(); i < count; i++)
         {
-            BodyPart bodyPart = (BodyPart)mParts.get(i);
+            BodyPart bodyPart = mParts.get(i);
             writer.write("--" + mBoundary + "\r\n");
             writer.flush();
             bodyPart.writeTo(out);
