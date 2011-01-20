@@ -68,7 +68,7 @@
     <string name="send_messages_action">Invia messaggi</string>
     <string name="list_folders_action">Elenca cartelle</string>
     <string name="refresh_folders_action">Aggiorna cartelle</string>
-    <string name="mark_all_as_read_action">Segna tutti i messaggi come letti</string>
+    <string name="mark_all_as_read_action">Segna tutti come letti</string>
     <string name="add_account_action">Aggiungi account</string>
     <string name="compose_action">Componi</string>
     <string name="search_action">Cerca</string>
@@ -88,7 +88,7 @@
     <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Leggi</string>
     <string name="mark_as_read_action">Segna come letto</string>
-    <string name="send_alternate_action">Inoltra con un\'altra applicazione</string>
+    <string name="send_alternate_action">Inoltra con altra applicazione</string>
     <string name="send_alternate_chooser_title">Scegli il mittente</string>
 
     <string name="mark_all_as_read_dlg_title">Segna tutti i messaggi come letti</string>
@@ -113,7 +113,7 @@
     <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
     <string name="dump_settings_action">Elimina impostazioni</string>
     <string name="empty_trash_action">Svuota cestino</string>
-    <string name="expunge_action">Rimuovi i messaggi eliminati</string>
+    <string name="expunge_action">Rimuovi messaggi eliminati</string>
     <string name="clear_local_folder_action">Cancella messaggi locali</string>
     <string name="set_sort_action">Scegli ordinamento</string>
     <string name="reverse_sort_action">Inverti ordinamento</string>
@@ -413,11 +413,11 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="local_storage_provider_external_label">Memoria esterna (SD card)</string>
     <string name="local_storage_provider_internal_label">Memoria interna standard</string>
     <string name="local_storage_provider_samsunggalaxy_label">Ulteriore memoria interna %1$s</string>
-    <string name="local_storage_provider_label">Posizione di memorizzazione</string>
+    <string name="local_storage_provider_label">Posizione memorizzazione</string>
 
-    <string name="account_setup_expunge_policy_label">Elimina i messaggi cancellati</string>
+    <string name="account_setup_expunge_policy_label">Elimina messaggi cancellati</string>
     <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
-    <string name="account_setup_expunge_policy_on_poll">Nel corso di ogni recupero</string>
+    <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
     <string name="account_setup_expunge_policy_manual">Solo manualmente</string>
 
     <string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
@@ -529,7 +529,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_default">Account predefinito</string>
     <string name="account_settings_default_label">Account predefinito</string>
     <string name="account_settings_default_summary">Invia mail da questo account per impostazione predefinita</string>
-    <string name="account_settings_notify_label">Notifiche nuovo messaggio</string>
+    <string name="account_settings_notify_label">Notifica nuovo messaggio</string>
     <string name="account_settings_notify_sync_label">Sincronizza notifiche</string>
     <string name="account_settings_email_label">Il tuo indirizzo e-mail</string>
     <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
@@ -538,8 +538,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_notify_self_label">Includi la Posta in uscita</string>
     <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
     <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
-    <string name="account_settings_notification_opens_unread_summary">Ricerca i messaggi non letti quando Notifiche è aperto</string>
-    <string name="account_settings_notification_unread_count_label">Mostra numero messaggi non letti</string>
+    <string name="account_settings_notification_opens_unread_summary">Ricerca non letti quando Notifiche è aperto</string>
+    <string name="account_settings_notification_unread_count_label">Vedi numero messaggi non letti</string>
     <string name="account_settings_notification_unread_count_summary">Mostra il numero dei messaggi non letti nella barra di notifica.</string>
 
     <string name="account_settings_hide_buttons_label">Scorri pulsanti navigazione</string>
@@ -558,7 +558,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="account_settings_composition">Composizione messaggio</string>
 
-    <string name="account_settings_reply_after_quote_label">Risposta dopo il testo quotato</string>
+    <string name="account_settings_reply_after_quote_label">Risposta dopo testo quotato</string>
     <string name="account_settings_reply_after_quote_summary">Quando si risponde ai messaggi, il messaggio originale viene visualizzato sopra la tua risposta.</string>
 
     <string name="account_settings_message_format_label">Formato messaggio</string>
@@ -583,7 +583,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_crypto_auto_signature">Accesso automatico</string>
     <string name="account_settings_crypto_auto_signature_summary">Utilizzare l\'indirizzo email dell\'account per dedurre la chiave di firma.</string>
 
-    <string name="account_settings_mail_check_frequency_label">Frequenza verifica delle cartelle</string>
+    <string name="account_settings_mail_check_frequency_label">Frequenza verifica cartelle</string>
     <string name="account_settings_second_class_check_frequency_label">Frequenza di controllo di 2a classe</string>
 
     <string name="account_settings_storage_title">Memorizzazione</string>
@@ -595,7 +595,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_led_color_label">Colore del LED di notifica</string>
     <string name="account_settings_led_color_summary">Scegli il colore del LED del telefono che dovrà lampeggiare per questo account</string>
 
-    <string name="account_settings_mail_display_count_label">Dimensione delle cartelle locali</string>
+    <string name="account_settings_mail_display_count_label">Dimensione cartelle locali</string>
 
     <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>
@@ -706,10 +706,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="account_settings_composition_title">Opzioni composizione messaggi</string>
     <string name="account_settings_composition_label">Opzioni predefinite</string>
-    <string name="account_settings_composition_summary">Imposta From, Bcc e firma predefiniti</string>
+    <string name="account_settings_composition_summary">Imposta Da, CCn e firma predefiniti</string>
 
     <string name="account_settings_identities_label">Gestione identità</string>
-    <string name="account_settings_identities_summary">Imposta indirizzo e firma alternativi \'Da\'</string>
+    <string name="account_settings_identities_summary">Imposta indirizzo mittente e firma alternativi </string>
 
     <string name="manage_identities_title">Gestione identità</string>
 
@@ -768,7 +768,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="sort_attach_first">Messaggi con allegati</string>
     <string name="sort_unattached_first">Messaggi senza allegati</string>
 
-    <string name="sort_by">Ordinato per...</string>
+    <string name="sort_by">Ordina per...</string>
     <string name="sort_by_date">Data</string>
     <string name="sort_by_sender">Mittente</string>
     <string name="sort_by_subject">Oggetto</string>
@@ -842,7 +842,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="settings_messageview_mobile_layout_label">Layout a colonna singola</string>
     <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
-    <string name="settings_messageview_zoom_controls_label">Controlli zoom di sistema</string>
+    <string name="settings_messageview_zoom_controls_label">Zoom di sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Abilita widgets dello zoom o pinch-zoom se il dispositivo lo supporta</string>
 
 
@@ -884,7 +884,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="batch_select_all">Seleziona tutti</string>
     <string name="batch_deselect_all">Cancella tutte le selezioni</string>
 
-    <string name="account_setup_push_limit_label">Numero max cartelle Push</string>
+    <string name="account_setup_push_limit_label">Max cartelle Push</string>
     <string name="account_setup_push_limit_10">10 cartelle</string>
     <string name="account_setup_push_limit_25">25 cartelle</string>
     <string name="account_setup_push_limit_50">50 cartelle</string>
@@ -898,12 +898,12 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="gestures_title">Gestione con tocco</string>
     <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
 
-    <string name="volume_navigation_title">Tasto volume per navigazione</string>
+    <string name="volume_navigation_title">Navigazione tasti volume</string>
     <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
     <string name="volume_navigation_message">Visualizzazione messaggi</string>
     <string name="volume_navigation_list">Diverse visualizzazioni di elenco</string>
 
-    <string name="manage_back_title">Gestisci il pulsante \"Indietro\"</string>
+    <string name="manage_back_title">Gestisci pulsante \"Indietro\"</string>
     <string name="manage_back_summary">\"Indietro\" sale sempre di un livello</string>
 
     <string name="start_integrated_inbox_title">Avvia in Posta In Arrivo Unificata</string>
