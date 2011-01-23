@@ -585,33 +585,30 @@ public class LocalStore extends Store implements Serializable
                 try
                 {
                     String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
-
-
-
                     if (displayMode == Account.FolderMode.NONE)
                     {
                         cursor = db.rawQuery(baseQuery+ "AND (name = ? )", new String[]
                                              {
-                                                 mAccount.getTrashFolderName(),
-                                                 mAccount.getDraftsFolderName(),
-                                                 mAccount.getSpamFolderName(),
-                                                 mAccount.getOutboxFolderName(),
-                                                 mAccount.getSentFolderName(),
 
-
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
                                                  K9.INBOX
-                                             });
+                                             }
+
+                                            );
                     }
                     else if (displayMode == Account.FolderMode.FIRST_CLASS )
                     {
                         cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ?)", new String[]
                                              {
-
-                                                 mAccount.getTrashFolderName(),
-                                                 mAccount.getDraftsFolderName(),
-                                                 mAccount.getSpamFolderName(),
-                                                 mAccount.getOutboxFolderName(),
-                                                 mAccount.getSentFolderName(),
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
                                                  K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
                                              });
 
@@ -621,11 +618,11 @@ public class LocalStore extends Store implements Serializable
                     {
                         cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ? OR display_class = ? )", new String[]
                                              {
-                                                 mAccount.getTrashFolderName(),
-                                                 mAccount.getDraftsFolderName(),
-                                                 mAccount.getSpamFolderName(),
-                                                 mAccount.getOutboxFolderName(),
-                                                 mAccount.getSentFolderName(),
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
                                                  K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     }
@@ -634,11 +631,11 @@ public class LocalStore extends Store implements Serializable
                         cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[]
                                              {
 
-                                                 mAccount.getTrashFolderName(),
-                                                 mAccount.getDraftsFolderName(),
-                                                 mAccount.getSpamFolderName(),
-                                                 mAccount.getOutboxFolderName(),
-                                                 mAccount.getSentFolderName(),
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
                                                  K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     }
@@ -647,12 +644,11 @@ public class LocalStore extends Store implements Serializable
                         cursor = db.rawQuery(baseQuery,  new String[]
                                              {
 
-                                                 mAccount.getTrashFolderName(),
-                                                 mAccount.getDraftsFolderName(),
-                                                 mAccount.getSpamFolderName(),
-                                                 mAccount.getOutboxFolderName(),
-                                                 mAccount.getSentFolderName()
-
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
                                              });
                     }
                     else
