@@ -268,7 +268,12 @@ public class Address
      */
     public CharSequence toFriendly(final Contacts contacts)
     {
-        if (contacts != null)
+        if (!K9.showCorrespondentNames())
+        {
+            return mAddress;
+
+        }
+        else if (contacts != null)
         {
             final String name = contacts.getNameForAddress(mAddress);
 

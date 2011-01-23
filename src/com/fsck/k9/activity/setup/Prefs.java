@@ -57,6 +57,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
+    private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES= "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
@@ -91,6 +92,7 @@ public class Prefs extends K9PreferenceActivity
     private ListPreference mPreviewLines;
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
+    private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mFixedWidth;
@@ -203,6 +205,9 @@ public class Prefs extends K9PreferenceActivity
 
         mCheckboxes = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CHECKBOXES);
         mCheckboxes.setChecked(K9.messageListCheckboxes());
+
+        mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
+        mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
 
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
@@ -318,6 +323,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
         K9.setMessageListStars(mStars.isChecked());
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
+        K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
