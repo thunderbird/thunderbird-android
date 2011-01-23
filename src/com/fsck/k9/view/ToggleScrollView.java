@@ -31,7 +31,8 @@ public class ToggleScrollView extends ScrollView
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        if(!mScrolling) {
+        if(!mScrolling)
+        {
             return false;
         }
 
@@ -63,7 +64,8 @@ public class ToggleScrollView extends ScrollView
                 {
                     return false;
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 // nothing
             }
