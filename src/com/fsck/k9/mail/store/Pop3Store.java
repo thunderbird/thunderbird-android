@@ -43,31 +43,6 @@ public class Pop3Store extends Store
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
-//    /**
-//     * Detected latency, used for usage scaling.
-//     * Usage scaling occurs when it is neccesary to get information about
-//     * messages that could result in large data loads. This value allows
-//     * the code that loads this data to decide between using large downloads
-//     * (high latency) or multiple round trips (low latency) to accomplish
-//     * the same thing.
-//     * Default is Integer.MAX_VALUE implying massive latency so that the large
-//     * download method is used by default until latency data is collected.
-//     */
-//    private int mLatencyMs = Integer.MAX_VALUE;
-//
-//    /**
-//     * Detected throughput, used for usage scaling.
-//     * Usage scaling occurs when it is neccesary to get information about
-//     * messages that could result in large data loads. This value allows
-//     * the code that loads this data to decide between using large downloads
-//     * (high latency) or multiple round trips (low latency) to accomplish
-//     * the same thing.
-//     * Default is Integer.MAX_VALUE implying massive bandwidth so that the
-//     * large download method is used by default until latency data is
-//     * collected.
-//     */
-//    private int mThroughputKbS = Integer.MAX_VALUE;
-
     /**
      * pop3://user:password@server:port CONNECTION_SECURITY_NONE
      * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -940,13 +915,6 @@ public class Pop3Store extends Store
                 executeSimpleCommand(String.format("DELE %s", msgNum));
             }
         }
-
-//        private boolean isRoundTripModeSuggested() {
-//            long roundTripMethodMs =
-//                (uncachedMessageCount * 2 * mLatencyMs);
-//            long bulkMethodMs =
-//                    (mMessageCount * 58) / (mThroughputKbS * 1024 / 8) * 1000;
-//        }
 
         private String readLine() throws IOException
         {
