@@ -30,6 +30,7 @@ import org.apache.commons.codec.binary.Hex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class SmtpTransport extends Transport
@@ -152,25 +153,37 @@ public class SmtpTransport extends Transport
     {
         try
         {
-            SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-            if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                    mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
-            {
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                sslContext.init(null, new TrustManager[]
-                                {
-                                    TrustManagerFactory.get(mHost, secure)
-                                }, new SecureRandom());
-                mSocket = sslContext.getSocketFactory().createSocket();
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                mSecure = true;
-            }
-            else
-            {
-                mSocket = new Socket();
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-            }
+        	InetAddress[] addresses = InetAddress.getAllByName(mHost);
+        	for (int i = 0; i < addresses.length; i++) {
+        		try {
+        			SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
+        			if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
+        					mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
+        			{
+        				SSLContext sslContext = SSLContext.getInstance("TLS");
+        				boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        				sslContext.init(null, new TrustManager[]
+        				                                       {
+        						TrustManagerFactory.get(mHost, secure)
+        				                                       }, new SecureRandom());
+        				mSocket = sslContext.getSocketFactory().createSocket();
+        				mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+        				mSecure = true;
+        			}
+        			else
+        			{
+        				mSocket = new Socket();
+        				mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+        			}
+        		} catch (ConnectException e) {
+        			if (i < (addresses.length - 1)) {
+        				// there are still other addresses for that host to try
+        				continue;
+        			}
+                    throw new MessagingException("Cannot connect to host", e);
+        		}
+        		break; // connection success
+        	}
 
             // RFC 1047
             mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
