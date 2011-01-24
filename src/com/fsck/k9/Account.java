@@ -78,6 +78,7 @@ public class Account implements BaseAccount
     private int mDisplayCount;
     private int mChipColor;
     private long mLastAutomaticCheckTime;
+    private long mLatestOldMessageSeenTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
     private String mDraftsFolderName;
@@ -257,14 +258,11 @@ public class Account implements BaseAccount
         {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
-        mLastAutomaticCheckTime = prefs.getLong(mUuid
-                                                + ".lastAutomaticCheckTime", 0);
-        mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail",
-                                          false);
-        mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail",
-                                              true);
-        mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck",
-                                       false);
+        mLastAutomaticCheckTime = prefs.getLong(mUuid + ".lastAutomaticCheckTime", 0);
+        mLatestOldMessageSeenTime = prefs.getLong(mUuid +".latestOldMessageSeenTime",0);
+        mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail", false);
+        mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
+        mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName",
                                             "Drafts");
@@ -445,6 +443,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".saveAllHeaders");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
+        editor.remove(mUuid + ".latestOldMessageSeenTime");
         editor.remove(mUuid + ".notifyNewMail");
         editor.remove(mUuid + ".notifySelfNewMail");
         editor.remove(mUuid + ".deletePolicy");
@@ -546,6 +545,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
+        editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
@@ -848,6 +848,16 @@ public class Account implements BaseAccount
     public synchronized void setLastAutomaticCheckTime(long lastAutomaticCheckTime)
     {
         this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
+    }
+
+    public synchronized long getLatestOldMessageSeenTime()
+    {
+        return mLatestOldMessageSeenTime;
+    }
+
+    public synchronized void setLatestOldMessageSeenTime(long latestOldMessageSeenTime)
+    {
+        this.mLatestOldMessageSeenTime = latestOldMessageSeenTime;
     }
 
     public synchronized boolean isNotifyNewMail()

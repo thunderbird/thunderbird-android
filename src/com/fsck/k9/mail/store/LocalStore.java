@@ -3281,6 +3281,41 @@ public class LocalStore extends Store implements Serializable
                 Log.d(K9.LOG_TAG, "Updated last UID for folder " + mName + " to " + lastUid);
             mLastUid = lastUid;
         }
+
+        public long getOldestMessageDate() throws MessagingException
+        {
+            return database.execute(false, new DbCallback<Long>()
+            {
+                @Override
+                public Long doDbWork(final SQLiteDatabase db)
+                {
+                    Cursor cursor = null;
+                    try
+                    {
+                        open(OpenMode.READ_ONLY);
+                        cursor = db.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
+                        if (cursor.getCount() > 0)
+                        {
+                            cursor.moveToFirst();
+                            return cursor.getLong(0);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to fetch oldest message date: ", e);
+                    }
+                    finally
+                    {
+                        if (cursor != null)
+                        {
+                            cursor.close();
+                        }
+                    }
+                    return null;
+                }
+            });
+        }
+
     }
 
     public static class LocalTextBody extends TextBody

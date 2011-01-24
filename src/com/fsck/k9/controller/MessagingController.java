@@ -1396,6 +1396,9 @@ public class MessagingController implements Runnable
                                  final LocalFolder localFolder, List<Message> inputMessages, boolean flagSyncOnly) throws MessagingException
     {
         final Date earliestDate = account.getEarliestPollDate();
+        Date downloadStarted = new Date(); // now
+
+
         if (earliestDate != null)
         {
             if (K9.DEBUG)
@@ -1540,6 +1543,25 @@ public class MessagingController implements Runnable
 
         });
 
+        // If the oldest message seen on this sync is newer than
+        // the oldest message seen on the previous sync, then
+        // we want to move our high-water mark forward
+        // this is all here just for pop which only syncs inbox
+        // this would be a little wrong for IMAP (we'd want a folder-level pref, not an account level pref.)
+        // fortunately, we just don't care.
+        Long oldestMessageTime = localFolder.getOldestMessageDate();
+
+        if (oldestMessageTime != null)
+        {
+            Date oldestExtantMessage = new Date(oldestMessageTime);
+            if  (oldestExtantMessage.before(downloadStarted) &&
+                    oldestExtantMessage.after(new Date(account.getLatestOldMessageSeenTime())))
+            {
+                account.setLatestOldMessageSeenTime(oldestExtantMessage.getTime());
+                account.save(Preferences.getPreferences(mApplication.getApplicationContext()));
+            }
+
+        }
         return newMessages.get();
     }
     private void evaluateMessageForDownload(final Message message, final String folder,
@@ -4692,6 +4714,17 @@ public class MessagingController implements Runnable
         {
             return false;
         }
+
+        // If the account us a POP3 account and the message is older than
+        // the oldest message we've previously seen then don't notify about it
+        if (account.getStoreUri().startsWith("pop3") )
+        {
+            if ( message.olderThan(new Date(account.getLatestOldMessageSeenTime())))
+            {
+                return false;
+            }
+        }
+
 
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuilder messageNotice = new StringBuilder();
