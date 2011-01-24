@@ -235,17 +235,15 @@ public class Pop3Store extends Store
                                         TrustManagerFactory.get(mHost, secure)
                                     }, new SecureRandom());
                     mSocket = sslContext.getSocketFactory().createSocket();
-                    mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                    mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
                 }
                 else
                 {
                     mSocket = new Socket();
-                    mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                    mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
                 }
+
+                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
+                mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
 
                 mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                 if (!isOpen())
