@@ -1022,8 +1022,7 @@ public class MessagingController implements Runnable
         try
         {
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " +
-                      account.getDescription());
+                Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " + account.getDescription());
 
             try
             {
@@ -1060,7 +1059,6 @@ public class MessagingController implements Runnable
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: using providedRemoteFolder " + folder);
-
                 remoteFolder = providedRemoteFolder;
             }
             else
@@ -1071,9 +1069,7 @@ public class MessagingController implements Runnable
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
                 remoteFolder = remoteStore.getFolder(folder);
 
-
-
-                if (!  verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener))
+                if (! verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener))
                 {
                     return;
                 }
@@ -1081,6 +1077,7 @@ public class MessagingController implements Runnable
 
                 /*
                  * Synchronization process:
+                 *
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
@@ -1088,12 +1085,10 @@ public class MessagingController implements Runnable
                 getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
-                Update the remote flags of any messages we have locally with an internal date
-                newer than the remote message.
+                Update the remote flags of any messages we have locally with an internal date newer than the remote message.
                 Get the current flags for any messages we have locally but did not just download
                 Update local flags
-                For any message we have locally but not remotely, delete the local message to keep
-                cache clean.
+                For any message we have locally but not remotely, delete the local message to keep cache clean.
                 Download larger parts of any new messages.
                 (Optional) Download small attachments in the background.
                  */
@@ -1109,8 +1104,6 @@ public class MessagingController implements Runnable
                 {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
-
-
                     remoteFolder.expunge();
                 }
 
@@ -1130,17 +1123,16 @@ public class MessagingController implements Runnable
 
             Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
-            //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
             final Date earliestDate = account.getEarliestPollDate();
+
+
             if (remoteMessageCount > 0)
             {
-                /*
-                 * Message numbers start at 1.
-                 */
+                /* Message numbers start at 1.  */
                 int remoteStart;
                 if (visibleLimit > 0 )
                 {
@@ -1229,17 +1221,14 @@ public class MessagingController implements Runnable
                 l.folderStatusChanged(account, folder, unreadMessageCount);
             }
 
-            /*
-             * Notify listeners that we're finally done.
-             */
+            /* Notify listeners that we're finally done. */
 
             localFolder.setLastChecked(System.currentTimeMillis());
             localFolder.setStatus(null);
 
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Done synchronizing folder " +
-                      account.getDescription() + ":" + folder + " @ " + new Date() +
-                      " with " + newMessages + " new messages");
+                Log.d(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder +
+                      " @ " + new Date() + " with " + newMessages + " new messages");
 
             for (MessagingListener l : getListeners(listener))
             {
@@ -1285,14 +1274,10 @@ public class MessagingController implements Runnable
 
             for (MessagingListener l : getListeners(listener))
             {
-                l.synchronizeMailboxFailed(
-                    account,
-                    folder,
-                    rootMessage);
+                l.synchronizeMailboxFailed( account, folder, rootMessage);
             }
             addErrorMessage(account, null, e);
-            Log.e(K9.LOG_TAG, "Failed synchronizing folder " +
-                  account.getDescription() + ":" + folder + " @ " + new Date());
+            Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
 
         }
         finally

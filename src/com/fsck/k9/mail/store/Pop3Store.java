@@ -1052,7 +1052,7 @@ public class Pop3Store extends Store
         public boolean supportsFetchingFlags()
         {
             return false;
-        }//isFlagSupported
+        }
 
         @Override
         public boolean equals(Object o)

@@ -238,21 +238,15 @@ public class Account implements BaseAccount
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid
-                                         + ".storeUri", null));
+        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid
-                                             + ".transportUri", null));
+        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
-        mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid
-                                         + ".automaticCheckIntervalMinutes", -1);
-        mIdleRefreshMinutes = prefs.getInt(mUuid
-                                           + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = prefs.getBoolean(mUuid
-                                           + ".saveAllHeaders", true);
-        mPushPollOnConnect = prefs.getBoolean(mUuid
-                                              + ".pushPollOnConnect", true);
+        mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
+        mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
+        mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
+        mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0)
         {
@@ -264,31 +258,21 @@ public class Account implements BaseAccount
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
-        mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName",
-                                            "Drafts");
-        mSentFolderName = prefs.getString(mUuid  + ".sentFolderName",
-                                          "Sent");
-        mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName",
-                                           "Trash");
-        mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName",
-                                             "Archive");
-        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName",
-                                          "Spam");
-        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName",
-                                            "Outbox");
+        mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
+        mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
+        mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
+        mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
+        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
+        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName", "Outbox");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
-        goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch",
-                                  false);
+        goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch", false);
         mNotificationShowsUnreadCount = prefs.getBoolean(mUuid + ".notificationUnreadCount", true);
-        subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
-                                false);
-        maximumPolledMessageAge = prefs.getInt(mUuid
-                                               + ".maximumPolledMessageAge", -1);
-        maximumAutoDownloadMessageSize = prefs.getInt(mUuid
-                                         + ".maximumAutoDownloadMessageSize", 32768);
+        subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly", false);
+        maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
+        maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
