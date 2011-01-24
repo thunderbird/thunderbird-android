@@ -95,6 +95,10 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
+
+    static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
+
+
     protected static final int DB_VERSION = 41;
 
     protected String uUid = null;
@@ -723,7 +727,7 @@ public class LocalStore extends Store implements Serializable
 
                     try
                     {
-                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class FROM folders ORDER BY name ASC", null);
+                        cursor = db.rawQuery("SELECT " +GET_FOLDER_COLS + " FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
@@ -1340,8 +1344,7 @@ public class LocalStore extends Store implements Serializable
                         Cursor cursor = null;
                         try
                         {
-                            String baseQuery =
-                                "SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class FROM folders ";
+                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders ";
 
                             if (mName != null)
                             {
