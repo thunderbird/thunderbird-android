@@ -253,7 +253,7 @@ public class HtmlConverter
             int codePoint = html.codePointAt(i);
             String emoji = getEmojiForCodePoint(codePoint);
             if (emoji != null)
-                buff.append("<img src=\"file:///android_asset/emoticons/" + emoji + ".gif\" alt=\"" + emoji + "\" />");
+                buff.append("<img src=\"file:///android_asset/emoticons/").append(emoji).append(".gif\" alt=\"").append(emoji).append("\" />");
             else
                 buff.appendCodePoint(codePoint);
 
