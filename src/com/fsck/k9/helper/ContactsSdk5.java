@@ -23,7 +23,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
      * The order in which the search results are returned by
      * {@link #searchContacts(CharSequence)}.
      */
-    private static final String SORT_ORDER =
+    protected static final String SORT_ORDER =
         Email.TIMES_CONTACTED + " DESC, " +
         Contacts.DISPLAY_NAME + ", " +
         Email._ID;
@@ -35,7 +35,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
      * {@link com.fsck.k9.EmailAddressAdapter} or more specificly by
      * {@link android.widget.ResourceCursorAdapter}.
      */
-    private static final String PROJECTION[] =
+    protected static final String PROJECTION[] =
     {
         Email._ID,
         Contacts.DISPLAY_NAME,
@@ -47,19 +47,19 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
      * Index of the name field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    private static final int NAME_INDEX = 1;
+    protected static final int NAME_INDEX = 1;
 
     /**
      * Index of the email address field in the projection. This must match the
      * order in {@link #PROJECTION}.
      */
-    private static final int EMAIL_INDEX = 2;
+    protected static final int EMAIL_INDEX = 2;
 
     /**
      * Index of the contact id field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    private static final int CONTACT_ID_INDEX = 3;
+    protected static final int CONTACT_ID_INDEX = 3;
 
 
     public ContactsSdk5(final Context context)
