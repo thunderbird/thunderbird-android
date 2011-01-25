@@ -859,7 +859,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
             mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ? View.VISIBLE : View.GONE);
             mQuotedHTML.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ? View.VISIBLE : View.GONE);
-            if (mQuotedHtmlContent.getQuotedContent() != null)
+            if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null)
             {
                 mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
             }
@@ -967,19 +967,35 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedHtmlContent.clearQuotedContent();
                 }
 
-                // If we're building a message to be sent, add some extra separators between the
-                // composed message and the quoted message.
-                if (!isDraft)
-                {
-                    text += "<br>";
-                }
-
                 mQuotedHtmlContent.setUserContent(text);
+
+                // Set the insertion location based upon our reply after quote setting. Reply after
+                // quote makes no sense for HEADER style replies. In addition, add some extra
+                // separators between the composed message and quoted message depending on the quote
+                // location. We only add the extra separators when we're sending, that way when we
+                // load a draft, we don't have to know the length of the separators to remove them
+                // before editing.
+                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX && replyAfterQuote)
+                {
+                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+                    if (!isDraft)
+                    {
+                        text = "<br><br>" + text;
+                    }
+                }
+                else
+                {
+                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                    if (!isDraft)
+                    {
+                        text += "<br>";
+                    }
+                }
                 // All done.  Build the body.
                 TextBody body = new TextBody(mQuotedHtmlContent.toString());
                 // Save length of the body and its offset.  This is used when thawing drafts.
                 body.setComposedMessageLength(text.length());
-                body.setComposedMessageOffset(mQuotedHtmlContent.getHeaderInsertionPoint());
+                body.setComposedMessageOffset(mQuotedHtmlContent.getInsertionPoint());
                 return body;
             }
             else

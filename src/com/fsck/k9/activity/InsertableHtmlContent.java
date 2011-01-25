@@ -22,10 +22,15 @@ class InsertableHtmlContent implements Serializable
     private StringBuilder quotedContent = new StringBuilder();
     // User content (typically their reply or comments on a forward)
     private StringBuilder userContent = new StringBuilder();
+    // Where to insert the content.  Default to top posting.
+    private InsertionLocation insertionLocation = InsertionLocation.BEFORE_QUOTE;
 
-    public int getHeaderInsertionPoint()
+    /**
+     * Defines where user content should be inserted, either before or after quoted content.
+     */
+    public enum InsertionLocation
     {
-        return headerInsertionPoint;
+        BEFORE_QUOTE, AFTER_QUOTE
     }
 
     public void setHeaderInsertionPoint(int headerInsertionPoint)
@@ -38,6 +43,10 @@ class InsertableHtmlContent implements Serializable
         this.footerInsertionPoint = footerInsertionPoint;
     }
 
+    /**
+     * Get the quoted content.
+     * @return Quoted content.
+     */
     public String getQuotedContent()
     {
         return quotedContent.toString();
@@ -53,10 +62,13 @@ class InsertableHtmlContent implements Serializable
     }
 
     /**
-     * Insert something into the quoted content header. This is typically used for inserting
+     * <p>Insert something into the quoted content header. This is typically used for inserting
      * reply/forward headers into the quoted content rather than inserting the user-generated reply
-     * content.
-     * @param content
+     * content.</p>
+     *
+     * <p>Subsequent calls to {@link #insertIntoQuotedHeader(String)} will <b>prepend</b> text onto any
+     * existing header and quoted content.</p>
+     * @param content Content to add.
      */
     public void insertIntoQuotedHeader(final String content)
     {
@@ -66,13 +78,18 @@ class InsertableHtmlContent implements Serializable
     }
 
     /**
-     * Insert something into the quoted content footer. This is typically used for inserting closing
-     * tags of reply/forward headers rather than inserting the user-generated reply content.
-     * @param content
+     * <p>Insert something into the quoted content footer. This is typically used for inserting closing
+     * tags of reply/forward headers rather than inserting the user-generated reply content.</p>
+     *
+     * <p>Subsequent calls to {@link #insertIntoQuotedFooter(String)} will <b>append</b> text onto any
+     * existing footer and quoted content.</p>
+     * @param content Content to add.
      */
     public void insertIntoQuotedFooter(final String content)
     {
         quotedContent.insert(footerInsertionPoint, content);
+        // Update the location of the footer insertion point to the end of the inserted content.
+        footerInsertionPoint += content.length();
     }
 
     /**
@@ -96,16 +113,42 @@ class InsertableHtmlContent implements Serializable
     }
 
     /**
+     * Configure where user content should be inserted, either before or after the quoted content.
+     * @param insertionLocation Where to insert user content.
+     */
+    public void setInsertionLocation(final InsertionLocation insertionLocation)
+    {
+        this.insertionLocation = insertionLocation;
+    }
+
+    /**
+     * Fetch the insertion point based upon the quote style.
+     * @return Insertion point
+     */
+    public int getInsertionPoint()
+    {
+        if (insertionLocation == InsertionLocation.BEFORE_QUOTE)
+        {
+            return headerInsertionPoint;
+        }
+        else
+        {
+            return footerInsertionPoint;
+        }
+    }
+
+    /**
      * Build the composed string with the inserted and original content.
      * @return Composed string.
      */
     @Override
     public String toString()
     {
+        final int insertionPoint = getInsertionPoint();
         // Inserting and deleting was twice as fast as instantiating a new StringBuilder and
         // using substring() to build the new pieces.
-        String result = quotedContent.insert(headerInsertionPoint, userContent.toString()).toString();
-        quotedContent.delete(headerInsertionPoint, headerInsertionPoint + userContent.length());
+        String result = quotedContent.insert(insertionPoint, userContent.toString()).toString();
+        quotedContent.delete(insertionPoint, insertionPoint + userContent.length());
         return result;
     }
 
@@ -118,6 +161,7 @@ class InsertableHtmlContent implements Serializable
         return "InsertableHtmlContent{" +
                "headerInsertionPoint=" + headerInsertionPoint +
                ", footerInsertionPoint=" + footerInsertionPoint +
+               ", insertionLocation=" + insertionLocation +
                ", quotedContent=" + quotedContent +
                ", userContent=" + userContent +
                ", compiledResult=" + toString() +
