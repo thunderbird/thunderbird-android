@@ -91,7 +91,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         String name = null;
         final Cursor c = mContentResolver.query(
                              Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
-                             PROJECTION,
+                             new String[] {Contacts.ContactMethods.DISPLAY_NAME},
                              null,
                              null,
                              null);
@@ -101,7 +101,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
             if (c.getCount() > 0)
             {
                 c.moveToFirst();
-                name = getName(c);
+                name = c.getString(0);  // owner's display name
             }
             c.close();
         }
