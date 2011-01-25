@@ -135,21 +135,27 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         final String[] args;
         if (constraint == null)
         {
-            where = null;
+            where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL;
             args = null;
         }
         else
         {
             where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
-                    " AND" + "(" +
+                    " AND " +
+                    "(" +
+                    // Match if name starts with "constraint"
                     Contacts.People.NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if name contains a word that starts with "constraint"
                     Contacts.People.NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if phonetic name starts with "constraint"
                     Contacts.People.PHONETIC_NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if phonetic name contains a word that starts with "constraint"
                     Contacts.People.PHONETIC_NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if email address starts with "constraint"
                     Contacts.ContactMethods.DATA + " LIKE ?" +
                     ")";
             final String filter = constraint.toString() + "%";
