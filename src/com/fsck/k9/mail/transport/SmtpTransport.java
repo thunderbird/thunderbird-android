@@ -30,7 +30,6 @@ import org.apache.commons.codec.binary.Hex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class SmtpTransport extends Transport

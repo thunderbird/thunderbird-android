@@ -135,7 +135,7 @@ public class Address
         }
         try
         {
-            MailboxList parsedList = (MailboxList) AddressBuilder.parseAddressList(addressList).flatten();
+            MailboxList parsedList = AddressBuilder.parseAddressList(addressList).flatten();
             for (int i = 0, count = parsedList.size(); i < count; i++)
             {
                 org.apache.james.mime4j.dom.address.Address address = parsedList.get(i);
