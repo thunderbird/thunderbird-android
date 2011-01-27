@@ -320,8 +320,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_touchable_label">メッセージプレビュー</string>
     <string name="global_settings_touchable_summary">メッセージ一覧にプレビューを追加</string>
     <string name="global_settings_preview_lines_label">メッセージプレビューの行数</string>
+    <string name="global_settings_show_correspondent_names_label">名前を表示</string>
+    <string name="global_settings_show_correspondent_names_summary">E-mailアドレスではなく名前を表示する</string>
     <string name="global_settings_show_contact_name_label">連絡先の名前を表示</string>
-    <string name="global_settings_show_contact_name_summary">可能なら宛先に連絡先の名前を利用する</string>
+    <string name="global_settings_show_contact_name_summary">連絡先に登録されている名前を表示する</string>
     <string name="global_settings_registered_name_color_label">連絡先の名前に色を付ける</string>
     <string name="global_settings_registered_name_color_default">連絡先の名前の場合も色を付けない</string>
     <string name="global_settings_registered_name_color_changed">連絡先の名前の場合は色を付ける</string>
@@ -534,6 +536,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
     <string name="account_settings_notification_opens_unread_label">未読メール通知の動作</string>
     <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
+    <string name="account_settings_notification_unread_count_label">未読件数の表示</string>
+    <string name="account_settings_notification_unread_count_summary">通知バーに未読メッセージの件数を表示する</string>
 
     <string name="account_settings_hide_buttons_label">ナビゲーションボタンのスクロール</string>
     <string name="account_settings_hide_buttons_never">しない</string>
@@ -553,6 +557,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_reply_after_quote_label">引用テキストの後に返信を書く</string>
     <string name="account_settings_reply_after_quote_summary">返信するときに元のメッセージを返信の上に表示</string>
+
+    <string name="account_settings_message_format_label">メッセージの形式</string>
+    <string name="account_settings_message_format_text">テキスト(画像や書式は取り除く)</string>
+    <string name="account_settings_message_format_html">HTML (画像や書式を保持)</string>
 
     <string name="account_settings_quote_style_label">返信の引用スタイル</string>
     <string name="account_settings_quote_style_prefix">引用記号 (Gmail, Pine形式)</string>
