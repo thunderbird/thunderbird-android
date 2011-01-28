@@ -2,7 +2,6 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -101,10 +100,6 @@ public class AttachmentView extends FrameLayout
                     || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
             {
                 viewButton.setVisibility(View.GONE);
-            }
-            else
-            {
-                checkViewable();
             }
             if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
                     || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
