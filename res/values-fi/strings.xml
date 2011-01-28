@@ -250,7 +250,11 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="message_compose_bcc_hint">Piilokopio</string>
     <string name="message_compose_subject_hint">Aihe</string>
     <string name="message_compose_content_hint">Viesti</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Alkuperäinen viesti --------\nSubject: <xliff:g id="subject">%s</xliff:g>\nLähettäjä: <xliff:g id="sender">%s</xliff:g>\nVastaanottaja: <xliff:g id="to">%s</xliff:g>\nKopio: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Alkuperäinen viesti --------</string>
+    <string name="message_compose_quote_header_subject">Subject:</string>
+    <string name="message_compose_quote_header_from">Lähettäjä:</string>
+    <string name="message_compose_quote_header_to">Vastaanottaja:</string>
+    <string name="message_compose_quote_header_cc">Kopio:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n\n</string>
     <string name="message_compose_quoted_text_label">Lainattu teksti</string>
     <string name="message_compose_error_no_recipients">Valitse ainakin yksi vastaanottaja.</string>

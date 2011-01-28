@@ -152,25 +152,37 @@ public class SmtpTransport extends Transport
     {
         try
         {
-            SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-            if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                    mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
-            {
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                sslContext.init(null, new TrustManager[]
-                                {
-                                    TrustManagerFactory.get(mHost, secure)
-                                }, new SecureRandom());
-                mSocket = sslContext.getSocketFactory().createSocket();
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                mSecure = true;
-            }
-            else
-            {
-                mSocket = new Socket();
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-            }
+        	InetAddress[] addresses = InetAddress.getAllByName(mHost);
+        	for (int i = 0; i < addresses.length; i++) {
+        		try {
+        			SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
+        			if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
+        					mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
+        			{
+        				SSLContext sslContext = SSLContext.getInstance("TLS");
+        				boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        				sslContext.init(null, new TrustManager[]
+        				                                       {
+        						TrustManagerFactory.get(mHost, secure)
+        				                                       }, new SecureRandom());
+        				mSocket = sslContext.getSocketFactory().createSocket();
+        				mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+        				mSecure = true;
+        			}
+        			else
+        			{
+        				mSocket = new Socket();
+        				mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+        			}
+        		} catch (ConnectException e) {
+        			if (i < (addresses.length - 1)) {
+        				// there are still other addresses for that host to try
+        				continue;
+        			}
+                    throw new MessagingException("Cannot connect to host", e);
+        		}
+        		break; // connection success
+        	}
 
             // RFC 1047
             mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
@@ -320,7 +332,7 @@ public class SmtpTransport extends Transport
         message.setRecipients(RecipientType.BCC, null);
 
         HashMap<String, ArrayList<String>> charsetAddressesMap =
-                new HashMap<String, ArrayList<String>>();
+            new HashMap<String, ArrayList<String>>();
         for (Address address : addresses)
         {
             String addressString = address.getAddress();
@@ -335,7 +347,7 @@ public class SmtpTransport extends Transport
         }
 
         for (HashMap.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
-                     charsetAddressesMap.entrySet())
+                charsetAddressesMap.entrySet())
         {
             String charset = charsetAddressesMapEntry.getKey();
             ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
@@ -345,7 +357,8 @@ public class SmtpTransport extends Transport
     }
 
     private void sendMessageTo(ArrayList<String> addresses, Message message)
-            throws MessagingException{
+    throws MessagingException
+    {
         close();
         open();
 

@@ -134,7 +134,7 @@ public class FontSizes
         folderName = LARGE;
         folderStatus = SMALL;
 
-        messageListSubject = SMALL;
+        messageListSubject = FONT_16DIP;
         messageListSender = SMALL;
         messageListDate = SMALL;
         messageListPreview = SMALL;

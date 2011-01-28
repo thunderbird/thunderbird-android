@@ -261,7 +261,11 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="message_compose_bcc_hint">Skrytá kopie</string>
     <string name="message_compose_subject_hint">Předmět</string>
     <string name="message_compose_content_hint">Text zprávy</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Původní zpráva --------\nPředmět: <xliff:g id="subject">%s</xliff:g>\nOdesílatel: <xliff:g id="sender">%s</xliff:g>\nKomu: <xliff:g id="to">%s</xliff:g>\nKopie: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Původní zpráva --------</string>
+    <string name="message_compose_quote_header_subject">Předmět:</string>
+    <string name="message_compose_quote_header_from">Odesílatel:</string>
+    <string name="message_compose_quote_header_to">Komu:</string>
+    <string name="message_compose_quote_header_cc">Kopie:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napsal(a):\n\n</string>
     <string name="message_compose_quoted_text_label">Citovaný text</string>
     <string name="message_compose_error_no_recipients">Musíte přidat alespoň jednoho příjemce.</string>

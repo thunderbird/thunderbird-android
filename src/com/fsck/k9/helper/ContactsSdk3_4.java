@@ -1,6 +1,5 @@
 package com.fsck.k9.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -65,7 +64,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public void createContact(final Activity activity, final Address email)
+    public void createContact(final Address email)
     {
         final Uri contactUri = Uri.fromParts("mailto", email.getAddress(), null);
 
@@ -83,7 +82,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
             contactIntent.putExtra(Contacts.Intents.Insert.NAME, senderPersonal);
         }
 
-        activity.startActivity(contactIntent);
+        mContext.startActivity(contactIntent);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         String name = null;
         final Cursor c = mContentResolver.query(
                              Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
-                             PROJECTION,
+                             new String[] {Contacts.ContactMethods.DISPLAY_NAME},
                              null,
                              null,
                              null);
@@ -102,7 +101,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
             if (c.getCount() > 0)
             {
                 c.moveToFirst();
-                name = getName(c);
+                name = c.getString(0);  // owner's display name
             }
             c.close();
         }
@@ -136,21 +135,27 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         final String[] args;
         if (constraint == null)
         {
-            where = null;
+            where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL;
             args = null;
         }
         else
         {
             where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
-                    " AND" + "(" +
+                    " AND " +
+                    "(" +
+                    // Match if name starts with "constraint"
                     Contacts.People.NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if name contains a word that starts with "constraint"
                     Contacts.People.NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if phonetic name starts with "constraint"
                     Contacts.People.PHONETIC_NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if phonetic name contains a word that starts with "constraint"
                     Contacts.People.PHONETIC_NAME + " LIKE ?" +
-                    ") OR (" +
+                    " OR " +
+                    // Match if email address starts with "constraint"
                     Contacts.ContactMethods.DATA + " LIKE ?" +
                     ")";
             final String filter = constraint.toString() + "%";

@@ -653,7 +653,24 @@
         <item>6</item>
     </string-array>
 
+    <string-array name="account_settings_quote_style_entries">
+        <item>@string/account_settings_quote_style_prefix</item>
+        <item>@string/account_settings_quote_style_header</item>
+    </string-array>
 
+    <string-array name="account_settings_quote_style_values">
+        <item>PREFIX</item>
+        <item>HEADER</item>
+    </string-array>
 
+    <string-array name="account_settings_message_format_entries">
+        <item>@string/account_settings_message_format_text</item>
+        <item>@string/account_settings_message_format_html</item>
+    </string-array>
+
+    <string-array name="account_settings_message_format_values">
+        <item>TEXT</item>
+        <item>HTML</item>
+    </string-array>
 
 </resources>

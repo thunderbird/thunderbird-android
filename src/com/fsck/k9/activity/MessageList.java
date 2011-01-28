@@ -739,13 +739,7 @@ public class MessageList
         }
 
         mAdapter = new MessageListAdapter();
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null)
-        {
-            //noinspection unchecked
-            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
-        }
+        restorePreviousData();
 
         if (mFolderName != null)
         {
@@ -754,6 +748,17 @@ public class MessageList
 
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restorePreviousData()
+    {
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null)
+        {
+            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
+        }
     }
 
     @Override
@@ -1060,6 +1065,7 @@ public class MessageList
             }
         }
 
+        boolean retval = true;
         int position = mListView.getSelectedItemPosition();
         try
         {
@@ -1132,9 +1138,9 @@ public class MessageList
         }
         finally
         {
-            return super.onKeyDown(keyCode, event);
+            retval = super.onKeyDown(keyCode, event);
         }
-
+        return retval;
     }
 
     @Override
@@ -2024,7 +2030,7 @@ public class MessageList
 
         getMenuInflater().inflate(R.menu.message_list_context, menu);
 
-        menu.setHeaderTitle((CharSequence) message.message.getSubject());
+        menu.setHeaderTitle(message.message.getSubject());
 
         if (message.read)
         {
@@ -2331,8 +2337,8 @@ public class MessageList
 
         MessageListAdapter()
         {
-            mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
-            mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+            mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
+            mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
         }
 
         public void markAllMessagesAsDirty()
@@ -2512,7 +2518,7 @@ public class MessageList
             {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(context, (Folder)local_folder, account);
+                return new FolderInfoHolder(context, local_folder, account);
             }
             catch (Exception e)
             {
@@ -2554,7 +2560,7 @@ public class MessageList
                 MessageInfoHolder messageHolder =(MessageInfoHolder) getItem(position);
                 if (messageHolder != null)
                 {
-                    return ((LocalStore.LocalMessage)  messageHolder.message).getId();
+                    return messageHolder.message.getId();
                 }
             }
             catch (Exception e)
@@ -2693,10 +2699,10 @@ public class MessageList
                     ColorStateList color = holder.subject.getTextColors();
                     ColorStateList linkColor = holder.subject.getLinkTextColors();
                     str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
-                            0,
-                            noSender.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                           );
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                               );
                 }
                 else
                 {
@@ -2742,7 +2748,7 @@ public class MessageList
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.flagged.setTag((Integer)position);
+            holder.flagged.setTag(position);
             holder.flagged.setChecked(message.flagged);
 
             // So that the mSelectedCount is only incremented/decremented
@@ -2782,18 +2788,18 @@ public class MessageList
                  */
 
                 holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                    .append(message.sender).append(" ").append(message.message.getPreview()),
-                    TextView.BufferType.SPANNABLE);
+                                       .append(message.sender).append(" ").append(message.message.getPreview()),
+                                       TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
                 ColorStateList color = holder.subject.getTextColors();
                 ColorStateList linkColor = holder.subject.getLinkTextColors();
                 str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
-                        0,
-                        message.sender.length() + 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                       );
+                            0,
+                            message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                           );
             }
             else
             {

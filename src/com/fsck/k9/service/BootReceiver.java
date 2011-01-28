@@ -77,10 +77,7 @@ public class BootReceiver extends CoreReceiver
                 Log.i(K9.LOG_TAG, "BootReceiver Got alarm to fire alarmedIntent " + alarmedAction);
             alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
             tmpWakeLockId = null;
-            if (alarmedIntent != null)
-            {
-                context.startService(alarmedIntent);
-            }
+            context.startService(alarmedIntent);
         }
         else if (SCHEDULE_INTENT.equals(action))
         {

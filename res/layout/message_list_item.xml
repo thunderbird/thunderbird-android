@@ -6,6 +6,7 @@
     android:orientation="horizontal"
     android:paddingRight="1dip"
     android:paddingTop="2dip"
+    android:paddingBottom="3dip"
     android:gravity="center_vertical"
     android:background="#ccc" >
 
@@ -47,9 +48,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="1dip"
+            android:layout_marginBottom="1dip"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -88,6 +90,7 @@
         android:id="@+id/flagged"
         android:layout_height="20dip"
         android:layout_width="20dip"
+        android:layout_marginLeft="2dip"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"

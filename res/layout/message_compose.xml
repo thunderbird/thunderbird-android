@@ -194,39 +194,34 @@
             <RelativeLayout
                 android:id="@+id/quoted_text_bar"
                 android:layout_width="fill_parent"
-                android:layout_height="45dip"
-                android:background="@drawable/email_quoted_bar" >
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/quoted_text"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/message_compose_quoted_text_label"
+                    android:layout_weight="1.0"
+                    android:gravity="left|top"
+                    android:minLines="3"
+                    android:autoText="true"
+                    android:capitalize="sentences"
                     android:textColor="@android:color/primary_text_light"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.fsck.k9.view.MessageWebView
+                    android:id="@+id/quoted_html"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
 
                 <ImageButton
                     android:id="@+id/quoted_text_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/btn_dialog" />
 
             </RelativeLayout>
-
-            <EditText
-                android:id="@+id/quoted_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left|top"
-                android:minLines="3"
-                android:autoText="true"
-                android:capitalize="sentences"
-                android:textColor="@android:color/primary_text_light"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
                 android:id="@+id/lower_signature"

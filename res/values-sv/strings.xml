@@ -252,7 +252,11 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Ämne</string>
     <string name="message_compose_content_hint">Meddelandetext</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Originalmeddelande --------\nÄmne: <xliff:g id="subject">%s</xliff:g>\nFrån: <xliff:g id="sender">%s</xliff:g>\nTill: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">-------- Originalmeddelande --------</string>
+    <string name="message_compose_quote_header_subject">Ämne:</string>
+    <string name="message_compose_quote_header_from">Från:</string>
+    <string name="message_compose_quote_header_to">Till:</string>
+    <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n\n</string>
     <string name="message_compose_quoted_text_label">Citerad text</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>

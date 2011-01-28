@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRemovalListener;
@@ -76,7 +77,7 @@ public class LocalStore extends Store implements Serializable
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
     {
-        HEADERS_TO_SAVE.add(K9.K9MAIL_IDENTITY);
+        HEADERS_TO_SAVE.add(K9.IDENTITY_HEADER);
         HEADERS_TO_SAVE.add("To");
         HEADERS_TO_SAVE.add("Cc");
         HEADERS_TO_SAVE.add("From");
@@ -94,7 +95,11 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-    protected static final int DB_VERSION = 39;
+
+    static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
+
+
+    protected static final int DB_VERSION = 41;
 
     protected String uUid = null;
 
@@ -152,13 +157,17 @@ public class LocalStore extends Store implements Serializable
 
                     db.execSQL("DROP TABLE IF EXISTS folders");
                     db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
+                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                               + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
+                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
+                               +")");
 
                     db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                     db.execSQL("DROP TABLE IF EXISTS messages");
                     db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
                                + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
+                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT, "
+                               + "mime_type TEXT)");
 
                     db.execSQL("DROP TABLE IF EXISTS headers");
                     db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -275,7 +284,6 @@ public class LocalStore extends Store implements Serializable
                         }
                     }
 
-
                     // Database version 38 is solely to prune cached attachments now that we clear them better
                     if (db.getVersion() < 39)
                     {
@@ -289,11 +297,79 @@ public class LocalStore extends Store implements Serializable
                         }
                     }
 
+                    // V40: Store the MIME type for a message.
+                    if (db.getVersion() < 40)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
+                        }
+                    }
+
+                    if (db.getVersion() < 41)
+                    {
+                        try
+                        {
+                            db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD push_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD display_class TEXT");
+                        }
+                        catch (SQLiteException e)
+                        {
+                            if (! e.getMessage().startsWith("duplicate column name:"))
+                            {
+                                throw e;
+                            }
+                        }
+                        Cursor cursor = null;
+
+                        try
+                        {
+
+                            SharedPreferences prefs = Preferences.getPreferences(mApplication).getPreferences();
+                            SharedPreferences.Editor editor = prefs.edit();
+                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
+                            while (cursor.moveToNext())
+                            {
+                                try
+                                {
+                                    int id = cursor.getInt(0);
+                                    String name = cursor.getString(1);
+                                    update41Metadata(db, prefs, editor, id, name);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.e(K9.LOG_TAG," error trying to ugpgrade a folder class: " +e);
+                                }
+                            }
+                            editor.commit();
 
 
+                        }
+
+
+                        catch (SQLiteException e)
+                        {
+                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished "+e);
+
+                        }
+                        finally
+                        {
+                            if (cursor != null)
+                            {
+                                cursor.close();
+                            }
+                        }
+                    }
                 }
-
             }
+
             catch (SQLiteException e)
             {
                 Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
@@ -321,7 +397,67 @@ public class LocalStore extends Store implements Serializable
             //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
             //}
         }
+
+
+        private void update41Metadata(final SQLiteDatabase  db, SharedPreferences prefs, SharedPreferences.Editor editor, int id, String name)
+        {
+
+
+            Folder.FolderClass displayClass = Folder.FolderClass.NO_CLASS;
+            Folder.FolderClass syncClass = Folder.FolderClass.INHERITED;
+            Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
+            boolean inTopGroup = false;
+            boolean integrate = false;
+            if (K9.INBOX.equals(name))
+            {
+                displayClass = Folder.FolderClass.FIRST_CLASS;
+                syncClass =  Folder.FolderClass.FIRST_CLASS;
+                pushClass =  Folder.FolderClass.FIRST_CLASS;
+                inTopGroup = true;
+                integrate = true;
+            }
+
+            try
+            {
+                displayClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".displayMode", displayClass.name()));
+                syncClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".syncMode", syncClass.name()));
+                pushClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "."+ name + ".pushMode", pushClass.name()));
+                inTopGroup = prefs.getBoolean(uUid + "."+ name + ".inTopGroup",inTopGroup);
+                integrate = prefs.getBoolean(uUid + "."+ name + ".integrate", integrate);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG," Throwing away an error while trying to upgrade folder metadata: "+e);
+            }
+
+            if (displayClass == Folder.FolderClass.NONE)
+            {
+                displayClass = Folder.FolderClass.NO_CLASS;
+            }
+            if (syncClass == Folder.FolderClass.NONE)
+            {
+                syncClass = Folder.FolderClass.INHERITED;
+            }
+            if (pushClass == Folder.FolderClass.NONE)
+            {
+                pushClass = Folder.FolderClass.INHERITED;
+            }
+
+            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
+                       new Object[] { integrate, inTopGroup,syncClass,pushClass,displayClass, id });
+
+            // now that we managed to update this folder, obliterate the old data
+
+            editor.remove(uUid+"."+name + ".displayMode");
+            editor.remove(uUid+"."+name + ".syncMode");
+            editor.remove(uUid+"."+name + ".pushMode");
+            editor.remove(uUid+"."+name + ".inTopGroup");
+            editor.remove(uUid+"."+name + ".integrate");
+
+
+        }
     }
+
 
     public long getSize() throws UnavailableStorageException
     {
@@ -438,6 +574,112 @@ public class LocalStore extends Store implements Serializable
         });
     }
 
+
+
+    public void getMessageCounts(final AccountStats stats) throws MessagingException
+    {
+        final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
+
+        database.execute(false, new DbCallback<Integer>()
+        {
+            @Override
+            public Integer doDbWork(final SQLiteDatabase db)
+            {
+                Cursor cursor = null;
+                try
+                {
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
+                    if (displayMode == Account.FolderMode.NONE)
+                    {
+                        cursor = db.rawQuery(baseQuery+ "AND (name = ? )", new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
+                                                 K9.INBOX
+                                             }
+
+                                            );
+                    }
+                    else if (displayMode == Account.FolderMode.FIRST_CLASS )
+                    {
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ?)", new String[]
+                                             {
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
+                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
+                                             });
+
+
+                    }
+                    else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS)
+                    {
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ? OR display_class = ? )", new String[]
+                                             {
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
+                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
+                                             });
+                    }
+                    else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS)
+                    {
+                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
+                                                 K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
+                                             });
+                    }
+                    else if (displayMode == Account.FolderMode.ALL)
+                    {
+                        cursor = db.rawQuery(baseQuery,  new String[]
+                                             {
+
+                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
+                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
+                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
+                                                 mAccount.getOutboxFolderName() != null?  mAccount.getOutboxFolderName() : "",
+                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
+                                             });
+                    }
+                    else
+                    {
+                        Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
+                        stats.unreadMessageCount = 0;
+                        stats.flaggedMessageCount = 0;
+                        return null;
+                    }
+
+                    cursor.moveToFirst();
+                    stats.unreadMessageCount = cursor.getInt(0);
+                    stats.flaggedMessageCount = cursor.getInt(1);
+                    return null;
+                }
+                finally
+                {
+                    if (cursor != null)
+                    {
+                        cursor.close();
+                    }
+                }
+            }
+        });
+    }
+
+
     public int getFolderCount() throws MessagingException
     {
         return database.execute(false, new DbCallback<Integer>()
@@ -485,11 +727,11 @@ public class LocalStore extends Store implements Serializable
 
                     try
                     {
-                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ORDER BY name ASC", null);
+                        cursor = db.rawQuery("SELECT " +GET_FOLDER_COLS + " FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
+                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
 
                             folders.add(folder);
                         }
@@ -1049,11 +1291,10 @@ public class LocalStore extends Store implements Serializable
         private int mUnreadMessageCount = -1;
         private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
-        private FolderClass displayClass = FolderClass.NO_CLASS;
-        private FolderClass syncClass = FolderClass.INHERITED;
-        private FolderClass pushClass = FolderClass.SECOND_CLASS;
-        private boolean inTopGroup = false;
-        private String prefId = null;
+        private FolderClass mDisplayClass = FolderClass.NO_CLASS;
+        private FolderClass mSyncClass = FolderClass.INHERITED;
+        private FolderClass mPushClass = FolderClass.SECOND_CLASS;
+        private boolean mInTopGroup = false;
         private String mPushState = null;
         private boolean mIntegrate = false;
         // mLastUid is used during syncs. It holds the highest UID within the local folder so we
@@ -1067,9 +1308,9 @@ public class LocalStore extends Store implements Serializable
 
             if (K9.INBOX.equals(getName()))
             {
-                syncClass =  FolderClass.FIRST_CLASS;
-                pushClass =  FolderClass.FIRST_CLASS;
-                inTopGroup = true;
+                mSyncClass =  FolderClass.FIRST_CLASS;
+                mPushClass =  FolderClass.FIRST_CLASS;
+                mInTopGroup = true;
             }
 
 
@@ -1103,8 +1344,8 @@ public class LocalStore extends Store implements Serializable
                         Cursor cursor = null;
                         try
                         {
-                            String baseQuery =
-                                "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ";
+                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders ";
+
                             if (mName != null)
                             {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -1119,7 +1360,7 @@ public class LocalStore extends Store implements Serializable
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0)
                                 {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
+                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
                                 }
                             }
                             else
@@ -1150,7 +1391,7 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount) throws MessagingException
+        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException
         {
             mFolderId = id;
             mName = name;
@@ -1163,6 +1404,13 @@ public class LocalStore extends Store implements Serializable
             // does a DB update on setLastChecked
             super.setLastChecked(lastChecked);
             super.setLastPush(lastPushed);
+            mInTopGroup = topGroup ==1  ? true : false;
+            mIntegrate = integrate == 1 ? true : false;
+            String noClass = FolderClass.NO_CLASS.toString();
+            mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
+            mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
+            mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
+
         }
 
         @Override
@@ -1222,24 +1470,7 @@ public class LocalStore extends Store implements Serializable
         @Override
         public boolean create(FolderType type) throws MessagingException
         {
-            if (exists())
-            {
-                throw new MessagingException("Folder " + mName + " already exists.");
-            }
-            database.execute(false, new DbCallback<Void>()
-            {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                {
-                    db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                               {
-                                   mName,
-                                   mAccount.getDisplayCount()
-                               });
-                    return null;
-                }
-            });
-            return true;
+            return create(type, mAccount.getDisplayCount());
         }
 
         @Override
@@ -1259,9 +1490,42 @@ public class LocalStore extends Store implements Serializable
                                    mName,
                                    visibleLimit
                                });
+
+
                     return null;
                 }
             });
+
+            // When created, special folders should always be displayed
+            // inbox should be integrated
+            // and the inbox and drafts folders should be syncced by default
+            if (mAccount.isSpecialFolder(mName))
+            {
+                LocalFolder f = new LocalFolder(mName);
+                f.open(OpenMode.READ_WRITE);
+                f.setInTopGroup(true);
+                f.setDisplayClass(FolderClass.FIRST_CLASS);
+                if (mName.equalsIgnoreCase(K9.INBOX))
+                {
+                    f.setIntegrate(true);
+                    f.setPushClass(FolderClass.FIRST_CLASS);
+                }
+                else
+                {
+                    f.setPushClass(FolderClass.INHERITED);
+
+                }
+                if ( mName.equalsIgnoreCase(K9.INBOX) ||
+                        mName.equalsIgnoreCase(mAccount.getDraftsFolderName()) )
+                {
+                    f.setSyncClass(FolderClass.FIRST_CLASS);
+                }
+                else
+                {
+                    f.setSyncClass(FolderClass.NO_CLASS);
+                }
+            }
+
             return true;
         }
 
@@ -1332,62 +1596,14 @@ public class LocalStore extends Store implements Serializable
 
         public void setUnreadMessageCount(final int unreadMessageCount) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        mUnreadMessageCount = Math.max(0, unreadMessageCount);
-                        db.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
-                                   new Object[] { mUnreadMessageCount, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            mUnreadMessageCount = Math.max(0, unreadMessageCount);
+            updateFolderColumn( "unread_count", mUnreadMessageCount);
         }
 
         public void setFlaggedMessageCount(final int flaggedMessageCount) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Integer>()
-                {
-                    @Override
-                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
-                        db.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
-                                   { mFlaggedMessageCount, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
+            updateFolderColumn( "flagged_count", mFlaggedMessageCount);
         }
 
         @Override
@@ -1395,30 +1611,14 @@ public class LocalStore extends Store implements Serializable
         {
             try
             {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setLastChecked(lastChecked);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
-                                   { lastChecked, mFolderId });
-                        return null;
-                    }
-                });
+                open(OpenMode.READ_WRITE);
+                LocalFolder.super.setLastChecked(lastChecked);
             }
-            catch (WrappedException e)
+            catch (MessagingException e)
             {
-                throw (MessagingException) e.getCause();
+                throw new WrappedException(e);
             }
+            updateFolderColumn( "last_updated", lastChecked);
         }
 
         @Override
@@ -1426,30 +1626,14 @@ public class LocalStore extends Store implements Serializable
         {
             try
             {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setLastPush(lastChecked);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
-                                   { lastChecked, mFolderId });
-                        return null;
-                    }
-                });
+                open(OpenMode.READ_WRITE);
+                LocalFolder.super.setLastPush(lastChecked);
             }
-            catch (WrappedException e)
+            catch (MessagingException e)
             {
-                throw (MessagingException) e.getCause();
+                throw new WrappedException(e);
             }
+            updateFolderColumn( "last_pushed", lastChecked);
         }
 
         public int getVisibleLimit() throws MessagingException
@@ -1480,58 +1664,22 @@ public class LocalStore extends Store implements Serializable
 
         public void setVisibleLimit(final int visibleLimit) throws MessagingException
         {
-            database.execute(false, new DbCallback<Void>()
-            {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                {
-                    try
-                    {
-                        open(OpenMode.READ_WRITE);
-                    }
-                    catch (MessagingException e)
-                    {
-                        throw new WrappedException(e);
-                    }
-                    mVisibleLimit = visibleLimit;
-                    db.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
-                               new Object[] { mVisibleLimit, mFolderId });
-                    return null;
-                }
-            });
+            mVisibleLimit = visibleLimit;
+            updateFolderColumn( "visible_limit", mVisibleLimit);
         }
 
         @Override
         public void setStatus(final String status) throws MessagingException
         {
-            try
-            {
-                database.execute(false, new DbCallback<Void>()
-                {
-                    @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                    {
-                        try
-                        {
-                            open(OpenMode.READ_WRITE);
-                            LocalFolder.super.setStatus(status);
-                        }
-                        catch (MessagingException e)
-                        {
-                            throw new WrappedException(e);
-                        }
-                        db.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
-                                   { status, mFolderId });
-                        return null;
-                    }
-                });
-            }
-            catch (WrappedException e)
-            {
-                throw (MessagingException) e.getCause();
-            }
+            updateFolderColumn( "status", status);
         }
         public void setPushState(final String pushState) throws MessagingException
+        {
+            mPushState = pushState;
+            updateFolderColumn("push_state", pushState);
+        }
+
+        private void updateFolderColumn(final String column, final Object value) throws MessagingException
         {
             try
             {
@@ -1548,9 +1696,7 @@ public class LocalStore extends Store implements Serializable
                         {
                             throw new WrappedException(e);
                         }
-                        mPushState = pushState;
-                        db.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
-                                   { pushState, mFolderId });
+                        db.execSQL("UPDATE folders SET "+column+" = ? WHERE id = ?", new Object[] { value, mFolderId });
                         return null;
                     }
                 });
@@ -1567,218 +1713,75 @@ public class LocalStore extends Store implements Serializable
         @Override
         public FolderClass getDisplayClass()
         {
-            return displayClass;
+            return mDisplayClass;
         }
 
         @Override
         public FolderClass getSyncClass()
         {
-            if (FolderClass.INHERITED == syncClass)
+            if (FolderClass.INHERITED == mSyncClass)
             {
                 return getDisplayClass();
             }
             else
             {
-                return syncClass;
+                return mSyncClass;
             }
         }
 
         public FolderClass getRawSyncClass()
         {
-            return syncClass;
+            return mSyncClass;
 
         }
 
         @Override
         public FolderClass getPushClass()
         {
-            if (FolderClass.INHERITED == pushClass)
+            if (FolderClass.INHERITED == mPushClass)
             {
                 return getSyncClass();
             }
             else
             {
-                return pushClass;
+                return mPushClass;
             }
         }
 
         public FolderClass getRawPushClass()
         {
-            return pushClass;
+            return mPushClass;
 
         }
 
-        public void setDisplayClass(FolderClass displayClass)
+        public void setDisplayClass(FolderClass displayClass) throws MessagingException
         {
-            this.displayClass = displayClass;
+            mDisplayClass = displayClass;
+            updateFolderColumn( "display_class", mDisplayClass.name());
+
         }
 
-        public void setSyncClass(FolderClass syncClass)
+        public void setSyncClass(FolderClass syncClass) throws MessagingException
         {
-            this.syncClass = syncClass;
+            mSyncClass = syncClass;
+            updateFolderColumn( "poll_class", mSyncClass.name());
         }
-        public void setPushClass(FolderClass pushClass)
+        public void setPushClass(FolderClass pushClass) throws MessagingException
         {
-            this.pushClass = pushClass;
+            mPushClass = pushClass;
+            updateFolderColumn( "push_class", mPushClass.name());
         }
 
         public boolean isIntegrate()
         {
             return mIntegrate;
         }
-        public void setIntegrate(boolean integrate)
+        public void setIntegrate(boolean integrate) throws MessagingException
         {
             mIntegrate = integrate;
+            updateFolderColumn( "integrate", mIntegrate ? 1 : 0 );
         }
 
-        private String getPrefId() throws MessagingException
-        {
-            open(OpenMode.READ_WRITE);
-
-            if (prefId == null)
-            {
-                prefId = uUid + "." + mName;
-            }
-
-            return prefId;
-        }
-
-        public void delete(Preferences preferences) throws MessagingException
-        {
-            String id = getPrefId();
-
-            SharedPreferences.Editor editor = preferences.getPreferences().edit();
-
-            editor.remove(id + ".displayMode");
-            editor.remove(id + ".syncMode");
-            editor.remove(id + ".pushMode");
-            editor.remove(id + ".inTopGroup");
-            editor.remove(id + ".integrate");
-
-            editor.commit();
-        }
-
-        public void save(Preferences preferences) throws MessagingException
-        {
-            String id = getPrefId();
-
-            SharedPreferences.Editor editor = preferences.getPreferences().edit();
-            // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-            if (displayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".displayMode");
-            }
-            else
-            {
-                editor.putString(id + ".displayMode", displayClass.name());
-            }
-
-            if (syncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".syncMode");
-            }
-            else
-            {
-                editor.putString(id + ".syncMode", syncClass.name());
-            }
-
-            if (pushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName()))
-            {
-                editor.remove(id + ".pushMode");
-            }
-            else
-            {
-                editor.putString(id + ".pushMode", pushClass.name());
-            }
-            editor.putBoolean(id + ".inTopGroup", inTopGroup);
-
-            editor.putBoolean(id + ".integrate", mIntegrate);
-
-            editor.commit();
-        }
-
-
-        public FolderClass getDisplayClass(Preferences preferences) throws MessagingException
-        {
-            String id = getPrefId();
-            return FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
-                                       FolderClass.NO_CLASS.name()));
-        }
-
-        @Override
-        public void refresh(Preferences preferences) throws MessagingException
-        {
-
-            String id = getPrefId();
-
-            try
-            {
-                displayClass = FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
-                                                   FolderClass.NO_CLASS.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load displayMode for " + getName(), e);
-
-                displayClass = FolderClass.NO_CLASS;
-            }
-            if (displayClass == FolderClass.NONE)
-            {
-                displayClass = FolderClass.NO_CLASS;
-            }
-
-
-            FolderClass defSyncClass = FolderClass.INHERITED;
-            if (K9.INBOX.equals(getName()))
-            {
-                defSyncClass =  FolderClass.FIRST_CLASS;
-            }
-
-            try
-            {
-                syncClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".syncMode",
-                                                defSyncClass.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load syncMode for " + getName(), e);
-
-                syncClass = defSyncClass;
-            }
-            if (syncClass == FolderClass.NONE)
-            {
-                syncClass = FolderClass.INHERITED;
-            }
-
-            FolderClass defPushClass = FolderClass.SECOND_CLASS;
-            boolean defInTopGroup = false;
-            boolean defIntegrate = false;
-            if (K9.INBOX.equals(getName()))
-            {
-                defPushClass =  FolderClass.FIRST_CLASS;
-                defInTopGroup = true;
-                defIntegrate = true;
-            }
-
-            try
-            {
-                pushClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".pushMode",
-                                                defPushClass.name()));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to load pushMode for " + getName(), e);
-
-                pushClass = defPushClass;
-            }
-            if (pushClass == FolderClass.NONE)
-            {
-                pushClass = FolderClass.INHERITED;
-            }
-            inTopGroup = preferences.getPreferences().getBoolean(id + ".inTopGroup", defInTopGroup);
-            mIntegrate = preferences.getPreferences().getBoolean(id + ".integrate", defIntegrate);
-
-        }
 
         @Override
         public void fetch(final Message[] messages, final FetchProfile fp, final MessageRetrievalListener listener)
@@ -1804,25 +1807,90 @@ public class LocalStore extends Store implements Serializable
                                     mp.setSubType("mixed");
                                     try
                                     {
-                                        cursor = db.rawQuery("SELECT html_content, text_content FROM messages "
+                                        cursor = db.rawQuery("SELECT html_content, text_content, mime_type FROM messages "
                                                              + "WHERE id = ?",
                                                              new String[] { Long.toString(localMessage.mId) });
                                         cursor.moveToNext();
                                         String htmlContent = cursor.getString(0);
                                         String textContent = cursor.getString(1);
-
-                                        if (textContent != null)
+                                        String mimeType = cursor.getString(2);
+                                        if (mimeType != null && mimeType.toLowerCase().startsWith("multipart/"))
                                         {
-                                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
-                                            mp.addBodyPart(bp);
+                                            // If this is a multipart message, preserve both text
+                                            // and html parts, as well as the subtype.
+                                            mp.setSubType(mimeType.toLowerCase().replaceFirst("^multipart/", ""));
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                            if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
+
+                                            // If we have both text and html content and our MIME type
+                                            // isn't multipart/alternative, then corral them into a new
+                                            // multipart/alternative part and put that into the parent.
+                                            // If it turns out that this is the only part in the parent
+                                            // MimeMultipart, it'll get fixed below before we attach to
+                                            // the message.
+                                            if (textContent != null && htmlContent != null && !mimeType.equalsIgnoreCase("multipart/alternative"))
+                                            {
+                                                MimeMultipart alternativeParts = mp;
+                                                alternativeParts.setSubType("alternative");
+                                                mp = new MimeMultipart();
+                                                mp.addBodyPart(new MimeBodyPart(alternativeParts));
+                                            }
+                                        }
+                                        else if (mimeType != null && mimeType.equalsIgnoreCase("text/plain"))
+                                        {
+                                            // If it's text, add only the plain part. The MIME
+                                            // container will drop away below.
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                        }
+                                        else if (mimeType != null && mimeType.equalsIgnoreCase("text/html"))
+                                        {
+                                            // If it's html, add only the html part. The MIME
+                                            // container will drop away below.
+                                            if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
                                         }
                                         else
                                         {
-                                            TextBody body = new TextBody(htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                            mp.addBodyPart(bp);
+                                            // MIME type not set. Grab whatever part we can get,
+                                            // with Text taking precedence. This preserves pre-HTML
+                                            // composition behaviour.
+                                            if (textContent != null)
+                                            {
+                                                LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                                                mp.addBodyPart(bp);
+                                            }
+                                            else if (htmlContent != null)
+                                            {
+                                                TextBody body = new TextBody(htmlContent);
+                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                mp.addBodyPart(bp);
+                                            }
                                         }
+
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.e(K9.LOG_TAG, "Exception fetching message:", e);
                                     }
                                     finally
                                     {
@@ -1889,7 +1957,7 @@ public class LocalStore extends Store implements Serializable
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                                             /*
                                              * HEADER_ANDROID_ATTACHMENT_STORE_DATA is a custom header we add to that
-                                             * we can later pull the attachment from the remote store if neccesary.
+                                             * we can later pull the attachment from the remote store if necessary.
                                              */
                                             bp.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, storeData);
 
@@ -1904,15 +1972,25 @@ public class LocalStore extends Store implements Serializable
                                         }
                                     }
 
-                                    if (mp.getCount() == 1)
+                                    if (mp.getCount() == 0)
                                     {
+                                        // If we have no body, remove the container and create a
+                                        // dummy plain text body. This check helps prevents us from
+                                        // triggering T_MIME_NO_TEXT and T_TVD_MIME_NO_HEADERS
+                                        // SpamAssassin rules.
+                                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
+                                        localMessage.setBody(new TextBody(""));
+                                    }
+                                    else if (mp.getCount() == 1)
+                                    {
+                                        // If we have only one part, drop the MimeMultipart container.
                                         BodyPart part = mp.getBodyPart(0);
                                         localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, part.getContentType());
                                         localMessage.setBody(part.getBody());
                                     }
                                     else
                                     {
-                                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/mixed");
+                                        // Otherwise, attach the MimeMultipart to the message.
                                         localMessage.setBody(mp);
                                     }
                                 }
@@ -2381,6 +2459,7 @@ public class LocalStore extends Store implements Serializable
                                     cv.put("attachment_count", attachments.size());
                                     cv.put("internal_date",  message.getInternalDate() == null
                                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
+                                    cv.put("mime_type", message.getMimeType());
 
                                     String messageId = message.getMessageId();
                                     if (messageId != null)
@@ -2739,8 +2818,8 @@ public class LocalStore extends Store implements Serializable
                             if (contentId != null && contentUri != null)
                             {
                                 Cursor cursor = db.query("messages", new String[]
-                                                  { "html_content" }, "id = ?", new String[]
-                                                  { Long.toString(messageId) }, null, null, null);
+                                                         { "html_content" }, "id = ?", new String[]
+                                                         { Long.toString(messageId) }, null, null, null);
                                 try
                                 {
                                     if (cursor.moveToNext())
@@ -3130,457 +3209,22 @@ public class LocalStore extends Store implements Serializable
                 html = HtmlConverter.textToHtml(text);
             }
 
-            html = convertEmoji2Img(html);
+            html = HtmlConverter.convertEmoji2Img(html);
 
             return html;
         }
 
-        public String convertEmoji2Img(String html)
-        {
-            StringBuilder buff = new StringBuilder(html.length() + 512);
-            for (int i = 0; i < html.length(); i = html.offsetByCodePoints(i, 1))
-             {
-                int codePoint = html.codePointAt(i);
-                String emoji = getEmojiForCodePoint(codePoint);
-                if (emoji != null)
-                    buff.append("<img src=\"file:///android_asset/emoticons/" + emoji + ".gif\" alt=\"" + emoji + "\" />");
-                else
-                    buff.appendCodePoint(codePoint);
-
-            }
-            return buff.toString();
-        }
-        private String getEmojiForCodePoint(int codePoint)
-        {
-            // Derived from http://code.google.com/p/emoji4unicode/source/browse/trunk/data/emoji4unicode.xml
-            // XXX: This doesn't cover all the characters.  More emoticons are wanted.
-            switch (codePoint)
-            {
-            case 0xFE000: return "sun";
-            case 0xFE001: return "cloud";
-            case 0xFE002: return "rain";
-            case 0xFE003: return "snow";
-            case 0xFE004: return "thunder";
-            case 0xFE005: return "typhoon";
-            case 0xFE006: return "mist";
-            case 0xFE007: return "sprinkle";
-            case 0xFE008: return "night";
-            case 0xFE009: return "sun";
-            case 0xFE00A: return "sun";
-            case 0xFE00C: return "sun";
-            case 0xFE010: return "night";
-            case 0xFE011: return "newmoon";
-            case 0xFE012: return "moon1";
-            case 0xFE013: return "moon2";
-            case 0xFE014: return "moon3";
-            case 0xFE015: return "fullmoon";
-            case 0xFE016: return "moon2";
-            case 0xFE018: return "soon";
-            case 0xFE019: return "on";
-            case 0xFE01A: return "end";
-            case 0xFE01B: return "sandclock";
-            case 0xFE01C: return "sandclock";
-            case 0xFE01D: return "watch";
-            case 0xFE01E: return "clock";
-            case 0xFE01F: return "clock";
-            case 0xFE020: return "clock";
-            case 0xFE021: return "clock";
-            case 0xFE022: return "clock";
-            case 0xFE023: return "clock";
-            case 0xFE024: return "clock";
-            case 0xFE025: return "clock";
-            case 0xFE026: return "clock";
-            case 0xFE027: return "clock";
-            case 0xFE028: return "clock";
-            case 0xFE029: return "clock";
-            case 0xFE02A: return "clock";
-            case 0xFE02B: return "aries";
-            case 0xFE02C: return "taurus";
-            case 0xFE02D: return "gemini";
-            case 0xFE02E: return "cancer";
-            case 0xFE02F: return "leo";
-            case 0xFE030: return "virgo";
-            case 0xFE031: return "libra";
-            case 0xFE032: return "scorpius";
-            case 0xFE033: return "sagittarius";
-            case 0xFE034: return "capricornus";
-            case 0xFE035: return "aquarius";
-            case 0xFE036: return "pisces";
-            case 0xFE038: return "wave";
-            case 0xFE03B: return "night";
-            case 0xFE03C: return "clover";
-            case 0xFE03D: return "tulip";
-            case 0xFE03E: return "bud";
-            case 0xFE03F: return "maple";
-            case 0xFE040: return "cherryblossom";
-            case 0xFE042: return "maple";
-            case 0xFE04E: return "clover";
-            case 0xFE04F: return "cherry";
-            case 0xFE050: return "banana";
-            case 0xFE051: return "apple";
-            case 0xFE05B: return "apple";
-            case 0xFE190: return "eye";
-            case 0xFE191: return "ear";
-            case 0xFE193: return "kissmark";
-            case 0xFE194: return "bleah";
-            case 0xFE195: return "rouge";
-            case 0xFE198: return "hairsalon";
-            case 0xFE19A: return "shadow";
-            case 0xFE19B: return "happy01";
-            case 0xFE19C: return "happy01";
-            case 0xFE19D: return "happy01";
-            case 0xFE19E: return "happy01";
-            case 0xFE1B7: return "dog";
-            case 0xFE1B8: return "cat";
-            case 0xFE1B9: return "snail";
-            case 0xFE1BA: return "chick";
-            case 0xFE1BB: return "chick";
-            case 0xFE1BC: return "penguin";
-            case 0xFE1BD: return "fish";
-            case 0xFE1BE: return "horse";
-            case 0xFE1BF: return "pig";
-            case 0xFE1C8: return "chick";
-            case 0xFE1C9: return "fish";
-            case 0xFE1CF: return "aries";
-            case 0xFE1D0: return "dog";
-            case 0xFE1D8: return "dog";
-            case 0xFE1D9: return "fish";
-            case 0xFE1DB: return "foot";
-            case 0xFE1DD: return "chick";
-            case 0xFE1E0: return "pig";
-            case 0xFE1E3: return "cancer";
-            case 0xFE320: return "angry";
-            case 0xFE321: return "sad";
-            case 0xFE322: return "wobbly";
-            case 0xFE323: return "despair";
-            case 0xFE324: return "wobbly";
-            case 0xFE325: return "coldsweats02";
-            case 0xFE326: return "gawk";
-            case 0xFE327: return "lovely";
-            case 0xFE328: return "smile";
-            case 0xFE329: return "bleah";
-            case 0xFE32A: return "bleah";
-            case 0xFE32B: return "delicious";
-            case 0xFE32C: return "lovely";
-            case 0xFE32D: return "lovely";
-            case 0xFE32F: return "happy02";
-            case 0xFE330: return "happy01";
-            case 0xFE331: return "coldsweats01";
-            case 0xFE332: return "happy02";
-            case 0xFE333: return "smile";
-            case 0xFE334: return "happy02";
-            case 0xFE335: return "delicious";
-            case 0xFE336: return "happy01";
-            case 0xFE337: return "happy01";
-            case 0xFE338: return "coldsweats01";
-            case 0xFE339: return "weep";
-            case 0xFE33A: return "crying";
-            case 0xFE33B: return "shock";
-            case 0xFE33C: return "bearing";
-            case 0xFE33D: return "pout";
-            case 0xFE33E: return "confident";
-            case 0xFE33F: return "sad";
-            case 0xFE340: return "think";
-            case 0xFE341: return "shock";
-            case 0xFE342: return "sleepy";
-            case 0xFE343: return "catface";
-            case 0xFE344: return "coldsweats02";
-            case 0xFE345: return "coldsweats02";
-            case 0xFE346: return "bearing";
-            case 0xFE347: return "wink";
-            case 0xFE348: return "happy01";
-            case 0xFE349: return "smile";
-            case 0xFE34A: return "happy02";
-            case 0xFE34B: return "lovely";
-            case 0xFE34C: return "lovely";
-            case 0xFE34D: return "weep";
-            case 0xFE34E: return "pout";
-            case 0xFE34F: return "smile";
-            case 0xFE350: return "sad";
-            case 0xFE351: return "ng";
-            case 0xFE352: return "ok";
-            case 0xFE357: return "paper";
-            case 0xFE359: return "sad";
-            case 0xFE35A: return "angry";
-            case 0xFE4B0: return "house";
-            case 0xFE4B1: return "house";
-            case 0xFE4B2: return "building";
-            case 0xFE4B3: return "postoffice";
-            case 0xFE4B4: return "hospital";
-            case 0xFE4B5: return "bank";
-            case 0xFE4B6: return "atm";
-            case 0xFE4B7: return "hotel";
-            case 0xFE4B9: return "24hours";
-            case 0xFE4BA: return "school";
-            case 0xFE4C1: return "ship";
-            case 0xFE4C2: return "bottle";
-            case 0xFE4C3: return "fuji";
-            case 0xFE4C9: return "wrench";
-            case 0xFE4CC: return "shoe";
-            case 0xFE4CD: return "shoe";
-            case 0xFE4CE: return "eyeglass";
-            case 0xFE4CF: return "t-shirt";
-            case 0xFE4D0: return "denim";
-            case 0xFE4D1: return "crown";
-            case 0xFE4D2: return "crown";
-            case 0xFE4D6: return "boutique";
-            case 0xFE4D7: return "boutique";
-            case 0xFE4DB: return "t-shirt";
-            case 0xFE4DC: return "moneybag";
-            case 0xFE4DD: return "dollar";
-            case 0xFE4E0: return "dollar";
-            case 0xFE4E2: return "yen";
-            case 0xFE4E3: return "dollar";
-            case 0xFE4EF: return "camera";
-            case 0xFE4F0: return "bag";
-            case 0xFE4F1: return "pouch";
-            case 0xFE4F2: return "bell";
-            case 0xFE4F3: return "door";
-            case 0xFE4F9: return "movie";
-            case 0xFE4FB: return "flair";
-            case 0xFE4FD: return "sign05";
-            case 0xFE4FF: return "book";
-            case 0xFE500: return "book";
-            case 0xFE501: return "book";
-            case 0xFE502: return "book";
-            case 0xFE503: return "book";
-            case 0xFE505: return "spa";
-            case 0xFE506: return "toilet";
-            case 0xFE507: return "toilet";
-            case 0xFE508: return "toilet";
-            case 0xFE50F: return "ribbon";
-            case 0xFE510: return "present";
-            case 0xFE511: return "birthday";
-            case 0xFE512: return "xmas";
-            case 0xFE522: return "pocketbell";
-            case 0xFE523: return "telephone";
-            case 0xFE524: return "telephone";
-            case 0xFE525: return "mobilephone";
-            case 0xFE526: return "phoneto";
-            case 0xFE527: return "memo";
-            case 0xFE528: return "faxto";
-            case 0xFE529: return "mail";
-            case 0xFE52A: return "mailto";
-            case 0xFE52B: return "mailto";
-            case 0xFE52C: return "postoffice";
-            case 0xFE52D: return "postoffice";
-            case 0xFE52E: return "postoffice";
-            case 0xFE535: return "present";
-            case 0xFE536: return "pen";
-            case 0xFE537: return "chair";
-            case 0xFE538: return "pc";
-            case 0xFE539: return "pencil";
-            case 0xFE53A: return "clip";
-            case 0xFE53B: return "bag";
-            case 0xFE53E: return "hairsalon";
-            case 0xFE540: return "memo";
-            case 0xFE541: return "memo";
-            case 0xFE545: return "book";
-            case 0xFE546: return "book";
-            case 0xFE547: return "book";
-            case 0xFE548: return "memo";
-            case 0xFE54D: return "book";
-            case 0xFE54F: return "book";
-            case 0xFE552: return "memo";
-            case 0xFE553: return "foot";
-            case 0xFE7D0: return "sports";
-            case 0xFE7D1: return "baseball";
-            case 0xFE7D2: return "golf";
-            case 0xFE7D3: return "tennis";
-            case 0xFE7D4: return "soccer";
-            case 0xFE7D5: return "ski";
-            case 0xFE7D6: return "basketball";
-            case 0xFE7D7: return "motorsports";
-            case 0xFE7D8: return "snowboard";
-            case 0xFE7D9: return "run";
-            case 0xFE7DA: return "snowboard";
-            case 0xFE7DC: return "horse";
-            case 0xFE7DF: return "train";
-            case 0xFE7E0: return "subway";
-            case 0xFE7E1: return "subway";
-            case 0xFE7E2: return "bullettrain";
-            case 0xFE7E3: return "bullettrain";
-            case 0xFE7E4: return "car";
-            case 0xFE7E5: return "rvcar";
-            case 0xFE7E6: return "bus";
-            case 0xFE7E8: return "ship";
-            case 0xFE7E9: return "airplane";
-            case 0xFE7EA: return "yacht";
-            case 0xFE7EB: return "bicycle";
-            case 0xFE7EE: return "yacht";
-            case 0xFE7EF: return "car";
-            case 0xFE7F0: return "run";
-            case 0xFE7F5: return "gasstation";
-            case 0xFE7F6: return "parking";
-            case 0xFE7F7: return "signaler";
-            case 0xFE7FA: return "spa";
-            case 0xFE7FC: return "carouselpony";
-            case 0xFE7FF: return "fish";
-            case 0xFE800: return "karaoke";
-            case 0xFE801: return "movie";
-            case 0xFE802: return "movie";
-            case 0xFE803: return "music";
-            case 0xFE804: return "art";
-            case 0xFE805: return "drama";
-            case 0xFE806: return "event";
-            case 0xFE807: return "ticket";
-            case 0xFE808: return "slate";
-            case 0xFE809: return "drama";
-            case 0xFE80A: return "game";
-            case 0xFE813: return "note";
-            case 0xFE814: return "notes";
-            case 0xFE81A: return "notes";
-            case 0xFE81C: return "tv";
-            case 0xFE81D: return "cd";
-            case 0xFE81E: return "cd";
-            case 0xFE823: return "kissmark";
-            case 0xFE824: return "loveletter";
-            case 0xFE825: return "ring";
-            case 0xFE826: return "ring";
-            case 0xFE827: return "kissmark";
-            case 0xFE829: return "heart02";
-            case 0xFE82B: return "freedial";
-            case 0xFE82C: return "sharp";
-            case 0xFE82D: return "mobaq";
-            case 0xFE82E: return "one";
-            case 0xFE82F: return "two";
-            case 0xFE830: return "three";
-            case 0xFE831: return "four";
-            case 0xFE832: return "five";
-            case 0xFE833: return "six";
-            case 0xFE834: return "seven";
-            case 0xFE835: return "eight";
-            case 0xFE836: return "nine";
-            case 0xFE837: return "zero";
-            case 0xFE960: return "fastfood";
-            case 0xFE961: return "riceball";
-            case 0xFE962: return "cake";
-            case 0xFE963: return "noodle";
-            case 0xFE964: return "bread";
-            case 0xFE96A: return "noodle";
-            case 0xFE973: return "typhoon";
-            case 0xFE980: return "restaurant";
-            case 0xFE981: return "cafe";
-            case 0xFE982: return "bar";
-            case 0xFE983: return "beer";
-            case 0xFE984: return "japanesetea";
-            case 0xFE985: return "bottle";
-            case 0xFE986: return "wine";
-            case 0xFE987: return "beer";
-            case 0xFE988: return "bar";
-            case 0xFEAF0: return "upwardright";
-            case 0xFEAF1: return "downwardright";
-            case 0xFEAF2: return "upwardleft";
-            case 0xFEAF3: return "downwardleft";
-            case 0xFEAF4: return "up";
-            case 0xFEAF5: return "down";
-            case 0xFEAF6: return "leftright";
-            case 0xFEAF7: return "updown";
-            case 0xFEB04: return "sign01";
-            case 0xFEB05: return "sign02";
-            case 0xFEB06: return "sign03";
-            case 0xFEB07: return "sign04";
-            case 0xFEB08: return "sign05";
-            case 0xFEB0B: return "sign01";
-            case 0xFEB0C: return "heart01";
-            case 0xFEB0D: return "heart02";
-            case 0xFEB0E: return "heart03";
-            case 0xFEB0F: return "heart04";
-            case 0xFEB10: return "heart01";
-            case 0xFEB11: return "heart02";
-            case 0xFEB12: return "heart01";
-            case 0xFEB13: return "heart01";
-            case 0xFEB14: return "heart01";
-            case 0xFEB15: return "heart01";
-            case 0xFEB16: return "heart01";
-            case 0xFEB17: return "heart01";
-            case 0xFEB18: return "heart02";
-            case 0xFEB19: return "cute";
-            case 0xFEB1A: return "heart";
-            case 0xFEB1B: return "spade";
-            case 0xFEB1C: return "diamond";
-            case 0xFEB1D: return "club";
-            case 0xFEB1E: return "smoking";
-            case 0xFEB1F: return "nosmoking";
-            case 0xFEB20: return "wheelchair";
-            case 0xFEB21: return "free";
-            case 0xFEB22: return "flag";
-            case 0xFEB23: return "danger";
-            case 0xFEB26: return "ng";
-            case 0xFEB27: return "ok";
-            case 0xFEB28: return "ng";
-            case 0xFEB29: return "copyright";
-            case 0xFEB2A: return "tm";
-            case 0xFEB2B: return "secret";
-            case 0xFEB2C: return "recycle";
-            case 0xFEB2D: return "r-mark";
-            case 0xFEB2E: return "ban";
-            case 0xFEB2F: return "empty";
-            case 0xFEB30: return "pass";
-            case 0xFEB31: return "full";
-            case 0xFEB36: return "new";
-            case 0xFEB44: return "fullmoon";
-            case 0xFEB48: return "ban";
-            case 0xFEB55: return "cute";
-            case 0xFEB56: return "flair";
-            case 0xFEB57: return "annoy";
-            case 0xFEB58: return "bomb";
-            case 0xFEB59: return "sleepy";
-            case 0xFEB5A: return "impact";
-            case 0xFEB5B: return "sweat01";
-            case 0xFEB5C: return "sweat02";
-            case 0xFEB5D: return "dash";
-            case 0xFEB5F: return "sad";
-            case 0xFEB60: return "shine";
-            case 0xFEB61: return "cute";
-            case 0xFEB62: return "cute";
-            case 0xFEB63: return "newmoon";
-            case 0xFEB64: return "newmoon";
-            case 0xFEB65: return "newmoon";
-            case 0xFEB66: return "newmoon";
-            case 0xFEB67: return "newmoon";
-            case 0xFEB77: return "shine";
-            case 0xFEB81: return "id";
-            case 0xFEB82: return "key";
-            case 0xFEB83: return "enter";
-            case 0xFEB84: return "clear";
-            case 0xFEB85: return "search";
-            case 0xFEB86: return "key";
-            case 0xFEB87: return "key";
-            case 0xFEB8A: return "key";
-            case 0xFEB8D: return "search";
-            case 0xFEB90: return "key";
-            case 0xFEB91: return "recycle";
-            case 0xFEB92: return "mail";
-            case 0xFEB93: return "rock";
-            case 0xFEB94: return "scissors";
-            case 0xFEB95: return "paper";
-            case 0xFEB96: return "punch";
-            case 0xFEB97: return "good";
-            case 0xFEB9D: return "paper";
-            case 0xFEB9F: return "ok";
-            case 0xFEBA0: return "down";
-            case 0xFEBA1: return "paper";
-            case 0xFEE10: return "info01";
-            case 0xFEE11: return "info02";
-            case 0xFEE12: return "by-d";
-            case 0xFEE13: return "d-point";
-            case 0xFEE14: return "appli01";
-            case 0xFEE15: return "appli02";
-            case 0xFEE1C: return "movie";
-            default: return null;
-            }
-        }
 
         @Override
         public boolean isInTopGroup()
         {
-            return inTopGroup;
+            return mInTopGroup;
         }
 
-        public void setInTopGroup(boolean inTopGroup)
+        public void setInTopGroup(boolean inTopGroup) throws MessagingException
         {
-            this.inTopGroup = inTopGroup;
+            mInTopGroup = inTopGroup;
+            updateFolderColumn( "top_group", mInTopGroup ? 1 : 0 );
         }
 
         public Integer getLastUid()
@@ -3640,6 +3284,41 @@ public class LocalStore extends Store implements Serializable
                 Log.d(K9.LOG_TAG, "Updated last UID for folder " + mName + " to " + lastUid);
             mLastUid = lastUid;
         }
+
+        public long getOldestMessageDate() throws MessagingException
+        {
+            return database.execute(false, new DbCallback<Long>()
+            {
+                @Override
+                public Long doDbWork(final SQLiteDatabase db)
+                {
+                    Cursor cursor = null;
+                    try
+                    {
+                        open(OpenMode.READ_ONLY);
+                        cursor = db.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
+                        if (cursor.getCount() > 0)
+                        {
+                            cursor.moveToFirst();
+                            return cursor.getLong(0);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to fetch oldest message date: ", e);
+                    }
+                    finally
+                    {
+                        if (cursor != null)
+                        {
+                            cursor.close();
+                        }
+                    }
+                    return null;
+                }
+            });
+        }
+
     }
 
     public static class LocalTextBody extends TextBody

@@ -3,7 +3,6 @@ package com.fsck.k9;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -92,7 +91,6 @@ public class Preferences
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
-     * @param context
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
     public synchronized Collection<Account> getAvailableAccounts()

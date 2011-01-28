@@ -376,13 +376,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
             }
 
-            if (icicle != null)
+            restoreAccountStats(icicle);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restoreAccountStats(Bundle icicle)
+    {
+        if (icicle != null)
+        {
+            Map<String, AccountStats> oldStats = (Map<String, AccountStats>)icicle.get(ACCOUNT_STATS);
+            if (oldStats != null)
             {
-                Map<String, AccountStats> oldStats = (Map<String, AccountStats>)icicle.get(ACCOUNT_STATS);
-                if (oldStats != null)
-                {
-                    accountStats.putAll(oldStats);
-                }
+                accountStats.putAll(oldStats);
             }
         }
     }

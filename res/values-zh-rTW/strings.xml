@@ -126,7 +126,11 @@
   <string name="message_compose_cc_hint">副本</string>
   <string name="message_compose_downloading_attachments_toast">某些附件未下載。在傳送此訊息之前，將會自動下載附件。</string>
   <string name="message_compose_error_no_recipients">必須新增至少一位收件者。</string>
-  <string name="message_compose_fwd_header_fmt">\n\n-------- 原始郵件 --------\n主旨：<xliff:g id="subject">%s</xliff:g>\n寄件者：<xliff:g id="sender">%s</xliff:g>\n收件者：<xliff:g id="to">%s</xliff:g>\n副本：<xliff:g id="cc">%s</xliff:g>\n\n</string>
+  <string name="message_compose_quote_header_separator">-------- 原始郵件 --------</string>
+  <string name="message_compose_quote_header_subject">主旨：</string>
+  <string name="message_compose_quote_header_from">寄件者：</string>
+  <string name="message_compose_quote_header_to">收件者：</string>
+  <string name="message_compose_quote_header_cc">副本：</string>
   <string name="message_compose_quoted_text_label">引用的文字</string>
   <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> 說：\n\n</string>
   <string name="message_compose_subject_hint">主旨</string>

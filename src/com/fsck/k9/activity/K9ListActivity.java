@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.os.Bundle;
 import com.fsck.k9.K9;
-
+import com.fsck.k9.helper.DateFormatter;
 
 public class K9ListActivity extends ListActivity
 {

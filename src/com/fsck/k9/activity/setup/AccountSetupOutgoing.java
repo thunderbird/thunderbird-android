@@ -330,6 +330,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     }
 
+    @Override
     protected void onNext()
     {
         int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;

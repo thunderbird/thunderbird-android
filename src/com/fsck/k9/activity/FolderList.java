@@ -348,19 +348,23 @@ public class FolderList extends K9ListActivity
     private void initializeActivityView()
     {
         mAdapter = new FolderListAdapter();
-
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null)
-        {
-            //noinspection unchecked
-            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-        }
+        restorePreviousData();
 
         setListAdapter(mAdapter);
 
         setTitle(mAccount.getDescription());
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restorePreviousData()
+    {
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null)
+        {
+            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+        }
     }
 
 
@@ -554,10 +558,7 @@ public class FolderList extends K9ListActivity
             }
             localFolder = account.getLocalStore().getFolder(folderName);
             localFolder.open(Folder.OpenMode.READ_WRITE);
-            if (localFolder != null)
-            {
-                localFolder.clearAllMessages();
-            }
+            localFolder.clearAllMessages();
         }
         catch (Exception e)
         {
@@ -811,7 +812,7 @@ public class FolderList extends K9ListActivity
 
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
-        menu.setHeaderTitle((CharSequence) folder.displayName);
+        menu.setHeaderTitle(folder.displayName);
 
         if (!folder.name.equals(mAccount.getTrashFolderName()))
             menu.findItem(R.id.empty_trash).setVisible(false);
@@ -1089,14 +1090,11 @@ public class FolderList extends K9ListActivity
                         }
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
-                        if (localFolder != null)
+                        FolderInfoHolder folderHolder = getFolder(folderName);
+                        if (folderHolder != null)
                         {
-                            FolderInfoHolder folderHolder = getFolder(folderName);
-                            if (folderHolder != null)
-                            {
-                                folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
-                                mHandler.dataChanged();
-                            }
+                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
+                            mHandler.dataChanged();
                         }
                     }
                 }
@@ -1281,7 +1279,7 @@ public class FolderList extends K9ListActivity
         {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.name = folder;
-            return   mFolders.indexOf((Object) searchHolder);
+            return   mFolders.indexOf(searchHolder);
         }
 
         public FolderInfoHolder getFolder(String folder)

@@ -4,12 +4,16 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
-import org.apache.james.mime4j.BodyDescriptor;
-import org.apache.james.mime4j.ContentHandler;
-import org.apache.james.mime4j.EOLConvertingInputStream;
-import org.apache.james.mime4j.MimeStreamParser;
-import org.apache.james.mime4j.field.DateTimeField;
-import org.apache.james.mime4j.field.Field;
+import org.apache.james.mime4j.stream.BodyDescriptor;
+import org.apache.james.mime4j.stream.RawField;
+import org.apache.james.mime4j.parser.ContentHandler;
+import org.apache.james.mime4j.io.EOLConvertingInputStream;
+import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.dom.field.DateTimeField;
+import org.apache.james.mime4j.dom.field.Field;
+import org.apache.james.mime4j.field.DefaultFieldParser;
+
+import org.apache.james.mime4j.MimeException;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -74,7 +78,15 @@ public class MimeMessage extends Message
 
         MimeStreamParser parser = new MimeStreamParser();
         parser.setContentHandler(new MimeMessageBuilder());
-        parser.parse(new EOLConvertingInputStream(in));
+        try
+        {
+            parser.parse(new EOLConvertingInputStream(in));
+        }
+        catch (MimeException me)
+        {
+            throw new Error(me);
+
+        }
     }
 
     @Override
@@ -84,7 +96,7 @@ public class MimeMessage extends Message
         {
             try
             {
-                DateTimeField field = (DateTimeField)Field.parse("Date: "
+                DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
             }
@@ -257,7 +269,7 @@ public class MimeMessage extends Message
     @Override
     public String getSubject()
     {
-        return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"));
+        return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"), this);
     }
 
     @Override
@@ -330,7 +342,7 @@ public class MimeMessage extends Message
         {
             mMessageId = getFirstHeader("Message-ID");
         }
-        if (mMessageId == null) //  even after checking the header
+        if (mMessageId == null)   //  even after checking the header
         {
             setMessageId(generateMessageId());
         }
@@ -501,6 +513,7 @@ public class MimeMessage extends Message
         }
     }
 
+    @Override
     public void setCharset(String charset) throws MessagingException
     {
         if (mBody instanceof Multipart)
@@ -562,6 +575,24 @@ public class MimeMessage extends Message
         public void startHeader()
         {
             expect(Part.class);
+        }
+
+        public void field(RawField field)
+        {
+            expect(Part.class);
+            try
+            {
+                Field parsedField = DefaultFieldParser.parse(field.getRaw(), null);
+                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+            }
+            catch (MessagingException me)
+            {
+                throw new Error(me);
+            }
+            catch (MimeException me)
+            {
+                throw new Error(me);
+            }
         }
 
         public void field(String fieldData)

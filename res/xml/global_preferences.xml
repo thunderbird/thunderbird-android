@@ -121,16 +121,27 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messagelist_show_correspondent_names"
+                android:title="@string/global_settings_show_correspondent_names_label"
+                android:summary="@string/global_settings_show_correspondent_names_summary"
+
+                />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="messagelist_show_contact_name"
                 android:title="@string/global_settings_show_contact_name_label"
-                android:summary="@string/global_settings_show_contact_name_summary" />
+                android:summary="@string/global_settings_show_contact_name_summary"
+                android:dependency="messagelist_show_correspondent_names"
+                />
 
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_contact_name_color"
                 android:title="@string/global_settings_registered_name_color_label"
                 android:summary="@string/global_settings_registered_name_color_default"
-                android:dependency="messagelist_show_contact_name" />
+                android:dependency="messagelist_show_contact_name"
+                />
 
         </PreferenceCategory>
 

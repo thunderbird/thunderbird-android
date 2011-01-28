@@ -4,7 +4,8 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 
-public class ColorChip {
+public class ColorChip
+{
     private static final Path CHIP_PATH = new Path();
 
     static
@@ -22,15 +23,17 @@ public class ColorChip {
 
     private ShapeDrawable mDrawable;
 
-    public ColorChip(int color) {
-                    
-                mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 10, 10));
-                mDrawable.getPaint().setColor(color);
+    public ColorChip(int color)
+    {
+
+        mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 10, 10));
+        mDrawable.getPaint().setColor(color);
 
 
     }
-    
-    public ShapeDrawable drawable () {
+
+    public ShapeDrawable drawable ()
+    {
 
         return mDrawable;
     }

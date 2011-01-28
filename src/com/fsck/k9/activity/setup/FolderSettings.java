@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
@@ -60,7 +61,7 @@ public class FolderSettings extends K9PreferenceActivity
         {
             LocalStore localStore = mAccount.getLocalStore();
             mFolder = localStore.getFolder(folderName);
-            mFolder.refresh(Preferences.getPreferences(this));
+            mFolder.open(OpenMode.READ_WRITE);
         }
         catch (MessagingException me)
         {
@@ -152,7 +153,7 @@ public class FolderSettings extends K9PreferenceActivity
         }
     }
 
-    private void saveSettings()
+    private void saveSettings() throws MessagingException
     {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
@@ -166,18 +167,10 @@ public class FolderSettings extends K9PreferenceActivity
         FolderClass newPushClass = mFolder.getPushClass();
         FolderClass newDisplayClass = mFolder.getDisplayClass();
 
-        try
+        if (oldPushClass != newPushClass
+                || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass))
         {
-            mFolder.save(Preferences.getPreferences(this));
-            if (oldPushClass != newPushClass
-                    || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass))
-            {
-                MailService.actionRestartPushers(getApplication(), null);
-            }
-        }
-        catch (MessagingException me)
-        {
-            Log.e(K9.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
+            MailService.actionRestartPushers(getApplication(), null);
         }
     }
 
@@ -186,7 +179,14 @@ public class FolderSettings extends K9PreferenceActivity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            saveSettings();
+            try
+            {
+                saveSettings();
+            }
+            catch (MessagingException e)
+            {
+                Log.e(K9.LOG_TAG,"Saving folder settings failed "+e);
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

@@ -11,12 +11,10 @@ import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
 
@@ -50,8 +48,9 @@ public class Account implements BaseAccount
     public static final String TYPE_OTHER = "OTHER";
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
+    private static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
-
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     /**
@@ -72,12 +71,6 @@ public class Account implements BaseAccount
      * storage
      */
     private String mLocalStorageProviderId;
-
-    /**
-     * True if {@link #mLocalStoreUri} may be in use at
-     * the moment.
-     */
-    private final boolean mIsInUse = false;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -85,6 +78,7 @@ public class Account implements BaseAccount
     private int mDisplayCount;
     private int mChipColor;
     private long mLastAutomaticCheckTime;
+    private long mLatestOldMessageSeenTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
     private String mDraftsFolderName;
@@ -111,6 +105,7 @@ public class Account implements BaseAccount
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
+    private boolean mNotificationShowsUnreadCount;
     private final Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
@@ -119,6 +114,8 @@ public class Account implements BaseAccount
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
+    private MessageFormat mMessageFormat;
+    private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
@@ -159,6 +156,16 @@ public class Account implements BaseAccount
         ALL, DISPLAYABLE, NONE
     }
 
+    public enum QuoteStyle
+    {
+        PREFIX, HEADER
+    }
+
+    public enum MessageFormat
+    {
+        TEXT, HTML
+    }
+
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
@@ -186,9 +193,12 @@ public class Account implements BaseAccount
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         goToUnreadMessageSearch = false;
+        mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
+        mMessageFormat = DEFAULT_MESSAGE_FORMAT;
+        mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
@@ -228,59 +238,43 @@ public class Account implements BaseAccount
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid
-                                         + ".storeUri", null));
+        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid
-                                             + ".transportUri", null));
+        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
-        mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid
-                                         + ".automaticCheckIntervalMinutes", -1);
-        mIdleRefreshMinutes = prefs.getInt(mUuid
-                                           + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = prefs.getBoolean(mUuid
-                                           + ".saveAllHeaders", true);
-        mPushPollOnConnect = prefs.getBoolean(mUuid
-                                              + ".pushPollOnConnect", true);
+        mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
+        mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
+        mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
+        mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0)
         {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
-        mLastAutomaticCheckTime = prefs.getLong(mUuid
-                                                + ".lastAutomaticCheckTime", 0);
-        mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail",
-                                          false);
-        mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail",
-                                              true);
-        mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck",
-                                       false);
+        mLastAutomaticCheckTime = prefs.getLong(mUuid + ".lastAutomaticCheckTime", 0);
+        mLatestOldMessageSeenTime = prefs.getLong(mUuid +".latestOldMessageSeenTime",0);
+        mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail", false);
+        mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
+        mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
-        mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName",
-                                            "Drafts");
-        mSentFolderName = prefs.getString(mUuid  + ".sentFolderName",
-                                          "Sent");
-        mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName",
-                                           "Trash");
-        mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName",
-                                             "Archive");
-        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName",
-                                          "Spam");
-        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName",
-                                            "Outbox");
+        mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
+        mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
+        mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
+        mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
+        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
+        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName", "Outbox");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
-        goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch",
-                                  false);
-        subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
-                                false);
-        maximumPolledMessageAge = prefs.getInt(mUuid
-                                               + ".maximumPolledMessageAge", -1);
-        maximumAutoDownloadMessageSize = prefs.getInt(mUuid
-                                         + ".maximumAutoDownloadMessageSize", 32768);
+        goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch", false);
+        mNotificationShowsUnreadCount = prefs.getBoolean(mUuid + ".notificationUnreadCount", true);
+        subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly", false);
+        maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
+        maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
+        mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
+        mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes)
@@ -306,7 +300,7 @@ public class Account implements BaseAccount
         try
         {
             mScrollMessageViewButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
-                                      ScrollButtons.NEVER.name()));
+                                        ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
@@ -316,7 +310,7 @@ public class Account implements BaseAccount
         try
         {
             mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                          ScrollButtons.NEVER.name()));
+                                            ScrollButtons.NEVER.name()));
         }
         catch (Exception e)
         {
@@ -433,6 +427,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".saveAllHeaders");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
+        editor.remove(mUuid + ".latestOldMessageSeenTime");
         editor.remove(mUuid + ".notifyNewMail");
         editor.remove(mUuid + ".notifySelfNewMail");
         editor.remove(mUuid + ".deletePolicy");
@@ -464,9 +459,11 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".led");
         editor.remove(mUuid + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
+        editor.remove(mUuid + ".notificationUnreadCount");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
+        editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
@@ -532,6 +529,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
+        editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
@@ -556,12 +554,15 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putBoolean(mUuid + ".syncRemoteDeletions", mSyncRemoteDeletions);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
-        editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
+        editor.putString(mUuid + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
+        editor.putBoolean(mUuid + ".notificationUnreadCount", mNotificationShowsUnreadCount);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
+        editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+        editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
@@ -616,67 +617,15 @@ public class Account implements BaseAccount
         }
         long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
-        int unreadMessageCount = 0;
-        int flaggedMessageCount = 0;
         LocalStore localStore = getLocalStore();
         if (K9.measureAccounts())
         {
             stats.size = localStore.getSize();
         }
-        Account.FolderMode aMode = getFolderDisplayMode();
-        Preferences prefs = Preferences.getPreferences(context);
-        long folderLoadStart = System.currentTimeMillis();
-        List<? extends Folder> folders = localStore.getPersonalNamespaces(false);
-        long folderLoadEnd = System.currentTimeMillis();
-        for (Folder folder : folders)
-        {
-            LocalFolder localFolder = (LocalFolder)folder;
-            //folder.refresh(prefs);
-            Folder.FolderClass fMode = localFolder.getDisplayClass(prefs);
-
-            // Always get stats about the INBOX (see issue 1817)
-            if (folder.getName().equals(K9.INBOX) || (
-                        !folder.getName().equals(getTrashFolderName()) &&
-                        !folder.getName().equals(getDraftsFolderName()) &&
-                        !folder.getName().equals(getArchiveFolderName()) &&
-                        !folder.getName().equals(getSpamFolderName()) &&
-                        !folder.getName().equals(getOutboxFolderName()) &&
-                        !folder.getName().equals(getSentFolderName()) &&
-                        !folder.getName().equals(getErrorFolderName())))
-            {
-                if (aMode == Account.FolderMode.NONE)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.FIRST_CLASS &&
-                        fMode != Folder.FolderClass.FIRST_CLASS)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                        fMode != Folder.FolderClass.FIRST_CLASS &&
-                        fMode != Folder.FolderClass.SECOND_CLASS)
-                {
-                    continue;
-                }
-                if (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                        fMode == Folder.FolderClass.SECOND_CLASS)
-                {
-                    continue;
-                }
-                unreadMessageCount += folder.getUnreadMessageCount();
-                flaggedMessageCount += folder.getFlaggedMessageCount();
-
-            }
-        }
-        long folderEvalEnd = System.currentTimeMillis();
-        stats.unreadMessageCount = unreadMessageCount;
-        stats.flaggedMessageCount = flaggedMessageCount;
+        localStore.getMessageCounts(stats);
         long endTime = System.currentTimeMillis();
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
-                  + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
-                  + " evaluating took " + (folderEvalEnd - folderLoadEnd) + " ms");
+            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;");
         return stats;
     }
 
@@ -692,7 +641,8 @@ public class Account implements BaseAccount
     }
 
 
-    public ColorChip generateColorChip() {
+    public ColorChip generateColorChip()
+    {
         return new ColorChip( mChipColor);
     }
 
@@ -884,6 +834,16 @@ public class Account implements BaseAccount
         this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
     }
 
+    public synchronized long getLatestOldMessageSeenTime()
+    {
+        return mLatestOldMessageSeenTime;
+    }
+
+    public synchronized void setLatestOldMessageSeenTime(long latestOldMessageSeenTime)
+    {
+        this.mLatestOldMessageSeenTime = latestOldMessageSeenTime;
+    }
+
     public synchronized boolean isNotifyNewMail()
     {
         return mNotifyNewMail;
@@ -903,6 +863,29 @@ public class Account implements BaseAccount
     {
         this.mDeletePolicy = deletePolicy;
     }
+
+
+    public boolean isSpecialFolder(String folderName)
+    {
+        if ( folderName != null && (folderName.equalsIgnoreCase(K9.INBOX) ||
+                                    folderName.equals(getTrashFolderName()) ||
+                                    folderName.equals(getDraftsFolderName()) ||
+                                    folderName.equals(getArchiveFolderName()) ||
+                                    folderName.equals(getSpamFolderName()) ||
+                                    folderName.equals(getOutboxFolderName()) ||
+                                    folderName.equals(getSentFolderName()) ||
+                                    folderName.equals(getErrorFolderName())))
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 
     public synchronized String getDraftsFolderName()
     {
@@ -1399,6 +1382,16 @@ public class Account implements BaseAccount
         this.goToUnreadMessageSearch = goToUnreadMessageSearch;
     }
 
+    public boolean isNotificationShowsUnreadCount()
+    {
+        return mNotificationShowsUnreadCount;
+    }
+
+    public void setNotificationShowsUnreadCount(boolean notificationShowsUnreadCount)
+    {
+        this.mNotificationShowsUnreadCount = notificationShowsUnreadCount;
+    }
+
     public synchronized boolean subscribedFoldersOnly()
     {
         return subscribedFoldersOnly;
@@ -1470,6 +1463,26 @@ public class Account implements BaseAccount
         }
     }
 
+    public MessageFormat getMessageFormat()
+    {
+        return mMessageFormat;
+    }
+
+    public void setMessageFormat(MessageFormat messageFormat)
+    {
+        this.mMessageFormat = messageFormat;
+    }
+
+    public QuoteStyle getQuoteStyle()
+    {
+        return mQuoteStyle;
+    }
+
+    public void setQuoteStyle(QuoteStyle quoteStyle)
+    {
+        this.mQuoteStyle = quoteStyle;
+    }
+
     public synchronized String getQuotePrefix()
     {
         return mQuotePrefix;
@@ -1539,11 +1552,6 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
-    }
-
-    public boolean isInUse()
-    {
-        return mIsInUse;
     }
 
     public synchronized CryptoProvider getCryptoProvider()

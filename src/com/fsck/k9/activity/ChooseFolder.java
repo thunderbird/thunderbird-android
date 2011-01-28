@@ -341,39 +341,54 @@ public class ChooseFolder extends K9ListActivity
                 }
             });
             mAdapter.setNotifyOnChange(false);
-            mAdapter.clear();
             int selectedFolder = -1;
-            int position = 0;
-            for (String name : localFolders)
+            try
             {
-                if (K9.INBOX.equalsIgnoreCase(name))
+                mAdapter.clear();
+                int position = 0;
+                for (String name : localFolders)
                 {
-                    mAdapter.add(getString(R.string.special_mailbox_name_inbox));
-                    heldInbox = name;
-                }
-                else if (!K9.ERROR_FOLDER_NAME.equals(name))
-                {
-                    mAdapter.add(name);
-                }
+                    if (K9.INBOX.equalsIgnoreCase(name))
+                    {
+                        mAdapter.add(getString(R.string.special_mailbox_name_inbox));
+                        heldInbox = name;
+                    }
+                    else if (!K9.ERROR_FOLDER_NAME.equals(name))
+                    {
+                        mAdapter.add(name);
+                    }
 
-                if (mSelectFolder != null)
-                {
-                    /*
-                     * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
-                     * (mSelectedFolder) was provided.
-                     */
+                    if (mSelectFolder != null)
+                    {
+                        /*
+                         * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
+                         * (mSelectedFolder) was provided.
+                         */
 
-                    if (name.equals(mSelectFolder))
+                        if (name.equals(mSelectFolder))
+                        {
+                            selectedFolder = position;
+                        }
+                    }
+                    else if (name.equals(mFolder) ||
+                             (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))
                     {
                         selectedFolder = position;
                     }
+                    position++;
                 }
-                else if (name.equals(mFolder) ||
-                         (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))
+            }
+            finally
+            {
+                mAdapter.setNotifyOnChange(true);
+                runOnUiThread(new Runnable()
                 {
-                    selectedFolder = position;
-                }
-                position++;
+                    public void run()
+                    {
+                        //              runOnUiThread(
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
             }
 
             mHandler.dataChanged();

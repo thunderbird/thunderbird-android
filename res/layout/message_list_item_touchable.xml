@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="3dip"
-    android:paddingBottom="3dip"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:paddingRight="3dip"
     android:background="#ccc" >
 
     <RelativeLayout
@@ -16,7 +17,7 @@
         android:layout_alignBottom="@+id/preview"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="4dip"
+        android:layout_marginRight="8dip"
         android:paddingLeft="6dip"
         android:background="@android:color/transparent" >
 
@@ -24,7 +25,7 @@
         <CheckBox
             android:id="@+id/selected_checkbox"
             android:layout_width="30dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:paddingRight="4dip"
@@ -49,8 +50,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
         android:layout_below="@+id/date"
-        android:paddingTop="3dip"
+        android:layout_marginTop="3dip"
         style="?android:attr/starStyle"
         android:focusable="false" />
 
@@ -63,8 +66,9 @@
         android:layout_toRightOf="@+id/chip"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="1dip"
+        android:paddingBottom="1dip"
         android:singleLine="true"
-        android:ellipsize="end"
+        android:ellipsize="marquee"
         android:textColor="?android:attr/textColorPrimary"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

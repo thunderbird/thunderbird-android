@@ -478,7 +478,7 @@ public class MessagingController implements Runnable
 
                 Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
-                if (refreshRemote || localFolders == null || localFolders.size() == 0)
+                if (refreshRemote || localFolders.size() == 0)
                 {
                     doRefreshRemote(account, listener);
                     return;
@@ -551,16 +551,7 @@ public class MessagingController implements Runnable
                     for (Folder localFolder : localFolders)
                     {
                         String localFolderName = localFolder.getName();
-                        if (localFolderName.equalsIgnoreCase(K9.INBOX) ||
-                                localFolderName.equals(account.getTrashFolderName()) ||
-                                localFolderName.equals(account.getOutboxFolderName()) ||
-                                localFolderName.equals(account.getDraftsFolderName()) ||
-                                localFolderName.equals(account.getSentFolderName()) ||
-                                localFolderName.equals(account.getErrorFolderName()))
-                        {
-                            continue;
-                        }
-                        if (!remoteFolderNames.contains(localFolder.getName()))
+                        if (!account.isSpecialFolder(localFolderName) && !remoteFolderNames.contains(localFolderName))
                         {
                             localFolder.delete(false);
                         }
@@ -857,12 +848,8 @@ public class MessagingController implements Runnable
                                 }
                             }
                             // Never exclude the INBOX (see issue 1817)
-                            else if (noSpecialFolders && !localFolderName.equals(K9.INBOX) && (
-                                         localFolderName.equals(account.getTrashFolderName()) ||
-                                         localFolderName.equals(account.getOutboxFolderName()) ||
-                                         localFolderName.equals(account.getDraftsFolderName()) ||
-                                         localFolderName.equals(account.getSentFolderName()) ||
-                                         localFolderName.equals(account.getErrorFolderName())))
+                            else if (noSpecialFolders && !localFolderName.equalsIgnoreCase(K9.INBOX) &&
+                                     !localFolderName.equals(account.getArchiveFolderName()) && account.isSpecialFolder(localFolderName))
                             {
                                 include = false;
                             }
@@ -1035,8 +1022,7 @@ public class MessagingController implements Runnable
         try
         {
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " +
-                      account.getDescription());
+                Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " + account.getDescription());
 
             try
             {
@@ -1073,7 +1059,6 @@ public class MessagingController implements Runnable
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: using providedRemoteFolder " + folder);
-
                 remoteFolder = providedRemoteFolder;
             }
             else
@@ -1084,9 +1069,7 @@ public class MessagingController implements Runnable
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
                 remoteFolder = remoteStore.getFolder(folder);
 
-
-
-                if (!  verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener))
+                if (! verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener))
                 {
                     return;
                 }
@@ -1094,6 +1077,7 @@ public class MessagingController implements Runnable
 
                 /*
                  * Synchronization process:
+                 *
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
@@ -1101,12 +1085,10 @@ public class MessagingController implements Runnable
                 getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
-                Update the remote flags of any messages we have locally with an internal date
-                newer than the remote message.
+                Update the remote flags of any messages we have locally with an internal date newer than the remote message.
                 Get the current flags for any messages we have locally but did not just download
                 Update local flags
-                For any message we have locally but not remotely, delete the local message to keep
-                cache clean.
+                For any message we have locally but not remotely, delete the local message to keep cache clean.
                 Download larger parts of any new messages.
                 (Optional) Download small attachments in the background.
                  */
@@ -1122,8 +1104,6 @@ public class MessagingController implements Runnable
                 {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
-
-
                     remoteFolder.expunge();
                 }
 
@@ -1143,17 +1123,16 @@ public class MessagingController implements Runnable
 
             Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
-            //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
             final Date earliestDate = account.getEarliestPollDate();
+
+
             if (remoteMessageCount > 0)
             {
-                /*
-                 * Message numbers start at 1.
-                 */
+                /* Message numbers start at 1.  */
                 int remoteStart;
                 if (visibleLimit > 0 )
                 {
@@ -1242,17 +1221,14 @@ public class MessagingController implements Runnable
                 l.folderStatusChanged(account, folder, unreadMessageCount);
             }
 
-            /*
-             * Notify listeners that we're finally done.
-             */
+            /* Notify listeners that we're finally done. */
 
             localFolder.setLastChecked(System.currentTimeMillis());
             localFolder.setStatus(null);
 
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Done synchronizing folder " +
-                      account.getDescription() + ":" + folder + " @ " + new Date() +
-                      " with " + newMessages + " new messages");
+                Log.d(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder +
+                      " @ " + new Date() + " with " + newMessages + " new messages");
 
             for (MessagingListener l : getListeners(listener))
             {
@@ -1298,14 +1274,10 @@ public class MessagingController implements Runnable
 
             for (MessagingListener l : getListeners(listener))
             {
-                l.synchronizeMailboxFailed(
-                    account,
-                    folder,
-                    rootMessage);
+                l.synchronizeMailboxFailed( account, folder, rootMessage);
             }
             addErrorMessage(account, null, e);
-            Log.e(K9.LOG_TAG, "Failed synchronizing folder " +
-                  account.getDescription() + ":" + folder + " @ " + new Date());
+            Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
 
         }
         finally
@@ -1409,6 +1381,9 @@ public class MessagingController implements Runnable
                                  final LocalFolder localFolder, List<Message> inputMessages, boolean flagSyncOnly) throws MessagingException
     {
         final Date earliestDate = account.getEarliestPollDate();
+        Date downloadStarted = new Date(); // now
+
+
         if (earliestDate != null)
         {
             if (K9.DEBUG)
@@ -1553,14 +1528,33 @@ public class MessagingController implements Runnable
 
         });
 
+        // If the oldest message seen on this sync is newer than
+        // the oldest message seen on the previous sync, then
+        // we want to move our high-water mark forward
+        // this is all here just for pop which only syncs inbox
+        // this would be a little wrong for IMAP (we'd want a folder-level pref, not an account level pref.)
+        // fortunately, we just don't care.
+        Long oldestMessageTime = localFolder.getOldestMessageDate();
+
+        if (oldestMessageTime != null)
+        {
+            Date oldestExtantMessage = new Date(oldestMessageTime);
+            if  (oldestExtantMessage.before(downloadStarted) &&
+                    oldestExtantMessage.after(new Date(account.getLatestOldMessageSeenTime())))
+            {
+                account.setLatestOldMessageSeenTime(oldestExtantMessage.getTime());
+                account.save(Preferences.getPreferences(mApplication.getApplicationContext()));
+            }
+
+        }
         return newMessages.get();
     }
     private void evaluateMessageForDownload(final Message message, final String folder,
                                             final LocalFolder localFolder,
                                             final Folder remoteFolder,
                                             final Account account,
-                                            final List unsyncedMessages,
-                                            final ArrayList syncFlagMessages,
+                                            final List<Message> unsyncedMessages,
+                                            final ArrayList<Message> syncFlagMessages,
                                             boolean flagSyncOnly) throws MessagingException
     {
         if (message.isSet(Flag.DELETED))
@@ -4656,12 +4650,13 @@ public class MessagingController implements Runnable
         Folder folder = message.getFolder();
         if (folder != null)
         {
-            // No notification for new messages in Trash, Drafts, or Sent folder.
+            // No notification for new messages in Trash, Drafts, Spam or Sent folder.
             // But do notify if it's the INBOX (see issue 1817).
             String folderName = folder.getName();
             if (!K9.INBOX.equals(folderName) &&
                     (account.getTrashFolderName().equals(folderName)
                      || account.getDraftsFolderName().equals(folderName)
+                     || account.getSpamFolderName().equals(folderName)
                      || account.getSentFolderName().equals(folderName)))
             {
                 return false;
@@ -4705,12 +4700,23 @@ public class MessagingController implements Runnable
             return false;
         }
 
+        // If the account us a POP3 account and the message is older than
+        // the oldest message we've previously seen then don't notify about it
+        if (account.getStoreUri().startsWith("pop3") )
+        {
+            if ( message.olderThan(new Date(account.getLatestOldMessageSeenTime())))
+            {
+                return false;
+            }
+        }
+
+
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuilder messageNotice = new StringBuilder();
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         try
         {
-            if (message != null && message.getFrom() != null)
+            if (message.getFrom() != null)
             {
                 Address[] fromAddrs = message.getFrom();
                 String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
@@ -4767,12 +4773,16 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = previousUnreadMessageCount + newMessageCount.get();
+        final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
+        if (account.isNotificationShowsUnreadCount())
+        {
+            notif.number = unreadCount;
+        }
 
         Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, notif.number, account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
@@ -5154,7 +5164,7 @@ public class MessagingController implements Runnable
                 try
                 {
                     LocalStore localStore = account.getLocalStore();
-                    localFolder= localStore.getFolder(remoteFolder.getName());
+                    localFolder = localStore.getFolder(remoteFolder.getName());
                     localFolder.open(OpenMode.READ_WRITE);
 
                     account.setRingNotified(false);
@@ -5186,7 +5196,10 @@ public class MessagingController implements Runnable
                     String errorMessage = "Push failed: " + rootMessage;
                     try
                     {
-                        localFolder.setStatus(errorMessage);
+                        // Oddly enough, using a local variable gets rid of a
+                        // potential null pointer access warning with Eclipse.
+                        LocalFolder folder = localFolder;
+                        folder.setStatus(errorMessage);
                     }
                     catch (Exception se)
                     {

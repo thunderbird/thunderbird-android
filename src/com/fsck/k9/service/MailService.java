@@ -434,7 +434,7 @@ public class MailService extends CoreService
                         long lastRefresh = pusher.getLastRefresh();
                         int refreshInterval = pusher.getRefreshInterval();
                         long sinceLast = nowTime - lastRefresh;
-                        if (sinceLast + 10000 > refreshInterval)  // Add 10 seconds to keep pushers in sync, avoid drift
+                        if (sinceLast + 10000 > refreshInterval)   // Add 10 seconds to keep pushers in sync, avoid drift
                         {
                             if (K9.DEBUG)
                             {

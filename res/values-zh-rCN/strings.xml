@@ -239,7 +239,11 @@
     <string name="message_compose_bcc_hint">暗送</string>
     <string name="message_compose_subject_hint">主题</string>
     <string name="message_compose_content_hint">邮件内容</string>
-    <string name="message_compose_fwd_header_fmt">\n--------原始邮件--------\主题：<xliff:g id="subject">%s</xliff:g>\发件人：<xliff:g id="sender">%s</xliff:g>\n收件人：<xliff:g id="to">%s</xliff:g>\n抄送：<xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <string name="message_compose_quote_header_separator">--------原始邮件--------</string>
+    <string name="message_compose_quote_header_subject">主题：</string>
+    <string name="message_compose_quote_header_from">发件人：</string>
+    <string name="message_compose_quote_header_to">收件人：</string>
+    <string name="message_compose_quote_header_cc">抄送：</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n\n</string>
     <string name="message_compose_quoted_text_label">引用文本</string>
     <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>

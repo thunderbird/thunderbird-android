@@ -7,11 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.RingtonePreference;
+import android.preference.*;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -21,6 +17,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -35,10 +32,8 @@ import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
 
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 
 
 public class AccountSettings extends K9PreferenceActivity
@@ -48,6 +43,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
+
+    private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
@@ -83,10 +80,13 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
+    private static final String PREFERENCE_NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
+    private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
@@ -107,6 +107,8 @@ public class AccountSettings extends K9PreferenceActivity
     private Account mAccount;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
+
+    private PreferenceScreen mComposingScreen;
 
     private EditTextPreference mAccountDescription;
     private ListPreference mCheckFrequency;
@@ -138,6 +140,9 @@ public class AccountSettings extends K9PreferenceActivity
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
+    private CheckBoxPreference mNotificationUnreadCount;
+    private ListPreference mMessageFormat;
+    private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
@@ -201,6 +206,21 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+        mMessageFormat = (ListPreference) findPreference(PREFERENCE_MESSAGE_FORMAT);
+        mMessageFormat.setValue(mAccount.getMessageFormat().name());
+        mMessageFormat.setSummary(mMessageFormat.getEntry());
+        mMessageFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageFormat.findIndexOfValue(summary);
+                mMessageFormat.setSummary(mMessageFormat.getEntries()[index]);
+                mMessageFormat.setValue(summary);
+                return false;
+            }
+        });
+
         mAccountQuotePrefix = (EditTextPreference) findPreference(PREFERENCE_QUOTE_PREFIX);
         mAccountQuotePrefix.setSummary(mAccount.getQuotePrefix());
         mAccountQuotePrefix.setText(mAccount.getQuotePrefix());
@@ -218,6 +238,37 @@ public class AccountSettings extends K9PreferenceActivity
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
+
+        mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
+
+        Preference.OnPreferenceChangeListener quoteStyleListener = new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final QuoteStyle style = QuoteStyle.valueOf(newValue.toString());
+                int index = mQuoteStyle.findIndexOfValue(newValue.toString());
+                mQuoteStyle.setSummary(mQuoteStyle.getEntries()[index]);
+                if (style == QuoteStyle.PREFIX)
+                {
+                    mComposingScreen.addPreference(mAccountQuotePrefix);
+                    mComposingScreen.addPreference(mReplyAfterQuote);
+                }
+                else if (style == QuoteStyle.HEADER)
+                {
+                    mComposingScreen.removePreference(mAccountQuotePrefix);
+                    mComposingScreen.removePreference(mReplyAfterQuote);
+                }
+                return true;
+            }
+        };
+        mQuoteStyle = (ListPreference) findPreference(PREFERENCE_QUOTE_STYLE);
+        mQuoteStyle.setValue(mAccount.getQuoteStyle().name());
+        mQuoteStyle.setSummary(mQuoteStyle.getEntry());
+        mQuoteStyle.setOnPreferenceChangeListener(quoteStyleListener);
+        // Call the onPreferenceChange() handler on startup to update the Preference dialogue based
+        // upon the existing quote style setting.
+        quoteStyleListener.onPreferenceChange(mQuoteStyle, mAccount.getQuoteStyle().name());
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
@@ -461,7 +512,7 @@ public class AccountSettings extends K9PreferenceActivity
             mLocalStorageProvider.setEntryValues(providerIds);
             mLocalStorageProvider.setEntries(providerLabels);
             mLocalStorageProvider.setValue(mAccount.getLocalStorageProviderId());
-            mLocalStorageProvider.setSummary(providers.get((Object)mAccount.getLocalStorageProviderId()));
+            mLocalStorageProvider.setSummary(providers.get(mAccount.getLocalStorageProviderId()));
 
             mLocalStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
             {
@@ -573,6 +624,9 @@ public class AccountSettings extends K9PreferenceActivity
 
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
+
+        mNotificationUnreadCount = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
+        mNotificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
 
         new PopulateFolderPrefsTask().execute();
 
@@ -710,12 +764,15 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
+        mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
@@ -907,6 +964,8 @@ public class AccountSettings extends K9PreferenceActivity
         List<? extends Folder> folders = new LinkedList<LocalFolder>();
         String[] allFolderValues;
         String[] allFolderLabels;
+
+        @Override
         protected Void doInBackground(Void... params)
         {
             try
@@ -938,7 +997,7 @@ public class AccountSettings extends K9PreferenceActivity
             return null;
         }
 
-
+        @Override
         protected void onPreExecute()
         {
             mAutoExpandFolder = (ListPreference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
@@ -957,6 +1016,8 @@ public class AccountSettings extends K9PreferenceActivity
             mTrashFolder.setEnabled(false);
 
         }
+
+        @Override
         protected void onPostExecute(Void res)
         {
             initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels,allFolderValues);
@@ -973,10 +1034,6 @@ public class AccountSettings extends K9PreferenceActivity
             mSentFolder.setEnabled(true);
             mSpamFolder.setEnabled(true);
             mTrashFolder.setEnabled(true);
-
         }
-
     }
-
-
 }
