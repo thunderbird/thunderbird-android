@@ -177,7 +177,6 @@
     <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_inbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in arrivo)</string>
     <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
@@ -429,7 +428,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="archive_folder_label">Cartella Archivio</string>
     <string name="spam_folder_label">Cartella Spam</string>
     <string name="outbox_folder_label">Cartella Posta in uscita</string>
-    <string name="inbox_folder_label">Cartella Posta in arrivo</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
     <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
