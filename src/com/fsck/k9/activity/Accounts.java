@@ -824,6 +824,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         String appName = getString(R.string.app_name);
         WebView wv = new WebView(this);
         String html = "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />" +
+                      "<img src=\"file:///android_res/drawable/icon.png\" alt=\""+appName+"\" />" +
                       "<h1>" + String.format(getString(R.string.about_title_fmt),
                                              "<a href=\"" + getString(R.string.app_webpage_url) + "\">" + appName + "</a>") + "</h1>" +
                       "<p>" + appName + " " +
@@ -833,7 +834,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                             getString(R.string.app_authors)) + "</p>" +
                       "<p>" + String.format(getString(R.string.app_revision_fmt),
                                             "<a href=\"" + getString(R.string.app_revision_url) + "\">" +
-                                            getString(R.string.app_revision_url) + "</a></p>");
+                                            getString(R.string.app_revision_url) + "</a></p>" +
+                      "<hr/><p>" + String.format(getString(R.string.app_copyright_fmt), "2011","2011")+ "</p>" +
+                      "<hr/><p>" + getString(R.string.app_license) + "</p>"
+
+
+
+                                            );
         wv.loadData(html, "text/html", "utf-8");
         new AlertDialog.Builder(this)
         .setView(wv)
