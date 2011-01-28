@@ -967,8 +967,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedHtmlContent.clearQuotedContent();
                 }
 
-                mQuotedHtmlContent.setUserContent(text);
-
                 // Set the insertion location based upon our reply after quote setting. Reply after
                 // quote makes no sense for HEADER style replies. In addition, add some extra
                 // separators between the composed message and quoted message depending on the quote
@@ -980,7 +978,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                     if (!isDraft)
                     {
-                        text = "<br><br>" + text;
+                        text = "<br clear=\"all\">" + text;
                     }
                 }
                 else
@@ -988,9 +986,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                     if (!isDraft)
                     {
-                        text += "<br>";
+                        text += "<br><br>";
                     }
                 }
+
+                mQuotedHtmlContent.setUserContent(text);
+
                 // All done.  Build the body.
                 TextBody body = new TextBody(mQuotedHtmlContent.toString());
                 // Save length of the body and its offset.  This is used when thawing drafts.
@@ -2955,7 +2956,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (quoteStyle == QuoteStyle.PREFIX)
         {
             StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
-            header.append("<br><div class=\"gmail_quote\">");
+            header.append("<div class=\"gmail_quote\">");
             // Remove all trailing newlines so that the quote starts immediately after the header.  "Be like Gmail!"
             header.append(HtmlConverter.textToHtmlFragment(String.format(
                               getString(R.string.message_compose_reply_header_fmt).replaceAll("\n$", ""),
