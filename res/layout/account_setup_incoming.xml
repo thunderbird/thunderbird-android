@@ -69,7 +69,6 @@
             android:layout_width="fill_parent"
             android:contentDescription="@string/account_setup_incoming_security_label" />
         <TextView
-
             android:id="@+id/account_auth_type_label"
             android:text="@string/account_setup_incoming_auth_type_label"
             android:layout_height="wrap_content"
@@ -122,10 +121,42 @@
                 android:layout_width="wrap_content"
                 android:text="@string/account_setup_incoming_subscribed_folders_only_label"
             />
-
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/webdav_path_prefix_section"
+            android:id="@+id/webdav_advanced_header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/advanced"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"
+                android:layout_marginTop="4px" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/webdav_mailbox_alias_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/account_setup_incoming_webdav_mailbox_path_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/webdav_mailbox_path"
+                android:hint="@string/account_setup_incoming_webdav_mailbox_path_hint"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/webdav_owa_path_section"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -137,14 +168,14 @@
                 android:textColor="?android:attr/textColorPrimary" />
             <EditText
                 android:id="@+id/webdav_path_prefix"
-                android:hint="@string/account_setup_incoming_imap_path_prefix_hint"
+                android:hint="@string/account_setup_incoming_webdav_path_prefix_hint"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:contentDescription="@string/account_setup_incoming_webdav_path_prefix_label" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/webdav_path_debug_section"
+            android:id="@+id/webdav_auth_path_section"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -161,19 +192,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:contentDescription="@string/account_setup_incoming_webdav_auth_path_label" />
-            <TextView
-                android:text="@string/account_setup_incoming_webdav_mailbox_path_label"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary" />
-            <EditText
-                android:id="@+id/webdav_mailbox_path"
-                android:hint="@string/account_setup_incoming_webdav_mailbox_path_hint"
-                android:singleLine="true"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label" />
         </LinearLayout>
         <TextView
             android:id="@+id/compression_label"

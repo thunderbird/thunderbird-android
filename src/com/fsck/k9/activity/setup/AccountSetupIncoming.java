@@ -263,15 +263,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
                 mAccountPorts = popPorts;
                 mAccountSchemes = popSchemes;
-                findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-
-
             }
             else if (uri.getScheme().startsWith("imap"))
             {
@@ -283,15 +284,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
-                findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+
+                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
 
-                if (! Intent.ACTION_EDIT.equals(getIntent().getAction()))
+                if (!Intent.ACTION_EDIT.equals(getIntent().getAction()))
                 {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-
             }
             else if (uri.getScheme().startsWith("webdav"))
             {
@@ -372,14 +375,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
 
-
             validateFields();
         }
         catch (Exception e)
         {
             failure(e);
         }
-
     }
 
     @Override
