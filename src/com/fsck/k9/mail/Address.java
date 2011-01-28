@@ -47,21 +47,49 @@ public class Address
 
     public Address(String address, String personal)
     {
-        this.mAddress = address;
-        if ("".equals(personal))
-        {
-            personal = null;
-        }
-        if (personal!=null)
-        {
-            personal = personal.trim();
-        }
-        this.mPersonal = personal;
+        this(address, personal, true);
     }
 
     public Address(String address)
     {
-        this.mAddress = address;
+        this(address, null);
+    }
+
+    private Address(String address, String personal, boolean parse)
+    {
+        if (parse)
+        {
+            Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(address);
+            if (tokens.length > 0)
+            {
+                Rfc822Token token = tokens[0];
+                mAddress = token.getAddress();
+                String name = token.getName();
+                if ((name != null) && !("".equals(name)))
+                {
+                    /*
+                     * Don't use the "personal" argument if "address" is of the form:
+                     * James Bond <james.bond@mi6.uk>
+                     *
+                     * See issue 2920
+                     */
+                    mPersonal = name;
+                }
+                else
+                {
+                    mPersonal = (personal == null) ? null : personal.trim();
+                }
+            }
+            else
+            {
+                // This should be an error
+            }
+        }
+        else
+        {
+            mAddress = address;
+            mPersonal = personal;
+        }
     }
 
     public String getAddress()
@@ -85,7 +113,7 @@ public class Address
         {
             personal = null;
         }
-        if (personal!=null)
+        if (personal != null)
         {
             personal = personal.trim();
         }
@@ -102,17 +130,15 @@ public class Address
     public static Address[] parseUnencoded(String addressList)
     {
         List<Address> addresses = new ArrayList<Address>();
-        if (addressList!=null
-                && !"".equals(addressList))
+        if ((addressList != null) && !("".equals(addressList)))
         {
-            Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(addressList);
+            Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens)
             {
                 String address = token.getAddress();
-                if (address!=null
-                        && !"".equals(address))
+                if ((address != null) && !("".equals(address)))
                 {
-                    addresses.add(new Address(token.getAddress(), token.getName()));
+                    addresses.add(new Address(token.getAddress(), token.getName(), false));
                 }
             }
         }
@@ -129,7 +155,7 @@ public class Address
     public static Address[] parse(String addressList)
     {
         ArrayList<Address> addresses = new ArrayList<Address>();
-        if (addressList == null && !"".equals(addressList))
+        if ((addressList == null) && !("".equals(addressList)))
         {
             return EMPTY_ADDRESS_ARRAY;
         }
@@ -142,25 +168,18 @@ public class Address
                 if (address instanceof Mailbox)
                 {
                     Mailbox mailbox = (Mailbox)address;
-                    if (mailbox.getName() != null )
-                    {
-                        addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName()));
-                    }
-                    else
-                    {
-                        addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
-                    }
+                    addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 }
                 else
                 {
                     Log.e(K9.LOG_TAG, "Unknown address type from Mime4J: "
                           + address.getClass().toString());
                 }
-
             }
         }
         catch (MimeException pe)
         {
+            Log.e(K9.LOG_TAG, "MimeException in Address.parse()", pe);
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
