@@ -206,8 +206,8 @@
     <string name="accounts_welcome">
 K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメールクライアントを元に作成したAndroid用のオープンソースのメールクライアントです。
 \n
-\nK-9での改良された機能:
-\n * IMAP IDLE利用したプッシュメール
+\nK-9で改良された機能:
+\n * IMAP IDLEを利用したプッシュメール
 \n * パフォーマンス改善
 \n * メッセージ整理
 \n * 電子メール署名
@@ -359,11 +359,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_basics_email_error_invalid_fmt">入力された <xliff:g id="email">%s</xliff:g> はメールアドレスとして正しくありません</string>
     <string name="account_setup_basics_email_error_duplicate_fmt">入力された <xliff:g id="email">%s</xliff:g> 既に登録されています</string>
     <string name="account_setup_basics_password_hint">パスワード</string>
-    <string name="account_setup_basics_default_label">送信用として利用されるメールアドレス</string>
+    <string name="account_setup_basics_default_label">既定でこのアカウントからメールを送信する</string>
     <string name="account_setup_basics_manual_setup_action">手動設定</string>
 
     <string name="account_setup_check_settings_title"></string>
-    <string name="account_setup_check_settings_retr_info_msg">アカウント情報を訂正してください\u2026</string>
+<string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
@@ -707,7 +707,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_composition_title">メール本文構成管理</string>
     <string name="account_settings_composition_label">本文構成</string>
-    <string name="account_settings_composition_summary">送信元 Bcc 署名の標準設定</string>
+    <string name="account_settings_composition_summary">送信元、Bcc、署名の標準設定</string>
 
     <string name="account_settings_identities_label">差出人情報管理</string>
     <string name="account_settings_identities_summary">送信者名、送信者アドレスと署名を行う</string>
@@ -719,7 +719,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="edit_identity_title">差出人情報管理</string>
     <string name="new_identity_action">差出人情報の新規作成</string>
 
-    <string name="account_settings_always_bcc_label">常に Bcc を付与する宛先</string>
+    <string name="account_settings_always_bcc_label">Bcc</string>
     <string name="account_settings_always_bcc_summary">送信メールの複製をこのアドレス宛に送信する</string>
 
     <string name="manage_identities_edit_action">編集</string>
@@ -923,7 +923,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="folder_settings_include_in_integrated_inbox_label">統合化</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">すべてのメッセージを統合フォルダで表示</string>
 
-    <string name="account_settings_searchable_label">フォルダ検索</string>
+    <string name="account_settings_searchable_label">検索対象フォルダ</string>
     <string name="account_settings_searchable_all">すべて</string>
     <string name="account_settings_searchable_displayable">表示可能範囲</string>
     <string name="account_settings_searchable_none">設定しない</string>
