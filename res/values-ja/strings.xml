@@ -3,10 +3,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <string name="app_libraries">以下のライブラリを利用しています: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">絵文字アイコン: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">添付ファイルを開く</string>
     <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
@@ -385,7 +389,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_incoming_password_label">パスワード</string>
     <string name="account_setup_incoming_pop_server_label">POP3 サーバ</string>
     <string name="account_setup_incoming_imap_server_label">IMAP サーバ</string>
-    <string name="account_setup_incoming_webdav_server_label">WebDav(Exchange) サーバ</string>
+    <string name="account_setup_incoming_webdav_server_label">Exchange サーバ</string>
     <string name="account_setup_incoming_port_label">ポート</string>
     <string name="account_setup_incoming_security_label">保護された接続</string>
     <string name="account_setup_incoming_auth_type_label">認証タイプ</string>
@@ -432,12 +436,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
     <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
 
-    <string name="account_setup_incoming_webdav_path_prefix_label">WebDav(Exchange) パス</string>
+    <string name="account_setup_incoming_webdav_path_prefix_label">OWA パス</string>
     <string name="account_setup_incoming_webdav_path_prefix_hint">オプション</string>
 
     <string name="account_setup_incoming_webdav_auth_path_label">認証パス</string>
     <string name="account_setup_incoming_webdav_auth_path_hint">オプション</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_label">メールボックスパス</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">メールボックスエイリアス</string>
     <string name="account_setup_incoming_webdav_mailbox_path_hint">オプション</string>
 
     <string name="account_setup_outgoing_title">送信メールサーバ設定</string>
