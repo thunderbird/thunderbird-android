@@ -84,7 +84,7 @@ public class DecoderUtil
         byte[] bytes;
         try
         {
-            bytes = encodedWord.getBytes("US-ASCII");
+            bytes = sb.toString().getBytes("US-ASCII");
         }
         catch (UnsupportedEncodingException e)
         {
@@ -213,7 +213,7 @@ public class DecoderUtil
 
         if (encoding.equalsIgnoreCase("Q"))
         {
-            return DecoderUtil.decodeQ(encodedText, charset);
+            return decodeQ(encodedText, charset);
         }
         else if (encoding.equalsIgnoreCase("B"))
         {
