@@ -833,7 +833,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         WebView wv = new WebView(this);
         StringBuilder html = new StringBuilder()
             .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-            .append("<img src=\"icon.png\" alt=\"").append(appName).append("\"/>")
+            .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
             .append("<h1>")
                 .append(String.format(getString(R.string.about_title_fmt),
                         "<a href=\"" + getString(R.string.app_webpage_url)) + "\">")
