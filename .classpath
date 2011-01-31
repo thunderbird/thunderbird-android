@@ -5,6 +5,7 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="lib" path="libs/apache-mime4j-core-0.7-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/apache-mime4j-dom-0.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/compile-only-libs"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
