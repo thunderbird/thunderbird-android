@@ -222,10 +222,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 \n * メッセージのソート
 \n * ...他にもたくさんあります
 \n
-\nK-9 は hotmail アカウントと、多くのメールクライアントと同様 Microsoft Exchange のいくつかの気まぐれをサポートしません。
+\nK-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
 \n
-\nバグレポートや新機能の貢献や質問がある場合 http://code.google.com/p/k9mail
-\n日本語版についての貢献や質問がある場合 http://groups.google.co.jp/group/k9mail_ja/
+\nバグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。
+\n日本語で質問などがある場合は http://groups.google.co.jp/group/k9mail_ja/ を参照してください。
 
 </string>
 
