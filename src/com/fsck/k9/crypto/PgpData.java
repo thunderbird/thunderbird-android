@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class PgpData implements Serializable
 {
+    private static final long serialVersionUID = 6314045536470848410L;
     protected long mEncryptionKeyIds[] = null;
     protected long mSignatureKeyId = 0;
     protected String mSignatureUserId = null;

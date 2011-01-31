@@ -423,6 +423,8 @@ public class ImapResponseParser
      */
     public class ImapList extends ArrayList<Object>
     {
+        private static final long serialVersionUID = -4067248341419617583L;
+
         public ImapList getList(int index)
         {
             return (ImapList)get(index);
@@ -580,6 +582,10 @@ public class ImapResponseParser
      */
     public class ImapResponse extends ImapList
     {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 6886458551615975669L;
         private boolean mCompleted;
         private IImapResponseCallback mCallback;
 

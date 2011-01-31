@@ -236,6 +236,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     static class Attachment implements Serializable
     {
+        private static final long serialVersionUID = 3642382876618963734L;
         public String name;
         public String contentType;
         public long size;

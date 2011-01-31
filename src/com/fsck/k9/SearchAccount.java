@@ -12,6 +12,7 @@ import com.fsck.k9.mail.Flag;
 
 public class SearchAccount implements BaseAccount, SearchSpecification, Serializable
 {
+    private static final long serialVersionUID = -4388420303235543976L;
     private Flag[] mRequiredFlags = null;
     private Flag[] mForbiddenFlags = null;
     private String email = null;

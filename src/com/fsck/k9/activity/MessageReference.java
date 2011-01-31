@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MessageReference implements Serializable
 {
+    private static final long serialVersionUID = -1625198750239083389L;
     public String accountUuid;
     public String folderName;
     public String uid;

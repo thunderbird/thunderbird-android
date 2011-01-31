@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Identity implements Serializable
 {
+    private static final long serialVersionUID = -1666669071480985760L;
     private String mDescription;
     private String mName;
     private String mEmail;

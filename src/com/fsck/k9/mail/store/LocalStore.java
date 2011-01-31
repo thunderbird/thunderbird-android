@@ -65,6 +65,8 @@ import com.fsck.k9.provider.AttachmentProvider;
 public class LocalStore extends Store implements Serializable
 {
 
+    private static final long serialVersionUID = -5142141896809423072L;
+
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
     /**
@@ -1286,6 +1288,7 @@ public class LocalStore extends Store implements Serializable
 
     public class LocalFolder extends Folder implements Serializable
     {
+        private static final long serialVersionUID = -1973296520918624767L;
         private String mName = null;
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;

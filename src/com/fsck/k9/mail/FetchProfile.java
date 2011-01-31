@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class FetchProfile extends ArrayList<FetchProfile.Item>
 {
+    private static final long serialVersionUID = -5520076119120964166L;
+
     /**
      * Default items available for pre-fetching. It should be expected that any
      * item fetched by using these items could potentially include all of the
