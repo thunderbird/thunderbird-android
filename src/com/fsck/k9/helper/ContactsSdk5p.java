@@ -36,11 +36,11 @@ public class ContactsSdk5p extends ContactsSdk5
         final String filter = constraint.toString();
         final Uri uri = Uri.withAppendedPath(Email.CONTENT_FILTER_URI, Uri.encode(filter));
         final Cursor cursor = mContentResolver.query(
-                                    uri,
-                                    new String[] {Email.CONTACT_ID},
-                                    null,
-                                    null,
-                                    null);
+                                  uri,
+                                  new String[] {Email.CONTACT_ID},
+                                  null,
+                                  null,
+                                  null);
 
         final StringBuilder matches = new StringBuilder();
         if ((cursor != null) && (cursor.getCount() > 0))
@@ -64,29 +64,29 @@ public class ContactsSdk5p extends ContactsSdk5
         // Find contacts with email addresses that have been found using
         // Email.CONTENT_FILTER_URI above or ones that have a matching phonetic name.
         final String where = Data.MIMETYPE + " = '" + Email.CONTENT_ITEM_TYPE + "'" +
-                " AND " +
-                "(" +
-                // Match if found by Email.CONTENT_FILTER_URI
-                Email.CONTACT_ID + " IN (" + matches.toString() + ")" +
-                " OR " +
-                // Match if phonetic given name starts with "constraint"
-                StructuredName.PHONETIC_GIVEN_NAME + " LIKE ?" +
-                " OR " +
-                // Match if phonetic given name contains a word that starts with "constraint"
-                StructuredName.PHONETIC_GIVEN_NAME + " LIKE ?" +
-                " OR " +
-                // Match if phonetic middle name starts with "constraint"
-                StructuredName.PHONETIC_MIDDLE_NAME + " LIKE ?" +
-                " OR " +
-                // Match if phonetic middle name contains a word that starts with "constraint"
-                StructuredName.PHONETIC_MIDDLE_NAME + " LIKE ?" +
-                " OR " +
-                // Match if phonetic family name starts with "constraint"
-                StructuredName.PHONETIC_FAMILY_NAME + " LIKE ?" +
-                " OR " +
-                // Match if phonetic family name contains a word that starts with "constraint"
-                StructuredName.PHONETIC_FAMILY_NAME + " LIKE ?" +
-                ")";
+                             " AND " +
+                             "(" +
+                             // Match if found by Email.CONTENT_FILTER_URI
+                             Email.CONTACT_ID + " IN (" + matches.toString() + ")" +
+                             " OR " +
+                             // Match if phonetic given name starts with "constraint"
+                             StructuredName.PHONETIC_GIVEN_NAME + " LIKE ?" +
+                             " OR " +
+                             // Match if phonetic given name contains a word that starts with "constraint"
+                             StructuredName.PHONETIC_GIVEN_NAME + " LIKE ?" +
+                             " OR " +
+                             // Match if phonetic middle name starts with "constraint"
+                             StructuredName.PHONETIC_MIDDLE_NAME + " LIKE ?" +
+                             " OR " +
+                             // Match if phonetic middle name contains a word that starts with "constraint"
+                             StructuredName.PHONETIC_MIDDLE_NAME + " LIKE ?" +
+                             " OR " +
+                             // Match if phonetic family name starts with "constraint"
+                             StructuredName.PHONETIC_FAMILY_NAME + " LIKE ?" +
+                             " OR " +
+                             // Match if phonetic family name contains a word that starts with "constraint"
+                             StructuredName.PHONETIC_FAMILY_NAME + " LIKE ?" +
+                             ")";
         final String filter1 = constraint.toString() + "%";
         final String filter2 = "% " + filter1;
         final String[] args = new String[] {filter1, filter2, filter1, filter2, filter1, filter2};

@@ -1288,6 +1288,9 @@ public class LocalStore extends Store implements Serializable
 
     public class LocalFolder extends Folder implements Serializable
     {
+        /**
+         *
+         */
         private static final long serialVersionUID = -1973296520918624767L;
         private String mName = null;
         private long mFolderId = -1;

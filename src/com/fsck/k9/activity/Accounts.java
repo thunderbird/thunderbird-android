@@ -819,7 +819,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         return true;
     }
 
-    private static String[][] USED_LIBRARIES = new String[][] {
+    private static String[][] USED_LIBRARIES = new String[][]
+    {
         new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
         new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
         new String[] {"Commons IO", "http://commons.apache.org/io/"},
@@ -832,30 +833,30 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         String year = "2011";
         WebView wv = new WebView(this);
         StringBuilder html = new StringBuilder()
-            .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-            .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
-            .append("<h1>")
-                .append(String.format(getString(R.string.about_title_fmt),
-                        "<a href=\"" + getString(R.string.app_webpage_url)) + "\">")
-                    .append(appName)
-                .append("</a>")
-            .append("</h1><p>")
-                .append(appName)
-                .append(" ")
-                .append(String.format(getString(R.string.debug_version_fmt), getVersionNumber()))
-            .append("</p><p>")
-                .append(String.format(getString(R.string.app_authors_fmt),
-                        getString(R.string.app_authors)))
-            .append("</p><p>")
-                .append(String.format(getString(R.string.app_revision_fmt),
-                        "<a href=\"" + getString(R.string.app_revision_url) + "\">" +
-                            getString(R.string.app_revision_url) +
-                        "</a>"))
-            .append("</p><hr/><p>")
-                .append(String.format(getString(R.string.app_copyright_fmt), year, year))
-            .append("</p><hr/><p>")
-                .append(getString(R.string.app_license))
-            .append("</p><hr/><p>");
+        .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
+        .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
+        .append("<h1>")
+        .append(String.format(getString(R.string.about_title_fmt),
+                              "<a href=\"" + getString(R.string.app_webpage_url)) + "\">")
+        .append(appName)
+        .append("</a>")
+        .append("</h1><p>")
+        .append(appName)
+        .append(" ")
+        .append(String.format(getString(R.string.debug_version_fmt), getVersionNumber()))
+        .append("</p><p>")
+        .append(String.format(getString(R.string.app_authors_fmt),
+                              getString(R.string.app_authors)))
+        .append("</p><p>")
+        .append(String.format(getString(R.string.app_revision_fmt),
+                              "<a href=\"" + getString(R.string.app_revision_url) + "\">" +
+                              getString(R.string.app_revision_url) +
+                              "</a>"))
+        .append("</p><hr/><p>")
+        .append(String.format(getString(R.string.app_copyright_fmt), year, year))
+        .append("</p><hr/><p>")
+        .append(getString(R.string.app_license))
+        .append("</p><hr/><p>");
 
         StringBuilder libs = new StringBuilder().append("<ul>");
         for (String[] library : USED_LIBRARIES)
@@ -865,12 +866,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         libs.append("</ul>");
 
         html.append(String.format(getString(R.string.app_libraries), libs.toString()))
-            .append("</p><hr/><p>")
-                .append(String.format(getString(R.string.app_emoji_icons),
-                        "<div>TypePad \u7d75\u6587\u5b57\u30a2\u30a4\u30b3\u30f3\u753b\u50cf " +
-                        "(<a href=\"http://typepad.jp/\">Six Apart Ltd</a>) / " +
-                        "<a href=\"http://creativecommons.org/licenses/by/2.1/jp/\">CC BY 2.1</a></div>"))
-            .append("</p>");
+        .append("</p><hr/><p>")
+        .append(String.format(getString(R.string.app_emoji_icons),
+                              "<div>TypePad \u7d75\u6587\u5b57\u30a2\u30a4\u30b3\u30f3\u753b\u50cf " +
+                              "(<a href=\"http://typepad.jp/\">Six Apart Ltd</a>) / " +
+                              "<a href=\"http://creativecommons.org/licenses/by/2.1/jp/\">CC BY 2.1</a></div>"))
+        .append("</p>");
 
         wv.loadDataWithBaseURL("file:///android_res/drawable/", html.toString(), "text/html", "utf-8", null);
         new AlertDialog.Builder(this)
