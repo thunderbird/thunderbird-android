@@ -673,7 +673,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
 
     <string name="account_recreate_dlg_title">Odtwórz konto</string>
-    <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Wszystkie wiadomości, załączników, folderów i ustawień folderu \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
 
     <string name="account_clear_dlg_title">Wyczyść konto</string>
     <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>

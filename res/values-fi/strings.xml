@@ -733,7 +733,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail ohjelmasta.</string>
 
     <string name="account_recreate_dlg_title">Luo tili uudelleen</string>
-    <string name="account_recreate_dlg_instructions_fmt">Kaikki tiedot tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Kaikki viestit, liitetiedostot, kansioiden ja asetusten \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
 
     <string name="account_clear_dlg_title">Siivoa Tili</string>
     <string name="account_clear_dlg_instructions_fmt">Kaikki viestit tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>

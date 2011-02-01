@@ -768,7 +768,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Recrear cuenta</string>
-    <string name="account_recreate_dlg_instructions_fmt">Los datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su Configuración</string>
+    <string name="account_recreate_dlg_instructions_fmt">Todos los mensajes, archivos adjuntos, carpetas y configuración de las carpetas de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su Configuración</string>
 
     <string name="account_clear_dlg_title">Limpiar cuenta</string>
     <string name="account_clear_dlg_instructions_fmt">Todos los mensajes en \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero la Configuración de la cuenta se mantendrá</string>
