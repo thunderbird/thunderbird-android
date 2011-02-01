@@ -9,6 +9,7 @@ import org.apache.james.mime4j.stream.RawField;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
 import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.stream.MimeEntityConfig;
 import org.apache.james.mime4j.dom.field.DateTimeField;
 import org.apache.james.mime4j.dom.field.Field;
 import org.apache.james.mime4j.field.DefaultFieldParser;
@@ -76,7 +77,11 @@ public class MimeMessage extends Message
 
         mBody = null;
 
-        MimeStreamParser parser = new MimeStreamParser();
+        MimeEntityConfig parserConfig  = new MimeEntityConfig();
+        parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
+        parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
+                                         // REALLY long References: headers
+        MimeStreamParser parser = new MimeStreamParser(parserConfig);
         parser.setContentHandler(new MimeMessageBuilder());
         try
         {
