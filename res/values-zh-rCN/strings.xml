@@ -737,7 +737,7 @@
     <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="account_clear_dlg_title">清除账户</string>
-    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”所有邮件，附件，文件夹和文件夹设置邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
+    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”所有邮件，附件，文件夹和文件夹设置将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="provider_note_live">只有一些“高级账户”允许POP访问并允许该程序连接。如果您使用了正确的用户名和密码却仍旧无法登录，则您可能没有购买这些“高级账户”。请使用浏览器来访问这些账户。</string>
 
