@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -673,6 +674,10 @@ public class WebDavStore extends Store
                 throw new IOException("Error with code " + info.statusCode + " during request processing: " +
                                       response.getStatusLine().toString());
             }
+        }
+        catch (SSLException e)
+        {
+            throw new CertificateValidationException(e.getMessage(), e);
         }
         catch (IOException ioe)
         {
