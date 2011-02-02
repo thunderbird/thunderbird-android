@@ -3,10 +3,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_license">Rilasciato sotto Licenza Apache, Versione 2.0.</string>
     <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
-    <string name="app_revision_fmt">Informazioni sulla versione: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision_fmt">Informazioni: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <string name="app_libraries">Ci avvaliamo delle seguenti librerie di terze parti: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Icone emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">Leggi gli allegati</string>
     <string name="read_attachment_desc">Permetti all\'applicazione di leggere gli allegati.</string>
@@ -95,14 +99,14 @@
     <string name="mark_all_as_read_dlg_instructions_fmt">Segnare tutti i messaggi in \'<xliff:g id="folder">%s</xliff:g>\' come letti?  (compresi
     i messaggi nella cartella che non vengono visualizzati in K-9)</string>
 
-    <string name="flag_action">Metti stella</string>
+    <string name="flag_action">Metti in evidenza</string>
     <string name="unflag_action">Togli stella</string>
     <string name="copy_action">Copia</string>
     <string name="show_full_header_action">Mostra intestazione completa</string>
     <string name="hide_full_header_action">Nascondi intestazione completa</string>
     <string name="select_text_action">Seleziona testo</string>
 
-    <string name="mark_as_unread_action">Segna come non letto</string>
+    <string name="mark_as_unread_action">Segna come da leggere</string>
     <string name="move_to_action">Sposta in</string>
     <string name="folders_action">Cartelle</string>
     <string name="view_hide_details_action">Mostra/nascondi dettagli</string>
@@ -136,7 +140,8 @@
 
     <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
 
-    <string name="load_more_messages_fmt">Scarica altri <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
+    <string name="load_more_messages_fmt">Scarica altri 
+	<xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -245,7 +250,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Elimina</string>
     <string name="message_list_mark_read_action">Segna come letto</string>
-    <string name="message_list_mark_unread_action">Segna come non letto</string>
+    <string name="message_list_mark_unread_action">Segna come da leggere</string>
     <string name="message_list_flag_action">Metti stella</string>
     <string name="message_list_unflag_action">Togli stella</string>
 
@@ -256,6 +261,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_compose_content_hint">Testo del messaggio</string>
     <string name="message_compose_quote_header_separator">-------- Messaggio originale --------</string>
     <string name="message_compose_quote_header_subject">Oggetto:</string>
+	<string name="message_compose_quote_header_send_date">Inviato il:</string>
     <string name="message_compose_quote_header_from">Da:</string>
     <string name="message_compose_quote_header_to">A:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
@@ -320,6 +326,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_touchable_label">Anteprima messaggi</string>
     <string name="global_settings_touchable_summary">Voci di elenco più ampie con anteprima messaggio</string>
     <string name="global_settings_preview_lines_label">Righe di anteprima</string>
+	<string name="global_settings_show_correspondent_names_label">Mostra nome mittente</string>
+    <string name="global_settings_show_correspondent_names_summary">Mostra il nome del mittente al posto dell\'indirizzo e-mail</string>
     <string name="global_settings_show_contact_name_label">Mostra nomi dei contatti</string>
     <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla Rubrica quando disponibile</string>
     <string name="global_settings_registered_name_color_label">Colora contatti</string>
@@ -563,7 +571,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_message_format_text">Plain Text (verranno rimosse immagini e formattazione)</string>
     <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
 
-    <string name="account_settings_quote_style_label">Aspetto testo citato nelle risposte</string>
+    <string name="account_settings_quote_style_label">Aspetto testo quotato nelle risposte</string>
     <string name="account_settings_quote_style_prefix">Prefisso (come Gmail, Pine)</string>
     <string name="account_settings_quote_style_header">Intestazione (come Outlook, Yahoo!, Hotmail)</string>
 
@@ -771,7 +779,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="sort_by_sender">Mittente</string>
     <string name="sort_by_subject">Oggetto</string>
     <string name="sort_by_flag">Stella</string>
-    <string name="sort_by_unread">Letto/non letto</string>
+    <string name="sort_by_unread">Letto/da leggere</string>
     <string name="sort_by_attach">Allegati</string>
     <string name="message_web_view_error">%s</string>
 
@@ -859,7 +867,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
-      http://developer.android.com/reference/java/text/SimpleDateFormat.html
     -->
     <string name="date_format_short">SHORT</string>
     <string name="date_format_medium">MEDIUM</string>
