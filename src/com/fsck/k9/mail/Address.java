@@ -203,7 +203,7 @@ public class Address
     @Override
     public String toString()
     {
-        if (mPersonal != null)
+        if (mPersonal != null && !mPersonal.equals(""))
         {
             return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
         }
