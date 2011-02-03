@@ -534,22 +534,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Log.d(K9.LOG_TAG, "action = " + action + ", account = " + mMessageReference.accountUuid + ", folder = " + mMessageReference.folderName + ", sourceMessageUid = " + mMessageReference.uid);
             */
 
-            if (ACTION_REPLY.equals(action) ||
-                    ACTION_REPLY_ALL.equals(action))
-            {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Setting message ANSWERED flag to true");
-
-                // TODO: Really, we should wait until we send the message, but that would require saving the original
-                // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
-
-                final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-                final String folderName = mMessageReference.folderName;
-                final String sourceMessageUid = mMessageReference.uid;
-                MessagingController.getInstance(getApplication()).setFlag(account, folderName, new String[] { sourceMessageUid }, Flag.ANSWERED, true);
-            }
-
             updateTitle();
+        }
+
+        if (ACTION_REPLY.equals(action) ||
+                ACTION_REPLY_ALL.equals(action))
+        {
+            mMessageReference.flag = Flag.ANSWERED;
         }
 
         if (ACTION_REPLY.equals(action) ||
@@ -1245,6 +1236,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    // Version identifier for "new style" identity. ! is an impossible value in base64 encoding, so we
+    // use that to determine which version we're in.
+    private static final String IDENTITY_VERSION_1 = "!";
+
     /**
      * Build the identity header string. This string contains metadata about a draft message to be
      * used upon loading a draft for composition. This should be generated at the time of saving a
@@ -1284,9 +1279,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             uri.appendQueryParameter(IdentityField.EMAIL.value(), mIdentity.getEmail());
         }
 
-        // Tag this is as a "new style" identity. ! is an impossible value in base64 encoding, so we
-        // use that to determine which version we're in.
-        String k9identity = "!" + uri.build().getEncodedQuery();
+        if (mMessageReference != null)
+        {
+            uri.appendQueryParameter(IdentityField.ORIGINAL_MESSAGE.value(), mMessageReference.toIdentityString());
+        }
+
+        String k9identity = IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
         if (K9.DEBUG)
         {
@@ -1313,7 +1311,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return identity;
         }
 
-        if (identityString.charAt(0) == '!' && identityString.length() > 2)
+        // Check to see if this is a "next gen" identity.
+        if (identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) && identityString.length() > 2)
         {
             Uri.Builder builder = new Uri.Builder();
             builder.encodedQuery(identityString.substring(1));  // Need to cut off the ! at the beginning.
@@ -1499,6 +1498,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
         }
         sendMessage();
+
+        if (mMessageReference.flag != null)
+        {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.folderName + ", " + mMessageReference.uid + ") flag to " + mMessageReference.flag);
+
+            final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+            final String folderName = mMessageReference.folderName;
+            final String sourceMessageUid = mMessageReference.uid;
+            MessagingController.getInstance(getApplication()).setFlag(account, folderName, new String[]{sourceMessageUid}, mMessageReference.flag, true);
+        }
+
         mDraftNeedsSaving = false;
         finish();
     }
@@ -2220,8 +2231,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null)
                 {
                     k9identity = parseIdentityHeader(message.getHeader(K9.IDENTITY_HEADER)[0]);
-                    if(K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Parsed identity: " + k9identity.toString());
                 }
 
                 Identity newIdentity = new Identity();
@@ -2255,6 +2264,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 else
                 {
                     newIdentity.setEmail(mIdentity.getEmail());
+                }
+
+                if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE))
+                {
+                    mMessageReference = null;
+                    try
+                    {
+                        mMessageReference = new MessageReference(k9identity.get(IdentityField.ORIGINAL_MESSAGE));
+                    } catch (MessagingException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Could not decode message reference in identity.", e);
+                    }
                 }
 
                 mIdentity = newIdentity;
