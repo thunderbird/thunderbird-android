@@ -66,6 +66,13 @@
                 android:key="animations"
                 android:title="@string/animations_title"
                 android:summary="@string/animations_summary" />
+                
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="high_density"
+                android:title="@string/high_density_title"
+                android:summary="@string/high_density_summary" />
+                
 
         </PreferenceCategory>
 

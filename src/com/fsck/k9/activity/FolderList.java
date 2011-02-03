@@ -1315,16 +1315,14 @@ public class FolderList extends K9ListActivity
         {
             FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
             View view;
-            if ((convertView != null) && (convertView.getId() == R.layout.folder_list_item))
+            if (convertView != null)
             {
                 view = convertView;
             }
             else
             {
                 view = mInflater.inflate(R.layout.folder_list_item, parent, false);
-                view.setId(R.layout.folder_list_item);
             }
-
 
             FolderViewHolder holder = (FolderViewHolder) view.getTag();
 
@@ -1337,6 +1335,7 @@ public class FolderList extends K9ListActivity
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
+                holder.folderListItemLayout = (LinearLayout)view.findViewById(R.id.folder_list_item_layout);
                 holder.rawFolderName = folder.name;
 
                 view.setTag(holder);
@@ -1405,6 +1404,10 @@ public class FolderList extends K9ListActivity
             {
                 holder.flaggedMessageCount.setVisibility(View.GONE);
             }
+            if (K9.isHighDensity() && holder.folderListItemLayout != null)
+            {
+                holder.folderListItemLayout.setMinimumHeight(0);
+            }
             holder.activeIcons.setOnClickListener(new OnClickListener()
             {
                 public void onClick(View v)
@@ -1450,6 +1453,7 @@ public class FolderList extends K9ListActivity
         public RelativeLayout activeIcons;
         public String rawFolderName;
         public View chip;
+        public LinearLayout folderListItemLayout;
     }
 
     private class FolderClickListener implements OnClickListener

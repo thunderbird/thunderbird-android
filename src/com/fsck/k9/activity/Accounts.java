@@ -974,6 +974,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 holder.chip = view.findViewById(R.id.chip);
                 holder.folders = (ImageButton) view.findViewById(R.id.folders);
+                holder.accountsItemLayout = (LinearLayout)view.findViewById(R.id.accounts_item_layout);
 
                 view.setTag(holder);
             }
@@ -1080,8 +1081,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
             holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
 
-
-            if (account instanceof SearchAccount)
+            if (K9.isHighDensity())
+            {
+                holder.accountsItemLayout.setMinimumHeight(0);
+            }
+            if (account instanceof SearchAccount || K9.isHighDensity())
             {
 
                 holder.folders.setVisibility(View.GONE);
@@ -1111,6 +1115,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public RelativeLayout activeIcons;
             public View chip;
             public ImageButton folders;
+            public LinearLayout accountsItemLayout;
         }
     }
     private Flag[] combine(Flag[] set1, Flag[] set2)

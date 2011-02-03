@@ -176,6 +176,9 @@ public class K9 extends Application
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
+    private static boolean highDensity = false;
+
+    
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -451,6 +454,8 @@ public class K9 extends Application
         editor.putBoolean("confirmDelete", mConfirmDelete);
 
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+        
+        editor.putBoolean("highDensity", highDensity);
 
         fontSizes.save(editor);
     }
@@ -501,6 +506,8 @@ public class K9 extends Application
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
 
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+        
+        highDensity = sprefs.getBoolean("highDensity", false);
 
         fontSizes.load(sprefs);
 
@@ -1033,6 +1040,16 @@ public class K9 extends Application
     public static void setKeyguardPrivacy(final boolean state)
     {
         mKeyguardPrivacy = state;
+    }
+    
+    public static boolean isHighDensity()
+    {
+        return highDensity;
+    }
+
+    public static void setHighDensity(boolean highDensity)
+    {
+        K9.highDensity = highDensity;
     }
 
     /**
