@@ -47,19 +47,30 @@ public class MessageReference implements Serializable
         {
             // Split the identity, stripping away the first two characters representing the version and delimiter.
             StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
-            if (tokens.countTokens() == 4)
+            if (tokens.countTokens() >= 3)
             {
                 accountUuid = Utility.base64Decode(tokens.nextToken());
                 folderName = Utility.base64Decode(tokens.nextToken());
                 uid = Utility.base64Decode(tokens.nextToken());
-                flag = Flag.valueOf(tokens.nextToken());
+
+                if (tokens.hasMoreTokens())
+                {
+                    final String flagString = tokens.nextToken();
+                    try
+                    {
+                        flag = Flag.valueOf(flagString);
+                    } catch (IllegalArgumentException ie)
+                    {
+                        throw new MessagingException("Could not thaw message flag '" + flagString + "'", ie);
+                    }
+                }
 
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Thawed " + toString());
             }
             else
             {
-                throw new MessagingException("Invalid token in " + IDENTITY_SEPARATOR + " identity.");
+                throw new MessagingException("Invalid MessageReference in " + identity + " identity.");
             }
         }
     }
@@ -80,8 +91,11 @@ public class MessageReference implements Serializable
         refString.append(Utility.base64Encode(folderName));
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Utility.base64Encode(uid));
-        refString.append(IDENTITY_SEPARATOR);
-        refString.append(flag.name());
+        if (flag != null)
+        {
+            refString.append(IDENTITY_SEPARATOR);
+            refString.append(flag.name());
+        }
 
         return refString.toString();
     }
