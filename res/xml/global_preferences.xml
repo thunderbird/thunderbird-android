@@ -69,9 +69,9 @@
                 
             <CheckBoxPreference
                 android:persistent="false"
-                android:key="high_density"
-                android:title="@string/high_density_title"
-                android:summary="@string/high_density_summary" />
+                android:key="compact_layouts"
+                android:title="@string/compact_layouts_title"
+                android:summary="@string/compact_layouts_summary" />
                 
 
         </PreferenceCategory>

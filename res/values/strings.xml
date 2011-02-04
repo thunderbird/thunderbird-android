@@ -903,8 +903,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
     
-    <string name="high_density_title">High density</string>
-    <string name="high_density_summary">Adjust layouts to display more on each page</string>
+    <string name="compact_layouts_title">Compact layouts</string>
+    <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
     <string name="volume_navigation_summary">Flip through items using the volume controls</string>

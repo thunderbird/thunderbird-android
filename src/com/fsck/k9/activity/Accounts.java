@@ -1081,11 +1081,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
             holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
 
-            if (K9.isHighDensity())
+            if (K9.useCompactLayouts())
             {
                 holder.accountsItemLayout.setMinimumHeight(0);
             }
-            if (account instanceof SearchAccount || K9.isHighDensity())
+            if (account instanceof SearchAccount || K9.useCompactLayouts())
             {
 
                 holder.folders.setVisibility(View.GONE);

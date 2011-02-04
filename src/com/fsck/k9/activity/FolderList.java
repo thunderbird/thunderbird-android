@@ -1404,7 +1404,7 @@ public class FolderList extends K9ListActivity
             {
                 holder.flaggedMessageCount.setVisibility(View.GONE);
             }
-            if (K9.isHighDensity() && holder.folderListItemLayout != null)
+            if (K9.useCompactLayouts() && holder.folderListItemLayout != null)
             {
                 holder.folderListItemLayout.setMinimumHeight(0);
             }

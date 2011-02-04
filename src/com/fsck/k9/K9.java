@@ -176,7 +176,7 @@ public class K9 extends Application
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
-    private static boolean highDensity = false;
+    private static boolean compactLayouts = false;
 
     
 
@@ -455,7 +455,7 @@ public class K9 extends Application
 
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
         
-        editor.putBoolean("highDensity", highDensity);
+        editor.putBoolean("compactLayouts", compactLayouts);
 
         fontSizes.save(editor);
     }
@@ -507,7 +507,7 @@ public class K9 extends Application
 
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
         
-        highDensity = sprefs.getBoolean("highDensity", false);
+        compactLayouts = sprefs.getBoolean("compactLayouts", false);
 
         fontSizes.load(sprefs);
 
@@ -1042,14 +1042,14 @@ public class K9 extends Application
         mKeyguardPrivacy = state;
     }
     
-    public static boolean isHighDensity()
+    public static boolean useCompactLayouts()
     {
-        return highDensity;
+        return compactLayouts;
     }
 
-    public static void setHighDensity(boolean highDensity)
+    public static void setCompactLayouts(boolean compactLayouts)
     {
-        K9.highDensity = highDensity;
+        K9.compactLayouts = compactLayouts;
     }
 
     /**
