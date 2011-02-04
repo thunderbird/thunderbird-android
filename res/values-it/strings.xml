@@ -42,7 +42,6 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Prossima verifica alle <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_syncing_off">\u0020(Verifica disattivata)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
