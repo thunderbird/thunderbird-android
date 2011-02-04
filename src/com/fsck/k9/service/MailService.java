@@ -111,6 +111,7 @@ public class MailService extends CoreService
         long startTime = System.currentTimeMillis();
         try
         {
+            boolean oldIsSyncDisabled = isSyncDisabled();
             ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
             boolean doBackground = true;
             boolean hasConnectivity = false;
@@ -221,6 +222,10 @@ public class MailService extends CoreService
             }
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
+            }
+            if (isSyncDisabled() != oldIsSyncDisabled)
+            {
+                MessagingController.getInstance(getApplication()).systemStatusChanged();
             }
         }
         finally

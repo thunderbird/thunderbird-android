@@ -2317,6 +2317,12 @@ public class MessageList
                     holder.message.setUid(newUid);
                 }
             }
+
+            @Override
+            public void systemStatusChanged()
+            {
+                mHandler.refreshTitle();
+            }
         };
 
         private boolean updateForMe(Account account, String folder)

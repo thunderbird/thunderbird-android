@@ -305,7 +305,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             mHandler.refreshTitle();
         }
 
-
+        @Override
+        public void systemStatusChanged()
+        {
+            mHandler.refreshTitle();
+        }
     };
 
     private static String ACCOUNT_STATS = "accountStats";

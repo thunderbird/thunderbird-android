@@ -1272,6 +1272,12 @@ public class FolderList extends K9ListActivity
                 mHandler.refreshTitle();
             }
 
+            @Override
+            public void systemStatusChanged()
+            {
+                mHandler.refreshTitle();
+            }
+
         };
 
 

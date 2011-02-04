@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
@@ -114,10 +115,14 @@ public abstract class CoreService extends Service
             {
                 try
                 {
-
+                    boolean oldIsSyncDisabled = MailService.isSyncDisabled();
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "CoreService (" + className + ") running Runnable " + runner.hashCode() + " with startId " + startId);
                     runner.run();
+                    if (MailService.isSyncDisabled() != oldIsSyncDisabled)
+                    {
+                        MessagingController.getInstance(getApplication()).systemStatusChanged();
+                    }
                 }
                 finally
                 {

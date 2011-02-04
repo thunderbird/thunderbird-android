@@ -5239,6 +5239,15 @@ public class MessagingController implements Runnable
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "MessagingController.messagesArrivedLatch released");
     }
+
+    public void systemStatusChanged()
+    {
+        for (MessagingListener l : getListeners())
+        {
+            l.systemStatusChanged();
+        }
+    }
+
     enum MemorizingState { STARTED, FINISHED, FAILED }
 
     static class Memory

@@ -180,6 +180,10 @@ public class MessagingListener
     {
     }
 
+    public void systemStatusChanged()
+    {
+    }
+
     public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
     {
 
