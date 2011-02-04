@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.util.Log;
 
@@ -101,7 +102,7 @@ public class LocalStore extends Store implements Serializable
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
 
-    protected static final int DB_VERSION = 41;
+    protected static final int DB_VERSION = 42;
 
     protected String uUid = null;
 
@@ -131,6 +132,11 @@ public class LocalStore extends Store implements Serializable
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException
     {
         database.switchProvider(newStorageProviderId);
+    }
+
+    protected SharedPreferences getPreferences()
+    {
+        return Preferences.getPreferences(mApplication).getPreferences();
     }
 
     private class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition
@@ -334,8 +340,7 @@ public class LocalStore extends Store implements Serializable
                         try
                         {
 
-                            SharedPreferences prefs = Preferences.getPreferences(mApplication).getPreferences();
-                            SharedPreferences.Editor editor = prefs.edit();
+                            SharedPreferences prefs = getPreferences();
                             cursor = db.rawQuery("SELECT id, name FROM folders", null);
                             while (cursor.moveToNext())
                             {
@@ -343,16 +348,13 @@ public class LocalStore extends Store implements Serializable
                                 {
                                     int id = cursor.getInt(0);
                                     String name = cursor.getString(1);
-                                    update41Metadata(db, prefs, editor, id, name);
+                                    update41Metadata(db, prefs, id, name);
                                 }
                                 catch (Exception e)
                                 {
                                     Log.e(K9.LOG_TAG," error trying to ugpgrade a folder class: " +e);
                                 }
                             }
-                            editor.commit();
-
-
                         }
 
 
@@ -367,6 +369,32 @@ public class LocalStore extends Store implements Serializable
                             {
                                 cursor.close();
                             }
+                        }
+                    }
+                    if (db.getVersion() == 41)
+                    {
+                        try
+                        {
+                            long startTime = System.currentTimeMillis();
+                            SharedPreferences.Editor editor = getPreferences().edit();
+
+                            List<? extends Folder>  folders = getPersonalNamespaces(true);
+                            for (Folder folder : folders)
+                            {
+                                if (folder instanceof LocalFolder)
+                                {
+                                    LocalFolder lFolder = (LocalFolder)folder;
+                                    lFolder.save(editor);
+                                }
+                            }
+
+                            editor.commit();
+                            long endTime = System.currentTimeMillis();
+                            Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
                         }
                     }
                 }
@@ -400,8 +428,7 @@ public class LocalStore extends Store implements Serializable
             //}
         }
 
-
-        private void update41Metadata(final SQLiteDatabase  db, SharedPreferences prefs, SharedPreferences.Editor editor, int id, String name)
+        private void update41Metadata(final SQLiteDatabase  db, SharedPreferences prefs, int id, String name)
         {
 
 
@@ -447,15 +474,6 @@ public class LocalStore extends Store implements Serializable
 
             db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
                        new Object[] { integrate, inTopGroup,syncClass,pushClass,displayClass, id });
-
-            // now that we managed to update this folder, obliterate the old data
-
-            editor.remove(uUid+"."+name + ".displayMode");
-            editor.remove(uUid+"."+name + ".syncMode");
-            editor.remove(uUid+"."+name + ".pushMode");
-            editor.remove(uUid+"."+name + ".inTopGroup");
-            editor.remove(uUid+"."+name + ".integrate");
-
 
         }
     }
@@ -1286,6 +1304,64 @@ public class LocalStore extends Store implements Serializable
         public int size;
     }
 
+    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException
+    {
+        database.execute(true, new DbCallback<Void>()
+        {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException
+            {
+                for (LocalFolder folder : foldersToCreate)
+                {
+                    String name = folder.getName();
+                    final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
+
+                    // When created, special folders should always be displayed
+                    // inbox should be integrated
+                    // and the inbox and drafts folders should be syncced by default
+                    if (mAccount.isSpecialFolder(name))
+                    {
+                        prefHolder.inTopGroup = true;
+                        prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
+                        if (name.equalsIgnoreCase(K9.INBOX))
+                        {
+                            prefHolder.integrate = true;
+                            prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
+                        }
+                        else
+                        {
+                            prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
+
+                        }
+                        if ( name.equalsIgnoreCase(K9.INBOX) ||
+                                name.equalsIgnoreCase(mAccount.getDraftsFolderName()) )
+                        {
+                            prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
+                        }
+                        else
+                        {
+                            prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
+                        }
+                    }
+                    folder.refresh(name, prefHolder);   // Recover settings from Preferences
+
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?)", new Object[]
+                               {
+                            name,
+                                   visibleLimit,
+                                   prefHolder.inTopGroup ? 1 : 0,
+                                   prefHolder.displayClass.name(),
+                                   prefHolder.syncClass.name(),
+                                   prefHolder.pushClass.name(),
+                                   prefHolder.integrate ? 1 : 0,
+                               });
+
+                }
+                return null;
+            }
+        });
+    }
+
     public class LocalFolder extends Folder implements Serializable
     {
         /**
@@ -1297,6 +1373,7 @@ public class LocalStore extends Store implements Serializable
         private int mUnreadMessageCount = -1;
         private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
+        private String prefId = null;
         private FolderClass mDisplayClass = FolderClass.NO_CLASS;
         private FolderClass mSyncClass = FolderClass.INHERITED;
         private FolderClass mPushClass = FolderClass.SECOND_CLASS;
@@ -1486,53 +1563,20 @@ public class LocalStore extends Store implements Serializable
             {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
-            database.execute(false, new DbCallback<Void>()
-            {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException
-                {
-                    db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                               {
-                                   mName,
-                                   visibleLimit
-                               });
-
-
-                    return null;
-                }
-            });
-
-            // When created, special folders should always be displayed
-            // inbox should be integrated
-            // and the inbox and drafts folders should be syncced by default
-            if (mAccount.isSpecialFolder(mName))
-            {
-                LocalFolder f = new LocalFolder(mName);
-                f.open(OpenMode.READ_WRITE);
-                f.setInTopGroup(true);
-                f.setDisplayClass(FolderClass.FIRST_CLASS);
-                if (mName.equalsIgnoreCase(K9.INBOX))
-                {
-                    f.setIntegrate(true);
-                    f.setPushClass(FolderClass.FIRST_CLASS);
-                }
-                else
-                {
-                    f.setPushClass(FolderClass.INHERITED);
-
-                }
-                if ( mName.equalsIgnoreCase(K9.INBOX) ||
-                        mName.equalsIgnoreCase(mAccount.getDraftsFolderName()) )
-                {
-                    f.setSyncClass(FolderClass.FIRST_CLASS);
-                }
-                else
-                {
-                    f.setSyncClass(FolderClass.NO_CLASS);
-                }
-            }
+            List<LocalFolder> foldersToCreate = new ArrayList<LocalFolder>(1);
+            foldersToCreate.add(this);
+            LocalStore.this.createFolders(foldersToCreate, visibleLimit);
 
             return true;
+        }
+
+        private class PreferencesHolder
+        {
+            FolderClass displayClass = mDisplayClass;
+            FolderClass syncClass = mSyncClass;
+            FolderClass pushClass = mPushClass;
+            boolean inTopGroup = mInTopGroup;
+            boolean integrate = mIntegrate;
         }
 
         @Override
@@ -1712,6 +1756,7 @@ public class LocalStore extends Store implements Serializable
                 throw (MessagingException) e.getCause();
             }
         }
+
         public String getPushState()
         {
             return mPushState;
@@ -1788,6 +1833,134 @@ public class LocalStore extends Store implements Serializable
             updateFolderColumn( "integrate", mIntegrate ? 1 : 0 );
         }
 
+        private String getPrefId(String name)
+        {
+            if (prefId == null)
+            {
+                prefId = uUid + "." + name;
+            }
+
+            return prefId;
+        }
+
+        private String getPrefId() throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            return getPrefId(mName);
+
+        }
+
+        public void delete() throws MessagingException
+        {
+            String id = getPrefId();
+
+            SharedPreferences.Editor editor = LocalStore.this.getPreferences().edit();
+
+            editor.remove(id + ".displayMode");
+            editor.remove(id + ".syncMode");
+            editor.remove(id + ".pushMode");
+            editor.remove(id + ".inTopGroup");
+            editor.remove(id + ".integrate");
+
+            editor.commit();
+        }
+
+        public void save() throws MessagingException
+        {
+            SharedPreferences.Editor editor = LocalStore.this.getPreferences().edit();
+            save(editor);
+            editor.commit();
+        }
+
+        public void save(SharedPreferences.Editor editor) throws MessagingException
+        {
+            String id = getPrefId();
+
+            // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
+            if (mDisplayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName()))
+            {
+                editor.remove(id + ".displayMode");
+            }
+            else
+            {
+                editor.putString(id + ".displayMode", mDisplayClass.name());
+            }
+
+            if (mSyncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName()))
+            {
+                editor.remove(id + ".syncMode");
+            }
+            else
+            {
+                editor.putString(id + ".syncMode", mSyncClass.name());
+            }
+
+            if (mPushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName()))
+            {
+                editor.remove(id + ".pushMode");
+            }
+            else
+            {
+                editor.putString(id + ".pushMode", mPushClass.name());
+            }
+            editor.putBoolean(id + ".inTopGroup", mInTopGroup);
+
+            editor.putBoolean(id + ".integrate", mIntegrate);
+
+        }
+
+        public void refresh(String name, PreferencesHolder prefHolder)
+        {
+            String id = getPrefId(name);
+
+            SharedPreferences preferences = LocalStore.this.getPreferences();
+
+            try
+            {
+                prefHolder.displayClass = FolderClass.valueOf(preferences.getString(id + ".displayMode",
+                        prefHolder.displayClass.name()));
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to load displayMode for " + getName(), e);
+            }
+            if (prefHolder.displayClass == FolderClass.NONE)
+            {
+                prefHolder.displayClass = FolderClass.NO_CLASS;
+            }
+
+            try
+            {
+                prefHolder.syncClass = FolderClass.valueOf(preferences.getString(id  + ".syncMode",
+                        prefHolder.syncClass.name()));
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to load syncMode for " + getName(), e);
+
+            }
+            if (prefHolder.syncClass == FolderClass.NONE)
+            {
+                prefHolder.syncClass = FolderClass.INHERITED;
+            }
+
+            try
+            {
+                prefHolder.pushClass = FolderClass.valueOf(preferences.getString(id  + ".pushMode",
+                        prefHolder.pushClass.name()));
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to load pushMode for " + getName(), e);
+            }
+            if (prefHolder.pushClass == FolderClass.NONE)
+            {
+                prefHolder.pushClass = FolderClass.INHERITED;
+            }
+            prefHolder.inTopGroup = preferences.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
+            prefHolder.integrate = preferences.getBoolean(id + ".integrate", prefHolder.integrate);
+
+        }
 
         @Override
         public void fetch(final Message[] messages, final FetchProfile fp, final MessageRetrievalListener listener)
@@ -3370,7 +3543,6 @@ public class LocalStore extends Store implements Serializable
         private boolean mCcMeCalculated = false;
         private boolean mToMe = false;
         private boolean mCcMe = false;
-
 
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;

@@ -143,14 +143,6 @@ public class FolderSettings extends K9PreferenceActivity
     public void onResume()
     {
         super.onResume();
-        try
-        {
-            mFolder.refresh(Preferences.getPreferences(this));
-        }
-        catch (MessagingException me)
-        {
-            Log.e(K9.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
-        }
     }
 
     private void saveSettings() throws MessagingException
@@ -163,6 +155,8 @@ public class FolderSettings extends K9PreferenceActivity
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+
+        mFolder.save();
 
         FolderClass newPushClass = mFolder.getPushClass();
         FolderClass newDisplayClass = mFolder.getDisplayClass();

@@ -97,6 +97,7 @@ public class Editor implements android.content.SharedPreferences.Editor
                 {
                     storage.remove(removeKey);
                 }
+                Map<String, String> insertables = new HashMap<String, String>();
                 for (Entry<String, String> entry : changes.entrySet())
                 {
                     String key = entry.getKey();
@@ -104,9 +105,10 @@ public class Editor implements android.content.SharedPreferences.Editor
                     String oldValue = snapshot.get(key);
                     if (removeAll || removals.contains(key) || !newValue.equals(oldValue))
                     {
-                        storage.put(key, newValue);
+                        insertables.put(key, newValue);
                     }
                 }
+                storage.put(insertables);
             }
         };
         storage.doInTransaction(committer);

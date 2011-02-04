@@ -533,15 +533,24 @@ public class MessagingController implements Runnable
 
                     LocalStore localStore = account.getLocalStore();
                     HashSet<String> remoteFolderNames = new HashSet<String>();
-                    for (int i = 0, count = remoteFolders.size(); i < count; i++)
+                    List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
+
+                    localFolders = localStore.getPersonalNamespaces(false);
+                    HashSet<String> localFolderNames = new HashSet<String>();
+                    for (Folder localFolder : localFolders)
                     {
-                        LocalFolder localFolder = localStore.getFolder(remoteFolders.get(i).getName());
-                        if (!localFolder.exists())
-                        {
-                            localFolder.create(FolderType.HOLDS_MESSAGES, account.getDisplayCount());
-                        }
-                        remoteFolderNames.add(remoteFolders.get(i).getName());
+                        localFolderNames.add(localFolder.getName());
                     }
+                    for (Folder remoteFolder : remoteFolders)
+                    {
+                        if (localFolderNames.contains(remoteFolder.getName()) == false)
+                        {
+                            LocalFolder localFolder = localStore.getFolder(remoteFolder.getName());
+                            foldersToCreate.add(localFolder);
+                        }
+                        remoteFolderNames.add(remoteFolder.getName());
+                    }
+                    localStore.createFolders(foldersToCreate, account.getDisplayCount());
 
                     localFolders = localStore.getPersonalNamespaces(false);
 

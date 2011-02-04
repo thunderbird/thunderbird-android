@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -255,10 +257,39 @@ public class Storage implements SharedPreferences
 
     protected void put(String key, String value)
     {
+        ContentValues cv = generateCV(key, value);
+        workingDB.get().insert("preferences_storage", "primkey", cv);
+        liveUpdate(key, value);
+    }
+
+    protected void put(Map<String, String> insertables)
+    {
+        String sql = "insert into preferences_storage (primkey, value) VALUES (?, ?)";
+        SQLiteStatement stmt = workingDB.get().compileStatement(sql);
+
+        for (Map.Entry<String, String> entry : insertables.entrySet())
+        {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            stmt.bindString(1, key);
+            stmt.bindString(2, value);
+            stmt.execute();
+            stmt.clearBindings();
+            liveUpdate(key, value);
+        }
+        stmt.close();
+    }
+
+    private ContentValues generateCV(String key, String value)
+    {
         ContentValues cv = new ContentValues();
         cv.put("primkey", key);
         cv.put("value", value);
-        workingDB.get().insert("preferences_storage", "primkey", cv);
+        return cv;
+    }
+
+    private void liveUpdate(String key, String value)
+    {
         workingStorage.get().put(key, value);
 
         keyChange(key);
