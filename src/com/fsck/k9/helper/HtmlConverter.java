@@ -32,6 +32,9 @@ public class HtmlConverter
     private static final char NBSP_CHARACTER = (char)0x00a0;    // utf-8 non-breaking space
     private static final char NBSP_REPLACEMENT = (char)0x20;    // space
 
+    // Number of extra bytes to allocate in a string buffer for htmlification.
+    private static final int TEXT_TO_HTML_EXTRA_BUFFER_LENGTH = 512;
+
     /**
      * Convert an HTML string to a plain text string.
      * @param html HTML string to convert.
@@ -158,7 +161,7 @@ public class HtmlConverter
                    "</body></html>";
         }
         StringReader reader = new StringReader(text);
-        StringBuilder buff = new StringBuilder(text.length() + 512);
+        StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
         int c;
         try
         {
@@ -192,10 +195,25 @@ public class HtmlConverter
         text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])","$1 ");
         text = text.replaceAll("(?m)(\r\n|\n|\r){4,}","\n\n");
 
-        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer(text.length() + 512);
+        StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
         sb.append("<html><head></head><body>");
         sb.append(htmlifyMessageHeader());
+        linkifyText(text, sb);
+        sb.append(htmlifyMessageFooter());
+        sb.append("</body></html>");
+        text = sb.toString();
+
+        return text;
+    }
+
+    /**
+     * Searches for link-like text in a string and turn it into a link. Append the result to
+     * <tt>outputBuffer</tt>. <tt>text</tt> is not modified.
+     * @param text Plain text to be linkified.
+     * @param outputBuffer Buffer to append linked text to.
+     */
+    private static void linkifyText(final String text, final StringBuffer outputBuffer) {
+        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
         while (m.find())
         {
             int start = m.start();
@@ -203,25 +221,20 @@ public class HtmlConverter
             {
                 if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
                 {
-                    m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
+                    m.appendReplacement(outputBuffer, "<a href=\"$0\">$0</a>");
                 }
                 else
                 {
-                    m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
+                    m.appendReplacement(outputBuffer, "<a href=\"http://$0\">$0</a>");
                 }
             }
             else
             {
-                m.appendReplacement(sb, "$0");
+                m.appendReplacement(outputBuffer, "$0");
             }
         }
 
-        m.appendTail(sb);
-        sb.append(htmlifyMessageFooter());
-        sb.append("</body></html>");
-        text = sb.toString();
-
-        return text;
+        m.appendTail(outputBuffer);
     }
 
     /*
@@ -260,6 +273,7 @@ public class HtmlConverter
         }
         return buff.toString();
     }
+
     private static String getEmojiForCodePoint(int codePoint)
     {
         // Derived from http://code.google.com/p/emoji4unicode/source/browse/trunk/data/emoji4unicode.xml
@@ -1095,8 +1109,6 @@ public class HtmlConverter
         }
     }
 
-
-
     private static String htmlifyMessageHeader()
     {
         if (K9.messageViewFixedWidthFont())
@@ -1129,10 +1141,16 @@ public class HtmlConverter
     public static String textToHtmlFragment(final String text)
     {
         // Escape the entities and add newlines.
-        // TODO - Perhaps use LocalStore.htmlifyString?
-        String result = TextUtils.htmlEncode(text).replace("\n", "<br>\n");
+        String htmlified = TextUtils.htmlEncode(text);
+
+        // Linkify the message.
+        StringBuffer linkified = new StringBuffer(htmlified.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
+        linkifyText(htmlified, linkified);
+
+        // Add newlines and unescaping.
+        //
         // For some reason, TextUtils.htmlEncode escapes ' into &apos;, which is technically part of the XHTML 1.0
         // standard, but Gmail doesn't recognize it as an HTML entity. We unescape that here.
-        return result.replace("&apos;", "&#39;");
+        return linkified.toString().replace("\n", "<br>\n").replace("&apos;", "&#39;");
     }
 }
