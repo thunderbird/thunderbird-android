@@ -57,7 +57,7 @@
   <string name="status_processing_account">\u0020(Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
   <string name="status_next_poll">\u0020(Prochaine récupération à <xliff:g id="nexttime">%s</xliff:g>)</string>
-  <string name="status_polling_off">\u0020(Récupération désactivée)</string>
+  <string name="status_syncing_off">\u0020(Récupération désactivée)</string>
   <string name="next_action">Suivant</string>
   <string name="okay_action">OK</string>
   <string name="cancel_action">Annuler</string>

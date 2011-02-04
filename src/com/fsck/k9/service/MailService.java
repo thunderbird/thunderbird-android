@@ -35,6 +35,9 @@ public class MailService extends CoreService
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static long nextCheck = -1;
+    private static boolean pushingRequested = false;
+    private static boolean pollingRequested = false;
+    private static boolean syncBlocked = false;
 
     public static void actionReset(Context context, Integer wakeLockId)
     {
@@ -148,6 +151,8 @@ public class MailService extends CoreService
                 }
 
             }
+
+            syncBlocked = !(doBackground && hasConnectivity);
 
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
@@ -300,6 +305,7 @@ public class MailService extends CoreService
                     if (shortestInterval == -1)
                     {
                         nextCheck = -1;
+                        pollingRequested = false;
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
                         cancel();
@@ -316,6 +322,7 @@ public class MailService extends CoreService
                                   + ", lastCheckEnd = " + new Date(lastCheckEnd)
                                   + ", considerLastCheckEnd = " + considerLastCheckEnd);
                         nextCheck = nextTime;
+                        pollingRequested = true;
                         try
                         {
                             if (K9.DEBUG)
@@ -344,6 +351,11 @@ public class MailService extends CoreService
                 Log.i(K9.LOG_TAG, "No connectivity, canceling check for " + getApplication().getPackageName());
             cancel();
         }
+    }
+
+    public static boolean isSyncDisabled()
+    {
+        return  syncBlocked || (!pollingRequested && !pushingRequested);
     }
 
     private void stopPushers(final Integer startId)
@@ -412,6 +424,7 @@ public class MailService extends CoreService
                 {
                     PushService.startService(MailService.this);
                 }
+                pushingRequested = pushing;
             }
         }
         , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);

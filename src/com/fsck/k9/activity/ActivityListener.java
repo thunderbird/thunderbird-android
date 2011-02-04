@@ -71,9 +71,13 @@ public class ActivityListener extends MessagingListener
             {
                 operation = context.getString(R.string.status_next_poll, timeFormat.format(nextPollTime));
             }
+            else if (MailService.isSyncDisabled())
+            {
+                operation = context.getString(R.string.status_syncing_off);
+            }
             else
             {
-                operation = ""; // context.getString(R.string.status_polling_off);
+                operation = "";
             }
         }
 
