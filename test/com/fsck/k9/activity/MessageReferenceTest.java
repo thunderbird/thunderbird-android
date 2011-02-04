@@ -9,7 +9,8 @@ public class MessageReferenceTest extends TestCase
     /**
      * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider FORWARDED a flag.)
      */
-    public void testIdentityStringNoFlag() {
+    public void testIdentityStringNoFlag()
+    {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -21,7 +22,8 @@ public class MessageReferenceTest extends TestCase
     /**
      * Typically happens during replies.
      */
-    public void testIdentityString() {
+    public void testIdentityString()
+    {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -57,10 +59,12 @@ public class MessageReferenceTest extends TestCase
 
     public void testNull() throws MessagingException
     {
-        try {
+        try
+        {
             new MessageReference(null);
             assertTrue(false);
-        } catch(MessagingException e) {
+        } catch (MessagingException e)
+        {
             assertTrue(true);
         }
     }
@@ -74,12 +78,13 @@ public class MessageReferenceTest extends TestCase
         assertNotNull(mr.uid);
 
         // Corruption in the Flag should throw MessagingException.
-        try {
+        try
+        {
             new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
             assertTrue(false);
-        } catch(MessagingException e) {
+        } catch (MessagingException e)
+        {
             assertTrue(true);
         }
     }
-
 }
