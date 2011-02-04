@@ -1499,7 +1499,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         sendMessage();
 
-        if (mMessageReference.flag != null)
+        if (mMessageReference != null && mMessageReference.flag != null)
         {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.folderName + ", " + mMessageReference.uid + ") flag to " + mMessageReference.flag);
