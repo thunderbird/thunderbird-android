@@ -213,13 +213,31 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent" />
 
-                <ImageButton
-                    android:id="@+id/quoted_text_delete"
+                <LinearLayout
+                    android:id="@+id/quoted_text_buttons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/btn_dialog" />
+                    android:layout_alignParentRight="true">
+
+                    <ImageButton
+                        android:id="@+id/quoted_text_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginRight="8dip"
+                        android:background="@drawable/btn_edit" />
+
+                    <ImageButton
+                        android:id="@+id/quoted_text_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/btn_dialog" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
