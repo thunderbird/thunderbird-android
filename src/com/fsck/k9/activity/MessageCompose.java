@@ -104,6 +104,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String STATE_PGP_DATA = "pgpData";
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
+    private static final String STATE_KEY_MESSAGE_FORMAT = "com.fsck.k9.activity.MessageCompose.messageFormat";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -164,6 +165,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private EditText mMessageContentView;
     private LinearLayout mAttachments;
     private View mQuotedTextBar;
+    private ImageButton mQuotedTextEdit;
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
     private MessageWebView mQuotedHTML;
@@ -178,6 +180,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String mReferences;
     private String mInReplyTo;
+
+    private boolean mSourceProcessed = false;
+    private MessageFormat mMessageFormat;
 
     private boolean mDraftNeedsSaving = false;
     private boolean mPreventDraftSaving = false;
@@ -380,6 +385,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
+        mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
         mQuotedText = (EditText)findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -441,7 +447,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mQuotedTextBar.setVisibility(View.GONE);
         mQuotedText.setVisibility(View.GONE);
         mQuotedHTML.setVisibility(View.GONE);
+        mQuotedTextEdit.setVisibility(View.GONE);
 
+        mQuotedTextEdit.setOnClickListener(this);
         mQuotedTextDelete.setOnClickListener(this);
 
         mFromView.setVisibility(View.GONE);
@@ -494,6 +502,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mSignatureView.setVisibility(View.GONE);
         }
+
+        mMessageFormat = mAccount.getMessageFormat();
 
         if (!mSourceMessageProcessed)
         {
@@ -838,6 +848,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
         outState.putString(STATE_REFERENCES, mReferences);
         outState.putSerializable(STATE_KEY_HTML_QUOTE, mQuotedHtmlContent);
+        outState.putSerializable(STATE_KEY_MESSAGE_FORMAT, mMessageFormat);
     }
 
     @Override
@@ -852,9 +863,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addAttachment(uri);
         }
 
+        mMessageFormat = (MessageFormat)savedInstanceState.getSerializable(STATE_KEY_MESSAGE_FORMAT);
         mCcView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ? View.VISIBLE : View.GONE);
         mBccView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
-        if (mAccount.getMessageFormat() == MessageFormat.HTML)
+        if (mMessageFormat == MessageFormat.HTML)
         {
             mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
             mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ? View.VISIBLE : View.GONE);
@@ -862,6 +874,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null)
             {
                 mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
+                mQuotedTextEdit.setVisibility(View.VISIBLE);
             }
         }
         else
@@ -948,7 +961,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
-        if (mAccount.getMessageFormat() == MessageFormat.HTML)
+        if (mMessageFormat == MessageFormat.HTML)
         {
             // Add the signature.
             if (!isDraft)
@@ -1008,7 +1021,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 return body;
             }
         }
-        else if (mAccount.getMessageFormat() == MessageFormat.TEXT)
+        else if (mMessageFormat == MessageFormat.TEXT)
         {
             // Capture composed message length before we start attaching quoted parts and signatures.
             Integer composedMessageLength = text.length();
@@ -1105,7 +1118,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         final boolean hasAttachments = mAttachments.getChildCount() > 0;
 
-        if (mAccount.getMessageFormat() == MessageFormat.HTML)
+        if (mMessageFormat == MessageFormat.HTML)
         {
             // HTML message (with alternative text part)
 
@@ -1269,7 +1282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
         }
         // Save the message format for this offset.
-        uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mAccount.getMessageFormat().name());
+        uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
 
         // If we're not using the standard identity of signature, append it on to the identity blob.
         if (mSignatureChanged)
@@ -1794,11 +1807,35 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 mDraftNeedsSaving = true;
                 break;
             case R.id.quoted_text_delete:
-                mQuotedTextBar.setVisibility(View.GONE);
-                mQuotedText.setVisibility(View.GONE);
-                mQuotedHTML.setVisibility(View.GONE);
+                deleteQuotedText();
                 mDraftNeedsSaving = true;
                 break;
+            case R.id.quoted_text_edit:
+                mMessageFormat = MessageFormat.TEXT;
+                if (mMessageReference != null)  // shouldn't happen...
+                {
+                    // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
+                    MessagingController.getInstance(getApplication()).addListener(mListener);
+                    final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+                    final String folderName = mMessageReference.folderName;
+                    final String sourceMessageUid = mMessageReference.uid;
+                    MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Delete the quoted text.
+     */
+    private void deleteQuotedText()
+    {
+        mQuotedTextBar.setVisibility(View.GONE);
+        mQuotedText.setVisibility(View.GONE);
+        mQuotedHTML.setVisibility(View.GONE);
+        if (mQuotedHtmlContent != null)
+        {
+            mQuotedHtmlContent.clearQuotedContent();
         }
     }
 
@@ -2270,7 +2307,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
                 // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
-                if (mAccount.getMessageFormat() == MessageFormat.HTML)
+                if (mMessageFormat == MessageFormat.HTML)
                 {
                     if (k9identity.get(IdentityField.MESSAGE_FORMAT) == null || !MessageFormat.valueOf(k9identity.get(IdentityField.MESSAGE_FORMAT)).equals(MessageFormat.HTML))
                     {
@@ -2308,11 +2345,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                 mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
                                 mQuotedHTML.setVisibility(View.VISIBLE);
                                 mQuotedTextBar.setVisibility(View.VISIBLE);
+                                mQuotedTextEdit.setVisibility(View.VISIBLE);
                             }
                         }
                     }
                 }
-                else if (mAccount.getMessageFormat() == MessageFormat.TEXT)
+                else if (mMessageFormat == MessageFormat.TEXT)
                 {
                     MessageFormat format = k9identity.get(IdentityField.MESSAGE_FORMAT) != null
                                            ? MessageFormat.valueOf(k9identity.get(IdentityField.MESSAGE_FORMAT))
@@ -2409,8 +2447,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // If we already have mSourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
         String content = mSourceMessageBody != null
                          ? mSourceMessageBody
-                         : getBodyTextFromMessage(mSourceMessage, mAccount.getMessageFormat());
-        if (mAccount.getMessageFormat() == MessageFormat.HTML)
+                         : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
+        if (mMessageFormat == MessageFormat.HTML)
         {
             // Add the HTML reply header to the top of the content.
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mAccount.getQuoteStyle());
@@ -2419,13 +2457,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             mQuotedTextBar.setVisibility(View.VISIBLE);
             mQuotedHTML.setVisibility(View.VISIBLE);
+            mQuotedTextEdit.setVisibility(View.VISIBLE);
+
+            mQuotedText.setVisibility(View.GONE);
         }
-        else if (mAccount.getMessageFormat() == MessageFormat.TEXT)
+        else if (mMessageFormat == MessageFormat.TEXT)
         {
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
 
             mQuotedTextBar.setVisibility(View.VISIBLE);
             mQuotedText.setVisibility(View.VISIBLE);
+
+            mQuotedHtmlContent = null;
+            mQuotedTextEdit.setVisibility(View.GONE);
+            mQuotedHTML.setVisibility(View.GONE);
         }
     }
 
@@ -2667,7 +2712,27 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             {
                 public void run()
                 {
-                    processSourceMessage(message);
+                    // We check to see if we've previously processed the source message since this
+                    // could be called when switching from HTML to text replies. If that happens, we
+                    // only want to update the UI with quoted text (which picks the appropriate
+                    // part).
+                    if (mSourceProcessed)
+                    {
+                        try
+                        {
+                            populateUIWithQuotedMessage();
+                        } catch (MessagingException e)
+                        {
+                            // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
+                            deleteQuotedText();
+                            Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
+                        }
+                    }
+                    else
+                    {
+                        processSourceMessage(message);
+                        mSourceProcessed = true;
+                    }
                 }
             });
         }
