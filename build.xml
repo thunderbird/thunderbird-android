@@ -151,6 +151,11 @@
             <arg path="${out-debug-package}" />
         </exec>
     </target>
+    <target name="astyle">
+    <exec executable="astyle" failonerror="true">
+        <arg line="--style=java --indent=spaces=4 --brackets=attach --convert-tabs   --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java'"/>
+    </exec>
+    </target>
 
     <target name="help">
         <!-- displays starts at col 13
@@ -170,6 +175,7 @@
         <echo>              device.</echo>
         <echo>   bump-version: ant -Dversion-name=3.123</echo>
         <echo>               Bumps the project version to 3.123,tags and commits it</echo>
+        <echo>   astyle:     Make K-9's source look like it's supposed to</echo>
     </target>
 
 </project>
