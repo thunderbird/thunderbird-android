@@ -95,7 +95,7 @@
     </target>
 
     <!-- rules -->
-    <target name="bump-version" depends="set-version,commit-version,git-tag,git-svn-tag">
+    <target name="bump-version" depends="set-version,commit-version,git-tag">
         <echo>Bumping K-9 to ${version-name}</echo>
     </target>
 
@@ -104,17 +104,12 @@
         <arg line="tag ${version-name}"/>
     </exec>
     </target>
-    <target name="git-svn-tag">
-    <exec executable="git" failonerror="true">
-        <arg line="svn tag ${version-name}"/>
-    </exec>
-    </target>
     <target name="commit-version">
     <exec executable="git" failonerror="true">
         <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
     </exec>
     <exec executable="git" failonerror="true">
-        <arg line="svn dcommit"/>
+        <arg line="push"/>
     </exec>
     </target>
 
@@ -175,7 +170,6 @@
         <echo>              device.</echo>
         <echo>   bump-version: ant -Dversion-name=3.123</echo>
         <echo>               Bumps the project version to 3.123,tags and commits it</echo>
-        <echo>               (Only works under git-svn)</echo>
     </target>
 
 </project>
