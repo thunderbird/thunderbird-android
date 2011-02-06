@@ -109,7 +109,7 @@
         <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
     </exec>
     <exec executable="git" failonerror="true">
-        <arg line="push"/>
+        <arg line="push --tags"/>
     </exec>
     </target>
 
