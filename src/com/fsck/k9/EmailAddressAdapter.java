@@ -24,14 +24,11 @@ import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-public class EmailAddressAdapter extends ResourceCursorAdapter
-{
+public class EmailAddressAdapter extends ResourceCursorAdapter {
     private static EmailAddressAdapter sInstance;
 
-    public static EmailAddressAdapter getInstance(Context context)
-    {
-        if (sInstance == null)
-        {
+    public static EmailAddressAdapter getInstance(Context context) {
+        if (sInstance == null) {
             sInstance = new EmailAddressAdapter(context);
         }
 
@@ -41,15 +38,13 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
 
     private final Contacts mContacts;
 
-    private EmailAddressAdapter(Context context)
-    {
+    private EmailAddressAdapter(Context context) {
         super(context, R.layout.recipient_dropdown_item, null);
         mContacts = Contacts.getInstance(context);
     }
 
     @Override
-    public final String convertToString(final Cursor cursor)
-    {
+    public final String convertToString(final Cursor cursor) {
         final String name = mContacts.getName(cursor);
         final String address = mContacts.getEmail(cursor);
 
@@ -57,8 +52,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
     }
 
     @Override
-    public final void bindView(final View view, final Context context, final Cursor cursor)
-    {
+    public final void bindView(final View view, final Context context, final Cursor cursor) {
         final TextView text1 = (TextView) view.findViewById(R.id.text1);
         final TextView text2 = (TextView) view.findViewById(R.id.text2);
         text1.setText(mContacts.getName(cursor));
@@ -66,8 +60,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
     }
 
     @Override
-    public Cursor runQueryOnBackgroundThread(CharSequence constraint)
-    {
+    public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
         return mContacts.searchContacts(constraint);
     }
 }

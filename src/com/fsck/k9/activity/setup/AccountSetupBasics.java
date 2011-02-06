@@ -35,8 +35,7 @@ import java.net.URLEncoder;
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-    implements OnClickListener, TextWatcher
-{
+    implements OnClickListener, TextWatcher {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
@@ -53,15 +52,13 @@ public class AccountSetupBasics extends K9Activity
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
 
-    public static void actionNewAccount(Context context)
-    {
+    public static void actionNewAccount(Context context) {
         Intent i = new Intent(context, AccountSetupBasics.class);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_basics);
         mPrefs = Preferences.getPreferences(this);
@@ -77,59 +74,48 @@ public class AccountSetupBasics extends K9Activity
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
 
-        if (mPrefs.getAccounts().length > 0)
-        {
+        if (mPrefs.getAccounts().length > 0) {
             mDefaultView.setVisibility(View.VISIBLE);
         }
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
             mProvider = (Provider)savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         validateFields();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mAccount != null)
-        {
+        if (mAccount != null) {
             outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         }
-        if (mProvider != null)
-        {
+        if (mProvider != null) {
             outState.putSerializable(STATE_KEY_PROVIDER, mProvider);
         }
     }
 
-    public void afterTextChanged(Editable s)
-    {
+    public void afterTextChanged(Editable s) {
         validateFields();
     }
 
-    public void beforeTextChanged(CharSequence s, int start, int count, int after)
-    {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 
-    public void onTextChanged(CharSequence s, int start, int before, int count)
-    {
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
     }
 
-    private void validateFields()
-    {
+    private void validateFields() {
         String email = mEmailView.getText().toString();
         boolean valid = Utility.requiredFieldValid(mEmailView)
                         && Utility.requiredFieldValid(mPasswordView)
@@ -145,61 +131,45 @@ public class AccountSetupBasics extends K9Activity
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
-    private String getOwnerName()
-    {
+    private String getOwnerName() {
         String name = null;
-        try
-        {
+        try {
             name = Contacts.getInstance(this).getOwnerName();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not get owner name, using default account name", e);
         }
-        if (name == null || name.length() == 0)
-        {
-            try
-            {
+        if (name == null || name.length() == 0) {
+            try {
                 name = getDefaultAccountName();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Could not get default account name", e);
             }
         }
-        if (name == null)
-        {
+        if (name == null) {
             name = "";
         }
         return name;
     }
 
-    private String getDefaultAccountName()
-    {
+    private String getDefaultAccountName() {
         String name = null;
         Account account = Preferences.getPreferences(this).getDefaultAccount();
-        if (account != null)
-        {
+        if (account != null) {
             name = account.getName();
         }
         return name;
     }
 
     @Override
-    public Dialog onCreateDialog(int id)
-    {
-        if (id == DIALOG_NOTE)
-        {
-            if (mProvider != null && mProvider.note != null)
-            {
+    public Dialog onCreateDialog(int id) {
+        if (id == DIALOG_NOTE) {
+            if (mProvider != null && mProvider.note != null) {
                 return new AlertDialog.Builder(this)
                        .setMessage(mProvider.note)
                        .setPositiveButton(
                            getString(R.string.okay_action),
-                           new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         finishAutoSetup();
                     }
                 })
@@ -212,8 +182,7 @@ public class AccountSetupBasics extends K9Activity
         return null;
     }
 
-    private void finishAutoSetup()
-    {
+    private void finishAutoSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
@@ -221,8 +190,7 @@ public class AccountSetupBasics extends K9Activity
         String domain = emailParts[1];
         URI incomingUri = null;
         URI outgoingUri = null;
-        try
-        {
+        try {
             String userEnc = URLEncoder.encode(user, "UTF-8");
             String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
@@ -258,14 +226,10 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setOutboxFolderName(getString(R.string.special_mailbox_name_outbox));
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
-        }
-        catch (UnsupportedEncodingException enc)
-        {
+        } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        }
-        catch (URISyntaxException use)
-        {
+        } catch (URISyntaxException use) {
             /*
              * If there is some problem with the URI we give up and go on to
              * manual setup.
@@ -275,14 +239,12 @@ public class AccountSetupBasics extends K9Activity
     }
 
     @Override
-    protected void onNext()
-    {
+    protected void onNext() {
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
         String domain = emailParts[1];
         mProvider = findProviderForDomain(domain);
-        if (mProvider == null)
-        {
+        if (mProvider == null) {
             /*
              * We don't have default settings for this account, start the manual
              * setup process.
@@ -291,25 +253,19 @@ public class AccountSetupBasics extends K9Activity
             return;
         }
 
-        if (mProvider.note != null)
-        {
+        if (mProvider.note != null) {
             showDialog(DIALOG_NOTE);
-        }
-        else
-        {
+        } else {
             finishAutoSetup();
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == RESULT_OK)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
             mAccount.setDescription(mAccount.getEmail());
             mAccount.save(Preferences.getPreferences(this));
-            if (mDefaultView.isChecked())
-            {
+            if (mDefaultView.isChecked()) {
                 Preferences.getPreferences(this).setDefaultAccount(mAccount);
             }
             K9.setServicesEnabled(this);
@@ -318,8 +274,7 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
-    private void onManualSetup()
-    {
+    private void onManualSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
@@ -329,8 +284,7 @@ public class AccountSetupBasics extends K9Activity
         mAccount = Preferences.getPreferences(this).newAccount();
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
-        try
-        {
+        try {
             String userEnc = URLEncoder.encode(user, "UTF-8");
             String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
@@ -338,14 +292,10 @@ public class AccountSetupBasics extends K9Activity
                               null, null);
             mAccount.setStoreUri(uri.toString());
             mAccount.setTransportUri(uri.toString());
-        }
-        catch (UnsupportedEncodingException enc)
-        {
+        } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        }
-        catch (URISyntaxException use)
-        {
+        } catch (URISyntaxException use) {
             /*
              * If we can't set up the URL we just continue. It's only for
              * convenience.
@@ -360,16 +310,14 @@ public class AccountSetupBasics extends K9Activity
         finish();
     }
 
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.next:
-                onNext();
-                break;
-            case R.id.manual_setup:
-                onManualSetup();
-                break;
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.next:
+            onNext();
+            break;
+        case R.id.manual_setup:
+            onManualSetup();
+            break;
         }
     }
 
@@ -380,69 +328,52 @@ public class AccountSetupBasics extends K9Activity
      * @param name
      * @return
      */
-    private String getXmlAttribute(XmlResourceParser xml, String name)
-    {
+    private String getXmlAttribute(XmlResourceParser xml, String name) {
         int resId = xml.getAttributeResourceValue(null, name, 0);
-        if (resId == 0)
-        {
+        if (resId == 0) {
             return xml.getAttributeValue(null, name);
-        }
-        else
-        {
+        } else {
             return getString(resId);
         }
     }
 
-    private Provider findProviderForDomain(String domain)
-    {
-        try
-        {
+    private Provider findProviderForDomain(String domain) {
+        try {
             XmlResourceParser xml = getResources().getXml(R.xml.providers);
             int xmlEventType;
             Provider provider = null;
-            while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT)
-            {
+            while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT) {
                 if (xmlEventType == XmlResourceParser.START_TAG
                         && "provider".equals(xml.getName())
-                        && domain.equalsIgnoreCase(getXmlAttribute(xml, "domain")))
-                {
+                        && domain.equalsIgnoreCase(getXmlAttribute(xml, "domain"))) {
                     provider = new Provider();
                     provider.id = getXmlAttribute(xml, "id");
                     provider.label = getXmlAttribute(xml, "label");
                     provider.domain = getXmlAttribute(xml, "domain");
                     provider.note = getXmlAttribute(xml, "note");
-                }
-                else if (xmlEventType == XmlResourceParser.START_TAG
-                         && "incoming".equals(xml.getName())
-                         && provider != null)
-                {
+                } else if (xmlEventType == XmlResourceParser.START_TAG
+                           && "incoming".equals(xml.getName())
+                           && provider != null) {
                     provider.incomingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
                     provider.incomingUsernameTemplate = getXmlAttribute(xml, "username");
-                }
-                else if (xmlEventType == XmlResourceParser.START_TAG
-                         && "outgoing".equals(xml.getName())
-                         && provider != null)
-                {
+                } else if (xmlEventType == XmlResourceParser.START_TAG
+                           && "outgoing".equals(xml.getName())
+                           && provider != null) {
                     provider.outgoingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
                     provider.outgoingUsernameTemplate = getXmlAttribute(xml, "username");
-                }
-                else if (xmlEventType == XmlResourceParser.END_TAG
-                         && "provider".equals(xml.getName())
-                         && provider != null)
-                {
+                } else if (xmlEventType == XmlResourceParser.END_TAG
+                           && "provider".equals(xml.getName())
+                           && provider != null) {
                     return provider;
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error while trying to load provider settings.", e);
         }
         return null;
     }
 
-    private String[] splitEmail(String email)
-    {
+    private String[] splitEmail(String email) {
         String[] retParts = new String[2];
         String[] emailParts = email.split("@");
         retParts[0] = (emailParts.length > 0) ? emailParts[0] : "";
@@ -450,8 +381,7 @@ public class AccountSetupBasics extends K9Activity
         return retParts;
     }
 
-    static class Provider implements Serializable
-    {
+    static class Provider implements Serializable {
         private static final long serialVersionUID = 8511656164616538989L;
 
         public String id;

@@ -11,8 +11,7 @@ import com.fsck.k9.mail.Message;
  * It currently also stores the results of such encryption or decryption.
  * TODO: separate the storage from the provider
  */
-abstract public class CryptoProvider
-{
+abstract public class CryptoProvider {
     static final long serialVersionUID = 0x21071234;
 
     abstract public boolean isAvailable(Context context);
@@ -29,10 +28,8 @@ abstract public class CryptoProvider
     abstract public String getName();
     abstract public boolean test(Context context);
 
-    public static CryptoProvider createInstance(String name)
-    {
-        if (Apg.NAME.equals(name))
-        {
+    public static CryptoProvider createInstance(String name) {
+        if (Apg.NAME.equals(name)) {
             return Apg.createInstance();
         }
 

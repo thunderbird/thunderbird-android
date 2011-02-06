@@ -27,8 +27,7 @@ import java.util.List;
  *
  * @see K9ExpandableListActivity
  */
-public class ChooseAccount extends K9ExpandableListActivity
-{
+public class ChooseAccount extends K9ExpandableListActivity {
 
     /**
      * {@link Intent} extended data name for storing {@link Account#getUuid()
@@ -42,8 +41,7 @@ public class ChooseAccount extends K9ExpandableListActivity
     public static final String EXTRA_IDENTITY = ChooseAccount.class.getName() + "_identity";
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -55,17 +53,14 @@ public class ChooseAccount extends K9ExpandableListActivity
         final ExpandableListAdapter adapter = createAdapter();
         setListAdapter(adapter);
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
-        {
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                                        int childPosition, long id)
-            {
+            int childPosition, long id) {
                 final Identity identity = (Identity) adapter.getChild(groupPosition, childPosition);
                 final Account account = (Account) adapter.getGroup(groupPosition);
 
-                if (!account.isAvailable(v.getContext()))
-                {
+                if (!account.isAvailable(v.getContext())) {
                     Log.i(K9.LOG_TAG, "Refusing selection of unavailable account");
                     return true;
                 }
@@ -81,15 +76,12 @@ public class ChooseAccount extends K9ExpandableListActivity
 
         final Bundle extras = getIntent().getExtras();
         final String uuid = extras.getString(EXTRA_ACCOUNT);
-        if (uuid != null)
-        {
+        if (uuid != null) {
             final Account[] accounts = Preferences.getPreferences(this).getAccounts();
             final int length = accounts.length;
-            for (int i = 0; i < length; i++)
-            {
+            for (int i = 0; i < length; i++) {
                 final Account account = accounts[i];
-                if (uuid.equals(account.getUuid()))
-                {
+                if (uuid.equals(account.getUuid())) {
                     // setSelectedChild() doesn't seem to obey the
                     // shouldExpandGroup parameter (2.1), manually expanding
                     // group
@@ -97,16 +89,13 @@ public class ChooseAccount extends K9ExpandableListActivity
 
                     final List<Identity> identities = account.getIdentities();
                     final Identity identity = (Identity) extras.getSerializable(EXTRA_IDENTITY);
-                    if (identity == null)
-                    {
+                    if (identity == null) {
                         expandableListView.setSelectedChild(i, 0, true);
                         break;
                     }
-                    for (int j = 0; j < identities.size(); j++)
-                    {
+                    for (int j = 0; j < identities.size(); j++) {
                         final Identity loopIdentity = identities.get(j);
-                        if (identity.equals(loopIdentity))
-                        {
+                        if (identity.equals(loopIdentity)) {
                             expandableListView.setSelectedChild(i, j, true);
                             break;
                         }
@@ -117,8 +106,7 @@ public class ChooseAccount extends K9ExpandableListActivity
         }
     }
 
-    private ExpandableListAdapter createAdapter()
-    {
+    private ExpandableListAdapter createAdapter() {
         return new IdentitiesAdapter(this, getLayoutInflater());
     }
 
@@ -131,65 +119,53 @@ public class ChooseAccount extends K9ExpandableListActivity
      * <li>Children represent {@link Identity identities} of the parent account</li>
      * </ul>
      */
-    public static class IdentitiesAdapter extends BaseExpandableListAdapter
-    {
+    public static class IdentitiesAdapter extends BaseExpandableListAdapter {
 
         private Context mContext;
         private LayoutInflater mLayoutInflater;
 
-        public IdentitiesAdapter(final Context context, final LayoutInflater layoutInflater)
-        {
+        public IdentitiesAdapter(final Context context, final LayoutInflater layoutInflater) {
             mContext = context;
             mLayoutInflater = layoutInflater;
         }
 
         @Override
-        public Object getChild(int groupPosition, int childPosition)
-        {
+        public Object getChild(int groupPosition, int childPosition) {
             return getAccounts()[groupPosition].getIdentity(childPosition);
         }
 
         @Override
-        public long getChildId(int groupPosition, int childPosition)
-        {
+        public long getChildId(int groupPosition, int childPosition) {
             return Integer.valueOf(childPosition).longValue();
         }
 
         @Override
-        public int getChildrenCount(int groupPosition)
-        {
+        public int getChildrenCount(int groupPosition) {
             return getAccounts()[groupPosition].getIdentities().size();
         }
 
         @Override
-        public Object getGroup(int groupPosition)
-        {
+        public Object getGroup(int groupPosition) {
             return getAccounts()[groupPosition];
         }
 
         @Override
-        public int getGroupCount()
-        {
+        public int getGroupCount() {
             return getAccounts().length;
         }
 
         @Override
-        public long getGroupId(int groupPosition)
-        {
+        public long getGroupId(int groupPosition) {
             return Integer.valueOf(groupPosition).longValue();
         }
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                                 ViewGroup parent)
-        {
+                                 ViewGroup parent) {
             final View v;
-            if (convertView == null)
-            {
+            if (convertView == null) {
                 v = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
-            }
-            else
-            {
+            } else {
                 v = convertView;
             }
 
@@ -221,18 +197,14 @@ public class ChooseAccount extends K9ExpandableListActivity
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                                 View convertView, ViewGroup parent)
-        {
+                                 View convertView, ViewGroup parent) {
             final Account account = getAccounts()[groupPosition];
             final Identity identity = account.getIdentity(childPosition);
 
             final View v;
-            if (convertView == null)
-            {
+            if (convertView == null) {
                 v = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
-            }
-            else
-            {
+            } else {
                 v = convertView;
             }
 
@@ -250,20 +222,17 @@ public class ChooseAccount extends K9ExpandableListActivity
         }
 
         @Override
-        public boolean hasStableIds()
-        {
+        public boolean hasStableIds() {
             // returning false since accounts/identities are mutable
             return false;
         }
 
         @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition)
-        {
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }
 
-        private Account[] getAccounts()
-        {
+        private Account[] getAccounts() {
             return Preferences.getPreferences(mContext).getAccounts();
         }
     }

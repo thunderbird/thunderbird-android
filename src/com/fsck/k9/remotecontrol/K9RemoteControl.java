@@ -19,8 +19,7 @@ import android.content.Intent;
  * @author Daniel I. Applebaum
  *
  */
-public class K9RemoteControl
-{
+public class K9RemoteControl {
     /**
      * Permission that every application sending a broadcast to K-9 for Remote Control purposes should send on every broadcast.
      * Prevent other applications from intercepting the broadcasts.
@@ -119,14 +118,12 @@ public class K9RemoteControl
 
     protected static String LOG_TAG = "K9RemoteControl";
 
-    public static void set(Context context, Intent broadcastIntent)
-    {
+    public static void set(Context context, Intent broadcastIntent) {
         broadcastIntent.setAction(K9RemoteControl.K9_SET);
         context.sendBroadcast(broadcastIntent, K9RemoteControl.K9_REMOTE_CONTROL_PERMISSION);
     }
 
-    public static void fetchAccounts(Context context, K9AccountReceptor receptor)
-    {
+    public static void fetchAccounts(Context context, K9AccountReceptor receptor) {
         Intent accountFetchIntent = new Intent();
         accountFetchIntent.setAction(K9RemoteControl.K9_REQUEST_ACCOUNTS);
         AccountReceiver receiver = new AccountReceiver(receptor);

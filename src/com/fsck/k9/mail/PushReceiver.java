@@ -6,8 +6,7 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
 import android.content.Context;
 
-public interface PushReceiver
-{
+public interface PushReceiver {
     public Context getContext();
     public void syncFolder(Folder folder);
     public void messagesArrived(Folder folder, List<Message> mess);

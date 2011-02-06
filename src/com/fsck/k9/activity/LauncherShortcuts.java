@@ -18,19 +18,16 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
-public class LauncherShortcuts extends K9ListActivity implements OnItemClickListener
-{
+public class LauncherShortcuts extends K9ListActivity implements OnItemClickListener {
     private AccountsAdapter mAdapter;
     private FontSizes mFontSizes = K9.getFontSizes();
 
     @Override
-    public void onCreate(Bundle icicle)
-    {
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         // finish() immediately if we aren't supposed to be here
-        if (!Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction()))
-        {
+        if (!Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())) {
             finish();
             return;
         }
@@ -43,23 +40,20 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         refresh();
     }
 
-    private void refresh()
-    {
+    private void refresh() {
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
 
         mAdapter = new AccountsAdapter(accounts);
         getListView().setAdapter(mAdapter);
     }
 
-    private void setupShortcut(Account account)
-    {
+    private void setupShortcut(Account account) {
         final Intent shortcutIntent = FolderList.actionHandleAccountIntent(this, account, null, true);
 
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         String description = account.getDescription();
-        if (description == null || description.length() == 0)
-        {
+        if (description == null || description.length() == 0) {
             description = account.getEmail();
         }
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, description);
@@ -70,38 +64,30 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         finish();
     }
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-    {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Account account = (Account) parent.getItemAtPosition(position);
         setupShortcut(account);
     }
 
-    class AccountsAdapter extends ArrayAdapter<Account>
-    {
-        public AccountsAdapter(Account[] accounts)
-        {
+    class AccountsAdapter extends ArrayAdapter<Account> {
+        public AccountsAdapter(Account[] accounts) {
             super(LauncherShortcuts.this, 0, accounts);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             final Account account = getItem(position);
 
             final View view;
-            if (convertView != null)
-            {
+            if (convertView != null) {
                 view = convertView;
-            }
-            else
-            {
+            } else {
                 view = getLayoutInflater().inflate(R.layout.accounts_item, parent, false);
                 view.findViewById(R.id.active_icons).setVisibility(View.GONE);
             }
 
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
-            if (holder == null)
-            {
+            if (holder == null) {
                 holder = new AccountViewHolder();
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
@@ -111,18 +97,14 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             }
 
             String description = account.getDescription();
-            if (account.getEmail().equals(description))
-            {
+            if (account.getEmail().equals(description)) {
                 holder.email.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 holder.email.setVisibility(View.VISIBLE);
                 holder.email.setText(account.getEmail());
             }
 
-            if (description == null || description.length() == 0)
-            {
+            if (description == null || description.length() == 0) {
                 description = account.getEmail();
             }
 
@@ -137,8 +119,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             return view;
         }
 
-        class AccountViewHolder
-        {
+        class AccountViewHolder {
             public TextView description;
             public TextView email;
             public View chip;

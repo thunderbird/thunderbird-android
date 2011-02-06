@@ -8,24 +8,19 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class StatusOutputStream extends FilterOutputStream
-{
+public class StatusOutputStream extends FilterOutputStream {
     private long mCount = 0;
 
-    public StatusOutputStream(OutputStream out)
-    {
+    public StatusOutputStream(OutputStream out) {
         super(out);
     }
 
     @Override
-    public void write(int oneByte) throws IOException
-    {
+    public void write(int oneByte) throws IOException {
         super.write(oneByte);
         mCount++;
-        if (Config.LOGV)
-        {
-            if (mCount % 1024 == 0)
-            {
+        if (Config.LOGV) {
+            if (mCount % 1024 == 0) {
                 Log.v(K9.LOG_TAG, "# " + mCount);
             }
         }

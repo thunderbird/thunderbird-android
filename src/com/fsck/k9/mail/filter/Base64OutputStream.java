@@ -40,8 +40,7 @@ import java.io.OutputStream;
  * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045</a>
  * @since 1.0-dev
  */
-public class Base64OutputStream extends FilterOutputStream
-{
+public class Base64OutputStream extends FilterOutputStream {
     private final boolean doEncode;
     private final Base64 base64;
     private final byte[] singleByte = new byte[1];
@@ -52,8 +51,7 @@ public class Base64OutputStream extends FilterOutputStream
      *
      * @param out OutputStream to wrap.
      */
-    public Base64OutputStream(OutputStream out)
-    {
+    public Base64OutputStream(OutputStream out) {
         this(out, true);
     }
 
@@ -65,8 +63,7 @@ public class Base64OutputStream extends FilterOutputStream
      * @param doEncode true if we should encode all data written to us,
      *                 false if we should decode.
      */
-    public Base64OutputStream(OutputStream out, boolean doEncode)
-    {
+    public Base64OutputStream(OutputStream out, boolean doEncode) {
         super(out);
         this.doEncode = doEncode;
         this.base64 = new Base64();
@@ -88,8 +85,7 @@ public class Base64OutputStream extends FilterOutputStream
      *                      If lineLength <= 0, the lineSeparator is not used.
      *                      If doEncode is false lineSeparator is ignored.
      */
-    public Base64OutputStream(OutputStream out, boolean doEncode, int lineLength, byte[] lineSeparator)
-    {
+    public Base64OutputStream(OutputStream out, boolean doEncode, int lineLength, byte[] lineSeparator) {
         super(out);
         this.doEncode = doEncode;
         this.base64 = new Base64(lineLength, lineSeparator);
@@ -99,8 +95,7 @@ public class Base64OutputStream extends FilterOutputStream
      * Writes the specified <code>byte</code> to this output stream.
      */
     @Override
-    public void write(int i) throws IOException
-    {
+    public void write(int i) throws IOException {
         singleByte[0] = (byte) i;
         write(singleByte, 0, 1);
     }
@@ -119,28 +114,17 @@ public class Base64OutputStream extends FilterOutputStream
      * @throws IndexOutOfBoundsException if offset, len or buffer size are invalid
      */
     @Override
-    public void write(byte b[], int offset, int len) throws IOException
-    {
-        if (b == null)
-        {
+    public void write(byte b[], int offset, int len) throws IOException {
+        if (b == null) {
             throw new NullPointerException();
-        }
-        else if (offset < 0 || len < 0 || offset + len < 0)
-        {
+        } else if (offset < 0 || len < 0 || offset + len < 0) {
             throw new IndexOutOfBoundsException();
-        }
-        else if (offset > b.length || offset + len > b.length)
-        {
+        } else if (offset > b.length || offset + len > b.length) {
             throw new IndexOutOfBoundsException();
-        }
-        else if (len > 0)
-        {
-            if (doEncode)
-            {
+        } else if (len > 0) {
+            if (doEncode) {
                 base64.encode(b, offset, len);
-            }
-            else
-            {
+            } else {
                 base64.decode(b, offset, len);
             }
             flush(false);
@@ -156,20 +140,16 @@ public class Base64OutputStream extends FilterOutputStream
      *                  OutputStream should also be flushed.
      * @throws IOException if an I/O error occurs.
      */
-    private void flush(boolean propogate) throws IOException
-    {
+    private void flush(boolean propogate) throws IOException {
         int avail = base64.avail();
-        if (avail > 0)
-        {
+        if (avail > 0) {
             byte[] buf = new byte[avail];
             int c = base64.readResults(buf, 0, avail);
-            if (c > 0)
-            {
+            if (c > 0) {
                 out.write(buf, 0, c);
             }
         }
-        if (propogate)
-        {
+        if (propogate) {
             out.flush();
         }
     }
@@ -181,8 +161,7 @@ public class Base64OutputStream extends FilterOutputStream
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void flush() throws IOException
-    {
+    public void flush() throws IOException {
         flush(true);
     }
 
@@ -191,15 +170,11 @@ public class Base64OutputStream extends FilterOutputStream
      * underlying stream is flushed but not closed.
      */
     @Override
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         // Notify encoder of EOF (-1).
-        if (doEncode)
-        {
+        if (doEncode) {
             base64.encode(singleByte, 0, -1);
-        }
-        else
-        {
+        } else {
             base64.decode(singleByte, 0, -1);
         }
         flush();

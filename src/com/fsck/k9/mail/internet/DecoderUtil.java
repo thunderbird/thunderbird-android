@@ -20,8 +20,7 @@ import org.apache.james.mime4j.util.CharsetUtil;
  * decode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
  * it has to be determined with the sender address, the mailer and so on.
  */
-public class DecoderUtil
-{
+public class DecoderUtil {
     /**
      * Decodes an encoded word encoded with the 'B' encoding (described in
      * RFC 2047) found in a header field body.
@@ -30,25 +29,18 @@ public class DecoderUtil
      * @param charset the Java charset to use.
      * @return the decoded string.
      */
-    private static String decodeB(String encodedWord, String charset)
-    {
+    private static String decodeB(String encodedWord, String charset) {
         byte[] bytes;
-        try
-        {
+        try {
             bytes = encodedWord.getBytes("US-ASCII");
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             return null;
         }
 
         Base64InputStream is = new Base64InputStream(new ByteArrayInputStream(bytes));
-        try
-        {
+        try {
             return MimeUtility.readToString(is, charset);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return null;
         }
     }
@@ -61,43 +53,32 @@ public class DecoderUtil
      * @param charset the Java charset to use.
      * @return the decoded string.
      */
-    private static String decodeQ(String encodedWord, String charset)
-    {
+    private static String decodeQ(String encodedWord, String charset) {
 
         /*
          * Replace _ with =20
          */
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < encodedWord.length(); i++)
-        {
+        for (int i = 0; i < encodedWord.length(); i++) {
             char c = encodedWord.charAt(i);
-            if (c == '_')
-            {
+            if (c == '_') {
                 sb.append("=20");
-            }
-            else
-            {
+            } else {
                 sb.append(c);
             }
         }
 
         byte[] bytes;
-        try
-        {
+        try {
             bytes = sb.toString().getBytes("US-ASCII");
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             return null;
         }
 
         QuotedPrintableInputStream is = new QuotedPrintableInputStream(new ByteArrayInputStream(bytes));
-        try
-        {
+        try {
             return MimeUtility.readToString(is, charset);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return null;
         }
     }
@@ -114,13 +95,11 @@ public class DecoderUtil
      * @param message the message which has the string.
      * @return the decoded string.
      */
-    public static String decodeEncodedWords(String body, Message message)
-    {
+    public static String decodeEncodedWords(String body, Message message) {
 
         // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
         // object creation.  This could also be handled via lazy creation of the StringBuilder.
-        if (body.indexOf("=?") == -1)
-        {
+        if (body.indexOf("=?") == -1) {
             return body;
         }
 
@@ -129,27 +108,23 @@ public class DecoderUtil
 
         StringBuilder sb = new StringBuilder();
 
-        while (true)
-        {
+        while (true) {
             int begin = body.indexOf("=?", previousEnd);
 
             // ANDROID:  The mime4j original version has an error here.  It gets confused if
             // the encoded string begins with an '=' (just after "?Q?").  This patch seeks forward
             // to find the two '?' in the "header", before looking for the final "?=".
             int endScan = begin + 2;
-            if (begin != -1)
-            {
+            if (begin != -1) {
                 int qm1 = body.indexOf('?', endScan + 2);
                 int qm2 = body.indexOf('?', qm1 + 1);
-                if (qm2 != -1)
-                {
+                if (qm2 != -1) {
                     endScan = qm2 + 1;
                 }
             }
 
             int end = begin == -1 ? -1 : body.indexOf("?=", endScan);
-            if (end == -1)
-            {
+            if (end == -1) {
                 if (previousEnd == 0)
                     return body;
 
@@ -161,15 +136,11 @@ public class DecoderUtil
             String sep = body.substring(previousEnd, begin);
 
             String decoded = decodeEncodedWord(body, begin, end, message);
-            if (decoded == null)
-            {
+            if (decoded == null) {
                 sb.append(sep);
                 sb.append(body.substring(begin, end));
-            }
-            else
-            {
-                if (!previousWasEncoded || !CharsetUtil.isWhitespace(sep))
-                {
+            } else {
+                if (!previousWasEncoded || !CharsetUtil.isWhitespace(sep)) {
                     sb.append(sep);
                 }
                 sb.append(decoded);
@@ -181,8 +152,7 @@ public class DecoderUtil
     }
 
     // return null on error
-    private static String decodeEncodedWord(String body, int begin, int end, Message message)
-    {
+    private static String decodeEncodedWord(String body, int begin, int end, Message message) {
         int qm1 = body.indexOf('?', begin + 2);
         if (qm1 == end - 2)
             return null;
@@ -196,31 +166,22 @@ public class DecoderUtil
         String encodedText = body.substring(qm2 + 1, end - 2);
 
         String charset;
-        try
-        {
+        try {
             charset = MimeUtility.fixupCharset(mimeCharset, message);
-        }
-        catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             return null;
         }
 
-        if (encodedText.length() == 0)
-        {
+        if (encodedText.length() == 0) {
             Log.w(K9.LOG_TAG, "Missing encoded text in encoded word: '" + body.substring(begin, end) + "'");
             return null;
         }
 
-        if (encoding.equalsIgnoreCase("Q"))
-        {
+        if (encoding.equalsIgnoreCase("Q")) {
             return decodeQ(encodedText, charset);
-        }
-        else if (encoding.equalsIgnoreCase("B"))
-        {
+        } else if (encoding.equalsIgnoreCase("B")) {
             return DecoderUtil.decodeB(encodedText, charset);
-        }
-        else
-        {
+        } else {
             Log.w(K9.LOG_TAG, "Warning: Unknown encoding in encoded word '" + body.substring(begin, end) + "'");
             return null;
         }

@@ -13,8 +13,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import java.util.List;
 
-public class EditIdentity extends K9Activity
-{
+public class EditIdentity extends K9Activity {
 
     public static final String EXTRA_IDENTITY = "com.fsck.k9.EditIdentity_identity";
     public static final String EXTRA_IDENTITY_INDEX = "com.fsck.k9.EditIdentity_identity_index";
@@ -33,8 +32,7 @@ public class EditIdentity extends K9Activity
     private EditText mReplyTo;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mIdentity = (Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
@@ -42,8 +40,7 @@ public class EditIdentity extends K9Activity
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        if (mIdentityIndex == -1)
-        {
+        if (mIdentityIndex == -1) {
             mIdentity = new Identity();
         }
 
@@ -53,8 +50,7 @@ public class EditIdentity extends K9Activity
          * If we're being reloaded we override the original account with the one
          * we saved
          */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY)) {
             mIdentity = (Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
         }
 
@@ -77,40 +73,30 @@ public class EditIdentity extends K9Activity
         mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureView = (EditText)findViewById(R.id.signature);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
-        mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if (isChecked)
-                {
+        mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     mSignatureLayout.setVisibility(View.VISIBLE);
                     mSignatureView.setText(mIdentity.getSignature());
-                }
-                else
-                {
+                } else {
                     mSignatureLayout.setVisibility(View.GONE);
                 }
             }
         });
 
-        if (mSignatureUse.isChecked())
-        {
+        if (mSignatureUse.isChecked()) {
             mSignatureView.setText(mIdentity.getSignature());
-        }
-        else
-        {
+        } else {
             mSignatureLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
     }
 
-    private void saveIdentity()
-    {
+    private void saveIdentity() {
 
         mIdentity.setDescription(mDescriptionView.getText().toString());
         mIdentity.setEmail(mEmailView.getText().toString());
@@ -119,22 +105,16 @@ public class EditIdentity extends K9Activity
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
 
-        if (mReplyTo.getText().length() == 0)
-        {
+        if (mReplyTo.getText().length() == 0) {
             mIdentity.setReplyTo(null);
-        }
-        else
-        {
+        } else {
             mIdentity.setReplyTo(mReplyTo.getText().toString());
         }
 
         List<Identity> identities = mAccount.getIdentities();
-        if (mIdentityIndex == -1)
-        {
+        if (mIdentityIndex == -1) {
             identities.add(mIdentity);
-        }
-        else
-        {
+        } else {
             identities.remove(mIdentityIndex);
             identities.add(mIdentityIndex, mIdentity);
         }
@@ -145,10 +125,8 @@ public class EditIdentity extends K9Activity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             saveIdentity();
             return true;
         }
@@ -156,8 +134,7 @@ public class EditIdentity extends K9Activity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_IDENTITY, mIdentity);
     }

@@ -8,13 +8,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.util.Log;
 
-public class AutoSyncSdk4 implements IAutoSync
-{
+public class AutoSyncSdk4 implements IAutoSync {
     private Method mGetListenForNetworkTickles;
     private Object mContentService;
 
-    public void initialize(Context context) throws NoSuchMethodException
-    {
+    public void initialize(Context context) throws NoSuchMethodException {
         /*
          * There's no documented/official way to query the state of the
          * auto-sync setting for a normal application in SDK 1.6/API 4.
@@ -23,26 +21,19 @@ public class AutoSyncSdk4 implements IAutoSync
          * getListenForNetworkTickles() method. This will return the current
          * auto-sync state.
          */
-        try
-        {
+        try {
             Method getContentService = ContentResolver.class.getMethod("getContentService");
             mContentService = getContentService.invoke(null);
             mGetListenForNetworkTickles = mContentService.getClass().getMethod("getListenForNetworkTickles");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new NoSuchMethodException();
         }
     }
 
-    public boolean getMasterSyncAutomatically()
-    {
-        try
-        {
+    public boolean getMasterSyncAutomatically() {
+        try {
             return (Boolean) mGetListenForNetworkTickles.invoke(mContentService);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not query for network tickle", e);
             return true;
         }

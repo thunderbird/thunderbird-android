@@ -11,14 +11,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DateFormatter
-{
-    private DateFormatter()
-    {
+public class DateFormatter {
+    private DateFormatter() {
     }
     private final static Calendar SAMPLE_DATE = Calendar.getInstance();
-    static
-    {
+    static {
         SAMPLE_DATE.set(SAMPLE_DATE.get(Calendar.YEAR), SAMPLE_DATE.getActualMaximum(Calendar.MONTH), SAMPLE_DATE.getActualMaximum(Calendar.DAY_OF_MONTH));
     }
 
@@ -30,45 +27,34 @@ public class DateFormatter
 
     private static volatile String sChosenFormat = null;
 
-    public static String getSampleDate(Context context, String formatString)
-    {
+    public static String getSampleDate(Context context, String formatString) {
         java.text.DateFormat formatter = getDateFormat(context, formatString);
         return formatter.format(SAMPLE_DATE.getTime());
     }
 
-    public static String[] getFormats(Context context)
-    {
+    public static String[] getFormats(Context context) {
         return context.getResources().getStringArray(R.array.date_formats);
     }
 
-    private static ThreadLocal<Map<String, DateFormat>> storedFormats = new ThreadLocal<Map<String, DateFormat>>()
-    {
+    private static ThreadLocal<Map<String, DateFormat>> storedFormats = new ThreadLocal<Map<String, DateFormat>>() {
         @Override
-        public synchronized Map<String, DateFormat> initialValue()
-        {
+        public synchronized Map<String, DateFormat> initialValue() {
             return new HashMap<String, DateFormat>();
         }
     };
 
-    public static DateFormat getDateFormat(Context context, String formatString)
-    {
+    public static DateFormat getDateFormat(Context context, String formatString) {
         java.text.DateFormat dateFormat;
 
-        if (SHORT_FORMAT.equals(formatString))
-        {
+        if (SHORT_FORMAT.equals(formatString)) {
             dateFormat = android.text.format.DateFormat.getDateFormat(context);
-        }
-        else if (MEDIUM_FORMAT.equals(formatString))
-        {
+        } else if (MEDIUM_FORMAT.equals(formatString)) {
             dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
-        }
-        else
-        {
+        } else {
             Map<String, DateFormat> formatMap = storedFormats.get();
             dateFormat = formatMap.get(formatString);
 
-            if (dateFormat == null)
-            {
+            if (dateFormat == null) {
                 dateFormat = new SimpleDateFormat(formatString);
                 formatMap.put(formatString, dateFormat);
             }
@@ -76,24 +62,20 @@ public class DateFormatter
         return dateFormat;
     }
 
-    public static void setDateFormat(Editor editor, String formatString)
-    {
+    public static void setDateFormat(Editor editor, String formatString) {
         sChosenFormat = formatString;
         editor.putString(PREF_KEY, formatString);
     }
 
-    public static String getFormat(Context context)
-    {
-        if (sChosenFormat == null)
-        {
+    public static String getFormat(Context context) {
+        if (sChosenFormat == null) {
             Preferences prefs = Preferences.getPreferences(context);
             sChosenFormat = prefs.getPreferences().getString(PREF_KEY, DEFAULT_FORMAT);
         }
         return sChosenFormat;
     }
 
-    public static DateFormat getDateFormat(Context context)
-    {
+    public static DateFormat getDateFormat(Context context) {
         String formatString = getFormat(context);
         return getDateFormat(context, formatString);
     }

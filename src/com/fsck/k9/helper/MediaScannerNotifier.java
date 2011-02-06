@@ -9,14 +9,12 @@ import android.net.Uri;
 import java.io.File;
 
 
-public class MediaScannerNotifier implements MediaScannerConnectionClient
-{
+public class MediaScannerNotifier implements MediaScannerConnectionClient {
     private MediaScannerConnection mConnection;
     private File mFile;
     private Context mContext;
 
-    public MediaScannerNotifier(Context context, File file)
-    {
+    public MediaScannerNotifier(Context context, File file) {
         mFile = file;
         mConnection = new MediaScannerConnection(context, this);
         mConnection.connect();
@@ -24,24 +22,18 @@ public class MediaScannerNotifier implements MediaScannerConnectionClient
 
     }
 
-    public void onMediaScannerConnected()
-    {
+    public void onMediaScannerConnected() {
         mConnection.scanFile(mFile.getAbsolutePath(), null);
     }
 
-    public void onScanCompleted(String path, Uri uri)
-    {
-        try
-        {
-            if (uri != null)
-            {
+    public void onScanCompleted(String path, Uri uri) {
+        try {
+            if (uri != null) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(uri);
                 mContext.startActivity(intent);
             }
-        }
-        finally
-        {
+        } finally {
             mConnection.disconnect();
         }
     }

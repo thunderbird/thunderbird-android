@@ -7,11 +7,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 
 
-public class K9PreferenceActivity extends PreferenceActivity
-{
+public class K9PreferenceActivity extends PreferenceActivity {
     @Override
-    public void onCreate(Bundle icicle)
-    {
+    public void onCreate(Bundle icicle) {
         K9Activity.setLanguage(this, K9.getK9Language());
         // http://code.google.com/p/k9mail/issues/detail?id=2439
         // Re-enable themeing support in preferences when
@@ -30,8 +28,7 @@ public class K9PreferenceActivity extends PreferenceActivity
      *
      * @return The {@link ListPreference} instance identified by {@code key}.
      */
-    protected ListPreference setupListPreference(final String key, final String value)
-    {
+    protected ListPreference setupListPreference(final String key, final String value) {
         final ListPreference prefView = (ListPreference) findPreference(key);
         prefView.setValue(value);
         prefView.setSummary(prefView.getEntry());
@@ -53,8 +50,7 @@ public class K9PreferenceActivity extends PreferenceActivity
      *         entry from entries is selected.
      */
     protected void initListPreference(final ListPreference prefView, final String value,
-                                      final CharSequence[] entries, final CharSequence[] entryValues)
-    {
+                                      final CharSequence[] entries, final CharSequence[] entryValues) {
         prefView.setEntries(entries);
         prefView.setEntryValues(entryValues);
         prefView.setValue(value);
@@ -65,12 +61,10 @@ public class K9PreferenceActivity extends PreferenceActivity
     /**
      * This class handles value changes of the {@link ListPreference} objects.
      */
-    private static class PreferenceChangeListener implements Preference.OnPreferenceChangeListener
-    {
+    private static class PreferenceChangeListener implements Preference.OnPreferenceChangeListener {
         private ListPreference mPrefView;
 
-        private PreferenceChangeListener(final ListPreference prefView)
-        {
+        private PreferenceChangeListener(final ListPreference prefView) {
             this.mPrefView = prefView;
         }
 
@@ -78,8 +72,7 @@ public class K9PreferenceActivity extends PreferenceActivity
          * Show the preference value in the preference summary field.
          */
         @Override
-        public boolean onPreferenceChange(final Preference preference, final Object newValue)
-        {
+        public boolean onPreferenceChange(final Preference preference, final Object newValue) {
             final String summary = newValue.toString();
             final int index = mPrefView.findIndexOfValue(summary);
             mPrefView.setSummary(mPrefView.getEntries()[index]);

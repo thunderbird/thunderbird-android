@@ -13,8 +13,7 @@ import com.fsck.k9.mail.Address;
  * @see android.provider.Contacts
  */
 @SuppressWarnings("deprecation")
-public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
-{
+public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
     /**
      * The order in which the search results are returned by
      * {@link #searchContacts(CharSequence)}.
@@ -31,8 +30,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      * {@link com.fsck.k9.EmailAddressAdapter} or more specificly by
      * {@link android.widget.ResourceCursorAdapter}.
      */
-    private static final String PROJECTION[] =
-    {
+    private static final String PROJECTION[] = {
         Contacts.ContactMethods._ID,
         Contacts.ContactMethods.DISPLAY_NAME,
         Contacts.ContactMethods.DATA,
@@ -58,14 +56,12 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     private static final int CONTACT_ID_INDEX = 3;
 
 
-    public ContactsSdk3_4(final Context context)
-    {
+    public ContactsSdk3_4(final Context context) {
         super(context);
     }
 
     @Override
-    public void createContact(final Address email)
-    {
+    public void createContact(final Address email) {
         final Uri contactUri = Uri.fromParts("mailto", email.getAddress(), null);
 
         final Intent contactIntent = new Intent(Contacts.Intents.SHOW_OR_CREATE_CONTACT);
@@ -77,8 +73,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
 
         // Only provide personal name hint if we have one
         final String senderPersonal = email.getPersonal();
-        if (senderPersonal != null)
-        {
+        if (senderPersonal != null) {
             contactIntent.putExtra(Contacts.Intents.Insert.NAME, senderPersonal);
         }
 
@@ -86,8 +81,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public String getOwnerName()
-    {
+    public String getOwnerName() {
         String name = null;
         final Cursor c = mContentResolver.query(
                              Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
@@ -96,10 +90,8 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
                              null,
                              null);
 
-        if (c != null)
-        {
-            if (c.getCount() > 0)
-            {
+        if (c != null) {
+            if (c.getCount() > 0) {
                 c.moveToFirst();
                 name = c.getString(0);  // owner's display name
             }
@@ -110,16 +102,13 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public boolean isInContacts(final String emailAddress)
-    {
+    public boolean isInContacts(final String emailAddress) {
         boolean result = false;
 
         final Cursor c = getContactByAddress(emailAddress);
 
-        if (c != null)
-        {
-            if (c.getCount() > 0)
-            {
+        if (c != null) {
+            if (c.getCount() > 0) {
                 result = true;
             }
             c.close();
@@ -129,17 +118,13 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public Cursor searchContacts(final CharSequence constraint)
-    {
+    public Cursor searchContacts(final CharSequence constraint) {
         final String where;
         final String[] args;
-        if (constraint == null)
-        {
+        if (constraint == null) {
             where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL;
             args = null;
-        }
-        else
-        {
+        } else {
             where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
                     " AND " +
                     "(" +
@@ -170,8 +155,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
                              args,
                              SORT_ORDER);
 
-        if (c != null)
-        {
+        if (c != null) {
             /*
              * To prevent expensive execution in the UI thread:
              * Cursors get lazily executed, so if you don't call anything on
@@ -187,20 +171,16 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public String getNameForAddress(String address)
-    {
-        if (address == null)
-        {
+    public String getNameForAddress(String address) {
+        if (address == null) {
             return null;
         }
 
         final Cursor c = getContactByAddress(address);
 
         String name = null;
-        if (c != null)
-        {
-            if (c.getCount() > 0)
-            {
+        if (c != null) {
+            if (c.getCount() > 0) {
                 c.moveToFirst();
                 name = getName(c);
             }
@@ -211,29 +191,23 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public String getName(Cursor c)
-    {
+    public String getName(Cursor c) {
         return c.getString(NAME_INDEX);
     }
 
     @Override
-    public String getEmail(Cursor c)
-    {
+    public String getEmail(Cursor c) {
         return c.getString(EMAIL_INDEX);
     }
 
     @Override
-    public void markAsContacted(final Address[] addresses)
-    {
+    public void markAsContacted(final Address[] addresses) {
         //TODO: Optimize! Potentially a lot of database queries
-        for (final Address address : addresses)
-        {
+        for (final Address address : addresses) {
             final Cursor c = getContactByAddress(address.getAddress());
 
-            if (c != null)
-            {
-                if (c.getCount() > 0)
-                {
+            if (c != null) {
+                if (c.getCount() > 0) {
                     c.moveToFirst();
                     final long personId = c.getLong(CONTACT_ID_INDEX);
                     Contacts.People.markAsContacted(mContentResolver, personId);
@@ -251,8 +225,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      * @return A {@link Cursor} instance that can be used to fetch information
      *         about the contact with the given email address
      */
-    private Cursor getContactByAddress(String address)
-    {
+    private Cursor getContactByAddress(String address) {
         final String where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
                              " AND " +
                              Contacts.ContactMethods.DATA + " = ?";

@@ -15,8 +15,7 @@ import com.fsck.k9.K9;
  *
  * @author Marcus@Wolschon.biz
  */
-public class FolderListFilter<T> extends Filter
-{
+public class FolderListFilter<T> extends Filter {
     /**
      * ArrayAdapter that contains the list of folders displayed in the
      * ListView.
@@ -36,8 +35,7 @@ public class FolderListFilter<T> extends Filter
      *
      * @param folderNames
      */
-    public FolderListFilter(final ArrayAdapter<T> folderNames)
-    {
+    public FolderListFilter(final ArrayAdapter<T> folderNames) {
         this.mFolders = folderNames;
     }
 
@@ -48,30 +46,24 @@ public class FolderListFilter<T> extends Filter
      * @see #publishResults(CharSequence, FilterResults)
      */
     @Override
-    protected FilterResults performFiltering(CharSequence searchTerm)
-    {
+    protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
         // Copy the values from mFolders to mOriginalValues if this is the
         // first time this method is called.
-        if (mOriginalValues == null)
-        {
+        if (mOriginalValues == null) {
             int count = mFolders.getCount();
             mOriginalValues = new ArrayList<T>(count);
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 mOriginalValues.add(mFolders.getItem(i));
             }
         }
 
-        if ((searchTerm == null) || (searchTerm.length() == 0))
-        {
+        if ((searchTerm == null) || (searchTerm.length() == 0)) {
             ArrayList<T> list = new ArrayList<T>(mOriginalValues);
             results.values = list;
             results.count = list.size();
-        }
-        else
-        {
+        } else {
             final String searchTermString = searchTerm.toString().toLowerCase();
             final String[] words = searchTermString.split(" ");
             final int wordCount = words.length;
@@ -80,14 +72,11 @@ public class FolderListFilter<T> extends Filter
 
             final ArrayList<T> newValues = new ArrayList<T>();
 
-            for (final T value : values)
-            {
+            for (final T value : values) {
                 final String valueText = value.toString().toLowerCase();
 
-                for (int k = 0; k < wordCount; k++)
-                {
-                    if (valueText.contains(words[k]))
-                    {
+                for (int k = 0; k < wordCount; k++) {
+                    if (valueText.contains(words[k])) {
                         newValues.add(value);
                         break;
                     }
@@ -107,26 +96,20 @@ public class FolderListFilter<T> extends Filter
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected void publishResults(CharSequence constraint, FilterResults results)
-    {
+    protected void publishResults(CharSequence constraint, FilterResults results) {
         // Don't notify for every change
         mFolders.setNotifyOnChange(false);
 
         //noinspection unchecked
         final List<T> folders = (List<T>) results.values;
         mFolders.clear();
-        if (folders != null)
-        {
-            for (T folder : folders)
-            {
-                if (folder != null)
-                {
+        if (folders != null) {
+            for (T folder : folders) {
+                if (folder != null) {
                     mFolders.add(folder);
                 }
             }
-        }
-        else
-        {
+        } else {
             Log.w(K9.LOG_TAG, "FolderListFilter.publishResults - null search-result ");
         }
 
@@ -134,8 +117,7 @@ public class FolderListFilter<T> extends Filter
         mFolders.notifyDataSetChanged();
     }
 
-    public void invalidate()
-    {
+    public void invalidate() {
         mOriginalValues = null;
     }
 }

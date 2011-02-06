@@ -8,8 +8,7 @@ import java.io.*;
 
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 
-public class TextBody implements Body
-{
+public class TextBody implements Body {
 
     /**
      * Immutable empty byte array
@@ -25,22 +24,16 @@ public class TextBody implements Body
     // Offset from position 0 where the composed message begins.
     private Integer mComposedMessageOffset;
 
-    public TextBody(String body)
-    {
+    public TextBody(String body) {
         this.mBody = body;
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException
-    {
-        if (mBody != null)
-        {
+    public void writeTo(OutputStream out) throws IOException, MessagingException {
+        if (mBody != null) {
             byte[] bytes = mBody.getBytes(mCharset);
-            if ("8bit".equals(mEncoding))
-            {
+            if ("8bit".equals(mEncoding)) {
                 out.write(bytes);
-            }
-            else
-            {
+            } else {
                 QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
                 qp.write(bytes);
                 qp.flush();
@@ -52,62 +45,48 @@ public class TextBody implements Body
      * Get the text of the body in it's unencoded format.
      * @return
      */
-    public String getText()
-    {
+    public String getText() {
         return mBody;
     }
 
     /**
      * Returns an InputStream that reads this body's text.
      */
-    public InputStream getInputStream() throws MessagingException
-    {
-        try
-        {
+    public InputStream getInputStream() throws MessagingException {
+        try {
             byte[] b;
-            if (mBody!=null)
-            {
+            if (mBody != null) {
                 b = mBody.getBytes(mCharset);
-            }
-            else
-            {
+            } else {
                 b = EMPTY_BYTE_ARRAY;
             }
             return new ByteArrayInputStream(b);
-        }
-        catch (UnsupportedEncodingException usee)
-        {
+        } catch (UnsupportedEncodingException usee) {
             return null;
         }
     }
 
-    public void setEncoding(String encoding)
-    {
+    public void setEncoding(String encoding) {
         mEncoding = encoding;
     }
 
-    public void setCharset(String charset)
-    {
+    public void setCharset(String charset) {
         mCharset = charset;
     }
 
-    public Integer getComposedMessageLength()
-    {
+    public Integer getComposedMessageLength() {
         return mComposedMessageLength;
     }
 
-    public void setComposedMessageLength(Integer composedMessageLength)
-    {
+    public void setComposedMessageLength(Integer composedMessageLength) {
         this.mComposedMessageLength = composedMessageLength;
     }
 
-    public Integer getComposedMessageOffset()
-    {
+    public Integer getComposedMessageOffset() {
         return mComposedMessageOffset;
     }
 
-    public void setComposedMessageOffset(Integer composedMessageOffset)
-    {
+    public void setComposedMessageOffset(Integer composedMessageOffset) {
         this.mComposedMessageOffset = composedMessageOffset;
     }
 }

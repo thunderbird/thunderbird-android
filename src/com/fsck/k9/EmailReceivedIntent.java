@@ -1,7 +1,6 @@
 package com.fsck.k9;
 
-public class EmailReceivedIntent
-{
+public class EmailReceivedIntent {
 
     public static final String ACTION_EMAIL_RECEIVED = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
     public static final String EXTRA_ACCOUNT    = "com.fsck.k9.intent.extra.ACCOUNT";

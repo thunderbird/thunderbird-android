@@ -15,8 +15,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 
-public class AccountSetupComposition extends K9Activity
-{
+public class AccountSetupComposition extends K9Activity {
 
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -31,8 +30,7 @@ public class AccountSetupComposition extends K9Activity
     private RadioButton mAccountSignatureAfterLocation;
     private LinearLayout mAccountSignatureLayout;
 
-    public static void actionEditCompositionSettings(Activity context, Account account)
-    {
+    public static void actionEditCompositionSettings(Activity context, Account account) {
         Intent i = new Intent(context, AccountSetupComposition.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -41,8 +39,7 @@ public class AccountSetupComposition extends K9Activity
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
@@ -54,8 +51,7 @@ public class AccountSetupComposition extends K9Activity
          * If we're being reloaded we override the original account with the one
          * we saved
          */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
@@ -74,20 +70,15 @@ public class AccountSetupComposition extends K9Activity
         mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
         boolean useSignature = mAccount.getSignatureUse();
         mAccountSignatureUse.setChecked(useSignature);
-        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if (isChecked)
-                {
+        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     mAccountSignatureLayout.setVisibility(View.VISIBLE);
                     mAccountSignature.setText(mAccount.getSignature());
                     boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
                     mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
                     mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
-                }
-                else
-                {
+                } else {
                     mAccountSignatureLayout.setVisibility(View.GONE);
                 }
             }
@@ -98,35 +89,29 @@ public class AccountSetupComposition extends K9Activity
         mAccountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
         mAccountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
 
-        if (useSignature)
-        {
+        if (useSignature) {
             mAccountSignature.setText(mAccount.getSignature());
 
             boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
             mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
             mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
-        }
-        else
-        {
+        } else {
             mAccountSignatureLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         //mAccount.refresh(Preferences.getPreferences(this));
     }
 
-    private void saveSettings()
-    {
+    private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mAccount.setName(mAccountName.getText().toString());
         mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
-        if (mAccountSignatureUse.isChecked())
-        {
+        if (mAccountSignatureUse.isChecked()) {
             mAccount.setSignature(mAccountSignature.getText().toString());
             boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
             mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
@@ -136,25 +121,21 @@ public class AccountSetupComposition extends K9Activity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mAccount.save(Preferences.getPreferences(this));
         finish();
     }

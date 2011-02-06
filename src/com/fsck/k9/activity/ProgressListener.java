@@ -6,8 +6,7 @@ import android.content.Context;
 /**
  * A listener that the user can register for global, persistent progress events.
  */
-public interface ProgressListener
-{
+public interface ProgressListener {
     /**
      * @param context
      * @param title

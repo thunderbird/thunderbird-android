@@ -10,18 +10,13 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 
-public class WebDavTransport extends Transport
-{
+public class WebDavTransport extends Transport {
     private WebDavStore store;
 
-    public WebDavTransport(Account account) throws MessagingException
-    {
-        if (account.getRemoteStore() instanceof WebDavStore)
-        {
+    public WebDavTransport(Account account) throws MessagingException {
+        if (account.getRemoteStore() instanceof WebDavStore) {
             store = (WebDavStore) account.getRemoteStore();
-        }
-        else
-        {
+        } else {
             store = new WebDavStore(account);
         }
 
@@ -30,8 +25,7 @@ public class WebDavTransport extends Transport
     }
 
     @Override
-    public void open() throws MessagingException
-    {
+    public void open() throws MessagingException {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, ">>> open called on WebDavTransport ");
 
@@ -39,13 +33,11 @@ public class WebDavTransport extends Transport
     }
 
     @Override
-    public void close()
-    {
+    public void close() {
     }
 
     @Override
-    public void sendMessage(Message message) throws MessagingException
-    {
+    public void sendMessage(Message message) throws MessagingException {
         store.sendMessages(new Message[] { message });
     }
 }

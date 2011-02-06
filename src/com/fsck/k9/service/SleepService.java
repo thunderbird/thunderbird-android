@@ -11,8 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SleepService extends CoreService
-{
+public class SleepService extends CoreService {
 
     private static String ALARM_FIRED = "com.fsck.k9.service.SleepService.ALARM_FIRED";
     private static String LATCH_ID = "com.fsck.k9.service.SleepService.LATCH_ID_EXTRA";
@@ -22,8 +21,7 @@ public class SleepService extends CoreService
 
     private static AtomicInteger latchId = new AtomicInteger();
 
-    public static void sleep(Context context, long sleepTime, TracingWakeLock wakeLock, long wakeLockTimeout)
-    {
+    public static void sleep(Context context, long sleepTime, TracingWakeLock wakeLock, long wakeLockTimeout) {
         Integer id = latchId.getAndIncrement();
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SleepService Preparing CountDownLatch with id = " + id + ", thread " + Thread.currentThread().getName());
@@ -40,99 +38,72 @@ public class SleepService extends CoreService
         long startTime = System.currentTimeMillis();
         long nextTime = startTime + sleepTime;
         BootReceiver.scheduleIntent(context, nextTime, i);
-        if (wakeLock != null)
-        {
+        if (wakeLock != null) {
             sleepDatum.wakeLock = wakeLock;
             sleepDatum.timeout = wakeLockTimeout;
             wakeLock.release();
         }
-        try
-        {
+        try {
             boolean countedDown = latch.await(sleepTime, TimeUnit.MILLISECONDS);
-            if (!countedDown)
-            {
+            if (!countedDown) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService latch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
             }
-        }
-        catch (InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             Log.e(K9.LOG_TAG, "SleepService Interrupted while awaiting latch", ie);
         }
         SleepDatum releaseDatum = sleepData.remove(id);
-        if (releaseDatum == null)
-        {
-            try
-            {
+        if (releaseDatum == null) {
+            try {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService waiting for reacquireLatch for id = " + id + ", thread " + Thread.currentThread().getName());
-                if (!sleepDatum.reacquireLatch.await(5000, TimeUnit.MILLISECONDS))
-                {
+                if (!sleepDatum.reacquireLatch.await(5000, TimeUnit.MILLISECONDS)) {
                     Log.w(K9.LOG_TAG, "SleepService reacquireLatch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
-                }
-                else if (K9.DEBUG)
+                } else if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService reacquireLatch finished for id = " + id + ", thread " + Thread.currentThread().getName());
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 Log.e(K9.LOG_TAG, "SleepService Interrupted while awaiting reacquireLatch", ie);
             }
-        }
-        else
-        {
+        } else {
             reacquireWakeLock(releaseDatum);
         }
 
         long endTime = System.currentTimeMillis();
         long actualSleep = endTime - startTime;
 
-        if (actualSleep < sleepTime)
-        {
+        if (actualSleep < sleepTime) {
             Log.w(K9.LOG_TAG, "SleepService sleep time too short: requested was " + sleepTime + ", actual was " + actualSleep);
-        }
-        else
-        {
+        } else {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SleepService requested sleep time was " + sleepTime + ", actual was " + actualSleep);
         }
     }
 
-    private static void endSleep(Integer id)
-    {
-        if (id != -1)
-        {
+    private static void endSleep(Integer id) {
+        if (id != -1) {
             SleepDatum sleepDatum = sleepData.remove(id);
-            if (sleepDatum != null)
-            {
+            if (sleepDatum != null) {
                 CountDownLatch latch = sleepDatum.latch;
-                if (latch == null)
-                {
+                if (latch == null) {
                     Log.e(K9.LOG_TAG, "SleepService No CountDownLatch available with id = " + id);
-                }
-                else
-                {
+                } else {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "SleepService Counting down CountDownLatch with id = " + id);
                     latch.countDown();
                 }
                 reacquireWakeLock(sleepDatum);
                 sleepDatum.reacquireLatch.countDown();
-            }
-            else
-            {
+            } else {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService Sleep for id " + id + " already finished");
             }
         }
     }
 
-    private static void reacquireWakeLock(SleepDatum sleepDatum)
-    {
+    private static void reacquireWakeLock(SleepDatum sleepDatum) {
         TracingWakeLock wakeLock = sleepDatum.wakeLock;
-        if (wakeLock != null)
-        {
-            synchronized (wakeLock)
-            {
+        if (wakeLock != null) {
+            synchronized (wakeLock) {
                 long timeout = sleepDatum.timeout;
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService Acquiring wakeLock for " + timeout + "ms");
@@ -142,18 +113,15 @@ public class SleepService extends CoreService
     }
 
     @Override
-    public void startService(Intent intent, int startId)
-    {
-        if (intent.getAction().startsWith(ALARM_FIRED))
-        {
+    public void startService(Intent intent, int startId) {
+        if (intent.getAction().startsWith(ALARM_FIRED)) {
             Integer id = intent.getIntExtra(LATCH_ID, -1);
             endSleep(id);
         }
         stopSelf(startId);
     }
 
-    private static class SleepDatum
-    {
+    private static class SleepDatum {
         CountDownLatch latch;
         TracingWakeLock wakeLock;
         long timeout;

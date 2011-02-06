@@ -9,30 +9,25 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
 
-public abstract class Folder
-{
+public abstract class Folder {
     protected final Account mAccount;
 
     private String status = null;
     private long lastChecked = 0;
     private long lastPush = 0;
-    public enum OpenMode
-    {
+    public enum OpenMode {
         READ_WRITE, READ_ONLY,
     }
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
-    public enum FolderClass
-    {
+    public enum FolderClass {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
     }
 
-    public enum FolderType
-    {
+    public enum FolderType {
         HOLDS_FOLDERS, HOLDS_MESSAGES,
     }
 
-    protected Folder(Account account)
-    {
+    protected Folder(Account account) {
         mAccount = account;
     }
 
@@ -69,8 +64,7 @@ public abstract class Folder
      * Create a new folder with a specified display limit.  Not abstract to allow
      * remote folders to not override or worry about this call if they don't care to.
      */
-    public boolean create(FolderType type, int displayLimit) throws MessagingException
-    {
+    public boolean create(FolderType type, int displayLimit) throws MessagingException {
         return create(type);
     }
 
@@ -101,8 +95,7 @@ public abstract class Folder
     public abstract Message[] getMessages(MessageRetrievalListener listener)
     throws MessagingException;
 
-    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException
-    {
+    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
         return getMessages(listener);
     }
 
@@ -115,10 +108,8 @@ public abstract class Folder
 
     public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {}
 
-    public void delete(Message[] msgs, String trashFolderName) throws MessagingException
-    {
-        for (Message message : msgs)
-        {
+    public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
+        for (Message message : msgs) {
             Message myMessage = getMessage(message.getUid());
             myMessage.delete(trashFolderName);
         }
@@ -138,8 +129,7 @@ public abstract class Folder
                                MessageRetrievalListener listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
-                          MessageRetrievalListener listener) throws MessagingException
-    {
+                          MessageRetrievalListener listener) throws MessagingException {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 
@@ -159,83 +149,67 @@ public abstract class Folder
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is
      */
-    public String getNewPushState(String oldPushState, Message message)
-    {
+    public String getNewPushState(String oldPushState, Message message) {
         return null;
     }
 
-    public boolean supportsFetchingFlags()
-    {
+    public boolean supportsFetchingFlags() {
         return true;
     }//isFlagSupported
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
-    public long getLastChecked()
-    {
+    public long getLastChecked() {
         return lastChecked;
     }
 
-    public void setLastChecked(long lastChecked) throws MessagingException
-    {
+    public void setLastChecked(long lastChecked) throws MessagingException {
         this.lastChecked = lastChecked;
     }
 
-    public long getLastPush()
-    {
+    public long getLastPush() {
         return lastPush;
     }
 
-    public void setLastPush(long lastCheckedDisplay) throws MessagingException
-    {
+    public void setLastPush(long lastCheckedDisplay) throws MessagingException {
         this.lastPush = lastCheckedDisplay;
     }
 
-    public long getLastUpdate()
-    {
+    public long getLastUpdate() {
         return Math.max(getLastChecked(), getLastPush());
     }
 
-    public FolderClass getDisplayClass()
-    {
+    public FolderClass getDisplayClass() {
         return FolderClass.NO_CLASS;
     }
 
-    public FolderClass getSyncClass()
-    {
+    public FolderClass getSyncClass() {
         return getDisplayClass();
     }
-    public FolderClass getPushClass()
-    {
+    public FolderClass getPushClass() {
         return getSyncClass();
     }
 
-    public void refresh(Preferences preferences) throws MessagingException
-    {
+    public void refresh(Preferences preferences) throws MessagingException {
 
     }
 
-    public boolean isInTopGroup()
-    {
+    public boolean isInTopGroup() {
         return false;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) throws MessagingException
-    {
+    public void setStatus(String status) throws MessagingException {
         this.status = status;
     }
 
-    public Account getAccount()
-    {
+    public Account getAccount() {
         return mAccount;
     }
 }

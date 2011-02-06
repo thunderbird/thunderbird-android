@@ -7,8 +7,7 @@ import com.fsck.k9.mail.Multipart;
 
 import java.io.*;
 
-public class MimeMultipart extends Multipart
-{
+public class MimeMultipart extends Multipart {
     protected String mPreamble;
 
     protected String mContentType;
@@ -17,81 +16,65 @@ public class MimeMultipart extends Multipart
 
     protected String mSubType;
 
-    public MimeMultipart() throws MessagingException
-    {
+    public MimeMultipart() throws MessagingException {
         mBoundary = generateBoundary();
         setSubType("mixed");
     }
 
-    public MimeMultipart(String contentType) throws MessagingException
-    {
+    public MimeMultipart(String contentType) throws MessagingException {
         this.mContentType = contentType;
-        try
-        {
+        try {
             mSubType = MimeUtility.getHeaderParameter(contentType, null).split("/")[1];
             mBoundary = MimeUtility.getHeaderParameter(contentType, "boundary");
-            if (mBoundary == null)
-            {
+            if (mBoundary == null) {
                 throw new MessagingException("MultiPart does not contain boundary: " + contentType);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new MessagingException(
                 "Invalid MultiPart Content-Type; must contain subtype and boundary. ("
                 + contentType + ")", e);
         }
     }
 
-    public String generateBoundary()
-    {
+    public String generateBoundary() {
         StringBuffer sb = new StringBuffer();
         sb.append("----");
-        for (int i = 0; i < 30; i++)
-        {
+        for (int i = 0; i < 30; i++) {
             sb.append(Integer.toString((int)(Math.random() * 35), 36));
         }
         return sb.toString().toUpperCase();
     }
 
-    public String getPreamble()
-    {
+    public String getPreamble() {
         return mPreamble;
     }
 
-    public void setPreamble(String preamble)
-    {
+    public void setPreamble(String preamble) {
         this.mPreamble = preamble;
     }
 
     @Override
-    public String getContentType()
-    {
+    public String getContentType() {
         return mContentType;
     }
 
-    public void setSubType(String subType)
-    {
+    public void setSubType(String subType) {
         this.mSubType = subType;
         mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException
-    {
+    public void writeTo(OutputStream out) throws IOException, MessagingException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
 
-        if (mPreamble != null)
-        {
+        if (mPreamble != null) {
             writer.write(mPreamble + "\r\n");
         }
 
-        if (mParts.size() == 0)
-        {
+        if (mParts.size() == 0) {
             writer.write("--" + mBoundary + "\r\n");
         }
 
-        for (int i = 0, count = mParts.size(); i < count; i++)
-        {
+        for (int i = 0, count = mParts.size(); i < count; i++) {
             BodyPart bodyPart = mParts.get(i);
             writer.write("--" + mBoundary + "\r\n");
             writer.flush();
@@ -103,8 +86,7 @@ public class MimeMultipart extends Multipart
         writer.flush();
     }
 
-    public InputStream getInputStream() throws MessagingException
-    {
+    public InputStream getInputStream() throws MessagingException {
         return null;
     }
 }

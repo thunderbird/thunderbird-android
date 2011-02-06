@@ -17,16 +17,13 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class TrustedSocketFactory implements LayeredSocketFactory
-{
+public class TrustedSocketFactory implements LayeredSocketFactory {
     private SSLSocketFactory mSocketFactory;
     private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
-    public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException
-    {
+    public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, new TrustManager[]
-                        {
+        sslContext.init(null, new TrustManager[] {
                             TrustManagerFactory.get(host, secure)
                         }, new SecureRandom());
         mSocketFactory = sslContext.getSocketFactory();
@@ -37,18 +34,15 @@ public class TrustedSocketFactory implements LayeredSocketFactory
 
     public Socket connectSocket(Socket sock, String host, int port,
                                 InetAddress localAddress, int localPort, HttpParams params)
-    throws IOException, UnknownHostException, ConnectTimeoutException
-    {
+    throws IOException, UnknownHostException, ConnectTimeoutException {
         return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 
-    public Socket createSocket() throws IOException
-    {
+    public Socket createSocket() throws IOException {
         return mSocketFactory.createSocket();
     }
 
-    public boolean isSecure(Socket sock) throws IllegalArgumentException
-    {
+    public boolean isSecure(Socket sock) throws IllegalArgumentException {
         return mSchemeSocketFactory.isSecure(sock);
     }
     public Socket createSocket(
@@ -56,8 +50,7 @@ public class TrustedSocketFactory implements LayeredSocketFactory
         final String host,
         final int port,
         final boolean autoClose
-    ) throws IOException, UnknownHostException
-    {
+    ) throws IOException, UnknownHostException {
         SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
                                   socket,
                                   host,

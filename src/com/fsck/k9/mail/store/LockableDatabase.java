@@ -14,8 +14,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
 
-public class LockableDatabase
-{
+public class LockableDatabase {
 
     /**
      * Callback interface for DB operations. Concept is similar to Spring
@@ -24,8 +23,7 @@ public class LockableDatabase
      * @param <T>
      *            Return value type for {@link #doDbWork(SQLiteDatabase)}
      */
-    public static interface DbCallback<T>
-    {
+    public static interface DbCallback<T> {
         /**
          * @param db
          *            The locked database on which the work should occur. Never
@@ -37,8 +35,7 @@ public class LockableDatabase
         T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
     }
 
-    public static interface SchemaDefinition
-    {
+    public static interface SchemaDefinition {
         int getVersion();
 
         /**
@@ -51,15 +48,13 @@ public class LockableDatabase
      * Workaround exception wrapper used to keep the inner exception generated
      * in a {@link DbCallback}.
      */
-    protected static class WrappedException extends RuntimeException
-    {
+    protected static class WrappedException extends RuntimeException {
         /**
          *
          */
         private static final long serialVersionUID = 8184421232587399369L;
 
-        public WrappedException(final Exception cause)
-        {
+        public WrappedException(final Exception cause) {
             super(cause);
         }
     }
@@ -67,58 +62,42 @@ public class LockableDatabase
     /**
      * Open the DB on mount and close the DB on unmount
      */
-    private class StorageListener implements StorageManager.StorageListener
-    {
+    private class StorageListener implements StorageManager.StorageListener {
         @Override
-        public void onUnmount(final String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
+        public void onUnmount(final String providerId) {
+            if (!providerId.equals(mStorageProviderId)) {
                 return;
             }
 
-            if (K9.DEBUG)
-            {
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "LockableDatabase: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
             }
 
-            try
-            {
+            try {
                 lockWrite();
-                try
-                {
+                try {
                     mDb.close();
-                }
-                finally
-                {
+                } finally {
                     unlockWrite();
                 }
-            }
-            catch (UnavailableStorageException e)
-            {
+            } catch (UnavailableStorageException e) {
                 Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
             }
         }
 
         @Override
-        public void onMount(final String providerId)
-        {
-            if (!providerId.equals(mStorageProviderId))
-            {
+        public void onMount(final String providerId) {
+            if (!providerId.equals(mStorageProviderId)) {
                 return;
             }
 
-            if (K9.DEBUG)
-            {
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "LockableDatabase: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
             }
 
-            try
-            {
+            try {
                 openOrCreateDataspace(mApplication);
-            }
-            catch (UnavailableStorageException e)
-            {
+            } catch (UnavailableStorageException e) {
                 Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
             }
         }
@@ -167,25 +146,21 @@ public class LockableDatabase
      * @param schemaDefinition
      *            Never <code>null</code
      */
-    public LockableDatabase(final Application application, final String uUid, final SchemaDefinition schemaDefinition)
-    {
+    public LockableDatabase(final Application application, final String uUid, final SchemaDefinition schemaDefinition) {
         this.mApplication = application;
         this.uUid = uUid;
         this.mSchemaDefinition = schemaDefinition;
     }
 
-    public void setStorageProviderId(String mStorageProviderId)
-    {
+    public void setStorageProviderId(String mStorageProviderId) {
         this.mStorageProviderId = mStorageProviderId;
     }
 
-    public String getStorageProviderId()
-    {
+    public String getStorageProviderId() {
         return mStorageProviderId;
     }
 
-    private StorageManager getStorageManager()
-    {
+    private StorageManager getStorageManager() {
         return StorageManager.getInstance(mApplication);
     }
 
@@ -201,27 +176,20 @@ public class LockableDatabase
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available
      */
-    protected void lockRead() throws UnavailableStorageException
-    {
+    protected void lockRead() throws UnavailableStorageException {
         mReadLock.lock();
-        try
-        {
+        try {
             getStorageManager().lockProvider(mStorageProviderId);
-        }
-        catch (UnavailableStorageException e)
-        {
+        } catch (UnavailableStorageException e) {
             mReadLock.unlock();
             throw e;
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             mReadLock.unlock();
             throw e;
         }
     }
 
-    protected void unlockRead()
-    {
+    protected void unlockRead() {
         getStorageManager().unlockProvider(mStorageProviderId);
         mReadLock.unlock();
     }
@@ -238,8 +206,7 @@ public class LockableDatabase
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite() throws UnavailableStorageException
-    {
+    protected void lockWrite() throws UnavailableStorageException {
         lockWrite(mStorageProviderId);
     }
 
@@ -258,32 +225,24 @@ public class LockableDatabase
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException
-    {
+    protected void lockWrite(final String providerId) throws UnavailableStorageException {
         mWriteLock.lock();
-        try
-        {
+        try {
             getStorageManager().lockProvider(providerId);
-        }
-        catch (UnavailableStorageException e)
-        {
+        } catch (UnavailableStorageException e) {
             mWriteLock.unlock();
             throw e;
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             mWriteLock.unlock();
             throw e;
         }
     }
 
-    protected void unlockWrite()
-    {
+    protected void unlockWrite() {
         unlockWrite(mStorageProviderId);
     }
 
-    protected void unlockWrite(final String providerId)
-    {
+    protected void unlockWrite(final String providerId) {
         getStorageManager().unlockProvider(providerId);
         mWriteLock.unlock();
     }
@@ -308,53 +267,38 @@ public class LockableDatabase
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
      * @throws UnavailableStorageException
      */
-    public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException
-    {
+    public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
-        try
-        {
+        try {
             final boolean debug = K9.DEBUG;
-            if (doTransaction)
-            {
+            if (doTransaction) {
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
             }
-            try
-            {
+            try {
                 final T result = callback.doDbWork(mDb);
-                if (doTransaction)
-                {
+                if (doTransaction) {
                     mDb.setTransactionSuccessful();
                 }
                 return result;
-            }
-            finally
-            {
-                if (doTransaction)
-                {
+            } finally {
+                if (doTransaction) {
                     final long begin;
-                    if (debug)
-                    {
+                    if (debug) {
                         begin = System.currentTimeMillis();
-                    }
-                    else
-                    {
+                    } else {
                         begin = 0l;
                     }
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
-                    if (debug)
-                    {
+                    if (debug) {
                         Log.v(K9.LOG_TAG, "LockableDatabase: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
                     }
                 }
             }
-        }
-        finally
-        {
-            if (doTransaction)
-            {
+        } finally {
+            if (doTransaction) {
                 inTransaction.set(null);
             }
             unlockRead();
@@ -366,27 +310,20 @@ public class LockableDatabase
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public void switchProvider(final String newProviderId) throws MessagingException
-    {
-        if (newProviderId.equals(mStorageProviderId))
-        {
+    public void switchProvider(final String newProviderId) throws MessagingException {
+        if (newProviderId.equals(mStorageProviderId)) {
             Log.v(K9.LOG_TAG, "LockableDatabase: Ignoring provider switch request as they are equal: " + newProviderId);
             return;
         }
 
         final String oldProviderId = mStorageProviderId;
         lockWrite(oldProviderId);
-        try
-        {
+        try {
             lockWrite(newProviderId);
-            try
-            {
-                try
-                {
+            try {
+                try {
                     mDb.close();
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
                 }
 
@@ -404,27 +341,19 @@ public class LockableDatabase
 
                 // re-initialize this class with the new Uri
                 openOrCreateDataspace(mApplication);
-            }
-            finally
-            {
+            } finally {
                 unlockWrite(newProviderId);
             }
-        }
-        finally
-        {
+        } finally {
             unlockWrite(oldProviderId);
         }
     }
 
-    public void open() throws UnavailableStorageException
-    {
+    public void open() throws UnavailableStorageException {
         lockWrite();
-        try
-        {
+        try {
             openOrCreateDataspace(mApplication);
-        }
-        finally
-        {
+        } finally {
             unlockWrite();
         }
         StorageManager.getInstance(mApplication).addListener(mStorageListener);
@@ -435,31 +364,23 @@ public class LockableDatabase
      * @param application
      * @throws UnavailableStorageException
      */
-    protected void openOrCreateDataspace(final Application application) throws UnavailableStorageException
-    {
+    protected void openOrCreateDataspace(final Application application) throws UnavailableStorageException {
 
         lockWrite();
-        try
-        {
+        try {
             final File databaseFile = prepareStorage(mStorageProviderId);
-            try
-            {
+            try {
                 mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-            }
-            catch (SQLiteException e)
-            {
+            } catch (SQLiteException e) {
                 // try to gracefully handle DB corruption - see issue 2537
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 databaseFile.delete();
                 mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
             }
-            if (mDb.getVersion() != mSchemaDefinition.getVersion())
-            {
+            if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
             }
-        }
-        finally
-        {
+        } finally {
             unlockWrite();
         }
     }
@@ -470,23 +391,19 @@ public class LockableDatabase
      * @return DB file.
      * @throws UnavailableStorageException
      */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException
-    {
+    protected File prepareStorage(final String providerId) throws UnavailableStorageException {
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile;
         final File databaseParentDir;
         databaseFile = storageManager.getDatabase(uUid, providerId);
         databaseParentDir = databaseFile.getParentFile();
-        if (databaseParentDir.isFile())
-        {
+        if (databaseParentDir.isFile()) {
             // should be safe to inconditionally delete clashing file: user is not supposed to mess with our directory
             databaseParentDir.delete();
         }
-        if (!databaseParentDir.exists())
-        {
-            if (!databaseParentDir.mkdirs())
-            {
+        if (!databaseParentDir.exists()) {
+            if (!databaseParentDir.mkdirs()) {
                 // Android seems to be unmounting the storage...
                 throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
             }
@@ -498,13 +415,11 @@ public class LockableDatabase
         attachmentDir = storageManager
                         .getAttachmentDirectory(uUid, providerId);
         attachmentParentDir = attachmentDir.getParentFile();
-        if (!attachmentParentDir.exists())
-        {
+        if (!attachmentParentDir.exists()) {
             attachmentParentDir.mkdirs();
             Utility.touchFile(attachmentParentDir, ".nomedia");
         }
-        if (!attachmentDir.exists())
-        {
+        if (!attachmentDir.exists()) {
             attachmentDir.mkdirs();
         }
         return databaseFile;
@@ -515,13 +430,11 @@ public class LockableDatabase
      *
      * @throws UnavailableStorageException
      */
-    public void delete() throws UnavailableStorageException
-    {
+    public void delete() throws UnavailableStorageException {
         delete(false);
     }
 
-    public void recreate() throws UnavailableStorageException
-    {
+    public void recreate() throws UnavailableStorageException {
         delete(true);
     }
 
@@ -530,60 +443,41 @@ public class LockableDatabase
      *            <code>true</code> if the DB should be recreated after delete
      * @throws UnavailableStorageException
      */
-    private void delete(final boolean recreate) throws UnavailableStorageException
-    {
+    private void delete(final boolean recreate) throws UnavailableStorageException {
         lockWrite();
-        try
-        {
-            try
-            {
+        try {
+            try {
                 mDb.close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
             final StorageManager storageManager = getStorageManager();
-            try
-            {
+            try {
                 final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
                 final File[] attachments = attachmentDirectory.listFiles();
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
+                for (File attachment : attachments) {
+                    if (attachment.exists()) {
                         attachment.delete();
                     }
                 }
-                if (attachmentDirectory.exists())
-                {
+                if (attachmentDirectory.exists()) {
                     attachmentDirectory.delete();
                 }
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
-            }
-            try
-            {
+            try {
                 storageManager.getDatabase(uUid, mStorageProviderId).delete();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.i(K9.LOG_TAG, "LockableDatabase: delete(): Unable to delete backing DB file", e);
             }
 
-            if (recreate)
-            {
+            if (recreate) {
                 openOrCreateDataspace(mApplication);
-            }
-            else
-            {
+            } else {
                 // stop waiting for mount/unmount events
                 getStorageManager().removeListener(mStorageListener);
             }
-        }
-        finally
-        {
+        } finally {
             unlockWrite();
         }
     }

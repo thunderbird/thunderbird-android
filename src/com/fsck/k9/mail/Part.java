@@ -4,8 +4,7 @@ package com.fsck.k9.mail;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public interface Part
-{
+public interface Part {
     public void addHeader(String name, String value) throws MessagingException;
 
     public void removeHeader(String name) throws MessagingException;

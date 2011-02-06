@@ -26,8 +26,7 @@ import com.fsck.k9.service.MailService;
  * Manager for different {@link StorageProvider} -classes that abstract access
  * to sd-cards, additional internal memory and other storage-locations.
  */
-public class StorageManager
-{
+public class StorageManager {
 
     /**
      * Provides entry points (File objects) to an underlying storage,
@@ -39,8 +38,7 @@ public class StorageManager
      * online later).
      * </p>
      */
-    public static interface StorageProvider
-    {
+    public static interface StorageProvider {
 
         /**
          * Retrieve the uniquely identifier for the current implementation.
@@ -139,8 +137,7 @@ public class StorageManager
      * Interface for components wanting to be notified of storage availability
      * events.
      */
-    public static interface StorageListener
-    {
+    public static interface StorageListener {
         /**
          * Invoked on storage mount (with read/write access).
          *
@@ -176,8 +173,7 @@ public class StorageManager
      * points using {@link StorageManager#isMountPoint(File)}.
      * </p>
      */
-    public abstract static class FixedStorageProviderBase implements StorageProvider
-    {
+    public abstract static class FixedStorageProviderBase implements StorageProvider {
         /**
          * The root of the denoted storage. Used for mount points checking.
          */
@@ -189,8 +185,7 @@ public class StorageManager
         protected File mApplicationDir;
 
         @Override
-        public void init(final Context context)
-        {
+        public void init(final Context context) {
             mRoot = computeRoot(context);
             // use <STORAGE_ROOT>/k9
             mApplicationDir = new File(mRoot, "k9");
@@ -205,42 +200,34 @@ public class StorageManager
         protected abstract boolean supportsVendor();
 
         @Override
-        public boolean isReady(Context context)
-        {
-            try
-            {
+        public boolean isReady(Context context) {
+            try {
                 final File root = mRoot.getCanonicalFile();
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 Log.w(K9.LOG_TAG, "Specified root isn't ready: " + mRoot, e);
                 return false;
             }
         }
 
         @Override
-        public final boolean isSupported(Context context)
-        {
+        public final boolean isSupported(Context context) {
             return mRoot.isDirectory() && supportsVendor();
         }
 
         @Override
-        public File getDatabase(Context context, String id)
-        {
+        public File getDatabase(Context context, String id) {
             return new File(mApplicationDir, id + ".db");
         }
 
         @Override
-        public File getAttachmentDirectory(Context context, String id)
-        {
+        public File getAttachmentDirectory(Context context, String id) {
             return new File(mApplicationDir, id + ".db_att");
         }
 
         @Override
-        public final File getRoot(Context context)
-        {
+        public final File getRoot(Context context) {
             return mRoot;
         }
 
@@ -268,60 +255,51 @@ public class StorageManager
      * The underlying storage has always been used by K-9.
      * </p>
      */
-    public static class InternalStorageProvider implements StorageProvider
-    {
+    public static class InternalStorageProvider implements StorageProvider {
 
         public static final String ID = "InternalStorage";
 
         protected File mRoot;
 
         @Override
-        public String getId()
-        {
+        public String getId() {
             return ID;
         }
 
         @Override
-        public void init(Context context)
-        {
+        public void init(Context context) {
             // XXX
             mRoot = new File("/");
         }
 
         @Override
-        public String getName(Context context)
-        {
+        public String getName(Context context) {
             return context.getString(R.string.local_storage_provider_internal_label);
         }
 
         @Override
-        public boolean isSupported(Context context)
-        {
+        public boolean isSupported(Context context) {
             return true;
         }
 
         @Override
-        public File getDatabase(Context context, String id)
-        {
+        public File getDatabase(Context context, String id) {
             return context.getDatabasePath(id + ".db");
         }
 
         @Override
-        public File getAttachmentDirectory(Context context, String id)
-        {
+        public File getAttachmentDirectory(Context context, String id) {
             // we store attachments in the database directory
             return context.getDatabasePath(id + ".db_att");
         }
 
         @Override
-        public boolean isReady(Context context)
-        {
+        public boolean isReady(Context context) {
             return true;
         }
 
         @Override
-        public File getRoot(Context context)
-        {
+        public File getRoot(Context context) {
             return mRoot;
         }
     }
@@ -344,8 +322,7 @@ public class StorageManager
      * mount/unmount/USB share events.
      * </p>
      */
-    public static class ExternalStorageProvider implements StorageProvider
-    {
+    public static class ExternalStorageProvider implements StorageProvider {
 
         public static final String ID = "ExternalStorage";
 
@@ -359,52 +336,44 @@ public class StorageManager
          */
         protected File mApplicationDirectory;
 
-        public String getId()
-        {
+        public String getId() {
             return ID;
         }
 
         @Override
-        public void init(Context context)
-        {
+        public void init(Context context) {
             mRoot = Environment.getExternalStorageDirectory();
             mApplicationDirectory = new File(new File(new File(new File(mRoot, "Android"), "data"),
                                              context.getPackageName()), "files");
         }
 
         @Override
-        public String getName(Context context)
-        {
+        public String getName(Context context) {
             return context.getString(R.string.local_storage_provider_external_label);
         }
 
         @Override
-        public boolean isSupported(Context context)
-        {
+        public boolean isSupported(Context context) {
             return true;
         }
 
         @Override
-        public File getDatabase(Context context, String id)
-        {
+        public File getDatabase(Context context, String id) {
             return new File(mApplicationDirectory, id + ".db");
         }
 
         @Override
-        public File getAttachmentDirectory(Context context, String id)
-        {
+        public File getAttachmentDirectory(Context context, String id) {
             return new File(mApplicationDirectory, id + ".db_att");
         }
 
         @Override
-        public boolean isReady(Context context)
-        {
+        public boolean isReady(Context context) {
             return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
         }
 
         @Override
-        public File getRoot(Context context)
-        {
+        public File getRoot(Context context) {
             return mRoot;
         }
     }
@@ -420,32 +389,27 @@ public class StorageManager
      *
      * @see FixedStorageProviderBase
      */
-    public static class HtcIncredibleStorageProvider extends FixedStorageProviderBase
-    {
+    public static class HtcIncredibleStorageProvider extends FixedStorageProviderBase {
 
         public static final String ID = "HtcIncredibleStorage";
 
-        public String getId()
-        {
+        public String getId() {
             return ID;
         }
 
         @Override
-        public String getName(Context context)
-        {
+        public String getName(Context context) {
             return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
                                      Build.MODEL);
         }
 
         @Override
-        protected boolean supportsVendor()
-        {
+        protected boolean supportsVendor() {
             return "inc".equals(Build.DEVICE);
         }
 
         @Override
-        protected File computeRoot(Context context)
-        {
+        protected File computeRoot(Context context) {
             return new File("/emmc");
         }
     }
@@ -461,34 +425,29 @@ public class StorageManager
      *
      * @see FixedStorageProviderBase
      */
-    public static class SamsungGalaxySStorageProvider extends FixedStorageProviderBase
-    {
+    public static class SamsungGalaxySStorageProvider extends FixedStorageProviderBase {
 
         public static final String ID = "SamsungGalaxySStorage";
 
-        public String getId()
-        {
+        public String getId() {
             return ID;
         }
 
         @Override
-        public String getName(Context context)
-        {
+        public String getName(Context context) {
             return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
                                      Build.MODEL);
         }
 
         @Override
-        protected boolean supportsVendor()
-        {
+        protected boolean supportsVendor() {
             // FIXME
             return "GT-I5800".equals(Build.DEVICE) || "GT-I9000".equals(Build.DEVICE)
                    || "SGH-T959".equals(Build.DEVICE) || "SGH-I897".equals(Build.DEVICE);
         }
 
         @Override
-        protected File computeRoot(Context context)
-        {
+        protected File computeRoot(Context context) {
             return Environment.getExternalStorageDirectory(); // was: new
             // File("/sdcard")
         }
@@ -497,8 +456,7 @@ public class StorageManager
     /**
      * Stores storage provider locking informations
      */
-    public static class SynchronizationAid
-    {
+    public static class SynchronizationAid {
         /**
          * {@link Lock} has a thread semantic so it can't be released from
          * another thread - this flags act as a holder for the unmount state
@@ -535,10 +493,8 @@ public class StorageManager
 
     private static transient StorageManager instance;
 
-    public static synchronized StorageManager getInstance(final Application application)
-    {
-        if (instance == null)
-        {
+    public static synchronized StorageManager getInstance(final Application application) {
+        if (instance == null) {
             instance = new StorageManager(application);
         }
         return instance;
@@ -550,12 +506,9 @@ public class StorageManager
      * @return Whether the specified file matches a filesystem root.
      * @throws IOException
      */
-    public static boolean isMountPoint(final File file)
-    {
-        for (final File root : File.listRoots())
-        {
-            if (root.equals(file))
-            {
+    public static boolean isMountPoint(final File file) {
+        for (final File root : File.listRoots()) {
+            if (root.equals(file)) {
                 return true;
             }
         }
@@ -568,10 +521,8 @@ public class StorageManager
      * @throws NullPointerException
      *             If <tt>application</tt> is <code>null</code>.
      */
-    protected StorageManager(final Application application) throws NullPointerException
-    {
-        if (application == null)
-        {
+    protected StorageManager(final Application application) throws NullPointerException {
+        if (application == null) {
             throw new NullPointerException("No application instance given");
         }
 
@@ -592,11 +543,9 @@ public class StorageManager
          */
         final List<StorageProvider> allProviders = Arrays.asList(new InternalStorageProvider(),
                 new ExternalStorageProvider());
-        for (final StorageProvider provider : allProviders)
-        {
+        for (final StorageProvider provider : allProviders) {
             // check for provider compatibility
-            if (provider.isSupported(mApplication))
-            {
+            if (provider.isSupported(mApplication)) {
                 // provider is compatible! proceeding
 
                 provider.init(application);
@@ -610,8 +559,7 @@ public class StorageManager
     /**
      * @return Never <code>null</code>.
      */
-    public String getDefaultProviderId()
-    {
+    public String getDefaultProviderId() {
         // assume there is at least 1 provider defined
         return mProviders.entrySet().iterator().next().getKey();
     }
@@ -621,8 +569,7 @@ public class StorageManager
      *            Never <code>null</code>.
      * @return <code>null</code> if not found.
      */
-    protected StorageProvider getProvider(final String providerId)
-    {
+    protected StorageProvider getProvider(final String providerId) {
         return mProviders.get(providerId);
     }
 
@@ -633,8 +580,7 @@ public class StorageManager
      *            Never <code>null</code>.
      * @return The resolved database file for the given provider ID.
      */
-    public File getDatabase(final String dbName, final String providerId)
-    {
+    public File getDatabase(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
         return provider.getDatabase(mApplication, dbName);
@@ -647,8 +593,7 @@ public class StorageManager
      *            Never <code>null</code>.
      * @return The resolved attachement directory for the given provider ID.
      */
-    public File getAttachmentDirectory(final String dbName, final String providerId)
-    {
+    public File getAttachmentDirectory(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
         return provider.getAttachmentDirectory(mApplication, dbName);
@@ -659,11 +604,9 @@ public class StorageManager
      *            Never <code>null</code>.
      * @return Whether the specified provider is ready for read/write operations
      */
-    public boolean isReady(final String providerId)
-    {
+    public boolean isReady(final String providerId) {
         StorageProvider provider = getProvider(providerId);
-        if (provider == null)
-        {
+        if (provider == null) {
             Log.w(K9.LOG_TAG, "Storage-Provider \"" + providerId + "\" does not exist");
             return false;
         }
@@ -676,11 +619,9 @@ public class StorageManager
      * @see StorageManager
      * @see StorageProvider#isSupported(Context)
      */
-    public Map<String, String> getAvailableProviders()
-    {
+    public Map<String, String> getAvailableProviders() {
         final Map<String, String> result = new LinkedHashMap<String, String>();
-        for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet())
-        {
+        for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet()) {
             result.put(entry.getKey(), entry.getValue().getName(mApplication));
         }
         return result;
@@ -689,22 +630,16 @@ public class StorageManager
     /**
      * @param path
      */
-    public void onBeforeUnmount(final String path)
-    {
+    public void onBeforeUnmount(final String path) {
         Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounting");
         final StorageProvider provider = resolveProvider(path);
-        if (provider == null)
-        {
+        if (provider == null) {
             return;
         }
-        for (final StorageListener listener : mListeners)
-        {
-            try
-            {
+        for (final StorageListener listener : mListeners) {
+            try {
                 listener.onUnmount(provider.getId());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
             }
         }
@@ -714,12 +649,10 @@ public class StorageManager
         sync.writeLock.unlock();
     }
 
-    public void onAfterUnmount(final String path)
-    {
+    public void onAfterUnmount(final String path) {
         Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
         final StorageProvider provider = resolveProvider(path);
-        if (provider == null)
-        {
+        if (provider == null) {
             return;
         }
         final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
@@ -732,27 +665,20 @@ public class StorageManager
      * @param path
      * @param readOnly
      */
-    public void onMount(final String path, final boolean readOnly)
-    {
+    public void onMount(final String path, final boolean readOnly) {
         Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
-        if (readOnly)
-        {
+        if (readOnly) {
             return;
         }
 
         final StorageProvider provider = resolveProvider(path);
-        if (provider == null)
-        {
+        if (provider == null) {
             return;
         }
-        for (final StorageListener listener : mListeners)
-        {
-            try
-            {
+        for (final StorageListener listener : mListeners) {
+            try {
                 listener.onMount(provider.getId());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
             }
         }
@@ -766,25 +692,20 @@ public class StorageManager
      *            Never <code>null</code>.
      * @return The corresponding provider. <code>null</code> if no match.
      */
-    protected StorageProvider resolveProvider(final String path)
-    {
-        for (final StorageProvider provider : mProviders.values())
-        {
-            if (path.equals(provider.getRoot(mApplication).getAbsolutePath()))
-            {
+    protected StorageProvider resolveProvider(final String path) {
+        for (final StorageProvider provider : mProviders.values()) {
+            if (path.equals(provider.getRoot(mApplication).getAbsolutePath())) {
                 return provider;
             }
         }
         return null;
     }
 
-    public void addListener(final StorageListener listener)
-    {
+    public void addListener(final StorageListener listener) {
         mListeners.add(listener);
     }
 
-    public void removeListener(final StorageListener listener)
-    {
+    public void removeListener(final StorageListener listener) {
         mListeners.remove(listener);
     }
 
@@ -800,33 +721,26 @@ public class StorageManager
      * @throws UnavailableStorageException
      *             If the storage can't be locked.
      */
-    public void lockProvider(final String providerId) throws UnavailableStorageException
-    {
+    public void lockProvider(final String providerId) throws UnavailableStorageException {
         final StorageProvider provider = getProvider(providerId);
-        if (provider == null)
-        {
+        if (provider == null) {
             throw new UnavailableStorageException("StorageProvider not found: " + providerId);
         }
         // lock provider
         final SynchronizationAid sync = mProviderLocks.get(provider);
         final boolean locked = sync.readLock.tryLock();
-        if (!locked || (locked && sync.unmounting))
-        {
-            if (locked)
-            {
+        if (!locked || (locked && sync.unmounting)) {
+            if (locked) {
                 sync.readLock.unlock();
             }
             throw new UnavailableStorageException("StorageProvider is unmounting");
-        }
-        else if (locked && !provider.isReady(mApplication))
-        {
+        } else if (locked && !provider.isReady(mApplication)) {
             sync.readLock.unlock();
             throw new UnavailableStorageException("StorageProvider not ready");
         }
     }
 
-    public void unlockProvider(final String providerId)
-    {
+    public void unlockProvider(final String providerId) {
         final StorageProvider provider = getProvider(providerId);
         final SynchronizationAid sync = mProviderLocks.get(provider);
         sync.readLock.unlock();

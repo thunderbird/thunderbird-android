@@ -22,8 +22,7 @@ import java.util.List;
  * performance on mobile devices. Implementations of this class should focus on
  * making as few network connections as possible.
  */
-public abstract class Store
-{
+public abstract class Store {
     protected static final int SOCKET_CONNECT_TIMEOUT = 30000;
     protected static final int SOCKET_READ_TIMEOUT = 60000;
 
@@ -38,47 +37,36 @@ public abstract class Store
 
     protected final Account mAccount;
 
-    protected Store(Account account)
-    {
+    protected Store(Account account) {
         mAccount = account;
     }
 
     /**
      * Get an instance of a remote mail store.
      */
-    public synchronized static Store getRemoteInstance(Account account) throws MessagingException
-    {
+    public synchronized static Store getRemoteInstance(Account account) throws MessagingException {
         String uri = account.getStoreUri();
 
-        if (uri.startsWith("local"))
-        {
+        if (uri.startsWith("local")) {
             throw new RuntimeException("Asked to get non-local Store object but given LocalStore URI");
         }
 
         Store store = mStores.get(uri);
-        if (store == null)
-        {
-            if (uri.startsWith("imap"))
-            {
+        if (store == null) {
+            if (uri.startsWith("imap")) {
                 store = new ImapStore(account);
-            }
-            else if (uri.startsWith("pop3"))
-            {
+            } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(account);
-            }
-            else if (uri.startsWith("webdav"))
-            {
+            } else if (uri.startsWith("webdav")) {
                 store = new WebDavStore(account);
             }
 
-            if (store != null)
-            {
+            if (store != null) {
                 mStores.put(uri, store);
             }
         }
 
-        if (store == null)
-        {
+        if (store == null) {
             throw new MessagingException("Unable to locate an applicable Store for " + uri);
         }
 
@@ -89,11 +77,9 @@ public abstract class Store
      * Get an instance of a local mail store.
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
-    public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException
-    {
+    public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException {
         Store store = mLocalStores.get(account.getUuid());
-        if (store == null)
-        {
+        if (store == null) {
             store = new LocalStore(account, application);
             mLocalStores.put(account.getUuid(), store);
         }
@@ -103,43 +89,35 @@ public abstract class Store
 
     public abstract Folder getFolder(String name);
 
-    public abstract List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException;
+    public abstract List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
 
-    public boolean isCopyCapable()
-    {
+    public boolean isCopyCapable() {
         return false;
     }
-    public boolean isMoveCapable()
-    {
+    public boolean isMoveCapable() {
         return false;
     }
-    public boolean isPushCapable()
-    {
+    public boolean isPushCapable() {
         return false;
     }
-    public boolean isSendCapable()
-    {
+    public boolean isSendCapable() {
         return false;
     }
-    public boolean isExpungeCapable()
-    {
+    public boolean isExpungeCapable() {
         return false;
     }
 
 
-    public void sendMessages(Message[] messages) throws MessagingException
-    {
+    public void sendMessages(Message[] messages) throws MessagingException {
     }
 
-    public Pusher getPusher(PushReceiver receiver)
-    {
+    public Pusher getPusher(PushReceiver receiver) {
         return null;
     }
 
-    public Account getAccount()
-    {
+    public Account getAccount() {
         return mAccount;
     }
 }

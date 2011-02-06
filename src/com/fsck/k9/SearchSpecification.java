@@ -3,8 +3,7 @@ package com.fsck.k9;
 
 import com.fsck.k9.mail.Flag;
 
-public interface SearchSpecification
-{
+public interface SearchSpecification {
 
     public Flag[] getRequiredFlags();
 

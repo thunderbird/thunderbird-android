@@ -9,8 +9,7 @@ import com.fsck.k9.mail.MessagingException;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
-public class MessageReference implements Serializable
-{
+public class MessageReference implements Serializable {
     private static final long serialVersionUID = -1625198750239083389L;
     public String accountUuid;
     public String folderName;
@@ -20,8 +19,7 @@ public class MessageReference implements Serializable
     /**
      * Initialize an empty MessageReference.
      */
-    public MessageReference()
-    {
+    public MessageReference() {
     }
 
     // Version identifier for use when serializing. This will allow us to introduce future versions
@@ -34,42 +32,33 @@ public class MessageReference implements Serializable
      * @param identity Serialized identity.
      * @throws MessagingException On missing or corrupted identity.
      */
-    public MessageReference(final String identity) throws MessagingException
-    {
+    public MessageReference(final String identity) throws MessagingException {
         // Can't be null and must be at least length one so we can check the version.
-        if (identity == null || identity.length() < 1)
-        {
+        if (identity == null || identity.length() < 1) {
             throw new MessagingException("Null or truncated MessageReference identity.");
         }
 
         // Version check.
-        if (identity.charAt(0) == IDENTITY_VERSION_1.charAt(0))
-        {
+        if (identity.charAt(0) == IDENTITY_VERSION_1.charAt(0)) {
             // Split the identity, stripping away the first two characters representing the version and delimiter.
             StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
-            if (tokens.countTokens() >= 3)
-            {
+            if (tokens.countTokens() >= 3) {
                 accountUuid = Utility.base64Decode(tokens.nextToken());
                 folderName = Utility.base64Decode(tokens.nextToken());
                 uid = Utility.base64Decode(tokens.nextToken());
 
-                if (tokens.hasMoreTokens())
-                {
+                if (tokens.hasMoreTokens()) {
                     final String flagString = tokens.nextToken();
-                    try
-                    {
+                    try {
                         flag = Flag.valueOf(flagString);
-                    } catch (IllegalArgumentException ie)
-                    {
+                    } catch (IllegalArgumentException ie) {
                         throw new MessagingException("Could not thaw message flag '" + flagString + "'", ie);
                     }
                 }
 
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Thawed " + toString());
-            }
-            else
-            {
+            } else {
                 throw new MessagingException("Invalid MessageReference in " + identity + " identity.");
             }
         }
@@ -80,8 +69,7 @@ public class MessageReference implements Serializable
      *
      * @return Serialized string.
      */
-    public String toIdentityString()
-    {
+    public String toIdentityString() {
         StringBuilder refString = new StringBuilder();
 
         refString.append(IDENTITY_VERSION_1);
@@ -91,8 +79,7 @@ public class MessageReference implements Serializable
         refString.append(Utility.base64Encode(folderName));
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Utility.base64Encode(uid));
-        if (flag != null)
-        {
+        if (flag != null) {
             refString.append(IDENTITY_SEPARATOR);
             refString.append(flag.name());
         }
@@ -101,25 +88,21 @@ public class MessageReference implements Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof MessageReference == false)
-        {
+    public boolean equals(Object o) {
+        if (o instanceof MessageReference == false) {
             return false;
         }
         MessageReference other = (MessageReference)o;
         if ((accountUuid == other.accountUuid || (accountUuid != null && accountUuid.equals(other.accountUuid)))
                 && (folderName == other.folderName || (folderName != null && folderName.equals(other.folderName)))
-                && (uid == other.uid || (uid != null && uid.equals(other.uid))))
-        {
+                && (uid == other.uid || (uid != null && uid.equals(other.uid)))) {
             return true;
         }
         return false;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         final int MULTIPLIER = 31;
 
         int result = 1;
@@ -130,13 +113,12 @@ public class MessageReference implements Serializable
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "MessageReference{" +
-                "accountUuid='" + accountUuid + '\'' +
-                ", folderName='" + folderName + '\'' +
-                ", uid='" + uid + '\'' +
-                ", flag=" + flag +
-                '}';
+               "accountUuid='" + accountUuid + '\'' +
+               ", folderName='" + folderName + '\'' +
+               ", uid='" + uid + '\'' +
+               ", flag=" + flag +
+               '}';
     }
 }

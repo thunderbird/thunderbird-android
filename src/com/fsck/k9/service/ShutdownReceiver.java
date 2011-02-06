@@ -19,14 +19,11 @@ import com.fsck.k9.K9;
  * {@link Context#registerReceiver(BroadcastReceiver, android.content.IntentFilter)}
  * </p>
  */
-public class ShutdownReceiver extends BroadcastReceiver
-{
+public class ShutdownReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(final Context context, final Intent intent)
-    {
-        if (Intent.ACTION_SHUTDOWN.equals(intent.getAction()))
-        {
+    public void onReceive(final Context context, final Intent intent) {
+        if (Intent.ACTION_SHUTDOWN.equals(intent.getAction())) {
             Log.i(K9.LOG_TAG, "System is shutting down, releasing resources");
 
             // prevent any scheduled intent from waking up K-9

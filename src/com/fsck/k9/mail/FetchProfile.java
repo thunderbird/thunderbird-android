@@ -15,8 +15,7 @@ import java.util.ArrayList;
  *                              any information it needs to download the content.
  * </pre>
  */
-public class FetchProfile extends ArrayList<FetchProfile.Item>
-{
+public class FetchProfile extends ArrayList<FetchProfile.Item> {
     private static final long serialVersionUID = -5520076119120964166L;
 
     /**
@@ -24,8 +23,7 @@ public class FetchProfile extends ArrayList<FetchProfile.Item>
      * item fetched by using these items could potentially include all of the
      * previous items.
      */
-    public enum Item
-    {
+    public enum Item {
         /**
          * Download the flags of the message.
          */

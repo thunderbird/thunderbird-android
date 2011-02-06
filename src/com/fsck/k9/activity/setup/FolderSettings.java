@@ -19,8 +19,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.MailService;
 
-public class FolderSettings extends K9PreferenceActivity
-{
+public class FolderSettings extends K9PreferenceActivity {
 
     private static final String EXTRA_FOLDER_NAME = "com.fsck.k9.folderName";
     private static final String EXTRA_ACCOUNT = "com.fsck.k9.account";
@@ -40,8 +39,7 @@ public class FolderSettings extends K9PreferenceActivity
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
 
-    public static void actionSettings(Context context, Account account, String folderName)
-    {
+    public static void actionSettings(Context context, Account account, String folderName) {
         Intent i = new Intent(context, FolderSettings.class);
         i.putExtra(EXTRA_FOLDER_NAME, folderName);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -49,35 +47,28 @@ public class FolderSettings extends K9PreferenceActivity
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        try
-        {
+        try {
             LocalStore localStore = mAccount.getLocalStore();
             mFolder = localStore.getFolder(folderName);
             mFolder.open(OpenMode.READ_WRITE);
-        }
-        catch (MessagingException me)
-        {
+        } catch (MessagingException me) {
             Log.e(K9.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
             return;
         }
 
         boolean isPushCapable = false;
         Store store = null;
-        try
-        {
+        try {
             store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not get remote store", e);
         }
 
@@ -95,10 +86,8 @@ public class FolderSettings extends K9PreferenceActivity
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
         mDisplayClass.setSummary(mDisplayClass.getEntry());
-        mDisplayClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mDisplayClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String summary = newValue.toString();
                 int index = mDisplayClass.findIndexOfValue(summary);
                 mDisplayClass.setSummary(mDisplayClass.getEntries()[index]);
@@ -110,10 +99,8 @@ public class FolderSettings extends K9PreferenceActivity
         mSyncClass = (ListPreference) findPreference(PREFERENCE_SYNC_CLASS);
         mSyncClass.setValue(mFolder.getRawSyncClass().name());
         mSyncClass.setSummary(mSyncClass.getEntry());
-        mSyncClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mSyncClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String summary = newValue.toString();
                 int index = mSyncClass.findIndexOfValue(summary);
                 mSyncClass.setSummary(mSyncClass.getEntries()[index]);
@@ -126,10 +113,8 @@ public class FolderSettings extends K9PreferenceActivity
         mPushClass.setEnabled(isPushCapable);
         mPushClass.setValue(mFolder.getRawPushClass().name());
         mPushClass.setSummary(mPushClass.getEntry());
-        mPushClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mPushClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String summary = newValue.toString();
                 int index = mPushClass.findIndexOfValue(summary);
                 mPushClass.setSummary(mPushClass.getEntries()[index]);
@@ -140,13 +125,11 @@ public class FolderSettings extends K9PreferenceActivity
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
     }
 
-    private void saveSettings() throws MessagingException
-    {
+    private void saveSettings() throws MessagingException {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
         // We call getPushClass() because display class changes can affect push class when push class is set to inherit
@@ -162,24 +145,18 @@ public class FolderSettings extends K9PreferenceActivity
         FolderClass newDisplayClass = mFolder.getDisplayClass();
 
         if (oldPushClass != newPushClass
-                || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass))
-        {
+                || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass)) {
             MailService.actionRestartPushers(getApplication(), null);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            try
-            {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            try {
                 saveSettings();
-            }
-            catch (MessagingException e)
-            {
-                Log.e(K9.LOG_TAG,"Saving folder settings failed "+e);
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Saving folder settings failed " + e);
             }
         }
         return super.onKeyDown(keyCode, event);

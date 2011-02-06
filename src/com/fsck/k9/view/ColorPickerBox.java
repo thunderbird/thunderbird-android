@@ -16,8 +16,7 @@ import android.graphics.Shader.*;
 import android.util.*;
 import android.view.*;
 
-public class ColorPickerBox extends View
-{
+public class ColorPickerBox extends View {
 
     Paint paint;
     Shader dalam;
@@ -28,18 +27,15 @@ public class ColorPickerBox extends View
     float sizeUiPx; // diset di constructor
     float[] tmp00 = new float[3];
 
-    public ColorPickerBox(Context context)
-    {
+    public ColorPickerBox(Context context) {
         this(context, null);
     }
 
-    public ColorPickerBox(Context context, AttributeSet attrs)
-    {
+    public ColorPickerBox(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ColorPickerBox(Context context, AttributeSet attrs, int defStyle)
-    {
+    public ColorPickerBox(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         onedp = context.getResources().getDimension(R.dimen.colorpicker_onedp);
@@ -47,12 +43,10 @@ public class ColorPickerBox extends View
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (paint == null)
-        {
+        if (paint == null) {
             paint = new Paint();
             luar = new LinearGradient(0.f, 0.f, 0.f, sizeUiPx, 0xffffffff, 0xff000000, TileMode.CLAMP);
         }
@@ -69,8 +63,7 @@ public class ColorPickerBox extends View
         canvas.drawRect(0.f, 0.f, sizeUiPx, sizeUiPx, paint);
     }
 
-    public void setHue(float hue)
-    {
+    public void setHue(float hue) {
         this.hue = hue;
         invalidate();
     }

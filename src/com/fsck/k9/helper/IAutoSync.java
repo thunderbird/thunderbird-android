@@ -7,8 +7,7 @@ import android.content.Context;
  * current state of the auto-sync setting. This method differs from SDK 3 to
  * SDK 5, so there are specialized implementations for each SDK version.
  */
-public interface IAutoSync
-{
+public interface IAutoSync {
     /**
      * Do the necessary reflection magic to get the necessary objects and/or
      * methods to later query the state of the auto-sync setting.

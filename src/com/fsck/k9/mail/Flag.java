@@ -4,8 +4,7 @@ package com.fsck.k9.mail;
 /**
  * Flags that can be applied to Messages.
  */
-public enum Flag
-{
+public enum Flag {
     DELETED,
     SEEN,
     ANSWERED,

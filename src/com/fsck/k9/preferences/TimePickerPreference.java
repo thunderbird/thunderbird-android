@@ -14,8 +14,7 @@ import android.widget.TimePicker;
  * A preference type that allows a user to choose a time
  */
 public class TimePickerPreference extends DialogPreference implements
-    TimePicker.OnTimeChangedListener
-{
+    TimePicker.OnTimeChangedListener {
 
     /**
      * The validation expression for this preference
@@ -31,8 +30,7 @@ public class TimePickerPreference extends DialogPreference implements
      * @param context
      * @param attrs
      */
-    public TimePickerPreference(Context context, AttributeSet attrs)
-    {
+    public TimePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize();
     }
@@ -43,8 +41,7 @@ public class TimePickerPreference extends DialogPreference implements
      * @param defStyle
      */
     public TimePickerPreference(Context context, AttributeSet attrs,
-                                int defStyle)
-    {
+                                int defStyle) {
         super(context, attrs, defStyle);
         initialize();
     }
@@ -52,8 +49,7 @@ public class TimePickerPreference extends DialogPreference implements
     /**
      * Initialize this preference
      */
-    private void initialize()
-    {
+    private void initialize() {
         setPersistent(true);
     }
 
@@ -63,16 +59,14 @@ public class TimePickerPreference extends DialogPreference implements
      * @see android.preference.DialogPreference#onCreateDialogView()
      */
     @Override
-    protected View onCreateDialogView()
-    {
+    protected View onCreateDialogView() {
 
         TimePicker tp = new TimePicker(getContext());
         tp.setOnTimeChangedListener(this);
 
         int h = getHour();
         int m = getMinute();
-        if (h >= 0 && m >= 0)
-        {
+        if (h >= 0 && m >= 0) {
             tp.setCurrentHour(h);
             tp.setCurrentMinute(m);
         }
@@ -88,11 +82,10 @@ public class TimePickerPreference extends DialogPreference implements
      * .widget.TimePicker, int, int)
      */
     @Override
-    public void onTimeChanged(TimePicker view, int hour, int minute)
-    {
+    public void onTimeChanged(TimePicker view, int hour, int minute) {
 
-        persistString(String.format("%02d:%02d",hour,minute));
-        callChangeListener(String.format("%02d:%02d",hour,minute));
+        persistString(String.format("%02d:%02d", hour, minute));
+        callChangeListener(String.format("%02d:%02d", hour, minute));
     }
 
     /*
@@ -101,19 +94,16 @@ public class TimePickerPreference extends DialogPreference implements
      * @see android.preference.Preference#setDefaultValue(java.lang.Object)
      */
     @Override
-    public void setDefaultValue(Object defaultValue)
-    {
+    public void setDefaultValue(Object defaultValue) {
         // BUG this method is never called if you use the 'android:defaultValue' attribute in your XML preference file, not sure why it isn't
 
         super.setDefaultValue(defaultValue);
 
-        if (!(defaultValue instanceof String))
-        {
+        if (!(defaultValue instanceof String)) {
             return;
         }
 
-        if (!((String) defaultValue).matches(VALIDATION_EXPRESSION))
-        {
+        if (!((String) defaultValue).matches(VALIDATION_EXPRESSION)) {
             return;
         }
 
@@ -125,11 +115,9 @@ public class TimePickerPreference extends DialogPreference implements
      *
      * @return The hour value, will be 0 to 23 (inclusive)
      */
-    private int getHour()
-    {
+    private int getHour() {
         String time = getPersistedString(this.defaultValue);
-        if (time == null || !time.matches(VALIDATION_EXPRESSION))
-        {
+        if (time == null || !time.matches(VALIDATION_EXPRESSION)) {
             return -1;
         }
 
@@ -141,19 +129,16 @@ public class TimePickerPreference extends DialogPreference implements
      *
      * @return the minute value, will be 0 to 59 (inclusive)
      */
-    private int getMinute()
-    {
+    private int getMinute() {
         String time = getPersistedString(this.defaultValue);
-        if (time == null || !time.matches(VALIDATION_EXPRESSION))
-        {
+        if (time == null || !time.matches(VALIDATION_EXPRESSION)) {
             return -1;
         }
 
         return Integer.valueOf(time.split(":")[1]);
     }
 
-    public String getTime()
-    {
+    public String getTime() {
         return getPersistedString(this.defaultValue);
     }
 

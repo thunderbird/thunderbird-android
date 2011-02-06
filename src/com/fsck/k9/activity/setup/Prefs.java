@@ -29,8 +29,7 @@ import com.fsck.k9.preferences.TimePickerPreference;
 import com.fsck.k9.service.MailService;
 
 
-public class Prefs extends K9PreferenceActivity
-{
+public class Prefs extends K9PreferenceActivity {
 
     /**
      * Immutable empty {@link CharSequence} array
@@ -57,7 +56,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
-    private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES= "messagelist_show_correspondent_names";
+    private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
@@ -112,15 +111,13 @@ public class Prefs extends K9PreferenceActivity
 
 
 
-    public static void actionPrefs(Context context)
-    {
+    public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.global_preferences);
@@ -130,10 +127,8 @@ public class Prefs extends K9PreferenceActivity
         Vector<CharSequence> entryValueVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
         String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
         HashSet<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
-        for (int i = entryVector.size() - 1; i > -1; --i)
-        {
-            if (!supportedLanguageSet.contains(entryValueVector.get(i)))
-            {
+        for (int i = entryVector.size() - 1; i > -1; --i) {
+            if (!supportedLanguageSet.contains(entryValueVector.get(i))) {
                 entryVector.remove(i);
                 entryValueVector.remove(i);
             }
@@ -146,10 +141,8 @@ public class Prefs extends K9PreferenceActivity
         mTheme = setupListPreference(PREFERENCE_THEME, theme);
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener()
-        {
-            public boolean onPreferenceClick(Preference preference)
-            {
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
                 onFontSizeSettings();
                 return true;
             }
@@ -159,8 +152,7 @@ public class Prefs extends K9PreferenceActivity
         String[] formats = DateFormatter.getFormats(this);
         CharSequence[] entries = new CharSequence[formats.length];
         CharSequence[] values = new CharSequence[formats.length];
-        for (int i = 0 ; i < formats.length; i++)
-        {
+        for (int i = 0 ; i < formats.length; i++) {
             String format = formats[i];
             entries[i] = DateFormatter.getSampleDate(this, format);
             values[i] = format;
@@ -172,7 +164,7 @@ public class Prefs extends K9PreferenceActivity
 
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
-        
+
         compactLayouts = (CheckBoxPreference)findPreference(PREFERENCE_COMPACT_LAYOUTS);
         compactLayouts.setChecked(K9.useCompactLayouts());
 
@@ -219,26 +211,18 @@ public class Prefs extends K9PreferenceActivity
 
         mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
         mChangeContactNameColor.setChecked(K9.changeContactNameColor());
-        if (K9.changeContactNameColor())
-        {
+        if (K9.changeContactNameColor()) {
             mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
-        }
-        else
-        {
+        } else {
             mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
         }
-        mChangeContactNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mChangeContactNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final Boolean checked = (Boolean) newValue;
-                if (checked)
-                {
+                if (checked) {
                     onChooseContactNameColor();
                     mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
-                }
-                else
-                {
+                } else {
                     mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
                 }
                 mChangeContactNameColor.setChecked(checked);
@@ -256,8 +240,7 @@ public class Prefs extends K9PreferenceActivity
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Integer.parseInt(Build.VERSION.SDK)  <= 7 )
-        {
+        if (Integer.parseInt(Build.VERSION.SDK)  <= 7) {
             mMobileOptimizedLayout.setEnabled(false);
         }
 
@@ -270,10 +253,8 @@ public class Prefs extends K9PreferenceActivity
         mQuietTimeStarts = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_STARTS);
         mQuietTimeStarts.setDefaultValue(K9.getQuietTimeStarts());
         mQuietTimeStarts.setSummary(K9.getQuietTimeStarts());
-        mQuietTimeStarts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mQuietTimeStarts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String time = (String) newValue;
                 mQuietTimeStarts.setSummary(time);
                 return false;
@@ -283,10 +264,8 @@ public class Prefs extends K9PreferenceActivity
         mQuietTimeEnds = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_ENDS);
         mQuietTimeEnds.setSummary(K9.getQuietTimeEnds());
         mQuietTimeEnds.setDefaultValue(K9.getQuietTimeEnds());
-        mQuietTimeEnds.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+        mQuietTimeEnds.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String time = (String) newValue;
                 mQuietTimeEnds.setSummary(time);
                 return false;
@@ -308,8 +287,7 @@ public class Prefs extends K9PreferenceActivity
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
     }
 
-    private void saveSettings()
-    {
+    private void saveSettings() {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
@@ -346,8 +324,7 @@ public class Prefs extends K9PreferenceActivity
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
 
-        if (!K9.DEBUG && mDebugLogging.isChecked())
-        {
+        if (!K9.DEBUG && mDebugLogging.isChecked()) {
             Toast.makeText(this, R.string.debug_logging_enabled, Toast.LENGTH_LONG).show();
         }
         K9.DEBUG = mDebugLogging.isChecked();
@@ -358,20 +335,16 @@ public class Prefs extends K9PreferenceActivity
         DateFormatter.setDateFormat(editor, mDateFormat.getValue());
         editor.commit();
 
-        if (needsRefresh)
-        {
+        if (needsRefresh) {
             MailService.actionReset(this, null);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             saveSettings();
-            if (K9.manageBack())
-            {
+            if (K9.manageBack()) {
                 Accounts.listAccounts(this);
                 finish();
                 return true;
@@ -380,17 +353,13 @@ public class Prefs extends K9PreferenceActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    private void onFontSizeSettings()
-    {
+    private void onFontSizeSettings() {
         FontSizeSettings.actionEditSettings(this);
     }
 
-    private void onChooseContactNameColor()
-    {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener()
-        {
-            public void colorChanged(int color)
-            {
+    private void onChooseContactNameColor() {
+        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener() {
+            public void colorChanged(int color) {
                 K9.setContactNameColor(color);
             }
         },

@@ -7,29 +7,23 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class SpinnerHelper
-{
-    public static void initSpinner(Context context, Spinner spinner, int entryRes, int valueRes, String curVal)
-    {
+public class SpinnerHelper {
+    public static void initSpinner(Context context, Spinner spinner, int entryRes, int valueRes, String curVal) {
         String[] entryArray = context.getResources().getStringArray(entryRes);
         String[] valueArray = context.getResources().getStringArray(valueRes);
         initSpinner(context, spinner, entryArray, valueArray, curVal);
     }
-    public static void initSpinner(Context context, Spinner spinner, String[] entryArray, String[] valueArray, String curVal)
-    {
+    public static void initSpinner(Context context, Spinner spinner, String[] entryArray, String[] valueArray, String curVal) {
 
-        if (entryArray.length != valueArray.length)
-        {
+        if (entryArray.length != valueArray.length) {
             throw new RuntimeException("Entry and value arrays are of unequal lenght");
         }
 
         EntryValue[] entryValues = new EntryValue[entryArray.length];
         int curSelection = 0;
-        for (int i = 0; i < entryArray.length; i++)
-        {
+        for (int i = 0; i < entryArray.length; i++) {
             entryValues[i] = new EntryValue(entryArray[i], valueArray[i]);
-            if (valueArray[i].equals(curVal))
-            {
+            if (valueArray[i].equals(curVal)) {
                 curSelection = i;
             }
         }
@@ -40,50 +34,37 @@ public class SpinnerHelper
         spinner.setSelection(curSelection);
     }
 
-    public static String getSpinnerValue(Spinner spinner)
-    {
+    public static String getSpinnerValue(Spinner spinner) {
         EntryValue entryValue = (EntryValue)spinner.getSelectedItem();
-        if (entryValue != null)
-        {
+        if (entryValue != null) {
             return entryValue.getValue();
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
-    public static String getSpinnerEntry(Spinner spinner)
-    {
+    public static String getSpinnerEntry(Spinner spinner) {
         EntryValue entryValue = (EntryValue)spinner.getSelectedItem();
-        if (entryValue != null)
-        {
+        if (entryValue != null) {
             return entryValue.getEntry();
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
-    private static class EntryValue
-    {
+    private static class EntryValue {
         final String entry;
         final String value;
-        EntryValue(String entry, String value)
-        {
+        EntryValue(String entry, String value) {
             this.entry = entry;
             this.value = value;
         }
         @Override
-        public String toString()
-        {
+        public String toString() {
             return entry;
         }
-        public String getEntry()
-        {
+        public String getEntry() {
             return entry;
         }
-        public String getValue()
-        {
+        public String getValue() {
             return value;
         }
     }
