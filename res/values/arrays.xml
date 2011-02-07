@@ -483,6 +483,7 @@
 
     <string-array name="supported_languages">
         <item></item>
+        <item>ca</item>
         <item>cs</item>
         <item>de</item>
         <item>en</item>
