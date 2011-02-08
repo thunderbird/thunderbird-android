@@ -781,7 +781,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
 
     <string name="account_recreate_dlg_title">アカウント再作成</string>
-    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のメール、添付ファイル、フォルダとフォルダの設定はK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
+    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全データはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
 
     <string name="account_clear_dlg_title">アカウントクリア</string>
     <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全メッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>

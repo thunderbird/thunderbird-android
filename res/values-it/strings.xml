@@ -786,7 +786,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Ricrea Account</string>
-    <string name="account_recreate_dlg_instructions_fmt">Tutti i messaggi, allegati, cartelle e impostazioni della cartella per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
 
     <string name="account_clear_dlg_title">Cancella Account</string>
     <string name="account_clear_dlg_instructions_fmt">Tutti i messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>

@@ -690,7 +690,7 @@
   <string name="account_delete_dlg_title">Supprimer</string>
   <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
   <string name="account_recreate_dlg_title">Recréer compte</string>
-  <string name="account_recreate_dlg_instructions_fmt">Tous les messages, pièces jointes, dossiers et paramètres de dossier de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Toutes les données de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
   <string name="account_clear_dlg_title">Vider le compte</string>
   <string name="account_clear_dlg_instructions_fmt">Tous les messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramàtres du compte seront sauvegardés</string>
   <string name="provider_note_live">Seuls certains comptes «\u00A0Plus\u00A0» autorisent l\'accès POP

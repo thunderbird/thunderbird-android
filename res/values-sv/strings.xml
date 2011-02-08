@@ -734,7 +734,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
 
     <string name="account_recreate_dlg_title">Återskapa konto</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alla meddelanden, bifogade filer, mappar och inställningar mapp för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån K-9 E-post, men kontoinställningar behålls.</string>
+    <string name="account_recreate_dlg_instructions_fmt">All data för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån K-9 E-post, men kontoinställningar behålls.</string>
 
     <string name="account_clear_dlg_title">Rensa konto</string>
     <string name="account_clear_dlg_instructions_fmt">All e-post i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån K-9 E-post, men kontoinställningar behålls.</string>
