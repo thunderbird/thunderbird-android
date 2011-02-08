@@ -297,10 +297,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (startup && K9.startIntegratedInbox()) {
             onOpenAccount(integratedInboxAccount);
             finish();
-        } else if (startup && accounts.length == 1) {
-            if (onOpenAccount(accounts[0])) {
-                finish();
-            }
+        } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
+            // fall through to "else" if !onOpenAccount()
         } else {
             requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
             requestWindowFeature(Window.FEATURE_PROGRESS);
