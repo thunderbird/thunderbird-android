@@ -1178,7 +1178,9 @@ public class MimeUtility {
             extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
             returnedType = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
-        if (returnedType != null) {
+        // If the MIME type set by the user's mailer is application/octet-stream, try to figure
+        // out whether there's a sane file type extension.
+        if (returnedType != null && !DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(returnedType)) {
             return returnedType;
         } else if (extension != null) {
             for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
