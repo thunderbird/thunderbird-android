@@ -205,15 +205,25 @@ public class AccountSetupBasics extends K9Activity
                                   null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
-            outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
-            outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
-            outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
 
             URI outgoingUriTemplate = mProvider.outgoingUriTemplate;
-            outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                                  + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                                  null, null);
 
+
+            if (outgoingUsername != null) {
+                outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
+                outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
+                outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
+                outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
+                                      + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+                                      null, null);
+
+            } else {
+                outgoingUri = new URI(outgoingUriTemplate.getScheme(),
+                                      null, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+                                      null, null);
+
+
+            }
             mAccount = Preferences.getPreferences(this).newAccount();
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
