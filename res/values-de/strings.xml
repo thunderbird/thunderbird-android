@@ -3,6 +3,7 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
+    <string name="app_license">Lizensiert unter der Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Autoren: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -38,6 +39,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Nächster Abruf @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_syncing_off">\u0020(Sync abgeschaltet)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Weiter</string> <!-- Used as part of a multi-step process -->
@@ -893,6 +895,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="animations_summary">Aufwändige visuelle Effekte benutzen</string>
     <string name="gestures_title">Gesten</string>
     <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
+
+    <string name="compact_layouts_title">Kompakte Darstellung</string>
+    <string name="compact_layouts_summary">Darstellung anpassen, um mehr auf jeder Seite zu zeigen</string>
 
     <string name="volume_navigation_title">Lauter/Leiser Scrolling</string>
     <string name="volume_navigation_summary">Mittels Lauter/Leiser-Tasten durch Listen scrollen</string>
