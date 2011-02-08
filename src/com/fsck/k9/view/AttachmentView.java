@@ -79,7 +79,7 @@ public class AttachmentView extends FrameLayout {
 
             size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
             contentType = part.getMimeType();
-            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(contentType)) {
+            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(contentType)) {
                 contentType = MimeUtility.getMimeTypeByExtension(name);
             }
             TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
