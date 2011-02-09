@@ -46,6 +46,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -3469,7 +3470,22 @@ public class MessagingController implements Runnable {
                     if (quotedText != null) {
                         msg.putExtra(Intent.EXTRA_TEXT, quotedText);
                     }
-                    msg.putExtra(Intent.EXTRA_SUBJECT, "Fwd: " + message.getSubject());
+                    msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
+
+                    Address[] to = message.getRecipients(RecipientType.TO);
+                    String[] recipientsTo = new String[to.length];
+                    for (int i = 0; i < to.length; i++) {
+                        recipientsTo[i] = to[i].toString();
+                    }
+                    msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
+
+                    Address[] cc = message.getRecipients(RecipientType.CC);
+                    String[] recipientsCc = new String[cc.length];
+                    for (int i = 0; i < cc.length; i++) {
+                        recipientsCc[i] = cc[i].toString();
+                    }
+                    msg.putExtra(Intent.EXTRA_CC, recipientsCc);
+
                     msg.setType("text/plain");
                     context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
                 } catch (MessagingException me) {
