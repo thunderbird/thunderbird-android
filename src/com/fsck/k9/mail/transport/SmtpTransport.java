@@ -27,10 +27,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Hex;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 
 public class SmtpTransport extends Transport {
     public static final int CONNECTION_SECURITY_NONE = 0;
@@ -284,7 +282,7 @@ public class SmtpTransport extends Transport {
             addressesOfCharset.add(addressString);
         }
 
-        for (HashMap.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
+        for (Map.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
                 charsetAddressesMap.entrySet()) {
             String charset = charsetAddressesMapEntry.getKey();
             ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
