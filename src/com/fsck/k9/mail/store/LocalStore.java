@@ -2020,6 +2020,27 @@ public class LocalStore extends Store implements Serializable {
             appendMessages(messages, false);
         }
 
+        public void destroyMessages(final Message[] messages) throws MessagingException {
+                try {
+                    database.execute(true, new DbCallback<Void>() {
+                        @Override
+                        public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                            for (Message message : messages) {
+                                try {
+                                    message.destroy();
+                                } catch (MessagingException e) {
+                                    throw new WrappedException(e);
+                                }
+                            }
+                            return null;
+                        }
+                    });
+                } catch (MessagingException e) {
+                    throw new WrappedException(e);
+                }
+        }
+
+
         /**
          * The method differs slightly from the contract; If an incoming message already has a uid
          * assigned and it matches the uid of an existing message then this message will replace the

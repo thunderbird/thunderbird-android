@@ -1005,13 +1005,19 @@ public class MessagingController implements Runnable {
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
             if (account.syncRemoteDeletions()) {
+                ArrayList<Message> destroyMessages = new ArrayList<Message>();
                 for (Message localMessage : localMessages) {
                     if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        localMessage.destroy();
+                        destroyMessages.add(localMessage);
+                    }
+                }
 
-                        for (MessagingListener l : getListeners(listener)) {
-                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                        }
+
+                localFolder.destroyMessages(destroyMessages.toArray(EMPTY_MESSAGE_ARRAY));
+
+                for (Message destroyMessage : destroyMessages) {
+                    for (MessagingListener l : getListeners(listener)) {
+                        l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
                     }
                 }
             }
