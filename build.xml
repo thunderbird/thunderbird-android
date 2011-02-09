@@ -127,10 +127,10 @@
 
     <!-- Install the package on the default emulator -->
     <target name="install" depends="debug">
-        <echo>Installing ${out-debug-package} onto default emulator...</echo>
+        <echo>Installing ${out.debug.file} onto default emulator...</echo>
         <exec executable="${adb}" failonerror="true">
             <arg value="install" />
-            <arg path="${out-debug-package}" />
+            <arg path="${out.debug.file}" />
         </exec>
     </target>
     <target name="astyle">
