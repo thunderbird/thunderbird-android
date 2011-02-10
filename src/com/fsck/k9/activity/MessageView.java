@@ -55,8 +55,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     private View mShowPicturesSection;
     private boolean mShowPictures;
     private Button mDownloadRemainder;
-    View next;
-    View previous;
+    private View mNext;
+    private View mPrevious;
     private View mDelete;
     private View mArchive;
     private View mMove;
@@ -432,7 +432,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
         if (intent.getBooleanExtra(EXTRA_NEXT, false)) {
-            next.requestFocus();
+            mNext.requestFocus();
         }
 
         setupHeaderLayout();
@@ -610,8 +610,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     private void setupDisplayMessageButtons() {
         mDelete.setEnabled(true);
-        next.setEnabled(mNextMessage != null);
-        previous.setEnabled(mPreviousMessage != null);
+        mNext.setEnabled(mNextMessage != null);
+        mPrevious.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (mController.isMoveCapable(mAccount)) {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
@@ -631,8 +631,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (buttons != null) {
             buttons.setVisibility(View.GONE);
         }
-        next = findViewById(R.id.next);
-        previous = findViewById(R.id.previous);
+        mNext = findViewById(R.id.next);
+        mPrevious = findViewById(R.id.previous);
         mDelete = findViewById(R.id.delete);
     }
 
@@ -641,8 +641,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (buttons != null) {
             buttons.setVisibility(View.GONE);
         }
-        next = findViewById(R.id.next_scrolling);
-        previous = findViewById(R.id.previous_scrolling);
+        mNext = findViewById(R.id.next_scrolling);
+        mPrevious = findViewById(R.id.previous_scrolling);
         mDelete = findViewById(R.id.delete_scrolling);
     }
 
@@ -669,8 +669,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     private void disableButtons() {
         setLoadPictures(false);
         disableMoveButtons();
-        next.setEnabled(false);
-        previous.setEnabled(false);
+        mNext.setEnabled(false);
+        mPrevious.setEnabled(false);
         mDelete.setEnabled(false);
     }
 
@@ -941,7 +941,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             mTopView.startAnimation(outToLeftAnimation());
         }
         displayMessage(mNextMessage);
-        next.requestFocus();
+        mNext.requestFocus();
     }
 
     @Override
@@ -956,7 +956,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             mTopView.startAnimation(inFromRightAnimation());
         }
         displayMessage(mPreviousMessage);
-        previous.requestFocus();
+        mPrevious.requestFocus();
     }
 
     private void onMarkAsUnread() {
