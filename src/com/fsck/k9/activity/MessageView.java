@@ -1134,10 +1134,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return true;
     }
 
-    public MessageCryptoView getDecryptLayout() {
-        return mCryptoView;
-    }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
