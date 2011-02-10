@@ -583,14 +583,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-        mTopView.setVisibility(View.GONE);
-        mTopView.scrollTo(0, 0);
-        mMessageContentView.scrollTo(0, 0);
-        mHeaderContainer.setVisibility(View.GONE);
-
-        mMessageContentView.clearView();
-        setLoadPictures(false);
-        mAttachments.removeAllViews();
+        clearMessageDisplay();
         findSurroundingMessagesUid();
         // start with fresh, empty PGP data
         mCryptoView.setCryptoData(null);
@@ -602,6 +595,17 @@ public class MessageView extends K9Activity implements OnClickListener {
             mMessageReference.uid,
             mListener);
         setupDisplayMessageButtons();
+    }
+
+    private void clearMessageDisplay() {
+        mTopView.setVisibility(View.GONE);
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
+        mHeaderContainer.setVisibility(View.GONE);
+
+        mMessageContentView.clearView();
+        setLoadPictures(false);
+        mAttachments.removeAllViews();
     }
 
     private void setupDisplayMessageButtons() {
