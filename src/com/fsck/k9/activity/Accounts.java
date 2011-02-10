@@ -299,6 +299,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             finish();
         } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
             // fall through to "else" if !onOpenAccount()
+        	finish();
         } else {
             requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
             requestWindowFeature(Window.FEATURE_PROGRESS);
