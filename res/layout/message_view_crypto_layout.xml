@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.fsck.k9.view.MessageCryptoView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_decrypt"
     android:orientation="horizontal"
@@ -55,4 +55,4 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
-</LinearLayout>
+</com.fsck.k9.view.MessageCryptoView>

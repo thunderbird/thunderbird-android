@@ -327,7 +327,7 @@ public class Apg extends CryptoProvider {
             pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
 
             pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-            ((MessageView) activity).onDecryptDone();
+            ((MessageView) activity).onDecryptDone(pgpData);
 
             break;
 
@@ -386,9 +386,7 @@ public class Apg extends CryptoProvider {
             activity.startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
             return true;
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(activity,
-                           R.string.error_activity_not_found,
-                           Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show();
             return false;
         }
     }

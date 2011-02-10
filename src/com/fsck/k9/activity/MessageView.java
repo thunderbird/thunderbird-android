@@ -20,7 +20,6 @@ import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
@@ -34,6 +33,7 @@ import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.ToggleScrollView;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageCryptoView;
 
 import java.io.Serializable;
 import java.util.*;
@@ -46,12 +46,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    private View mDecryptLayout;
-    private Button mDecryptButton;
-    private LinearLayout mCryptoSignatureLayout = null;
-    private ImageView mCryptoSignatureStatusImage = null;
-    private TextView mCryptoSignatureUserId = null;
-    private TextView mCryptoSignatureUserIdRest = null;
+    private MessageCryptoView mCryptoView;
     private MessageWebView mMessageContentView;
     private boolean mScreenReaderEnabled;
     private AccessibleWebView mAccessibleMessageContentView;
@@ -71,7 +66,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private MessageReference mMessageReference;
     private ArrayList<MessageReference> mMessageReferences;
     private Message mMessage;
-    private PgpData mPgpData = null;
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
     private int mLastDirection = PREVIOUS;
@@ -377,6 +371,9 @@ public class MessageView extends K9Activity implements OnClickListener {
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
+        mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
+        mCryptoView.setActivity(this);
+        mCryptoView.setupChildViews();
 
         mScreenReaderEnabled = isScreenReaderActive();
         if (mScreenReaderEnabled) {
@@ -387,15 +384,13 @@ public class MessageView extends K9Activity implements OnClickListener {
             mMessageContentView.setVisibility(View.VISIBLE);
         }
 
-        setupDecryptLayout();
 
         setTitle("");
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (icicle != null) {
             restoreMessageReferences(icicle);
-            mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
-            updateDecryptLayout();
+            mCryptoView.setCryptoData((PgpData) icicle.getSerializable(STATE_PGP_DATA));
         } else {
             if (uri == null) {
                 restoreMessageReferencesExtra(intent);
@@ -532,33 +527,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    private void setupDecryptLayout() {
-        mDecryptLayout = findViewById(R.id.layout_decrypt);
-        mDecryptButton = (Button) findViewById(R.id.btn_decrypt);
-        mDecryptButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String data = null;
-                    Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-                    if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-                    }
-                    if (part != null) {
-                        data = MimeUtility.getTextFromPart(part);
-                    }
-                    mAccount.getCryptoProvider().decrypt(MessageView.this, data, mPgpData);
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
-                }
-            }
-        });
-        mCryptoSignatureLayout = (LinearLayout) findViewById(R.id.crypto_signature);
-        mCryptoSignatureStatusImage = (ImageView) findViewById(R.id.ic_crypto_signature_status);
-        mCryptoSignatureUserId = (TextView) findViewById(R.id.userId);
-        mCryptoSignatureUserIdRest = (TextView) findViewById(R.id.userIdRest);
-        mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
-    }
 
     private boolean isScreenReaderActive() {
         final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
@@ -597,7 +565,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
-        outState.putSerializable(STATE_PGP_DATA, mPgpData);
+        outState.putSerializable(STATE_PGP_DATA, mCryptoView.getCryptoData());
         outState.putBoolean(SHOW_PICTURES, mShowPictures);
     }
 
@@ -605,8 +573,9 @@ public class MessageView extends K9Activity implements OnClickListener {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
-        initializeCrypto((PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA));
-        updateDecryptLayout();
+        mCryptoView.setCryptoData((PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA));
+        mCryptoView.setCryptoProvider(mAccount.getCryptoProvider());
+        mCryptoView.updateLayout(mMessage);
     }
 
     private void displayMessage(MessageReference ref) {
@@ -624,7 +593,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
         // start with fresh, empty PGP data
-        initializeCrypto(null);
+        mCryptoView.setCryptoData(null);
+        mCryptoView.setCryptoProvider(mAccount.getCryptoProvider());
         mTopView.setVisibility(View.VISIBLE);
         mController.loadMessageForView(
             mAccount,
@@ -844,21 +814,21 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     private void onReply() {
         if (mMessage != null) {
-            MessageCompose.actionReply(this, mAccount, mMessage, false, mPgpData.getDecryptedData());
+            MessageCompose.actionReply(this, mAccount, mMessage, false, mCryptoView.getDecryptedContent());
             finish();
         }
     }
 
     private void onReplyAll() {
         if (mMessage != null) {
-            MessageCompose.actionReply(this, mAccount, mMessage, true, mPgpData.getDecryptedData());
+            MessageCompose.actionReply(this, mAccount, mMessage, true, mCryptoView.getDecryptedContent());
             finish();
         }
     }
 
     private void onForward() {
         if (mMessage != null) {
-            MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
+            MessageCompose.actionForward(this, mAccount, mMessage, mCryptoView.getDecryptedContent());
             finish();
         }
     }
@@ -917,7 +887,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mPgpData)) {
+        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mCryptoView.getCryptoData())) {
             return;
         }
         if (resultCode != RESULT_OK)
@@ -1160,6 +1130,11 @@ public class MessageView extends K9Activity implements OnClickListener {
         return true;
     }
 
+    public MessageCryptoView getDecryptLayout() {
+        return mCryptoView;
+    }
+
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         prepareMenuItems();
@@ -1207,8 +1182,8 @@ public class MessageView extends K9Activity implements OnClickListener {
             MessageView.this.mMessage = message;
             mHandler.removeAllAttachments();
             String text, type;
-            if (mPgpData.getDecryptedData() != null) {
-                text = mPgpData.getDecryptedData();
+            if (mCryptoView.getDecryptedContent() != null) {
+                text = mCryptoView.getDecryptedContent();
                 type = "text/plain";
             } else {
                 // getTextForDisplay() always returns HTML-ified content.
@@ -1229,7 +1204,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                                                                     contentType, "utf-8", null);
                             mMessageContentView.scrollTo(0, 0);
                         }
-                        updateDecryptLayout();
+                        mCryptoView.updateLayout(mMessage);
                     }
                 });
                 // If the message contains external pictures and the "Show pictures"
@@ -1248,7 +1223,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                 mHandler.post(new Runnable() {
                     public void run() {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                        updateDecryptLayout();
+                        mCryptoView.updateLayout(mMessage);
                     }
                 });
             }
@@ -1302,7 +1277,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                 mHandler.post(new Runnable() {
                     public void run() {
                         mMessageContentView.loadUrl("file:///android_asset/downloading.html");
-                        updateDecryptLayout();
+                        mCryptoView.updateLayout(mMessage);
                     }
                 });
             }
@@ -1340,7 +1315,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     if ((MessageView.this.mMessage == null) ||
                     !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                        updateDecryptLayout();
+                        mCryptoView.updateLayout(mMessage);
                     }
                 }
             });
@@ -1368,7 +1343,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    updateDecryptLayout();
+                    mCryptoView.updateLayout(mMessage);
                     setProgressBarIndeterminateVisibility(true);
                 }
             });
@@ -1419,86 +1394,12 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    private void initializeCrypto(PgpData data) {
-        if (data == null) {
-            if (mAccount == null) {
-                mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-            }
-            mPgpData = new PgpData();
-        } else {
-            mPgpData = data;
-        }
-    }
-
-    /**
-     * Fill the decrypt layout with signature data, if known, make controls visible, if
-     * they should be visible.
-     */
-    public void updateDecryptLayout() {
-        if (mPgpData.getSignatureKeyId() != 0) {
-            mCryptoSignatureUserIdRest.setText(
-                getString(R.string.key_id, Long.toHexString(mPgpData.getSignatureKeyId() & 0xffffffffL)));
-            String userId = mPgpData.getSignatureUserId();
-            if (userId == null) {
-                userId = getString(R.string.unknown_crypto_signature_user_id);
-            }
-            String chunks[] = userId.split(" <", 2);
-            String name = chunks[0];
-            if (chunks.length > 1) {
-                mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
-            }
-            mCryptoSignatureUserId.setText(name);
-            if (mPgpData.getSignatureSuccess()) {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-            } else if (mPgpData.getSignatureUnknown()) {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-            } else {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-            }
-            mCryptoSignatureLayout.setVisibility(View.VISIBLE);
-            mDecryptLayout.setVisibility(View.VISIBLE);
-        } else {
-            mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
-        }
-        if (false || ((mMessage == null) && (mPgpData.getDecryptedData() == null))) {
-            mDecryptLayout.setVisibility(View.GONE);
-            return;
-        }
-        if (mPgpData.getDecryptedData() != null) {
-            if (mPgpData.getSignatureKeyId() == 0) {
-                mDecryptLayout.setVisibility(View.GONE);
-            } else {
-                // no need to show this after decryption/verification
-                mDecryptButton.setVisibility(View.GONE);
-            }
-            return;
-        }
-        mDecryptButton.setVisibility(View.VISIBLE);
-        CryptoProvider crypto = mAccount.getCryptoProvider();
-        if (crypto.isEncrypted(mMessage)) {
-            mDecryptButton.setText(R.string.btn_decrypt);
-            mDecryptLayout.setVisibility(View.VISIBLE);
-        } else if (crypto.isSigned(mMessage)) {
-            mDecryptButton.setText(R.string.btn_verify);
-            mDecryptLayout.setVisibility(View.VISIBLE);
-        } else {
-            mDecryptLayout.setVisibility(View.GONE);
-            try {
-                // check for PGP/MIME encryption
-                Part pgp = MimeUtility.findFirstPartByMimeType(mMessage, "application/pgp-encrypted");
-                if (pgp != null) {
-                    Toast.makeText(this, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG).show();
-                }
-            } catch (MessagingException e) {
-                // nothing to do...
-            }
-        }
-    }
-
-    public void onDecryptDone() {
+    // This REALLY should be in MessageCryptoView
+    public void onDecryptDone(PgpData pgpData) {
         // TODO: this might not be enough if the orientation was changed while in APG,
         // sometimes shows the original encrypted content
-        mMessageContentView.loadDataWithBaseURL("email://", mPgpData.getDecryptedData(), "text/plain", "utf-8", null);
-        updateDecryptLayout();
+        mMessageContentView.loadDataWithBaseURL("email://", pgpData.getDecryptedData(), "text/plain", "utf-8", null);
+        mCryptoView.updateLayout(mMessage);
     }
+
 }
