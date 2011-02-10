@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout 
+    android:id="@+id/message_view"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+ xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Header area -->
     <com.fsck.k9.view.MessageHeader
         android:id="@+id/header_container"
@@ -216,4 +223,4 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_width="fill_parent" />
-</merge>
+</LinearLayout>
