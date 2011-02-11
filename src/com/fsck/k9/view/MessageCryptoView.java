@@ -66,6 +66,11 @@ public class MessageCryptoView extends LinearLayout {
 
     }
 
+
+    public void hide () {
+        this.setVisibility(View.GONE);
+    }
+
     /**
      * Fill the decrypt layout with signature data, if known, make controls visible, if
      * they should be visible.

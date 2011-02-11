@@ -122,7 +122,7 @@ public class SingleMessageView extends LinearLayout {
 
     public void loadBodyFromUrl(String url) {
         mMessageContentView.loadUrl(url);
-        // TODO reenable: updateCryptoLayout(cryptoProvider, pgpData, message);
+        mCryptoView.hide();
 
     }
 
