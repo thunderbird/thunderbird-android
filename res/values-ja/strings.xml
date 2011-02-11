@@ -42,6 +42,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(次回受信 @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_syncing_off">\u0020(同期停止)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">次へ</string>
@@ -889,6 +890,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="animations_summary">派手な視覚効果を使用する</string>
     <string name="gestures_title">ジェスチャー</string>
     <string name="gestures_summary">ジェスチャー制御の許可</string>
+
+    <string name="compact_layouts_title">コンパクトレイアウト</string>
+    <string name="compact_layouts_summary">ページの表示レイアウトを調整</string>
 
     <string name="volume_navigation_title">ボリュームキー操作</string>
     <string name="volume_navigation_summary">ボリュームキーを使ってメッセージを切り替え</string>
