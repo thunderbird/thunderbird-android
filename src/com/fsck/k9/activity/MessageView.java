@@ -65,7 +65,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private MessagingController mController = MessagingController.getInstance(getApplication());
     private MessageReference mNextMessage = null;
     private MessageReference mPreviousMessage = null;
-    private Menu optionsMenu = null;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
     private Contacts mContacts;
@@ -754,7 +753,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             try {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
                 mMessageView.setHeaders(mMessage, mAccount);
-                prepareMenuItems();
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
             }
@@ -1018,8 +1016,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
-        optionsMenu = menu;
-        prepareMenuItems();
         if (!mController.isCopyCapable(mAccount)) {
             menu.findItem(R.id.copy).setVisible(false);
         }
@@ -1037,12 +1033,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return true;
     }
 
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        prepareMenuItems();
-        return super.onPrepareOptionsMenu(menu);
-    }
     // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
 
     /**
@@ -1060,8 +1050,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onCreateDialog(id);
     }
 
-    private void prepareMenuItems() {
-        Menu menu = optionsMenu;
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         if (menu != null) {
             MenuItem flagItem = menu.findItem(R.id.flag);
             if (flagItem != null && mMessage != null) {
@@ -1073,6 +1063,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                                                R.string.hide_full_header_action : R.string.show_full_header_action);
             }
         }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void displayMessage(Account account, String folder, String uid, Message message) {
