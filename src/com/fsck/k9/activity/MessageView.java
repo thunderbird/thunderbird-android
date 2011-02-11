@@ -1137,6 +1137,12 @@ public class MessageView extends K9Activity implements OnClickListener {
                         mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
                     }
                     mMessageView.setHeaders(message, account);
+                    mMessageView.setOnFlagListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onFlag();
+                        }
+                    });
                 }
             });
         }

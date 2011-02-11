@@ -91,13 +91,8 @@ public class SingleMessageView extends LinearLayout {
     public void setHeaders(final Message message, Account account) {
         try {
             mHeaderContainer.populate(message, account);
-            mHeaderContainer.setOnFlagListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    if (message != null) {
-                        //TODO: reenable onFlag();
-                    }
-                }
-            });
+
+
         } catch (Exception me) {
             Log.e(K9.LOG_TAG, "setHeaders - error", me);
         }
@@ -108,6 +103,11 @@ public class SingleMessageView extends LinearLayout {
             mDownloadRemainder.setVisibility(View.VISIBLE);
         }
     }
+
+    public void setOnFlagListener(OnClickListener listener) {
+        mHeaderContainer.setOnFlagListener(listener);
+    }
+
     public void showAllHeaders() {
         mHeaderContainer.onShowAdditionalHeaders();
     }
