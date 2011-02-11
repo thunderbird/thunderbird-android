@@ -96,6 +96,9 @@ public class SingleMessageView extends LinearLayout {
         } catch (Exception me) {
             Log.e(K9.LOG_TAG, "setHeaders - error", me);
         }
+    }
+
+    public void setShowDownloadButton(Message message) {
         if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
             mDownloadRemainder.setVisibility(View.GONE);
         } else {

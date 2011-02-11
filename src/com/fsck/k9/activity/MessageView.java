@@ -1185,7 +1185,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid,
-                                               Message message) {
+                                               final Message message) {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
@@ -1193,6 +1193,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             mHandler.post(new Runnable() {
                 public void run() {
                     setProgressBarIndeterminateVisibility(false);
+                    mMessageView.setShowDownloadButton(message);
                 }
             });
         }
