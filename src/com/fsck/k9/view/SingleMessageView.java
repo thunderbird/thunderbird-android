@@ -33,7 +33,7 @@ public class SingleMessageView extends LinearLayout {
     private View mShowPicturesSection;
     private boolean mShowPictures;
     private Button mDownloadRemainder;
-    private Activity mActivity;
+    private LayoutInflater mInflater;
 
 
     public void initialize(Activity activity, Boolean isScreenReaderActive) {
@@ -47,8 +47,7 @@ public class SingleMessageView extends LinearLayout {
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
         mShowPictures = false;
 
-        mActivity = activity;
-
+        mInflater = activity.getLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mMessageContentView.configure();
 
@@ -174,8 +173,7 @@ public class SingleMessageView extends LinearLayout {
                     && part.getHeader("Content-ID") != null) {
                 return;
             }
-            LayoutInflater inflater = mActivity.getLayoutInflater();
-            AttachmentView view = (AttachmentView)inflater.inflate(R.layout.message_view_attachment, null);
+            AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             if (view.populateFromPart(part, message, account, controller, listener)) {
                 addAttachment(view);
             }
