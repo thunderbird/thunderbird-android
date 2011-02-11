@@ -2,35 +2,20 @@ package com.fsck.k9.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.*;
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
-import com.fsck.k9.helper.MediaScannerNotifier;
-import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
-import com.fsck.k9.provider.AttachmentProvider;
-import org.apache.commons.io.IOUtils;
 
-import java.io.*;
 
 
 
@@ -38,8 +23,6 @@ public class MessageCryptoView extends LinearLayout {
 
     private Context mContext;
     private Activity mActivity;
-    private PgpData mPgpData = null;
-    private View mMessageContentView;
     private Button mDecryptButton;
     private LinearLayout mCryptoSignatureLayout = null;
     private ImageView mCryptoSignatureStatusImage = null;
