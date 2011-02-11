@@ -1108,7 +1108,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             } else {
                 mHandler.post(new Runnable() {
                     public void run() {
-                        mMessageView.loadBodyFromUrl(mMessage, "file:///android_asset/empty.html");
+                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
                     }
                 });
             }
@@ -1134,7 +1134,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             new Runnable() {
                 public void run() {
                     if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl(mMessage, "file:///android_asset/downloading.html");
+                        mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
                     }
                     mMessageView.setHeaders(message, account);
                 }
@@ -1171,7 +1171,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                     if ((MessageView.this.mMessage == null) ||
                     !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl(mMessage, "file:///android_asset/empty.html");
+                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
                     }
                 }
             });
