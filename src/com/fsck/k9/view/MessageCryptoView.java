@@ -39,7 +39,6 @@ public class MessageCryptoView extends LinearLayout {
     private Context mContext;
     private Activity mActivity;
     private PgpData mPgpData = null;
-    private CryptoProvider mCryptoProvider = null;
     private View mMessageContentView;
     private Button mDecryptButton;
     private LinearLayout mCryptoSignatureLayout = null;
@@ -67,31 +66,15 @@ public class MessageCryptoView extends LinearLayout {
 
     }
 
-    public void setCryptoProvider(CryptoProvider provider){
-        mCryptoProvider = provider;
-    }
-
-    public PgpData getCryptoData() {
-        return mPgpData;
-    }
-
-    public void setCryptoData(PgpData data) {
-        if (data == null) {
-            mPgpData = new PgpData();
-        } else {
-            mPgpData = data;
-        }
-    }
-
     /**
      * Fill the decrypt layout with signature data, if known, make controls visible, if
      * they should be visible.
      */
-    public void updateLayout(final Message message) {
-        if (mPgpData.getSignatureKeyId() != 0) {
+    public void updateLayout(final CryptoProvider cryptoProvider, final PgpData pgpData, final Message message) {
+        if (pgpData.getSignatureKeyId() != 0) {
             mCryptoSignatureUserIdRest.setText(
-                mContext.getString(R.string.key_id, Long.toHexString(mPgpData.getSignatureKeyId() & 0xffffffffL)));
-            String userId = mPgpData.getSignatureUserId();
+                mContext.getString(R.string.key_id, Long.toHexString(pgpData.getSignatureKeyId() & 0xffffffffL)));
+            String userId = pgpData.getSignatureUserId();
             if (userId == null) {
                 userId = mContext.getString(R.string.unknown_crypto_signature_user_id);
             }
@@ -101,9 +84,9 @@ public class MessageCryptoView extends LinearLayout {
                 mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
             }
             mCryptoSignatureUserId.setText(name);
-            if (mPgpData.getSignatureSuccess()) {
+            if (pgpData.getSignatureSuccess()) {
                 mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-            } else if (mPgpData.getSignatureUnknown()) {
+            } else if (pgpData.getSignatureUnknown()) {
                 mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             } else {
                 mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
@@ -113,12 +96,12 @@ public class MessageCryptoView extends LinearLayout {
         } else {
             mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
-        if (false || ((message == null) && (getDecryptedContent() == null))) {
+        if ((message == null) && (pgpData.getDecryptedData() == null)) {
             this.setVisibility(View.GONE);
             return;
         }
-        if (getDecryptedContent() != null) {
-            if (mPgpData.getSignatureKeyId() == 0) {
+        if (pgpData.getDecryptedData() != null) {
+            if (pgpData.getSignatureKeyId() == 0) {
                 this.setVisibility(View.GONE);
             } else {
                 // no need to show this after decryption/verification
@@ -140,7 +123,7 @@ public class MessageCryptoView extends LinearLayout {
                     if (part != null) {
                         data = MimeUtility.getTextFromPart(part);
                     }
-                    mCryptoProvider.decrypt(mActivity, data, mPgpData);
+                    cryptoProvider.decrypt(mActivity, data, pgpData);
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
                 }
@@ -149,10 +132,10 @@ public class MessageCryptoView extends LinearLayout {
 
 
         mDecryptButton.setVisibility(View.VISIBLE);
-        if (mCryptoProvider.isEncrypted(message)) {
+        if (cryptoProvider.isEncrypted(message)) {
             mDecryptButton.setText(R.string.btn_decrypt);
             this.setVisibility(View.VISIBLE);
-        } else if (mCryptoProvider.isSigned(message)) {
+        } else if (cryptoProvider.isSigned(message)) {
             mDecryptButton.setText(R.string.btn_verify);
             this.setVisibility(View.VISIBLE);
         } else {
@@ -169,8 +152,4 @@ public class MessageCryptoView extends LinearLayout {
         }
     }
 
-
-    public String getDecryptedContent() {
-        return mPgpData.getDecryptedData();
-    }
 }
