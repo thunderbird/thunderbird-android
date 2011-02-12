@@ -89,8 +89,9 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * <pre>
@@ -1986,8 +1987,8 @@ public class ImapStore extends Store {
                     if (useCompression) {
                         try {
                             executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
-                            ZInputStream zInputStream = new ZInputStream(mSocket.getInputStream(), true);
-                            zInputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
+                            Inflater inf = new Inflater(true);
+                            InflaterInputStream zInputStream = new InflaterInputStream(mSocket.getInputStream(), inf);
                             mIn = new PeekableInputStream(new BufferedInputStream(zInputStream, 1024));
                             mParser = new ImapResponseParser(mIn);
                             ZOutputStream zOutputStream = new ZOutputStream(mSocket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
