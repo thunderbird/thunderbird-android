@@ -683,6 +683,8 @@ public class Account implements BaseAccount {
                 switchLocalStorage(id);
                 successful = true;
             } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Switching local storage provider from " +
+                        mLocalStorageProviderId + " to " + id + " failed.", e);
             } finally {
                 // if migration to/from SD-card failed once, it will fail again.
                 if (!successful) {
