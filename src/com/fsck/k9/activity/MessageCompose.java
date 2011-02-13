@@ -46,6 +46,8 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.AbstractAction;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.MessageFormat;
@@ -161,6 +163,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private boolean mSourceMessageProcessed = false;
 
+
+    private ActionBar mActionBar;
 
     private TextView mFromView;
     private LinearLayout mCcWrapper;
@@ -335,7 +339,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_compose);
 
         final Intent intent = getIntent();
@@ -620,6 +624,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mEncryptLayout.setVisibility(View.GONE);
         }
 
+        ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+        mActionBar.addAction(new CloseAction());
+        mActionBar.addAction(new SendAction());
         mDraftNeedsSaving = false;
     }
 
@@ -858,9 +865,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void updateTitle() {
         if (mSubjectView.getText().length() == 0) {
-            setTitle(R.string.compose_title);
+         //TODO   mActionBar.setTitle(R.string.compose_title);
         } else {
-            setTitle(mSubjectView.getText().toString());
+    //TODO        mActionBar.setTitle(mSubjectView.getText().toString());
         }
     }
 
@@ -1683,16 +1690,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.send:
-            mPgpData.setEncryptionKeys(null);
-            onSend();
-            break;
-        case R.id.save:
-            onSave();
-            break;
-        case R.id.discard:
-            onDiscard();
-            break;
         case R.id.add_cc_bcc:
             onAddCcBcc();
             break;
@@ -1760,9 +1757,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     @Override
     public void onBackPressed() {
+        onSaveOrDiscard();
         // This will be called either automatically for you on 2.0
         // or later, or by the code above on earlier versions of the
         // platform.
+    }
+
+    public void onSaveOrDiscard() {
         if (mDraftNeedsSaving) {
             showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         } else {
@@ -2696,4 +2697,25 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         return insertable;
     }
+
+    public class SendAction extends AbstractAction {
+        public SendAction() {
+            super(R.drawable.ic_menu_send);
+        }
+        @Override
+        public void performAction(View view) {
+            onSend();
+        }
+    }
+
+    public class CloseAction extends AbstractAction {
+        public CloseAction() {
+            super(R.drawable.ic_menu_save_draft);
+        }
+        @Override
+        public void performAction(View view) {
+            onSaveOrDiscard();
+        }
+    }
+
 }

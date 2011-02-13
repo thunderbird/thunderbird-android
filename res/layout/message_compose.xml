@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#ffffff" >
+    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
 
     <ScrollView
         android:layout_width="fill_parent"
