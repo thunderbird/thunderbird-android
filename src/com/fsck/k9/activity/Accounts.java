@@ -19,6 +19,10 @@ import android.webkit.WebView;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.AbstractAction;
+import com.markupartist.android.widget.ActionBar.IntentAction;
+
 import com.fsck.k9.*;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -60,6 +64,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount unreadAccount = null;
     private SearchAccount integratedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
+    private ActionBar mActionBar;
+
+
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
@@ -229,6 +236,34 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         context.startActivity(intent);
     }
 
+    public class SearchAction extends AbstractAction {
+        public SearchAction() {
+            super(R.drawable.ic_menu_search);
+        }
+        @Override
+        public void performAction(View view) {
+            onSearchRequested();
+        }
+    }
+
+    public class SyncAction extends AbstractAction {
+        public SyncAction() {
+            super(R.drawable.ic_menu_refresh);
+        }
+        @Override
+        public void performAction(View view) {
+            onCheckMail(null);
+        }
+    }
+    public class ComposeAction extends AbstractAction {
+        public ComposeAction() {
+            super(R.drawable.ic_menu_compose);
+        }
+        @Override
+        public void performAction(View view) {
+            onCompose();
+        }
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -254,8 +289,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             // fall through to "else" if !onOpenAccount()
             finish();
         } else {
-            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-            requestWindowFeature(Window.FEATURE_PROGRESS);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
 
             setContentView(R.layout.accounts);
             ListView listView = getListView();
@@ -269,7 +303,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 String accountUuid = icicle.getString("selectedContextAccount");
                 mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
             }
-
+            ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+            //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
+            //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
+            mActionBar.addAction(new SearchAction());
+            mActionBar.addAction(new SyncAction());
+            mActionBar.addAction(new ComposeAction());
             restoreAccountStats(icicle);
         }
     }
@@ -644,17 +683,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case R.id.edit_prefs:
             onEditPrefs();
             break;
-        case R.id.check_mail:
-            onCheckMail(null);
-            break;
-        case R.id.compose:
-            onCompose();
-            break;
         case R.id.about:
             onAbout();
-            break;
-        case R.id.search:
-            onSearchRequested();
             break;
         default:
             return super.onOptionsItemSelected(item);
