@@ -35,6 +35,7 @@ import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Utility;
@@ -3477,6 +3478,13 @@ public class MessagingController implements Runnable {
                         msg.putExtra(Intent.EXTRA_TEXT, quotedText);
                     }
                     msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
+
+                    Address[] from = message.getFrom();
+                    String[] senders = new String[from.length];
+                    for (int i = 0; i < from.length; i++) {
+                        senders[i] = from[i].toString();
+                    }
+                    msg.putExtra(Intents.Share.EXTRA_FROM, senders);
 
                     Address[] to = message.getRecipients(RecipientType.TO);
                     String[] recipientsTo = new String[to.length];
