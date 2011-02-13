@@ -293,6 +293,14 @@ public class K9 extends Application {
             public static final String EXTRA_FROM_SELF          = "com.fsck.k9.intent.extra.FROM_SELF";
         }
 
+        public static class Share {
+            /*
+             * We don't want to use EmailReceived.EXTRA_FROM ("com.fsck.k9.intent.extra.FROM")
+             * because of different semantics (String array vs. string with comma separated
+             * email addresses)
+             */
+            public static final String EXTRA_FROM               = "com.fsck.k9.intent.extra.SENDER";
+        }
     }
 
     /**
