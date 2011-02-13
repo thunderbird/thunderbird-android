@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010 Johan Nilsson <http://markupartist.com>
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/screen"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:orientation="horizontal"
+    >
+    <RelativeLayout
+        android:id="@+id/actionbar_home"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/actionbar_height"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        >
+        <ImageView
+            android:id="@+id/actionbar_home_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@drawable/actionbar_btn"
+            android:padding="0dip"
+            android:visibility="gone"
+            />
+        <RelativeLayout
+            android:id="@+id/actionbar_home_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/actionbar_height"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@color/actionbar_separator"
+            android:visibility="gone"
+            >
+            <!-- TODO: Make configurable. -->
+            <ImageButton
+                android:id="@+id/actionbar_home_btn"
+                style="@style/ActionBarHomeItem"
+                android:background="@drawable/actionbar_btn"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+	        android:id="@+id/actionbar_actions"
+	        android:layout_width="wrap_content"
+	        android:layout_height="@dimen/actionbar_height"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+	        android:background="@color/actionbar_separator"
+	        >
+	    </LinearLayout>
+
+	    <com.markupartist.android.widget.ScrollingTextView
+	        android:id="@+id/actionbar_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/actionbar_home_bg"
+	        android:layout_toLeftOf="@id/actionbar_actions"
+	        android:layout_alignWithParentIfMissing="true"
+	        android:layout_centerVertical="true"
+	        android:paddingLeft="10dip"
+	        android:paddingRight="10dip"
+	        android:textSize="16dip"
+	        android:textStyle="bold"
+	        android:textColor="@color/actionbar_title"
+	        android:lines="1"
+	        android:scrollHorizontally="true"
+	        android:ellipsize="marquee"
+	        android:marqueeRepeatLimit="marquee_forever"
+	        />
+    </RelativeLayout>
+</RelativeLayout>
