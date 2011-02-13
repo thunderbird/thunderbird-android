@@ -1110,9 +1110,6 @@ public class MessageList
     }
 
     private void onArchive(MessageInfoHolder holder) {
-        if (!mController.isMoveCapable(holder.message.getFolder().getAccount())) {
-            return;
-        }
 
         if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
@@ -1124,9 +1121,6 @@ public class MessageList
     }
 
     private void onSpam(MessageInfoHolder holder) {
-        if (!mController.isMoveCapable(holder.message.getFolder().getAccount())) {
-            return;
-        }
 
         if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
