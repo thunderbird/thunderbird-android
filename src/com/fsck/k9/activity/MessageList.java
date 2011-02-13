@@ -2701,23 +2701,6 @@ public class MessageList
     }
 
     private void onArchiveBatch() {
-        if (!mController.isMoveCapable(mAccount)) {
-            return;
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                }
-            }
-        }
-
         String folderName = mAccount.getArchiveFolderName();
         if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
             return;
@@ -2726,23 +2709,6 @@ public class MessageList
     }
 
     private void onSpamBatch() {
-        if (!mController.isMoveCapable(mAccount)) {
-            return;
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                }
-            }
-        }
-
         String folderName = mAccount.getSpamFolderName();
         if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
             return;
