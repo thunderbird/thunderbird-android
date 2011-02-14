@@ -567,7 +567,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             //change focus to message body.
             mMessageContentView.requestFocus();
+        } else {
+            // Explicitly set focus to "To:" input field (see issue 2998)
+            mToView.requestFocus();
         }
+
 
         mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
