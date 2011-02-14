@@ -276,13 +276,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             });
         }
 
-        public void showShowPictures(final boolean show) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mMessageView.showShowPicturesSection(show);
-                }
-            });
-        }
 
         public void setHeaders(final Message message, final Account account) {
             runOnUiThread(new Runnable() {
@@ -489,9 +482,9 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
+        mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
     }
 
     private void displayMessage(MessageReference ref) {
@@ -511,7 +504,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private void clearMessageDisplay() {
         mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
-        setLoadPictures(false);
+        mMessageView.setLoadPictures(false);
 
         mMessageView.resetView();
 
@@ -576,7 +569,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     private void disableButtons() {
-        setLoadPictures(false);
+        mMessageView.setLoadPictures(false);
         disableMoveButtons();
         mNext.setEnabled(false);
         mPrevious.setEnabled(false);
@@ -895,19 +888,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
     }
 
-    /**
-     * Enable/disable image loading of the WebView. But always hide the
-     * "Show pictures" button!
-     *
-     * @param enable true, if (network) images should be loaded.
-     *               false, otherwise.
-     */
-    private void setLoadPictures(boolean enable) {
-        mMessageView.blockNetworkData(!enable);
-        mMessageView.setShowPictures(enable);
-        mHandler.showShowPictures(false);
-    }
-
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -950,7 +930,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             ((AttachmentView)view).saveFile();
             break;
         case R.id.show_pictures:
-            setLoadPictures(true);
+            mMessageView.setLoadPictures(true);
             break;
         case R.id.download_remainder:
             onDownloadRemainder();
@@ -1100,7 +1080,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                             ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
                              mContacts.isInContacts(message.getFrom()[0].getAddress()))) {
-                        setLoadPictures(true);
+                        mMessageView.setLoadPictures(true);
                     } else {
                         mMessageView.showShowPicturesSection(true);
                     }

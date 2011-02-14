@@ -75,8 +75,17 @@ public class SingleMessageView extends LinearLayout {
         mShowPictures = show;
     }
 
-    public void blockNetworkData(Boolean block) {
-        mMessageContentView.blockNetworkData(block);
+    /**
+     * Enable/disable image loading of the WebView. But always hide the
+     * "Show pictures" button!
+     *
+     * @param enable true, if (network) images should be loaded.
+     *               false, otherwise.
+     */
+     public void setLoadPictures(boolean enable) {
+        mMessageContentView.blockNetworkData(!enable);
+        setShowPictures(enable);
+        showShowPicturesSection(false);
     }
 
     public Button downloadRemainderButton() {
