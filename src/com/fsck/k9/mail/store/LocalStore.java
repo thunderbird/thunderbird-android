@@ -2021,23 +2021,23 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public void destroyMessages(final Message[] messages) throws MessagingException {
-                try {
-                    database.execute(true, new DbCallback<Void>() {
-                        @Override
-                        public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                            for (Message message : messages) {
-                                try {
-                                    message.destroy();
-                                } catch (MessagingException e) {
-                                    throw new WrappedException(e);
-                                }
+            try {
+                database.execute(true, new DbCallback<Void>() {
+                    @Override
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                        for (Message message : messages) {
+                            try {
+                                message.destroy();
+                            } catch (MessagingException e) {
+                                throw new WrappedException(e);
                             }
-                            return null;
                         }
-                    });
-                } catch (MessagingException e) {
-                    throw new WrappedException(e);
-                }
+                        return null;
+                    }
+                });
+            } catch (MessagingException e) {
+                throw new WrappedException(e);
+            }
         }
 
 

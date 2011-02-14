@@ -50,7 +50,7 @@ public class MessageCryptoView extends LinearLayout {
     }
 
 
-    public void hide () {
+    public void hide() {
         this.setVisibility(View.GONE);
     }
 

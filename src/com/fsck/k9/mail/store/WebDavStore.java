@@ -539,8 +539,7 @@ public class WebDavStore extends Store {
                 info.requiredAuthType = AUTH_TYPE_BASIC;
             } else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
                        (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
-                       (info.statusCode == 440)) // Unauthorized 
-            {
+                       (info.statusCode == 440)) { // Unauthorized
                 // We will handle all 3 situations the same. First we take an educated
                 // guess at where the authorization DLL is located. If this is this
                 // doesn't work, then we'll use the redirection URL for OWA login given
@@ -666,7 +665,7 @@ public class WebDavStore extends Store {
                     request = new HttpGeneric(loginUrl);
                     request.setMethod("POST");
                     request.setEntity(formEntity);
-                    
+
                     response = httpClient.executeOverride(request, mContext);
                     authenticated = testAuthenticationResponse(response);
                 } catch (URISyntaxException e) {
@@ -720,8 +719,8 @@ public class WebDavStore extends Store {
 
         return formAction;
     }
-    
-    private boolean testAuthenticationResponse(HttpResponse response) 
+
+    private boolean testAuthenticationResponse(HttpResponse response)
     throws MessagingException {
         boolean authenticated = false;
         int statusCode = response.getStatusLine().getStatusCode();
@@ -743,14 +742,14 @@ public class WebDavStore extends Store {
                 try {
                     String thisPath = new URI(mUrl).getPath();
                     String redirectPath = new URI(info.redirectUrl).getPath();
-                    
+
                     if (!thisPath.endsWith("/")) {
                         thisPath = thisPath.concat("/");
                     }
                     if (!redirectPath.endsWith("/")) {
                         redirectPath = redirectPath.concat("/");
                     }
-                    
+
                     if (redirectPath.equalsIgnoreCase(thisPath)) {
                         authenticated = true;
                     } else {
@@ -769,7 +768,7 @@ public class WebDavStore extends Store {
                 }
             }
         }
-        
+
         return authenticated;
     }
 
