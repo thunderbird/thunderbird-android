@@ -42,6 +42,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Prossima verifica alle <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
@@ -127,7 +128,7 @@
     <string name="folder_context_menu_title">Opzioni cartella</string>
 
     <string name="general_no_subject">(Nessun oggetto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-
+    <!-- NEW: <string name="general_no_date">No date</string>-->
     <string name="general_no_sender">Nessun mittente</string>
     <string name="status_loading">Recupero in corso</string>
     <string name="status_loading_folder">(Verifica di <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -325,7 +326,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_touchable_label">Anteprima messaggi</string>
     <string name="global_settings_touchable_summary">Voci di elenco più ampie con anteprima messaggio</string>
     <string name="global_settings_preview_lines_label">Righe di anteprima</string>
-	<string name="global_settings_show_correspondent_names_label">Mostra nome mittente</string>
+    <string name="global_settings_show_correspondent_names_label">Mostra nome mittente</string>
     <string name="global_settings_show_correspondent_names_summary">Mostra il nome del mittente al posto dell\'indirizzo e-mail</string>
     <string name="global_settings_show_contact_name_label">Mostra nomi dei contatti</string>
     <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla Rubrica quando disponibile</string>
@@ -472,8 +473,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_setup_options_title">Opzioni dell\'account</string>
 
     <string name="compact_action">Compatta</string>
-   <string name="clear_action">Cancella i messaggi (pericolo!)</string>
-   <string name="recreate_action">Ricrea dati (ultima spiaggia!)</string>
+    <string name="clear_action">Cancella i messaggi (pericolo!)</string>
+    <string name="recreate_action">Ricrea dati (ultima spiaggia!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frequenza verifica posta</string>
     <!-- Frequency also used in account_settings_* -->
@@ -812,13 +813,13 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     Sposta\u000AY - Copia\u000AG - Stella\u000AO - Tipo ordinamento\u000AI - Verso ordinamento\u000AQ
     - Ritorna alle cartelle\u000AS - Seleziona/deseleziona</string>
 
-      <string name="folder_list_help_key">
-      1 - Visualizza soltanto cartelle di 1a Classe\u000A
-      2 - Visualizza cartelle di 1a e 2a Classe\u000A
-      3 - Visualizza tutte eccetto le cartelle di 2a Classe\u000A
-      4 - Visualizza tutte le cartelle\u000A
-      Q - Ritorna agli Account\u000A
-      S - Modifica le impostazioni dell\'account</string>
+    <string name="folder_list_help_key">
+    1 - Visualizza soltanto cartelle di 1a Classe\u000A
+    2 - Visualizza cartelle di 1a e 2a Classe\u000A
+    3 - Visualizza tutte eccetto le cartelle di 2a Classe\u000A
+    4 - Visualizza tutte le cartelle\u000A
+    Q - Ritorna agli Account\u000A
+    S - Modifica le impostazioni dell\'account</string>
 
     <string name="folder_list_display_mode_label">Cartelle</string>
     <string name="folder_list_display_mode_all">Visualizza tutte le cartelle</string>
@@ -902,6 +903,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="gestures_title">Gestione con tocco</string>
     <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
 
+    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
+    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+
     <string name="volume_navigation_title">Navigazione tasti volume</string>
     <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
     <string name="volume_navigation_message">Visualizzazione messaggi</string>
@@ -957,7 +961,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="font_size_message_list_subject">Oggetto</string>
     <string name="font_size_message_list_sender">Mittente</string>
     <string name="font_size_message_list_date">Data</string>
-	<string name="font_size_message_list_preview">Anteprima</string>
+    <string name="font_size_message_list_preview">Anteprima</string>
 
     <string name="font_size_message_view">Messaggi</string>
     <string name="font_size_message_view_sender">Mittente</string>
