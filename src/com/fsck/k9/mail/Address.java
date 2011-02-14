@@ -21,6 +21,7 @@ import org.apache.james.mime4j.MimeException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Address {
     /**
      * If the number of addresses exceeds this value the addresses aren't
@@ -310,7 +311,7 @@ public class Address {
                 address = addressList.substring(pairStartIndex, addressEndIndex);
                 personal = addressList.substring(addressEndIndex + 2, pairEndIndex);
             }
-            addresses.add(new Address(address, personal));
+            addresses.add(new Address(address, personal, false));
             pairStartIndex = pairEndIndex + 2;
         }
         return addresses.toArray(new Address[addresses.size()]);
@@ -319,8 +320,8 @@ public class Address {
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a "\u0000," separated list of:
-     * address\u0000;personal
+     * The packed list is a ",\u0000" separated list of:
+     * address;\u0000personal
      * @param addresses Array of addresses to pack.
      * @return Packed addresses.
      */
