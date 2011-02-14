@@ -21,6 +21,8 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
@@ -41,6 +43,7 @@ public class SingleMessageView extends LinearLayout {
     private boolean mShowPictures;
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
+    private Contacts mContacts;
 
 
     public void initialize(Activity activity) {
@@ -53,6 +56,8 @@ public class SingleMessageView extends LinearLayout {
         mCryptoView.setupChildViews();
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
         mShowPictures = false;
+
+        mContacts = Contacts.getInstance(activity);
 
         mInflater = activity.getLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
@@ -77,7 +82,7 @@ public class SingleMessageView extends LinearLayout {
     }
 
 
-    private boolean isScreenReaderActive(Activity activity ) {
+    private boolean isScreenReaderActive(Activity activity) {
         final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
         final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
         // Restrict the set of intents to only accessibility services that have
@@ -85,7 +90,7 @@ public class SingleMessageView extends LinearLayout {
         Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
         screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
         List<ResolveInfo> screenReaders = activity.getPackageManager().queryIntentServices(
-                screenReaderIntent, 0);
+                                              screenReaderIntent, 0);
         ContentResolver cr = activity.getContentResolver();
         Cursor cursor = null;
         int status = 0;
@@ -94,7 +99,7 @@ public class SingleMessageView extends LinearLayout {
             // that responds to
             // content://<nameofpackage>.providers.StatusProvider
             cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
-                    + ".providers.StatusProvider"), null, null, null, null);
+                                        + ".providers.StatusProvider"), null, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();
                 // These content providers use a special cursor that only has
@@ -126,7 +131,7 @@ public class SingleMessageView extends LinearLayout {
      * @param enable true, if (network) images should be loaded.
      *               false, otherwise.
      */
-     public void setLoadPictures(boolean enable) {
+    public void setLoadPictures(boolean enable) {
         mMessageContentView.blockNetworkData(!enable);
         setShowPictures(enable);
         showShowPicturesSection(false);
@@ -171,6 +176,39 @@ public class SingleMessageView extends LinearLayout {
         return mHeaderContainer.additionalHeadersVisible();
     }
 
+    public void displayMessageBody(Account account, String folder, String uid, Message message, PgpData pgpData) throws MessagingException {
+        // TODO - really this code  path? this is an odd place to put it
+        removeAllAttachments();
+
+        String type;
+        String text = pgpData.getDecryptedData();
+        if (text != null) {
+            type = "text/plain";
+        } else {
+            // getTextForDisplay() always returns HTML-ified content.
+            text = ((LocalStore.LocalMessage) message).getTextForDisplay();
+            type = "text/html";
+        }
+        if (text != null) {
+            final String emailText = text;
+            final String contentType = type;
+            loadBodyFromText(account.getCryptoProvider(), pgpData, message, emailText, contentType);
+            // If the message contains external pictures and the "Show pictures"
+            // button wasn't already pressed, see if the user's preferences has us
+            // showing them anyway.
+            if (Utility.hasExternalImages(text) && !showPictures()) {
+                if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
+                        ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
+                         mContacts.isInContacts(message.getFrom()[0].getAddress()))) {
+                    setLoadPictures(true);
+                } else {
+                    showShowPicturesSection(true);
+                }
+            }
+        } else {
+            loadBodyFromUrl("file:///android_asset/empty.html");
+        }
+    }
 
     public void loadBodyFromUrl(String url) {
         mMessageContentView.loadUrl(url);
