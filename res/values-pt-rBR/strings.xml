@@ -255,7 +255,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
-    <!-- NEW: <string name="message_compose_quote_header_separator">-------- Original Message --------</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_separator">........ Original Message ........</string>-->
     <!-- NEW: <string name="message_compose_quote_header_subject">Subject:</string>-->
     <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
     <!-- NEW: <string name="message_compose_quote_header_from">From:</string>-->

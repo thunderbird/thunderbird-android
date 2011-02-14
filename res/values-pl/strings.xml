@@ -429,7 +429,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <!-- NEW: <string name="local_storage_provider_external_label">External storage (SD card)</string>-->
     <!-- NEW: <string name="local_storage_provider_internal_label">Regular internal storage</string>-->
     <!-- NEW: <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>-->
-    <!-- NEW: <string name="local_storage_provider_label">Storage location</string>
+    <!-- NEW: <string name="local_storage_provider_label">Storage location</string>-->
 
     <string name="account_setup_expunge_policy_label">Usuwanie wiadomości</string>
     <string name="account_setup_expunge_policy_immediately">Od razu po skasowaniu lub przeniesieniu</string>
