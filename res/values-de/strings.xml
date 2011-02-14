@@ -3,11 +3,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
+    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
     <string name="app_license">Lizensiert unter der Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Autoren: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
+    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Anlagen der Nachricht lesen</string>
     <string name="read_attachment_desc">Dieser Anwendung erlauben die Anlagen Ihrer Nachrichten zu lesen.</string>
@@ -467,8 +470,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_options_title">Kontoeinstellungen</string>
 
     <string name="compact_action">Komprimieren</string>
-   <string name="clear_action">Alle Daten löschen (Achtung!)</string>
-   <string name="recreate_action">Daten wiederherstellen (Letzter Ausweg!)</string>
+    <string name="clear_action">Alle Daten löschen (Achtung!)</string>
+    <string name="recreate_action">Daten wiederherstellen (Letzter Ausweg!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
     <!-- Frequency also used in account_settings_* -->

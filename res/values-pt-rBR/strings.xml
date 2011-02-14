@@ -3,10 +3,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
+    <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Revisões e informações: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
+    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
     <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
@@ -38,6 +42,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Nova verif. às @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Próximo</string> <!-- Used as part of a multi-step process -->
@@ -123,7 +128,7 @@
     <string name="folder_context_menu_title">Opções de pasta</string>
 
     <string name="general_no_subject">(Sem assunto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-
+    <!-- NEW: <string name="general_no_date">No date</string>-->
     <string name="general_no_sender">Sem remetente</string>
     <string name="status_loading">Verificando</string>
     <string name="status_loading_folder">(Verificar <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -250,7 +255,12 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
-    <string name="message_compose_fwd_header_fmt">\n-------- Mensagem original --------\nAssunto: <xliff:g id="subject">%s</xliff:g>\nDe: <xliff:g id="sender">%s</xliff:g>\nPara: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+    <!-- NEW: <string name="message_compose_quote_header_separator">-------- Original Message --------</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_subject">Subject:</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_from">From:</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_to">To:</string>-->
+    <!-- NEW: <string name="message_compose_quote_header_cc">Cc:</string>-->
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n\n</string>
     <string name="message_compose_quoted_text_label">Texto citado</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
@@ -312,6 +322,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_touchable_label">Visualizar mensagens</string>
     <string name="global_settings_touchable_summary">Itens mais espaçosos da lista com vizualização</string>
     <string name="global_settings_preview_lines_label">Linhas de visualização</string>
+    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
+    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
     <string name="global_settings_show_contact_name_label">Mostar nomes dos contatos</string>
     <string name="global_settings_show_contact_name_summary">Quando disponível, utilizar nomes dos contatos para destinitário</string>
     <string name="global_settings_registered_name_color_label">Colorir contatos</string>
@@ -457,8 +469,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_setup_options_title">Opções da conta</string>
 
     <string name="compact_action">Compactar</string>
-   <string name="clear_action">Limpar mensagens (perigo!)</string>
-   <string name="recreate_action">Recriar dados (Última solução!)</string>
+    <string name="clear_action">Limpar mensagens (perigo!)</string>
+    <string name="recreate_action">Recriar dados (Última solução!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frequência de verificação de e-mail</string>
     <!-- Frequency also used in account_settings_* -->
@@ -529,6 +541,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_notify_self_summary">Mostar avisos para mensagens que eu envio</string>
     <string name="account_settings_notification_opens_unread_label">Avisos abrem mensagens não lidas</string>
     <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
+    <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
+    <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
 
     <string name="account_settings_hide_buttons_label">Navegação com botões de scroll</string>
     <string name="account_settings_hide_buttons_never">Nunca</string>
@@ -548,6 +562,14 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
     <string name="account_settings_reply_after_quote_label">Resposta após texto da mensagem</string>
     <string name="account_settings_reply_after_quote_summary">Quando respondendo mensagens, o texto original deverá aparecer acima da minha resposta.</string>
+
+    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
+    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
+    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+
+    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
+    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
+    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
 
     <string name="account_settings_general_title">Configurações gerais</string>
     <string name="account_settings_display_prefs_title">Exibição</string>
@@ -786,13 +808,13 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     Mover\u000AY - Copiar\u000AG - Favoritar\u000AO - Tipo de ordenação\u000AI - Ordernar\u000AQ
     - Retornar à pastas\u000AS - Selecionar/desselecionar</string>
 
-      <string name="folder_list_help_key">
-      1 - Mostrar apenas pastar de Primeira Classe\u000A
-      2 - Mostrar pastas de Primeira e Segunda Classe\u000A
-      3 - Mostar todas exceto as de Segunda Classe\u000A
-      4 - Mostar todas as pastas\u000A
-      Q - Retornar para contas\u000A
-      S - Editar Configurações de Conta</string>
+    <string name="folder_list_help_key">
+    1 - Mostrar apenas pastar de Primeira Classe\u000A
+    2 - Mostrar pastas de Primeira e Segunda Classe\u000A
+    3 - Mostar todas exceto as de Segunda Classe\u000A
+    4 - Mostar todas as pastas\u000A
+    Q - Retornar para contas\u000A
+    S - Editar Configurações de Conta</string>
 
     <string name="folder_list_display_mode_label">Pastas</string>
     <string name="folder_list_display_mode_all">Mostar todas as pastas</string>
@@ -874,6 +896,9 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="gestures_title">Gestos</string>
     <string name="gestures_summary">Aceitar controle de gestos</string>
 
+    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
+    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+
     <string name="volume_navigation_title">Tecla de volume para navegação</string>
     <string name="volume_navigation_summary">Percorrer itens usando controle de volume</string>
     <string name="volume_navigation_message">Visualizar mensagem</string>
@@ -929,6 +954,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="font_size_message_list_subject">Assunto</string>
     <string name="font_size_message_list_sender">Remetente</string>
     <string name="font_size_message_list_date">Data</string>
+    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
 
     <string name="font_size_message_view">Mensagens</string>
     <string name="font_size_message_view_sender">Remetente</string>
@@ -992,6 +1018,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
     <string name="debug_logging_enabled">O log de depuração para o sistema Android foi habilitado</string>
 
+    <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
+    <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <string name="error_unable_to_connect">Não é possível conectar.</string>
 </resources>
 

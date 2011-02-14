@@ -8,10 +8,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
+    <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
     <string name="app_authors_fmt">Autoři: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Informace o revizi: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
+    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Číst přílohy zpráv</string>
     <string name="read_attachment_desc">Povolit této aplikaci číst přílohy vašich zpráv.</string>
@@ -43,6 +47,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Příští dotaz @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Další</string> <!-- Used as part of a multi-step process -->
@@ -128,7 +133,6 @@
     <string name="folder_context_menu_title">Možnosti složky</string>
 
     <string name="general_no_subject">(Bez předmětu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-
     <string name="general_no_sender">Bez odesílatele</string>
     <string name="status_loading">Dotazování</string>
     <string name="status_loading_folder">(Dotazování <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -262,6 +266,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="message_compose_content_hint">Text zprávy</string>
     <string name="message_compose_quote_header_separator">-------- Původní zpráva --------</string>
     <string name="message_compose_quote_header_subject">Předmět:</string>
+    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
     <string name="message_compose_quote_header_from">Odesílatel:</string>
     <string name="message_compose_quote_header_to">Komu:</string>
     <string name="message_compose_quote_header_cc">Kopie:</string>
@@ -326,6 +331,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="global_settings_touchable_label">Náhledy zpráv</string>
     <string name="global_settings_touchable_summary">Prostornější seznam položek s náhledy zpráv</string>
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
+    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
+    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
     <string name="global_settings_show_contact_name_label">Zobrazit jména kontaktů</string>
     <string name="global_settings_show_contact_name_summary">Použít jména příjemců ze Seznamu kontaktů, je-li to možné</string>
     <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
@@ -543,6 +550,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_settings_notify_self_summary">Oznamovat i v případě odeslání pošty s identitou účtu</string>
     <string name="account_settings_notification_opens_unread_label">Oznámení otevírá nepřečtené zprávy</string>
     <string name="account_settings_notification_opens_unread_summary">Vyhledává nepřečtené zprávy, je-li otevřeno oznámení</string>
+    <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
+    <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
 
     <string name="account_settings_hide_buttons_label">Posunovat navigační tlačítka</string>
     <string name="account_settings_hide_buttons_never">Nikdy</string>
@@ -562,6 +571,14 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
 
     <string name="account_settings_reply_after_quote_label">Odpovědět za citovaným textem</string>
     <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví ned vaší odpovědí.</string>
+
+    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
+    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
+    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+
+    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
+    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
+    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
     <string name="account_settings_display_prefs_title">Zobrazení</string>
@@ -823,6 +840,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="setting_theme_dark">Tmavé</string>
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Zobrazení</string>
+    <!-- NEW: <string name="global_preferences">Global</string>-->
     <string name="debug_preferences">Ladění</string>
     <string name="privacy_preferences">Soukromí</string>
     <string name="network_preferences">Síť</string>
@@ -890,6 +908,9 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="gestures_title">Gesta</string>
     <string name="gestures_summary">Používat ovládání gesty</string>
 
+    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
+    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+
     <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
     <string name="volume_navigation_summary">Přeskakovat přes položky při použití ovladačů hlasitosti</string>
     <string name="volume_navigation_message">Zobrazení zpráv</string>
@@ -945,6 +966,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="font_size_message_list_subject">Předmět zprávy</string>
     <string name="font_size_message_list_sender">Odesílatel zprávy</string>
     <string name="font_size_message_list_date">Datum zprávy</string>
+    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
 
     <string name="font_size_message_view">Zobrazení zprávy</string>
     <string name="font_size_message_view_sender">Odesílatel zprávy</string>

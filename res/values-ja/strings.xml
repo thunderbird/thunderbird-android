@@ -127,7 +127,6 @@
     <string name="folder_context_menu_title">フォルダオプション</string>
 
     <string name="general_no_subject">(件名なし)</string>
-
     <string name="general_no_date">日付なし</string>
     <string name="general_no_sender">送信者なし</string>
     <string name="status_loading">取込中</string>
@@ -261,6 +260,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_content_hint">本文</string>
     <string name="message_compose_quote_header_separator">-------- 元メール --------</string>
     <string name="message_compose_quote_header_subject">件名:</string>
+    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
     <string name="message_compose_quote_header_from">送信者:</string>
     <string name="message_compose_quote_header_to">宛先:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
@@ -347,10 +347,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
     <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
 
+
     <string name="quiet_time">夜間時間帯</string>
     <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定します．</string>
     <string name="quiet_time_starts">開始時刻</string>
     <string name="quiet_time_ends">終了時刻</string>
+
 
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
@@ -363,7 +365,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_basics_manual_setup_action">手動設定</string>
 
     <string name="account_setup_check_settings_title"></string>
-<string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
+    <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
@@ -841,6 +843,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_messageview_zoom_controls_label">ズーム制御</string>
     <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にします</string>
 
+
+
     <string name="setting_language_system">システム設定</string>
 
     <string name="background_ops_label">バックグラウンド同期</string>
@@ -1001,6 +1005,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
     <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
+
     <string name="charset_not_found">このメッセージに使われている文字セット \"<xliff:g id="charset">%s</xliff:g>\" は存在していません</string>
 
     <string name="select_text_now">選択したテキストをコピーします</string>
