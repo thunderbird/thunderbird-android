@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/message_list_titlebar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dip"
+        android:padding="5dip"
+        >
+        <TextView
+            android:id="@+id/account_title_button"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="5dip"
+            android:layout_height="30dp"
+/>
+        <TextView
+            android:id="@+id/title_button_separator"
+            android:text="/"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="5dip"
+            android:layout_height="30dp"
+            android:textColor="#ccc"
+        />
+        <TextView
+            android:id="@+id/folder_title_button"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+
+           />
+    </LinearLayout>

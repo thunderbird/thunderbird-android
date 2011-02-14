@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_view"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
     >
     <com.fsck.k9.view.ToggleScrollView
         android:id="@+id/top_view"

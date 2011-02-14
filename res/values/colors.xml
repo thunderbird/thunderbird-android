@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+	<color name="hyperlink_button_text">#ff6666ff</color>
 	<color name="message_list_item_background">#ffffff</color>
     <color name="message_list_item_footer_background">#eeeeee</color>
+    <color name="red">#ffff0000</color>
+    <color name="green">#ff00ff00</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="yellow">#ffcc00ff</color>
 </resources>

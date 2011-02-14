@@ -8,7 +8,8 @@
     android:paddingTop="2dip"
     android:paddingBottom="3dip"
     android:gravity="center_vertical"
-    android:background="#ccc" >
+        android:background="@android:color/transparent"
+    >
 
     <RelativeLayout
         android:id="@+id/chip"
@@ -18,7 +19,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="2dip"
-        android:background="@android:color/transparent" >
+        android:background="@android:color/transparent"
+        >
 
         <View
             android:layout_width="6dip"

@@ -6,7 +6,8 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingRight="3dip"
-    android:background="#ccc" >
+    android:background="@drawable/list_item_background"
+>
 
     <RelativeLayout
         android:id="@+id/chip"
