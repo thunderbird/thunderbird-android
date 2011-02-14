@@ -1,7 +1,12 @@
 package com.fsck.k9.view;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +25,8 @@ import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 
+import java.util.List;
+
 
 /**
  */
@@ -36,7 +43,7 @@ public class SingleMessageView extends LinearLayout {
     private LayoutInflater mInflater;
 
 
-    public void initialize(Activity activity, Boolean isScreenReaderActive) {
+    public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
@@ -53,20 +60,57 @@ public class SingleMessageView extends LinearLayout {
 
 
         mAttachments.setVisibility(View.GONE);
-        if (isScreenReaderActive) {
+        if (isScreenReaderActive(activity)) {
             mAccessibleMessageContentView.setVisibility(View.VISIBLE);
             mMessageContentView.setVisibility(View.GONE);
+            mScreenReaderEnabled = true;
         } else {
             mAccessibleMessageContentView.setVisibility(View.GONE);
             mMessageContentView.setVisibility(View.VISIBLE);
+            mScreenReaderEnabled = false;
         }
-        mScreenReaderEnabled = isScreenReaderActive;
 
     }
 
     public SingleMessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+
+    private boolean isScreenReaderActive(Activity activity ) {
+        final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
+        final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
+        // Restrict the set of intents to only accessibility services that have
+        // the category FEEDBACK_SPOKEN (aka, screen readers).
+        Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+        screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+        List<ResolveInfo> screenReaders = activity.getPackageManager().queryIntentServices(
+                screenReaderIntent, 0);
+        ContentResolver cr = activity.getContentResolver();
+        Cursor cursor = null;
+        int status = 0;
+        for (ResolveInfo screenReader : screenReaders) {
+            // All screen readers are expected to implement a content provider
+            // that responds to
+            // content://<nameofpackage>.providers.StatusProvider
+            cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
+                    + ".providers.StatusProvider"), null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                // These content providers use a special cursor that only has
+                // one element,
+                // an integer that is 1 if the screen reader is running.
+                status = cursor.getInt(0);
+                cursor.close();
+                if (status == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 
     public boolean showPictures() {
         return mShowPictures;

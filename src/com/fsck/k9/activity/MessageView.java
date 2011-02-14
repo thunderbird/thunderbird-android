@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -313,7 +312,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
-        mMessageView.initialize(this, isScreenReaderActive());
+        mMessageView.initialize(this);
 
         setTitle("");
         Intent intent = getIntent();
@@ -409,10 +408,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         // Perhaps the ScrollButtons should be global, instead of account-specific
         Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
-        if
-        ((Account.ScrollButtons.ALWAYS == scrollButtons)
-                ||
-                (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
+        if ((Account.ScrollButtons.ALWAYS == scrollButtons)
+                || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
                  (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO))) {
             scrollButtons();
         } else {  // never or the keyboard is open
@@ -436,39 +433,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                 buttons.setVisibility(View.GONE);
             }
         }
-    }
-
-    private boolean isScreenReaderActive() {
-        final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
-        final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
-        // Restrict the set of intents to only accessibility services that have
-        // the category FEEDBACK_SPOKEN (aka, screen readers).
-        Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
-        screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
-        List<ResolveInfo> screenReaders = getPackageManager().queryIntentServices(
-                                              screenReaderIntent, 0);
-        ContentResolver cr = getContentResolver();
-        Cursor cursor = null;
-        int status = 0;
-        for (ResolveInfo screenReader : screenReaders) {
-            // All screen readers are expected to implement a content provider
-            // that responds to
-            // content://<nameofpackage>.providers.StatusProvider
-            cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
-                                        + ".providers.StatusProvider"), null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                // These content providers use a special cursor that only has
-                // one element,
-                // an integer that is 1 if the screen reader is running.
-                status = cursor.getInt(0);
-                cursor.close();
-                if (status == 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     @Override
