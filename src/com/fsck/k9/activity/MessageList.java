@@ -1716,79 +1716,42 @@ public class MessageList
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private final ActivityListener mListener = new ActivityListener() {
+
+            @Override
+            public void informUserOfStatus() {
+                mHandler.refreshTitle();
+            }
+
             @Override
             public void synchronizeMailboxStarted(Account account, String folder) {
-                super.synchronizeMailboxStarted(account, folder);
-
                 if (updateForMe(account, folder)) {
                     mHandler.progress(true);
                     mHandler.folderLoading(folder, true);
                 }
-                mHandler.refreshTitle();
+                super.synchronizeMailboxStarted(account, folder);
             }
-            @Override
-            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
-                super.synchronizeMailboxHeadersProgress(account, folder, completed, total);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxHeadersFinished(Account account, String folder,
-            int total, int completed) {
-                super.synchronizeMailboxHeadersFinished(account, folder, total, completed);
-                mHandler.refreshTitle();
-            }
-
-
-
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
             int totalMessagesInMailbox, int numNewMessages) {
-                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
 
                 if (updateForMe(account, folder)) {
                     mHandler.progress(false);
                     mHandler.folderLoading(folder, false);
                     mHandler.sortMessages();
                 }
-                mHandler.refreshTitle();
+                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
             }
 
             @Override
             public void synchronizeMailboxFailed(Account account, String folder, String message) {
-                super.synchronizeMailboxFailed(account, folder, message);
 
                 if (updateForMe(account, folder)) {
                     mHandler.progress(false);
                     mHandler.folderLoading(folder, false);
                     mHandler.sortMessages();
                 }
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesStarted(Account account) {
-                super.sendPendingMessagesStarted(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesCompleted(Account account) {
-                super.sendPendingMessagesCompleted(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesFailed(Account account) {
-                super.sendPendingMessagesFailed(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
-                super.synchronizeMailboxProgress(account, folder, completed, total);
-                mHandler.refreshTitle();
+                super.synchronizeMailboxFailed(account, folder, message);
             }
 
             @Override
@@ -1808,9 +1771,7 @@ public class MessageList
 
             @Override
             public void listLocalMessagesStarted(Account account, String folder) {
-                if ((mQueryString != null && folder == null) ||
-                        (account != null && account.equals(mAccount))
-                ) {
+                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
                     mHandler.progress(true);
                     if (folder != null) {
                         mHandler.folderLoading(folder, true);
@@ -1820,8 +1781,7 @@ public class MessageList
 
             @Override
             public void listLocalMessagesFailed(Account account, String folder, String message) {
-                if ((mQueryString != null && folder == null) ||
-                (account != null && account.equals(mAccount))) {
+                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
                     mHandler.sortMessages();
                     mHandler.progress(false);
                     if (folder != null) {
@@ -1832,8 +1792,7 @@ public class MessageList
 
             @Override
             public void listLocalMessagesFinished(Account account, String folder) {
-                if ((mQueryString != null && folder == null) ||
-                (account != null && account.equals(mAccount))) {
+                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
                     mHandler.sortMessages();
                     mHandler.progress(false);
                     if (folder != null) {
@@ -1863,40 +1822,15 @@ public class MessageList
             @Override
             public void searchStats(AccountStats stats) {
                 mUnreadMessageCount = stats.unreadMessageCount;
-                mHandler.refreshTitle();
+                super.searchStats(stats);
             }
 
             @Override
             public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-                super.folderStatusChanged(account, folder, unreadMessageCount);
                 if (updateForMe(account, folder)) {
                     mUnreadMessageCount = unreadMessageCount;
-                    mHandler.refreshTitle();
                 }
-            }
-
-            @Override
-            public void pendingCommandsProcessing(Account account) {
-                super.pendingCommandsProcessing(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandsFinished(Account account) {
-                super.pendingCommandsFinished(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandStarted(Account account, String commandTitle) {
-                super.pendingCommandStarted(account, commandTitle);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandCompleted(Account account, String commandTitle) {
-                super.pendingCommandCompleted(account, commandTitle);
-                mHandler.refreshTitle();
+                super.folderStatusChanged(account, folder, unreadMessageCount);
             }
 
             @Override
@@ -1911,11 +1845,6 @@ public class MessageList
                     holder.uid = newUid;
                     holder.message.setUid(newUid);
                 }
-            }
-
-            @Override
-            public void systemStatusChanged() {
-                mHandler.refreshTitle();
             }
         };
 

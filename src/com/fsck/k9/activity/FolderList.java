@@ -746,6 +746,10 @@ public class FolderList extends K9ListActivity {
 
         private ActivityListener mListener = new ActivityListener() {
             @Override
+            public void informUserOfStatus() {
+                mHandler.refreshTitle();
+            }
+            @Override
             public void accountStatusChanged(BaseAccount account, AccountStats stats) {
                 if (!account.equals(mAccount)) {
                     return;
@@ -754,162 +758,124 @@ public class FolderList extends K9ListActivity {
                     return;
                 }
                 mUnreadMessageCount = stats.unreadMessageCount;
-                mHandler.refreshTitle();
+                super.accountStatusChanged(account, stats);
             }
 
             @Override
             public void listFoldersStarted(Account account) {
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    mHandler.progress(true);
                 }
+                super.listFoldersStarted(account);
 
-                mHandler.progress(true);
             }
 
             @Override
             public void listFoldersFailed(Account account, String message) {
-                if (!account.equals(mAccount)) {
-                    return;
-                }
+                if (account.equals(mAccount)) {
 
-                mHandler.progress(false);
+                    mHandler.progress(false);
 
-                if (Config.LOGV) {
-                    Log.v(K9.LOG_TAG, "listFoldersFailed " + message);
+                    if (Config.LOGV) {
+                        Log.v(K9.LOG_TAG, "listFoldersFailed " + message);
+                    }
                 }
+                super.listFoldersFailed(account, message);
             }
 
             @Override
             public void listFoldersFinished(Account account) {
-                if (!account.equals(mAccount)) {
-                    return;
-                }
+                if (account.equals(mAccount)) {
 
-                mHandler.progress(false);
-                MessagingController.getInstance(getApplication()).refreshListener(mAdapter.mListener);
-                mHandler.dataChanged();
+                    mHandler.progress(false);
+                    MessagingController.getInstance(getApplication()).refreshListener(mAdapter.mListener);
+                    mHandler.dataChanged();
+                }
+                super.listFoldersFinished(account);
 
             }
 
             @Override
             public void listFolders(Account account, Folder[] folders) {
-                if (!account.equals(mAccount)) {
-                    return;
-                }
+                if (account.equals(mAccount)) {
 
-                List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
-                List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
+                    List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
+                    List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
 
-                Account.FolderMode aMode = account.getFolderDisplayMode();
-                Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
-                for (Folder folder : folders) {
-                    try {
-                        folder.refresh(prefs);
+                    Account.FolderMode aMode = account.getFolderDisplayMode();
+                    Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
+                    for (Folder folder : folders) {
+                        try {
+                            folder.refresh(prefs);
 
-                        Folder.FolderClass fMode = folder.getDisplayClass();
+                            Folder.FolderClass fMode = folder.getDisplayClass();
 
-                        if ((aMode == Account.FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
-                                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                                    fMode != Folder.FolderClass.FIRST_CLASS &&
-                                    fMode != Folder.FolderClass.SECOND_CLASS)
-                        || (aMode == Account.FolderMode.NOT_SECOND_CLASS && fMode == Folder.FolderClass.SECOND_CLASS)) {
-                            continue;
+                            if ((aMode == Account.FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
+                                    || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+                                        fMode != Folder.FolderClass.FIRST_CLASS &&
+                                        fMode != Folder.FolderClass.SECOND_CLASS)
+                            || (aMode == Account.FolderMode.NOT_SECOND_CLASS && fMode == Folder.FolderClass.SECOND_CLASS)) {
+                                continue;
+                            }
+                        } catch (MessagingException me) {
+                            Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
                         }
-                    } catch (MessagingException me) {
-                        Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
-                    }
 
-                    FolderInfoHolder holder = null;
+                        FolderInfoHolder holder = null;
 
-                    int folderIndex = getFolderIndex(folder.getName());
-                    if (folderIndex >= 0) {
-                        holder = (FolderInfoHolder) getItem(folderIndex);
-                    }
-                    int unreadMessageCount = 0;
-                    try {
-                        unreadMessageCount  = folder.getUnreadMessageCount();
-                    } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
-                              + folder.getName());
-                    }
+                        int folderIndex = getFolderIndex(folder.getName());
+                        if (folderIndex >= 0) {
+                            holder = (FolderInfoHolder) getItem(folderIndex);
+                        }
+                        int unreadMessageCount = 0;
+                        try {
+                            unreadMessageCount  = folder.getUnreadMessageCount();
+                        } catch (Exception e) {
+                            Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
+                                  + folder.getName());
+                        }
 
-                    if (holder == null) {
-                        holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
-                    } else {
-                        holder.populate(context, folder, mAccount, unreadMessageCount);
+                        if (holder == null) {
+                            holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
+                        } else {
+                            holder.populate(context, folder, mAccount, unreadMessageCount);
 
+                        }
+                        if (folder.isInTopGroup()) {
+                            topFolders.add(holder);
+                        } else {
+                            newFolders.add(holder);
+                        }
                     }
-                    if (folder.isInTopGroup()) {
-                        topFolders.add(holder);
-                    } else {
-                        newFolders.add(holder);
-                    }
+                    Collections.sort(newFolders);
+                    Collections.sort(topFolders);
+                    topFolders.addAll(newFolders);
+                    mHandler.newFolders(topFolders);
                 }
-                Collections.sort(newFolders);
-                Collections.sort(topFolders);
-                topFolders.addAll(newFolders);
-                mHandler.newFolders(topFolders);
-                mHandler.refreshTitle();
-
+                super.listFolders(account, folders);
             }
 
             @Override
             public void synchronizeMailboxStarted(Account account, String folder) {
                 super.synchronizeMailboxStarted(account, folder);
-                mHandler.refreshTitle();
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+
+                    mHandler.progress(true);
+                    mHandler.folderLoading(folder, true);
+                    mHandler.dataChanged();
                 }
 
-                mHandler.progress(true);
-                mHandler.folderLoading(folder, true);
-                mHandler.dataChanged();
-
-            }
-
-            @Override
-            public void synchronizeMailboxHeadersStarted(Account account, String folder) {
-
-                super.synchronizeMailboxHeadersStarted(account, folder);
-                mHandler.refreshTitle();
-            }
-
-
-            @Override
-            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
-                super.synchronizeMailboxHeadersProgress(account, folder, completed, total);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxHeadersFinished(Account account, String folder,
-            int total, int completed) {
-                super.synchronizeMailboxHeadersFinished(account, folder, total, completed);
-                mHandler.refreshTitle();
-            }
-
-
-
-
-
-            @Override
-            public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
-                super.synchronizeMailboxProgress(account, folder, completed, total);
-                mHandler.refreshTitle();
             }
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages) {
                 super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-                mHandler.refreshTitle();
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    mHandler.progress(false);
+                    mHandler.folderLoading(folder, false);
+
+                    refreshFolder(account, folder);
                 }
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
-
-                refreshFolder(account, folder);
-
 
             }
 
@@ -941,10 +907,8 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void synchronizeMailboxFailed(Account account, String folder,
-            String message) {
+            public void synchronizeMailboxFailed(Account account, String folder, String message) {
                 super.synchronizeMailboxFailed(account, folder, message);
-                mHandler.refreshTitle();
                 if (!account.equals(mAccount)) {
                     return;
                 }
@@ -983,105 +947,55 @@ public class FolderList extends K9ListActivity {
 
 
             @Override
-            public void messageDeleted(Account account,
-            String folder, Message message) {
-                synchronizeMailboxRemovedMessage(account,
-                                                 folder, message);
+            public void messageDeleted(Account account, String folder, Message message) {
+                synchronizeMailboxRemovedMessage(account, folder, message);
             }
 
             @Override
             public void emptyTrashCompleted(Account account) {
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    refreshFolder(account, mAccount.getTrashFolderName());
                 }
-                refreshFolder(account, mAccount.getTrashFolderName());
             }
 
             @Override
             public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    refreshFolder(account, folderName);
                 }
-                refreshFolder(account, folderName);
             }
 
             @Override
             public void sendPendingMessagesCompleted(Account account) {
                 super.sendPendingMessagesCompleted(account);
-                mHandler.refreshTitle();
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    refreshFolder(account, mAccount.getOutboxFolderName());
                 }
-
-                refreshFolder(account, mAccount.getOutboxFolderName());
-
-
             }
 
             @Override
             public void sendPendingMessagesStarted(Account account) {
                 super.sendPendingMessagesStarted(account);
-                mHandler.refreshTitle();
 
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    mHandler.dataChanged();
                 }
-
-                mHandler.dataChanged();
-
             }
 
             @Override
             public void sendPendingMessagesFailed(Account account) {
                 super.sendPendingMessagesFailed(account);
-                mHandler.refreshTitle();
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    refreshFolder(account, mAccount.getOutboxFolderName());
                 }
-
-                refreshFolder(account, mAccount.getOutboxFolderName());
-
             }
 
             @Override
             public void accountSizeChanged(Account account, long oldSize, long newSize) {
-                if (!account.equals(mAccount)) {
-                    return;
+                if (account.equals(mAccount)) {
+                    mHandler.accountSizeChanged(oldSize, newSize);
                 }
-
-                mHandler.accountSizeChanged(oldSize, newSize);
-
             }
-
-            @Override
-            public void pendingCommandsProcessing(Account account) {
-                super.pendingCommandsProcessing(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandsFinished(Account account) {
-                super.pendingCommandsFinished(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandStarted(Account account, String commandTitle) {
-                super.pendingCommandStarted(account, commandTitle);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandCompleted(Account account, String commandTitle) {
-                super.pendingCommandCompleted(account, commandTitle);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void systemStatusChanged() {
-                mHandler.refreshTitle();
-            }
-
         };
 
 

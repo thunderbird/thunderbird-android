@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingListener;
@@ -70,6 +71,9 @@ public class ActivityListener extends MessagingListener {
 
     }
 
+    public void informUserOfStatus() {
+    }
+
     @Override
     public void synchronizeMailboxFinished(
         Account account,
@@ -78,6 +82,7 @@ public class ActivityListener extends MessagingListener {
         int numNewMessages) {
         mLoadingAccountDescription = null;
         mLoadingFolderName = null;
+        informUserOfStatus();
     }
 
     @Override
@@ -86,12 +91,14 @@ public class ActivityListener extends MessagingListener {
         mLoadingFolderName = folder;
         mFolderCompleted = 0;
         mFolderTotal = 0;
+        informUserOfStatus();
     }
 
 
     @Override
     public void synchronizeMailboxHeadersStarted(Account account, String folder) {
         mLoadingHeaderFolderName = folder;
+        informUserOfStatus();
     }
 
 
@@ -99,6 +106,7 @@ public class ActivityListener extends MessagingListener {
     public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
         mFolderCompleted = completed;
         mFolderTotal = total;
+        informUserOfStatus();
     }
 
     @Override
@@ -107,6 +115,7 @@ public class ActivityListener extends MessagingListener {
         mLoadingHeaderFolderName = null;
         mFolderCompleted = 0;
         mFolderTotal = 0;
+        informUserOfStatus();
     }
 
 
@@ -114,6 +123,7 @@ public class ActivityListener extends MessagingListener {
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
         mFolderCompleted = completed;
         mFolderTotal = total;
+        informUserOfStatus();
     }
 
     @Override
@@ -121,22 +131,26 @@ public class ActivityListener extends MessagingListener {
                                          String message) {
         mLoadingAccountDescription = null;
         mLoadingFolderName = null;
+        informUserOfStatus();
 
     }
 
     @Override
     public void sendPendingMessagesStarted(Account account) {
         mSendingAccountDescription = account.getDescription();
+        informUserOfStatus();
     }
 
     @Override
     public void sendPendingMessagesCompleted(Account account) {
         mSendingAccountDescription = null;
+        informUserOfStatus();
     }
 
     @Override
     public void sendPendingMessagesFailed(Account account) {
         mSendingAccountDescription = null;
+        informUserOfStatus();
     }
 
     @Override
@@ -144,26 +158,45 @@ public class ActivityListener extends MessagingListener {
         mProcessingAccountDescription = account.getDescription();
         mFolderCompleted = 0;
         mFolderTotal = 0;
+        informUserOfStatus();
     }
 
     @Override
     public void pendingCommandsFinished(Account account) {
         mProcessingAccountDescription = null;
+        informUserOfStatus();
     }
 
     @Override
     public void pendingCommandStarted(Account account, String commandTitle) {
         mProcessingCommandTitle = commandTitle;
+        informUserOfStatus();
     }
 
     @Override
     public void pendingCommandCompleted(Account account, String commandTitle) {
         mProcessingCommandTitle = null;
+        informUserOfStatus();
+    }
+
+    @Override
+    public void searchStats(AccountStats stats) {
+        informUserOfStatus();
+    }
+
+    @Override
+    public void systemStatusChanged() {
+        informUserOfStatus();
+    }
+    @Override
+    public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
+        informUserOfStatus();
     }
 
     public int getFolderCompleted() {
         return mFolderCompleted;
     }
+
 
     public int getFolderTotal() {
         return mFolderTotal;

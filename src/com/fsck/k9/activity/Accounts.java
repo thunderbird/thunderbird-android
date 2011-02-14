@@ -132,6 +132,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     ActivityListener mListener = new ActivityListener() {
         @Override
+        public void informUserOfStatus() {
+            mHandler.refreshTitle();
+        }
+
+        @Override
         public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
             try {
                 AccountStats stats = account.getStats(Accounts.this);
@@ -181,25 +186,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             String folder,
             int totalMessagesInMailbox,
         int numNewMessages) {
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
             MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
 
             mHandler.progress(false);
 
-            mHandler.refreshTitle();
         }
 
         @Override
         public void synchronizeMailboxStarted(Account account, String folder) {
             super.synchronizeMailboxStarted(account, folder);
             mHandler.progress(true);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
-            super.synchronizeMailboxProgress(account, folder, completed, total);
-            mHandler.refreshTitle();
         }
 
         @Override
@@ -207,57 +204,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         String message) {
             super.synchronizeMailboxFailed(account, folder, message);
             mHandler.progress(false);
-            mHandler.refreshTitle();
 
         }
 
-        @Override
-        public void sendPendingMessagesStarted(Account account) {
-            super.sendPendingMessagesStarted(account);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void sendPendingMessagesCompleted(Account account) {
-            super.sendPendingMessagesCompleted(account);
-            mHandler.refreshTitle();
-        }
-
-
-        @Override
-        public void sendPendingMessagesFailed(Account account) {
-            super.sendPendingMessagesFailed(account);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void pendingCommandsProcessing(Account account) {
-            super.pendingCommandsProcessing(account);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void pendingCommandsFinished(Account account) {
-            super.pendingCommandsFinished(account);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void pendingCommandStarted(Account account, String commandTitle) {
-            super.pendingCommandStarted(account, commandTitle);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void pendingCommandCompleted(Account account, String commandTitle) {
-            super.pendingCommandCompleted(account, commandTitle);
-            mHandler.refreshTitle();
-        }
-
-        @Override
-        public void systemStatusChanged() {
-            mHandler.refreshTitle();
-        }
     };
 
     private static String ACCOUNT_STATS = "accountStats";
@@ -299,7 +248,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             finish();
         } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
             // fall through to "else" if !onOpenAccount()
-        	finish();
+            finish();
         } else {
             requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
             requestWindowFeature(Window.FEATURE_PROGRESS);
