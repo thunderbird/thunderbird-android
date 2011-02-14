@@ -504,8 +504,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private void clearMessageDisplay() {
         mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
-        mMessageView.setLoadPictures(false);
-
         mMessageView.resetView();
 
     }

@@ -211,7 +211,7 @@ public class SingleMessageView extends LinearLayout {
 
 
     public void resetView() {
-
+        setLoadPictures(false);
         mMessageContentView.scrollTo(0, 0);
         mHeaderContainer.setVisibility(View.GONE);
         mMessageContentView.clearView();
