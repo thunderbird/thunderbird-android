@@ -1006,7 +1006,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void displayMessage(Account account, String folder, String uid, Message message) {
+    public void displayMessageBody(Account account, String folder, String uid, Message message) {
         try {
             if (MessageView.this.mMessage != null
                     && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
@@ -1095,7 +1095,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return;
             }
 
-            displayMessage(account, folder, uid, message);
+            displayMessageBody(account, folder, uid, message);
         }//loadMessageForViewBodyAvailable
 
 
