@@ -192,7 +192,7 @@
     <string name="send_failure_subject">Failed to send some messages</string>
     <string name="send_failure_body_abbrev">See your <xliff:g id="errorFolder">%s</xliff:g> folder for details.</string>
     <string name="send_failure_body_fmt">K-9 encountered a problem sending some of your messages.
-     However, due to the nature of the problem, K-9 cannot be certain if the messages
+    However, due to the nature of the problem, K-9 cannot be certain if the messages
     were sent or not.  The recipients may have already received copies of the message.
     \u000a\u000aThe messages for which this type of problem occurred are now starred in your Outbox.
     If you remove the stars, K-9 will try to send the messages again.
@@ -473,8 +473,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_title">Account options</string>
 
     <string name="compact_action">Compact</string>
-   <string name="clear_action">Clear messages (danger!)</string>
-   <string name="recreate_action">Recreate data (Last Resort!)</string>
+    <string name="clear_action">Clear messages (danger!)</string>
+    <string name="recreate_action">Recreate data (Last Resort!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <!-- Frequency also used in account_settings_* -->
@@ -813,13 +813,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
     - Return to Folders\u000AS - Select/deselect</string>
 
-      <string name="folder_list_help_key">
-      1 - Display only 1st Class folders\u000A
-      2 - Display 1st and 2nd Class folders\u000A
-      3 - Display all except 2nd Class folders\u000A
-      4 - Display all folders\u000A
-      Q - Return to Accounts\u000A
-      S - Edit Account Settings</string>
+    <string name="folder_list_help_key">
+    1 - Display only 1st Class folders\u000A
+    2 - Display 1st and 2nd Class folders\u000A
+    3 - Display all except 2nd Class folders\u000A
+    4 - Display all folders\u000A
+    Q - Return to Accounts\u000A
+    S - Edit Account Settings</string>
 
     <string name="folder_list_display_mode_label">Folders</string>
     <string name="folder_list_display_mode_all">Display all folders</string>
@@ -902,7 +902,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="animations_summary">Use gaudy visual effects</string>
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
-    
+
     <string name="compact_layouts_title">Compact layouts</string>
     <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
 
