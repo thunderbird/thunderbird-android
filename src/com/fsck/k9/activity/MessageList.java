@@ -486,29 +486,23 @@ public class MessageList
             getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
         }
 
-        private void setWindowTitle() {
-            String displayName;
+         private void setWindowTitle() {
+             if (mFolderName != null) {
+                String displayName  = mFolderName;
 
-            if (mFolderName != null) {
-                displayName  = mFolderName;
+                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
+                     displayName = getString(R.string.special_mailbox_name_inbox);
+                 }
 
-                if (K9.INBOX.equalsIgnoreCase(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_inbox);
-                } else if (mAccount.getOutboxFolderName().equals(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_outbox);
-                }
+                mAccountButton.setText(mAccount.getDescription());
+                mFolderButton.setText(displayName);
+             } else if (mQueryString != null) {
 
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
-                setTitle(dispString);
-            } else if (mQueryString != null) {
-                if (mTitle != null) {
-                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
-                    setTitle(dispString);
-                } else {
-                    setTitle(getString(R.string.search_results) + ": " + mQueryString);
-                }
-            }
-        }
+                mAccountButton.setText(getString(R.string.search_results));
+                mFolderButton.setText(mQueryString);
+             }
+         }
+
 
         public void progress(final boolean progress) {
             runOnUiThread(new Runnable() {
