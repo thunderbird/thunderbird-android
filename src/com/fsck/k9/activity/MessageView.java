@@ -470,7 +470,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             disableMoveButtons();
         }
     }
-
     private void staticButtons() {
         View buttons = findViewById(R.id.scrolling_buttons);
         if (buttons != null) {
@@ -609,9 +608,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             disableButtons();
             Message messageToDelete = mMessage;
             showNextMessageOrReturn();
-            mController.deleteMessages(
-                new Message[] {messageToDelete},
-                null);
+            mController.deleteMessages(new Message[] {messageToDelete}, null);
         }
     }
 
@@ -630,8 +627,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             return;
         }
         showNextMessageOrReturn();
-        mController
-        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+        mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
 
@@ -754,12 +750,10 @@ public class MessageView extends K9Activity implements OnClickListener {
                 case ACTIVITY_CHOOSE_FOLDER_MOVE:
                     Message messageToMove = mMessage;
                     showNextMessageOrReturn();
-                    mController.moveMessage(mAccount,
-                                            srcFolderName, messageToMove, destFolderName, null);
+                    mController.moveMessage(mAccount, srcFolderName, messageToMove, destFolderName, null);
                     break;
                 case ACTIVITY_CHOOSE_FOLDER_COPY:
-                    mController.copyMessage(mAccount,
-                                            srcFolderName, mMessage, destFolderName, null);
+                    mController.copyMessage(mAccount, srcFolderName, mMessage, destFolderName, null);
                     break;
                 }
             }
@@ -805,12 +799,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     private void onMarkAsUnread() {
         if (mMessage != null) {
-            mController.setFlag(
-                mAccount,
-                mMessageReference.folderName,
-                new String[] { mMessage.getUid() },
-                Flag.SEEN,
-                false);
+            mController.setFlag(mAccount, mMessageReference.folderName, new String[] { mMessage.getUid() }, Flag.SEEN, false);
             try {
                 mMessage.setFlag(Flag.SEEN, false);
                 mMessageView.setHeaders(mMessage, mAccount);
@@ -1050,8 +1039,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid,
-                                             final Throwable t) {
+        public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
@@ -1073,8 +1061,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid,
-                                               final Message message) {
+        public void loadMessageForViewFinished(Account account, String folder, String uid, final Message message) {
             if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
@@ -1101,8 +1088,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         @Override
-        public void loadAttachmentStarted(Account account, Message message,
-                                          Part part, Object tag, boolean requiresDownload) {
+        public void loadAttachmentStarted(Account account, Message message, Part part, Object tag, boolean requiresDownload) {
             if (mMessage != message) {
                 return;
             }
@@ -1125,15 +1111,13 @@ public class MessageView extends K9Activity implements OnClickListener {
             AttachmentView attachment = (AttachmentView) params[1];
             if (download) {
                 attachment.writeFile();
-
             } else {
                 attachment.showFile();
             }
         }
 
         @Override
-        public void loadAttachmentFailed(Account account, Message message, Part part,
-                                         Object tag, String reason) {
+        public void loadAttachmentFailed(Account account, Message message, Part part, Object tag, String reason) {
             if (mMessage != message) {
                 return;
             }
