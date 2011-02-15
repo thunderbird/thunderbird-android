@@ -235,31 +235,26 @@ public class MessageView extends K9Activity implements OnClickListener {
             });
         }
 
-        public void networkError() {
+        /* A helper for a set of "show a toast" methods */
+        private void showToast(final String message, final int toastLength)  {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    Toast.makeText(MessageView.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MessageView.this, message, toastLength).show();
                 }
             });
         }
 
+        public void networkError() {
+            showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
+        }
+
         public void invalidIdError() {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageView.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
-                }
-            });
+            showToast(getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
         }
 
 
         public void fetchingAttachment() {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageView.this,
-                                   getString(R.string.message_view_fetching_attachment_toast),
-                                   Toast.LENGTH_SHORT).show();
-                }
-            });
+            showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
         }
 
 
