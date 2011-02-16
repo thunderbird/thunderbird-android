@@ -1488,15 +1488,15 @@ public class MessageList
             return;
         }
         mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
-            try {
-                holder.read = !holder.read;
-                holder.message.setFlag(Flag.SEEN, holder.read);
-                if (mMessage.uid == holder.uid) {
+        try {
+            holder.read = !holder.read;
+            holder.message.setFlag(Flag.SEEN, holder.read);
+            if (mMessage.uid == holder.uid) {
                 mMessageView.setHeaders(holder.message, holder.message.getFolder().getAccount());
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
             }
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
+        }
         mHandler.sortMessages();
     }
 
@@ -1505,13 +1505,13 @@ public class MessageList
             return;
         }
         mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
-            try {
-        holder.message.setFlag(Flag.FLAGGED,  !holder.flagged);
-        holder.flagged = !holder.flagged;
+        try {
+            holder.message.setFlag(Flag.FLAGGED,  !holder.flagged);
+            holder.flagged = !holder.flagged;
 
-            } catch (MessagingException me) {
-                Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
-            }
+        } catch (MessagingException me) {
+            Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
+        }
         if (holder.uid == mCurrentMessageInfo.uid) {
             mMessageView.setHeaders(holder.message, holder.message.account);
         }
