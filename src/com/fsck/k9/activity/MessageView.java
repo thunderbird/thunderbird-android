@@ -315,19 +315,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    private void onFlag() {
-        if (mMessage != null) {
-            mController.setFlag(mAccount,
-                                mMessage.getFolder().getName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
-            try {
-                mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
-                mMessageView.setHeaders(mMessage, mAccount);
-            } catch (MessagingException me) {
-                Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
-            }
-        }
-    }
-
     private void onMove() {
         if ((!mController.isMoveCapable(mAccount))
                 || (mMessage == null)) {

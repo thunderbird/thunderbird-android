@@ -1497,7 +1497,16 @@ public class MessageList
             return;
         }
         mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+            try {
+        holder.message.setFlag(Flag.FLAGGED,  !holder.flagged);
         holder.flagged = !holder.flagged;
+
+            } catch (MessagingException me) {
+                Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
+            }
+        if (holder.uid == mCurrentMessageInfo.uid) {
+            mMessageView.setHeaders(holder.message, holder.message.account);
+        }
         mHandler.sortMessages();
     }
 
