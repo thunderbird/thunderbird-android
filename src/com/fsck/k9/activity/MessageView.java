@@ -284,55 +284,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         mMessageView.resetView();
 
     }
-
-    private void setupDisplayMessageButtons() {
-        mDelete.setEnabled(true);
-        mNext.setEnabled(mNextMessage != null);
-        mPrevious.setEnabled(mPreviousMessage != null);
-        // If moving isn't support at all, then all of them must be disabled anyway.
-        if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if the Archive folder is not the current folder and not NONE.
-            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
-            // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
-            mMove.setEnabled(true);
-        } else {
-            disableMoveButtons();
-        }
-    }
-    private void staticButtons() {
-        mNext = findViewById(R.id.next);
-        mPrevious = findViewById(R.id.previous);
-        mDelete = findViewById(R.id.delete);
-        mArchive = findViewById(R.id.archive);
-        mMove = findViewById(R.id.move);
-        mSpam = findViewById(R.id.spam);
-    }
-
-
-    private void disableButtons() {
-        mMessageView.setLoadPictures(false);
-        disableMoveButtons();
-        mNext.setEnabled(false);
-        mPrevious.setEnabled(false);
-        mDelete.setEnabled(false);
-    }
-
-    private void disableMoveButtons() {
-        mArchive.setEnabled(false);
-        mMove.setEnabled(false);
-        mSpam.setEnabled(false);
-    }
-
-    private void setOnClickListener(int viewCode) {
-        View thisView = findViewById(viewCode);
-        if (thisView != null) {
-            thisView.setOnClickListener(this);
-        }
-    }
-
     private void findSurroundingMessagesUid() {
         mNextMessage = mPreviousMessage = null;
         int i = mMessageReferences.indexOf(mMessageReference);
