@@ -2056,8 +2056,8 @@ public class MessageList
         @Override
         public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
                 final Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+            if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             MessageView.this.mMessage = message;
@@ -2080,8 +2080,8 @@ public class MessageList
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
                 Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+            if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
 
@@ -2093,8 +2093,8 @@ public class MessageList
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                                              final Throwable t) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+            if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -2116,8 +2116,8 @@ public class MessageList
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid,
                                                final Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+            if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -2130,8 +2130,8 @@ public class MessageList
 
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+            if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -3101,10 +3101,10 @@ public class MessageList
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (mController.isMoveCapable(mAccount)) {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
-            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+            mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&
                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
             // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+            mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) &&
                              !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
             mMove.setEnabled(true);
         } else {
