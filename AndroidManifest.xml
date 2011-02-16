@@ -202,20 +202,6 @@
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.MessageView"
-            android:theme="@android:style/Theme.Light"
-            android:configChanges="locale"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:scheme="email"
-                    android:host="messages"
-                />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.fsck.k9.activity.MessageCompose"
             android:label="@string/app_name"
             android:enabled="false"
