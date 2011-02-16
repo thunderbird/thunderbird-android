@@ -2818,7 +2818,7 @@ public class MessageList
     }
 
 
-    // XXX do we actually need this? why?
+    // XXX do we actually need this? why? - presumably for API v ??? compatibility
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean ret = false;

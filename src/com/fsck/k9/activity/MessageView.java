@@ -82,18 +82,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        boolean ret = false;
-        if (KeyEvent.ACTION_DOWN == event.getAction()) {
-            ret = onKeyDown(event.getKeyCode(), event);
-        }
-        if (!ret) {
-            ret = super.dispatchKeyEvent(event);
-        }
-        return ret;
-    }
-
-    @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         switch (keyCode) {
         case KeyEvent.KEYCODE_SHIFT_LEFT:
