@@ -1302,7 +1302,7 @@ public class MessageList
         if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
         } else {
-            //mHandler.post(new Runnable() { public void run() { showMessage(message); } });
+            mHandler.post(new Runnable() { public void run() { displayMessage(message); } });
         }
 
         /*
@@ -3411,12 +3411,6 @@ public class MessageList
 
 
         staticButtons();
-        if (!mAccount.getEnableMoveButtons()) {
-            View buttons = findViewById(R.id.move_buttons);
-            if (buttons != null) {
-                buttons.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void setupDisplayMessageButtons() {

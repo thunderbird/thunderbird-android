@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
             <include layout="@layout/message" />
-            <include layout="@layout/message_view_scrolling_buttons"/>
         </LinearLayout>
     </com.fsck.k9.view.ToggleScrollView>
     <include layout="@layout/message_view_move_buttons"/>
