@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -327,7 +326,7 @@ public class Apg extends CryptoProvider {
             pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
 
             pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-            ((MessageView) activity).onDecryptDone(pgpData);
+//  TODO              ((MessageView) activity).onDecryptDone();
 
             break;
 
