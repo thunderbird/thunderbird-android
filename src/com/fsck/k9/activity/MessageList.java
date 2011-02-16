@@ -968,16 +968,13 @@ public class MessageList
 
                 if (message != null) {
                     switch (keyCode) {
+                    case KeyEvent.KEYCODE_D:
                     case KeyEvent.KEYCODE_DEL: {
                         onDelete(message);
                         return true;
                     }
                     case KeyEvent.KEYCODE_S: {
                         setSelected(message, !message.selected);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_D: {
-                        onDelete(message);
                         return true;
                     }
                     case KeyEvent.KEYCODE_F: {
@@ -1010,6 +1007,42 @@ public class MessageList
                     }
                     case KeyEvent.KEYCODE_Z: {
                         onToggleRead(message);
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_J:
+                    case KeyEvent.KEYCODE_P: {
+                        onPrevious();
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_N:
+                    case KeyEvent.KEYCODE_K: {
+                        onNext();
+                        return true;
+                    }
+                    /* TODO - MESSAGE VIEW SPECIAL KEYS
+                    case KeyEvent.KEYCODE_SHIFT_LEFT:
+                    case KeyEvent.KEYCODE_SHIFT_RIGHT: {
+                        // Selecting text started via shift key. Disable scrolling as
+                        // this causes problems when selecting text.
+                        mToggleScrollView.setScrolling(false);
+                        break;
+                    }
+                    case KeyEvent.KEYCODE_S: {
+                        onRefile(mAccount.getSpamFolderName());
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_Z: {
+                        mHandler.post(new Runnable() {
+                            public void run() {
+                                mMessageView.zoom(event);
+                            }
+                        });
+                        return true;
+                    }
+                        */
+                    case KeyEvent.KEYCODE_H: {
+                        Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
+                        toast.show();
                         return true;
                     }
                     }
