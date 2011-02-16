@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
@@ -236,6 +237,8 @@ public class WebDavStore extends Store {
         String[] folderUrls;
         int urlLength;
 
+        String translatedInbox = K9.app.getString(R.string.special_mailbox_name_inbox);
+
         /**
          * We have to check authentication here so we have the proper URL stored
          */
@@ -253,8 +256,13 @@ public class WebDavStore extends Store {
             String fullPathName = "";
             WebDavFolder wdFolder;
 
-            if (folderName.equalsIgnoreCase(K9.INBOX)) {
-                folderName = "INBOX";
+            // Check each Exchange folder name to see if it is the user's inbox.
+            // We will check for the default English inbox ("Inbox"), and the user's
+            // translation for "Inbox", in case the user is using a non-English
+            // version of Exchange.
+            if (folderName.equalsIgnoreCase("Inbox") ||
+                    folderName.equalsIgnoreCase(translatedInbox)) {
+                folderName = K9.INBOX;
             } else {
                 for (int j = 5, count = urlParts.length; j < count; j++) {
                     if (j != 5) {
@@ -1031,15 +1039,7 @@ public class WebDavStore extends Store {
 
                 encodedName = encodedName.replaceAll("\\+", "%20");
 
-                /**
-                 * In some instances, it is possible that our folder objects have been collected, but
-                 * getPersonalNamespaces() isn't called again (ex. Android destroys the email client). Perform an
-                 * authentication to get the appropriate URLs in place again
-                 */
-                // TODO: danapple0 - huh?
-                // getHttpClient();
-
-                if (encodedName.equals("INBOX")) {
+                if (encodedName.equals(K9.INBOX)) {
                     encodedName = "Inbox";
                 }
                 this.mFolderUrl = WebDavStore.this.mUrl;
