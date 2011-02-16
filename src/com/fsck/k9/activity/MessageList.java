@@ -347,7 +347,7 @@ public class MessageList
         }
     }
 
-    class MessageListHandler {
+    class MessageListHandler extends Handler {
         public void removeMessage(final List<MessageInfoHolder> messages) {
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -533,6 +533,51 @@ public class MessageList
                 }
             });
         }
+
+        public void addAttachment(final View attachmentView) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    mMessageView.addAttachment(attachmentView);
+                }
+            });
+        }
+
+        public void networkError() {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MessageView.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        public void invalidIdError() {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MessageView.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+
+        public void fetchingAttachment() {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MessageView.this,
+                                   getString(R.string.message_view_fetching_attachment_toast),
+                                   Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+        public void setHeaders(final Message message, final Account account) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    mMessageView.setHeaders(message, account);
+                }
+            });
+        }
+
     }
 
     public static void actionHandleFolder(Context context, Account account, String folder) {

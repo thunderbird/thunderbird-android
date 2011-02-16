@@ -86,57 +86,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onKeyDown(keyCode, event);
     }
 
-    class MessageViewHandler extends Handler {
-
-        public void progress(final boolean progress) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    setProgressBarIndeterminateVisibility(progress);
-                }
-            });
-        }
-
-        public void addAttachment(final View attachmentView) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mMessageView.addAttachment(attachmentView);
-                }
-            });
-        }
-
-        /* A helper for a set of "show a toast" methods */
-        private void showToast(final String message, final int toastLength)  {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageView.this, message, toastLength).show();
-                }
-            });
-        }
-
-        public void networkError() {
-            showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
-        }
-
-        public void invalidIdError() {
-            showToast(getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
-        }
-
-
-        public void fetchingAttachment() {
-            showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
-        }
-
-
-        public void setHeaders(final Message message, final Account account) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mMessageView.setHeaders(message, account);
-                }
-            });
-        }
-
-    }
-
 
     public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences) {
         actionView(context, messRef, messReferences, null);
