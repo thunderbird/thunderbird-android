@@ -29,8 +29,6 @@ import com.fsck.k9.view.SingleMessageView;
 import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener {
-    private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
-    private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
@@ -222,43 +220,14 @@ public class MessageView extends K9Activity implements OnClickListener {
         displayMessage(mMessageReference);
     }
 
-    private void setupButtonViews() {
-        setOnClickListener(R.id.from);
-        setOnClickListener(R.id.reply);
-        setOnClickListener(R.id.reply_all);
-        setOnClickListener(R.id.delete);
-        setOnClickListener(R.id.forward);
-        setOnClickListener(R.id.next);
-        setOnClickListener(R.id.previous);
-        setOnClickListener(R.id.archive);
-        setOnClickListener(R.id.move);
-        setOnClickListener(R.id.spam);
-        // To show full header
-        setOnClickListener(R.id.header_container);
-        setOnClickListener(R.id.show_pictures);
-        setOnClickListener(R.id.download_remainder);
-
-
-        staticButtons();
-        if (!mAccount.getEnableMoveButtons()) {
-            View buttons = findViewById(R.id.move_buttons);
-            if (buttons != null) {
-                buttons.setVisibility(View.GONE);
-            }
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
-        outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
         mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
