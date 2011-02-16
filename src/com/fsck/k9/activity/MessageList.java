@@ -1404,14 +1404,17 @@ public class MessageList
     }
 
     private void onReply(MessageInfoHolder holder) {
+        // TODO - need to re-enable pgp support here
         MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false, null);
     }
 
     private void onReplyAll(MessageInfoHolder holder) {
+        // TODO - need to re-enable pgp support here
         MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true, null);
     }
 
     private void onForward(MessageInfoHolder holder) {
+        // TODO - need to re-enable pgp support here
         MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
     }
 

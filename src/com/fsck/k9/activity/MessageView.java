@@ -315,27 +315,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    private void onReply() {
-        if (mMessage != null) {
-            MessageCompose.actionReply(this, mAccount, mMessage, false, mPgpData.getDecryptedData());
-            finish();
-        }
-    }
-
-    private void onReplyAll() {
-        if (mMessage != null) {
-            MessageCompose.actionReply(this, mAccount, mMessage, true, mPgpData.getDecryptedData());
-            finish();
-        }
-    }
-
-    private void onForward() {
-        if (mMessage != null) {
-            MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
-            finish();
-        }
-    }
-
     private void onFlag() {
         if (mMessage != null) {
             mController.setFlag(mAccount,
