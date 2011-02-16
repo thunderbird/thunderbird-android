@@ -141,7 +141,7 @@ public class FontSizes {
         messageViewTo = FONT_12DIP;
         messageViewCC = FONT_12DIP;
         messageViewAdditionalHeaders = FONT_12DIP;
-        messageViewSubject = FONT_12DIP;
+        messageViewSubject = FONT_16DIP;
         messageViewTime = FONT_10DIP;
         messageViewDate = FONT_10DIP;
     }
