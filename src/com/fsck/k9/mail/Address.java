@@ -189,7 +189,7 @@ public class Address {
     }
 
     public String toEncodedString() {
-        if (mPersonal != null) {
+        if (mPersonal != null && !mPersonal.equals("")) {
             return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
