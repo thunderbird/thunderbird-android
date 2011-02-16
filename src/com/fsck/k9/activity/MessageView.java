@@ -363,42 +363,13 @@ public class MessageView extends K9Activity implements OnClickListener {
         setOnClickListener(R.id.spam);
         // To show full header
         setOnClickListener(R.id.header_container);
-        setOnClickListener(R.id.reply_scrolling);
-//       setOnClickListener(R.id.reply_all_scrolling);
-        setOnClickListener(R.id.delete_scrolling);
-        setOnClickListener(R.id.forward_scrolling);
-        setOnClickListener(R.id.next_scrolling);
-        setOnClickListener(R.id.previous_scrolling);
-        setOnClickListener(R.id.archive_scrolling);
-        setOnClickListener(R.id.move_scrolling);
-        setOnClickListener(R.id.spam_scrolling);
         setOnClickListener(R.id.show_pictures);
         setOnClickListener(R.id.download_remainder);
 
 
-        // Perhaps the ScrollButtons should be global, instead of account-specific
-        Account.ScrollButtons scrollButtons = mAccount.getScrollMessageViewButtons();
-        if ((Account.ScrollButtons.ALWAYS == scrollButtons)
-                || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollButtons &&
-                    (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO))) {
-            scrollButtons();
-        } else {  // never or the keyboard is open
             staticButtons();
-        }
-        Account.ScrollButtons scrollMoveButtons = mAccount.getScrollMessageViewMoveButtons();
-        if ((Account.ScrollButtons.ALWAYS == scrollMoveButtons)
-                || (Account.ScrollButtons.KEYBOARD_AVAILABLE == scrollMoveButtons &&
-                    (this.getResources().getConfiguration().hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO))) {
-            scrollMoveButtons();
-        } else {
-            staticMoveButtons();
-        }
         if (!mAccount.getEnableMoveButtons()) {
             View buttons = findViewById(R.id.move_buttons);
-            if (buttons != null) {
-                buttons.setVisibility(View.GONE);
-            }
-            buttons = findViewById(R.id.scrolling_move_buttons);
             if (buttons != null) {
                 buttons.setVisibility(View.GONE);
             }
@@ -460,44 +431,14 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
     }
     private void staticButtons() {
-        View buttons = findViewById(R.id.scrolling_buttons);
-        if (buttons != null) {
-            buttons.setVisibility(View.GONE);
-        }
         mNext = findViewById(R.id.next);
         mPrevious = findViewById(R.id.previous);
         mDelete = findViewById(R.id.delete);
-    }
-
-    private void scrollButtons() {
-        View buttons = findViewById(R.id.bottom_buttons);
-        if (buttons != null) {
-            buttons.setVisibility(View.GONE);
-        }
-        mNext = findViewById(R.id.next_scrolling);
-        mPrevious = findViewById(R.id.previous_scrolling);
-        mDelete = findViewById(R.id.delete_scrolling);
-    }
-
-    private void staticMoveButtons() {
-        View buttons = findViewById(R.id.scrolling_move_buttons);
-        if (buttons != null) {
-            buttons.setVisibility(View.GONE);
-        }
         mArchive = findViewById(R.id.archive);
         mMove = findViewById(R.id.move);
         mSpam = findViewById(R.id.spam);
     }
 
-    private void scrollMoveButtons() {
-        View buttons = findViewById(R.id.move_buttons);
-        if (buttons != null) {
-            buttons.setVisibility(View.GONE);
-        }
-        mArchive = findViewById(R.id.archive_scrolling);
-        mMove = findViewById(R.id.move_scrolling);
-        mSpam = findViewById(R.id.spam_scrolling);
-    }
 
     private void disableButtons() {
         mMessageView.setLoadPictures(false);
@@ -813,38 +754,30 @@ public class MessageView extends K9Activity implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
         case R.id.reply:
-        case R.id.reply_scrolling:
             onReply();
             break;
         case R.id.reply_all:
             onReplyAll();
             break;
         case R.id.delete:
-        case R.id.delete_scrolling:
             onDelete();
             break;
         case R.id.forward:
-        case R.id.forward_scrolling:
             onForward();
             break;
         case R.id.archive:
-        case R.id.archive_scrolling:
             onRefile(mAccount.getArchiveFolderName());
             break;
         case R.id.spam:
-        case R.id.spam_scrolling:
             onRefile(mAccount.getSpamFolderName());
             break;
         case R.id.move:
-        case R.id.move_scrolling:
             onMove();
             break;
         case R.id.next:
-        case R.id.next_scrolling:
             onNext();
             break;
         case R.id.previous:
-        case R.id.previous_scrolling:
             onPrevious();
             break;
         case R.id.download:
