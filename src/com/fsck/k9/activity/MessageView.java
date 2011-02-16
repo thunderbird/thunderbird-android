@@ -234,7 +234,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             });
         }
 
-<<<<<<< HEAD
         /* A helper for a set of "show a toast" methods */
         private void showToast(final String message, final int toastLength)  {
             runOnUiThread(new Runnable() {
@@ -244,8 +243,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             });
         }
 
-=======
->>>>>>> Lifting more of the "Show this message" over to the SingleMessageView
         public void networkError() {
             showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
         }
@@ -975,11 +972,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     public void displayMessageBody(final Account account, final String folder, final String uid, final Message message) {
-<<<<<<< HEAD
-        runOnUiThread(new Runnable() {
-            public void run() {
-                mTopView.scrollTo(0, 0);
-                try {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    mTopView.scrollTo(0, 0);
+                    try {
                     if (MessageView.this.mMessage != null
                             && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
                     && message.isSet(Flag.X_DOWNLOADED_FULL)) {
@@ -994,27 +990,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                 }
             }
-        });
-=======
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mTopView.scrollTo(0, 0);
-                    try {
-                    if (MessageView.this.mMessage != null
-                            && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                            && message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                        mMessageView.setHeaders(message, account);
-                    }
-                    MessageView.this.mMessage = message;
-                    mMessageView.displayMessageBody(account, folder,uid, message, mPgpData);
-                    mMessageView.renderAttachments(mMessage, 0, mMessage, mAccount, mController, mListener);
-        } catch (MessagingException e) {
-            if (Config.LOGV) {
-                Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
-            }
-        }
-                }});
->>>>>>> Lifting more of the "Show this message" over to the SingleMessageView
     }
 
     class Listener extends MessagingListener {
@@ -1026,11 +1001,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return;
             }
             MessageView.this.mMessage = message;
-<<<<<<< HEAD
             runOnUiThread(new Runnable() {
-=======
-            runOnUiThread(  new Runnable() {
->>>>>>> Lifting more of the "Show this message" over to the SingleMessageView
                 public void run() {
                     if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                         mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
