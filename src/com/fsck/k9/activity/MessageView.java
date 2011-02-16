@@ -454,9 +454,6 @@ public class MessageView extends K9Activity implements OnClickListener {
      * Called from UI thread when user select Delete
      */
     private void onDelete() {
-        if (K9.confirmDelete()) {
-            showDialog(R.id.dialog_confirm_delete);
-        } else {
             delete();
         }
     }
@@ -487,16 +484,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return builder.create();
     }
 
-    private void delete() {
-        if (mMessage != null) {
-            // Disable the delete button after it's tapped (to try to prevent
-            // accidental clicks)
-            disableButtons();
-            Message messageToDelete = mMessage;
-            showNextMessageOrReturn();
-            mController.deleteMessages(new Message[] {messageToDelete}, null);
-        }
-    }
 
     private void onRefile(String dstFolder) {
         if (!mController.isMoveCapable(mAccount)) {

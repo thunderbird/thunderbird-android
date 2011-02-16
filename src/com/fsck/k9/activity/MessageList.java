@@ -1168,9 +1168,19 @@ public class MessageList
     }
 
     private void onDelete(MessageInfoHolder holder) {
+        if (K9.confirmDelete()) {
+            // TODO: how to pass a messageinfoholder to the dialog?
+            //
+            // showDialog(R.id.dialog_confirm_delete);
+        } else {
+            delete(holder);
+        }
+    }
+
+        private void delete(MessageInfoHolder holder) {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(new Message[] { holder.message }, null);
-    }
+        }
 
     private void onMove(MessageInfoHolder holder) {
         if (holder == null) {
