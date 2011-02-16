@@ -96,18 +96,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         switch (keyCode) {
-        case KeyEvent.KEYCODE_VOLUME_UP: {
-            if (K9.useVolumeKeysForNavigationEnabled()) {
-                onNext();
-                return true;
-            }
-        }
-        case KeyEvent.KEYCODE_VOLUME_DOWN: {
-            if (K9.useVolumeKeysForNavigationEnabled()) {
-                onPrevious();
-                return true;
-            }
-        }
         case KeyEvent.KEYCODE_SHIFT_LEFT:
         case KeyEvent.KEYCODE_SHIFT_RIGHT: {
             /*
@@ -182,19 +170,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForNavigationEnabled()) {
-            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Swallowed key up.");
-                return true;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
     class MessageViewHandler extends Handler {
