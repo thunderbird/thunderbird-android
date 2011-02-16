@@ -21,7 +21,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
 import com.fsck.k9.view.SingleMessageView;
@@ -62,25 +62,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private MessageReference mPreviousMessage = null;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
-    private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
-
-    private final class StorageListenerImplementation implements StorageManager.StorageListener {
-        @Override
-        public void onUnmount(String providerId) {
-            if (!providerId.equals(mAccount.getLocalStorageProviderId())) {
-                return;
-            }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    onAccountUnavailable();
-                }
-            });
-        }
-
-        @Override
-        public void onMount(String providerId) {} // no-op
-    }
 
 
     @Override
