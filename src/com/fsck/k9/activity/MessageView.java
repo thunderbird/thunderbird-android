@@ -672,11 +672,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
     }
 
-    // This REALLY should be in MessageCryptoView
-    public void onDecryptDone(PgpData pgpData) {
-        // TODO: this might not be enough if the orientation was changed while in APG,
-        // sometimes shows the original encrypted content
-        mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
-    }
+
 
 }
