@@ -508,22 +508,22 @@ public class MessageList
             getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
         }
 
-         private void setWindowTitle() {
-             if (mFolderName != null) {
+        private void setWindowTitle() {
+            if (mFolderName != null) {
                 String displayName  = mFolderName;
 
-                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
-                     displayName = getString(R.string.special_mailbox_name_inbox);
-                 }
+                if (K9.INBOX.equalsIgnoreCase(displayName)) {
+                    displayName = getString(R.string.special_mailbox_name_inbox);
+                }
 
                 mAccountButton.setText(mAccount.getDescription());
                 mFolderButton.setText(displayName);
-             } else if (mQueryString != null) {
+            } else if (mQueryString != null) {
 
                 mAccountButton.setText(getString(R.string.search_results));
                 mFolderButton.setText(mQueryString);
-             }
-         }
+            }
+        }
 
 
         public void progress(final boolean progress) {
@@ -671,12 +671,12 @@ public class MessageList
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
 
                 mListView.setItemChecked(position, true);
-             //TODO   mHandler.post(new Runnable() {
-             //       public void run() {
-                        mCurrentMessageInfo = (MessageInfoHolder) mAdapter.getItem(position);
-                        onOpenMessage(mCurrentMessageInfo);
-             //       }
-             //   });
+                //TODO   mHandler.post(new Runnable() {
+                //       public void run() {
+                mCurrentMessageInfo = (MessageInfoHolder) mAdapter.getItem(position);
+                onOpenMessage(mCurrentMessageInfo);
+                //       }
+                //   });
             }
 
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -1177,10 +1177,10 @@ public class MessageList
         }
     }
 
-        private void delete(MessageInfoHolder holder) {
+    private void delete(MessageInfoHolder holder) {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(new Message[] { holder.message }, null);
-        }
+    }
 
     private void onMove(MessageInfoHolder holder) {
         if (holder == null) {

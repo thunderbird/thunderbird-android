@@ -311,7 +311,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         setOnClickListener(R.id.download_remainder);
 
 
-            staticButtons();
+        staticButtons();
         if (!mAccount.getEnableMoveButtons()) {
             View buttons = findViewById(R.id.move_buttons);
             if (buttons != null) {
