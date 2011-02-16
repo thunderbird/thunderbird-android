@@ -218,15 +218,17 @@ public class MessageList
     private static final String EXTRA_FOLDER_NAMES = "folderNames";
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_LIST_POSITION = "listPosition";
+    private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
 
     private MessageInfoHolder mCurrentMessageInfo;
+    private ToggleScrollView mToggleScrollView;
     private SingleMessageView mMessageView;
     private Message mMessage;
     private PgpData mPgpData = null;
 
-    View next;
-    View previous;
+    private View mNext;
+    private View mPevious;
     private View mDelete;
     private View mArchive;
     private View mMove;
@@ -236,6 +238,9 @@ public class MessageList
     private View mForward;
     private Contacts mContacts;
 
+    private static final int PREVIOUS = 1;
+    private static final int NEXT = 2;
+    private int mLastDirection = PREVIOUS;
 
     /**
      * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
@@ -733,6 +738,43 @@ public class MessageList
 
 
                                            );
+
+        /// Loading up by a URL TODO!!!
+        showMessageFromIntentURL(intent);
+
+    }
+    public void showMessageFromIntentURL(Intent intent) {
+        //TODO
+        Uri uri = intent.getData();
+        if (uri != null) {
+            List<String> segmentList = uri.getPathSegments();
+            if (segmentList.size() != 3) {
+                //TODO: Use ressource to externalize message
+                Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            String accountId = segmentList.get(0);
+            Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
+            boolean found = false;
+            for (Account account : accounts) {
+                if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
+                    mAccount = account;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                //TODO: Use ressource to externalize message
+                Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            MessageReference messageReference = new MessageReference();
+            messageReference.accountUuid = mAccount.getUuid();
+            messageReference.folderName = segmentList.get(1);
+            messageReference.uid = segmentList.get(2);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -756,12 +798,20 @@ public class MessageList
     public void saveListState() {
         mState = new Bundle();
         mState.putInt(EXTRA_LIST_POSITION, mListView.getSelectedItemPosition());
+        mState.putSerializable(STATE_PGP_DATA, mPgpData);
+        mState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
     }
 
     public void restoreListState() {
         if (mState == null) {
             return;
         }
+
+
+        mPgpData = (PgpData) mState.getSerializable(STATE_PGP_DATA);
+        mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
+        mMessageView.setLoadPictures(mState.getBoolean(SHOW_PICTURES));
+
 
         int pos = mState.getInt(EXTRA_LIST_POSITION, ListView.INVALID_POSITION);
 
@@ -880,16 +930,9 @@ public class MessageList
 
         });
 
-        mBatchButtonArea = findViewById(R.id.batch_button_area);
-        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
-        mBatchReadButton.setOnClickListener(this);
-        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
-        mBatchDeleteButton.setOnClickListener(this);
-        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
-        mBatchFlagButton.setOnClickListener(this);
-        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-
-        mBatchDoneButton.setOnClickListener(this);
+        initializeMessageView();
+        setupButtonViews();
+        setupBatchButtonViews();
 
         // Gesture detection
         gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -906,8 +949,78 @@ public class MessageList
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            // Text selection is finished. Allow scrolling again.
+            mToggleScrollView.setScrolling(true);
+        } else if (K9.zoomControlsEnabled()) {
+            // If we have system zoom controls enabled, disable scrolling so the screen isn't wiggling around while
+            // trying to zoom.
+            if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
+                mToggleScrollView.setScrolling(false);
+            } else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_UP) {
+                mToggleScrollView.setScrolling(true);
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void initializeMessageView() {
+        mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
+        mMessageView = (SingleMessageView) findViewById(R.id.message_view);
+
+        mMessageView.initialize(this);
+
+    }
+
+    @Override
     public Object onRetainNonConfigurationInstance() {
         return mAdapter.messages;
+    }
+
+    private void displayMessage(MessageReference ref) {
+        mMessageReference = ref;
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
+        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        clearMessageDisplay();
+        findSurroundingMessagesUid();
+        // start with fresh, empty PGP data
+        mPgpData = new PgpData();
+        mTopView.setVisibility(View.VISIBLE);
+        mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
+        setupDisplayMessageButtons();
+    }
+
+
+    public void displayMessageBody(final Account account, final String folder, final String uid, final Message message) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                mTopView.scrollTo(0, 0);
+                try {
+                    if (MessageView.this.mMessage != null
+                            && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                    && message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                        mMessageView.setHeaders(message, account);
+                    }
+                    MessageView.this.mMessage = message;
+                    mMessageView.displayMessageBody(account, folder, uid, message, mPgpData);
+                    mMessageView.renderAttachments(mMessage, 0, mMessage, mAccount, mController, mListener);
+                } catch (MessagingException e) {
+                    if (Config.LOGV) {
+                        Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    }
+                }
+            }
+        });
+    }
+
+
+    private void clearMessageDisplay() {
+        mTopView.setVisibility(View.GONE);
+        mTopView.scrollTo(0, 0);
+        mMessageView.resetView();
+
     }
 
     @Override
@@ -1056,12 +1169,12 @@ public class MessageList
                     }
                     case KeyEvent.KEYCODE_J:
                     case KeyEvent.KEYCODE_P: {
-                        onPrevious();
+                        gotoPreviousItem();
                         return true;
                     }
                     case KeyEvent.KEYCODE_N:
                     case KeyEvent.KEYCODE_K: {
-                        onNext();
+                        gotoNextItem();
                         return true;
                     }
                     /* TODO - MESSAGE VIEW SPECIAL KEYS
@@ -1110,6 +1223,40 @@ public class MessageList
             }
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    private void findSurroundingMessagesUid() {
+        mNextMessage = mPreviousMessage = null;
+        int i = mMessageReferences.indexOf(mMessageReference);
+        if (i < 0)
+            return;
+        if (i != 0)
+            mNextMessage = mMessageReferences.get(i - 1);
+        if (i != (mMessageReferences.size() - 1))
+            mPreviousMessage = mMessageReferences.get(i + 1);
+    }
+    private void showNextMessageOrReturn() {
+        if (K9.messageViewReturnToList()) {
+            finish();
+        } else {
+            showNextMessage();
+        }
+    }
+
+    private void showNextMessage() {
+        findSurroundingMessagesUid();
+        mMessageReferences.remove(mMessageReference);
+        if (mLastDirection == NEXT && mNextMessage != null) {
+            gotoNextItem();
+        } else if (mLastDirection == PREVIOUS && mPreviousMessage != null) {
+            gotoPreviousItem();
+        } else if (mNextMessage != null) {
+            gotoNextItem();
+        } else if (mPreviousMessage != null) {
+            gotoPreviousItem();
+        } else {
+            finish();
+        }
     }
 
 
@@ -1163,6 +1310,13 @@ public class MessageList
         if (!message.read) {
             message.read = true;
         }
+    }
+    private void onDownloadRemainder() {
+        if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
+            return;
+        }
+        mMessageView.downloadRemainderButton().setEnabled(false);
+        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
     }
 
     private void onAccounts() {
@@ -1310,6 +1464,7 @@ public class MessageList
             return;
         }
         mAdapter.removeMessage(holder);
+        // TODO showNextMessageOrReturn();
         mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folder, null);
     }
 
@@ -1426,11 +1581,22 @@ public class MessageList
         mController.expunge(account, folderName, null);
     }
 
+    // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
+
+    /**
+     * @param id The id of the dialog.
+     * @return The dialog. If you return null, the dialog will not be created.
+     * @see android.app.Activity#onCreateDialog(int)
+     */
+    @Override
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return createMarkAllAsReadDialog();
+        case R.id.dialog_confirm_delete: {
+            return createConfirmDeleteDialog(id);
+        }
         }
 
         return super.onCreateDialog(id);
@@ -1481,6 +1647,33 @@ public class MessageList
             }
         })
                .create();
+    }
+
+
+    /**
+     * @param id
+     * @return Never <code>null</code>
+     */
+    protected Dialog createConfirmDeleteDialog(final int id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_confirm_delete_title);
+        builder.setMessage(R.string.dialog_confirm_delete_message);
+        builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismissDialog(id);
+                delete();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismissDialog(id);
+            }
+        });
+        return builder.create();
     }
 
     private void onToggleRead(MessageInfoHolder holder) {
@@ -1655,6 +1848,18 @@ public class MessageList
             }
             return true;
         }
+        case R.id.show_full_header:
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mMessageView.showAllHeaders();
+                }
+            });
+            return true;
+        case R.id.select_text:
+            mToggleScrollView.setScrolling(false);
+            mMessageView.beginSelectingText();
+            return true;
         default: {
             return super.onOptionsItemSelected(item);
         }
@@ -1722,342 +1927,348 @@ public class MessageList
         menu.findItem(R.id.batch_deselect_all).setVisible(anySelected);
         menu.findItem(R.id.batch_select_all).setEnabled(true);
 
-        return true;
+        MenuItem additionalHeadersItem = menu.findItem(R.id.show_full_header);
+        if (additionalHeadersItem != null) {
+            additionalHeadersItem.setTitle(mMessageView.additionalHeadersVisible() ?
+                                           R.string.hide_full_header_action : R.string.show_full_header_action);
+        }
+    }
+    return true;
+}
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    super.onCreateOptionsMenu(menu);
+    getMenuInflater().inflate(R.menu.message_list_option, menu);
+
+    return true;
+}
+
+@Override
+public boolean onContextItemSelected(MenuItem item) {
+    AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+    MessageInfoHolder holder = mSelectedMessage;
+    // don't need this anymore
+    mSelectedMessage = null;
+    if (holder == null) {
+        holder = (MessageInfoHolder) mAdapter.getItem(info.position);
     }
 
+    switch (item.getItemId()) {
+    case R.id.open: {
+        onOpenMessage(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.select: {
+        setSelected(mCurrentMessageInfo, true);
+        break;
+    }
+    case R.id.deselect: {
+        setSelected(mCurrentMessageInfo, false);
+        break;
+    }
+    case R.id.delete: {
+        onDelete(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.reply: {
+        onReply(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.reply_all: {
+        onReplyAll(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.forward: {
+        onForward(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.send_again: {
+        onResendMessage(mCurrentMessageInfo);
+        break;
+
+    }
+    case R.id.mark_as_read: {
+        onToggleRead(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.flag: {
+        onToggleFlag(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.archive: {
+        onArchive(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.spam: {
+        onSpam(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.move: {
+        onMove(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.copy: {
+        onCopy(mCurrentMessageInfo);
+        break;
+    }
+    case R.id.send_alternate: {
+        onSendAlternate(mAccount, mCurrentMessageInfo);
+        break;
+    }
+    case R.id.same_sender: {
+        MessageList.actionHandle(MessageList.this,
+                                 "From " + mCurrentMessageInfo.sender, mCurrentMessageInfo.senderAddress, true,
+                                 null, null);
+        break;
+    }
+    }
+    return super.onContextItemSelected(item);
+}
+
+public void onSendAlternate(Account account, MessageInfoHolder holder) {
+    mController.sendAlternate(this, account, holder.message);
+}
+
+public void showProgressIndicator(boolean status) {
+    setProgressBarIndeterminateVisibility(status);
+    ProgressBar bar = (ProgressBar)mListView.findViewById(R.id.message_list_progress);
+    if (bar == null) {
+        return;
+    }
+
+    bar.setIndeterminate(true);
+    if (status) {
+        bar.setVisibility(ProgressBar.VISIBLE);
+    } else {
+        bar.setVisibility(ProgressBar.INVISIBLE);
+    }
+}
+
+class MyGestureDetector extends SimpleOnGestureListener {
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_list_option, menu);
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if (e2 == null || e1 == null)
+            return true;
 
-        return true;
-    }
+        float deltaX = e2.getX() - e1.getX(),
+              deltaY = e2.getY() - e1.getY();
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        MessageInfoHolder holder = mSelectedMessage;
-        // don't need this anymore
-        mSelectedMessage = null;
-        if (holder == null) {
-            holder = (MessageInfoHolder) mAdapter.getItem(info.position);
-        }
+        boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
+        boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
 
-        switch (item.getItemId()) {
-        case R.id.open: {
-            onOpenMessage(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.select: {
-            setSelected(mCurrentMessageInfo, true);
-            break;
-        }
-        case R.id.deselect: {
-            setSelected(mCurrentMessageInfo, false);
-            break;
-        }
-        case R.id.delete: {
-            onDelete(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.reply: {
-            onReply(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.reply_all: {
-            onReplyAll(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.forward: {
-            onForward(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.send_again: {
-            onResendMessage(mCurrentMessageInfo);
-            break;
+        if (movedAcross && steadyHand) {
+            boolean selected = (deltaX > 0);
+            int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
 
-        }
-        case R.id.mark_as_read: {
-            onToggleRead(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.flag: {
-            onToggleFlag(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.archive: {
-            onArchive(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.spam: {
-            onSpam(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.move: {
-            onMove(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.copy: {
-            onCopy(mCurrentMessageInfo);
-            break;
-        }
-        case R.id.send_alternate: {
-            onSendAlternate(mAccount, mCurrentMessageInfo);
-            break;
-        }
-        case R.id.same_sender: {
-            MessageList.actionHandle(MessageList.this,
-                                     "From " + mCurrentMessageInfo.sender, mCurrentMessageInfo.senderAddress, true,
-                                     null, null);
-            break;
-        }
-        }
-        return super.onContextItemSelected(item);
-    }
+            if (position != AdapterView.INVALID_POSITION) {
+                MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
-    public void onSendAlternate(Account account, MessageInfoHolder holder) {
-        mController.sendAlternate(this, account, holder.message);
-    }
-
-    public void showProgressIndicator(boolean status) {
-        setProgressBarIndeterminateVisibility(status);
-        ProgressBar bar = (ProgressBar)mListView.findViewById(R.id.message_list_progress);
-        if (bar == null) {
-            return;
-        }
-
-        bar.setIndeterminate(true);
-        if (status) {
-            bar.setVisibility(ProgressBar.VISIBLE);
-        } else {
-            bar.setVisibility(ProgressBar.INVISIBLE);
-        }
-    }
-
-    class MyGestureDetector extends SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (e2 == null || e1 == null)
-                return true;
-
-            float deltaX = e2.getX() - e1.getX(),
-                  deltaY = e2.getY() - e1.getY();
-
-            boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-            boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
-
-            if (movedAcross && steadyHand) {
-                boolean selected = (deltaX > 0);
-                int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
-
-                if (position != AdapterView.INVALID_POSITION) {
-                    MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
-
-                    if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
-                        msgInfoHolder.selected = selected;
-                        mSelectedCount += (selected ? 1 : -1);
-                        mAdapter.notifyDataSetChanged();
-                        toggleBatchButtons();
-                    }
+                if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
+                    msgInfoHolder.selected = selected;
+                    mSelectedCount += (selected ? 1 : -1);
+                    mAdapter.notifyDataSetChanged();
+                    toggleBatchButtons();
                 }
             }
-
-            return false;
         }
+
+        return false;
+    }
+}
+
+@Override
+public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+
+    AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+    // remember which message was originally selected, in case the list changes while the
+    // dialog is up
+    mSelectedMessage = message;
+
+    if (message == null) {
+        return;
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
+    getMenuInflater().inflate(R.menu.message_list_context, menu);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
-        // remember which message was originally selected, in case the list changes while the
-        // dialog is up
-        mSelectedMessage = message;
+    menu.setHeaderTitle(message.message.getSubject());
 
-        if (message == null) {
-            return;
-        }
-
-        getMenuInflater().inflate(R.menu.message_list_context, menu);
-
-        menu.setHeaderTitle(message.message.getSubject());
-
-        if (message.read) {
-            menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
-        }
-
-        if (message.flagged) {
-            menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
-        }
-
-        Account account = message.message.getFolder().getAccount();
-        if (!mController.isCopyCapable(account)) {
-            menu.findItem(R.id.copy).setVisible(false);
-        }
-
-        if (!mController.isMoveCapable(account)) {
-            menu.findItem(R.id.move).setVisible(false);
-            menu.findItem(R.id.archive).setVisible(false);
-            menu.findItem(R.id.spam).setVisible(false);
-        }
-
-        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName())) {
-            menu.findItem(R.id.archive).setVisible(false);
-        }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName())) {
-            menu.findItem(R.id.spam).setVisible(false);
-        }
-
-        if (message.selected) {
-            menu.findItem(R.id.select).setVisible(false);
-            menu.findItem(R.id.deselect).setVisible(true);
-        } else {
-            menu.findItem(R.id.select).setVisible(true);
-            menu.findItem(R.id.deselect).setVisible(false);
-        }
+    if (message.read) {
+        menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
     }
 
-    class MessageListAdapter extends BaseAdapter {
-        private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
+    if (message.flagged) {
+        menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
+    }
 
-        private final ActivityListener mListener = new ActivityListener() {
+    Account account = message.message.getFolder().getAccount();
+    if (!mController.isCopyCapable(account)) {
+        menu.findItem(R.id.copy).setVisible(false);
+    }
 
-            @Override
-            public void informUserOfStatus() {
-                mHandler.refreshTitle();
+    if (!mController.isMoveCapable(account)) {
+        menu.findItem(R.id.move).setVisible(false);
+        menu.findItem(R.id.archive).setVisible(false);
+        menu.findItem(R.id.spam).setVisible(false);
+    }
+
+    if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName())) {
+        menu.findItem(R.id.archive).setVisible(false);
+    }
+    if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName())) {
+        menu.findItem(R.id.spam).setVisible(false);
+    }
+
+    if (message.selected) {
+        menu.findItem(R.id.select).setVisible(false);
+        menu.findItem(R.id.deselect).setVisible(true);
+    } else {
+        menu.findItem(R.id.select).setVisible(true);
+        menu.findItem(R.id.deselect).setVisible(false);
+    }
+}
+
+class MessageListAdapter extends BaseAdapter {
+    private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
+
+    private final ActivityListener mListener = new ActivityListener() {
+
+        @Override
+        public void informUserOfStatus() {
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxStarted(Account account, String folder) {
+            if (updateForMe(account, folder)) {
+                mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
             }
+            super.synchronizeMailboxStarted(account, folder);
+        }
 
-            @Override
-            public void synchronizeMailboxStarted(Account account, String folder) {
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(true);
+        @Override
+        public void synchronizeMailboxFinished(Account account, String folder,
+        int totalMessagesInMailbox, int numNewMessages) {
+
+            if (updateForMe(account, folder)) {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+        }
+
+        @Override
+        public void synchronizeMailboxFailed(Account account, String folder, String message) {
+
+            if (updateForMe(account, folder)) {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            super.synchronizeMailboxFailed(account, folder, message);
+        }
+
+        @Override
+        public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
+            addOrUpdateMessage(account, folder, message, true);
+        }
+
+        @Override
+        public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
+            MessageInfoHolder holder = getMessage(message);
+            if (holder == null) {
+                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
+            } else {
+                removeMessage(holder);
+            }
+        }
+
+        @Override
+        public void listLocalMessagesStarted(Account account, String folder) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.progress(true);
+                if (folder != null) {
                     mHandler.folderLoading(folder, true);
                 }
-                super.synchronizeMailboxStarted(account, folder);
             }
+        }
 
-            @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
-            int totalMessagesInMailbox, int numNewMessages) {
-
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(false);
+        @Override
+        public void listLocalMessagesFailed(Account account, String folder, String message) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null) {
                     mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
                 }
-                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
             }
+        }
 
-            @Override
-            public void synchronizeMailboxFailed(Account account, String folder, String message) {
-
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(false);
+        @Override
+        public void listLocalMessagesFinished(Account account, String folder) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null) {
                     mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
-                }
-                super.synchronizeMailboxFailed(account, folder, message);
-            }
-
-            @Override
-            public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
-                addOrUpdateMessage(account, folder, message, true);
-            }
-
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder == null) {
-                    Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
-                } else {
-                    removeMessage(holder);
                 }
             }
+        }
 
-            @Override
-            public void listLocalMessagesStarted(Account account, String folder) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.progress(true);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, true);
-                    }
-                }
+        @Override
+        public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
+            MessageInfoHolder holder = getMessage(message);
+            if (holder != null) {
+                removeMessage(holder);
             }
+        }
 
-            @Override
-            public void listLocalMessagesFailed(Account account, String folder, String message) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
+        @Override
+        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
+            addOrUpdateMessages(account, folder, messages, false);
+        }
+
+        @Override
+        public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
+            addOrUpdateMessage(account, folder, message, false);
+        }
+
+        @Override
+        public void searchStats(AccountStats stats) {
+            mUnreadMessageCount = stats.unreadMessageCount;
+            super.searchStats(stats);
+        }
+
+        @Override
+        public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
+            if (updateForMe(account, folder)) {
+                mUnreadMessageCount = unreadMessageCount;
             }
+            super.folderStatusChanged(account, folder, unreadMessageCount);
+        }
 
-            @Override
-            public void listLocalMessagesFinished(Account account, String folder) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
+        @Override
+        public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = account.getUuid();
+            ref.folderName = folder;
+            ref.uid = oldUid;
+
+            MessageInfoHolder holder = getMessage(ref);
+            if (holder != null) {
+                holder.uid = newUid;
+                holder.message.setUid(newUid);
             }
-
-            @Override
-            public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder != null) {
-                    removeMessage(holder);
-                }
-            }
-
-            @Override
-            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
-                addOrUpdateMessages(account, folder, messages, false);
-            }
-
-            @Override
-            public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
-                addOrUpdateMessage(account, folder, message, false);
-            }
-
-            @Override
-            public void searchStats(AccountStats stats) {
-                mUnreadMessageCount = stats.unreadMessageCount;
-                super.searchStats(stats);
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-                if (updateForMe(account, folder)) {
-                    mUnreadMessageCount = unreadMessageCount;
-                }
-                super.folderStatusChanged(account, folder, unreadMessageCount);
-            }
-
-            @Override
-            public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = account.getUuid();
-                ref.folderName = folder;
-                ref.uid = oldUid;
-
-                MessageInfoHolder holder = getMessage(ref);
-                if (holder != null) {
-                    holder.uid = newUid;
-                    holder.message.setUid(newUid);
-                }
-            }
+        }
         @Override
         public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
-                final Message message) {
+        final Message message) {
             if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
-                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
+            || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             MessageView.this.mMessage = message;
@@ -2079,9 +2290,9 @@ public class MessageList
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                Message message) {
+        Message message) {
             if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
-                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
+            || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
 
@@ -2092,9 +2303,9 @@ public class MessageList
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
-                                             final Throwable t) {
+        final Throwable t) {
             if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
-                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
+            || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -2115,9 +2326,9 @@ public class MessageList
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid,
-                                               final Message message) {
+        final Message message) {
             if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
-                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
+            || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -2131,7 +2342,7 @@ public class MessageList
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
             if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
-                    || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
+            || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                 return;
             }
             mHandler.post(new Runnable() {
@@ -2143,7 +2354,7 @@ public class MessageList
 
         @Override
         public void loadAttachmentStarted(Account account, Message message,
-                                          Part part, Object tag, boolean requiresDownload) {
+        Part part, Object tag, boolean requiresDownload) {
             if (mMessage != message) {
                 return;
             }
@@ -2174,7 +2385,7 @@ public class MessageList
 
         @Override
         public void loadAttachmentFailed(Account account, Message message, Part part,
-                                         Object tag, String reason) {
+        Object tag, String reason) {
             if (mMessage != message) {
                 return;
             }
@@ -2184,464 +2395,466 @@ public class MessageList
         }
 
 
-        };
+    };
 
-        private boolean updateForMe(Account account, String folder) {
-            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
-                return true;
-            } else {
-                return false;
-            }
+    private boolean updateForMe(Account account, String folder) {
+        if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
+            return true;
+        } else {
+            return false;
         }
+    }
 
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
 
-        MessageListAdapter() {
-            mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
-            mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
-        }
+    MessageListAdapter() {
+        mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
+        mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
+    }
 
-        public void markAllMessagesAsDirty() {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                holder.dirty = true;
-            }
+    public void markAllMessagesAsDirty() {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            holder.dirty = true;
         }
-        public void pruneDirtyMessages() {
-            synchronized (mAdapter.messages) {
-                Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
-                while (iter.hasNext()) {
-                    MessageInfoHolder holder = iter.next();
-                    if (holder.dirty) {
-                        if (holder.selected) {
-                            mSelectedCount--;
-                            toggleBatchButtons();
-                        }
-                        mAdapter.removeMessage(holder);
+    }
+    public void pruneDirtyMessages() {
+        synchronized (mAdapter.messages) {
+            Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
+            while (iter.hasNext()) {
+                MessageInfoHolder holder = iter.next();
+                if (holder.dirty) {
+                    if (holder.selected) {
+                        mSelectedCount--;
+                        toggleBatchButtons();
                     }
+                    mAdapter.removeMessage(holder);
                 }
             }
         }
+    }
 
-        public void removeMessages(List<MessageInfoHolder> holders) {
-            if (holders != null) {
-                mHandler.removeMessage(holders);
-            }
+    public void removeMessages(List<MessageInfoHolder> holders) {
+        if (holders != null) {
+            mHandler.removeMessage(holders);
         }
+    }
 
-        public void removeMessage(MessageInfoHolder holder) {
-            if (holder == null) {
-                return;
-            }
-            List<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
-            messages.add(holder);
-            removeMessages(messages);
+    public void removeMessage(MessageInfoHolder holder) {
+        if (holder == null) {
+            return;
         }
+        List<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
+        messages.add(holder);
+        removeMessages(messages);
+    }
 
-        private void addOrUpdateMessage(Account account, String folderName, Message message, boolean verifyAgainstSearch) {
-            List<Message> messages = new ArrayList<Message>();
-            messages.add(message);
-            addOrUpdateMessages(account, folderName, messages, verifyAgainstSearch);
-        }
+    private void addOrUpdateMessage(Account account, String folderName, Message message, boolean verifyAgainstSearch) {
+        List<Message> messages = new ArrayList<Message>();
+        messages.add(message);
+        addOrUpdateMessages(account, folderName, messages, verifyAgainstSearch);
+    }
 
-        private void addOrUpdateMessages(final Account account, final String folderName, final List<Message> providedMessages, final boolean verifyAgainstSearch) {
-            // we copy the message list because the callback doesn't expect
-            // the callbacks to mutate it.
-            final List<Message> messages = new ArrayList<Message>(providedMessages);
+    private void addOrUpdateMessages(final Account account, final String folderName, final List<Message> providedMessages, final boolean verifyAgainstSearch) {
+        // we copy the message list because the callback doesn't expect
+        // the callbacks to mutate it.
+        final List<Message> messages = new ArrayList<Message>(providedMessages);
 
-            boolean needsSort = false;
-            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-            List<Message> messagesToSearch = new ArrayList<Message>();
+        boolean needsSort = false;
+        final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+        List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+        List<Message> messagesToSearch = new ArrayList<Message>();
 
-            // cache field into local variable for faster access for JVM without JIT
-            final MessageHelper messageHelper = mMessageHelper;
+        // cache field into local variable for faster access for JVM without JIT
+        final MessageHelper messageHelper = mMessageHelper;
 
-            for (Message message : messages) {
-                MessageInfoHolder m = getMessage(message);
-                if (message.isSet(Flag.DELETED)) {
-                    if (m != null) {
-                        messagesToRemove.add(m);
-                    }
-                } else {
-                    final Folder messageFolder = message.getFolder();
-                    final Account messageAccount = messageFolder.getAccount();
-                    if (m == null) {
-                        if (updateForMe(account, folderName)) {
-                            m = new MessageInfoHolder();
-                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
-                            messagesToAdd.add(m);
-                        } else {
-                            if (mQueryString != null) {
-                                if (verifyAgainstSearch) {
-                                    messagesToSearch.add(message);
-                                } else {
-                                    m = new MessageInfoHolder();
-                                    messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
-                                    messagesToAdd.add(m);
-                                }
+        for (Message message : messages) {
+            MessageInfoHolder m = getMessage(message);
+            if (message.isSet(Flag.DELETED)) {
+                if (m != null) {
+                    messagesToRemove.add(m);
+                }
+            } else {
+                final Folder messageFolder = message.getFolder();
+                final Account messageAccount = messageFolder.getAccount();
+                if (m == null) {
+                    if (updateForMe(account, folderName)) {
+                        m = new MessageInfoHolder();
+                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                        messagesToAdd.add(m);
+                    } else {
+                        if (mQueryString != null) {
+                            if (verifyAgainstSearch) {
+                                messagesToSearch.add(message);
+                            } else {
+                                m = new MessageInfoHolder();
+                                messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                messagesToAdd.add(m);
                             }
                         }
-                    } else {
-                        m.dirty = false; // as we reload the message, unset its dirty flag
-                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
-                        needsSort = true;
                     }
+                } else {
+                    m.dirty = false; // as we reload the message, unset its dirty flag
+                    messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                    needsSort = true;
                 }
             }
-
-            if (messagesToSearch.size() > 0) {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
-                new MessagingListener() {
-                    @Override
-                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
-                        addOrUpdateMessages(account, folder, messages, false);
-                    }
-                });
-            }
-
-            if (messagesToRemove.size() > 0) {
-                removeMessages(messagesToRemove);
-            }
-
-            if (messagesToAdd.size() > 0) {
-                mHandler.addMessages(messagesToAdd);
-            }
-
-            if (needsSort) {
-                mHandler.sortMessages();
-                mHandler.resetUnreadCount();
-            }
-        }
-        public MessageInfoHolder getMessage(Message message) {
-            return getMessage(message.makeMessageReference());
         }
 
-        // XXX TODO - make this not use a for loop
-        public MessageInfoHolder getMessage(MessageReference messageReference) {
+        if (messagesToSearch.size() > 0) {
+            mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+            new MessagingListener() {
+                @Override
+                public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
+                    addOrUpdateMessages(account, folder, messages, false);
+                }
+            });
+        }
+
+        if (messagesToRemove.size() > 0) {
+            removeMessages(messagesToRemove);
+        }
+
+        if (messagesToAdd.size() > 0) {
+            mHandler.addMessages(messagesToAdd);
+        }
+
+        if (needsSort) {
+            mHandler.sortMessages();
+            mHandler.resetUnreadCount();
+        }
+    }
+    public MessageInfoHolder getMessage(Message message) {
+        return getMessage(message.makeMessageReference());
+    }
+
+    // XXX TODO - make this not use a for loop
+    public MessageInfoHolder getMessage(MessageReference messageReference) {
+        synchronized (mAdapter.messages) {
+            for (MessageInfoHolder holder : mAdapter.messages) {
+                /*
+                 * 2010-06-21 - cketti
+                 * Added null pointer check. Not sure what's causing 'holder'
+                 * to be null. See log provided in issue 1749, comment #15.
+                 *
+                 * Please remove this comment once the cause was found and the
+                 * bug(?) fixed.
+                 */
+                if ((holder != null) && holder.message.equalsReference(messageReference)) {
+                    return holder;
+                }
+            }
+        }
+        return null;
+    }
+
+    public FolderInfoHolder getFolder(String folder, Account account) {
+        LocalFolder local_folder = null;
+        try {
+            LocalStore localStore = account.getLocalStore();
+            local_folder = localStore.getFolder(folder);
+            return new FolderInfoHolder(context, local_folder, account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
+            return null;
+        } finally {
+            if (local_folder != null) {
+                local_folder.close();
+            }
+        }
+    }
+    private static final int NON_MESSAGE_ITEMS = 1;
+
+    private final OnClickListener flagClickListener = new OnClickListener() {
+        public void onClick(View v) {
+            // Perform action on clicks
+            MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+            onToggleFlag(message);
+        }
+    };
+
+    @Override
+    public int getCount() {
+        return messages.size() + NON_MESSAGE_ITEMS;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        try {
+            MessageInfoHolder messageHolder = (MessageInfoHolder) getItem(position);
+            if (messageHolder != null) {
+                return messageHolder.message.getId();
+            }
+        } catch (Exception e) {
+            Log.i(K9.LOG_TAG, "getItemId(" + position + ") ", e);
+        }
+        return -1;
+    }
+
+    public Object getItem(long position) {
+        return getItem((int)position);
+    }
+
+    @Override
+    public Object getItem(int position) {
+        try {
             synchronized (mAdapter.messages) {
-                for (MessageInfoHolder holder : mAdapter.messages) {
-                    /*
-                     * 2010-06-21 - cketti
-                     * Added null pointer check. Not sure what's causing 'holder'
-                     * to be null. See log provided in issue 1749, comment #15.
-                     *
-                     * Please remove this comment once the cause was found and the
-                     * bug(?) fixed.
-                     */
-                    if ((holder != null) && holder.message.equalsReference(messageReference)) {
-                        return holder;
-                    }
+                if (position < mAdapter.messages.size()) {
+                    return mAdapter.messages.get(position);
                 }
             }
-            return null;
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
         }
-
-        public FolderInfoHolder getFolder(String folder, Account account) {
-            LocalFolder local_folder = null;
-            try {
-                LocalStore localStore = account.getLocalStore();
-                local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(context, local_folder, account);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
-                return null;
-            } finally {
-                if (local_folder != null) {
-                    local_folder.close();
-                }
-            }
-        }
-
-        private final OnClickListener flagClickListener = new OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on clicks
-                MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                onToggleFlag(message);
-            }
-        };
-
-        @Override
-        public int getCount() {
-            return messages.size();
-        }
-
-        @Override
-        public long getItemId(int position) {
-            try {
-                MessageInfoHolder messageHolder = (MessageInfoHolder) getItem(position);
-                if (messageHolder != null) {
-                    return messageHolder.message.getId();
-                }
-            } catch (Exception e) {
-                Log.i(K9.LOG_TAG, "getItemId(" + position + ") ", e);
-            }
-            return -1;
-        }
-
-        public Object getItem(long position) {
-            return getItem((int)position);
-        }
-
-        @Override
-        public Object getItem(int position) {
-            try {
-                synchronized (mAdapter.messages) {
-                    if (position < mAdapter.messages.size()) {
-                        return mAdapter.messages.get(position);
-                    }
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
-            }
-            return null;
-        }
+        return null;
+    }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view;
-
-            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
-                view = convertView;
+        if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
+            view = convertView;
+        } else {
+            if (mTouchView) {
+                view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
+                view.setId(R.layout.message_list_item);
             } else {
-                if (mTouchView) {
-                    view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
-                    view.setId(R.layout.message_list_item);
-                } else {
-                    view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                    view.setId(R.layout.message_list_item);
-                }
+                view = mInflater.inflate(R.layout.message_list_item, parent, false);
+                view.setId(R.layout.message_list_item);
             }
-
-            MessageViewHolder holder = (MessageViewHolder) view.getTag();
-
-            if (holder == null) {
-                holder = new MessageViewHolder();
-                holder.subject = (TextView) view.findViewById(R.id.subject);
-                holder.from = (TextView) view.findViewById(R.id.from);
-                holder.date = (TextView) view.findViewById(R.id.date);
-                holder.chip = view.findViewById(R.id.chip);
-                holder.preview = (TextView) view.findViewById(R.id.preview);
-                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-                holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
-
-                holder.flagged.setOnClickListener(flagClickListener);
-
-                if (!mStars) {
-                    holder.flagged.setVisibility(View.GONE);
-                }
-
-                if (mCheckboxes) {
-                    holder.selected.setVisibility(View.VISIBLE);
-                }
-
-                if (holder.selected != null) {
-                    holder.selected.setOnCheckedChangeListener(holder);
-                }
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
-
-                if (mTouchView) {
-                    holder.preview.setLines(mPreviewLines);
-                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListPreview());
-
-                } else {
-                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-                }
-
-                view.setTag(holder);
-            }
-
-            if (message != null) {
-                bindView(position, view, holder, message);
-            } else {
-                // This branch code is triggered when the local store
-                // hands us an invalid message
-
-                holder.chip.getBackground().setAlpha(0);
-                holder.subject.setText(getString(R.string.general_no_subject));
-                holder.subject.setTypeface(null, Typeface.NORMAL);
-                String noSender = getString(R.string.general_no_sender);
-                if (holder.preview != null) {
-                    holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
-                    Spannable str = (Spannable) holder.preview.getText();
-
-                    ColorStateList color = holder.subject.getTextColors();
-                    ColorStateList linkColor = holder.subject.getLinkTextColors();
-                    str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
-                                0,
-                                noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                               );
-                } else {
-                    holder.from.setText(noSender);
-                    holder.from.setTypeface(null, Typeface.NORMAL);
-                    holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                }
-
-                holder.date.setText(getString(R.string.general_no_date));
-
-                //WARNING: Order of the next 2 lines matter
-                holder.position = -1;
-                holder.selected.setChecked(false);
-
-                if (!mCheckboxes) {
-                    holder.selected.setVisibility(View.GONE);
-                }
-                holder.flagged.setChecked(false);
-            }
-
-
-            return view;
         }
 
-        /**
-         * Associate model data to view object.
-         *
-         * @param position
-         *            The position of the item within the adapter's data set of
-         *            the item whose view we want.
-         * @param view
-         *            Main view component to alter. Never <code>null</code>.
-         * @param holder
-         *            Convenience view holder - eases access to <tt>view</tt>
-         *            child views. Never <code>null</code>.
-         * @param message
-         *            Never <code>null</code>.
-         */
-        private void bindView(final int position, final View view, final MessageViewHolder holder,
-                              final MessageInfoHolder message) {
-            holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+        MessageViewHolder holder = (MessageViewHolder) view.getTag();
 
-            // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.flagged.setTag(position);
-            holder.flagged.setChecked(message.flagged);
+        if (holder == null) {
+            holder = new MessageViewHolder();
+            holder.subject = (TextView) view.findViewById(R.id.subject);
+            holder.from = (TextView) view.findViewById(R.id.from);
+            holder.date = (TextView) view.findViewById(R.id.date);
+            holder.chip = view.findViewById(R.id.chip);
+            holder.preview = (TextView) view.findViewById(R.id.preview);
+            holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+            holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
 
-            // So that the mSelectedCount is only incremented/decremented
-            // when a user checks the checkbox (vs code)
-            holder.position = -1;
-            holder.selected.setChecked(message.selected);
+            holder.flagged.setOnClickListener(flagClickListener);
 
-            if (!mCheckboxes) {
-                holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
+            if (!mStars) {
+                holder.flagged.setVisibility(View.GONE);
             }
 
+            if (mCheckboxes) {
+                holder.selected.setVisibility(View.VISIBLE);
+            }
 
+            if (holder.selected != null) {
+                holder.selected.setOnCheckedChangeListener(holder);
+            }
+            holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
 
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
-            holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
-            view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+            if (mTouchView) {
+                holder.preview.setLines(mPreviewLines);
+                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListPreview());
 
-            if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
-                holder.subject.setText(getText(R.string.general_no_subject));
             } else {
-                holder.subject.setText(message.message.getSubject());
+                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
             }
 
-            int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
+            view.setTag(holder);
+        }
+
+        if (message != null) {
+            bindView(position, view, holder, message);
+        } else {
+            // This branch code is triggered when the local store
+            // hands us an invalid message
+
+            holder.chip.getBackground().setAlpha(0);
+            holder.subject.setText(getString(R.string.general_no_subject));
+            holder.subject.setTypeface(null, Typeface.NORMAL);
+            String noSender = getString(R.string.general_no_sender);
             if (holder.preview != null) {
-                /*
-                 * In the touchable UI, we have previews. Otherwise, we
-                 * have just a "from" line.
-                 * Because text views can't wrap around each other(?) we
-                 * compose a custom view containing the preview and the
-                 * from.
-                 */
+                holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
+                Spannable str = (Spannable) holder.preview.getText();
 
-                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                                       .append(message.sender).append(" ").append(message.message.getPreview()),
-                                       TextView.BufferType.SPANNABLE);
-                Spannable str = (Spannable)holder.preview.getText();
-
-                // Create a span section for the sender, and assign the correct font size and weight.
                 ColorStateList color = holder.subject.getTextColors();
                 ColorStateList linkColor = holder.subject.getLinkTextColors();
-                str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
+                str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
                             0,
-                            message.sender.length() + 1,
+                            noSender.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
             } else {
-                holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
-
-                holder.from.setTypeface(null, senderTypeface);
+                holder.from.setText(noSender);
+                holder.from.setTypeface(null, Typeface.NORMAL);
+                holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             }
 
-            holder.date.setText(message.getDate(mMessageHelper));
-            holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                message.answered ? mAnsweredIcon : null, // left
-                null, // top
-                message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                null); // bottom
-            holder.position = position;
-        }
+            holder.date.setText(getString(R.string.general_no_date));
 
-        private String recipientSigil(MessageInfoHolder message) {
-            if (message.message.toMe()) {
-                return getString(R.string.messagelist_sent_to_me_sigil);
-            } else if (message.message.ccMe()) {
-                return getString(R.string.messagelist_sent_cc_me_sigil);
-            } else {
-                return "";
+            //WARNING: Order of the next 2 lines matter
+            holder.position = -1;
+            holder.selected.setChecked(false);
+
+            if (!mCheckboxes) {
+                holder.selected.setVisibility(View.GONE);
             }
+            holder.flagged.setChecked(false);
         }
 
 
+        return view;
+    }
+
+    /**
+     * Associate model data to view object.
+     *
+     * @param position
+     *            The position of the item within the adapter's data set of
+     *            the item whose view we want.
+     * @param view
+     *            Main view component to alter. Never <code>null</code>.
+     * @param holder
+     *            Convenience view holder - eases access to <tt>view</tt>
+     *            child views. Never <code>null</code>.
+     * @param message
+     *            Never <code>null</code>.
+     */
+    private void bindView(final int position, final View view, final MessageViewHolder holder,
+                          final MessageInfoHolder message) {
+        holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+
+        // XXX TODO there has to be some way to walk our view hierarchy and get this
+        holder.flagged.setTag(position);
+        holder.flagged.setChecked(message.flagged);
+
+        // So that the mSelectedCount is only incremented/decremented
+        // when a user checks the checkbox (vs code)
+        holder.position = -1;
+        holder.selected.setChecked(message.selected);
+
+        if (!mCheckboxes) {
+            holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
+        }
 
 
-        @Override
-        public boolean hasStableIds() {
+
+        holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
+        holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+        view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+
+        if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
+            holder.subject.setText(getText(R.string.general_no_subject));
+        } else {
+            holder.subject.setText(message.message.getSubject());
+        }
+
+        int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
+        if (holder.preview != null) {
+            /*
+             * In the touchable UI, we have previews. Otherwise, we
+             * have just a "from" line.
+             * Because text views can't wrap around each other(?) we
+             * compose a custom view containing the preview and the
+             * from.
+             */
+
+            holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
+                                   .append(message.sender).append(" ").append(message.message.getPreview()),
+                                   TextView.BufferType.SPANNABLE);
+            Spannable str = (Spannable)holder.preview.getText();
+
+            // Create a span section for the sender, and assign the correct font size and weight.
+            ColorStateList color = holder.subject.getTextColors();
+            ColorStateList linkColor = holder.subject.getLinkTextColors();
+            str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
+                        0,
+                        message.sender.length() + 1,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                       );
+        } else {
+            holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
+
+            holder.from.setTypeface(null, senderTypeface);
+        }
+
+        holder.date.setText(message.getDate(mMessageHelper));
+        holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+            message.answered ? mAnsweredIcon : null, // left
+            null, // top
+            message.message.hasAttachments() ? mAttachmentIcon : null, // right
+            null); // bottom
+        holder.position = position;
+    }
+
+    private String recipientSigil(MessageInfoHolder message) {
+        if (message.message.toMe()) {
+            return getString(R.string.messagelist_sent_to_me_sigil);
+        } else if (message.message.ccMe()) {
+            return getString(R.string.messagelist_sent_cc_me_sigil);
+        } else {
+            return "";
+        }
+    }
+
+
+
+        return footerView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    public boolean isItemSelectable(int position) {
+        if (position < mAdapter.messages.size()) {
             return true;
-        }
-
-        public boolean isItemSelectable(int position) {
-            if (position < mAdapter.messages.size()) {
-                return true;
-            } else {
-                return false;
-            }
+        } else {
+            return false;
         }
     }
+}
 
-    class MessageViewHolder
-        implements OnCheckedChangeListener {
-        public TextView subject;
-        public TextView preview;
-        public TextView from;
-        public TextView time;
-        public TextView date;
-        public CheckBox flagged;
-        public View chip;
-        public CheckBox selected;
-        public int position = -1;
+class MessageViewHolder
+    implements OnCheckedChangeListener {
+    public TextView subject;
+    public TextView preview;
+    public TextView from;
+    public TextView time;
+    public TextView date;
+    public CheckBox flagged;
+    public View chip;
+    public CheckBox selected;
+    public int position = -1;
 
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (position != -1) {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-                if (message.selected != isChecked) {
-                    if (isChecked) {
-                        mSelectedCount++;
-                    } else if (mSelectedCount > 0) {
-                        mSelectedCount--;
-                    }
-
-                    // We must set the flag before showing the buttons as the
-                    // buttons text depends on what is selected.
-                    message.selected = isChecked;
-                    if (!mCheckboxes) {
-                        if (isChecked) {
-                            selected.setVisibility(View.VISIBLE);
-                        } else {
-                            selected.setVisibility(View.GONE);
-                        }
-                    }
-                    toggleBatchButtons();
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (position != -1) {
+            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+            if (message.selected != isChecked) {
+                if (isChecked) {
+                    mSelectedCount++;
+                } else if (mSelectedCount > 0) {
+                    mSelectedCount--;
                 }
+
+                // We must set the flag before showing the buttons as the
+                // buttons text depends on what is selected.
+                message.selected = isChecked;
+                if (!mCheckboxes) {
+                    if (isChecked) {
+                        selected.setVisibility(View.VISIBLE);
+                    } else {
+                        selected.setVisibility(View.GONE);
+                    }
+                }
+                toggleBatchButtons();
             }
         }
     }
+}
 
 
     private View getFooterView(ViewGroup parent) {
@@ -2693,460 +2906,513 @@ public class MessageList
         }
     }
 
-    private void showBatchButtons() {
-        if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
-            mBatchButtonArea.setVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
-            animation.setAnimationListener(this);
-            mBatchButtonArea.startAnimation(animation);
-        }
+private void showBatchButtons() {
+    if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
+        mBatchButtonArea.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
+        animation.setAnimationListener(this);
+        mBatchButtonArea.startAnimation(animation);
     }
+}
 
-    private void toggleBatchButtons() {
+private void toggleBatchButtons() {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+    runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
 
-                if (mSelectedCount < 0) {
-                    mSelectedCount = 0;
-                }
-
-                int readButtonIconId;
-                int flagButtonIconId;
-
-                if (mSelectedCount == 0) {
-                    readButtonIconId = R.drawable.ic_button_mark_read;
-                    flagButtonIconId = R.drawable.ic_button_flag;
-                    hideBatchButtons();
-                } else {
-                    boolean newReadState = computeBatchDirection(false);
-                    if (newReadState) {
-                        readButtonIconId = R.drawable.ic_button_mark_read;
-                    } else {
-                        readButtonIconId = R.drawable.ic_button_mark_unread;
-                    }
-                    boolean newFlagState = computeBatchDirection(true);
-                    if (newFlagState) {
-                        flagButtonIconId = R.drawable.ic_button_flag;
-                    } else {
-                        flagButtonIconId = R.drawable.ic_button_unflag;
-                    }
-                    showBatchButtons();
-                }
-
-                mBatchReadButton.setImageResource(readButtonIconId);
-                mBatchFlagButton.setImageResource(flagButtonIconId);
-
-
-            }
-        });
-
-
-    }
-
-    static class FooterViewHolder {
-        public ProgressBar progress;
-        public TextView main;
-    }
-
-
-    private boolean computeBatchDirection(boolean flagged) {
-        boolean newState = false;
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (flagged) {
-                        if (!holder.flagged) {
-                            newState = true;
-                            break;
-                        }
-                    } else {
-                        if (!holder.read) {
-                            newState = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return newState;
-    }
-
-    private boolean anySelected() {
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        boolean newState = false;
-        List<Message> messageList = new ArrayList<Message>();
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-
-        if (v == mBatchDoneButton) {
-            setAllSelected(false);
-            return;
-        }
-
-        if (v == mBatchFlagButton) {
-            newState = computeBatchDirection(true);
-        } else {
-            newState = computeBatchDirection(false);
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (v == mBatchDeleteButton) {
-                        removeHolderList.add(holder);
-                    } else if (v == mBatchFlagButton) {
-                        holder.flagged = newState;
-                    } else if (v == mBatchReadButton) {
-                        holder.read = newState;
-                    }
-                    messageList.add(holder.message);
-                }
-            }
-        }
-        mAdapter.removeMessages(removeHolderList);
-
-        if (!messageList.isEmpty()) {
-            if (v == mBatchDeleteButton) {
-                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
+            if (mSelectedCount < 0) {
                 mSelectedCount = 0;
-                toggleBatchButtons();
+            }
+
+            int readButtonIconId;
+            int flagButtonIconId;
+
+            if (mSelectedCount == 0) {
+                readButtonIconId = R.drawable.ic_button_mark_read;
+                flagButtonIconId = R.drawable.ic_button_flag;
+                hideBatchButtons();
             } else {
-                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+                boolean newReadState = computeBatchDirection(false);
+                if (newReadState) {
+                    readButtonIconId = R.drawable.ic_button_mark_read;
+                } else {
+                    readButtonIconId = R.drawable.ic_button_mark_unread;
+                }
+                boolean newFlagState = computeBatchDirection(true);
+                if (newFlagState) {
+                    flagButtonIconId = R.drawable.ic_button_flag;
+                } else {
+                    flagButtonIconId = R.drawable.ic_button_unflag;
+                }
+                showBatchButtons();
             }
-        } else {
-            // Should not happen
-            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+
+            mBatchReadButton.setImageResource(readButtonIconId);
+            mBatchFlagButton.setImageResource(flagButtonIconId);
+
+
         }
-        mHandler.sortMessages();
-    }
-
-    public void onAnimationEnd(Animation animation) {
-    }
-
-    public void onAnimationRepeat(Animation animation) {
-    }
-
-    public void onAnimationStart(Animation animation) {
-    }
+    });
 
 
+}
 
-    private void setAllSelected(boolean isSelected) {
-        mSelectedCount = 0;
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                holder.selected = isSelected;
-                mSelectedCount += (isSelected ? 1 : 0);
-            }
-        }
-        mAdapter.notifyDataSetChanged();
-        toggleBatchButtons();
-    }
+static class FooterViewHolder {
+    public ProgressBar progress;
+    public TextView main;
+}
 
-    private void setSelected(MessageInfoHolder holder, boolean newState) {
-        if (holder.selected != newState) {
-            holder.selected = newState;
-            mSelectedCount += (newState ? 1 : -1);
-        }
-        mAdapter.notifyDataSetChanged();
-        toggleBatchButtons();
-    }
 
-    private void flagSelected(Flag flag, boolean newState) {
-        List<Message> messageList = new ArrayList<Message>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    messageList.add(holder.message);
-                    if (flag == Flag.SEEN) {
-                        holder.read = newState;
-                    } else if (flag == Flag.FLAGGED) {
-                        holder.flagged = newState;
+private boolean computeBatchDirection(boolean flagged) {
+    boolean newState = false;
+
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                if (flagged) {
+                    if (!holder.flagged) {
+                        newState = true;
+                        break;
+                    }
+                } else {
+                    if (!holder.read) {
+                        newState = true;
+                        break;
                     }
                 }
             }
         }
-        mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
-        mHandler.sortMessages();
+    }
+    return newState;
+}
+
+private boolean anySelected() {
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+@Override
+public void onClick(View v) {
+    boolean newState = false;
+    List<Message> messageList = new ArrayList<Message>();
+    List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+
+
+    switch (v.getId()) {
+    case R.id.reply:
+        onReply();
+        return;
+    case R.id.reply_all:
+        onReplyAll();
+        return;
+    case R.id.delete:
+        onDelete();
+        return;
+    case R.id.forward:
+        onForward();
+        return;
+    case R.id.archive:
+        onRefile(mAccount.getArchiveFolderName());
+        return;
+    case R.id.spam:
+        onRefile(mAccount.getSpamFolderName());
+        return;
+    case R.id.move:
+        onMove();
+        return;
+    case R.id.next:
+        onNext();
+        return;
+    case R.id.previous:
+        onPrevious();
+        return;
+    case R.id.download:
+        ((AttachmentView)view).saveFile();
+        return;
+    case R.id.show_pictures:
+        mMessageView.setLoadPictures(true);
+        return;
+    case R.id.download_remainder:
+        onDownloadRemainder();
+        return;
     }
 
-    private void deleteSelected() {
-        List<Message> messageList = new ArrayList<Message>();
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
+
+    if (v == mBatchDoneButton) {
+        setAllSelected(false);
+        return;
+    }
+
+    if (v == mBatchFlagButton) {
+        newState = computeBatchDirection(true);
+    } else {
+        newState = computeBatchDirection(false);
+    }
+
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                if (v == mBatchDeleteButton) {
                     removeHolderList.add(holder);
-                    messageList.add(holder.message);
+                } else if (v == mBatchFlagButton) {
+                    holder.flagged = newState;
+                } else if (v == mBatchReadButton) {
+                    holder.read = newState;
                 }
-            }
-        }
-        mAdapter.removeMessages(removeHolderList);
-
-        mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-        mSelectedCount = 0;
-        toggleBatchButtons();
-    }
-
-    private void onMoveBatch() {
-        if (!mController.isMoveCapable(mAccount)) {
-            return;
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                }
-            }
-        }
-
-        final Folder folder = mCurrentFolder.folder;
-        final Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
-        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
-    }
-
-    private void onMoveChosenBatch(String folderName) {
-        if (!mController.isMoveCapable(mAccount)) {
-            return;
-        }
-        List<Message> messageList = new ArrayList<Message>();
-
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                    messageList.add(holder.message);
-                    removeHolderList.add(holder);
-                }
-            }
-        }
-        mAdapter.removeMessages(removeHolderList);
-
-        mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
-        mSelectedCount = 0;
-        toggleBatchButtons();
-    }
-
-    private void onArchiveBatch() {
-        String folderName = mAccount.getArchiveFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
-        onMoveChosenBatch(folderName);
-    }
-
-    private void onSpamBatch() {
-        String folderName = mAccount.getSpamFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
-        onMoveChosenBatch(folderName);
-    }
-
-    private void onCopyBatch() {
-        if (!mController.isCopyCapable(mAccount)) {
-            return;
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isCopyCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                }
-            }
-        }
-
-        final Folder folder = mCurrentFolder.folder;
-        final Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
-        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
-    }
-
-    private void onCopyChosenBatch(String folderName) {
-        if (!mController.isCopyCapable(mAccount)) {
-            return;
-        }
-
-        List<Message> messageList = new ArrayList<Message>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isCopyCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
-                        return;
-                    }
-                    messageList.add(holder.message);
-                }
-            }
-        }
-        mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
-    }
-
-    protected void onAccountUnavailable() {
-        finish();
-        // TODO inform user about account unavailability using Toast
-        Accounts.listAccounts(this);
-    }
-
-    // utilities
-
-
-    /** Wrapper-function taking a KeyCode.
-     * A complete KeyStroke is DOWN and UP Action on a key! */
-    private void simulateKeystroke(int KeyCode) {
-        doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyCode));
-        doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyCode));
-    }
-
-    /** This function actually handles the KeyStroke-Injection. */
-    private void doInjectKeyEvent(KeyEvent keyEvent) {
-
-        dispatchKeyEvent(keyEvent);
-
-    }
-
-
-    // XXX do we actually need this? why? - presumably for API v ??? compatibility
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        boolean ret = false;
-        if (KeyEvent.ACTION_DOWN == event.getAction()) {
-            ret = onKeyDown(event.getKeyCode(), event);
-        }
-        if (!ret) {
-            ret = super.dispatchKeyEvent(event);
-        }
-        return ret;
-    }
-
-
-
-    // Message Buttons
-    //
-    //
-    //
-
-
-    private void setupButtonViews() {
-        setOnClickListener(R.id.from);
-        setOnClickListener(R.id.reply);
-        setOnClickListener(R.id.reply_all);
-        setOnClickListener(R.id.delete);
-        setOnClickListener(R.id.forward);
-        setOnClickListener(R.id.next);
-        setOnClickListener(R.id.previous);
-        setOnClickListener(R.id.archive);
-        setOnClickListener(R.id.move);
-        setOnClickListener(R.id.spam);
-        // To show full header
-        setOnClickListener(R.id.header_container);
-        setOnClickListener(R.id.show_pictures);
-        setOnClickListener(R.id.download_remainder);
-
-
-        staticButtons();
-        if (!mAccount.getEnableMoveButtons()) {
-            View buttons = findViewById(R.id.move_buttons);
-            if (buttons != null) {
-                buttons.setVisibility(View.GONE);
+                messageList.add(holder.message);
             }
         }
     }
+    mAdapter.removeMessages(removeHolderList);
 
-    private void setupDisplayMessageButtons() {
-        mDelete.setEnabled(true);
-        mNext.setEnabled(mNextMessage != null);
-        mPrevious.setEnabled(mPreviousMessage != null);
-        // If moving isn't support at all, then all of them must be disabled anyway.
-        if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if the Archive folder is not the current folder and not NONE.
-            mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&
-                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
-            // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) &&
-                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
-            mMove.setEnabled(true);
+    if (!messageList.isEmpty()) {
+        if (v == mBatchDeleteButton) {
+            mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
+            mSelectedCount = 0;
+            toggleBatchButtons();
         } else {
-            disableMoveButtons();
+            mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+        }
+    } else {
+        // Should not happen
+        Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+    }
+    mHandler.sortMessages();
+}
+
+public void onAnimationEnd(Animation animation) {
+}
+
+public void onAnimationRepeat(Animation animation) {
+}
+
+public void onAnimationStart(Animation animation) {
+}
+
+
+
+private void setAllSelected(boolean isSelected) {
+    mSelectedCount = 0;
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            holder.selected = isSelected;
+            mSelectedCount += (isSelected ? 1 : 0);
+        }
+    }
+    mAdapter.notifyDataSetChanged();
+    toggleBatchButtons();
+}
+
+private void setSelected(MessageInfoHolder holder, boolean newState) {
+    if (holder.selected != newState) {
+        holder.selected = newState;
+        mSelectedCount += (newState ? 1 : -1);
+    }
+    mAdapter.notifyDataSetChanged();
+    toggleBatchButtons();
+}
+
+private void flagSelected(Flag flag, boolean newState) {
+    List<Message> messageList = new ArrayList<Message>();
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                messageList.add(holder.message);
+                if (flag == Flag.SEEN) {
+                    holder.read = newState;
+                } else if (flag == Flag.FLAGGED) {
+                    holder.flagged = newState;
+                }
+            }
+        }
+    }
+    mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
+    mHandler.sortMessages();
+}
+
+private void deleteSelected() {
+    List<Message> messageList = new ArrayList<Message>();
+    List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                removeHolderList.add(holder);
+                messageList.add(holder.message);
+            }
+        }
+    }
+    mAdapter.removeMessages(removeHolderList);
+
+    mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
+    mSelectedCount = 0;
+    toggleBatchButtons();
+}
+
+private void onMoveBatch() {
+    if (!mController.isMoveCapable(mAccount)) {
+        return;
+    }
+
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                Message message = holder.message;
+                if (!mController.isMoveCapable(message)) {
+                    Toast toast = Toast.makeText(this,
+                                                 R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
         }
     }
 
-    private void staticButtons() {
-        mNext = findViewById(R.id.next);
-        mPrevious = findViewById(R.id.previous);
-        mDelete = findViewById(R.id.delete);
-        mArchive = findViewById(R.id.archive);
-        mMove = findViewById(R.id.move);
-        mSpam = findViewById(R.id.spam);
+    final Folder folder = mCurrentFolder.folder;
+    final Intent intent = new Intent(this, ChooseFolder.class);
+    intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+    intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+    intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
+    startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
+}
+
+private void onMoveChosenBatch(String folderName) {
+    if (!mController.isMoveCapable(mAccount)) {
+        return;
+    }
+    List<Message> messageList = new ArrayList<Message>();
+
+    List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                Message message = holder.message;
+                if (!mController.isMoveCapable(message)) {
+                    Toast toast = Toast.makeText(this,
+                                                 R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                messageList.add(holder.message);
+                removeHolderList.add(holder);
+            }
+        }
+    }
+    mAdapter.removeMessages(removeHolderList);
+
+    mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
+    mSelectedCount = 0;
+    toggleBatchButtons();
+}
+
+private void onArchiveBatch() {
+    String folderName = mAccount.getArchiveFolderName();
+    if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
+        return;
+    }
+    onMoveChosenBatch(folderName);
+}
+
+private void onSpamBatch() {
+    String folderName = mAccount.getSpamFolderName();
+    if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
+        return;
+    }
+    onMoveChosenBatch(folderName);
+}
+
+private void onCopyBatch() {
+    if (!mController.isCopyCapable(mAccount)) {
+        return;
     }
 
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                Message message = holder.message;
+                if (!mController.isCopyCapable(message)) {
+                    Toast toast = Toast.makeText(this,
+                                                 R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+    }
 
-    private void disableButtons() {
-        mMessageView.setLoadPictures(false);
+    final Folder folder = mCurrentFolder.folder;
+    final Intent intent = new Intent(this, ChooseFolder.class);
+    intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+    intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+    intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
+    startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
+}
+
+private void onCopyChosenBatch(String folderName) {
+    if (!mController.isCopyCapable(mAccount)) {
+        return;
+    }
+
+    List<Message> messageList = new ArrayList<Message>();
+    synchronized (mAdapter.messages) {
+        for (MessageInfoHolder holder : mAdapter.messages) {
+            if (holder.selected) {
+                Message message = holder.message;
+                if (!mController.isCopyCapable(message)) {
+                    Toast toast = Toast.makeText(this,
+                                                 R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                messageList.add(holder.message);
+            }
+        }
+    }
+    mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
+}
+
+protected void onAccountUnavailable() {
+    finish();
+    // TODO inform user about account unavailability using Toast
+    Accounts.listAccounts(this);
+}
+
+// utilities
+
+
+/** Wrapper-function taking a KeyCode.
+ * A complete KeyStroke is DOWN and UP Action on a key! */
+private void simulateKeystroke(int KeyCode) {
+    doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyCode));
+    doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyCode));
+}
+
+/** This function actually handles the KeyStroke-Injection. */
+private void doInjectKeyEvent(KeyEvent keyEvent) {
+
+    dispatchKeyEvent(keyEvent);
+
+}
+
+
+// XXX do we actually need this? why? - presumably for API v ??? compatibility
+@Override
+public boolean dispatchKeyEvent(KeyEvent event) {
+    boolean ret = false;
+    if (KeyEvent.ACTION_DOWN == event.getAction()) {
+        ret = onKeyDown(event.getKeyCode(), event);
+    }
+    if (!ret) {
+        ret = super.dispatchKeyEvent(event);
+    }
+    return ret;
+}
+
+
+
+// Message Buttons
+//
+//
+//
+
+private void setupBatchButtonViews() {
+    mBatchButtonArea = findViewById(R.id.batch_button_area);
+    mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
+    mBatchReadButton.setOnClickListener(this);
+    mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
+    mBatchDeleteButton.setOnClickListener(this);
+    mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
+    mBatchFlagButton.setOnClickListener(this);
+    mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
+
+    mBatchDoneButton.setOnClickListener(this);
+}
+
+private void setupButtonViews() {
+    setOnClickListener(R.id.from);
+    setOnClickListener(R.id.reply);
+    setOnClickListener(R.id.reply_all);
+    setOnClickListener(R.id.delete);
+    setOnClickListener(R.id.forward);
+    setOnClickListener(R.id.next);
+    setOnClickListener(R.id.previous);
+    setOnClickListener(R.id.archive);
+    setOnClickListener(R.id.move);
+    setOnClickListener(R.id.spam);
+    // To show full header
+    setOnClickListener(R.id.header_container);
+    setOnClickListener(R.id.show_pictures);
+    setOnClickListener(R.id.download_remainder);
+
+
+    staticButtons();
+    if (!mAccount.getEnableMoveButtons()) {
+        View buttons = findViewById(R.id.move_buttons);
+        if (buttons != null) {
+            buttons.setVisibility(View.GONE);
+        }
+    }
+}
+
+private void setupDisplayMessageButtons() {
+    mDelete.setEnabled(true);
+    mNext.setEnabled(mNextMessage != null);
+    mPrevious.setEnabled(mPreviousMessage != null);
+    // If moving isn't support at all, then all of them must be disabled anyway.
+    if (mController.isMoveCapable(mAccount)) {
+        // Only enable the button if the Archive folder is not the current folder and not NONE.
+        mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&
+                            !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+        // Only enable the button if the Spam folder is not the current folder and not NONE.
+        mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) &&
+                         !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+        mMove.setEnabled(true);
+    } else {
         disableMoveButtons();
-        mNext.setEnabled(false);
-        mPrevious.setEnabled(false);
-        mDelete.setEnabled(false);
     }
+}
 
-    private void disableMoveButtons() {
-        mArchive.setEnabled(false);
-        mMove.setEnabled(false);
-        mSpam.setEnabled(false);
-    }
+private void staticButtons() {
+    mNext = findViewById(R.id.next);
+    mPrevious = findViewById(R.id.previous);
+    mDelete = findViewById(R.id.delete);
+    mArchive = findViewById(R.id.archive);
+    mMove = findViewById(R.id.move);
+    mSpam = findViewById(R.id.spam);
+}
 
-    private void setOnClickListener(int viewCode) {
-        View thisView = findViewById(viewCode);
-        if (thisView != null) {
-            thisView.setOnClickListener(this);
-        }
+
+private void disableButtons() {
+    mMessageView.setLoadPictures(false);
+    disableMoveButtons();
+    mNext.setEnabled(false);
+    mPrevious.setEnabled(false);
+    mDelete.setEnabled(false);
+}
+
+private void disableMoveButtons() {
+    mArchive.setEnabled(false);
+    mMove.setEnabled(false);
+    mSpam.setEnabled(false);
+}
+
+private void setOnClickListener(int viewCode) {
+    View thisView = findViewById(viewCode);
+    if (thisView != null) {
+        thisView.setOnClickListener(this);
     }
-    // This REALLY should be in MessageCryptoView
-    public void onDecryptDone(PgpData pgpData) {
-        // TODO: this might not be enough if the orientation was changed while in APG,
-        // sometimes shows the original encrypted content
-        mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
-    }
+}
+// This REALLY should be in MessageCryptoView
+public void onDecryptDone(PgpData pgpData) {
+    // TODO: this might not be enough if the orientation was changed while in APG,
+    // sometimes shows the original encrypted content
+    mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
+}
 
 }
