@@ -350,22 +350,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         displayMessage(mPreviousMessage);
         mPrevious.requestFocus();
     }
-
-    private void onMarkAsUnread() {
-        if (mMessage != null) {
-            mController.setFlag(mAccount, mMessageReference.folderName, new String[] { mMessage.getUid() }, Flag.SEEN, false);
-            try {
-                mMessage.setFlag(Flag.SEEN, false);
-                mMessageView.setHeaders(mMessage, mAccount);
-                String subject = mMessage.getSubject();
-                setTitle(subject);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
-            }
-        }
-    }
-
-
     private void onDownloadRemainder() {
         if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
             return;

@@ -1488,7 +1488,15 @@ public class MessageList
             return;
         }
         mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
-        holder.read = !holder.read;
+            try {
+                holder.read = !holder.read;
+                holder.message.setFlag(Flag.SEEN, holder.read);
+                if (mMessage.uid == holder.uid) {
+                mMessageView.setHeaders(holder.message, holder.message.getFolder().getAccount());
+                }
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
+            }
         mHandler.sortMessages();
     }
 
