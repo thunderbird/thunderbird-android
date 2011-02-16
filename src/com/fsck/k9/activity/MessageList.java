@@ -2053,6 +2053,137 @@ public class MessageList
                     holder.message.setUid(newUid);
                 }
             }
+        @Override
+        public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
+                final Message message) {
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
+                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+                return;
+            }
+            MessageView.this.mMessage = message;
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                        mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
+                    }
+                    mMessageView.setHeaders(message, account);
+                    mMessageView.setOnFlagListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onFlag();
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
+                Message message) {
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
+                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+                return;
+            }
+
+            displayMessageBody(account, folder, uid, message);
+        }//loadMessageForViewBodyAvailable
+
+
+
+        @Override
+        public void loadMessageForViewFailed(Account account, String folder, String uid,
+                                             final Throwable t) {
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
+                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+                return;
+            }
+            mHandler.post(new Runnable() {
+                public void run() {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (t instanceof IllegalArgumentException) {
+                        mHandler.invalidIdError();
+                    } else {
+                        mHandler.networkError();
+                    }
+                    if ((MessageView.this.mMessage == null) ||
+                    !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void loadMessageForViewFinished(Account account, String folder, String uid,
+                                               final Message message) {
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
+                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+                return;
+            }
+            mHandler.post(new Runnable() {
+                public void run() {
+                    setProgressBarIndeterminateVisibility(false);
+                    mMessageView.setShowDownloadButton(message);
+                }
+            });
+        }
+
+        @Override
+        public void loadMessageForViewStarted(Account account, String folder, String uid) {
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
+                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+                return;
+            }
+            mHandler.post(new Runnable() {
+                public void run() {
+                    setProgressBarIndeterminateVisibility(true);
+                }
+            });
+        }
+
+        @Override
+        public void loadAttachmentStarted(Account account, Message message,
+                                          Part part, Object tag, boolean requiresDownload) {
+            if (mMessage != message) {
+                return;
+            }
+            mMessageView.setAttachmentsEnabled(false);
+            mHandler.progress(true);
+            if (requiresDownload) {
+                mHandler.fetchingAttachment();
+            }
+        }
+
+        @Override
+        public void loadAttachmentFinished(Account account, Message message, Part part, Object tag) {
+            if (mMessage != message) {
+                return;
+            }
+            mMessageView.setAttachmentsEnabled(true);
+            mHandler.progress(false);
+            Object[] params = (Object[]) tag;
+            boolean download = (Boolean) params[0];
+            AttachmentView attachment = (AttachmentView) params[1];
+            if (download) {
+                attachment.writeFile();
+
+            } else {
+                attachment.showFile();
+            }
+        }
+
+        @Override
+        public void loadAttachmentFailed(Account account, Message message, Part part,
+                                         Object tag, String reason) {
+            if (mMessage != message) {
+                return;
+            }
+            mMessageView.setAttachmentsEnabled(true);
+            mHandler.progress(false);
+            mHandler.networkError();
+        }
+
+
         };
 
         private boolean updateForMe(Account account, String folder) {
