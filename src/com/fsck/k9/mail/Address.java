@@ -231,10 +231,8 @@ public class Address
         return sb.toString();
     }
 
-    public String toEncodedString()
-    {
-        if (mPersonal != null)
-        {
+    public String toEncodedString() {
+        if (mPersonal != null && !mPersonal.equals("")) {
             return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         }
         else
