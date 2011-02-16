@@ -23,6 +23,7 @@ public class MessageInfoHolder {
     public FolderInfoHolder folder;
     public boolean selected;
     public String account;
+    public String accountUuid;
     public String uri;
 
     // Empty constructor for comparison
