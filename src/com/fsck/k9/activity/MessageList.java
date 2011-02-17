@@ -71,6 +71,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.AbstractAction;
+import com.markupartist.android.widget.ActionBar.IntentAction;
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -242,6 +245,7 @@ public class MessageList
     private View mReplyAll;
     private View mForward;
     private Contacts mContacts;
+    private ActionBar mActionBar;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -269,9 +273,6 @@ public class MessageList
 
     private ListView mListView;
 
-
-    private TextView mAccountButton;
-    private TextView mFolderButton;
 
 
     private boolean mTouchView = true;
@@ -519,19 +520,18 @@ public class MessageList
         }
 
         private void setWindowTitle() {
-            if (mFolderName != null) {
+            if (mAccount != null && mFolderName != null) {
                 String displayName  = mFolderName;
 
                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
                     displayName = getString(R.string.special_mailbox_name_inbox);
                 }
 
-                mAccountButton.setText(mAccount.getDescription());
-                mFolderButton.setText(displayName);
+                //mActionBar.setTitle(mAccount.getDescription() + " / " + displayName );
+
             } else if (mQueryString != null) {
 
-                mAccountButton.setText(getString(R.string.search_results));
-                mFolderButton.setText(mQueryString);
+                mActionBar.setTitle( getString(R.string.search_results) + " / " + mQueryString);
             }
         }
 
@@ -896,12 +896,11 @@ public class MessageList
         if (mAccount != null && mFolderName != null) {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
-        mHandler.refreshTitle();
-
     }
     private void initializeLayout() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_list);
+        initializeActionBar();
 
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
@@ -917,23 +916,6 @@ public class MessageList
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         registerForContextMenu(mListView);
 
-
-        mFolderButton = (TextView) findViewById(R.id.folder_title_button);
-        mAccountButton = (TextView) findViewById(R.id.account_title_button);
-
-
-        mFolderButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onShowFolderList();
-            }
-        });
-
-        mAccountButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onAccounts();
-            }
-
-        });
 
         initializeMessageView();
         setupButtonViews();
@@ -952,6 +934,46 @@ public class MessageList
 
         mListView.setOnTouchListener(gestureListener);
     }
+
+    private void initializeActionBar() {
+            ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+            Log.v(K9.LOG_TAG,"Action bar exists! " +mActionBar);
+            //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
+            //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
+            mActionBar.addAction(new SearchAction());
+            mActionBar.addAction(new SyncAction());
+            mActionBar.addAction(new ComposeAction());
+    }
+
+    public class SearchAction extends AbstractAction {
+        public SearchAction() {
+            super(R.drawable.ic_menu_search);
+        }
+        @Override
+        public void performAction(View view) {
+            onSearchRequested();
+        }
+    }
+
+    public class SyncAction extends AbstractAction {
+        public SyncAction() {
+            super(R.drawable.ic_menu_refresh);
+        }
+        @Override
+        public void performAction(View view) {
+             checkMail(mAccount, mFolderName);
+        }
+    }
+    public class ComposeAction extends AbstractAction {
+        public ComposeAction() {
+            super(R.drawable.ic_menu_compose);
+        }
+        @Override
+        public void performAction(View view) {
+            onCompose();
+        }
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

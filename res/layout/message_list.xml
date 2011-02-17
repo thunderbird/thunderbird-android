@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
     android:layout_width="fill_parent"
     android:orientation="vertical"
     android:layout_height="fill_parent">
+    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
 <LinearLayout
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:orientation="vertical"
     >
-    <include layout="@layout/message_list_titlebar" />
     <ListView
         android:id="@+id/message_list"
         android:layout_height="300dp"
