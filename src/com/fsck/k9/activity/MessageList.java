@@ -1748,10 +1748,6 @@ public class MessageList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-        case R.id.compose: {
-            onCompose();
-            return true;
-        }
         case R.id.accounts: {
             onAccounts();
             return true;
@@ -1824,16 +1820,6 @@ public class MessageList
         }
 
         switch (itemId) {
-        case R.id.check_mail: {
-            if (mFolderName != null) {
-                checkMail(mAccount, mFolderName);
-            }
-            return true;
-        }
-        case R.id.send_messages: {
-            mController.sendPendingMessages(mAccount, mAdapter.mListener);
-            return true;
-        }
         case R.id.list_folders: {
             onShowFolderList();
             return true;
@@ -1924,17 +1910,9 @@ public class MessageList
             menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
             menu.findItem(R.id.batch_copy_op).setVisible(false);
-            menu.findItem(R.id.check_mail).setVisible(false);
-            menu.findItem(R.id.send_messages).setVisible(false);
             menu.findItem(R.id.folder_settings).setVisible(false);
             menu.findItem(R.id.account_settings).setVisible(false);
         } else {
-            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            } else {
-                menu.findItem(R.id.send_messages).setVisible(false);
-            }
-
             if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
                 menu.findItem(R.id.expunge).setVisible(false);
             }
