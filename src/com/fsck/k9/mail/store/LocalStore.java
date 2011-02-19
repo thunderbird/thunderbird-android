@@ -485,9 +485,6 @@ public class LocalStore extends Store implements Serializable {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
                     return cursor.getInt(0);   // message count
-
-
-
                 } finally {
                     if (cursor != null) {
                         cursor.close();
@@ -496,8 +493,6 @@ public class LocalStore extends Store implements Serializable {
             }
         });
     }
-
-
 
     public void getMessageCounts(final AccountStats stats) throws MessagingException {
         final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
@@ -1269,7 +1264,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
