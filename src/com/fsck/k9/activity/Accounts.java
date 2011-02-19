@@ -21,8 +21,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
-import com.markupartist.android.widget.ActionBar.IntentAction;
-
 import com.fsck.k9.*;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -238,7 +236,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     public class SearchAction extends AbstractAction {
         public SearchAction() {
-            super(R.drawable.ic_menu_search);
+            super(R.drawable.ic_actionbar_search);
         }
         @Override
         public void performAction(View view) {
@@ -248,7 +246,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     public class SyncAction extends AbstractAction {
         public SyncAction() {
-            super(R.drawable.ic_menu_refresh);
+            super(R.drawable.ic_actionbar_refresh);
         }
         @Override
         public void performAction(View view) {
@@ -257,7 +255,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
     public class ComposeAction extends AbstractAction {
         public ComposeAction() {
-            super(R.drawable.ic_menu_compose);
+            super(R.drawable.ic_actionbar_compose);
         }
         @Override
         public void performAction(View view) {

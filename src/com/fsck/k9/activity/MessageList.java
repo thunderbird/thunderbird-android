@@ -8,17 +8,12 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import android.R.drawable;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.res.Configuration;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -55,16 +50,12 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
@@ -73,8 +64,8 @@ import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
-import com.markupartist.android.widget.ActionBar.IntentAction;
-
+import net.londatiga.android.QuickAction;
+import net.londatiga.android.ActionItem;
 /**
  * MessageList is the primary user interface for the program. This Activity
  * shows a list of messages.
@@ -531,7 +522,7 @@ public class MessageList
 
             } else if (mQueryString != null) {
 
-                mActionBar.setTitle( getString(R.string.search_results) + " / " + mQueryString);
+                mActionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
             }
         }
 
@@ -936,18 +927,19 @@ public class MessageList
     }
 
     private void initializeActionBar() {
-            ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
-            Log.v(K9.LOG_TAG,"Action bar exists! " +mActionBar);
-            //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
-            //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
-            mActionBar.addAction(new SearchAction());
-            mActionBar.addAction(new SyncAction());
-            mActionBar.addAction(new ComposeAction());
+        ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+        Log.v(K9.LOG_TAG, "Action bar exists! " + mActionBar);
+        //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
+        //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
+        mActionBar.addAction(new SearchAction());
+        mActionBar.addAction(new SyncAction());
+        mActionBar.addAction(new ComposeAction());
     }
+
 
     public class SearchAction extends AbstractAction {
         public SearchAction() {
-            super(R.drawable.ic_menu_search);
+            super(R.drawable.ic_actionbar_search);
         }
         @Override
         public void performAction(View view) {
@@ -957,22 +949,82 @@ public class MessageList
 
     public class SyncAction extends AbstractAction {
         public SyncAction() {
-            super(R.drawable.ic_menu_refresh);
+            super(R.drawable.ic_actionbar_refresh);
         }
         @Override
         public void performAction(View view) {
-             checkMail(mAccount, mFolderName);
+            checkMail(mAccount, mFolderName);
         }
     }
     public class ComposeAction extends AbstractAction {
         public ComposeAction() {
-            super(R.drawable.ic_menu_compose);
+            super(R.drawable.ic_actionbar_compose);
         }
         @Override
         public void performAction(View view) {
-            onCompose();
+            QuickAction qa = new QuickAction(view);
+            ActionItem composeAction = new ActionItem();
+            composeAction.setTitle(getString(R.string.compose_action));
+            composeAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_compose));
+            composeAction.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    onCompose();
+                }
+            });
+            qa.addActionItem(composeAction);
+
+            if (mCurrentMessageInfo != null) {
+            ActionItem replyAction = new ActionItem();
+            replyAction.setTitle(getString(R.string.reply_action));
+            replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
+            replyAction.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    onReply(mCurrentMessageInfo);
+                }
+            });
+            qa.addActionItem(replyAction);
+            ActionItem ReplyAllAction = new ActionItem();
+            ReplyAllAction.setTitle(getString(R.string.reply_all_action));
+            ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
+            ReplyAllAction.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    onReplyAll(mCurrentMessageInfo);
+                }
+            });
+            qa.addActionItem(ReplyAllAction);
+            ActionItem forwardAction = new ActionItem();
+            forwardAction.setTitle(getString(R.string.forward_action));
+            forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
+            forwardAction.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    onForward(mCurrentMessageInfo);
+                }
+            });
+            qa.addActionItem(forwardAction);
+
+            /*
+            ActionItem shareAction = new ActionItem();
+            shareAction.setTitle(getString(R.string.share_action));
+            shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
+            shareAction.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    onCompose();
+                }
+            });
+            qa.addActionItem(shareAction);
+            */
+
+
+
+
+            }
+
+
+
+            qa.show();
         }
-    }
+    };
+
 
 
     @Override
@@ -1324,7 +1376,11 @@ public class MessageList
         if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
         } else {
-            mHandler.post(new Runnable() { public void run() { displayMessage(message); } });
+            mHandler.post(new Runnable() {
+                public void run() {
+                    displayMessage(message);
+                }
+            });
         }
 
         /*
@@ -3418,6 +3474,7 @@ public class MessageList
         mNext.setEnabled(mNextMessage != null);
         mPrevious.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
+        findViewById(R.id.move_buttons).setVisibility(View.GONE);
         if (mController.isMoveCapable(mAccount)) {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
             mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&

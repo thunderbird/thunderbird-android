@@ -13,13 +13,21 @@
     >
     <ListView
         android:id="@+id/message_list"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_width="fill_parent"
         android:cacheColorHint="?android:attr/colorBackground"
         android:layout_weight="5"
 
-    />
+        />
+    <include layout="@layout/message_view_bottom_buttons"/>
     <include layout="@layout/message_list_batch_buttons"/>
 </LinearLayout>
+    <ImageView
+        android:id="@+id/message_list_toggle"
+        android:background="@drawable/shade_handlebar"
+        android:layout_width="fill_parent"
+        android:paddingBottom="3dip"
+        android:layout_height="20dip"
+        />
 <include layout="@layout/message_view" />
 </LinearLayout>
