@@ -70,7 +70,7 @@ public class ChooseFolder extends K9ListActivity {
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mMessageReference = (MessageReference)intent.getSerializableExtra(EXTRA_MESSAGE);
+        mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE);
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
