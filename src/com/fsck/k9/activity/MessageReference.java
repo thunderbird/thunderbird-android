@@ -1,16 +1,16 @@
 package com.fsck.k9.activity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 
-import java.io.Serializable;
 import java.util.StringTokenizer;
 
-public class MessageReference implements Serializable {
-    private static final long serialVersionUID = -1625198750239083389L;
+public class MessageReference implements Parcelable {
     public String accountUuid;
     public String folderName;
     public String uid;
@@ -120,5 +120,36 @@ public class MessageReference implements Serializable {
                ", uid='" + uid + '\'' +
                ", flag=" + flag +
                '}';
+    }
+
+    public static final Creator<MessageReference> CREATOR = new Creator<MessageReference>() {
+        @Override
+        public MessageReference createFromParcel(Parcel source) {
+            MessageReference ref = new MessageReference();
+            ref.uid = source.readString();
+            ref.accountUuid = source.readString();
+            ref.folderName = source.readString();
+            String flag = source.readString();
+            if (flag != null) ref.flag = Flag.valueOf(flag);
+            return ref;
+        }
+
+        @Override
+        public MessageReference[] newArray(int size) {
+            return new MessageReference[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(accountUuid);
+        dest.writeString(folderName);
+        dest.writeString(flag == null ? null : flag.name());
     }
 }

@@ -327,7 +327,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         final Intent intent = getIntent();
 
-        mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+        mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
         mSourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
 
         if (K9.DEBUG && mSourceMessageBody != null)

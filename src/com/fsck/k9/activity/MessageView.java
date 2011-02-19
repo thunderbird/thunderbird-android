@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Config;
 import android.util.Log;
 import android.view.*;
@@ -26,7 +27,6 @@ import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
 import com.fsck.k9.view.SingleMessageView;
 
-import java.io.Serializable;
 import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener {
@@ -269,14 +269,14 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    public static void actionView(Context context, MessageReference messRef, List<MessageReference> messReferences) {
+    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences) {
         actionView(context, messRef, messReferences, null);
     }
 
-    public static void actionView(Context context, MessageReference messRef, List<MessageReference> messReferences, Bundle extras) {
+    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, Bundle extras) {
         Intent i = new Intent(context, MessageView.class);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
-        i.putExtra(EXTRA_MESSAGE_REFERENCES, (Serializable) messReferences);
+        i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
         if (extras != null) {
             i.putExtras(extras);
         }
@@ -349,16 +349,14 @@ public class MessageView extends K9Activity implements OnClickListener {
         displayMessage(mMessageReference);
     }
 
-    @SuppressWarnings("unchecked")
     private void restoreMessageReferences(Bundle icicle) {
-        mMessageReference = (MessageReference) icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
-        mMessageReferences = (ArrayList<MessageReference>) icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
+        mMessageReference = icicle.getParcelable(EXTRA_MESSAGE_REFERENCE);
+        mMessageReferences = icicle.getParcelableArrayList(EXTRA_MESSAGE_REFERENCES);
     }
 
-    @SuppressWarnings("unchecked")
     private void restoreMessageReferencesExtra(Intent intent) {
-        mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
-        mMessageReferences = (ArrayList<MessageReference>) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
+        mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        mMessageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
     }
 
     private void setupButtonViews() {
@@ -418,8 +416,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
-        outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
+        outState.putParcelable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
+        outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
     }
@@ -743,7 +741,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return;
             String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
             String srcFolderName = data.getStringExtra(ChooseFolder.EXTRA_CUR_FOLDER);
-            MessageReference ref = (MessageReference) data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
+            MessageReference ref = data.getParcelableExtra(ChooseFolder.EXTRA_MESSAGE);
             if (mMessageReference.equals(ref)) {
                 mAccount.setLastSelectedFolderName(destFolderName);
                 switch (requestCode) {

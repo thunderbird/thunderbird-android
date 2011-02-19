@@ -1164,7 +1164,7 @@ public class MessageList
                 return;
 
             final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-            final MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
+            final MessageReference ref = data.getParcelableExtra(ChooseFolder.EXTRA_MESSAGE);
             final MessageInfoHolder m = mAdapter.getMessage(ref);
 
             if ((destFolderName != null) && (m != null)) {
