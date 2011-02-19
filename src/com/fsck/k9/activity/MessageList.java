@@ -1495,6 +1495,7 @@ public class MessageList
     private void delete(MessageInfoHolder holder) {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(new Message[] { holder.message }, null);
+        gotoNextItem();
     }
 
     private void onMove(MessageInfoHolder holder) {
@@ -1549,6 +1550,9 @@ public class MessageList
         mAdapter.removeMessage(holder);
         // TODO showNextMessageOrReturn();
         mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folder, null);
+        if (holder.uid == mCurrentMessageInfo.uid) {
+            gotoNextItem();
+        }
     }
 
 
