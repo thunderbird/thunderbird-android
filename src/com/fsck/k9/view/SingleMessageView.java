@@ -51,6 +51,7 @@ public class SingleMessageView extends LinearLayout {
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
+        mHeaderContainer.setVisibility(View.GONE);
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
         mCryptoView.setActivity(activity);
         mCryptoView.setupChildViews();
@@ -61,6 +62,7 @@ public class SingleMessageView extends LinearLayout {
 
         mInflater = activity.getLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
+        mDownloadRemainder.setVisibility(View.GONE);
         mMessageContentView.configure();
 
 
