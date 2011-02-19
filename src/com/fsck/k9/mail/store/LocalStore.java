@@ -2928,24 +2928,17 @@ public class LocalStore extends Store implements Serializable {
         /**
          * Fetch the message text for display. This always returns an HTML-ified version of the
          * message, even if it was originally a text-only message.
-         * @return HTML version of message for display purposes.
+         * @return HTML version of message for display purposes or null.
          * @throws MessagingException
          */
         public String getTextForDisplay() throws MessagingException {
-            String text;    // First try and fetch an HTML part.
+            String text = null;    // First try and fetch an HTML part.
             Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
             if (part == null) {
                 // If that fails, try and get a text part.
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part == null) {
-                    text = null;
-                } else {
-                    LocalStore.LocalTextBody body = (LocalStore.LocalTextBody) part.getBody();
-                    if (body == null) {
-                        text = null;
-                    } else {
-                        text = body.getBodyForDisplay();
-                    }
+                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
                 }
             } else {
                 // We successfully found an HTML part; do the necessary character set decoding.
