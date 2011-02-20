@@ -4,12 +4,12 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
-    <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
+    <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
     <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Informació de la revisió: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
-    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
+    <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Llegeix adjunts del correu</string>
@@ -42,13 +42,13 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Propera comprovació @ <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_polling_off">\u0020(Comprovació acabada)</string>
+    <string name="status_syncing_off">\u0020(Comprovació acabada)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Següent</string>
     <string name="previous_action">Anterior</string>
     <string name="okay_action">D’acord</string>
-    <string name="cancel_action">Cancel la</string>
+    <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
     <string name="select_action">Selecciona</string>
@@ -141,7 +141,7 @@
     <string name="status_loading_more_failed">Reintenta carregar més missatges</string>
 
     <string name="load_more_messages_fmt">Carrega’n
-    fins <xliff:g id="messages_to_load">%d</xliff:g> més</string>
+    fins a <xliff:g id="messages_to_load">%d</xliff:g> més</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -188,7 +188,7 @@
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arxiu)</string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
 
-    <string name="send_failure_subject">L’enviament d’alguns missatges ha fallat</string>
+    <string name="send_failure_subject">La tramesa d’alguns missatges ha fallat</string>
     <string name="send_failure_body_abbrev">Mira la teva <xliff:g id="errorFolder">%s</xliff:g> carpeta per detalls.</string>
     <string name="send_failure_body_fmt">El K-9 ha trobat un problema a l’enviar alguns missatges.
     Tanmateix, per causa de la natura del problema, el K-9 no pot estar segur si els missatges
@@ -199,12 +199,12 @@
     La carpeta <xliff:g id="errorFolder">%s</xliff:g> pot contenir missatges d’error relacionades amb les errades.</string>
 
     <string name="alert_header">Alerta K-9</string>
-    <string name="no_connection_alert">S’ha suspès la sincronització i l’enviament per manca de xarxa.</string>
+    <string name="no_connection_alert">S’ha suspès la sincronització i la tramesa per manca de xarxa.</string>
 
     <string name="end_of_folder">No hi ha més missatges</string>
 
     <string name="accounts_welcome">
-Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per Android originalment basat en l’estàndard de client de Correu d’Android.
+Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per Android, originalment basat en l’estàndard de client de Correu d’Android.
 \n
 \n\nEl K-9 inclou les característiques millorades de:
 \n * Push mail utilitzant IMAP IDLE
@@ -217,7 +217,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 \n * Configuració de l’adreça de retorn
 \n * Dreceres de teclat
 \n * Millor suport IMAP
-\n * Desa els adjunts a la SD
+\n * Desat dels adjunts a la SD
 \n * Buidat de la paperera
 \n * Ordenació de missatges
 \n * ...i més
@@ -325,8 +325,8 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="global_settings_touchable_label">Previsualització missatges</string>
     <string name="global_settings_touchable_summary">Llista més espaiosa amb previsualització de missatges</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>
-    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
+    <string name="global_settings_show_correspondent_names_label">Mostra noms dels contactes</string>
+    <string name="global_settings_show_correspondent_names_summary">Mostra noms dels contactes enlloc dels correus</string>
     <string name="global_settings_show_contact_name_label">Mostra noms contactes</string>
     <string name="global_settings_show_contact_name_summary">Quan siguin disponibles, utilitzar els noms dels destinataris dels contactes</string>
     <string name="global_settings_registered_name_color_label">Acoloreix els contactes</string>
@@ -367,12 +367,12 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">Recuperant la informació del compte\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Comprovant la configuració del servidor d’entrada\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Comprovant la configuració del servidor de sortida\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">S'està comprovant la configuració del servidor d’entrada\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">S'està comprovant la configuració del servidor de sortida\u2026</string>
     <string name="account_setup_check_settings_authenticate">S’està autenticant\u2026</string>
     <string name="account_setup_check_settings_fetch">Recollint la configuració del compte\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">S’està acabant\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">S’està cancel lant\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">S’està cancel·lant\u2026</string>
 
     <string name="account_setup_names_title">Ja està gairebé fet!</string>
     <string name="account_setup_names_instructions">S’ha configurat el compte, s’està comprovant correu nou!</string>
@@ -559,7 +559,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="account_settings_show_pictures_only_from_contacts">Dels contactes</string>
     <string name="account_settings_show_pictures_always">De qualsevol</string>
 
-    <string name="account_settings_composition">Enviament correu</string>
+    <string name="account_settings_composition">Tramesa correu</string>
 
     <string name="account_settings_reply_after_quote_label">Contesta després del text citat</string>
     <string name="account_settings_reply_after_quote_summary">Quan contestis, el missatge original apareixerà sobre de la contesta.</string>
@@ -712,7 +712,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="account_settings_composition_summary">Configura per defecte De,  A/c i signatura</string>
 
     <string name="account_settings_identities_label">Gestiona les identitats</string>
-    <string name="account_settings_identities_summary">Configura adresses i signatures \'From\' alternatives</string>
+    <string name="account_settings_identities_summary">Configura adreces i signatures \'From\' alternatives</string>
 
     <string name="manage_identities_title">Gestiona identitats</string>
 
@@ -900,8 +900,8 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="gestures_title">Gestos</string>
     <string name="gestures_summary">Accepta el control de gestos</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+    <string name="compact_layouts_title">Compacta formats</string>
+    <string name="compact_layouts_summary">Adjusta formats per mostrar més a cada pàgina</string>
 
     <string name="volume_navigation_title">Navegació botons de volum</string>
     <string name="volume_navigation_summary">Canvia a través dels elements utilitzant els botons de volum</string>
@@ -990,7 +990,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
     <string name="message_compose_use_workaround">Utilitza \"Afegeix adjunt (Imatge)\" or \"Afegeix adjunt (Vídeo)\" per afegir imatges o vídeos amb la Galeria 3D.</string>
 
-    <string name="miscellaneous_preferences">Miscel lània</string>
+    <string name="miscellaneous_preferences">Miscel·lània</string>
     <string name="misc_preferences_attachment_title">Utilitza la Galeria d’errors</string>
     <string name="misc_preferences_attachment_description">Mostra els botons per afegir adjunts d’imatge/vídeo (per treballar amb els errors de la Galeria 3D)</string>
 
@@ -1006,7 +1006,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="insufficient_apg_permissions">K-9 no té permís per accedir plenament a l’APG, si us plau, reinstal la el K-9 per esmenar-ho.</string>
     <string name="pgp_mime_unsupported">Encara no hi ha suport per a missatges PGP/MIME.</string>
     <string name="attachment_encryption_unsupported">Alerta: els adjunts encara NO estan signats o encriptats.</string>
-    <string name="send_aborted">Enviament avortat</string>
+    <string name="send_aborted">Tramesa suspesa</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Desa l’esborrany?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Desa o descarta aquest missatge?</string>
