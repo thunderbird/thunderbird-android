@@ -296,11 +296,13 @@ public class MessageView extends K9Activity implements OnClickListener {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (icicle != null) {
-            restoreMessageReferences(icicle);
+            mMessageReference = icicle.getParcelable(EXTRA_MESSAGE_REFERENCE);
+            mMessageReferences = icicle.getParcelableArrayList(EXTRA_MESSAGE_REFERENCES);
             mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
         } else {
             if (uri == null) {
-                restoreMessageReferencesExtra(intent);
+                mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+                mMessageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
             } else {
                 List<String> segmentList = uri.getPathSegments();
                 if (segmentList.size() != 3) {
@@ -344,16 +346,6 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         setupButtonViews();
         displayMessage(mMessageReference);
-    }
-
-    private void restoreMessageReferences(Bundle icicle) {
-        mMessageReference = icicle.getParcelable(EXTRA_MESSAGE_REFERENCE);
-        mMessageReferences = icicle.getParcelableArrayList(EXTRA_MESSAGE_REFERENCES);
-    }
-
-    private void restoreMessageReferencesExtra(Intent intent) {
-        mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
-        mMessageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
     }
 
     private void setupButtonViews() {
