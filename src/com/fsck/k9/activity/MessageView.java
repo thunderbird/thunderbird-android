@@ -943,7 +943,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
-            case R.id.dialog_confirm_delete: return createConfirmDeleteDialog(id);
+            case R.id.dialog_confirm_delete:
+                return createConfirmDeleteDialog(id);
             case R.id.dialog_attachment_progress:
                 ProgressDialog d = new ProgressDialog(this);
                 d.setIndeterminate(true);
@@ -1084,7 +1085,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return;
             }
             mHandler.post(new Runnable() {
-                @Override
                 public void run() {
                     mMessageView.setAttachmentsEnabled(false);
                     showDialog(R.id.dialog_attachment_progress);
@@ -1112,7 +1112,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                     } else {
                         attachment.showFile();
                     }
-
                 }
             });
         }
@@ -1127,7 +1126,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                     mMessageView.setAttachmentsEnabled(true);
                     removeDialog(R.id.dialog_attachment_progress);
                     mHandler.networkError();
-
                 }
             });
         }
