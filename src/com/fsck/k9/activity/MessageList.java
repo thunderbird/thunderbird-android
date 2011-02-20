@@ -906,8 +906,9 @@ public class MessageList
         mListToggle.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
                 View listHolder = findViewById(R.id.message_list_holder);
-            listHolder.setVisibility((listHolder.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
-        }});
+                listHolder.setVisibility((listHolder.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
+            }
+        });
 
 
         registerForContextMenu(mListView);
@@ -3510,7 +3511,7 @@ public class MessageList
                              !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
             mMove.setEnabled(true);
         } else {
-            disableMoveButtons();
+            findViewById(R.id.move_buttons).setVisibility(View.GONE);
         }
     }
 
@@ -3521,6 +3522,8 @@ public class MessageList
         mArchive = findViewById(R.id.archive);
         mMove = findViewById(R.id.move);
         mSpam = findViewById(R.id.spam);
+        //hide the refile buttons until we actually want them
+        findViewById(R.id.move_buttons).setVisibility(View.GONE);
     }
 
 
