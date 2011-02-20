@@ -2,5 +2,6 @@
 <resources>
 
     <item type="id" name="dialog_confirm_delete"/>
+    <item type="id" name="dialog_attachment_progress"/>
 
 </resources>

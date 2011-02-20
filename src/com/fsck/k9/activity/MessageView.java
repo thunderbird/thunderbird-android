@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -942,9 +943,12 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
-        case R.id.dialog_confirm_delete: {
-            return createConfirmDeleteDialog(id);
-        }
+            case R.id.dialog_confirm_delete: return createConfirmDeleteDialog(id);
+            case R.id.dialog_attachment_progress:
+                ProgressDialog d = new ProgressDialog(this);
+                d.setIndeterminate(true);
+                d.setTitle(R.string.dialog_attachment_progress_title);
+                return d;
         }
         return super.onCreateDialog(id);
     }
@@ -1075,32 +1079,42 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         @Override
-        public void loadAttachmentStarted(Account account, Message message, Part part, Object tag, boolean requiresDownload) {
+        public void loadAttachmentStarted(Account account, Message message, Part part, Object tag, final boolean requiresDownload) {
             if (mMessage != message) {
                 return;
             }
-            mMessageView.setAttachmentsEnabled(false);
-            mHandler.progress(true);
-            if (requiresDownload) {
-                mHandler.fetchingAttachment();
-            }
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mMessageView.setAttachmentsEnabled(false);
+                    showDialog(R.id.dialog_attachment_progress);
+                    if (requiresDownload) {
+                        mHandler.fetchingAttachment();
+                    }
+                }
+            });
         }
 
         @Override
-        public void loadAttachmentFinished(Account account, Message message, Part part, Object tag) {
+        public void loadAttachmentFinished(Account account, Message message, Part part, final Object tag) {
             if (mMessage != message) {
                 return;
             }
-            mMessageView.setAttachmentsEnabled(true);
-            mHandler.progress(false);
-            Object[] params = (Object[]) tag;
-            boolean download = (Boolean) params[0];
-            AttachmentView attachment = (AttachmentView) params[1];
-            if (download) {
-                attachment.writeFile();
-            } else {
-                attachment.showFile();
-            }
+            mHandler.post(new Runnable() {
+                public void run() {
+                    mMessageView.setAttachmentsEnabled(true);
+                    removeDialog(R.id.dialog_attachment_progress);
+                    Object[] params = (Object[]) tag;
+                    boolean download = (Boolean) params[0];
+                    AttachmentView attachment = (AttachmentView) params[1];
+                    if (download) {
+                        attachment.writeFile();
+                    } else {
+                        attachment.showFile();
+                    }
+
+                }
+            });
         }
 
         @Override
@@ -1108,9 +1122,14 @@ public class MessageView extends K9Activity implements OnClickListener {
             if (mMessage != message) {
                 return;
             }
-            mMessageView.setAttachmentsEnabled(true);
-            mHandler.progress(false);
-            mHandler.networkError();
+            mHandler.post(new Runnable() {
+                public void run() {
+                    mMessageView.setAttachmentsEnabled(true);
+                    removeDialog(R.id.dialog_attachment_progress);
+                    mHandler.networkError();
+
+                }
+            });
         }
     }
 
