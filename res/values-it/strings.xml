@@ -42,7 +42,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Prossima verifica alle <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
+    <string name="status_syncing_off">\u0020(Sincronizzazione disabilitata)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
@@ -96,7 +96,7 @@
     <string name="send_alternate_chooser_title">Scegli il mittente</string>
 
     <string name="mark_all_as_read_dlg_title">Segna tutti i messaggi come letti</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Segnare tutti i messaggi in \'<xliff:g id="folder">%s</xliff:g>\' come letti?  (compresi
+    <string name="mark_all_as_read_dlg_instructions_fmt">Segnare tutti i messaggi in \'<xliff:g id="folder">%s</xliff:g>\' come letti? (compresi
     i messaggi nella cartella che non vengono visualizzati in K-9)</string>
 
     <string name="flag_action">Metti in evidenza</string>
@@ -128,7 +128,7 @@
     <string name="folder_context_menu_title">Opzioni cartella</string>
 
     <string name="general_no_subject">(Nessun oggetto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <!-- NEW: <string name="general_no_date">No date</string>-->
+    <string name="general_no_date">Nessuna data</string>
     <string name="general_no_sender">Nessun mittente</string>
     <string name="status_loading">Recupero in corso</string>
     <string name="status_loading_folder">(Verifica di <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -141,7 +141,7 @@
     <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
 
     <string name="load_more_messages_fmt">Scarica altri
-	<xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
+    <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -260,7 +260,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_compose_content_hint">Testo del messaggio</string>
     <string name="message_compose_quote_header_separator">-------- Messaggio originale --------</string>
     <string name="message_compose_quote_header_subject">Oggetto:</string>
-	<string name="message_compose_quote_header_send_date">Inviato il:</string>
+    <string name="message_compose_quote_header_send_date">Inviato il:</string>
     <string name="message_compose_quote_header_from">Da:</string>
     <string name="message_compose_quote_header_to">A:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
@@ -901,8 +901,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="gestures_title">Gestione con tocco</string>
     <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+    <string name="compact_layouts_title">Layout compatto</string>
+    <string name="compact_layouts_summary">Regola il layout per visualizzare di più in ogni pagina</string>
 
     <string name="volume_navigation_title">Navigazione tasti volume</string>
     <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
