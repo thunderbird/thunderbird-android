@@ -1087,7 +1087,7 @@ public class MessageList
         mCurrentMessageInfo = holder;
         mAccount = Preferences.getPreferences(this).getAccount(mCurrentMessageInfo.accountUuid);
         clearMessageDisplay();
-         findSurroundingMessagesUid();
+        findSurroundingMessagesUid();
         // start with fresh, empty PGP data
         mPgpData = new PgpData();
         mTopView.setVisibility(View.VISIBLE);
@@ -1364,24 +1364,22 @@ public class MessageList
 
 
     private void gotoNextItem() {
-              if (mNextMessage == null)
-               {
-                   Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
-                   return;
-            }
-                mLastDirection = NEXT;
+        if (mNextMessage == null) {
+            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mLastDirection = NEXT;
         mListView.requestFocus();
         simulateKeystroke(KeyEvent.KEYCODE_DPAD_DOWN);
         mListView.smoothScrollToPosition(mListView.getSelectedItemPosition());
     }
 
     private void gotoPreviousItem() {
-                if (mPreviousMessage == null)
-                {
-                    Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-           mLastDirection = PREVIOUS;
+        if (mPreviousMessage == null) {
+            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mLastDirection = PREVIOUS;
         mListView.requestFocus();
         simulateKeystroke(KeyEvent.KEYCODE_DPAD_UP);
         mListView.smoothScrollToPosition(mListView.getSelectedItemPosition());
