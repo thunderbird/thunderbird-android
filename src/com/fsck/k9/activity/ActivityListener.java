@@ -12,6 +12,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
 
 public class ActivityListener extends MessagingListener {
+    private Account mAccount = null;
     private String mLoadingFolderName = null;
     private String mLoadingHeaderFolderName = null;
     private String mLoadingAccountDescription = null;
@@ -36,6 +37,9 @@ public class ActivityListener extends MessagingListener {
                 String displayName = mLoadingFolderName;
                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
+                }
+                else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
+                    displayName = context.getString(R.string.special_mailbox_name_outbox);
                 }
 
                 if (mLoadingHeaderFolderName != null) {
@@ -82,6 +86,7 @@ public class ActivityListener extends MessagingListener {
         int numNewMessages) {
         mLoadingAccountDescription = null;
         mLoadingFolderName = null;
+        mAccount = null;
         informUserOfStatus();
     }
 
@@ -89,6 +94,7 @@ public class ActivityListener extends MessagingListener {
     public void synchronizeMailboxStarted(Account account, String folder) {
         mLoadingAccountDescription = account.getDescription();
         mLoadingFolderName = folder;
+        mAccount = account;
         mFolderCompleted = 0;
         mFolderTotal = 0;
         informUserOfStatus();
@@ -131,6 +137,7 @@ public class ActivityListener extends MessagingListener {
                                          String message) {
         mLoadingAccountDescription = null;
         mLoadingFolderName = null;
+        mAccount = null;
         informUserOfStatus();
 
     }

@@ -300,17 +300,12 @@
             android:key="archive_folder"
             android:title="@string/archive_folder_label"
             android:dialogTitle="@string/archive_folder_label" />
+
         <ListPreference
             android:persistent="false"
             android:key="drafts_folder"
             android:title="@string/drafts_folder_label"
             android:dialogTitle="@string/drafts_folder_label" />
-        <ListPreference
-            android:persistent="false"
-            android:key="outbox_folder"
-            android:title="@string/outbox_folder_label"
-            android:dialogTitle="@string/outbox_folder_label" />
-
 
         <ListPreference
             android:persistent="false"

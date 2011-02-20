@@ -104,7 +104,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         }
 
         if (this.name.equals(account.getOutboxFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_outbox_fmt), this.name);
+            this.displayName = context.getString(R.string.special_mailbox_name_outbox);
         }
 
         if (this.name.equals(account.getDraftsFolderName())) {

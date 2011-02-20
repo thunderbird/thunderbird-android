@@ -233,7 +233,6 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
             mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
-            mAccount.setOutboxFolderName(getString(R.string.special_mailbox_name_outbox));
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
         } catch (UnsupportedEncodingException enc) {
@@ -313,7 +312,6 @@ public class AccountSetupBasics extends K9Activity
         }
         mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
         mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
-        mAccount.setOutboxFolderName(getString(R.string.special_mailbox_name_outbox));
         mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, mDefaultView.isChecked());
