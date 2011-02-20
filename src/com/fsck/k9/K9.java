@@ -214,6 +214,11 @@ public class K9 extends Application {
     public static final String INBOX = "INBOX";
 
     /**
+     * This local folder is used to store messages to be sent.
+     */
+    public static final String OUTBOX = "OUTBOX";
+
+    /**
      * For use when displaying that no folder is selected
      */
     public static final String FOLDER_NONE = "-NONE-";

@@ -301,7 +301,7 @@ public class ChooseFolder extends K9ListActivity {
                     if (K9.INBOX.equalsIgnoreCase(name)) {
                         mAdapter.add(getString(R.string.special_mailbox_name_inbox));
                         heldInbox = name;
-                    } else if (!K9.ERROR_FOLDER_NAME.equals(name)) {
+                    } else if (!K9.ERROR_FOLDER_NAME.equals(name) && !account.getOutboxFolderName().equals(name)) {
                         mAdapter.add(name);
                     }
 

@@ -386,6 +386,13 @@ public class ImapStore extends Store {
 
                 if (folder.equalsIgnoreCase(K9.INBOX)) {
                     continue;
+                } else if (folder.equalsIgnoreCase(K9.OUTBOX)) {
+                    /*
+                     * There is a folder on the server with the same name as our local
+                     * outbox. Until we have a good plan to deal with this situation
+                     * we simply ignore the folder on the server.
+                     */
+                    continue;
                 } else {
 
                     if (getCombinedPrefix().length() > 0) {

@@ -173,7 +173,6 @@
   <string name="special_mailbox_name_archive">Archive</string>
   <string name="special_mailbox_name_spam">Spams</string>
 
-  <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Boîte d\'envoi)</string>
   <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Brouillons)</string>
   <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Corbeille)</string>
   <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Envoyés)</string>
@@ -270,7 +269,7 @@
   <string name="message_view_show_pictures_action">Afficher les images</string>
   <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualisateur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
-  
+
   <string name="message_view_download_remainder">Télécharger le message complet</string>
 
   <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
@@ -394,7 +393,6 @@
   <string name="trash_folder_label">Nom du dossier de la corbeille</string>
   <string name="archive_folder_label">Nom du dossier des archives</string>
   <string name="spam_folder_label">Nom du dossier des spams</string>
-  <string name="outbox_folder_label">Nom du dossier de la boîte d\'envoi</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
   <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Chemin WebDAV (Exchange)</string>
@@ -520,7 +518,7 @@
   <string name="account_settings_crypto_app_not_available">Non disponible</string>
   <string name="account_settings_crypto_auto_signature">Signature automatique</string>
   <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
-  
+
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
   <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
 
@@ -625,7 +623,7 @@
 
     <string name="account_settings_led_label">Clignotement DEL</string>
     <string name="account_settings_led_summary">Clignotement de la DEL quand un message arrive</string>
-    
+
   <string name="account_settings_servers">Paramètres du serveur</string>
   <string name="account_settings_composition_title">Options de composition</string>
   <string name="account_settings_composition_label">Défauts pour la composition</string>
@@ -662,7 +660,7 @@
   <string name="choose_identity_title">Choisir l\'identité</string>
   <string name="choose_account_title">Choisir le compte/l\'identité</string>
     <string name="send_as">Envoyer en tant que</string>
-  
+
   <string name="no_identities">Aller dans Paramètres du compte &gt; Gérer les identités pour créer des identités</string>
   <string name="no_removable_identity">Vous ne pouvez votre seule identité</string>
   <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse e-mail</string>

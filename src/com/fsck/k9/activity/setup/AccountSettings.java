@@ -11,6 +11,7 @@ import android.preference.*;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,7 +97,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final String PREFERENCE_ARCHIVE_FOLDER = "archive_folder";
     private static final String PREFERENCE_DRAFTS_FOLDER = "drafts_folder";
-    private static final String PREFERENCE_OUTBOX_FOLDER = "outbox_folder";
     private static final String PREFERENCE_SENT_FOLDER = "sent_folder";
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
@@ -157,7 +157,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private ListPreference mArchiveFolder;
     private ListPreference mDraftsFolder;
-    private ListPreference mOutboxFolder;
     private ListPreference mSentFolder;
     private ListPreference mSpamFolder;
     private ListPreference mTrashFolder;
@@ -699,7 +698,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
         mAccount.setArchiveFolderName(mArchiveFolder.getValue());
         mAccount.setDraftsFolderName(mDraftsFolder.getValue());
-        mAccount.setOutboxFolderName(mOutboxFolder.getValue());
         mAccount.setSentFolderName(mSentFolder.getValue());
         mAccount.setSpamFolderName(mSpamFolder.getValue());
         mAccount.setTrashFolderName(mTrashFolder.getValue());
@@ -852,18 +850,26 @@ public class AccountSettings extends K9PreferenceActivity {
             } catch (Exception e) {
                 /// this can't be checked in
             }
-            allFolderValues = new String[folders.size()+2];
-            allFolderLabels = new String[folders.size()+2];
+
+            // TODO: In the future the call above should be changed to only return remote folders.
+            // For now we just remove the Outbox folder if present.
+            Iterator<? extends Folder> iter = folders.iterator();
+            while (iter.hasNext())
+            {
+                Folder folder = iter.next();
+                if (mAccount.getOutboxFolderName().equals(folder.getName()))
+                {
+                    iter.remove();
+                }
+            }
+
+            allFolderValues = new String[folders.size()+1];
+            allFolderLabels = new String[folders.size()+1];
 
             allFolderValues[0] = K9.FOLDER_NONE;
             allFolderLabels[0] = K9.FOLDER_NONE;
 
-            // There's a non-zero chance that "outbox" won't actually exist, so we force it into the list
-            allFolderValues[1] = mAccount.getOutboxFolderName();
-            allFolderLabels[1] = mAccount.getOutboxFolderName();
-
-
-            int i = 2;
+            int i = 1;
             for (Folder folder : folders) {
                 allFolderLabels[i] = folder.getName();
                 allFolderValues[i] = folder.getName();
@@ -880,8 +886,6 @@ public class AccountSettings extends K9PreferenceActivity {
             mArchiveFolder.setEnabled(false);
             mDraftsFolder = (ListPreference)findPreference(PREFERENCE_DRAFTS_FOLDER);
             mDraftsFolder.setEnabled(false);
-            mOutboxFolder = (ListPreference)findPreference(PREFERENCE_OUTBOX_FOLDER);
-            mOutboxFolder.setEnabled(false);
             mSentFolder = (ListPreference)findPreference(PREFERENCE_SENT_FOLDER);
             mSentFolder.setEnabled(false);
             mSpamFolder = (ListPreference)findPreference(PREFERENCE_SPAM_FOLDER);
@@ -896,14 +900,12 @@ public class AccountSettings extends K9PreferenceActivity {
             initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels, allFolderValues);
             initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels, allFolderValues);
             initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mOutboxFolder, mAccount.getOutboxFolderName(), allFolderLabels, allFolderValues);
             initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels, allFolderValues);
             initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels, allFolderValues);
             initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels, allFolderValues);
             mAutoExpandFolder.setEnabled(true);
             mArchiveFolder.setEnabled(true);
             mDraftsFolder.setEnabled(true);
-            mOutboxFolder.setEnabled(true);
             mSentFolder.setEnabled(true);
             mSpamFolder.setEnabled(true);
             mTrashFolder.setEnabled(true);

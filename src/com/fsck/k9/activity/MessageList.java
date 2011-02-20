@@ -488,6 +488,8 @@ public class MessageList
 
                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
                     displayName = getString(R.string.special_mailbox_name_inbox);
+                } else if (mAccount.getOutboxFolderName().equals(displayName)) {
+                    displayName = getString(R.string.special_mailbox_name_outbox);
                 }
 
                 String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());

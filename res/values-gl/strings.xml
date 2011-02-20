@@ -180,7 +180,6 @@
     <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Saída)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Borradores)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Lixo)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviados)</string>
@@ -433,7 +432,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="trash_folder_label">Carpeta Lixo</string>
     <string name="archive_folder_label">Carpeta Arquivados</string>
     <string name="spam_folder_label">Carpeta SPAM</string>
-    <string name="outbox_folder_label">Carpeta Saída</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Ver só carpetas	suscritas</string>
     <string name="account_setup_auto_expand_folder">Autoexpandir carpeta</string>

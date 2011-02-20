@@ -186,7 +186,6 @@
     <string name="special_mailbox_name_spam">Nevyžádaná</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (K odeslání)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Koncepty)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Koš)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Odeslaná)</string>
@@ -440,7 +439,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="trash_folder_label">Název složky Koš</string>
     <string name="archive_folder_label">Název složky Archív</string>
     <string name="spam_folder_label">Název složky Nevyžádaná</string>
-    <string name="outbox_folder_label">Název složky K odeslání</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Zobrazit jen odebírané složky</string>
     <string name="account_setup_auto_expand_folder">Aut. rozbalená složka</string>

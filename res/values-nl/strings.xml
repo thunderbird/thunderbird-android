@@ -181,7 +181,6 @@
     <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Postvak uit)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Concepten)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Prullenbak)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Verzonden)</string>
@@ -191,7 +190,7 @@
     <string name="send_failure_subject">Fout bij verzenden van berichten</string>
     <string name="send_failure_body_abbrev">Bekijk je <xliff:g id="errorFolder">%s</xliff:g> map voor details.</string>
     <string name="send_failure_body_fmt">K-9 ondervond een probleem bij het verzenden van sommige berichten.
-    Echter, vanwege de aard van het probleem, kan K-9 niet zeker zeggen of de berichten werden verzonden of niet. 
+    Echter, vanwege de aard van het probleem, kan K-9 niet zeker zeggen of de berichten werden verzonden of niet.
     De ontvangers kunnen al kopieen van het bericht hebben ontvangen.
     \u000a\u000aDe berichten waarbij dit probleem is geconstateerd, zijn nu gemerkt met een ster in het postvak uit.
     Als je de sterren verwijderd, zal K-9 opnieuw proberen de berichten te verzenden.
@@ -221,7 +220,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
 \n * Prullenbak legen
 \n * Berichten sorteren
 \n * ...en meer
-\n             
+\n
 \nHoud er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
 \n
 \n Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op http://k9mail.googlecode.com/
@@ -434,7 +433,6 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="trash_folder_label">Prullenbak map naam</string>
     <string name="archive_folder_label">Archief map naam</string>
     <string name="spam_folder_label">Spam map naam</string>
-    <string name="outbox_folder_label">Postvak uit map naam</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Laat alleen geabonneerde mappen zien</string>
     <string name="account_setup_auto_expand_folder">Auto-uitbreiden mappen</string>

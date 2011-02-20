@@ -180,7 +180,6 @@
     <string name="special_mailbox_name_spam">迷惑メール</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (送信トレイ)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (下書き)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (ゴミ箱)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (送信済み)</string>
@@ -433,7 +432,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="trash_folder_label">ゴミ箱フォルダ名</string>
     <string name="archive_folder_label">アーカイブフォルダ名</string>
     <string name="spam_folder_label">迷惑メールフォルダ名</string>
-    <string name="outbox_folder_label">送信トレイフォルダ名</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
     <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>

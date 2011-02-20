@@ -182,7 +182,6 @@
     <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Postausgang)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Entwürfe)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Papierkorb)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Gesendet)</string>
@@ -432,7 +431,6 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="trash_folder_label">Ordner für gelöschte Objekte</string>
     <string name="archive_folder_label">Ordner für archivierte Objekte</string>
     <string name="spam_folder_label">Ordner für Spam</string>
-    <string name="outbox_folder_label">Ordner für ausgehende Objekte</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
     <string name="account_setup_auto_expand_folder">Startordner</string>

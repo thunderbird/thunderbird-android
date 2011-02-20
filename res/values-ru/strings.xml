@@ -182,7 +182,6 @@
     <!-- NEW: <string name="special_mailbox_name_spam">Spam</string>-->
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Исходящие)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Черновики)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Мусор)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Отправленные)</string>
@@ -433,7 +432,6 @@
     <string name="trash_folder_label">Имя папки Мусора</string>
     <!-- NEW: <string name="archive_folder_label">Archive folder</string>-->
     <!-- NEW: <string name="spam_folder_label">Spam folder</string>-->
-    <string name="outbox_folder_label">Имя папки Исходящиx</string>
 
     <!-- NEW: <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>-->
     <string name="account_setup_auto_expand_folder">Автоматически открывать папку</string>

@@ -85,7 +85,6 @@ public class Account implements BaseAccount {
     private String mTrashFolderName;
     private String mArchiveFolderName;
     private String mSpamFolderName;
-    private String mOutboxFolderName;
     private String mAutoExpandFolderName;
     private FolderMode mFolderDisplayMode;
     private FolderMode mFolderSyncMode;
@@ -252,7 +251,6 @@ public class Account implements BaseAccount {
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
         mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
-        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName", "Outbox");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
@@ -396,7 +394,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".trashFolderName");
         editor.remove(mUuid + ".archiveFolderName");
         editor.remove(mUuid + ".spamFolderName");
-        editor.remove(mUuid + ".outboxFolderName");
         editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
@@ -493,7 +490,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
         editor.putString(mUuid + ".archiveFolderName", mArchiveFolderName);
         editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
-        editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
@@ -828,11 +824,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getOutboxFolderName() {
-        return mOutboxFolderName;
-    }
-
-    public synchronized void setOutboxFolderName(String outboxFolderName) {
-        mOutboxFolderName = outboxFolderName;
+        return K9.OUTBOX;
     }
 
     public synchronized String getAutoExpandFolderName() {
