@@ -2353,7 +2353,7 @@ public class MessageList
             @Override
             public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
             final Message message) {
-                if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                if (mCurrentMessageInfo == null || !mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
                 || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                     return;
                 }
@@ -2377,7 +2377,7 @@ public class MessageList
             @Override
             public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
             Message message) {
-                if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                if (mCurrentMessageInfo == null || !mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
                 || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                     return;
                 }
@@ -2389,7 +2389,8 @@ public class MessageList
             @Override
             public void loadMessageForViewFailed(Account account, String folder, String uid,
             final Throwable t) {
-                if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                if (mCurrentMessageInfo == null
+                        || !mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
                 || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                     return;
                 }
@@ -2412,7 +2413,7 @@ public class MessageList
             @Override
             public void loadMessageForViewFinished(Account account, String folder, String uid,
             final Message message) {
-                if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                if (mCurrentMessageInfo == null || !mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
                 || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                     return;
                 }
@@ -2426,7 +2427,9 @@ public class MessageList
 
             @Override
             public void loadMessageForViewStarted(Account account, String folder, String uid) {
-                if (!mCurrentMessageInfo.uid.equals(uid) || !mCurrentMessageInfo.folder.name.equals(folder)
+                if (mCurrentMessageInfo == null
+                        || !mCurrentMessageInfo.uid.equals(uid)
+                        || !mCurrentMessageInfo.folder.name.equals(folder)
                 || !mCurrentMessageInfo.accountUuid.equals(account.getUuid())) {
                     return;
                 }
@@ -2440,7 +2443,7 @@ public class MessageList
             @Override
             public void loadAttachmentStarted(Account account, Message message,
             Part part, Object tag, boolean requiresDownload) {
-                if (mMessage != message) {
+                if (mMessage == null || mMessage != message) {
                     return;
                 }
                 mMessageView.setAttachmentsEnabled(false);
