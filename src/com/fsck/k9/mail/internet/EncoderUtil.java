@@ -4,7 +4,6 @@ package com.fsck.k9.mail.internet;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.BitSet;
-import java.util.Locale;
 
 import org.apache.james.mime4j.util.CharsetUtil;
 
@@ -19,8 +18,6 @@ import org.apache.james.mime4j.util.CharsetUtil;
  */
 public class EncoderUtil {
     private static final BitSet Q_RESTRICTED_CHARS = initChars("=_?\"#$%&'(),.:;<>@[\\]^`{|}~");
-
-    private static final int MAX_USED_CHARACTERS = 50;
 
     private static final String ENC_WORD_PREFIX = "=?";
     private static final String ENC_WORD_SUFFIX = "?=";
