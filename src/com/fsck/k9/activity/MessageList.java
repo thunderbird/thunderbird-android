@@ -228,6 +228,7 @@ public class MessageList
 
     private View mListToggle;
 
+    private View mListHolder;
 
     private View mNext;
     private View mPrevious;
@@ -901,12 +902,19 @@ public class MessageList
         mListView.setItemsCanFocus(false);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        mListHolder = findViewById(R.id.message_list_holder);
 
         mListToggle = (View)findViewById(R.id.message_list_toggle);
         mListToggle.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
-                View listHolder = findViewById(R.id.message_list_holder);
-                listHolder.setVisibility((listHolder.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
+                if ((mListHolder.getVisibility() == View.GONE) ) {
+                    showMessageList();
+                } else {
+                    hideMessageList();
+
+
+                }
+
             }
         });
 
@@ -3057,6 +3065,16 @@ public class MessageList
             mBatchButtonArea.startAnimation(animation);
         }
     }
+
+    private void hideMessageList() {
+            mListHolder.setVisibility(View.GONE);
+    }
+
+    private void showMessageList() {
+            mListHolder.setVisibility(View.VISIBLE);
+    }
+
+
 
     private void toggleBatchButtons() {
 
