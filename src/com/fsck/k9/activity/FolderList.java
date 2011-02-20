@@ -42,6 +42,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.AbstractAction;
+
 /**
  * FolderList is the primary user interface for the program. This
  * Activity shows list of the Account's folders
@@ -61,6 +64,7 @@ public class FolderList extends K9ListActivity {
 
     private ListView mListView;
 
+    private ActionBar mActionBar;
     private FolderListAdapter mAdapter;
 
     private LayoutInflater mInflater;
@@ -237,7 +241,7 @@ public class FolderList extends K9ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.folder_list);
         mListView = getListView();
@@ -302,8 +306,23 @@ public class FolderList extends K9ListActivity {
 
         setListAdapter(mAdapter);
         getListView().setTextFilterEnabled(mAdapter.getFilter() != null); // should never be false but better safe then sorry
+        initializeActionBar();
 
         setTitle(mAccount.getDescription());
+
+    }
+
+    private void initializeActionBar() {
+        ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+        mActionBar.addAction(new SearchAction());
+        mActionBar.addAction(new SyncAction());
+        mActionBar.addAction(new ComposeAction());
+        mActionBar.setOnTitleClickListener(
+        new OnClickListener() {
+            @Override public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
 
@@ -491,6 +510,10 @@ public class FolderList extends K9ListActivity {
     }
 
 
+    public void onCheckMail() {
+        MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+    }
 
 
 
@@ -506,12 +529,11 @@ public class FolderList extends K9ListActivity {
             return true;
 
         case R.id.check_mail:
-            MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
-
+            onCheckMail();
             return true;
 
         case R.id.send_messages:
-            MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+            sendMail(mAccount);
             return true;
         case R.id.accounts:
             onAccounts();
@@ -1318,5 +1340,34 @@ public class FolderList extends K9ListActivity {
         };
         MessageList.actionHandle(context, description, searchSpec);
     }
+    public class SearchAction extends AbstractAction {
+        public SearchAction() {
+            super(R.drawable.ic_actionbar_search);
+        }
+        @Override
+        public void performAction(View view) {
+            onSearchRequested();
+        }
+    }
+
+    public class SyncAction extends AbstractAction {
+        public SyncAction() {
+            super(R.drawable.ic_actionbar_refresh);
+        }
+        @Override
+        public void performAction(View view) {
+            onCheckMail();
+        }
+    }
+    public class ComposeAction extends AbstractAction {
+        public ComposeAction() {
+            super(R.drawable.ic_actionbar_compose);
+        }
+        @Override
+        public void performAction(View view) {
+            MessageCompose.actionCompose(FolderList.this, mAccount);
+        }
+    }
+
 
 }

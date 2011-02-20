@@ -2916,7 +2916,7 @@ public class LocalStore extends Store implements Serializable {
                     try {
                         body = (LocalStore.LocalTextBody) part.getBody();
                     } catch (ClassCastException e) {
-                        Log.e(K9.LOG_TAG,"Could not turn the part's body into a LocalTextBody "+part+" " +e);
+                        Log.e(K9.LOG_TAG, "Could not turn the part's body into a LocalTextBody " + part + " " + e);
                     }
                     if (body == null) {
                         text = null;

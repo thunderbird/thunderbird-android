@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
     android:orientation="vertical"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
+    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

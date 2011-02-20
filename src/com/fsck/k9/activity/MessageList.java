@@ -511,18 +511,8 @@ public class MessageList
         }
 
         private void setWindowTitle() {
-            if (mAccount != null && mFolderName != null) {
-                String displayName  = mFolderName;
-
-                if (K9.INBOX.equalsIgnoreCase(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_inbox);
-                }
-
-                //mActionBar.setTitle(mAccount.getDescription() + " / " + displayName );
-
-            } else if (mQueryString != null) {
-
-                mActionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
+            if (mActionBar != null) {
+                setActionBarTitle();
             }
         }
 
@@ -934,8 +924,28 @@ public class MessageList
         mActionBar.addAction(new SearchAction());
         mActionBar.addAction(new SyncAction());
         mActionBar.addAction(new ComposeAction());
+        mActionBar.setOnTitleClickListener(
+        new OnClickListener() {
+            @Override public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 
+    public void setActionBarTitle() {
+        if (mAccount != null && mFolderName != null) {
+            String displayName  = mFolderName;
+
+            if (K9.INBOX.equalsIgnoreCase(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_inbox);
+            }
+
+            mActionBar.setTitle(mAccount.getDescription() + " / " + displayName);
+        } else if (mQueryString != null) {
+            mActionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
+        }
+    }
 
     public class SearchAction extends AbstractAction {
         public SearchAction() {
@@ -974,45 +984,45 @@ public class MessageList
             qa.addActionItem(composeAction);
 
             if (mCurrentMessageInfo != null) {
-            ActionItem replyAction = new ActionItem();
-            replyAction.setTitle(getString(R.string.reply_action));
-            replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
-            replyAction.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    onReply(mCurrentMessageInfo);
-                }
-            });
-            qa.addActionItem(replyAction);
-            ActionItem ReplyAllAction = new ActionItem();
-            ReplyAllAction.setTitle(getString(R.string.reply_all_action));
-            ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
-            ReplyAllAction.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    onReplyAll(mCurrentMessageInfo);
-                }
-            });
-            qa.addActionItem(ReplyAllAction);
-            ActionItem forwardAction = new ActionItem();
-            forwardAction.setTitle(getString(R.string.forward_action));
-            forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
-            forwardAction.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    onForward(mCurrentMessageInfo);
-                }
-            });
-            qa.addActionItem(forwardAction);
+                ActionItem replyAction = new ActionItem();
+                replyAction.setTitle(getString(R.string.reply_action));
+                replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
+                replyAction.setOnClickListener(new OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onReply(mCurrentMessageInfo);
+                    }
+                });
+                qa.addActionItem(replyAction);
+                ActionItem ReplyAllAction = new ActionItem();
+                ReplyAllAction.setTitle(getString(R.string.reply_all_action));
+                ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
+                ReplyAllAction.setOnClickListener(new OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onReplyAll(mCurrentMessageInfo);
+                    }
+                });
+                qa.addActionItem(ReplyAllAction);
+                ActionItem forwardAction = new ActionItem();
+                forwardAction.setTitle(getString(R.string.forward_action));
+                forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
+                forwardAction.setOnClickListener(new OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onForward(mCurrentMessageInfo);
+                    }
+                });
+                qa.addActionItem(forwardAction);
 
-            /*
-            ActionItem shareAction = new ActionItem();
-            shareAction.setTitle(getString(R.string.share_action));
-            shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
-            shareAction.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    onCompose();
-                }
-            });
-            qa.addActionItem(shareAction);
-            */
+                /*
+                ActionItem shareAction = new ActionItem();
+                shareAction.setTitle(getString(R.string.share_action));
+                shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
+                shareAction.setOnClickListener(new OnClickListener() {
+                    @Override public void onClick(View v) {
+                        onCompose();
+                    }
+                });
+                qa.addActionItem(shareAction);
+                */
 
 
 
