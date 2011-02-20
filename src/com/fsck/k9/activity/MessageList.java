@@ -226,6 +226,9 @@ public class MessageList
     private Message mMessage;
     private PgpData mPgpData = null;
 
+    private View mListToggle;
+
+
     private View mNext;
     private View mPrevious;
     private View mDelete;
@@ -895,6 +898,16 @@ public class MessageList
 
         mListView.setItemsCanFocus(false);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+
+        mListToggle = (View)findViewById(R.id.message_list_toggle);
+        mListToggle.setOnClickListener(new OnClickListener() {
+            @Override public void onClick(View v) {
+                View listHolder = findViewById(R.id.message_list_holder);
+            listHolder.setVisibility((listHolder.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
+        }});
+
+
         registerForContextMenu(mListView);
 
 
