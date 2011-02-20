@@ -181,7 +181,6 @@
     <string name="special_mailbox_name_spam">Roskaposti</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Lähtevät)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Luonnokset)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Roskakori)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Lähetetyt)</string>
@@ -431,7 +430,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="trash_folder_label">Roskakori-kansio</string>
     <string name="archive_folder_label">Arkisto-kansio</string>
     <string name="spam_folder_label">Roskaposti-kansio</string>
-    <string name="outbox_folder_label">Lähtevät-kansio</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
     <string name="account_setup_auto_expand_folder">Aukaise kansio automaattisesti</string>

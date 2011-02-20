@@ -175,7 +175,6 @@
     <string name="special_mailbox_name_spam">垃圾邮件</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g>（发件箱）</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g>（草稿箱）</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾箱）</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g>（已发送）</string>
@@ -422,7 +421,6 @@
     <string name="trash_folder_label">垃圾箱名称</string>
     <string name="archive_folder_label">归档文件夹名称</string>
     <string name="spam_folder_label">垃圾邮件箱名称</string>
-    <string name="outbox_folder_label">已发送文件夹名称</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
     <string name="account_setup_auto_expand_folder">自动展开文件夹</string>

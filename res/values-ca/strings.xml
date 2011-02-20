@@ -182,7 +182,6 @@
     <string name="special_mailbox_name_spam">Brossa</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Bústia de sortida)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Esborranys)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviat)</string>
@@ -435,7 +434,6 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="trash_folder_label">Carpeta paperera</string>
     <string name="archive_folder_label">Carpeta arxiu</string>
     <string name="spam_folder_label">Carpeta brossa</string>
-    <string name="outbox_folder_label">Carpeta sortida</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Només mostra carpetes subscrites</string>
     <string name="account_setup_auto_expand_folder">Autoexpandeix carpeta</string>
