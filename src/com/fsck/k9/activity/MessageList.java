@@ -248,6 +248,7 @@ public class MessageList
 
 
     private MessageListAdapter mAdapter;
+    private View mFooterView;
 
     private FolderInfoHolder mCurrentFolder;
 
@@ -449,6 +450,11 @@ public class MessageList
             if (mCurrentFolder != null && mCurrentFolder.name.equals(folder)) {
                 mCurrentFolder.loading = loading;
             }
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    updateFooterView();
+                }
+            });
         }
 
         private void refreshTitle() {
@@ -560,7 +566,7 @@ public class MessageList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mCurrentFolder != null && ((position + 1) == mAdapter.getCount())) {
+        if (mCurrentFolder != null && ((position + 1) == mListView.getAdapter().getCount())) {
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
@@ -762,6 +768,7 @@ public class MessageList
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
+        mListView.addFooterView(getFooterView(mListView));
 
         registerForContextMenu(mListView);
 
@@ -1860,7 +1867,6 @@ public class MessageList
 
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
-        private View footerView = null;
 
         MessageListAdapter() {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
@@ -2015,8 +2021,6 @@ public class MessageList
             }
         }
 
-        private static final int NON_MESSAGE_ITEMS = 1;
-
         private final OnClickListener flagClickListener = new OnClickListener() {
             public void onClick(View v) {
                 // Perform action on clicks
@@ -2027,7 +2031,7 @@ public class MessageList
 
         @Override
         public int getCount() {
-            return messages.size() + NON_MESSAGE_ITEMS;
+            return messages.size();
         }
 
         @Override
@@ -2063,15 +2067,6 @@ public class MessageList
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (position == mAdapter.messages.size()) {
-                return getFooterView(position, convertView, parent);
-            } else {
-                return  getItemView(position, convertView, parent);
-            }
-        }
-
-        public View getItemView(int position, View convertView, ViewGroup parent) {
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view;
 
@@ -2261,44 +2256,7 @@ public class MessageList
         }
 
 
-        public View getFooterView(int position, View convertView, ViewGroup parent) {
-            if (footerView == null) {
-                footerView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                if (mQueryString != null) {
-                    footerView.setVisibility(View.GONE);
-                }
-                footerView.setId(R.layout.message_list_item_footer);
-                FooterViewHolder holder = new FooterViewHolder();
-                holder.progress = (ProgressBar)footerView.findViewById(R.id.message_list_progress);
-                holder.progress.setIndeterminate(true);
-                holder.main = (TextView)footerView.findViewById(R.id.main_text);
-                footerView.setTag(holder);
-            }
 
-            FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
-
-            if (mCurrentFolder != null && mAccount != null) {
-                if (mCurrentFolder.loading) {
-                    holder.main.setText(getString(R.string.status_loading_more));
-                    holder.progress.setVisibility(ProgressBar.VISIBLE);
-                } else {
-                    if (!mCurrentFolder.lastCheckFailed) {
-                        if (mAccount.getDisplayCount() == 0) {
-                            holder.main.setText(getString(R.string.message_list_load_more_messages_action));
-                        } else {
-                            holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
-                        }
-                    } else {
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
-                    holder.progress.setVisibility(ProgressBar.INVISIBLE);
-                }
-            } else {
-                holder.progress.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            return footerView;
-        }
 
         @Override
         public boolean hasStableIds() {
@@ -2350,6 +2308,48 @@ public class MessageList
                     toggleBatchButtons();
                 }
             }
+        }
+    }
+
+
+    private View getFooterView(ViewGroup parent) {
+        if (mFooterView == null) {
+            mFooterView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+            if (mQueryString != null) {
+                mFooterView.setVisibility(View.GONE);
+            }
+            mFooterView.setId(R.layout.message_list_item_footer);
+            FooterViewHolder holder = new FooterViewHolder();
+            holder.progress = (ProgressBar) mFooterView.findViewById(R.id.message_list_progress);
+            holder.progress.setIndeterminate(true);
+            holder.main = (TextView) mFooterView.findViewById(R.id.main_text);
+            mFooterView.setTag(holder);
+        }
+
+        return mFooterView;
+    }
+
+    private void updateFooterView() {
+        FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
+
+        if (mCurrentFolder != null && mAccount != null) {
+            if (mCurrentFolder.loading) {
+                holder.main.setText(getString(R.string.status_loading_more));
+                holder.progress.setVisibility(ProgressBar.VISIBLE);
+            } else {
+                if (!mCurrentFolder.lastCheckFailed) {
+                    if (mAccount.getDisplayCount() == 0) {
+                        holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+                    } else {
+                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                    }
+                } else {
+                    holder.main.setText(getString(R.string.status_loading_more_failed));
+                }
+                holder.progress.setVisibility(ProgressBar.INVISIBLE);
+            }
+        } else {
+            holder.progress.setVisibility(ProgressBar.INVISIBLE);
         }
     }
 
