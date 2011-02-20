@@ -813,6 +813,8 @@ public class MessageList
         } else {
             mListView.setSelection(pos);
             mListView.setItemChecked(pos, true);
+            mListView.smoothScrollToPosition(pos);
+            onOpenMessage((MessageInfoHolder) mAdapter.getItem(pos));
         }
     }
 
