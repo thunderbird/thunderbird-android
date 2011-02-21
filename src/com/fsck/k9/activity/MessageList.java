@@ -711,12 +711,8 @@ public class MessageList
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
 
                 mListView.setItemChecked(position, true);
-                //TODO   mHandler.post(new Runnable() {
-                //       public void run() {
                 mCurrentMessageInfo = (MessageInfoHolder) mAdapter.getItem(position);
                 onOpenMessage(mCurrentMessageInfo);
-                //       }
-                //   });
             }
 
             @Override public void onNothingSelected(AdapterView<?> parent) {}
