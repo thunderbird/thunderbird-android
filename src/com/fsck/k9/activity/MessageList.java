@@ -2045,69 +2045,69 @@ public class MessageList
 
         switch (item.getItemId()) {
         case R.id.open: {
-            onOpenMessage(mCurrentMessageInfo);
+            onOpenMessage(holder);
             break;
         }
         case R.id.select: {
-            setSelected(mCurrentMessageInfo, true);
+            setSelected(holder, true);
             break;
         }
         case R.id.deselect: {
-            setSelected(mCurrentMessageInfo, false);
+            setSelected(holder, false);
             break;
         }
         case R.id.delete: {
-            onDelete(mCurrentMessageInfo);
+            onDelete(holder);
             break;
         }
         case R.id.reply: {
-            onReply(mCurrentMessageInfo);
+            onReply(holder);
             break;
         }
         case R.id.reply_all: {
-            onReplyAll(mCurrentMessageInfo);
+            onReplyAll(holder);
             break;
         }
         case R.id.forward: {
-            onForward(mCurrentMessageInfo);
+            onForward(holder);
             break;
         }
         case R.id.send_again: {
-            onResendMessage(mCurrentMessageInfo);
+            onResendMessage(holder);
             break;
 
         }
         case R.id.mark_as_read: {
-            onToggleRead(mCurrentMessageInfo);
+            onToggleRead(holder);
             break;
         }
         case R.id.flag: {
-            onToggleFlag(mCurrentMessageInfo);
+            onToggleFlag(holder);
             break;
         }
         case R.id.archive: {
-            onArchive(mCurrentMessageInfo);
+            onArchive(holder);
             break;
         }
         case R.id.spam: {
-            onSpam(mCurrentMessageInfo);
+            onSpam(holder);
             break;
         }
         case R.id.move: {
-            onMove(mCurrentMessageInfo);
+            onMove(holder);
             break;
         }
         case R.id.copy: {
-            onCopy(mCurrentMessageInfo);
+            onCopy(holder);
             break;
         }
         case R.id.send_alternate: {
-            onSendAlternate(mAccount, mCurrentMessageInfo);
+            onSendAlternate(mAccount, holder);
             break;
         }
         case R.id.same_sender: {
             MessageList.actionHandle(MessageList.this,
-                                     "From " + mCurrentMessageInfo.sender, mCurrentMessageInfo.senderAddress, true,
+                                     "From " + holder.sender, holder.senderAddress, true,
                                      null, null);
             break;
         }
