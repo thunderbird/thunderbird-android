@@ -14,7 +14,8 @@
     >
     <ListView
         android:id="@+id/message_list"
-        android:layout_height="250dp"
+        android:minHeight="2.5in"
+        android:layout_height="200dp"
         android:layout_width="fill_parent"
         android:cacheColorHint="?android:attr/colorBackground"
         android:layout_weight="5"
