@@ -1033,17 +1033,15 @@ public class MessageList
                 });
                 qa.addActionItem(forwardAction);
 
-                /*
                 ActionItem shareAction = new ActionItem();
-                shareAction.setTitle(getString(R.string.share_action));
+                shareAction.setTitle(getString(R.string.send_alternate_action));
                 shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
                 shareAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
-                        onCompose();
+                        onSendAlternate(mAccount, mCurrentMessageInfo);
                     }
                 });
                 qa.addActionItem(shareAction);
-                */
 
 
 
