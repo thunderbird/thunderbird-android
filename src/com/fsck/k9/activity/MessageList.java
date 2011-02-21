@@ -903,7 +903,7 @@ public class MessageList
         mListToggle = (View)findViewById(R.id.message_list_toggle);
         mListToggle.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
-                if ((mListHolder.getVisibility() == View.GONE) ) {
+                if ((mListHolder.getVisibility() == View.GONE)) {
                     showMessageList();
                 } else {
                     hideMessageList();
@@ -1336,7 +1336,7 @@ public class MessageList
         mNextMessage = mPreviousMessage = null;
         int i = mAdapter.messages.indexOf(mCurrentMessageInfo);
         if (i < 0)
-            return;
+            i = 0;
         if (i != 0)
             mNextMessage = mAdapter.messages.get(i - 1);
         if (i != (mAdapter.messages.size() - 1))
