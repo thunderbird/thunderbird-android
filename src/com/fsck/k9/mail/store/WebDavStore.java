@@ -701,7 +701,7 @@ public class WebDavStore extends Store
 
         WebDavHttpClient httpClient = getHttpClient();
 
-        String loginUrl = "";
+        String loginUrl;
         if (info != null)
         {
             loginUrl = info.guessedAuthUrl;
@@ -732,16 +732,9 @@ public class WebDavStore extends Store
         request.setEntity(formEntity);
 
         HttpResponse response = httpClient.executeOverride(request, mContext);
-        int statusCode = response.getStatusLine().getStatusCode();
-
-        if (statusCode >= 200 && statusCode < 300 &&
-                mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
-        {
-            // Success, we're authenticated and cookies have been added to mAuthCookies for us.
-        }
-        else
-        {
-            // Check our response from the authentication URL above for a form action.
+        boolean authenticated = testAuthenticationResponse(response);
+        if (!authenticated) {
+            // Check the response from the authentication request above for a form action.
             String formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
             if (formAction == null)
             {
@@ -772,12 +765,15 @@ public class WebDavStore extends Store
                     else
                     {
                         // Append the form action to our current URL, minus the file name.
-                        String urlPath = loginUri.getPath();
-                        int lastPathPos = urlPath.lastIndexOf('/');
-                        if (lastPathPos > -1)
-                        {
-                            urlPath = urlPath.substring(0, lastPathPos + 1);
-                            urlPath = urlPath.concat(formAction);
+                        String urlPath;
+                        if (formAction.startsWith("/")) {
+                            urlPath = formAction;
+                        } else {
+                            urlPath = loginUri.getPath();
+                            int lastPathPos = urlPath.lastIndexOf('/');
+                            if (lastPathPos > -1) {
+                                urlPath = urlPath.substring(0, lastPathPos + 1);
+                                urlPath = urlPath.concat(formAction);
                         }
 
                         // Reconstruct the login URL based on the original login URL and the form action.
@@ -795,8 +791,10 @@ public class WebDavStore extends Store
                     request = new HttpGeneric(loginUrl);
                     request.setMethod("POST");
                     request.setEntity(formEntity);
-                    httpClient.executeOverride(request, mContext);
+                    response = httpClient.executeOverride(request, mContext);
+                    authenticated = testAuthenticationResponse(response);
                 }
+                } 
                 catch (URISyntaxException e)
                 {
                     Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
@@ -809,10 +807,12 @@ public class WebDavStore extends Store
             }
         }
 
-        if (mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
+        if (authenticated)
         {
             mAuthentication = AUTH_TYPE_FORM_BASED;
             mCachedLoginUrl = loginUrl;
+        } else {
+            throw new MessagingException("Invalid credentials provided for authentication.");
         }
     }
 
@@ -856,6 +856,58 @@ public class WebDavStore extends Store
 
         return formAction;
     }
+    private boolean testAuthenticationResponse(HttpResponse response) 
+    throws MessagingException {
+        boolean authenticated = false;
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        // Exchange 2007 will return a 302 status code no matter what.
+        if (((statusCode >= 200 && statusCode < 300) || statusCode == 302) &&
+                mAuthCookies != null && !mAuthCookies.getCookies().isEmpty()) {
+            // We may be authenticated, we need to send a test request to know for sure.
+            // Exchange 2007 adds the same cookies whether the username and password were valid or not.
+            ConnectionInfo info = doInitialConnection();
+            if (info.statusCode >= 200 && info.statusCode < 300) {
+                authenticated = true;
+            } else if (info.statusCode == 302) {
+                // If we are successfully authenticated, Exchange will try to redirect us to our OWA inbox.
+                // Otherwise, it will redirect us to a logon page.
+                // Our URL is in the form: https://hostname:port/Exchange/alias.
+                // The redirect is in the form: https://hostname:port/owa/alias.
+                // Do a simple replace and compare the resulting strings.
+                try {
+                    String thisPath = new URI(mUrl).getPath();
+                    String redirectPath = new URI(info.redirectUrl).getPath();
+                    
+                    if (!thisPath.endsWith("/")) {
+                        thisPath = thisPath.concat("/");
+                    }
+                    if (!redirectPath.endsWith("/")) {
+                        redirectPath = redirectPath.concat("/");
+                    }
+                    
+                    if (redirectPath.equalsIgnoreCase(thisPath)) {
+                        authenticated = true;
+                    } else {
+                        int found = thisPath.indexOf('/', 1);
+                        if (found != -1) {
+                            String replace = thisPath.substring(0, found + 1);
+                            redirectPath = redirectPath.replace("/owa/", replace);
+                            if (redirectPath.equalsIgnoreCase(thisPath)) {
+                                authenticated = true;
+                            }
+                        }
+                    }
+                } catch (URISyntaxException e) {
+                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
+                    throw new MessagingException("URISyntaxException caught", e);
+                }
+            }
+        }
+        
+        return authenticated;
+    }
+ 
 
     public CookieStore getAuthCookies()
     {
