@@ -1017,6 +1017,8 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="dialog_confirm_delete_confirm_button">Verwijder</string>
     <string name="dialog_confirm_delete_cancel_button">Niet verwijderen</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Debug logging van Android logging systeem ingeschakeld</string>
 
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->

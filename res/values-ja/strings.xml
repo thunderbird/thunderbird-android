@@ -1013,6 +1013,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_delete_confirm_button">削除する</string>
     <string name="dialog_confirm_delete_cancel_button">削除しない</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Android のログにデバッグ用のログを出力するように設定しました。</string>
 
     <string name="messagelist_sent_to_me_sigil">\u00bb</string>

@@ -1001,6 +1001,8 @@
     <string name="dialog_confirm_delete_confirm_button">删除</string>
     <string name="dialog_confirm_delete_cancel_button">不要删除</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">已经启用将调试日志写入Andorid日志系统</string>
 
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->

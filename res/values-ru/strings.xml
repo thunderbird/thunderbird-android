@@ -1011,6 +1011,8 @@
     <!-- NEW: <string name="dialog_confirm_delete_confirm_button">Delete</string>-->
     <!-- NEW: <string name="dialog_confirm_delete_cancel_button">Do not delete</string>-->
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <!-- NEW: <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>-->
 
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->

@@ -1014,6 +1014,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="dialog_confirm_delete_confirm_button">Poista</string>
     <string name="dialog_confirm_delete_cancel_button">Älä poista</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Vianselvitys lokikirjoitus Androidin lokiin otettu käyttöön</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>

@@ -1026,6 +1026,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Ladící záznam do záznamového systému Androidu je povolen</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>

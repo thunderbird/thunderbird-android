@@ -1017,6 +1017,8 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">No borrar</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Opción de depuración activa</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>

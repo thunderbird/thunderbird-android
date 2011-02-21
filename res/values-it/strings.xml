@@ -1021,6 +1021,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="dialog_confirm_delete_confirm_button">Elimina</string>
     <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
 
+    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+
     <string name="debug_logging_enabled">Registrazione dei log per il debug di Android abilitata</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>
