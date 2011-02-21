@@ -246,6 +246,7 @@ public class MessageList
     private static final int NEXT = 2;
     private int mLastDirection = PREVIOUS;
 
+
     /**
      * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
      */
@@ -3063,11 +3064,11 @@ public class MessageList
     }
 
     private void hideMessageList() {
-            mListHolder.setVisibility(View.GONE);
+        mListHolder.setVisibility(View.GONE);
     }
 
     private void showMessageList() {
-            mListHolder.setVisibility(View.VISIBLE);
+        mListHolder.setVisibility(View.VISIBLE);
     }
 
 
