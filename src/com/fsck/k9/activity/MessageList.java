@@ -1352,7 +1352,6 @@ public class MessageList
     }
 
     private void showNextMessage() {
-        findSurroundingMessagesUid();
         if (mLastDirection == NEXT && mNextMessage != null) {
             gotoNextItem();
         } else if (mLastDirection == PREVIOUS && mPreviousMessage != null) {
@@ -1373,9 +1372,8 @@ public class MessageList
             return;
         }
         mLastDirection = NEXT;
-        mListView.requestFocus();
-        simulateKeystroke(KeyEvent.KEYCODE_DPAD_DOWN);
-        mListView.smoothScrollToPosition(mListView.getSelectedItemPosition());
+        mListView.setSelection(mAdapter.messages.indexOf(mNextMessage));
+        onOpenMessage(mNextMessage);
     }
 
     private void gotoPreviousItem() {
@@ -1384,9 +1382,8 @@ public class MessageList
             return;
         }
         mLastDirection = PREVIOUS;
-        mListView.requestFocus();
-        simulateKeystroke(KeyEvent.KEYCODE_DPAD_UP);
-        mListView.smoothScrollToPosition(mListView.getSelectedItemPosition());
+        mListView.setSelection(mAdapter.messages.indexOf(mPreviousMessage));
+        onOpenMessage(mPreviousMessage);
     }
 
 
@@ -1520,7 +1517,10 @@ public class MessageList
     private void delete(MessageInfoHolder holder) {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(new Message[] { holder.message }, null);
-        gotoNextItem();
+        // only change the current message being viewed if the one deleted was the current one
+        if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
+            showNextMessage();
+        }
     }
 
     private void onMove(MessageInfoHolder holder) {
@@ -1576,7 +1576,7 @@ public class MessageList
         // TODO showNextMessageOrReturn();
         mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folder, null);
         if (holder.uid == mCurrentMessageInfo.uid) {
-            gotoNextItem();
+            showNextMessage();
         }
     }
 
