@@ -301,14 +301,23 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 String accountUuid = icicle.getString("selectedContextAccount");
                 mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
             }
-            ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+            if (accounts.length != 0) {
+               initializeActionBar();
+            }
+            restoreAccountStats(icicle);
+        }
+    }
+
+
+    private void initializeActionBar() {
             //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
             //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
+            ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
             mActionBar.addAction(new SearchAction());
             mActionBar.addAction(new SyncAction());
             mActionBar.addAction(new ComposeAction());
-            restoreAccountStats(icicle);
-        }
+
+
     }
 
     @SuppressWarnings("unchecked")
