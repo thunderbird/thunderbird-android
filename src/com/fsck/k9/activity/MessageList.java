@@ -226,7 +226,6 @@ public class MessageList
     private Message mMessage;
     private PgpData mPgpData = null;
 
-    private View mListToggle;
 
     private View mListHolder;
 
@@ -900,20 +899,6 @@ public class MessageList
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         mListHolder = findViewById(R.id.message_list_holder);
-
-        mListToggle = (View)findViewById(R.id.message_list_toggle);
-        mListToggle.setOnClickListener(new OnClickListener() {
-            @Override public void onClick(View v) {
-                if ((mListHolder.getVisibility() == View.GONE)) {
-                    showMessageList();
-                } else {
-                    hideMessageList();
-
-
-                }
-
-            }
-        });
 
 
         registerForContextMenu(mListView);
