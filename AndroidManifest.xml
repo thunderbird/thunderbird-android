@@ -60,6 +60,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:name="K9"
+        android:theme="@android:style/Theme.NoTitleBar"
         android:allowTaskReparenting="false"
         >
         <meta-data android:name="android.app.default_searchable"
