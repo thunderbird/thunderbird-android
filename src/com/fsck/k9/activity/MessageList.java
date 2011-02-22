@@ -3501,7 +3501,6 @@ public class MessageList
         mNext.setEnabled(mNextMessage != null);
         mPrevious.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
-        findViewById(R.id.move_buttons).setVisibility(View.GONE);
         if (mController.isMoveCapable(mAccount)) {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
             mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&
@@ -3511,7 +3510,6 @@ public class MessageList
                              !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
             mMove.setEnabled(true);
         } else {
-            findViewById(R.id.move_buttons).setVisibility(View.GONE);
         }
     }
 
@@ -3523,7 +3521,6 @@ public class MessageList
         mMove = findViewById(R.id.move);
         mSpam = findViewById(R.id.spam);
         //hide the refile buttons until we actually want them
-        findViewById(R.id.move_buttons).setVisibility(View.GONE);
     }
 
 
