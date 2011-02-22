@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/mainLayout"
+    android:background="#ffd8d8d8"
+>
+<org.miscwidgets.widget.VirtualKeyboard
+    android:layout_width="fill_parent"
+    android:layout_height="160dip"
+    android:layout_gravity="bottom"
+    android:id="@+id/kbd"
+/>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Press any button for more than ¼ of second (250 ms) to see what happens :-)"
+    android:textColor="#000"
+    android:padding="16dip"
+/>
+<EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/edit"
+/>
+</LinearLayout>
+</FrameLayout>

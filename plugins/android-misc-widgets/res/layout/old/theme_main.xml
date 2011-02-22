@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="8dip"
+>
+	<TableLayout
+	android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:stretchColumns="0"
+    >
+	    <TableRow>
+	        <EditText
+	            android:id="@+id/text"
+	            android:text="edit me..."
+	        />
+			<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="OK"
+			    android:textStyle="bold"
+			    android:gravity="center"
+			/>
+	    </TableRow>
+	    <TableRow>
+	        <Spinner
+			android:entries="@array/seasons"
+	        />
+			<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="Cancel"
+			    android:gravity="center"
+			/>
+	    </TableRow>
+	    <TableRow>
+	        <TextView
+		    android:text="Lorem ipsum dolor..."
+	        />
+			<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:text="disabled button"
+			    android:gravity="center"
+			    android:enabled="false"
+			/>
+	    </TableRow>
+	</TableLayout>
+	<ListView
+		android:id="@+id/t1"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    android:entries="@array/months"
+	/>
+</LinearLayout>

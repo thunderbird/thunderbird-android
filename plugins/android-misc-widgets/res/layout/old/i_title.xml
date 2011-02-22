@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/i_title_gradient"
+>
+	<Button
+		android:id="@+id/title_left_btn"
+	    android:layout_width="75dip"
+	    android:layout_height="wrap_content"
+	    style="@style/iBtn"
+	/>
+	<TextView
+		android:id="@+id/title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+		android:textSize="20dip"
+	    android:textStyle="bold"
+	    android:textColor="#ddd"
+	    android:layout_gravity="center"
+	    android:gravity="center"
+	    android:paddingLeft="8dip"
+	    android:paddingRight="8dip"
+	/>
+	<Button
+		android:id="@+id/title_right_btn"
+	    android:layout_width="75dip"
+	    android:layout_height="wrap_content"
+	    style="@style/iBtn"
+	/>
+</LinearLayout>

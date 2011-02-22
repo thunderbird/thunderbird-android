@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Test MiscWidgets</string>
+    <string name="panels_app_name">Test Panels</string>
+    <string name="switcher_app_name">Test Switcher</string>
+    <string name="smoothbutton_app_name">Test SmoothButton</string>
+    <string name="interpolators_app_name">Test Interpolators</string>
+    <string name="theme_app_name">Test Theme</string>
+    <string name="virtual_keyboard_app_name">Test Virtual Keyboard</string>
+    <string name="custom_title_app_name">Test Custom Title</string>
+	<string name="b0"><b>press me</b> - left animation - 750 msec</string>
+	<string name="b1"><b>press me</b> - right animation - 1500 msec</string>
+</resources>

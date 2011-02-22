@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:misc="http://schemas.android.com/apk/res/org.miscwidgets"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="4dip"
+    android:background="#7b96bd"
+>
+	<org.miscwidgets.widget.SmoothButton
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="smooth button 1"
+	    android:background="@drawable/red_button"
+	    misc:transitionDrawable="@drawable/red_transition_list"
+	    misc:transitionDrawableLength="8"
+	    misc:transitionTextColorUp="#eee"
+	    misc:transitionTextColorDown="#aaa"
+	/>
+	<org.miscwidgets.widget.SmoothButton
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="smooth button 2"
+	    android:background="@drawable/red_button"
+	    misc:transitionDrawable="@drawable/red_transition_list"
+	    misc:transitionDrawableLength="8"
+	    misc:transitionTextColorUp="#eee"
+	    misc:transitionTextColorDown="#aaa"
+	/>
+	<org.miscwidgets.widget.SmoothButton
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="smooth button 3"
+	    android:background="@drawable/silver_button"
+	    misc:transitionDrawable="@drawable/silver_transition_list"
+	    misc:transitionDrawableLength="8"
+	/>
+	<org.miscwidgets.widget.SmoothButton
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="smooth button 4"
+	    android:background="@drawable/silver_button"
+	    misc:transitionDrawable="@drawable/silver_transition_list"
+	    misc:transitionDrawableLength="8"
+	/>
+</LinearLayout>

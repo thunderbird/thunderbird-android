@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Layout>
+	<!-- first row -->
+	<Button	x="0" y="0"	text="1!--" />
+	<Button x="1" y="0" text="2@__" />
+	<Button x="2" y="0" text="3#==" />
+	<Button x="3" y="0" text="4$++" />
+	<Button x="4" y="0" text="5%\\\\" />
+	<Button x="5" y="0" text="6^||" />
+	<Button x="6" y="0" text="7&amp;[[" />
+	<Button x="7" y="0" text="8*]]" />
+	<Button x="8" y="0" text="9({{" />
+	<Button x="9" y="0" text="0)}}" />
+
+	<!-- second row -->
+	<Button x="0" y="1" text="qQ;;" />
+	<Button x="1" y="1" text="wW::" />
+	<Button x="2" y="1" text="eE''" />
+	<Button x="3" y="1" text="rR&quot;&quot;" />
+	<Button x="4" y="1" text="tT&lt;&lt;" />
+	<Button x="5" y="1" text="yY&gt;&gt;" />
+	<Button x="6" y="1" text="uU//" />
+	<Button x="7" y="1" text="iI??" />
+	<Button x="8" y="1" text="oO``" />
+	<Button x="9" y="1" text="pP~~" />
+
+	<!-- third row -->
+	<Button x="0" y="2" text="\t\t\t\t" drawable="drawable/vk_tab" />
+	<Button x="1" y="2" text="aA€€" />
+	<Button x="2" y="2" text="sS$$" />
+	<Button x="3" y="2" text="dD££" />
+	<Button x="4" y="2" text="fF©©" />
+	<Button x="5" y="2" text="gG®®" />
+	<Button x="6" y="2" text="hH™™" />
+	<Button x="7" y="2" text="jJ§§" />
+	<Button x="8" y="2" text="kK±±" />
+	<Button x="9" y="2" text="lL¢¢" />
+
+	<!-- fourth row -->
+	<ShiftButton x="0" y="3" drawable="drawable/vk_shift" />
+	<Button x="1" y="3" text="zZ¹¹" />
+	<Button x="2" y="3" text="xX²²" />
+	<Button x="3" y="3" text="cC³³" />
+	<Button x="4" y="3" text="vV¼¼" />
+	<Button x="5" y="3" text="bB½½" />
+	<Button x="6" y="3" text="nN¾¾" />
+	<Button x="7" y="3" text="mM°°" />
+	<!-- backspace button is unique since i cannot just pass "\b\b\b\b" as a text -->
+	<BackspaceButton x="8" y="3" width="2" drawable="drawable/vk_backspace" />
+
+	<!-- fifth row -->
+	<SymbolsButton x="0" y="4" width="2" text=" ?+" />
+	<Button x="2" y="4" width="5" text="    " />
+	<Button x="7" y="4" text=",.÷÷" />
+	<EnterButton x="8" y="4" width="2" drawable="drawable/vk_enter" />
+</Layout>

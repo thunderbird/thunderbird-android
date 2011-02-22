@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget" parent="android:Widget">
+    </style>
+
+    <style name="Widget.TextView">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.Button">
+        <item name="android:background">@drawable/btn_default</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">11dip</item>
+    </style>
+
+    <style name="Widget.AbsListView">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadingEdge">vertical</item>
+        <item name="android:scrollbarStyle">outsideInset</item>
+    </style>
+
+    <style name="Widget.ListView" parent="Widget.AbsListView">
+        <item name="android:listSelector">@drawable/btn_default</item>
+        <item name="android:divider">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.EditText">
+        <item name="android:background">@drawable/edit_text</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">11dip</item>
+    </style>
+
+    <style name="Widget.Spinner">
+        <item name="android:background">@drawable/btn_dropdown</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">11dip</item>
+    </style>
+
+    <style name="iWindowTitleBackground" parent="android:WindowTitleBackground">
+        <item name="android:background">@drawable/title_bar</item>
+    </style>
+
+    <style name="iBtn">
+	    <item name="android:background">@drawable/i_btn</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+        <item name="android:paddingTop">8dip</item>
+        <item name="android:paddingBottom">8dip</item>
+	    <item name="android:layout_gravity">center</item>
+		<item name="android:textSize">18dip</item>
+	    <item name="android:textStyle">bold</item>
+	    <item name="android:textColor">#eee</item>
+	    <item name="android:shadowColor">#444</item>
+	    <item name="android:shadowRadius">2</item>
+    </style>
+
+</resources>

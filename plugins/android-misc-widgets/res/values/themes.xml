@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="GreenTheme" parent="android:Theme">
+	    <item name="android:textViewStyle">@style/Widget.TextView</item>
+		<item name="android:buttonStyle">@style/Widget.Button</item>
+
+		<item name="android:windowBackground">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+
+        <item name="android:listViewStyle">@style/Widget.ListView</item>
+        <item name="android:listPreferredItemHeight">48px</item>
+        <item name="android:listDivider">@android:color/transparent</item>
+
+        <item name="android:scrollbarSize">10dip</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar_handle_vertical</item>
+        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_vertical</item>
+
+        <item name="android:editTextStyle">@style/Widget.EditText</item>
+
+        <item name="android:spinnerStyle">@style/Widget.Spinner</item>
+	</style>
+
+	<style name="iTitleTheme" parent="android:Theme">
+		<item name="android:windowTitleSize">44dip</item>item>
+		<item name="android:windowTitleBackgroundStyle">@style/iWindowTitleBackground</item>
+		<item name="android:windowContentOverlay">@android:color/transparent</item>
+	</style>
+
+</resources>
