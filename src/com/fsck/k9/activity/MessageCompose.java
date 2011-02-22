@@ -2700,7 +2700,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     public class SendAction extends AbstractAction {
         public SendAction() {
-            super(R.drawable.ic_menu_send);
+            super(R.drawable.ic_actionbar_send);
         }
         @Override
         public void performAction(View view) {
@@ -2710,7 +2710,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     public class CloseAction extends AbstractAction {
         public CloseAction() {
-            super(R.drawable.ic_menu_save_draft);
+            super(R.drawable.ic_actionbar_save_draft);
         }
         @Override
         public void performAction(View view) {
