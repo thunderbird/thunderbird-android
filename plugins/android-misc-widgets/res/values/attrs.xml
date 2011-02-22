@@ -16,6 +16,7 @@
         </attr>
         <!-- Identifier for the child that represents the panel's handle. -->
         <attr name="handle" format="reference" />
+        <attr name="handleWrapper" format="reference" />
         <!-- Identifier for the child that represents the panel's content. -->
         <attr name="content" format="reference" />
         <!-- Defines if flying gesture forces linear interpolator in animation. -->

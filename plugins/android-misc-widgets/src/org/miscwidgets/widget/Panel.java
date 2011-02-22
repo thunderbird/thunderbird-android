@@ -43,8 +43,10 @@ public class Panel extends LinearLayout {
 	private int mDuration;
 	private boolean mLinearFlying;
 	private int mHandleId;
+	private int mHandleWrapperId;
 	private int mContentId;
 	private View mHandle;
+	private View mHandleWrapper;
 	private View mContent;
 	private Drawable mOpenedHandle;
 	private Drawable mClosedHandle;
@@ -96,6 +98,11 @@ public class Panel extends LinearLayout {
 			e = new IllegalArgumentException(a.getPositionDescription() +
 					": The handle attribute is required and must refer to a valid child.");
 		}
+		mHandleWrapperId = a.getResourceId(R.styleable.Panel_handleWrapper, 0);
+		if (mHandleWrapperId == 0) {
+			e = new IllegalArgumentException(a.getPositionDescription() +
+					": The handleWrapper attribute is required and must refer to a valid child.");
+		}
 		mContentId = a.getResourceId(R.styleable.Panel_content, 0);
 		if (mContentId == 0) {
 			e = new IllegalArgumentException(a.getPositionDescription() +
@@ -133,6 +140,14 @@ public class Panel extends LinearLayout {
      */
     public View getHandle() {
 		return mHandle;
+	}
+    /**
+     * Gets Panel's mHandleWrapper
+     *
+     * @return Panel's mHandleWrapper
+     */
+    public View getHandleWrapper() {
+		return mHandleWrapper;
 	}
 
     /**
@@ -203,20 +218,28 @@ public class Panel extends LinearLayout {
 		mHandle.setOnTouchListener(touchListener);
 		mHandle.setOnClickListener(clickListener);
 
+		mHandleWrapper = findViewById(mHandleWrapperId);
+		if (mHandleWrapper == null) {
+			String name = getResources().getResourceEntryName(mHandleWrapperId);
+            throw new RuntimeException("Your Panel must have a child View whose id attribute is 'R.id." + name + "'");
+		}
+		mHandle.setOnTouchListener(touchListener);
+		mHandle.setOnClickListener(clickListener);
+
 		mContent = findViewById(mContentId);
 		if (mContent == null) {
-			String name = getResources().getResourceEntryName(mHandleId);
+			String name = getResources().getResourceEntryName(mContentId);
             throw new RuntimeException("Your Panel must have a child View whose id attribute is 'R.id." + name + "'");
 		}
 
 		// reposition children
-		removeView(mHandle);
+		removeView(mHandleWrapper);
 		removeView(mContent);
 		if (mPosition == TOP || mPosition == LEFT) {
 			addView(mContent);
-			addView(mHandle);
+			addView(mHandleWrapper);
 		} else {
-			addView(mHandle);
+			addView(mHandleWrapper);
 			addView(mContent);
 		}
 
