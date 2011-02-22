@@ -396,6 +396,7 @@ public class MessageList
 
                     if (wasEmpty) {
                         mListView.setSelection(0);
+                        onOpenMessage((MessageInfoHolder)mAdapter.getItem(0));
                         mListView.setItemChecked(0, true);
                     }
                     resetUnreadCountOnThread();
