@@ -6,21 +6,17 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.GestureDetector.OnGestureListener;
-import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -451,7 +447,6 @@ public class Panel extends LinearLayout {
 
 			animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
 			animation.setDuration(calculatedDuration);
-			animation.setAnimationListener(animationListener);
 			if (mState == State.FLYING && mLinearFlying) {
 				animation.setInterpolator(new LinearInterpolator());
 			} else
@@ -462,20 +457,21 @@ public class Panel extends LinearLayout {
 		}
 	};
 
-	private AnimationListener animationListener = new AnimationListener() {
-		public void onAnimationEnd(Animation animation) {
-			mState = State.READY;
-			if (mIsShrinking) {
-				mContent.setVisibility(GONE);
-			}
-			postProcess();
+	@Override
+	protected void onAnimationEnd() {
+		super.onAnimationEnd();
+		mState = State.READY;
+		if (mIsShrinking) {
+			mContent.setVisibility(GONE);
 		}
-		public void onAnimationRepeat(Animation animation) {
-		}
-		public void onAnimationStart(Animation animation) {
-			mState = State.ANIMATING;
-		}
-	};
+		postProcess();
+	}
+
+	@Override
+	protected void onAnimationStart() {
+		super.onAnimationStart();
+		mState = State.ANIMATING;
+	}
 
 	private void postProcess() {
 		if (mIsShrinking && mClosedHandle != null) {
