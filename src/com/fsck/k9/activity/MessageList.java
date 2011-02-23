@@ -991,6 +991,24 @@ public class MessageList
             qa.addActionItem(composeAction);
 
             if (mCurrentMessageInfo != null) {
+
+        if (mCurrentMessageInfo.folder.name.equals(mCurrentMessageInfo.message.getFolder().getAccount().getDraftsFolderName())) {
+
+
+                ActionItem editDraftAction = new ActionItem();
+                editDraftAction.setTitle(getString(R.string.edit_draft_action));
+                editDraftAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
+                editDraftAction.setOnClickListener(new OnClickListener() {
+                    @Override public void onClick(View v) {
+                        MessageCompose.actionEditDraft(MessageList.this, mAccount, mCurrentMessageInfo.message);
+                    }
+                });
+                qa.addActionItem(editDraftAction);
+
+
+
+
+        } else {
                 ActionItem replyAction = new ActionItem();
                 replyAction.setTitle(getString(R.string.reply_action));
                 replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
@@ -1034,6 +1052,7 @@ public class MessageList
 
             }
 
+        }
 
 
             qa.show();
@@ -1380,15 +1399,11 @@ public class MessageList
         if (message == null) {
             return;
         }
-        if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName())) {
-            MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
-        } else {
             mHandler.post(new Runnable() {
                 public void run() {
                     displayMessage(message);
                 }
             });
-        }
 
         /*
          * We set read=true here for UI performance reasons. The actual value

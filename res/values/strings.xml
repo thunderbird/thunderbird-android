@@ -66,6 +66,7 @@
     <string name="remove_action">Remove</string>
     <string name="discard_action">Discard</string>
     <string name="save_draft_action">Save as draft</string>
+    <string name="edit_draft_action">Edit draft</string>
     <string name="retry_action">Retry</string>
     <string name="refresh_action">Refresh</string>
     <string name="check_mail_action">Check mail</string>
