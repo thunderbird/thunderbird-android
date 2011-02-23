@@ -15,9 +15,17 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
+/*
+ * 16:38 <cketti> <obra> why do we have our own custom sql database instead of android's platform XML preferences storage again? <- maybe you should write the answer down so you don't have to ask every two months ;)
+ * 16:39 <obra> sorry
+ * 16:39 <cketti> there was a problem with the xml getting corrupted (concurrent writes maybe). and we'd have to do some hacking to build our <account-uuid>.<setting> keys
+ *
+ */
 public class Storage implements SharedPreferences {
     private static ConcurrentHashMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
