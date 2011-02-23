@@ -14,7 +14,7 @@
                     android:layout_height="fill_parent"
                     android:layout_width="wrap_content"
                     android:id="@+id/panel"
-                    android:paddingBottom="4dip"
+                    android:paddingRight="4dip"
                     panel:handle="@+id/panelHandle"
                     panel:handleWrapper="@+id/panelHandleWrapper"
                     panel:content="@+id/message_list_holder"
