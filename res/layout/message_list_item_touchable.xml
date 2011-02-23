@@ -46,17 +46,18 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textAppearance="?android:attr/textAppearanceSmall"  />
 
-    <CheckBox
-        android:id="@+id/flagged"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        >
+             <CheckBox android:id="@+id/flagged"
+                 android:layout_width="22dip"
+                 android:layout_height="22dip"
+                 android:background="@android:color/transparent"
+        android:layout_below="@+id/date"
+               android:focusable="false"
+               android:gravity="right"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:layout_below="@+id/date"
-        android:layout_marginTop="3dip"
-        style="?android:attr/starStyle"
-        android:focusable="false" />
+               android:button="@drawable/star" />
+
 
 
     <TextView

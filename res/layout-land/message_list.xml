@@ -19,8 +19,8 @@
                     panel:handleWrapper="@+id/panelHandleWrapper"
                     panel:content="@+id/message_list_holder"
                     panel:position="left"
-                    panel:openedHandle="@drawable/left_switcher_expanded_background"
-                    panel:closedHandle="@drawable/left_switcher_collapsed_background"
+                    panel:openedHandle="@drawable/shade_handlebar_vertical"
+                    panel:closedHandle="@drawable/shade_handlebar_vertical"
 
                 >
 <LinearLayout
@@ -45,8 +45,8 @@
 
     <LinearLayout
     android:id="@+id/panelHandleWrapper"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_width="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="left|center_vertical"
     android:baselineAligned="true"
@@ -54,8 +54,8 @@
     >
     <Button android:id="@+id/panelHandle"
             android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_width="33dip" />
+            android:layout_height="fill_parent"
+        android:layout_width="16dip" />
    </LinearLayout>
 
 

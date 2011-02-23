@@ -5,8 +5,8 @@
         android:orientation="vertical"
         android:layout_height="fill_parent"
         android:layout_width="40dip"
-        android:paddingLeft="5dip"
-        android:background="@android:color/transparent"
+        android:paddingLeft="1dip"
+        android:background="#ffcccccc"
         >
        <Button
             android:id="@+id/next"

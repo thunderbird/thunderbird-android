@@ -18,8 +18,8 @@
                     panel:position="top"
                     panel:animationDuration="1000"
                     panel:linearFlying="true"
-                    panel:openedHandle="@drawable/top_switcher_expanded_background"
-                    panel:closedHandle="@drawable/top_switcher_collapsed_background"
+                    panel:openedHandle="@drawable/shade_handlebar"
+                    panel:closedHandle="@drawable/shade_handlebar"
 
                 >
 
@@ -42,15 +42,14 @@ android:orientation="vertical"
 </LinearLayout>
 <LinearLayout
     android:id="@+id/panelHandleWrapper"
-    android:layout_height="40dip"
+    android:layout_height="16dip"
     android:layout_width="fill_parent"
     android:orientation="horizontal"
     android:baselineAligned="true"
     >
         <Button android:id="@+id/panelHandle"
-            android:gravity="top"
-            android:layout_width="wrap_content"
-            android:layout_height="33dip"
+            android:layout_width="fill_parent"
+            android:layout_height="16dip"
             android:layout_weight="1"
           />
    </LinearLayout>

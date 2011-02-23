@@ -5,8 +5,8 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="32dip"
-        android:paddingRight="6dip"
-        android:background="@android:color/transparent"
+        android:paddingTop="1dip"
+        android:background="#ffcccccc"
         android:gravity="center_vertical">
         <Button
             android:id="@+id/previous"
