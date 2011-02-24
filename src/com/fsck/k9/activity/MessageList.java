@@ -928,6 +928,7 @@ public class MessageList
         Log.v(K9.LOG_TAG, "Action bar exists! " + mActionBar);
         //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
         //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
+        mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.addAction(new SearchAction());
         mActionBar.addAction(new SyncAction());
         mActionBar.addAction(new ComposeAction());
