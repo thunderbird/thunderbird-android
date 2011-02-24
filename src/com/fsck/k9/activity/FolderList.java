@@ -323,7 +323,7 @@ public class FolderList extends K9ListActivity {
                 onBackPressed();
             }
         });
-
+        mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @SuppressWarnings("unchecked")
