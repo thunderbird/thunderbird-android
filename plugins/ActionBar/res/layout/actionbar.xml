@@ -53,6 +53,16 @@
                 android:background="@drawable/actionbar_btn"
                 />
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/actionbar_home_is_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/actionbar_back_indicator"
+            android:layout_toLeftOf="@+id/actionbar_home_btn"
+            android:layout_alignParentTop="true"
+            android:padding="0dip"
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:id="@+id/actionbar_actions"

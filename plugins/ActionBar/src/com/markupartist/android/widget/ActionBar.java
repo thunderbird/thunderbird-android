@@ -41,6 +41,7 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
     private LayoutInflater mInflater;
     private RelativeLayout mBarView;
     private ImageView mLogoView;
+    private View mBackIndicator;
     //private View mHomeView;
     private TextView mTitleView;
     private LinearLayout mActionsView;
@@ -59,6 +60,7 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
         mLogoView = (ImageView) mBarView.findViewById(R.id.actionbar_home_logo);
         mHomeLayout = (RelativeLayout) mBarView.findViewById(R.id.actionbar_home_bg);
         mHomeBtn = (ImageButton) mBarView.findViewById(R.id.actionbar_home_btn);
+        mBackIndicator = mBarView.findViewById(R.id.actionbar_home_is_back);
 
         mTitleView = (TextView) mBarView.findViewById(R.id.actionbar_title);
         mActionsView = (LinearLayout) mBarView.findViewById(R.id.actionbar_actions);
@@ -95,6 +97,14 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
         mLogoView.setVisibility(View.VISIBLE);
         mHomeLayout.setVisibility(View.GONE);
     }
+
+    /* Emulating Honeycomb, setdisplayHomeAsUpEnabled takes a boolean
+     * and toggles whether the "home" view should have a little triangle
+     * indicating "up" */
+    public void setDisplayHomeAsUpEnabled(boolean show) {
+        mBackIndicator.setVisibility(show? View.VISIBLE : View.GONE);
+    }
+
 
     public void setTitle(CharSequence title) {
         mTitleView.setText(title);
