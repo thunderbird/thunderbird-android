@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/radial_blur"
+    android:antialias="true"
+    android:dither="true"
+    android:filter="true"
+    android:gravity="center|clip_horizontal|clip_vertical"
+    android:tileMode="disabled"/>
