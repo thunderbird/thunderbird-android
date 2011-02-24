@@ -87,7 +87,7 @@ public class FolderList extends K9ListActivity {
                                         getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
 
 
-                    setTitle(dispString);
+                    getActionBar().setTitle(dispString);
                 }
             });
         }
@@ -313,7 +313,7 @@ public class FolderList extends K9ListActivity {
     }
 
     private void initializeActionBar() {
-        ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
+        ActionBar mActionBar = getActionBar();
         mActionBar.addAction(new SearchAction());
         mActionBar.addAction(new SyncAction());
         mActionBar.addAction(new ComposeAction());

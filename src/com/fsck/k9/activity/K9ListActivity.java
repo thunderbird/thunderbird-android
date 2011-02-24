@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.os.Bundle;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.R;
+import com.markupartist.android.widget.ActionBar;
 
 public class K9ListActivity extends ListActivity {
     @Override
@@ -86,5 +88,9 @@ public class K9ListActivity extends ListActivity {
             }
         }
         return super.onKeyUp(keyCode, event);
+    }
+    public ActionBar getActionBar() {
+        ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+        return actionBar;
     }
 }

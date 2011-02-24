@@ -15,8 +15,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
+import com.fsck.k9.R;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
+import com.markupartist.android.widget.ActionBar;
 
 
 public class K9Activity extends Activity {
@@ -91,6 +93,13 @@ public class K9Activity extends Activity {
     }
     protected void onPrevious() {
     }
+
+
+    public ActionBar getActionBar() {
+        ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+        return actionBar;
+    }
+
 
 
     protected Animation inFromRightAnimation() {

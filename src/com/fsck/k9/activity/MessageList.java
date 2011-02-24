@@ -516,9 +516,7 @@ public class MessageList
         }
 
         private void setWindowTitle() {
-            if (mActionBar != null) {
                 setActionBarTitle();
-            }
         }
 
 
@@ -924,8 +922,7 @@ public class MessageList
     }
 
     private void initializeActionBar() {
-        ActionBar mActionBar = (ActionBar) findViewById(R.id.actionbar);
-        Log.v(K9.LOG_TAG, "Action bar exists! " + mActionBar);
+        ActionBar mActionBar = getActionBar();
         //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
         //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -942,16 +939,18 @@ public class MessageList
     }
 
     public void setActionBarTitle() {
-        if (mAccount != null && mFolderName != null) {
+        ActionBar actionBar = getActionBar();
+
+        if (mAccount != null && mFolderName != null && actionBar != null)  {
             String displayName  = mFolderName;
 
             if (K9.INBOX.equalsIgnoreCase(displayName)) {
                 displayName = getString(R.string.special_mailbox_name_inbox);
             }
 
-            mActionBar.setTitle(mAccount.getDescription() + " / " + displayName);
+            actionBar.setTitle(mAccount.getDescription() + " / " + displayName);
         } else if (mQueryString != null) {
-            mActionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
+            actionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
         }
     }
 
@@ -3519,11 +3518,9 @@ public class MessageList
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (mController.isMoveCapable(mAccount)) {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
-            mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) &&
-                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+            //mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) && !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
             // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) &&
-                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+            //mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) && !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
             mMove.setEnabled(true);
         } else {
         }
@@ -3549,9 +3546,9 @@ public class MessageList
     }
 
     private void disableMoveButtons() {
-        mArchive.setEnabled(false);
+        //mArchive.setEnabled(false);
         mMove.setEnabled(false);
-        mSpam.setEnabled(false);
+        //mSpam.setEnabled(false);
     }
 
     private void setOnClickListener(int viewCode) {
