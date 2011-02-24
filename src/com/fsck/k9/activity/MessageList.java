@@ -987,67 +987,67 @@ public class MessageList
 
             if (mCurrentMessageInfo != null) {
 
-        if (mCurrentMessageInfo.folder.name.equals(mCurrentMessageInfo.message.getFolder().getAccount().getDraftsFolderName())) {
+                if (mCurrentMessageInfo.folder.name.equals(mCurrentMessageInfo.message.getFolder().getAccount().getDraftsFolderName())) {
 
 
-                ActionItem editDraftAction = new ActionItem();
-                editDraftAction.setTitle(getString(R.string.edit_draft_action));
-                editDraftAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
-                editDraftAction.setOnClickListener(new OnClickListener() {
-                    @Override public void onClick(View v) {
-                        MessageCompose.actionEditDraft(MessageList.this, mAccount, mCurrentMessageInfo.message);
-                    }
-                });
-                qa.addActionItem(editDraftAction);
-
-
-
-
-        } else {
-                ActionItem replyAction = new ActionItem();
-                replyAction.setTitle(getString(R.string.reply_action));
-                replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
-                replyAction.setOnClickListener(new OnClickListener() {
-                    @Override public void onClick(View v) {
-                        onReply(mCurrentMessageInfo);
-                    }
-                });
-                qa.addActionItem(replyAction);
-                ActionItem ReplyAllAction = new ActionItem();
-                ReplyAllAction.setTitle(getString(R.string.reply_all_action));
-                ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
-                ReplyAllAction.setOnClickListener(new OnClickListener() {
-                    @Override public void onClick(View v) {
-                        onReplyAll(mCurrentMessageInfo);
-                    }
-                });
-                qa.addActionItem(ReplyAllAction);
-                ActionItem forwardAction = new ActionItem();
-                forwardAction.setTitle(getString(R.string.forward_action));
-                forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
-                forwardAction.setOnClickListener(new OnClickListener() {
-                    @Override public void onClick(View v) {
-                        onForward(mCurrentMessageInfo);
-                    }
-                });
-                qa.addActionItem(forwardAction);
-
-                ActionItem shareAction = new ActionItem();
-                shareAction.setTitle(getString(R.string.send_alternate_action));
-                shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
-                shareAction.setOnClickListener(new OnClickListener() {
-                    @Override public void onClick(View v) {
-                        onSendAlternate(mAccount, mCurrentMessageInfo);
-                    }
-                });
-                qa.addActionItem(shareAction);
+                    ActionItem editDraftAction = new ActionItem();
+                    editDraftAction.setTitle(getString(R.string.edit_draft_action));
+                    editDraftAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
+                    editDraftAction.setOnClickListener(new OnClickListener() {
+                        @Override public void onClick(View v) {
+                            MessageCompose.actionEditDraft(MessageList.this, mAccount, mCurrentMessageInfo.message);
+                        }
+                    });
+                    qa.addActionItem(editDraftAction);
 
 
 
+
+                } else {
+                    ActionItem replyAction = new ActionItem();
+                    replyAction.setTitle(getString(R.string.reply_action));
+                    replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
+                    replyAction.setOnClickListener(new OnClickListener() {
+                        @Override public void onClick(View v) {
+                            onReply(mCurrentMessageInfo);
+                        }
+                    });
+                    qa.addActionItem(replyAction);
+                    ActionItem ReplyAllAction = new ActionItem();
+                    ReplyAllAction.setTitle(getString(R.string.reply_all_action));
+                    ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
+                    ReplyAllAction.setOnClickListener(new OnClickListener() {
+                        @Override public void onClick(View v) {
+                            onReplyAll(mCurrentMessageInfo);
+                        }
+                    });
+                    qa.addActionItem(ReplyAllAction);
+                    ActionItem forwardAction = new ActionItem();
+                    forwardAction.setTitle(getString(R.string.forward_action));
+                    forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
+                    forwardAction.setOnClickListener(new OnClickListener() {
+                        @Override public void onClick(View v) {
+                            onForward(mCurrentMessageInfo);
+                        }
+                    });
+                    qa.addActionItem(forwardAction);
+
+                    ActionItem shareAction = new ActionItem();
+                    shareAction.setTitle(getString(R.string.send_alternate_action));
+                    shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
+                    shareAction.setOnClickListener(new OnClickListener() {
+                        @Override public void onClick(View v) {
+                            onSendAlternate(mAccount, mCurrentMessageInfo);
+                        }
+                    });
+                    qa.addActionItem(shareAction);
+
+
+
+
+                }
 
             }
-
-        }
 
 
             qa.show();
@@ -1394,11 +1394,11 @@ public class MessageList
         if (message == null) {
             return;
         }
-            mHandler.post(new Runnable() {
-                public void run() {
-                    displayMessage(message);
-                }
-            });
+        mHandler.post(new Runnable() {
+            public void run() {
+                displayMessage(message);
+            }
+        });
 
         /*
          * We set read=true here for UI performance reasons. The actual value
