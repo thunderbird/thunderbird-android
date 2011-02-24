@@ -115,7 +115,7 @@
     <string name="add_attachment_action_image">Añadir adjunto (Imagen)</string>
     <string name="add_attachment_action_video">Añadir adjunto (Vídeo)</string>
     <string name="dump_settings_action">Volcado de Configuración</string>
-    <string name="empty_trash_action">Vacíar Papelera</string>
+    <string name="empty_trash_action">Vaciar Papelera</string>
     <string name="expunge_action">Erradicar</string>
     <string name="clear_local_folder_action">Borrar mensajes locales</string>
     <string name="set_sort_action">Modo de ordenación</string>
