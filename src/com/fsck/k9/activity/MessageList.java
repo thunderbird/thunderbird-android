@@ -495,7 +495,7 @@ public class MessageList
         }
 
         private void refreshTitleOnThread() {
-            setWindowTitle();
+            setActionBarTitle();
             setWindowProgress();
         }
 
@@ -514,11 +514,6 @@ public class MessageList
 
             getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
         }
-
-        private void setWindowTitle() {
-                setActionBarTitle();
-        }
-
 
         public void progress(final boolean progress) {
             runOnUiThread(new Runnable() {
@@ -941,7 +936,7 @@ public class MessageList
     public void setActionBarTitle() {
         ActionBar actionBar = getActionBar();
 
-        if (mAccount != null && mFolderName != null && actionBar != null)  {
+        if (mAccount != null && mFolderName != null) {
             String displayName  = mFolderName;
 
             if (K9.INBOX.equalsIgnoreCase(displayName)) {
