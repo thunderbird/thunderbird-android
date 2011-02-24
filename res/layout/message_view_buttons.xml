@@ -27,9 +27,9 @@
             android:layout_width="40dip"
             android:layout_weight="1"
            />
-        <Button
+        <ImageButton
             android:id="@+id/previous"
-            android:text="@string/message_view_prev_action"
+            android:src="@drawable/ic_button_move_left"
             android:contentDescription="@string/previous_action"
             android:padding="0dip"
             android:background="@drawable/message_buttonbar_button_background"
@@ -37,10 +37,10 @@
             android:layout_width="40dip"
             android:layout_weight="1"
            />
-       <Button
+       <ImageButton
             android:id="@+id/next"
-            android:text="@string/message_view_next_action"
             android:contentDescription="@string/next_action"
+            android:src="@drawable/ic_button_move_right"
             android:padding="0dip"
             android:background="@drawable/message_buttonbar_button_background"
             android:layout_height="wrap_content"
