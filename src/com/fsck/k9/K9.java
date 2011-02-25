@@ -776,7 +776,7 @@ public class K9 extends Application {
 
 
     public static boolean startIntegratedInbox() {
-        return !mHideSpecialAccounts && mStartIntegratedInbox;
+        return mStartIntegratedInbox;
     }
 
     public static void setStartIntegratedInbox(boolean startIntegratedInbox) {
