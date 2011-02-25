@@ -69,6 +69,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
         final Uri contactUri = Uri.fromParts("mailto", email.getAddress(), null);
 
         final Intent contactIntent = new Intent(Intents.SHOW_OR_CREATE_CONTACT);
+        contactIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         contactIntent.setData(contactUri);
 
         // Pass along full E-mail string for possible create dialog
