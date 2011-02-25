@@ -232,18 +232,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        unreadAccount = new SearchAccount(this, false, null, null);
-        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+        if (!K9.isHideSpecialAccounts()) {
+            unreadAccount = new SearchAccount(this, false, null, null);
+            unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+            unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
 
-        integratedInboxAccount = new SearchAccount(this, true, null,  null);
-        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+            integratedInboxAccount = new SearchAccount(this, true, null,  null);
+            integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+            integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+        }
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
-        if (startup && K9.startIntegratedInbox()) {
+        if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(integratedInboxAccount);
             finish();
         } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
@@ -306,10 +308,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void refresh() {
         BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
 
-        List<BaseAccount> newAccounts = new ArrayList<BaseAccount>(accounts.length + 4);
-        if (accounts.length > 0) {
+        List<BaseAccount> newAccounts;
+        if (!K9.isHideSpecialAccounts()
+            && accounts.length > 0) {
+            newAccounts = new ArrayList<BaseAccount>(accounts.length + 2);
             newAccounts.add(integratedInboxAccount);
             newAccounts.add(unreadAccount);
+        }
+        else {
+            newAccounts = new ArrayList<BaseAccount>(accounts.length);
         }
 
         newAccounts.addAll(Arrays.asList(accounts));

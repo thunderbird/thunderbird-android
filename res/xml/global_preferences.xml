@@ -92,6 +92,13 @@
                 android:title="@string/count_search_title"
                 android:summary="@string/count_search_summary" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="hide_special_accounts"
+                android:title="@string/hide_special_accounts_title"
+                android:summary="@string/hide_special_accounts_summary"
+                android:disableDependentsState="true" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -180,7 +187,8 @@
             android:persistent="false"
             android:key="start_integrated_inbox"
             android:title="@string/start_integrated_inbox_title"
-            android:summary="@string/start_integrated_inbox_summary" />
+            android:summary="@string/start_integrated_inbox_summary"
+            android:dependency="hide_special_accounts" />
 
         <CheckBoxPreference
             android:persistent="false"
