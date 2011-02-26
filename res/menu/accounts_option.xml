@@ -31,8 +31,16 @@
 		<item android:id="@+id/search"
 		android:title="@string/search_action" />
 	-->
-        <item android:id="@+id/edit_prefs"
+        <item android:id="@+id/settings"
         android:title="@string/preferences_action" 
-        android:icon="@android:drawable/ic_menu_preferences"
-    />
+        android:icon="@android:drawable/ic_menu_preferences">
+        <menu>
+            <item android:id="@+id/edit_prefs"
+                android:title="@string/global_settings_action"  />
+            <item android:id="@+id/export_all"
+               android:title="@string/settings_export_all" /> 
+            <item android:id="@+id/import_settings"
+               android:title="@string/settings_import" /> 
+        </menu>
+    </item>
 </menu>

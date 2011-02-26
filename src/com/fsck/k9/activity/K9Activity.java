@@ -15,11 +15,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
 
-public class K9Activity extends Activity
+public class K9Activity extends Activity implements Progressable
 {
     private GestureDetector gestureDetector;
 
@@ -195,6 +197,13 @@ public class K9Activity extends Activity
             return false;
         }
     }
-
-
+    public void setProgress(boolean progress)
+    {
+    }
+    
+    public void onExport(final Account account)
+    {
+        ExportHelper.exportSettings(this, this, account);
+    }
+   
 }

@@ -174,7 +174,11 @@ public class FolderList extends K9ListActivity
             });
         }
     }
-
+    
+    public void setProgress(boolean progress)
+    {
+        mHandler.progress(progress);
+    }
     /**
     * This class is responsible for reloading the list of local messages for a
     * given folder, notifying the adapter that the message have been loaded and
@@ -628,6 +632,12 @@ public class FolderList extends K9ListActivity
             case R.id.compact:
                 onCompact(mAccount);
 
+            case R.id.export:
+                onExport(mAccount);
+                return true;
+                
+            case R.id.export_all:
+                onExport(null);
                 return true;
 
             case R.id.display_1st_class:

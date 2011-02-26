@@ -80,7 +80,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
  */
 public class MessageList
     extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener
+    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener, Progressable
 {
 
     /**
@@ -595,6 +595,10 @@ public class MessageList
                 }
             });
         }
+    }
+    public void setProgress(boolean progress)
+    {
+        mHandler.progress(progress);
     }
 
     public static void actionHandleFolder(Context context, Account account, String folder)
@@ -1679,6 +1683,14 @@ public class MessageList
                 onEditPrefs();
                 return true;
             }
+            case R.id.export:
+                onExport(mAccount);
+                return true;
+                
+            case R.id.export_all:
+                onExport(null);
+                return true;
+
         }
 
         if (mQueryString != null)

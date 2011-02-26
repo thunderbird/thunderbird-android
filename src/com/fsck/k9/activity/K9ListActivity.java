@@ -5,11 +5,16 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.os.Bundle;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.DateFormatter;
 
-public class K9ListActivity extends ListActivity
+public class K9ListActivity extends ListActivity implements Progressable
 {
     @Override
     public void onCreate(Bundle icicle)
@@ -106,4 +111,14 @@ public class K9ListActivity extends ListActivity
         }
         return super.onKeyUp(keyCode,event);
     }
+    
+    public void setProgress(boolean progress)
+    {
+    }
+    
+    public void onExport(final Account account)
+    {
+        ExportHelper.exportSettings(this, this, account);
+    }
+    
 }

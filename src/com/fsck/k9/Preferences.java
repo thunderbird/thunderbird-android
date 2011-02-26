@@ -3,7 +3,12 @@ package com.fsck.k9;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Config;
@@ -32,7 +37,8 @@ public class Preferences
 
 
     private Storage mStorage;
-    private List<Account> accounts;
+    private Map<String, Account> accounts = null;
+    private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context mContext;
 
@@ -51,22 +57,44 @@ public class Preferences
 
     private synchronized void loadAccounts()
     {
+        accounts = new HashMap<String, Account>();
+        refreshAccounts();
+    }
+    
+    public synchronized void refreshAccounts()
+    {
+        Map<String, Account> newAccountMap = new HashMap<String, Account>();
+        accountsInOrder = new LinkedList<Account>();
         String accountUuids = getPreferences().getString("accountUuids", null);
         if ((accountUuids != null) && (accountUuids.length() != 0))
         {
             String[] uuids = accountUuids.split(",");
-            accounts = new ArrayList<Account>(uuids.length);
             for (String uuid : uuids)
             {
-                accounts.add(new Account(this, uuid));
+                Account account = accounts.get(uuid);
+                if (account != null)
+                {
+                    newAccountMap.put(uuid, account);
+                    accountsInOrder.add(account);
+                }
+                else
+                {
+                    Account newAccount = new Account(this, uuid);
+                    newAccountMap.put(uuid, newAccount);
+                    accountsInOrder.add(newAccount);
+                }
             }
         }
-        else
+        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
         {
-            accounts = new ArrayList<Account>();
+            newAccountMap.put(newAccount.getUuid(), newAccount);
+            accountsInOrder.add(newAccount);
+            newAccount = null;
         }
-    }
 
+        accounts = newAccountMap;
+    }
+    
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
@@ -79,13 +107,7 @@ public class Preferences
             loadAccounts();
         }
 
-        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
-        {
-            accounts.add(newAccount);
-            newAccount = null;
-        }
-
-        return accounts.toArray(EMPTY_ACCOUNT_ARRAY);
+        return accountsInOrder.toArray(EMPTY_ACCOUNT_ARRAY);
     }
 
     /**
@@ -95,18 +117,9 @@ public class Preferences
      */
     public synchronized Collection<Account> getAvailableAccounts()
     {
-        if (accounts == null)
-        {
-            loadAccounts();
-        }
-
-        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
-        {
-            accounts.add(newAccount);
-            newAccount = null;
-        }
+        Account[] allAccounts = getAccounts();
         Collection<Account> retval = new ArrayList<Account>(accounts.size());
-        for (Account account : accounts)
+        for (Account account : allAccounts)
         {
             if (account.isAvailable(mContext))
             {
@@ -123,33 +136,24 @@ public class Preferences
         {
             loadAccounts();
         }
-
-        for (Account account : accounts)
-        {
-            if (account.getUuid().equals(uuid))
-            {
-                return account;
-            }
-        }
-
-        if ((newAccount != null) && newAccount.getUuid().equals(uuid))
-        {
-            return newAccount;
-        }
-
-        return null;
+        Account account = accounts.get(uuid);
+        
+        return account;
     }
 
     public synchronized Account newAccount()
     {
         newAccount = new Account(K9.app);
+        accounts.put(newAccount.getUuid(), newAccount);
+        accountsInOrder.add(newAccount);
 
         return newAccount;
     }
 
     public synchronized void deleteAccount(Account account)
     {
-        accounts.remove(account);
+        accounts.remove(account.getUuid());
+        accountsInOrder.remove(account);
         account.delete(this);
 
         if (newAccount == account)
