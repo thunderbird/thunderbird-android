@@ -26,7 +26,7 @@
 <LinearLayout
     android:layout_height="fill_parent"
         android:minWidth="3in"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
     android:orientation="vertical"
     android:id="@+id/message_list_holder"
     >
