@@ -16,7 +16,7 @@
 
 package com.fsck.k9.helper;
 
-import org.bouncycastle.asn1.x509.X509Name;
+import android.net.http.SslCertificate;
 import android.util.Log;
 import com.fsck.k9.K9;
 import java.net.InetAddress;
@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.Vector;
 
 /**
  * Implements basic domain-name validation as specified by RFC2818.
@@ -198,14 +197,8 @@ public class DomainNameChecker {
         }
 
         if (!hasDns) {
-            X509Name xName = new X509Name(certificate.getSubjectDN().getName());
-            Vector<?> val = xName.getValues();
-            Vector<?> oid = xName.getOIDs();
-            for (int i = 0; i < oid.size(); i++) {
-                if (oid.elementAt(i).equals(X509Name.CN)) {
-                    return matchDns(thisDomain, (String)(val.elementAt(i)));
-                }
-            }
+            SslCertificate sslCertificate = new SslCertificate(certificate);
+            return matchDns(thisDomain, sslCertificate.getIssuedTo().getCName());
         }
 
         return false;
