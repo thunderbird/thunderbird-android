@@ -367,8 +367,8 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">Recuperant la informació del compte\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">S\'està comprovant la configuració del servidor d’entrada\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">S\'està comprovant la configuració del servidor de sortida\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">S’està comprovant la configuració del servidor d’entrada\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">S’està comprovant la configuració del servidor de sortida\u2026</string>
     <string name="account_setup_check_settings_authenticate">S’està autenticant\u2026</string>
     <string name="account_setup_check_settings_fetch">Recollint la configuració del compte\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">S’està acabant\u2026</string>
