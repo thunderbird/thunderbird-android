@@ -390,12 +390,8 @@ public class SmtpTransport extends Transport {
             Log.d(K9.LOG_TAG, commandToLog);
         }
 
-        /*
-         * Note: We can use the string length to compute the buffer size since
-         * only ASCII characters are allowed in SMTP commands i.e. this string
-         * will never contain multi-byte characters.
-         */
-        byte[] data = (s.concat("\r\n")).getBytes();
+        byte[] data = s.concat("\r\n").getBytes();
+
         /*
          * Important: Send command + CRLF using just one write() call. Using
          * multiple calls will likely result in multiple TCP packets and some
