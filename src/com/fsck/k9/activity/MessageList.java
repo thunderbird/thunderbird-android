@@ -941,6 +941,8 @@ public class MessageList
 
             if (K9.INBOX.equalsIgnoreCase(displayName)) {
                 displayName = getString(R.string.special_mailbox_name_inbox);
+            } else if (mAccount.getOutboxFolderName().equals(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_outbox);
             }
 
             actionBar.setTitle(mAccount.getDescription() + " / " + displayName);
