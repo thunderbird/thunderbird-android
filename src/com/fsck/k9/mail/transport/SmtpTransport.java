@@ -492,12 +492,7 @@ public class SmtpTransport extends Transport
          * only ASCII characters are allowed in SMTP commands i.e. this string
          * will never contain multi-byte characters.
          */
-        int len = s.length();
-        byte[] data = new byte[len + 2];
-        s.getBytes(0, len, data, 0);
-        data[len+0] = '\r';
-        data[len+1] = '\n';
-
+        byte[] data = (s.concat("\r\n")).getBytes();
         /*
          * Important: Send command + CRLF using just one write() call. Using
          * multiple calls will likely result in multiple TCP packets and some
