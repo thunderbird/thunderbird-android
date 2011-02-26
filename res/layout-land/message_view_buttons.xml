@@ -28,20 +28,20 @@
             android:layout_height="40dip"
             android:layout_weight="1"
            />
-
         <ImageButton
-            android:id="@+id/delete"
+            android:id="@+id/move"
             android:layout_width="fill_parent"
-            android:src="@drawable/ic_button_delete"
+            android:src="@drawable/ic_button_move"
             android:background="@drawable/message_buttonbar_button_background"
             android:textSize="0dip"
             android:layout_height="40dip"
             android:layout_weight="1"
            />
+
         <ImageButton
-            android:id="@+id/move"
+            android:id="@+id/delete"
             android:layout_width="fill_parent"
-            android:src="@drawable/ic_button_move"
+            android:src="@drawable/ic_button_delete"
             android:background="@drawable/message_buttonbar_button_background"
             android:textSize="0dip"
             android:layout_height="40dip"
