@@ -921,6 +921,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="count_search_title">Conta i risultati della ricerca</string>
     <string name="count_search_summary">Disattiva per una visualizzazione più veloce</string>
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Con stella</string>
     <string name="unread_modifier"> - Non letto</string>
