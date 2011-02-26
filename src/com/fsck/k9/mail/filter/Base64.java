@@ -17,11 +17,6 @@
 
 package com.fsck.k9.mail.filter;
 
-import org.apache.commons.codec.BinaryDecoder;
-import org.apache.commons.codec.BinaryEncoder;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.EncoderException;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
@@ -38,7 +33,7 @@ import java.math.BigInteger;
  * @since 1.0-dev
  * @version $Id$
  */
-public class Base64 implements BinaryEncoder, BinaryDecoder {
+public class Base64 {
     /**
      * Chunk size per RFC 2045 section 6.8.
      *
@@ -758,5 +753,17 @@ public class Base64 implements BinaryEncoder, BinaryDecoder {
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, len);
 
         return resizedBytes;
+    }
+
+    static class DecoderException extends Exception {
+        DecoderException(String error) {
+            super(error);
+        }
+    }
+
+    static class EncoderException extends Exception {
+        EncoderException(String error) {
+            super(error);
+        }
     }
 }
