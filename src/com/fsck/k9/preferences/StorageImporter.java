@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.helper.DateFormatter;
 
 public class StorageImporter {
     public static int importPreferences(Context context, String fileName, String encryptionKey) throws StorageImportExportException {
@@ -68,6 +69,7 @@ public class StorageImporter {
             }
             editor.commit();
             Preferences.getPreferences(context).refreshAccounts();
+            DateFormatter.clearChosenFormat();
             K9.loadPrefs(Preferences.getPreferences(context));
             return numAccounts;
         } catch (SAXException se) {
