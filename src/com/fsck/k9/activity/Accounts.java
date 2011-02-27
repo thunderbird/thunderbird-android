@@ -829,7 +829,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                 public void run()
                                 {
                                     mHandler.progress(false);
-                                    String toastText = Accounts.this.getString(R.string.settings_import_success, numAccounts, fileName );
+                                    String toastText = 
+                                        numAccounts != 1 
+                                            ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName )
+                                            : Accounts.this.getString(R.string.settings_import_success_single, fileName );
                                     Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
                                     toast.show();
                                     refresh();
