@@ -13,47 +13,37 @@ import java.io.*;
  * and writeTo one time. After writeTo is called, or the InputStream returned from
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
-public class BinaryTempFileBody implements Body
-{
+public class BinaryTempFileBody implements Body {
     private static File mTempDirectory;
 
     private File mFile;
 
-    public static void setTempDirectory(File tempDirectory)
-    {
+    public static void setTempDirectory(File tempDirectory) {
         mTempDirectory = tempDirectory;
     }
 
-    public BinaryTempFileBody()
-    {
-        if (mTempDirectory == null)
-        {
+    public BinaryTempFileBody() {
+        if (mTempDirectory == null) {
             throw new
             RuntimeException("setTempDirectory has not been called on BinaryTempFileBody!");
         }
     }
 
-    public OutputStream getOutputStream() throws IOException
-    {
+    public OutputStream getOutputStream() throws IOException {
         mFile = File.createTempFile("body", null, mTempDirectory);
         mFile.deleteOnExit();
         return new FileOutputStream(mFile);
     }
 
-    public InputStream getInputStream() throws MessagingException
-    {
-        try
-        {
+    public InputStream getInputStream() throws MessagingException {
+        try {
             return new BinaryTempFileBodyInputStream(new FileInputStream(mFile));
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             throw new MessagingException("Unable to open body", ioe);
         }
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException
-    {
+    public void writeTo(OutputStream out) throws IOException, MessagingException {
         InputStream in = getInputStream();
         Base64OutputStream base64Out = new Base64OutputStream(out);
         IOUtils.copy(in, base64Out);
@@ -61,16 +51,13 @@ public class BinaryTempFileBody implements Body
         mFile.delete();
     }
 
-    class BinaryTempFileBodyInputStream extends FilterInputStream
-    {
-        public BinaryTempFileBodyInputStream(InputStream in)
-        {
+    class BinaryTempFileBodyInputStream extends FilterInputStream {
+        public BinaryTempFileBodyInputStream(InputStream in) {
             super(in);
         }
 
         @Override
-        public void close() throws IOException
-        {
+        public void close() throws IOException {
             super.close();
             mFile.delete();
         }

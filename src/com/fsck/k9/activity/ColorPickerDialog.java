@@ -18,12 +18,10 @@ import android.widget.*;
 import com.fsck.k9.view.ColorPickerBox;
 
 
-public class ColorPickerDialog
-{
+public class ColorPickerDialog {
     private static final String TAG = ColorPickerDialog.class.getSimpleName();
 
-    public interface OnColorChangedListener
-    {
+    public interface OnColorChangedListener {
         void colorChanged(int color);
     }
 
@@ -45,8 +43,7 @@ public class ColorPickerDialog
     float sizeUiDp = 240.f;
     float sizeUiPx; // diset di constructor
 
-    public ColorPickerDialog(Context context, OnColorChangedListener listener, int color )
-    {
+    public ColorPickerDialog(Context context, OnColorChangedListener listener, int color) {
         this.listener = listener;
         this.colorOld = color;
         this.colorNew = color;
@@ -73,15 +70,12 @@ public class ColorPickerDialog
         viewColorOld.setBackgroundColor(color);
         viewColorNew.setBackgroundColor(color);
 
-        viewHue.setOnTouchListener(new View.OnTouchListener()
-        {
+        viewHue.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN
-                        || event.getAction() == MotionEvent.ACTION_UP)
-                {
+                || event.getAction() == MotionEvent.ACTION_UP) {
 
                     float y = event.getY(); // dalam px, bukan dp
                     if (y < 0.f) y = 0.f;
@@ -101,15 +95,12 @@ public class ColorPickerDialog
                 return false;
             }
         });
-        viewBox.setOnTouchListener(new View.OnTouchListener()
-        {
+        viewBox.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN
-                        || event.getAction() == MotionEvent.ACTION_UP)
-                {
+                || event.getAction() == MotionEvent.ACTION_UP) {
 
                     float x = event.getX(); // dalam px, bukan dp
                     float y = event.getY(); // dalam px, bukan dp
@@ -135,24 +126,18 @@ public class ColorPickerDialog
 
         dialog = new AlertDialog.Builder(context)
         .setView(view)
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener()
-        {
+        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if (ColorPickerDialog.this.listener != null)
-                {
+            public void onClick(DialogInterface dialog, int which) {
+                if (ColorPickerDialog.this.listener != null) {
                     ColorPickerDialog.this.listener.colorChanged(colorNew);
                 }
             }
         })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener()
-        {
+        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if (ColorPickerDialog.this.listener != null)
-                {
+            public void onClick(DialogInterface dialog, int which) {
+                if (ColorPickerDialog.this.listener != null) {
                 }
             }
         })
@@ -161,39 +146,35 @@ public class ColorPickerDialog
     }
 
     @SuppressWarnings("deprecation")
-    protected void placeArrow()
-    {
+    protected void placeArrow() {
         float y = sizeUiPx - (hue * sizeUiPx / 360.f);
         if (y == sizeUiPx) y = 0.f;
 
         AbsoluteLayout.LayoutParams layoutParams = (AbsoluteLayout.LayoutParams) arrow.getLayoutParams();
-        layoutParams.y = (int) (y + 4);
+        layoutParams.y = (int)(y + 4);
         arrow.setLayoutParams(layoutParams);
     }
 
     @SuppressWarnings("deprecation")
-    protected void placeSpyglass()
-    {
+    protected void placeSpyglass() {
         float x = sat * sizeUiPx;
         float y = (1.f - val) * sizeUiPx;
 
         AbsoluteLayout.LayoutParams layoutParams = (AbsoluteLayout.LayoutParams) viewSpyglass.getLayoutParams();
-        layoutParams.x = (int) (x + 3);
-        layoutParams.y = (int) (y + 3);
+        layoutParams.x = (int)(x + 3);
+        layoutParams.y = (int)(y + 3);
         viewSpyglass.setLayoutParams(layoutParams);
     }
 
     float[] tmp01 = new float[3];
-    private int calculateColor()
-    {
+    private int calculateColor() {
         tmp01[0] = hue;
         tmp01[1] = sat;
         tmp01[2] = val;
         return Color.HSVToColor(tmp01);
     }
 
-    public void show()
-    {
+    public void show() {
         dialog.show();
     }
 }

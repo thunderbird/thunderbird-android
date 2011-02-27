@@ -14,11 +14,9 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.DateFormatter;
 
-public class K9ListActivity extends ListActivity implements Progressable
-{
+public class K9ListActivity extends ListActivity implements Progressable {
     @Override
-    public void onCreate(Bundle icicle)
-    {
+    public void onCreate(Bundle icicle) {
         K9Activity.setLanguage(this, K9.getK9Language());
         setTheme(K9.getK9Theme());
         super.onCreate(icicle);
@@ -26,8 +24,7 @@ public class K9ListActivity extends ListActivity implements Progressable
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupFormats();
     }
@@ -35,90 +32,72 @@ public class K9ListActivity extends ListActivity implements Progressable
     private java.text.DateFormat mDateFormat;
     private java.text.DateFormat mTimeFormat;
 
-    private void setupFormats()
-    {
+    private void setupFormats() {
         mDateFormat = DateFormatter.getDateFormat(this);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
     }
 
-    public java.text.DateFormat getTimeFormat()
-    {
+    public java.text.DateFormat getTimeFormat() {
         return mTimeFormat;
     }
 
-    public java.text.DateFormat getDateFormat()
-    {
+    public java.text.DateFormat getDateFormat() {
         return mDateFormat;
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Shortcuts that work no matter what is selected
-        switch (keyCode)
-        {
-            case KeyEvent.KEYCODE_VOLUME_UP:
-            {
-                final ListView listView = getListView();
-                if (K9.useVolumeKeysForListNavigationEnabled())
-                {
-                    int currentPosition = listView.getSelectedItemPosition();
-                    if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode())
-                    {
-                        currentPosition = listView.getFirstVisiblePosition();
-                    }
-                    if (currentPosition > 0)
-                    {
-                        listView.setSelection(currentPosition - 1);
-                    }
-                    return true;
+        switch (keyCode) {
+        case KeyEvent.KEYCODE_VOLUME_UP: {
+            final ListView listView = getListView();
+            if (K9.useVolumeKeysForListNavigationEnabled()) {
+                int currentPosition = listView.getSelectedItemPosition();
+                if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode()) {
+                    currentPosition = listView.getFirstVisiblePosition();
                 }
+                if (currentPosition > 0) {
+                    listView.setSelection(currentPosition - 1);
+                }
+                return true;
             }
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-            {
-                final ListView listView = getListView();
-                if (K9.useVolumeKeysForListNavigationEnabled())
-                {
-                    int currentPosition = listView.getSelectedItemPosition();
-                    if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode())
-                    {
-                        currentPosition = listView.getFirstVisiblePosition();
-                    }
+        }
+        case KeyEvent.KEYCODE_VOLUME_DOWN: {
+            final ListView listView = getListView();
+            if (K9.useVolumeKeysForListNavigationEnabled()) {
+                int currentPosition = listView.getSelectedItemPosition();
+                if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode()) {
+                    currentPosition = listView.getFirstVisiblePosition();
+                }
 
-                    if (currentPosition < listView.getCount())
-                    {
-                        listView.setSelection(currentPosition + 1);
-                    }
-                    return true;
+                if (currentPosition < listView.getCount()) {
+                    listView.setSelection(currentPosition + 1);
                 }
+                return true;
             }
+        }
         }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled())
-        {
-            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
-            {
+        if (K9.useVolumeKeysForListNavigationEnabled()) {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
             }
         }
-        return super.onKeyUp(keyCode,event);
+        return super.onKeyUp(keyCode, event);
     }
-    
-    public void setProgress(boolean progress)
-    {
+
+    public void setProgress(boolean progress) {
     }
-    
-    public void onExport(final Account account)
-    {
+
+    public void onExport(final Account account) {
         ExportHelper.exportSettings(this, this, account);
     }
-    
+
 }

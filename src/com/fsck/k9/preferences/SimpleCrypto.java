@@ -12,7 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 
 
 /**
- * package net.sf.andhsli.hotspotlogin;  
+ * package net.sf.andhsli.hotspotlogin;
  * Usage:
  * <pre>
  * String crypto = SimpleCrypto.encrypt(masterpassword, cleartext)
@@ -28,7 +28,7 @@ public class SimpleCrypto {
         byte[] result = encrypt(rawKey, cleartext.getBytes());
         return new String(base64.encode(result));
     }
-    
+
     public static String decrypt(String seed, String encrypted, Base64 base64) throws Exception {
         byte[] rawKey = getRawKey(seed.getBytes());
         byte[] enc = base64.decode(encrypted.getBytes());
@@ -46,7 +46,7 @@ public class SimpleCrypto {
         return raw;
     }
 
-    
+
     private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
         Cipher cipher = Cipher.getInstance("AES");
@@ -63,7 +63,7 @@ public class SimpleCrypto {
         return decrypted;
     }
 
-//    
+//
 //    public static byte[] toByte(String hexString) {
 //        int len = hexString.length()/2;
 //        byte[] result = new byte[len];
@@ -85,6 +85,6 @@ public class SimpleCrypto {
 //    private static void appendHex(StringBuffer sb, byte b) {
 //        sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 //    }
-//    
+//
 }
 

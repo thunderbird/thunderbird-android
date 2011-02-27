@@ -4,8 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class LineWrapOutputStream extends FilterOutputStream
-{
+public class LineWrapOutputStream extends FilterOutputStream {
     private static final byte[] CRLF = new byte[] {'\r', '\n'};
 
     private byte[] buffer;
@@ -14,21 +13,17 @@ public class LineWrapOutputStream extends FilterOutputStream
     private int endOfLastWord = 0;
 
 
-    public LineWrapOutputStream(OutputStream out, int maxLineLength)
-    {
+    public LineWrapOutputStream(OutputStream out, int maxLineLength) {
         super(out);
         buffer = new byte[maxLineLength - 2];
     }
 
     @Override
-    public void write(int oneByte) throws IOException
-    {
+    public void write(int oneByte) throws IOException {
         // Buffer full?
-        if (lineLength == buffer.length)
-        {
+        if (lineLength == buffer.length) {
             // Usable word-boundary found earlier?
-            if (endOfLastWord > 0)
-            {
+            if (endOfLastWord > 0) {
                 // Yes, so output everything up to that word-boundary
                 out.write(buffer, bufferStart, endOfLastWord - bufferStart);
                 out.write(CRLF);
@@ -38,15 +33,12 @@ public class LineWrapOutputStream extends FilterOutputStream
                 // Skip the <SPACE> in the buffer
                 endOfLastWord++;
                 lineLength = buffer.length - endOfLastWord;
-                if (lineLength > 0)
-                {
+                if (lineLength > 0) {
                     // Copy rest of the buffer to the front
                     System.arraycopy(buffer, endOfLastWord + 0, buffer, 0, lineLength);
                 }
                 endOfLastWord = 0;
-            }
-            else
-            {
+            } else {
                 // No word-boundary found, so output whole buffer
                 out.write(buffer, bufferStart, buffer.length - bufferStart);
                 out.write(CRLF);
@@ -55,11 +47,9 @@ public class LineWrapOutputStream extends FilterOutputStream
             }
         }
 
-        if ((oneByte == '\n') || (oneByte == '\r'))
-        {
+        if ((oneByte == '\n') || (oneByte == '\r')) {
             // <CR> or <LF> character found, so output buffer ...
-            if (lineLength - bufferStart > 0)
-            {
+            if (lineLength - bufferStart > 0) {
                 out.write(buffer, bufferStart, lineLength - bufferStart);
             }
             // ... and that character
@@ -67,12 +57,9 @@ public class LineWrapOutputStream extends FilterOutputStream
             lineLength = 0;
             bufferStart = 0;
             endOfLastWord = 0;
-        }
-        else
-        {
+        } else {
             // Remember this position as last word-boundary if <SPACE> found
-            if (oneByte == ' ')
-            {
+            if (oneByte == ' ') {
                 endOfLastWord = lineLength;
             }
 
@@ -83,11 +70,9 @@ public class LineWrapOutputStream extends FilterOutputStream
     }
 
     @Override
-    public void flush() throws IOException
-    {
+    public void flush() throws IOException {
         // Buffer empty?
-        if (lineLength > bufferStart)
-        {
+        if (lineLength > bufferStart) {
             // Output everything we have up till now
             out.write(buffer, bufferStart, lineLength - bufferStart);
 

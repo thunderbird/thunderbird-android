@@ -7,8 +7,7 @@ import android.webkit.WebSettings.TextSize;
  * Manage font size of the information displayed in the account list, folder
  * list, message list and in the message view.
  */
-public class FontSizes
-{
+public class FontSizes {
     /*
      * Keys for the preference storage.
      */
@@ -126,8 +125,7 @@ public class FontSizes
     /**
      * Create a <code>FontSizes</code> object with default values.
      */
-    public FontSizes()
-    {
+    public FontSizes() {
         accountName = MEDIUM;
         accountDescription = SMALL;
 
@@ -153,8 +151,7 @@ public class FontSizes
      *
      * @param editor Used to save the font size settings.
      */
-    public void save(SharedPreferences.Editor editor)
-    {
+    public void save(SharedPreferences.Editor editor) {
         editor.putInt(ACCOUNT_NAME, accountName);
         editor.putInt(ACCOUNT_DESCRIPTION, accountDescription);
 
@@ -181,8 +178,7 @@ public class FontSizes
      *
      * @param prefs Used to load the font size settings.
      */
-    public void load(SharedPreferences prefs)
-    {
+    public void load(SharedPreferences prefs) {
         accountName = prefs.getInt(ACCOUNT_NAME, accountName);
         accountDescription = prefs.getInt(ACCOUNT_DESCRIPTION, accountDescription);
 
@@ -204,198 +200,163 @@ public class FontSizes
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
     }
 
-    public int getAccountName()
-    {
+    public int getAccountName() {
         return accountName;
     }
 
-    public void setAccountName(int accountName)
-    {
+    public void setAccountName(int accountName) {
         this.accountName = accountName;
     }
 
-    public int getAccountDescription()
-    {
+    public int getAccountDescription() {
         return accountDescription;
     }
 
-    public void setAccountDescription(int accountDescription)
-    {
+    public void setAccountDescription(int accountDescription) {
         this.accountDescription = accountDescription;
     }
 
-    public int getFolderName()
-    {
+    public int getFolderName() {
         return folderName;
     }
 
-    public void setFolderName(int folderName)
-    {
+    public void setFolderName(int folderName) {
         this.folderName = folderName;
     }
 
-    public int getFolderStatus()
-    {
+    public int getFolderStatus() {
         return folderStatus;
     }
 
-    public void setFolderStatus(int folderStatus)
-    {
+    public void setFolderStatus(int folderStatus) {
         this.folderStatus = folderStatus;
     }
 
-    public int getMessageListSubject()
-    {
+    public int getMessageListSubject() {
         return messageListSubject;
     }
 
-    public void setMessageListSubject(int messageListSubject)
-    {
+    public void setMessageListSubject(int messageListSubject) {
         this.messageListSubject = messageListSubject;
     }
 
-    public int getMessageListSender()
-    {
+    public int getMessageListSender() {
         return messageListSender;
     }
 
-    public void setMessageListSender(int messageListSender)
-    {
+    public void setMessageListSender(int messageListSender) {
         this.messageListSender = messageListSender;
     }
 
-    public int getMessageListDate()
-    {
+    public int getMessageListDate() {
         return messageListDate;
     }
 
-    public void setMessageListDate(int messageListDate)
-    {
+    public void setMessageListDate(int messageListDate) {
         this.messageListDate = messageListDate;
     }
 
-    public int getMessageListPreview()
-    {
+    public int getMessageListPreview() {
         return messageListPreview;
     }
 
-    public void setMessageListPreview(int messageListPreview)
-    {
+    public void setMessageListPreview(int messageListPreview) {
         this.messageListPreview = messageListPreview;
     }
 
-    public int getMessageViewSender()
-    {
+    public int getMessageViewSender() {
         return messageViewSender;
     }
 
-    public void setMessageViewSender(int messageViewSender)
-    {
+    public void setMessageViewSender(int messageViewSender) {
         this.messageViewSender = messageViewSender;
     }
 
-    public int getMessageViewTo()
-    {
+    public int getMessageViewTo() {
         return messageViewTo;
     }
 
-    public void setMessageViewTo(int messageViewTo)
-    {
+    public void setMessageViewTo(int messageViewTo) {
         this.messageViewTo = messageViewTo;
     }
 
-    public int getMessageViewCC()
-    {
+    public int getMessageViewCC() {
         return messageViewCC;
     }
 
-    public void setMessageViewCC(int messageViewCC)
-    {
+    public void setMessageViewCC(int messageViewCC) {
         this.messageViewCC = messageViewCC;
     }
 
-    public int getMessageViewAdditionalHeaders()
-    {
+    public int getMessageViewAdditionalHeaders() {
         return messageViewAdditionalHeaders;
     }
 
-    public void setMessageViewAdditionalHeaders(int messageViewAdditionalHeaders)
-    {
+    public void setMessageViewAdditionalHeaders(int messageViewAdditionalHeaders) {
         this.messageViewAdditionalHeaders = messageViewAdditionalHeaders;
     }
 
-    public int getMessageViewSubject()
-    {
+    public int getMessageViewSubject() {
         return messageViewSubject;
     }
 
-    public void setMessageViewSubject(int messageViewSubject)
-    {
+    public void setMessageViewSubject(int messageViewSubject) {
         this.messageViewSubject = messageViewSubject;
     }
 
-    public int getMessageViewTime()
-    {
+    public int getMessageViewTime() {
         return messageViewTime;
     }
 
-    public void setMessageViewTime(int messageViewTime)
-    {
+    public void setMessageViewTime(int messageViewTime) {
         this.messageViewTime = messageViewTime;
     }
 
-    public int getMessageViewDate()
-    {
+    public int getMessageViewDate() {
         return messageViewDate;
     }
 
-    public void setMessageViewDate(int messageViewDate)
-    {
+    public void setMessageViewDate(int messageViewDate) {
         this.messageViewDate = messageViewDate;
     }
 
-    public TextSize getMessageViewContent()
-    {
+    public TextSize getMessageViewContent() {
         return messageViewContent;
     }
 
-    public int getMessageViewContentAsInt()
-    {
-        switch (messageViewContent)
-        {
-            case SMALLEST:
-                return 1;
-            case SMALLER:
-                return 2;
-            default:
-            case NORMAL:
-                return 3;
-            case LARGER:
-                return 4;
-            case LARGEST:
-                return 5;
+    public int getMessageViewContentAsInt() {
+        switch (messageViewContent) {
+        case SMALLEST:
+            return 1;
+        case SMALLER:
+            return 2;
+        default:
+        case NORMAL:
+            return 3;
+        case LARGER:
+            return 4;
+        case LARGEST:
+            return 5;
         }
     }
 
-    public void setMessageViewContent(int size)
-    {
-        switch (size)
-        {
-            case 1:
-                messageViewContent = TextSize.SMALLEST;
-                break;
-            case 2:
-                messageViewContent = TextSize.SMALLER;
-                break;
-            case 3:
-                messageViewContent = TextSize.NORMAL;
-                break;
-            case 4:
-                messageViewContent = TextSize.LARGER;
-                break;
-            case 5:
-                messageViewContent = TextSize.LARGEST;
-                break;
+    public void setMessageViewContent(int size) {
+        switch (size) {
+        case 1:
+            messageViewContent = TextSize.SMALLEST;
+            break;
+        case 2:
+            messageViewContent = TextSize.SMALLER;
+            break;
+        case 3:
+            messageViewContent = TextSize.NORMAL;
+            break;
+        case 4:
+            messageViewContent = TextSize.LARGER;
+            break;
+        case 5:
+            messageViewContent = TextSize.LARGEST;
+            break;
         }
     }
 }

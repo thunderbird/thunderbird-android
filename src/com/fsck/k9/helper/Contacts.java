@@ -20,8 +20,7 @@ import com.fsck.k9.mail.Address;
  * @see ContactsSdk3_4
  * @see ContactsSdk5
  */
-public abstract class Contacts
-{
+public abstract class Contacts {
     /**
      * Instance of the SDK specific class that interfaces with the contacts
      * API.
@@ -34,10 +33,8 @@ public abstract class Contacts
      * @param context A {@link Context} instance.
      * @return Appropriate {@link Contacts} instance for this device.
      */
-    public static Contacts getInstance(Context context)
-    {
-        if (sInstance == null)
-        {
+    public static Contacts getInstance(Context context) {
+        if (sInstance == null) {
             /*
              * Check the version of the SDK we are running on. Choose an
              * implementation class designed for that version of the SDK.
@@ -45,56 +42,38 @@ public abstract class Contacts
             int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
 
             String className = null;
-            if (sdkVersion <= Build.VERSION_CODES.DONUT)
-            {
+            if (sdkVersion <= Build.VERSION_CODES.DONUT) {
                 className = "com.fsck.k9.helper.ContactsSdk3_4";
-            }
-            else if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1)
-            {
+            } else if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1) {
                 /*
                  * The new API was introduced with SDK 5. But Android versions < 2.2
                  * need some additional code to be able to search for phonetic names.
                  */
                 className = "com.fsck.k9.helper.ContactsSdk5p";
-            }
-            else
-            {
+            } else {
                 className = "com.fsck.k9.helper.ContactsSdk5";
             }
 
             /*
              * Find the required class by name and instantiate it.
              */
-            try
-            {
-                Class<? extends Contacts> clazz =
+            try {
+                Class <? extends Contacts > clazz =
                     Class.forName(className).asSubclass(Contacts.class);
 
-                Constructor<? extends Contacts> constructor = clazz.getConstructor(Context.class);
+                Constructor <? extends Contacts > constructor = clazz.getConstructor(Context.class);
                 sInstance = constructor.newInstance(context);
-            }
-            catch (ClassNotFoundException e)
-            {
+            } catch (ClassNotFoundException e) {
                 Log.e(K9.LOG_TAG, "Couldn't find class: " + className, e);
-            }
-            catch (InstantiationException e)
-            {
+            } catch (InstantiationException e) {
                 Log.e(K9.LOG_TAG, "Couldn't instantiate class: " + className, e);
-            }
-            catch (IllegalAccessException e)
-            {
+            } catch (IllegalAccessException e) {
                 Log.e(K9.LOG_TAG, "Couldn't access class: " + className, e);
-            }
-            catch (NoSuchMethodException e)
-            {
+            } catch (NoSuchMethodException e) {
                 Log.e(K9.LOG_TAG, "Couldn't find constructor of class: " + className, e);
-            }
-            catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 Log.e(K9.LOG_TAG, "Wrong arguments for constructor of class: " + className, e);
-            }
-            catch (InvocationTargetException e)
-            {
+            } catch (InvocationTargetException e) {
                 Log.e(K9.LOG_TAG, "Couldn't invoke constructor of class: " + className, e);
             }
         }
@@ -111,8 +90,7 @@ public abstract class Contacts
      *
      * @param context A {@link Context} instance.
      */
-    protected Contacts(Context context)
-    {
+    protected Contacts(Context context) {
         mContext = context;
         mContentResolver = context.getContentResolver();
     }

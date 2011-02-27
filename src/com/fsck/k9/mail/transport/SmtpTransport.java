@@ -32,8 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class SmtpTransport extends Transport
-{
+public class SmtpTransport extends Transport {
     public static final int CONNECTION_SECURITY_NONE = 0;
 
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
@@ -74,73 +73,51 @@ public class SmtpTransport extends Transport
      *
      * @param _uri
      */
-    public SmtpTransport(String _uri) throws MessagingException
-    {
+    public SmtpTransport(String _uri) throws MessagingException {
         URI uri;
-        try
-        {
+        try {
             uri = new URI(_uri);
-        }
-        catch (URISyntaxException use)
-        {
+        } catch (URISyntaxException use) {
             throw new MessagingException("Invalid SmtpTransport URI", use);
         }
 
         String scheme = uri.getScheme();
-        if (scheme.equals("smtp"))
-        {
+        if (scheme.equals("smtp")) {
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
             mPort = 25;
-        }
-        else if (scheme.equals("smtp+tls"))
-        {
+        } else if (scheme.equals("smtp+tls")) {
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
             mPort = 25;
-        }
-        else if (scheme.equals("smtp+tls+"))
-        {
+        } else if (scheme.equals("smtp+tls+")) {
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
             mPort = 25;
-        }
-        else if (scheme.equals("smtp+ssl+"))
-        {
+        } else if (scheme.equals("smtp+ssl+")) {
             mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
             mPort = 465;
-        }
-        else if (scheme.equals("smtp+ssl"))
-        {
+        } else if (scheme.equals("smtp+ssl")) {
             mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
             mPort = 465;
-        }
-        else
-        {
+        } else {
             throw new MessagingException("Unsupported protocol");
         }
 
         mHost = uri.getHost();
 
-        if (uri.getPort() != -1)
-        {
+        if (uri.getPort() != -1) {
             mPort = uri.getPort();
         }
 
-        if (uri.getUserInfo() != null)
-        {
-            try
-            {
+        if (uri.getUserInfo() != null) {
+            try {
                 String[] userInfoParts = uri.getUserInfo().split(":");
                 mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1)
-                {
+                if (userInfoParts.length > 1) {
                     mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
-                if (userInfoParts.length > 2)
-                {
+                if (userInfoParts.length > 2) {
                     mAuthType = userInfoParts[2];
                 }
-            }
-            catch (UnsupportedEncodingException enc)
-            {
+            } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
                 Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
@@ -148,39 +125,28 @@ public class SmtpTransport extends Transport
     }
 
     @Override
-    public void open() throws MessagingException
-    {
-        try
-        {
+    public void open() throws MessagingException {
+        try {
             InetAddress[] addresses = InetAddress.getAllByName(mHost);
-            for (int i = 0; i < addresses.length; i++)
-            {
-                try
-                {
+            for (int i = 0; i < addresses.length; i++) {
+                try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                            mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
-                    {
+                            mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                        sslContext.init(null, new TrustManager[]
-                                        {
+                        sslContext.init(null, new TrustManager[] {
                                             TrustManagerFactory.get(mHost, secure)
                                         }, new SecureRandom());
                         mSocket = sslContext.getSocketFactory().createSocket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         mSecure = true;
-                    }
-                    else
-                    {
+                    } else {
                         mSocket = new Socket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     }
-                }
-                catch (ConnectException e)
-                {
-                    if (i < (addresses.length - 1))
-                    {
+                } catch (ConnectException e) {
+                    if (i < (addresses.length - 1)) {
                         // there are still other addresses for that host to try
                         continue;
                     }
@@ -202,23 +168,16 @@ public class SmtpTransport extends Transport
             String localHost = localAddress.getHostName();
             String ipAddr = localAddress.getHostAddress();
 
-            if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_"))
-            {
+            if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
                 // We don't have a FQDN or the hostname contains invalid
                 // characters (see issue 2143), so use IP address.
-                if (!ipAddr.equals(""))
-                {
-                    if (localAddress instanceof Inet6Address)
-                    {
+                if (!ipAddr.equals("")) {
+                    if (localAddress instanceof Inet6Address) {
                         localHost = "[IPV6:" + ipAddr + "]";
-                    }
-                    else
-                    {
+                    } else {
                         localHost = "[" + ipAddr + "]";
                     }
-                }
-                else
-                {
+                } else {
                     // If the IP address is no good, set a sane default (see issue 2750).
                     localHost = "android";
                 }
@@ -237,16 +196,13 @@ public class SmtpTransport extends Transport
              * if not.
              */
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
-            {
-                if (results.contains("STARTTLS"))
-                {
+                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+                if (results.contains("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                    sslContext.init(null, new TrustManager[]
-                                    {
+                    sslContext.init(null, new TrustManager[] {
                                         TrustManagerFactory.get(mHost, secure)
                                     }, new SecureRandom());
                     mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
@@ -260,9 +216,7 @@ public class SmtpTransport extends Transport
                      * Exim.
                      */
                     results = executeSimpleCommand("EHLO " + localHost);
-                }
-                else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
-                {
+                } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
             }
@@ -273,61 +227,42 @@ public class SmtpTransport extends Transport
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
-            for (String result : results)
-            {
-                if (result.matches(".*AUTH.*LOGIN.*$"))
-                {
+            for (String result : results) {
+                if (result.matches(".*AUTH.*LOGIN.*$")) {
                     authLoginSupported = true;
                 }
-                if (result.matches(".*AUTH.*PLAIN.*$"))
-                {
+                if (result.matches(".*AUTH.*PLAIN.*$")) {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5"))
-                {
+                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5")) {
                     authCramMD5Supported = true;
                 }
             }
 
             if (mUsername != null && mUsername.length() > 0 && mPassword != null
-                    && mPassword.length() > 0)
-            {
-                if (authCramMD5Supported)
-                {
+                    && mPassword.length() > 0) {
+                if (authCramMD5Supported) {
                     saslAuthCramMD5(mUsername, mPassword);
-                }
-                else if (authPlainSupported)
-                {
+                } else if (authPlainSupported) {
                     saslAuthPlain(mUsername, mPassword);
-                }
-                else if (authLoginSupported)
-                {
+                } else if (authLoginSupported) {
                     saslAuthLogin(mUsername, mPassword);
-                }
-                else
-                {
+                } else {
                     throw new MessagingException("No valid authentication mechanism found.");
                 }
             }
-        }
-        catch (SSLException e)
-        {
+        } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
-        }
-        catch (GeneralSecurityException gse)
-        {
+        } catch (GeneralSecurityException gse) {
             throw new MessagingException(
                 "Unable to open connection to SMTP server due to security error.", gse);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
     }
 
     @Override
-    public void sendMessage(Message message) throws MessagingException
-    {
+    public void sendMessage(Message message) throws MessagingException {
         ArrayList<Address> addresses = new ArrayList<Address>();
         {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
@@ -338,13 +273,11 @@ public class SmtpTransport extends Transport
 
         HashMap<String, ArrayList<String>> charsetAddressesMap =
             new HashMap<String, ArrayList<String>>();
-        for (Address address : addresses)
-        {
+        for (Address address : addresses) {
             String addressString = address.getAddress();
             String charset = MimeUtility.getCharsetFromAddress(addressString);
             ArrayList<String> addressesOfCharset = charsetAddressesMap.get(charset);
-            if (addressesOfCharset == null)
-            {
+            if (addressesOfCharset == null) {
                 addressesOfCharset = new ArrayList<String>();
                 charsetAddressesMap.put(charset, addressesOfCharset);
             }
@@ -352,8 +285,7 @@ public class SmtpTransport extends Transport
         }
 
         for (HashMap.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
-                charsetAddressesMap.entrySet())
-        {
+                charsetAddressesMap.entrySet()) {
             String charset = charsetAddressesMapEntry.getKey();
             ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
             message.setCharset(charset);
@@ -362,8 +294,7 @@ public class SmtpTransport extends Transport
     }
 
     private void sendMessageTo(ArrayList<String> addresses, Message message)
-    throws MessagingException
-    {
+    throws MessagingException {
         close();
         open();
 
@@ -371,12 +302,10 @@ public class SmtpTransport extends Transport
 
         Address[] from = message.getFrom();
         boolean possibleSend = false;
-        try
-        {
+        try {
             //TODO: Add BODY=8BITMIME parameter if appropriate?
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
-            for (String address : addresses)
-            {
+            for (String address : addresses) {
                 executeSimpleCommand("RCPT TO: " + "<" + address + ">");
             }
             executeSimpleCommand("DATA");
@@ -394,15 +323,11 @@ public class SmtpTransport extends Transport
 
             possibleSend = true; // After the "\r\n." is attempted, we may have sent the message
             executeSimpleCommand("\r\n.");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             MessagingException me = new MessagingException("Unable to send message", e);
             me.setPermanentFailure(possibleSend);
             throw me;
-        }
-        finally
-        {
+        } finally {
             close();
         }
 
@@ -411,38 +336,25 @@ public class SmtpTransport extends Transport
     }
 
     @Override
-    public void close()
-    {
-        try
-        {
+    public void close() {
+        try {
             executeSimpleCommand("QUIT");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
-        try
-        {
+        try {
             mIn.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
-        try
-        {
+        try {
             mOut.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
-        try
-        {
+        try {
             mSocket.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         mIn = null;
@@ -450,22 +362,15 @@ public class SmtpTransport extends Transport
         mSocket = null;
     }
 
-    private String readLine() throws IOException
-    {
+    private String readLine() throws IOException {
         StringBuffer sb = new StringBuffer();
         int d;
-        while ((d = mIn.read()) != -1)
-        {
-            if (((char)d) == '\r')
-            {
+        while ((d = mIn.read()) != -1) {
+            if (((char)d) == '\r') {
                 continue;
-            }
-            else if (((char)d) == '\n')
-            {
+            } else if (((char)d) == '\n') {
                 break;
-            }
-            else
-            {
+            } else {
                 sb.append((char)d);
             }
         }
@@ -476,17 +381,12 @@ public class SmtpTransport extends Transport
         return ret;
     }
 
-    private void writeLine(String s, boolean sensitive) throws IOException
-    {
-        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP)
-        {
+    private void writeLine(String s, boolean sensitive) throws IOException {
+        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
             final String commandToLog;
-            if (sensitive && !K9.DEBUG_SENSITIVE)
-            {
+            if (sensitive && !K9.DEBUG_SENSITIVE) {
                 commandToLog = "SMTP >>> *sensitive*";
-            }
-            else
-            {
+            } else {
                 commandToLog = "SMTP >>> " + s;
             }
             Log.d(K9.LOG_TAG, commandToLog);
@@ -513,30 +413,24 @@ public class SmtpTransport extends Transport
         mOut.flush();
     }
 
-    private void checkLine(String line) throws MessagingException
-    {
-        if (line.length() < 1)
-        {
+    private void checkLine(String line) throws MessagingException {
+        if (line.length() < 1) {
             throw new MessagingException("SMTP response is 0 length");
         }
         char c = line.charAt(0);
-        if ((c == '4') || (c == '5'))
-        {
+        if ((c == '4') || (c == '5')) {
             throw new MessagingException(line);
         }
     }
 
-    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException
-    {
+    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
     private List<String> executeSimpleCommand(String command, boolean sensitive)
-    throws IOException, MessagingException
-    {
+    throws IOException, MessagingException {
         List<String> results = new ArrayList<String>();
-        if (command != null)
-        {
+        if (command != null) {
             writeLine(command, sensitive);
         }
 
@@ -546,16 +440,13 @@ public class SmtpTransport extends Transport
          * be handled by checkLine() below.
          */
         String line = readLine();
-        while (line.length() >= 4)
-        {
-            if (line.length() > 4)
-            {
+        while (line.length() >= 4) {
+            if (line.length() > 4) {
                 // Everything after the first four characters goes into the results array.
                 results.add(line.substring(4));
             }
 
-            if (line.charAt(3) != '-')
-            {
+            if (line.charAt(3) != '-') {
                 // If the fourth character isn't "-" this is the last line of the response.
                 break;
             }
@@ -587,18 +478,13 @@ public class SmtpTransport extends Transport
 //    S: 235 2.0.0 OK Authenticated
 
     private void saslAuthLogin(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException
-    {
-        try
-        {
+        AuthenticationFailedException, IOException {
+        try {
             executeSimpleCommand("AUTH LOGIN");
             executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())), true);
             executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())), true);
-        }
-        catch (MessagingException me)
-        {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3')
-            {
+        } catch (MessagingException me) {
+            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
                 throw new AuthenticationFailedException("AUTH LOGIN failed (" + me.getMessage()
                                                         + ")");
             }
@@ -607,18 +493,13 @@ public class SmtpTransport extends Transport
     }
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException
-    {
+        AuthenticationFailedException, IOException {
         byte[] data = ("\000" + username + "\000" + password).getBytes();
         data = new Base64().encode(data);
-        try
-        {
+        try {
             executeSimpleCommand("AUTH PLAIN " + new String(data), true);
-        }
-        catch (MessagingException me)
-        {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3')
-            {
+        } catch (MessagingException me) {
+            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
                 throw new AuthenticationFailedException("AUTH PLAIN failed (" + me.getMessage()
                                                         + ")");
             }
@@ -627,8 +508,7 @@ public class SmtpTransport extends Transport
     }
 
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException
-    {
+        AuthenticationFailedException, IOException {
         List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
         String b64Nonce = respList.get(0);
@@ -637,16 +517,12 @@ public class SmtpTransport extends Transport
         byte[] opad = new byte[64];
         byte[] secretBytes = password.getBytes("US-ASCII");
         MessageDigest md;
-        try
-        {
+        try {
             md = MessageDigest.getInstance("MD5");
-        }
-        catch (NoSuchAlgorithmException nsae)
-        {
+        } catch (NoSuchAlgorithmException nsae) {
             throw new AuthenticationFailedException("MD5 Not Available.");
         }
-        if (secretBytes.length > 64)
-        {
+        if (secretBytes.length > 64) {
             secretBytes = md.digest(secretBytes);
         }
         System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
@@ -660,12 +536,9 @@ public class SmtpTransport extends Transport
         String plainCRAM = username + " " + new String(Hex.encodeHex(result));
         byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
         String b64CRAMString = new String(b64CRAM, "US-ASCII");
-        try
-        {
+        try {
             executeSimpleCommand(b64CRAMString, true);
-        }
-        catch (MessagingException me)
-        {
+        } catch (MessagingException me) {
             throw new AuthenticationFailedException("Unable to negotiate MD5 CRAM");
         }
     }

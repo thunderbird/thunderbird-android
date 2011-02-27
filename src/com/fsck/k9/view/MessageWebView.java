@@ -13,8 +13,7 @@ import com.fsck.k9.R;
 
 import java.lang.reflect.Method;
 
-public class MessageWebView extends WebView
-{
+public class MessageWebView extends WebView {
 
     /**
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
@@ -24,18 +23,15 @@ public class MessageWebView extends WebView
      */
     public static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
 
-    public MessageWebView(Context context)
-    {
+    public MessageWebView(Context context) {
         super(context);
     }
 
-    public MessageWebView(Context context, AttributeSet attrs)
-    {
+    public MessageWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MessageWebView(Context context, AttributeSet attrs, int defStyle)
-    {
+    public MessageWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -44,23 +40,17 @@ public class MessageWebView extends WebView
      * network data will be blocked.
      * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
      */
-    public void blockNetworkData(final boolean shouldBlockNetworkData)
-    {
+    public void blockNetworkData(final boolean shouldBlockNetworkData) {
         // Sanity check to make sure we don't blow up.
-        if (getSettings() == null)
-        {
+        if (getSettings() == null) {
             return;
         }
 
         // Block network loads.
-        if (mGetBlockNetworkLoads != null)
-        {
-            try
-            {
+        if (mGetBlockNetworkLoads != null) {
+            try {
                 mGetBlockNetworkLoads.invoke(getSettings(), shouldBlockNetworkData);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
             }
         }
@@ -75,8 +65,7 @@ public class MessageWebView extends WebView
      * preferences when configuring the view. This message is used to view a message and to display a message being
      * replied to.
      */
-    public void configure()
-    {
+    public void configure() {
         this.setVerticalScrollBarEnabled(true);
         this.setVerticalScrollbarOverlay(true);
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
@@ -90,21 +79,17 @@ public class MessageWebView extends WebView
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
-        if (K9.zoomControlsEnabled())
-        {
+        if (K9.zoomControlsEnabled()) {
             webSettings.setBuiltInZoomControls(true);
         }
 
         // SINGLE_COLUMN layout was broken on Android < 2.2, so we
         // administratively disable it
         if (
-            ( Integer.parseInt(Build.VERSION.SDK)  > 7)
-            &&  K9.mobileOptimizedLayout())
-        {
+            (Integer.parseInt(Build.VERSION.SDK)  > 7)
+            &&  K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        }
-        else
-        {
+        } else {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
@@ -119,18 +104,14 @@ public class MessageWebView extends WebView
      * of a WebView.
      */
     @Override
-    public void emulateShiftHeld()
-    {
-        try
-        {
+    public void emulateShiftHeld() {
+        try {
 
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
                                                     KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
             shiftPressEvent.dispatch(this);
             Toast.makeText(getContext() , R.string.select_text_now, Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
         }
     }

@@ -4,8 +4,7 @@ import java.util.Date;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
-public class MessageInfoHolder
-{
+public class MessageInfoHolder {
     public String date;
     public Date compareDate;
     public String compareSubject;
@@ -27,16 +26,13 @@ public class MessageInfoHolder
     public String uri;
 
     // Empty constructor for comparison
-    public MessageInfoHolder()
-    {
+    public MessageInfoHolder() {
         this.selected = false;
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof MessageInfoHolder == false)
-        {
+    public boolean equals(Object o) {
+        if (o instanceof MessageInfoHolder == false) {
             return false;
         }
         MessageInfoHolder other = (MessageInfoHolder)o;
@@ -44,15 +40,12 @@ public class MessageInfoHolder
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return uid.hashCode();
     }
 
-    public String getDate(MessageHelper messageHelper)
-    {
-        if (date == null)
-        {
+    public String getDate(MessageHelper messageHelper) {
+        if (date == null) {
             date = messageHelper.formatDate(message.getSentDate());
         }
         return date;

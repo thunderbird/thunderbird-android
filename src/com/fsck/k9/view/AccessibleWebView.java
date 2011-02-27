@@ -27,80 +27,66 @@ import android.widget.TextView;
 
 import com.fsck.k9.activity.AccessibleEmailContentActivity;
 
-public class AccessibleWebView extends TextView
-{
+public class AccessibleWebView extends TextView {
     private Context mContext;
     private String mHtmlSource;
     private WebView mDummyWebView;
 
-    public AccessibleWebView(Context context)
-    {
+    public AccessibleWebView(Context context) {
         super(context);
         init(context);
     }
 
-    public AccessibleWebView(Context context, AttributeSet attributes)
-    {
+    public AccessibleWebView(Context context, AttributeSet attributes) {
         super(context, attributes);
         init(context);
     }
 
-    private void init(Context context)
-    {
+    private void init(Context context) {
         mContext = context;
         mDummyWebView = new WebView(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
-        setOnClickListener(new OnClickListener()
-        {
+        setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View arg0)
-            {
+            public void onClick(View arg0) {
                 diveIn();
             }
         });
     }
 
-    public void loadData(String data, String mimeType, String encoding)
-    {
+    public void loadData(String data, String mimeType, String encoding) {
         mHtmlSource = data;
         this.setText(Html.fromHtml(mHtmlSource, null, null));
     }
 
-    public WebSettings getSettings()
-    {
+    public WebSettings getSettings() {
         return mDummyWebView.getSettings();
     }
 
     public void loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding,
-                                    String historyUrl)
-    {
+                                    String historyUrl) {
         mHtmlSource = data;
         this.setText(Html.fromHtml(mHtmlSource, null, null));
     }
 
-    public boolean zoomIn()
-    {
-        if (getTextSize() < 100)
-        {
+    public boolean zoomIn() {
+        if (getTextSize() < 100) {
             setTextSize(getTextSize() + 5);
             return true;
         }
         return false;
     }
 
-    public boolean zoomOut()
-    {
-        if (getTextSize() > 5)
-        {
+    public boolean zoomOut() {
+        if (getTextSize() > 5) {
             setTextSize(getTextSize() - 5);
             return true;
         }
         return false;
     }
 
-    private void diveIn()
-    {
+    private void diveIn() {
         Intent i = new Intent();
         i.setClass(mContext, AccessibleEmailContentActivity.class);
         i.putExtra("content", mHtmlSource);

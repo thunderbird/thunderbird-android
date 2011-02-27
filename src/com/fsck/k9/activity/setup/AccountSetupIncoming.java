@@ -22,38 +22,30 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class AccountSetupIncoming extends K9Activity implements OnClickListener
-{
+public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int popPorts[] =
-    {
+    private static final int popPorts[] = {
         110, 995, 995, 110, 110
     };
-    private static final String popSchemes[] =
-    {
+    private static final String popSchemes[] = {
         "pop3", "pop3+ssl", "pop3+ssl+", "pop3+tls", "pop3+tls+"
     };
-    private static final int imapPorts[] =
-    {
+    private static final int imapPorts[] = {
         143, 993, 993, 143, 143
     };
-    private static final String imapSchemes[] =
-    {
+    private static final String imapSchemes[] = {
         "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
     };
-    private static final int webdavPorts[] =
-    {
+    private static final int webdavPorts[] = {
         80, 443, 443, 443, 443
     };
-    private static final String webdavSchemes[] =
-    {
+    private static final String webdavSchemes[] = {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
 
-    private static final String authTypes[] =
-    {
+    private static final String authTypes[] = {
         "PLAIN", "CRAM_MD5"
     };
 
@@ -78,16 +70,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionOther;
     private CheckBox subscribedFoldersOnly;
 
-    public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
-    {
+    public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
 
-    public static void actionEditIncomingSettings(Activity context, Account account)
-    {
+    public static void actionEditIncomingSettings(Activity context, Account account) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -95,8 +85,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_incoming);
 
@@ -119,8 +108,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         mNextButton.setOnClickListener(this);
 
-        SpinnerOption securityTypes[] =
-        {
+        SpinnerOption securityTypes[] = {
             new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
             new SpinnerOption(1,
             getString(R.string.account_setup_incoming_security_ssl_optional_label)),
@@ -132,8 +120,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         // This needs to be kept in sync with the list at the top of the file.
         // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] =
-        {
+        SpinnerOption authTypeSpinnerOptions[] = {
             new SpinnerOption(0, "PLAIN"),
             new SpinnerOption(1, "CRAM_MD5")
         };
@@ -152,15 +139,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
          * Updates the port when the user changes the security type. This allows
          * us to show a reasonable default which the user can change.
          */
-        mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+        mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updatePortFromSecurityType();
             }
 
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -168,19 +152,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
          * Calls validateFields() which enables or disables the Next button
          * based on the fields' validity.
          */
-        TextWatcher validationTextWatcher = new TextWatcher()
-        {
-            public void afterTextChanged(Editable s)
-            {
+        TextWatcher validationTextWatcher = new TextWatcher() {
+            public void afterTextChanged(Editable s) {
                 validateFields();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         };
         mUsernameView.addTextChangedListener(validationTextWatcher);
@@ -201,65 +181,51 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
          * If we're being reloaded we override the original account with the one
          * we saved
          */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
-        {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
-        try
-        {
+        try {
             URI uri = new URI(mAccount.getStoreUri());
             String username = null;
             String password = null;
             String authType = null;
 
-            if (uri.getUserInfo() != null)
-            {
+            if (uri.getUserInfo() != null) {
                 String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length == 3)
-                {
+                if (userInfoParts.length == 3) {
                     authType = userInfoParts[0];
                     username = URLDecoder.decode(userInfoParts[1], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                }
-                else if (userInfoParts.length == 2)
-                {
+                } else if (userInfoParts.length == 2) {
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                else if (userInfoParts.length == 1)
-                {
+                } else if (userInfoParts.length == 1) {
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                 }
             }
 
 
 
-            if (username != null)
-            {
+            if (username != null) {
                 mUsernameView.setText(username);
             }
 
-            if (password != null)
-            {
+            if (password != null) {
                 mPasswordView.setText(password);
             }
 
-            if (authType != null)
-            {
-                for (int i = 0; i < authTypes.length; i++)
-                {
-                    if (authTypes[i].equals(authType))
-                    {
+            if (authType != null) {
+                for (int i = 0; i < authTypes.length; i++) {
+                    if (authTypes[i].equals(authType)) {
                         SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
                     }
                 }
             }
 
 
-            if (uri.getScheme().startsWith("pop3"))
-            {
+            if (uri.getScheme().startsWith("pop3")) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
                 mAccountPorts = popPorts;
                 mAccountSchemes = popSchemes;
@@ -273,15 +239,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            }
-            else if (uri.getScheme().startsWith("imap"))
-            {
+            } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
                 mAccountSchemes = imapSchemes;
 
-                if (uri.getPath() != null && uri.getPath().length() > 0)
-                {
+                if (uri.getPath() != null && uri.getPath().length() > 0) {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
 
@@ -291,13 +254,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
 
-                if (!Intent.ACTION_EDIT.equals(getIntent().getAction()))
-                {
+                if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            }
-            else if (uri.getScheme().startsWith("webdav"))
-            {
+            } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
                 mAccountSchemes = webdavSchemes;
@@ -309,49 +269,35 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 subscribedFoldersOnly.setVisibility(View.GONE);
-                if (uri.getPath() != null && uri.getPath().length() > 0)
-                {
+                if (uri.getPath() != null && uri.getPath().length() > 0) {
                     String[] pathParts = uri.getPath().split("\\|");
 
-                    for (int i = 0, count = pathParts.length; i < count; i++)
-                    {
-                        if (i == 0)
-                        {
+                    for (int i = 0, count = pathParts.length; i < count; i++) {
+                        if (i == 0) {
                             if (pathParts[0] != null &&
-                                    pathParts[0].length() > 1)
-                            {
+                                    pathParts[0].length() > 1) {
                                 mWebdavPathPrefixView.setText(pathParts[0].substring(1));
                             }
-                        }
-                        else if (i == 1)
-                        {
+                        } else if (i == 1) {
                             if (pathParts[1] != null &&
-                                    pathParts[1].length() > 1)
-                            {
+                                    pathParts[1].length() > 1) {
                                 mWebdavAuthPathView.setText(pathParts[1]);
                             }
-                        }
-                        else if (i == 2)
-                        {
+                        } else if (i == 2) {
                             if (pathParts[2] != null &&
-                                    pathParts[2].length() > 1)
-                            {
+                                    pathParts[2].length() > 1) {
                                 mWebdavMailboxPathView.setText(pathParts[2]);
                             }
                         }
                     }
                 }
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
-            }
-            else
-            {
+            } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
-            for (int i = 0; i < mAccountSchemes.length; i++)
-            {
-                if (mAccountSchemes[i].equals(uri.getScheme()))
-                {
+            for (int i = 0; i < mAccountSchemes.length; i++) {
+                if (mAccountSchemes[i].equals(uri.getScheme())) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
@@ -359,39 +305,31 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             compressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
             compressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
 
-            if (uri.getHost() != null)
-            {
+            if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
             }
 
-            if (uri.getPort() != -1)
-            {
+            if (uri.getPort() != -1) {
                 mPortView.setText(Integer.toString(uri.getPort()));
-            }
-            else
-            {
+            } else {
                 updatePortFromSecurityType();
             }
 
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
 
             validateFields();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             failure(e);
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
-    private void validateFields()
-    {
+    private void validateFields() {
         mNextButton
         .setEnabled(Utility.requiredFieldValid(mUsernameView)
                     && Utility.requiredFieldValid(mPasswordView)
@@ -400,33 +338,25 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
-    private void updatePortFromSecurityType()
-    {
-        if (mAccountPorts != null)
-        {
+    private void updatePortFromSecurityType() {
+        if (mAccountPorts != null) {
             int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             mPortView.setText(Integer.toString(mAccountPorts[securityType]));
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == RESULT_OK)
-        {
-            if (Intent.ACTION_EDIT.equals(getIntent().getAction()))
-            {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
-            }
-            else
-            {
+            } else {
                 /*
                  * Set the username and password for the outgoing settings to the username and
                  * password the user just set for incoming.
                  */
-                try
-                {
+                try {
                     String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
                     String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
                     URI oldUri = new URI(mAccount.getTransportUri());
@@ -439,14 +369,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                         null,
                         null);
                     mAccount.setTransportUri(uri.toString());
-                }
-                catch (UnsupportedEncodingException enc)
-                {
+                } catch (UnsupportedEncodingException enc) {
                     // This really shouldn't happen since the encoding is hardcoded to UTF-8
                     Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-                }
-                catch (URISyntaxException use)
-                {
+                } catch (URISyntaxException use) {
                     /*
                      * If we can't set up the URL we just continue. It's only for
                      * convenience.
@@ -461,18 +387,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     }
 
     @Override
-    protected void onNext()
-    {
-        try
-        {
+    protected void onNext() {
+        try {
             int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             String path = null;
-            if (mAccountSchemes[securityType].startsWith("imap"))
-            {
+            if (mAccountSchemes[securityType].startsWith("imap")) {
                 path = "/" + mImapPathPrefixView.getText();
-            }
-            else if (mAccountSchemes[securityType].startsWith("webdav"))
-            {
+            } else if (mAccountSchemes[securityType].startsWith("webdav")) {
                 path = "/" + mWebdavPathPrefixView.getText();
                 path = path + "|" + mWebdavAuthPathView.getText();
                 path = path + "|" + mWebdavMailboxPathView.getText();
@@ -484,13 +405,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             String userEnc = URLEncoder.encode(user, "UTF-8");
             String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
-            if (mAccountSchemes[securityType].startsWith("imap"))
-            {
+            if (mAccountSchemes[securityType].startsWith("imap")) {
                 String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
                 userInfo = authType + ":" + userEnc + ":" + passwordEnc;
-            }
-            else
-            {
+            } else {
                 userInfo = userEnc + ":" + passwordEnc;
             }
             URI uri = new URI(
@@ -510,33 +428,25 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             failure(e);
         }
 
     }
 
-    public void onClick(View v)
-    {
-        try
-        {
-            switch (v.getId())
-            {
-                case R.id.next:
-                    onNext();
-                    break;
+    public void onClick(View v) {
+        try {
+            switch (v.getId()) {
+            case R.id.next:
+                onNext();
+                break;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             failure(e);
         }
     }
 
-    private void failure(Exception use)
-    {
+    private void failure(Exception use) {
         Log.e(K9.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 

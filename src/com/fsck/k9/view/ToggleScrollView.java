@@ -6,33 +6,27 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-public class ToggleScrollView extends ScrollView
-{
+public class ToggleScrollView extends ScrollView {
     private GestureDetector mDetector;
     private boolean mScrolling = true;
 
-    public ToggleScrollView(Context context, AttributeSet attrs)
-    {
+    public ToggleScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mDetector = new GestureDetector(new YScrollDetector());
     }
 
-    public void setScrolling(boolean enable)
-    {
+    public void setScrolling(boolean enable) {
         mScrolling = enable;
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev)
-    {
+    public boolean onTouchEvent(MotionEvent ev) {
         return (mScrolling) ? super.onTouchEvent(ev) : true;
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev)
-    {
-        if(!mScrolling)
-        {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!mScrolling) {
             return false;
         }
 
@@ -41,8 +35,7 @@ public class ToggleScrollView extends ScrollView
         // http://stackoverflow.com/questions/2646028/android-horizontalscrollview-within-scrollview-touch-handling
         boolean result = super.onInterceptTouchEvent(ev);
         // Let the original ScrollView handle ACTION_DOWN so we can stop the scroll when someone touches the screen.
-        if (ev.getAction() == MotionEvent.ACTION_DOWN || mDetector.onTouchEvent(ev))
-        {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN || mDetector.onTouchEvent(ev)) {
             return result;
         }
 
@@ -51,24 +44,16 @@ public class ToggleScrollView extends ScrollView
 
     // Return false if we're scrolling in the x direction. That is, decline to consume the event and
     // let the parent class take a stab at it.
-    class YScrollDetector extends GestureDetector.SimpleOnGestureListener
-    {
+    class YScrollDetector extends GestureDetector.SimpleOnGestureListener {
         @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-        {
-            try
-            {
-                if (Math.abs(distanceY) > Math.abs(distanceX))
-                {
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            try {
+                if (Math.abs(distanceY) > Math.abs(distanceX)) {
                     return true;
-                }
-                else
-                {
+                } else {
                     return false;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // nothing
             }
             return false;

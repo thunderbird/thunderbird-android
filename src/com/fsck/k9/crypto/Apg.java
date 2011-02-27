@@ -25,8 +25,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 /**
  * APG integration.
  */
-public class Apg extends CryptoProvider
-{
+public class Apg extends CryptoProvider {
     static final long serialVersionUID = 0x21071235;
     public static final String NAME = "apg";
 
@@ -44,8 +43,7 @@ public class Apg extends CryptoProvider
     public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS =
         Uri.parse("content://" + AUTHORITY + "/key_rings/public/emails/");
 
-    public static class Intent
-    {
+    public static class Intent {
         public static final String DECRYPT = "org.thialfihar.android.apg.intent.DECRYPT";
         public static final String ENCRYPT = "org.thialfihar.android.apg.intent.ENCRYPT";
         public static final String DECRYPT_FILE = "org.thialfihar.android.apg.intent.DECRYPT_FILE";
@@ -88,8 +86,7 @@ public class Apg extends CryptoProvider
         Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                         Pattern.DOTALL);
 
-    public static Apg createInstance()
-    {
+    public static Apg createInstance() {
         return new Apg();
     }
 
@@ -100,23 +97,16 @@ public class Apg extends CryptoProvider
      * @return whether a suitable version of APG was found
      */
     @Override
-    public boolean isAvailable(Context context)
-    {
-        try
-        {
+    public boolean isAvailable(Context context) {
+        try {
             PackageInfo pi = context.getPackageManager().getPackageInfo(mApgPackageName, 0);
-            if (pi.versionCode >= mMinRequiredVersion)
-            {
+            if (pi.versionCode >= mMinRequiredVersion) {
                 return true;
-            }
-            else
-            {
+            } else {
                 Toast.makeText(context,
                                R.string.error_apg_version_not_supported, Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (NameNotFoundException e)
-        {
+        } catch (NameNotFoundException e) {
             // not found
         }
 
@@ -131,17 +121,13 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean selectSecretKey(Activity activity, PgpData pgpData)
-    {
+    public boolean selectSecretKey(Activity activity, PgpData pgpData) {
         android.content.Intent intent = new android.content.Intent(Intent.SELECT_SECRET_KEY);
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
-        try
-        {
+        try {
             activity.startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
             return true;
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(activity,
                            R.string.error_activity_not_found,
                            Toast.LENGTH_SHORT).show();
@@ -158,67 +144,51 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean selectEncryptionKeys(Activity activity, String emails, PgpData pgpData)
-    {
+    public boolean selectEncryptionKeys(Activity activity, String emails, PgpData pgpData) {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         long[] initialKeyIds = null;
-        if (!pgpData.hasEncryptionKeys())
-        {
+        if (!pgpData.hasEncryptionKeys()) {
             Vector<Long> keyIds = new Vector<Long>();
-            if (pgpData.hasSignatureKey())
-            {
+            if (pgpData.hasSignatureKey()) {
                 keyIds.add(pgpData.getSignatureKeyId());
             }
 
-            try
-            {
+            try {
                 Uri contentUri = Uri.withAppendedPath(
                                      Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
                                      emails);
                 Cursor c = activity.getContentResolver().query(contentUri,
                            new String[] { "master_key_id" },
                            null, null, null);
-                if (c != null)
-                {
-                    while (c.moveToNext())
-                    {
+                if (c != null) {
+                    while (c.moveToNext()) {
                         keyIds.add(c.getLong(0));
                     }
                 }
 
-                if (c != null)
-                {
+                if (c != null) {
                     c.close();
                 }
-            }
-            catch (SecurityException e)
-            {
+            } catch (SecurityException e) {
                 Toast.makeText(activity,
                                activity.getResources().getString(R.string.insufficient_apg_permissions),
                                Toast.LENGTH_LONG).show();
             }
-            if (keyIds.size() > 0)
-            {
+            if (keyIds.size() > 0) {
                 initialKeyIds = new long[keyIds.size()];
-                for (int i = 0, size = keyIds.size(); i < size; ++i)
-                {
+                for (int i = 0, size = keyIds.size(); i < size; ++i) {
                     initialKeyIds[i] = keyIds.get(i);
                 }
             }
-        }
-        else
-        {
+        } else {
             initialKeyIds = pgpData.getEncryptionKeys();
         }
         intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
-        try
-        {
+        try {
             activity.startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
             return true;
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(activity,
                            R.string.error_activity_not_found,
                            Toast.LENGTH_SHORT).show();
@@ -234,32 +204,25 @@ public class Apg extends CryptoProvider
      * @return key ids
      */
     @Override
-    public long[] getSecretKeyIdsFromEmail(Context context, String email)
-    {
+    public long[] getSecretKeyIdsFromEmail(Context context, String email) {
         long ids[] = null;
-        try
-        {
+        try {
             Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
                                                   email);
             Cursor c = context.getContentResolver().query(contentUri,
                        new String[] { "master_key_id" },
                        null, null, null);
-            if (c != null && c.getCount() > 0)
-            {
+            if (c != null && c.getCount() > 0) {
                 ids = new long[c.getCount()];
-                while (c.moveToNext())
-                {
+                while (c.moveToNext()) {
                     ids[c.getPosition()] = c.getLong(0);
                 }
             }
 
-            if (c != null)
-            {
+            if (c != null) {
                 c.close();
             }
-        }
-        catch (SecurityException e)
-        {
+        } catch (SecurityException e) {
             Toast.makeText(context,
                            context.getResources().getString(R.string.insufficient_apg_permissions),
                            Toast.LENGTH_LONG).show();
@@ -276,36 +239,29 @@ public class Apg extends CryptoProvider
      * @return user id
      */
     @Override
-    public String getUserId(Context context, long keyId)
-    {
+    public String getUserId(Context context, long keyId) {
         String userId = null;
-        try
-        {
+        try {
             Uri contentUri = ContentUris.withAppendedId(
                                  Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
                                  keyId);
             Cursor c = context.getContentResolver().query(contentUri,
                        new String[] { "user_id" },
                        null, null, null);
-            if (c != null && c.moveToFirst())
-            {
+            if (c != null && c.moveToFirst()) {
                 userId = c.getString(0);
             }
 
-            if (c != null)
-            {
+            if (c != null) {
                 c.close();
             }
-        }
-        catch (SecurityException e)
-        {
+        } catch (SecurityException e) {
             Toast.makeText(context,
                            context.getResources().getString(R.string.insufficient_apg_permissions),
                            Toast.LENGTH_LONG).show();
         }
 
-        if (userId == null)
-        {
+        if (userId == null) {
             userId = context.getString(R.string.unknown_crypto_signature_user_id);
         }
         return userId;
@@ -322,69 +278,61 @@ public class Apg extends CryptoProvider
      */
     @Override
     public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
-                                    android.content.Intent data, PgpData pgpData)
-    {
-        switch (requestCode)
-        {
-            case Apg.SELECT_SECRET_KEY:
-                if (resultCode != Activity.RESULT_OK || data == null)
-                {
-                    break;
-                }
-                pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
-                pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_USER_ID));
-                ((MessageCompose) activity).updateEncryptLayout();
+                                    android.content.Intent data, PgpData pgpData) {
+        switch (requestCode) {
+        case Apg.SELECT_SECRET_KEY:
+            if (resultCode != Activity.RESULT_OK || data == null) {
                 break;
+            }
+            pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
+            pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_USER_ID));
+            ((MessageCompose) activity).updateEncryptLayout();
+            break;
 
-            case Apg.SELECT_PUBLIC_KEYS:
-                if (resultCode != Activity.RESULT_OK || data == null)
-                {
-                    pgpData.setEncryptionKeys(null);
-                    ((MessageCompose) activity).onEncryptionKeySelectionDone();
-                    break;
-                }
-                pgpData.setEncryptionKeys(data.getLongArrayExtra(Apg.EXTRA_SELECTION));
+        case Apg.SELECT_PUBLIC_KEYS:
+            if (resultCode != Activity.RESULT_OK || data == null) {
+                pgpData.setEncryptionKeys(null);
                 ((MessageCompose) activity).onEncryptionKeySelectionDone();
                 break;
+            }
+            pgpData.setEncryptionKeys(data.getLongArrayExtra(Apg.EXTRA_SELECTION));
+            ((MessageCompose) activity).onEncryptionKeySelectionDone();
+            break;
 
-            case Apg.ENCRYPT_MESSAGE:
-                if (resultCode != Activity.RESULT_OK || data == null)
-                {
-                    pgpData.setEncryptionKeys(null);
-                    ((MessageCompose) activity).onEncryptDone();
-                    break;
-                }
-                pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE));
-                // this was a stupid bug in an earlier version, just gonna leave this in for an APG
-                // version or two
-                if (pgpData.getEncryptedData() == null)
-                {
-                    pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-                }
-                if (pgpData.getEncryptedData() != null)
-                {
-                    ((MessageCompose) activity).onEncryptDone();
-                }
+        case Apg.ENCRYPT_MESSAGE:
+            if (resultCode != Activity.RESULT_OK || data == null) {
+                pgpData.setEncryptionKeys(null);
+                ((MessageCompose) activity).onEncryptDone();
                 break;
+            }
+            pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE));
+            // this was a stupid bug in an earlier version, just gonna leave this in for an APG
+            // version or two
+            if (pgpData.getEncryptedData() == null) {
+                pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+            }
+            if (pgpData.getEncryptedData() != null) {
+                ((MessageCompose) activity).onEncryptDone();
+            }
+            break;
 
-            case Apg.DECRYPT_MESSAGE:
-                if (resultCode != Activity.RESULT_OK || data == null)
-                {
-                    break;
-                }
-
-                pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID));
-                pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0));
-                pgpData.setSignatureSuccess(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false));
-                pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
-
-                pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-                ((MessageView) activity).onDecryptDone();
-
+        case Apg.DECRYPT_MESSAGE:
+            if (resultCode != Activity.RESULT_OK || data == null) {
                 break;
+            }
 
-            default:
-                return false;
+            pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID));
+            pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0));
+            pgpData.setSignatureSuccess(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false));
+            pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
+
+            pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+            ((MessageView) activity).onDecryptDone();
+
+            break;
+
+        default:
+            return false;
         }
 
         return true;
@@ -399,21 +347,17 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean encrypt(Activity activity, String data, PgpData pgpData)
-    {
+    public boolean encrypt(Activity activity, String data, PgpData pgpData) {
         android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
         intent.putExtra(Apg.EXTRA_TEXT, data);
         intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, pgpData.getEncryptionKeys());
         intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, pgpData.getSignatureKeyId());
-        try
-        {
+        try {
             activity.startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
             return true;
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(activity,
                            R.string.error_activity_not_found,
                            Toast.LENGTH_SHORT).show();
@@ -430,23 +374,18 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean decrypt(Activity activity, String data, PgpData pgpData)
-    {
+    public boolean decrypt(Activity activity, String data, PgpData pgpData) {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.DECRYPT_AND_RETURN);
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
-        if (data == null)
-        {
+        if (data == null) {
             return false;
         }
-        try
-        {
+        try {
             intent.putExtra(EXTRA_TEXT, data);
             activity.startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
             return true;
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(activity,
                            R.string.error_activity_not_found,
                            Toast.LENGTH_SHORT).show();
@@ -455,29 +394,22 @@ public class Apg extends CryptoProvider
     }
 
     @Override
-    public boolean isEncrypted(Message message)
-    {
+    public boolean isEncrypted(Message message) {
         String data = null;
-        try
-        {
+        try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null)
-            {
+            if (part == null) {
                 part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
-            if (part != null)
-            {
+            if (part != null) {
                 data = MimeUtility.getTextFromPart(part);
             }
-        }
-        catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             // guess not...
             // TODO: maybe log this?
         }
 
-        if (data == null)
-        {
+        if (data == null) {
             return false;
         }
 
@@ -486,29 +418,22 @@ public class Apg extends CryptoProvider
     }
 
     @Override
-    public boolean isSigned(Message message)
-    {
+    public boolean isSigned(Message message) {
         String data = null;
-        try
-        {
+        try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null)
-            {
+            if (part == null) {
                 part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
-            if (part != null)
-            {
+            if (part != null) {
                 data = MimeUtility.getTextFromPart(part);
             }
-        }
-        catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             // guess not...
             // TODO: maybe log this?
         }
 
-        if (data == null)
-        {
+        if (data == null) {
             return false;
         }
 
@@ -522,8 +447,7 @@ public class Apg extends CryptoProvider
      * @return provider name
      */
     @Override
-    public String getName()
-    {
+    public String getName() {
         return NAME;
     }
 
@@ -533,15 +457,12 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean test(Context context)
-    {
-        if (!isAvailable(context))
-        {
+    public boolean test(Context context) {
+        if (!isAvailable(context)) {
             return false;
         }
 
-        try
-        {
+        try {
             // try out one content provider to check permissions
             Uri contentUri = ContentUris.withAppendedId(
                                  Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
@@ -549,13 +470,10 @@ public class Apg extends CryptoProvider
             Cursor c = context.getContentResolver().query(contentUri,
                        new String[] { "user_id" },
                        null, null, null);
-            if (c != null)
-            {
+            if (c != null) {
                 c.close();
             }
-        }
-        catch (SecurityException e)
-        {
+        } catch (SecurityException e) {
             // if there was a problem, then let the user know, this will not stop K9/APG from
             // working, but some features won't be available, so we can still return "true"
             Toast.makeText(context,

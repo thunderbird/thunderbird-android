@@ -16,18 +16,14 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
  *
  * @see android.provider.ContactsContract
  */
-public class ContactsSdk5p extends ContactsSdk5
-{
-    public ContactsSdk5p(final Context context)
-    {
+public class ContactsSdk5p extends ContactsSdk5 {
+    public ContactsSdk5p(final Context context) {
         super(context);
     }
 
     @Override
-    public Cursor searchContacts(final CharSequence constraint)
-    {
-        if (constraint == null)
-        {
+    public Cursor searchContacts(final CharSequence constraint) {
+        if (constraint == null) {
             return null;
         }
 
@@ -43,17 +39,12 @@ public class ContactsSdk5p extends ContactsSdk5
                                   null);
 
         final StringBuilder matches = new StringBuilder();
-        if ((cursor != null) && (cursor.getCount() > 0))
-        {
+        if ((cursor != null) && (cursor.getCount() > 0)) {
             boolean first = true;
-            while (cursor.moveToNext())
-            {
-                if (first)
-                {
+            while (cursor.moveToNext()) {
+                if (first) {
                     first = false;
-                }
-                else
-                {
+                } else {
                     matches.append(",");
                 }
                 matches.append(cursor.getLong(0));
@@ -97,8 +88,7 @@ public class ContactsSdk5p extends ContactsSdk5
                              args,
                              SORT_ORDER);
 
-        if (c != null)
-        {
+        if (c != null) {
             /*
              * To prevent expensive execution in the UI thread:
              * Cursors get lazily executed, so if you don't call anything on

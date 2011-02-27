@@ -7,14 +7,12 @@ import java.util.Set;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
-public abstract class Message implements Part, Body
-{
+public abstract class Message implements Part, Body {
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     private MessageReference mReference = null;
 
-    public enum RecipientType
-    {
+    public enum RecipientType {
         TO, CC, BCC,
     }
 
@@ -26,28 +24,22 @@ public abstract class Message implements Part, Body
 
     protected Folder mFolder;
 
-    public boolean olderThan(Date earliestDate)
-    {
-        if (earliestDate == null)
-        {
+    public boolean olderThan(Date earliestDate) {
+        if (earliestDate == null) {
             return false;
         }
         Date myDate = getSentDate();
-        if (myDate == null)
-        {
+        if (myDate == null) {
             myDate = getInternalDate();
         }
-        if (myDate != null)
-        {
+        if (myDate != null) {
             return myDate.before(earliestDate);
         }
         return false;
     }
     @Override
-    public boolean equals(Object o)
-    {
-        if (o == null || !(o instanceof Message))
-        {
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Message)) {
             return false;
         }
         Message other = (Message)o;
@@ -57,8 +49,7 @@ public abstract class Message implements Part, Body
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         final int MULTIPLIER = 31;
 
         int result = 1;
@@ -68,19 +59,16 @@ public abstract class Message implements Part, Body
         return result;
     }
 
-    public String getUid()
-    {
+    public String getUid() {
         return mUid;
     }
 
-    public void setUid(String uid)
-    {
+    public void setUid(String uid) {
         mReference = null;
         this.mUid = uid;
     }
 
-    public Folder getFolder()
-    {
+    public Folder getFolder() {
         return mFolder;
     }
 
@@ -88,13 +76,11 @@ public abstract class Message implements Part, Body
 
     public abstract void setSubject(String subject) throws MessagingException;
 
-    public Date getInternalDate()
-    {
+    public Date getInternalDate() {
         return mInternalDate;
     }
 
-    public void setInternalDate(Date internalDate)
-    {
+    public void setInternalDate(Date internalDate) {
         this.mInternalDate = internalDate;
     }
 
@@ -107,10 +93,8 @@ public abstract class Message implements Part, Body
     public abstract void setRecipients(RecipientType type, Address[] addresses)
     throws MessagingException;
 
-    public void setRecipient(RecipientType type, Address address) throws MessagingException
-    {
-        setRecipients(type, new Address[]
-                      {
+    public void setRecipient(RecipientType type, Address address) throws MessagingException {
+        setRecipients(type, new Address[] {
                           address
                       });
     }
@@ -147,8 +131,7 @@ public abstract class Message implements Part, Body
 
     public abstract void setBody(Body body) throws MessagingException;
 
-    public boolean isMimeType(String mimeType) throws MessagingException
-    {
+    public boolean isMimeType(String mimeType) throws MessagingException {
         return getContentType().startsWith(mimeType);
     }
 
@@ -157,8 +140,7 @@ public abstract class Message implements Part, Body
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */
-    public Flag[] getFlags()
-    {
+    public Flag[] getFlags() {
         return mFlags.toArray(EMPTY_FLAG_ARRAY);
     }
 
@@ -170,14 +152,10 @@ public abstract class Message implements Part, Body
      *            , the flag is removed.
      * @throws MessagingException
      */
-    public void setFlag(Flag flag, boolean set) throws MessagingException
-    {
-        if (set)
-        {
+    public void setFlag(Flag flag, boolean set) throws MessagingException {
+        if (set) {
             mFlags.add(flag);
-        }
-        else
-        {
+        } else {
             mFlags.remove(flag);
         }
     }
@@ -187,16 +165,13 @@ public abstract class Message implements Part, Body
      * @param flags
      * @param set
      */
-    public void setFlags(Flag[] flags, boolean set) throws MessagingException
-    {
-        for (Flag flag : flags)
-        {
+    public void setFlags(Flag[] flags, boolean set) throws MessagingException {
+        for (Flag flag : flags) {
             setFlag(flag, set);
         }
     }
 
-    public boolean isSet(Flag flag)
-    {
+    public boolean isSet(Flag flag) {
         return mFlags.contains(flag);
     }
 
@@ -209,10 +184,8 @@ public abstract class Message implements Part, Body
 
     public abstract void setCharset(String charset) throws MessagingException;
 
-    public MessageReference makeMessageReference()
-    {
-        if (mReference == null)
-        {
+    public MessageReference makeMessageReference() {
+        if (mReference == null) {
             mReference = new MessageReference();
             mReference.accountUuid = getFolder().getAccount().getUuid();
             mReference.folderName = getFolder().getName();
@@ -221,8 +194,7 @@ public abstract class Message implements Part, Body
         return mReference;
     }
 
-    public boolean equalsReference(MessageReference ref)
-    {
+    public boolean equalsReference(MessageReference ref) {
         MessageReference tmpReference = makeMessageReference();
         return tmpReference.equals(ref);
     }

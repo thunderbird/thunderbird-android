@@ -17,8 +17,7 @@ import com.fsck.k9.activity.K9PreferenceActivity;
  *
  * @see FontSizes
  */
-public class FontSizeSettings extends K9PreferenceActivity
-{
+public class FontSizeSettings extends K9PreferenceActivity {
     /*
      * Keys of the preferences defined in res/xml/font_preferences.xml
      */
@@ -62,15 +61,13 @@ public class FontSizeSettings extends K9PreferenceActivity
      *
      * @param context The application context.
      */
-    public static void actionEditSettings(Context context)
-    {
+    public static void actionEditSettings(Context context) {
         Intent i = new Intent(context, FontSizeSettings.class);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         FontSizes fontSizes = K9.getFontSizes();
@@ -133,8 +130,7 @@ public class FontSizeSettings extends K9PreferenceActivity
      * Update the global FontSize object and permanently store the (possibly
      * changed) font size settings.
      */
-    private void saveSettings()
-    {
+    private void saveSettings() {
         FontSizes fontSizes = K9.getFontSizes();
 
         fontSizes.setAccountName(Integer.parseInt(mAccountName.getValue()));
@@ -164,10 +160,8 @@ public class FontSizeSettings extends K9PreferenceActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);

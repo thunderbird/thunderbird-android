@@ -17,33 +17,26 @@ import com.fsck.k9.mail.store.StorageManager;
  * receiver to be statically defined in manifest.
  * </p>
  */
-public class StorageGoneReceiver extends BroadcastReceiver
-{
+public class StorageGoneReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(final Context context, final Intent intent)
-    {
+    public void onReceive(final Context context, final Intent intent) {
         final String action = intent.getAction();
         final Uri uri = intent.getData();
 
-        if (uri == null || uri.getPath() == null)
-        {
+        if (uri == null || uri.getPath() == null) {
             return;
         }
 
-        if (K9.DEBUG)
-        {
+        if (K9.DEBUG) {
             Log.v(K9.LOG_TAG, "StorageGoneReceiver: " + intent.toString());
         }
 
         final String path = uri.getPath();
 
-        if (Intent.ACTION_MEDIA_EJECT.equals(action))
-        {
+        if (Intent.ACTION_MEDIA_EJECT.equals(action)) {
             StorageManager.getInstance(K9.app).onBeforeUnmount(path);
-        }
-        else if (Intent.ACTION_MEDIA_UNMOUNTED.equals(action))
-        {
+        } else if (Intent.ACTION_MEDIA_UNMOUNTED.equals(action)) {
             StorageManager.getInstance(K9.app).onAfterUnmount(path);
         }
     }

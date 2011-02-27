@@ -32,8 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.text.DateFormat;
 
-public class MessageHeader extends LinearLayout
-{
+public class MessageHeader extends LinearLayout {
     private Context mContext;
     private TextView mFromView;
     private TextView mDateView;
@@ -61,20 +60,17 @@ public class MessageHeader extends LinearLayout
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
      */
-    private static class HeaderEntry
-    {
+    private static class HeaderEntry {
         public String label;
         public String value;
 
-        public HeaderEntry(String label, String value)
-        {
+        public HeaderEntry(String label, String value) {
             this.label = label;
             this.value = value;
         }
     }
 
-    public MessageHeader(Context context, AttributeSet attrs)
-    {
+    public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         mDateFormat = DateFormatter.getDateFormat(mContext);
@@ -82,8 +78,7 @@ public class MessageHeader extends LinearLayout
         mContacts = Contacts.getInstance(mContext);
     }
 
-    private void initializeLayout()
-    {
+    private void initializeLayout() {
         mAttachmentIcon = findViewById(R.id.attachment);
         mAnsweredIcon = findViewById(R.id.answered);
         mFromView = (TextView) findViewById(R.id.from);
@@ -112,30 +107,22 @@ public class MessageHeader extends LinearLayout
         ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
         ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
 
-        setOnClickListener(new OnClickListener()
-        {
+        setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 onShowAdditionalHeaders();
                 return;
             }
         });
 
-        mFromView.setOnClickListener( new OnClickListener()
-        {
+        mFromView.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (mMessage != null)
-                {
-                    try
-                    {
+            public void onClick(View v) {
+                if (mMessage != null) {
+                    try {
                         final Address senderEmail = mMessage.getFrom()[0];
                         mContacts.createContact(senderEmail);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e(K9.LOG_TAG, "Couldn't create contact", e);
                     }
                 }
@@ -143,20 +130,15 @@ public class MessageHeader extends LinearLayout
         });
     }
 
-    public void setOnFlagListener (OnClickListener listener)
-    {
+    public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
     }
 
 
-    public boolean additionalHeadersVisible()
-    {
-        if ( mAdditionalHeadersView != null && mAdditionalHeadersView.getVisibility() == View.VISIBLE )
-        {
+    public boolean additionalHeadersVisible() {
+        if (mAdditionalHeadersView != null && mAdditionalHeadersView.getVisibility() == View.VISIBLE) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -165,8 +147,7 @@ public class MessageHeader extends LinearLayout
      * Clear the text field for the additional headers display if they are
      * not shown, to save UI resources.
      */
-    private void hideAdditionalHeaders()
-    {
+    private void hideAdditionalHeaders() {
         mAdditionalHeadersView.setVisibility(View.GONE);
         mAdditionalHeadersView.setText("");
 
@@ -178,22 +159,18 @@ public class MessageHeader extends LinearLayout
      * {@link #onShowAdditionalHeaders()}
      * (when switching between messages).
      */
-    private void showAdditionalHeaders()
-    {
+    private void showAdditionalHeaders() {
         Integer messageToShow = null;
-        try
-        {
+        try {
             // Retrieve additional headers
             boolean allHeadersDownloaded = mMessage.isSet(Flag.X_GOT_ALL_HEADERS);
             List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);
-            if (!additionalHeaders.isEmpty())
-            {
+            if (!additionalHeaders.isEmpty()) {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
                 mAdditionalHeadersView.setVisibility(View.VISIBLE);
             }
-            if (!allHeadersDownloaded)
-            {
+            if (!allHeadersDownloaded) {
                 /*
                 * Tell the user about the "save all headers" setting
                 *
@@ -202,20 +179,15 @@ public class MessageHeader extends LinearLayout
                 * have not been saved in their entirety initially.
                 */
                 messageToShow = R.string.message_additional_headers_not_downloaded;
-            }
-            else if (additionalHeaders.isEmpty())
-            {
+            } else if (additionalHeaders.isEmpty()) {
                 // All headers have been downloaded, but there are no additional headers.
                 messageToShow = R.string.message_no_additional_headers_available;
             }
-        }
-        catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             messageToShow = R.string.message_additional_headers_retrieval_failed;
         }
         // Show a message to the user, if any
-        if (messageToShow != null)
-        {
+        if (messageToShow != null) {
             Toast toast = Toast.makeText(mContext, messageToShow, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
@@ -223,8 +195,7 @@ public class MessageHeader extends LinearLayout
 
     }
 
-    public void populate( final Message message, final Account account) throws MessagingException
-    {
+    public void populate(final Message message, final Account account) throws MessagingException {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
         final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
         final String date = mDateFormat.format(message.getSentDate());
@@ -237,25 +208,19 @@ public class MessageHeader extends LinearLayout
 
         initializeLayout();
         String subject = message.getSubject();
-        if (subject == null || subject.equals(""))
-        {
+        if (subject == null || subject.equals("")) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
-        }
-        else
-        {
+        } else {
             mSubjectView.setText(subject);
         }
         mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
         mFromView.setText(from);
 
-        if (date != null)
-        {
+        if (date != null) {
             mDateView.setText(date);
             mDateView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             mDateView.setVisibility(View.GONE);
         }
         mTimeView.setText(time);
@@ -269,28 +234,22 @@ public class MessageHeader extends LinearLayout
         mChip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
         mChip.getBackground().setAlpha(!message.isSet(Flag.SEEN) ? 255 : 127);
         setVisibility(View.VISIBLE);
-        if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
-        {
+        if (mAdditionalHeadersView.getVisibility() == View.VISIBLE) {
             showAdditionalHeaders();
         }
     }
 
-    public void onShowAdditionalHeaders()
-    {
+    public void onShowAdditionalHeaders() {
         int currentVisibility = mAdditionalHeadersView.getVisibility();
-        if (currentVisibility == View.VISIBLE)
-        {
+        if (currentVisibility == View.VISIBLE) {
             hideAdditionalHeaders();
-        }
-        else
-        {
+        } else {
             showAdditionalHeaders();
         }
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
-    throws MessagingException
-    {
+    throws MessagingException {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
         /*
         * Remove "Subject" header as it is already shown in the standard
@@ -299,11 +258,9 @@ public class MessageHeader extends LinearLayout
         */
         Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
         headerNames.remove("Subject");
-        for (String headerName : headerNames)
-        {
+        for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);
-            for (String headerValue : headerValues)
-            {
+            for (String headerValue : headerValues) {
                 additionalHeaders.add(new HeaderEntry(headerName, headerValue));
             }
         }
@@ -320,18 +277,13 @@ public class MessageHeader extends LinearLayout
      *                          This method is always called from within the UI thread by
      *                          {@link #showAdditionalHeaders()}.
      */
-    private void populateAdditionalHeadersView(final List<HeaderEntry> additionalHeaders)
-    {
+    private void populateAdditionalHeadersView(final List<HeaderEntry> additionalHeaders) {
         SpannableStringBuilder sb = new SpannableStringBuilder();
         boolean first = true;
-        for (HeaderEntry additionalHeader : additionalHeaders)
-        {
-            if (!first)
-            {
+        for (HeaderEntry additionalHeader : additionalHeaders) {
+            if (!first) {
                 sb.append("\n");
-            }
-            else
-            {
+            } else {
                 first = false;
             }
             StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);

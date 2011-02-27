@@ -2,8 +2,7 @@ package com.fsck.k9.crypto;
 
 import java.io.Serializable;
 
-public class PgpData implements Serializable
-{
+public class PgpData implements Serializable {
     private static final long serialVersionUID = 6314045536470848410L;
     protected long mEncryptionKeyIds[] = null;
     protected long mSignatureKeyId = 0;
@@ -13,83 +12,67 @@ public class PgpData implements Serializable
     protected String mDecryptedData = null;
     protected String mEncryptedData = null;
 
-    public void setSignatureKeyId(long keyId)
-    {
+    public void setSignatureKeyId(long keyId) {
         mSignatureKeyId = keyId;
     }
 
-    public long getSignatureKeyId()
-    {
+    public long getSignatureKeyId() {
         return mSignatureKeyId;
     }
 
-    public void setEncryptionKeys(long keyIds[])
-    {
+    public void setEncryptionKeys(long keyIds[]) {
         mEncryptionKeyIds = keyIds;
     }
 
-    public long[] getEncryptionKeys()
-    {
+    public long[] getEncryptionKeys() {
         return mEncryptionKeyIds;
     }
 
-    public boolean hasSignatureKey()
-    {
+    public boolean hasSignatureKey() {
         return mSignatureKeyId != 0;
     }
 
-    public boolean hasEncryptionKeys()
-    {
+    public boolean hasEncryptionKeys() {
         return (mEncryptionKeyIds != null) && (mEncryptionKeyIds.length > 0);
     }
 
-    public String getEncryptedData()
-    {
+    public String getEncryptedData() {
         return mEncryptedData;
     }
 
-    public void setEncryptedData(String data)
-    {
+    public void setEncryptedData(String data) {
         mEncryptedData = data;
     }
 
-    public String getDecryptedData()
-    {
+    public String getDecryptedData() {
         return mDecryptedData;
     }
 
-    public void setDecryptedData(String data)
-    {
+    public void setDecryptedData(String data) {
         mDecryptedData = data;
     }
 
-    public void setSignatureUserId(String userId)
-    {
+    public void setSignatureUserId(String userId) {
         mSignatureUserId = userId;
     }
 
-    public String getSignatureUserId()
-    {
+    public String getSignatureUserId() {
         return mSignatureUserId;
     }
 
-    public boolean getSignatureSuccess()
-    {
+    public boolean getSignatureSuccess() {
         return mSignatureSuccess;
     }
 
-    public void setSignatureSuccess(boolean success)
-    {
+    public void setSignatureSuccess(boolean success) {
         mSignatureSuccess = success;
     }
 
-    public boolean getSignatureUnknown()
-    {
+    public boolean getSignatureUnknown() {
         return mSignatureUnknown;
     }
 
-    public void setSignatureUnknown(boolean unknown)
-    {
+    public void setSignatureUnknown(boolean unknown) {
         mSignatureUnknown = unknown;
     }
 }

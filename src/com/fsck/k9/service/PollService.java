@@ -13,15 +13,13 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
 import java.util.HashMap;
 
-public class PollService extends CoreService
-{
+public class PollService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PollService.startService";
     private static String STOP_SERVICE = "com.fsck.k9.service.PollService.stopService";
 
     private Listener mListener = new Listener();
 
-    public static void startService(Context context)
-    {
+    public static void startService(Context context) {
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.START_SERVICE);
@@ -29,8 +27,7 @@ public class PollService extends CoreService
         context.startService(i);
     }
 
-    public static void stopService(Context context)
-    {
+    public static void stopService(Context context) {
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.STOP_SERVICE);
@@ -39,34 +36,27 @@ public class PollService extends CoreService
     }
 
     @Override
-    public void startService(Intent intent, int startId)
-    {
-        if (START_SERVICE.equals(intent.getAction()))
-        {
+    public void startService(Intent intent, int startId) {
+        if (START_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PollService started with startId = " + startId);
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
-            if (listener == null)
-            {
+            if (listener == null) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "***** PollService *****: starting new check");
                 mListener.setStartId(startId);
                 mListener.wakeLockAcquire();
                 controller.setCheckMailListener(mListener);
                 controller.checkMail(this, null, false, false, mListener);
-            }
-            else
-            {
+            } else {
                 if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG,"***** PollService *****: renewing WakeLock");
+                    Log.i(K9.LOG_TAG, "***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
                 listener.wakeLockAcquire();
             }
-        }
-        else if (STOP_SERVICE.equals(intent.getAction()))
-        {
+        } else if (STOP_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PollService stopping");
             stopSelf();
@@ -75,21 +65,18 @@ public class PollService extends CoreService
     }
 
     @Override
-    public IBinder onBind(Intent arg0)
-    {
+    public IBinder onBind(Intent arg0) {
         return null;
     }
 
-    class Listener extends MessagingListener
-    {
+    class Listener extends MessagingListener {
         HashMap<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private TracingWakeLock wakeLock = null;
         private int startId = -1;
 
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
         // don't want to take the chance of running wild
-        public synchronized void wakeLockAcquire()
-        {
+        public synchronized void wakeLockAcquire() {
             TracingWakeLock oldWakeLock = wakeLock;
 
             TracingPowerManager pm = TracingPowerManager.getPowerManager(PollService.this);
@@ -97,29 +84,24 @@ public class PollService extends CoreService
             wakeLock.setReferenceCounted(false);
             wakeLock.acquire(K9.WAKE_LOCK_TIMEOUT);
 
-            if (oldWakeLock != null)
-            {
+            if (oldWakeLock != null) {
                 oldWakeLock.release();
             }
 
         }
-        public synchronized void wakeLockRelease()
-        {
-            if (wakeLock != null)
-            {
+        public synchronized void wakeLockRelease() {
+            if (wakeLock != null) {
                 wakeLock.release();
                 wakeLock = null;
             }
         }
         @Override
-        public void checkMailStarted(Context context, Account account)
-        {
+        public void checkMailStarted(Context context, Account account) {
             accountsChecked.clear();
         }
 
         @Override
-        public void checkMailFailed(Context context, Account account, String reason)
-        {
+        public void checkMailFailed(Context context, Account account, String reason) {
             release();
         }
 
@@ -128,21 +110,17 @@ public class PollService extends CoreService
             Account account,
             String folder,
             int totalMessagesInMailbox,
-            int numNewMessages)
-        {
-            if (account.isNotifyNewMail())
-            {
+            int numNewMessages) {
+            if (account.isNotifyNewMail()) {
                 Integer existingNewMessages = accountsChecked.get(account.getUuid());
-                if (existingNewMessages == null)
-                {
+                if (existingNewMessages == null) {
                     existingNewMessages = 0;
                 }
                 accountsChecked.put(account.getUuid(), existingNewMessages + numNewMessages);
             }
         }
 
-        private void release()
-        {
+        private void release() {
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             controller.setCheckMailListener(null);
@@ -157,19 +135,16 @@ public class PollService extends CoreService
         }
 
         @Override
-        public void checkMailFinished(Context context, Account account)
-        {
+        public void checkMailFinished(Context context, Account account) {
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
             release();
         }
-        public int getStartId()
-        {
+        public int getStartId() {
             return startId;
         }
-        public void setStartId(int startId)
-        {
+        public void setStartId(int startId) {
             this.startId = startId;
         }
     }

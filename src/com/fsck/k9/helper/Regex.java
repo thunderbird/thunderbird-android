@@ -27,8 +27,7 @@ import java.util.regex.Pattern;
 /**
  * Commonly used regular expression patterns.
  */
-public class Regex
-{
+public class Regex {
 
     /**
      *  Regular expression to match all IANA top-level domains.
@@ -190,19 +189,16 @@ public class Regex
      *  @return             A String comprising all of the non-null matched
      *                      groups concatenated together
      */
-    public static final String concatGroups(Matcher matcher)
-    {
+    public static final String concatGroups(Matcher matcher) {
         StringBuilder b = new StringBuilder();
         final int numGroups = matcher.groupCount();
 
-        for (int i = 1; i <= numGroups; i++)
-        {
+        for (int i = 1; i <= numGroups; i++) {
             String s = matcher.group(i);
 
             System.err.println("Group(" + i + ") : " + s);
 
-            if (s != null)
-            {
+            if (s != null) {
                 b.append(s);
             }
         }
@@ -220,17 +216,14 @@ public class Regex
      * @return             A String comprising all of the digits and plus in
      *                     the match
      */
-    public static final String digitsAndPlusOnly(Matcher matcher)
-    {
+    public static final String digitsAndPlusOnly(Matcher matcher) {
         StringBuilder buffer = new StringBuilder();
         String matchingRegion = matcher.group();
 
-        for (int i = 0, size = matchingRegion.length(); i < size; i++)
-        {
+        for (int i = 0, size = matchingRegion.length(); i < size; i++) {
             char character = matchingRegion.charAt(i);
 
-            if (character == '+' || Character.isDigit(character))
-            {
+            if (character == '+' || Character.isDigit(character)) {
                 buffer.append(character);
             }
         }

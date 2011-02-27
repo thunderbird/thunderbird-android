@@ -7,8 +7,7 @@ import com.fsck.k9.mail.store.ImapStore.ImapConnection;
 /**
  * Settings source for IMAP. Implemented in order to remove coupling between {@link ImapStore} and {@link ImapConnection}.
  */
-public interface ImapSettings
-{
+public interface ImapSettings {
     String getHost();
 
     int getPort();

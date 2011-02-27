@@ -7,8 +7,7 @@ import android.util.Log;
 /**
  * Helper class to get the current state of the auto-sync setting.
  */
-public class AutoSyncHelper
-{
+public class AutoSyncHelper {
     /**
      * False, if we never tried to load the class for this SDK version.
      * True, otherwise.
@@ -34,8 +33,7 @@ public class AutoSyncHelper
      * @return the IAutoSync object for this SDK version, or null if something
      *         went wrong.
      */
-    private static IAutoSync loadAutoSync()
-    {
+    private static IAutoSync loadAutoSync() {
         /*
          * We're trying to load the class for this SDK version. If anything
          * goes wrong after this point, we don't want to try again.
@@ -49,48 +47,33 @@ public class AutoSyncHelper
         int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
 
         String className = null;
-        if (sdkVersion == Build.VERSION_CODES.CUPCAKE)
-        {
+        if (sdkVersion == Build.VERSION_CODES.CUPCAKE) {
             className = "com.fsck.k9.helper.AutoSyncSdk3";
-        }
-        else if (sdkVersion == Build.VERSION_CODES.DONUT)
-        {
+        } else if (sdkVersion == Build.VERSION_CODES.DONUT) {
             className = "com.fsck.k9.helper.AutoSyncSdk4";
-        }
-        else if (sdkVersion >= Build.VERSION_CODES.ECLAIR)
-        {
+        } else if (sdkVersion >= Build.VERSION_CODES.ECLAIR) {
             className = "com.fsck.k9.helper.AutoSyncSdk5";
         }
 
         /*
          * Find the required class by name and instantiate it.
          */
-        try
-        {
-            Class<? extends IAutoSync> clazz =
+        try {
+            Class <? extends IAutoSync > clazz =
                 Class.forName(className).asSubclass(IAutoSync.class);
 
             IAutoSync autoSync = clazz.newInstance();
             autoSync.initialize(K9.app);
 
             return autoSync;
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             Log.e(K9.LOG_TAG, "Couldn't find class: " + className, e);
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             Log.e(K9.LOG_TAG, "Couldn't instantiate class: " + className, e);
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             Log.e(K9.LOG_TAG, "Couldn't access class: " + className, e);
-        }
-        catch (NoSuchMethodException e)
-        {
-            if (K9.DEBUG)
-            {
+        } catch (NoSuchMethodException e) {
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Couldn't load method to get auto-sync state", e);
             }
         }
@@ -104,10 +87,8 @@ public class AutoSyncHelper
      * @return true, if calls to getMasterSyncAutomatically() will return the
      *         state of the auto-sync setting. false, otherwise.
      */
-    public static boolean isAvailable()
-    {
-        if (!sChecked)
-        {
+    public static boolean isAvailable() {
+        if (!sChecked) {
             sAutoSync = loadAutoSync();
         }
         return (sAutoSync != null);
@@ -119,15 +100,12 @@ public class AutoSyncHelper
      * @return the state of the auto-sync setting.
      * @see IAutoSync
      */
-    public static boolean getMasterSyncAutomatically()
-    {
-        if (!sChecked)
-        {
+    public static boolean getMasterSyncAutomatically() {
+        if (!sChecked) {
             sAutoSync = loadAutoSync();
         }
 
-        if (sAutoSync == null)
-        {
+        if (sAutoSync == null) {
             throw new RuntimeException(
                 "Called getMasterSyncAutomatically() before checking if it's available.");
         }

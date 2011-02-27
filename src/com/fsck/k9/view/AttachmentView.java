@@ -27,8 +27,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 
-public class AttachmentView extends FrameLayout
-{
+public class AttachmentView extends FrameLayout {
 
     private Context mContext;
     public Button viewButton;
@@ -43,40 +42,33 @@ public class AttachmentView extends FrameLayout
     public long size;
     public ImageView iconView;
 
-    public AttachmentView(Context context, AttributeSet attrs, int defStyle)
-    {
+    public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
     }
-    public AttachmentView(Context context, AttributeSet attrs)
-    {
+    public AttachmentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }
-    public AttachmentView(Context context)
-    {
+    public AttachmentView(Context context) {
         super(context);
         mContext = context;
     }
 
 
 
-    public boolean populateFromPart(Part inputPart, Message message, Account account, MessagingController controller, MessagingListener listener  )
-    {
-        try
-        {
+    public boolean populateFromPart(Part inputPart, Message message, Account account, MessagingController controller, MessagingListener listener) {
+        try {
             part = (LocalAttachmentBodyPart) inputPart;
 
             contentType = MimeUtility.unfoldAndDecode(part.getContentType());
             String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
 
             name = MimeUtility.getHeaderParameter(contentType, "name");
-            if (name == null)
-            {
+            if (name == null) {
                 name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
             }
-            if (name == null)
-            {
+            if (name == null) {
                 return false;
             }
 
@@ -87,8 +79,7 @@ public class AttachmentView extends FrameLayout
 
             size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
             contentType = part.getMimeType();
-            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(contentType))
-            {
+            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(contentType)) {
                 contentType = MimeUtility.getMimeTypeByExtension(name);
             }
             TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
@@ -97,37 +88,30 @@ public class AttachmentView extends FrameLayout
             viewButton = (Button) findViewById(R.id.view);
             downloadButton = (Button) findViewById(R.id.download);
             if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
-                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES)))
-            {
+                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
                 viewButton.setVisibility(View.GONE);
             }
             if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
-                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES)))
-            {
+                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
                 downloadButton.setVisibility(View.GONE);
             }
-            if (size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE)
-            {
+            if (size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
                 viewButton.setVisibility(View.GONE);
                 downloadButton.setVisibility(View.GONE);
             }
 
-            viewButton.setOnClickListener(new OnClickListener()
-            {
+            viewButton.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     onViewButtonClicked();
                     return;
                 }
             });
 
 
-            downloadButton.setOnClickListener(new OnClickListener()
-            {
+            downloadButton.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     onSaveButtonClicked();
                     return;
                 }
@@ -136,37 +120,29 @@ public class AttachmentView extends FrameLayout
             attachmentName.setText(name);
             attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
             Bitmap previewIcon = getPreviewIcon();
-            if (previewIcon != null)
-            {
+            if (previewIcon != null) {
                 attachmentIcon.setImageBitmap(previewIcon);
-            }
-            else
-            {
+            } else {
                 attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
             }
         }
 
-        catch (Exception e)
-        {
-            Log.e(K9.LOG_TAG, "error ",e);
+        catch (Exception e) {
+            Log.e(K9.LOG_TAG, "error ", e);
         }
 
         return true;
     }
 
-    private Bitmap getPreviewIcon()
-    {
-        try
-        {
+    private Bitmap getPreviewIcon() {
+        try {
             return BitmapFactory.decodeStream(
                        mContext.getContentResolver().openInputStream(
                            AttachmentProvider.getAttachmentThumbnailUri(mAccount,
                                    part.getAttachmentId(),
                                    62,
                                    62)));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             /*
              * We don't care what happened, we just return null for the preview icon.
              */
@@ -174,26 +150,21 @@ public class AttachmentView extends FrameLayout
         }
     }
 
-    private void onViewButtonClicked()
-    {
-        if (mMessage != null)
-        {
-            mController.loadAttachment( mAccount, mMessage, part, new Object[] { false, this }, mListener);
+    private void onViewButtonClicked() {
+        if (mMessage != null) {
+            mController.loadAttachment(mAccount, mMessage, part, new Object[] { false, this }, mListener);
         }
     }
 
 
-    private void onSaveButtonClicked()
-    {
+    private void onSaveButtonClicked() {
         saveFile();
     }
 
-    public void writeFile ()
-    {
-        try
-        {
+    public void writeFile() {
+        try {
             File file = Utility.createUniqueFile(Environment.getExternalStorageDirectory(), name);
-            Uri uri = AttachmentProvider.getAttachmentUri( mAccount, part.getAttachmentId());
+            Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);
             IOUtils.copy(in, out);
@@ -202,17 +173,13 @@ public class AttachmentView extends FrameLayout
             in.close();
             attachmentSaved(file.getName());
             new MediaScannerNotifier(mContext, file);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             attachmentNotSaved();
         }
     }
 
-    public void saveFile()
-    {
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-        {
+    public void saveFile() {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             /*
              * Abort early if there's no place to save the attachment. We don't want to spend
              * the time downloading it and then abort.
@@ -222,25 +189,20 @@ public class AttachmentView extends FrameLayout
                            Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mMessage != null)
-        {
-            mController.loadAttachment( mAccount, mMessage, part, new Object[] {true, this}, mListener);
+        if (mMessage != null) {
+            mController.loadAttachment(mAccount, mMessage, part, new Object[] {true, this}, mListener);
         }
     }
 
 
-    public void showFile()
-    {
-        Uri uri = AttachmentProvider.getAttachmentUri( mAccount, part.getAttachmentId());
+    public void showFile() {
+        Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        try
-        {
+        try {
             mContext.startActivity(intent);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
             Toast toast = Toast.makeText(mContext, mContext.getString(R.string.message_view_no_viewer, contentType), Toast.LENGTH_LONG);
             toast.show();
@@ -255,45 +217,36 @@ public class AttachmentView extends FrameLayout
      * attachment.viewButton.setEnabled(enabled); is called.
      * This method is safe to be called from the UI-thread.
      */
-    public void checkViewable()
-    {
-        if (viewButton.getVisibility() == View.GONE)
-        {
+    public void checkViewable() {
+        if (viewButton.getVisibility() == View.GONE) {
             // nothing to do
             return;
         }
-        if (!viewButton.isEnabled())
-        {
+        if (!viewButton.isEnabled()) {
             // nothing to do
             return;
         }
-        try
-        {
-            Uri uri = AttachmentProvider.getAttachmentUri( mAccount, part.getAttachmentId());
+        try {
+            Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (intent.resolveActivity(mContext.getPackageManager()) == null)
-            {
+            if (intent.resolveActivity(mContext.getPackageManager()) == null) {
                 viewButton.setEnabled(false);
             }
             // currently we do not cache re result.
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Cannot resolve activity to determine if we shall show the 'view'-button for an attachment", e);
         }
     }
 
-    public void attachmentSaved(final String filename)
-    {
+    public void attachmentSaved(final String filename) {
         Toast.makeText(mContext, String.format(
                            mContext.getString(R.string.message_view_status_attachment_saved), filename),
                        Toast.LENGTH_LONG).show();
     }
 
-    public void attachmentNotSaved()
-    {
+    public void attachmentNotSaved() {
         Toast.makeText(mContext,
                        mContext.getString(R.string.message_view_status_attachment_not_saved),
                        Toast.LENGTH_LONG).show();

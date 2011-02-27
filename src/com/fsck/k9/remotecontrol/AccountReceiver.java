@@ -6,23 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-class AccountReceiver extends BroadcastReceiver
-{
+class AccountReceiver extends BroadcastReceiver {
     K9AccountReceptor receptor = null;
 
-    protected AccountReceiver(K9AccountReceptor nReceptor)
-    {
+    protected AccountReceiver(K9AccountReceptor nReceptor) {
         receptor = nReceptor;
     }
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
-        if (K9RemoteControl.K9_REQUEST_ACCOUNTS.equals(intent.getAction()))
-        {
+    public void onReceive(Context context, Intent intent) {
+        if (K9RemoteControl.K9_REQUEST_ACCOUNTS.equals(intent.getAction())) {
             Bundle bundle = getResultExtras(false);
-            if (bundle == null)
-            {
+            if (bundle == null) {
                 Log.w(K9RemoteControl.LOG_TAG, "Response bundle is empty");
                 return;
             }

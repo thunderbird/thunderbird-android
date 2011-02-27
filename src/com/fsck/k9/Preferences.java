@@ -16,8 +16,7 @@ import android.util.Log;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
 
-public class Preferences
-{
+public class Preferences {
 
     /**
      * Immutable empty {@link Account} array
@@ -26,10 +25,8 @@ public class Preferences
 
     private static Preferences preferences;
 
-    public static synchronized Preferences getPreferences(Context context)
-    {
-        if (preferences == null)
-        {
+    public static synchronized Preferences getPreferences(Context context) {
+        if (preferences == null) {
             preferences = new Preferences(context);
         }
         return preferences;
@@ -42,12 +39,10 @@ public class Preferences
     private Account newAccount;
     private Context mContext;
 
-    private Preferences(Context context)
-    {
+    private Preferences(Context context) {
         mStorage = Storage.getStorage(context);
         mContext = context;
-        if (mStorage.size() == 0)
-        {
+        if (mStorage.size() == 0) {
             Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
             Editor editor = mStorage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
@@ -55,38 +50,30 @@ public class Preferences
         }
     }
 
-    private synchronized void loadAccounts()
-    {
+    private synchronized void loadAccounts() {
         accounts = new HashMap<String, Account>();
         refreshAccounts();
     }
-    
-    public synchronized void refreshAccounts()
-    {
+
+    public synchronized void refreshAccounts() {
         Map<String, Account> newAccountMap = new HashMap<String, Account>();
         accountsInOrder = new LinkedList<Account>();
         String accountUuids = getPreferences().getString("accountUuids", null);
-        if ((accountUuids != null) && (accountUuids.length() != 0))
-        {
+        if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
-            for (String uuid : uuids)
-            {
+            for (String uuid : uuids) {
                 Account account = accounts.get(uuid);
-                if (account != null)
-                {
+                if (account != null) {
                     newAccountMap.put(uuid, account);
                     accountsInOrder.add(account);
-                }
-                else
-                {
+                } else {
                     Account newAccount = new Account(this, uuid);
                     newAccountMap.put(uuid, newAccount);
                     accountsInOrder.add(newAccount);
                 }
             }
         }
-        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
-        {
+        if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
             newAccountMap.put(newAccount.getUuid(), newAccount);
             accountsInOrder.add(newAccount);
             newAccount = null;
@@ -94,16 +81,14 @@ public class Preferences
 
         accounts = newAccountMap;
     }
-    
+
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
      * @return all accounts
      */
-    public synchronized Account[] getAccounts()
-    {
-        if (accounts == null)
-        {
+    public synchronized Account[] getAccounts() {
+        if (accounts == null) {
             loadAccounts();
         }
 
@@ -115,14 +100,11 @@ public class Preferences
      * registered the method returns an empty array.
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
-    public synchronized Collection<Account> getAvailableAccounts()
-    {
+    public synchronized Collection<Account> getAvailableAccounts() {
         Account[] allAccounts = getAccounts();
         Collection<Account> retval = new ArrayList<Account>(accounts.size());
-        for (Account account : allAccounts)
-        {
-            if (account.isAvailable(mContext))
-            {
+        for (Account account : allAccounts) {
+            if (account.isAvailable(mContext)) {
                 retval.add(account);
             }
         }
@@ -130,19 +112,16 @@ public class Preferences
         return retval;
     }
 
-    public synchronized Account getAccount(String uuid)
-    {
-        if (accounts == null)
-        {
+    public synchronized Account getAccount(String uuid) {
+        if (accounts == null) {
             loadAccounts();
         }
         Account account = accounts.get(uuid);
-        
+
         return account;
     }
 
-    public synchronized Account newAccount()
-    {
+    public synchronized Account newAccount() {
         newAccount = new Account(K9.app);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
@@ -150,14 +129,12 @@ public class Preferences
         return newAccount;
     }
 
-    public synchronized void deleteAccount(Account account)
-    {
+    public synchronized void deleteAccount(Account account) {
         accounts.remove(account.getUuid());
         accountsInOrder.remove(account);
         account.delete(this);
 
-        if (newAccount == account)
-        {
+        if (newAccount == account) {
             newAccount = null;
         }
     }
@@ -167,16 +144,13 @@ public class Preferences
      * the first account in the list is marked as default and then returned. If
      * there are no accounts on the system the method returns null.
      */
-    public Account getDefaultAccount()
-    {
+    public Account getDefaultAccount() {
         String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
         Account defaultAccount = getAccount(defaultAccountUuid);
 
-        if (defaultAccount == null)
-        {
+        if (defaultAccount == null) {
             Collection<Account> accounts = getAvailableAccounts();
-            if (accounts.size() > 0)
-            {
+            if (accounts.size() > 0) {
                 defaultAccount = accounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }
@@ -185,24 +159,19 @@ public class Preferences
         return defaultAccount;
     }
 
-    public void setDefaultAccount(Account account)
-    {
+    public void setDefaultAccount(Account account) {
         getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
-    public void dump()
-    {
-        if (Config.LOGV)
-        {
-            for (String key : getPreferences().getAll().keySet())
-            {
+    public void dump() {
+        if (Config.LOGV) {
+            for (String key : getPreferences().getAll().keySet()) {
                 Log.v(K9.LOG_TAG, key + " = " + getPreferences().getAll().get(key));
             }
         }
     }
 
-    public SharedPreferences getPreferences()
-    {
+    public SharedPreferences getPreferences() {
         return mStorage;
     }
 }

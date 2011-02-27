@@ -21,23 +21,19 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
 
-public class K9Activity extends Activity implements Progressable
-{
+public class K9Activity extends Activity implements Progressable {
     private GestureDetector gestureDetector;
 
     protected ScrollView mTopView;
 
     @Override
-    public void onCreate(Bundle icicle)
-    {
+    public void onCreate(Bundle icicle) {
         onCreate(icicle, true);
     }
 
-    public void onCreate(Bundle icicle, boolean useTheme)
-    {
+    public void onCreate(Bundle icicle, boolean useTheme) {
         setLanguage(this, K9.getK9Language());
-        if (useTheme)
-        {
+        if (useTheme) {
             setTheme(K9.getK9Theme());
         }
         super.onCreate(icicle);
@@ -48,20 +44,14 @@ public class K9Activity extends Activity implements Progressable
 
     }
 
-    public static void setLanguage(Context context, String language)
-    {
+    public static void setLanguage(Context context, String language) {
         Locale locale;
-        if (language == null || language.equals(""))
-        {
+        if (language == null || language.equals("")) {
             locale = Locale.getDefault();
-        }
-        else if (language.length() == 5 && language.charAt(2) == '_')
-        {
+        } else if (language.length() == 5 && language.charAt(2) == '_') {
             // language is in the form: en_US
             locale = new Locale(language.substring(0, 2), language.substring(3));
-        }
-        else
-        {
+        } else {
             locale = new Locale(language);
         }
         Configuration config = new Configuration();
@@ -71,15 +61,13 @@ public class K9Activity extends Activity implements Progressable
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev)
-    {
+    public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
         return gestureDetector.onTouchEvent(ev);
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupFormats();
     }
@@ -87,43 +75,35 @@ public class K9Activity extends Activity implements Progressable
     private java.text.DateFormat mDateFormat;
     private java.text.DateFormat mTimeFormat;
 
-    private void setupFormats()
-    {
+    private void setupFormats() {
 
         mDateFormat = DateFormatter.getDateFormat(this);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
     }
 
-    public java.text.DateFormat getTimeFormat()
-    {
+    public java.text.DateFormat getTimeFormat() {
         return mTimeFormat;
     }
 
-    public java.text.DateFormat getDateFormat()
-    {
+    public java.text.DateFormat getDateFormat() {
         return mDateFormat;
     }
-    protected void onNext()
-    {
+    protected void onNext() {
 
     }
-    protected void onPrevious()
-    {
+    protected void onPrevious() {
     }
 
 
-    protected Animation inFromRightAnimation()
-    {
+    protected Animation inFromRightAnimation() {
         return slideAnimation(0.0f, +1.0f);
     }
 
-    protected Animation outToLeftAnimation()
-    {
+    protected Animation outToLeftAnimation() {
         return slideAnimation(0.0f, -1.0f);
     }
 
-    private Animation slideAnimation(float right, float left)
-    {
+    private Animation slideAnimation(float right, float left) {
 
         Animation slide = new TranslateAnimation(
             Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
@@ -135,27 +115,21 @@ public class K9Activity extends Activity implements Progressable
         return slide;
     }
 
-    class MyGestureDetector extends SimpleOnGestureListener
-    {
+    class MyGestureDetector extends SimpleOnGestureListener {
 
         private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
         private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
         @Override
-        public boolean onDoubleTap(MotionEvent ev)
-        {
+        public boolean onDoubleTap(MotionEvent ev) {
             super.onDoubleTap(ev);
-            if (mTopView != null)
-            {
+            if (mTopView != null) {
                 int height = getResources().getDisplayMetrics().heightPixels;
-                if (ev.getRawY() < (height/4))
-                {
+                if (ev.getRawY() < (height / 4)) {
                     mTopView.fullScroll(View.FOCUS_UP);
 
-                }
-                else if (ev.getRawY() > (height - height/4))
-                {
+                } else if (ev.getRawY() > (height - height / 4)) {
                     mTopView.fullScroll(View.FOCUS_DOWN);
 
                 }
@@ -164,10 +138,8 @@ public class K9Activity extends Activity implements Progressable
         }
 
         @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-        {
-            if (K9.gesturesEnabled())
-            {
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (K9.gesturesEnabled()) {
                 // Convert the dips to pixels
                 final float mGestureScale = getResources().getDisplayMetrics().density;
                 int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
@@ -175,35 +147,27 @@ public class K9Activity extends Activity implements Progressable
                 int max_off_path = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
 
 
-                try
-                {
+                try {
                     if (Math.abs(e1.getY() - e2.getY()) > max_off_path)
                         return false;
                     // right to left swipe
-                    if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity)
-                    {
+                    if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
                         onNext();
-                    }
-                    else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity)
-                    {
+                    } else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
                         onPrevious();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     // nothing
                 }
             }
             return false;
         }
     }
-    public void setProgress(boolean progress)
-    {
+    public void setProgress(boolean progress) {
     }
-    
-    public void onExport(final Account account)
-    {
+
+    public void onExport(final Account account) {
         ExportHelper.exportSettings(this, this, account);
     }
-   
+
 }

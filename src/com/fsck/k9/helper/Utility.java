@@ -20,8 +20,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utility
-{
+public class Utility {
 
     // \u00A0 (non-breaking space) happens to be used by French MUA
 
@@ -37,25 +36,20 @@ public class Utility
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
 
-    public static String readInputStream(InputStream in, String encoding) throws IOException
-    {
+    public static String readInputStream(InputStream in, String encoding) throws IOException {
         InputStreamReader reader = new InputStreamReader(in, encoding);
         StringBuffer sb = new StringBuffer();
         int count;
         char[] buf = new char[512];
-        while ((count = reader.read(buf)) != -1)
-        {
+        while ((count = reader.read(buf)) != -1) {
             sb.append(buf, 0, count);
         }
         return sb.toString();
     }
 
-    public static boolean arrayContains(Object[] a, Object o)
-    {
-        for (Object element : a)
-        {
-            if (element.equals(o))
-            {
+    public static boolean arrayContains(Object[] a, Object o) {
+        for (Object element : a) {
+            if (element.equals(o)) {
                 return true;
             }
         }
@@ -71,70 +65,55 @@ public class Utility
      * @param seperator
      * @return
      */
-    public static String combine(Object[] parts, char seperator)
-    {
-        if (parts == null)
-        {
+    public static String combine(Object[] parts, char seperator) {
+        if (parts == null) {
             return null;
         }
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < parts.length; i++)
-        {
+        for (int i = 0; i < parts.length; i++) {
             sb.append(parts[i].toString());
-            if (i < parts.length - 1)
-            {
+            if (i < parts.length - 1) {
                 sb.append(seperator);
             }
         }
         return sb.toString();
     }
 
-    public static String base64Decode(String encoded)
-    {
-        if (encoded == null)
-        {
+    public static String base64Decode(String encoded) {
+        if (encoded == null) {
             return null;
         }
         byte[] decoded = new Base64().decode(encoded.getBytes());
         return new String(decoded);
     }
 
-    public static String base64Encode(String s)
-    {
-        if (s == null)
-        {
+    public static String base64Encode(String s) {
+        if (s == null) {
             return s;
         }
         byte[] encoded = new Base64().encode(s.getBytes());
         return new String(encoded);
     }
 
-    public static boolean requiredFieldValid(TextView view)
-    {
+    public static boolean requiredFieldValid(TextView view) {
         return view.getText() != null && view.getText().length() > 0;
     }
 
 
-    public static boolean requiredFieldValid(Editable s)
-    {
+    public static boolean requiredFieldValid(Editable s) {
         return s != null && s.length() > 0;
     }
 
-    public static boolean domainFieldValid(EditText view)
-    {
-        if (view.getText() != null)
-        {
+    public static boolean domainFieldValid(EditText view) {
+        if (view.getText() != null) {
             String s = view.getText().toString();
-            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$"))
-            {
+            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$")) {
                 return true;
             }
-            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"))
-            {
+            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
                 return true;
             }
-            if ((s.equalsIgnoreCase("localhost"))||(s.equalsIgnoreCase("localhost.localdomain")))
-            {
+            if ((s.equalsIgnoreCase("localhost")) || (s.equalsIgnoreCase("localhost.localdomain"))) {
                 return true;
             }
         }
@@ -150,14 +129,10 @@ public class Utility
      * @param text String to quote.
      * @return Possibly quoted string.
      */
-    public static String quoteAtoms(final String text)
-    {
-        if (ATOM.matcher(text).matches())
-        {
+    public static String quoteAtoms(final String text) {
+        if (ATOM.matcher(text).matches()) {
             return text;
-        }
-        else
-        {
+        } else {
             return quoteString(text);
         }
     }
@@ -176,18 +151,13 @@ public class Utility
      * @param s
      * @return
      */
-    public static String quoteString(String s)
-    {
-        if (s == null)
-        {
+    public static String quoteString(String s) {
+        if (s == null) {
             return null;
         }
-        if (!s.matches("^\".*\"$"))
-        {
+        if (!s.matches("^\".*\"$")) {
             return "\"" + s + "\"";
-        }
-        else
-        {
+        } else {
             return s;
         }
     }
@@ -197,45 +167,33 @@ public class Utility
      * allocations. This version is around 3x as fast as the standard one and I'm using it
      * hundreds of times in places that slow down the UI, so it helps.
      */
-    public static String fastUrlDecode(String s)
-    {
-        try
-        {
+    public static String fastUrlDecode(String s) {
+        try {
             byte[] bytes = s.getBytes("UTF-8");
             byte ch;
             int length = 0;
-            for (int i = 0, count = bytes.length; i < count; i++)
-            {
+            for (int i = 0, count = bytes.length; i < count; i++) {
                 ch = bytes[i];
-                if (ch == '%')
-                {
+                if (ch == '%') {
                     int h = (bytes[i + 1] - '0');
                     int l = (bytes[i + 2] - '0');
-                    if (h > 9)
-                    {
+                    if (h > 9) {
                         h -= 7;
                     }
-                    if (l > 9)
-                    {
+                    if (l > 9) {
                         l -= 7;
                     }
                     bytes[length] = (byte)((h << 4) | l);
                     i += 2;
-                }
-                else if (ch == '+')
-                {
+                } else if (ch == '+') {
                     bytes[length] = ' ';
-                }
-                else
-                {
+                } else {
                     bytes[length] = bytes[i];
                 }
                 length++;
             }
             return new String(bytes, 0, length, "UTF-8");
-        }
-        catch (UnsupportedEncodingException uee)
-        {
+        } catch (UnsupportedEncodingException uee) {
             return null;
         }
     }
@@ -245,15 +203,11 @@ public class Utility
      * @param date
      * @return
      */
-    public static boolean isDateToday(Date date)
-    {
+    public static boolean isDateToday(Date date) {
         Date now = new Date();
-        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime())
-        {
+        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -262,8 +216,7 @@ public class Utility
      * TODO disabled this method globally. It is used in all the settings screens but I just
      * noticed that an unrelated icon was dimmed. Android must share drawables internally.
      */
-    public static void setCompoundDrawablesAlpha(TextView view, int alpha)
-    {
+    public static void setCompoundDrawablesAlpha(TextView view, int alpha) {
 //        Drawable[] drawables = view.getCompoundDrawables();
 //        for (Drawable drawable : drawables) {
 //            if (drawable != null) {
@@ -311,11 +264,9 @@ public class Utility
      * @return a line with newlines inserted, <code>null</code> if null input
      */
     private static final String NEWLINE_REGEX = "(?:\\r?\\n)";
-    public static String wrap(String str, int wrapLength)
-    {
+    public static String wrap(String str, int wrapLength) {
         StringBuilder result = new StringBuilder();
-        for (String piece : str.split(NEWLINE_REGEX))
-        {
+        for (String piece : str.split(NEWLINE_REGEX)) {
             result.append(wrap(piece, wrapLength, null, false));
             result.append("\n");
         }
@@ -360,62 +311,47 @@ public class Utility
      * @param wrapLongWords  true if long words (such as URLs) should be wrapped
      * @return a line with newlines inserted, <code>null</code> if null input
      */
-    public static String wrap(String str, int wrapLength, String newLineStr, boolean wrapLongWords)
-    {
-        if (str == null)
-        {
+    public static String wrap(String str, int wrapLength, String newLineStr, boolean wrapLongWords) {
+        if (str == null) {
             return null;
         }
-        if (newLineStr == null)
-        {
+        if (newLineStr == null) {
             newLineStr = "\n";
         }
-        if (wrapLength < 1)
-        {
+        if (wrapLength < 1) {
             wrapLength = 1;
         }
         int inputLineLength = str.length();
         int offset = 0;
         StringBuilder wrappedLine = new StringBuilder(inputLineLength + 32);
 
-        while ((inputLineLength - offset) > wrapLength)
-        {
-            if (str.charAt(offset) == ' ')
-            {
+        while ((inputLineLength - offset) > wrapLength) {
+            if (str.charAt(offset) == ' ') {
                 offset++;
                 continue;
             }
             int spaceToWrapAt = str.lastIndexOf(' ', wrapLength + offset);
 
-            if (spaceToWrapAt >= offset)
-            {
+            if (spaceToWrapAt >= offset) {
                 // normal case
                 wrappedLine.append(str.substring(offset, spaceToWrapAt));
                 wrappedLine.append(newLineStr);
                 offset = spaceToWrapAt + 1;
-            }
-            else
-            {
+            } else {
                 // really long word or URL
-                if (wrapLongWords)
-                {
+                if (wrapLongWords) {
                     // wrap really long word one line at a time
                     wrappedLine.append(str.substring(offset, wrapLength + offset));
                     wrappedLine.append(newLineStr);
                     offset += wrapLength;
-                }
-                else
-                {
+                } else {
                     // do not wrap really long word, just extend beyond limit
                     spaceToWrapAt = str.indexOf(' ', wrapLength + offset);
-                    if (spaceToWrapAt >= 0)
-                    {
+                    if (spaceToWrapAt >= 0) {
                         wrappedLine.append(str.substring(offset, spaceToWrapAt));
                         wrappedLine.append(newLineStr);
                         offset = spaceToWrapAt + 1;
-                    }
-                    else
-                    {
+                    } else {
                         wrappedLine.append(str.substring(offset));
                         offset = inputLineLength;
                     }
@@ -442,8 +378,7 @@ public class Utility
      *            Never <code>null</code>.
      * @return Never <code>null</code>.
      */
-    public static String stripSubject(final String subject)
-    {
+    public static String stripSubject(final String subject) {
         int lastPrefix = 0;
 
         final Matcher tagMatcher = TAG_PATTERN.matcher(subject);
@@ -452,11 +387,9 @@ public class Utility
         boolean tagPresent = false;
         // whether the last action stripped a tag
         boolean tagStripped = false;
-        if (tagMatcher.find(0))
-        {
+        if (tagMatcher.find(0)) {
             tagPresent = true;
-            if (tagMatcher.start() == 0)
-            {
+            if (tagMatcher.start() == 0) {
                 // found at beginning of subject, considering it an actual tag
                 tag = tagMatcher.group();
 
@@ -478,25 +411,19 @@ public class Utility
                 && matcher.find(lastPrefix)
                 && matcher.start() == lastPrefix
                 && (!tagPresent || tag == null || subject.regionMatches(matcher.end(), tag, 0,
-                        tag.length())))
-        {
+                        tag.length()))) {
             lastPrefix = matcher.end();
 
-            if (tagPresent)
-            {
+            if (tagPresent) {
                 tagStripped = false;
-                if (tag == null)
-                {
+                if (tag == null) {
                     // attempt to find tag
-                    if (tagMatcher.start() == lastPrefix)
-                    {
+                    if (tagMatcher.start() == lastPrefix) {
                         tag = tagMatcher.group();
                         lastPrefix += tag.length();
                         tagStripped = true;
                     }
-                }
-                else if (lastPrefix < subject.length() - 1 && subject.startsWith(tag, lastPrefix))
-                {
+                } else if (lastPrefix < subject.length() - 1 && subject.startsWith(tag, lastPrefix)) {
                     // Re: [foo] Re: [foo] blah blah blah
                     //               ^     ^
                     //               ^     ^
@@ -509,17 +436,13 @@ public class Utility
             }
         }
         // Null pointer check is to make the static analysis component of Eclipse happy.
-        if (tagStripped && (tag != null))
-        {
+        if (tagStripped && (tag != null)) {
             // restore the last tag
             lastPrefix -= tag.length();
         }
-        if (lastPrefix > -1 && lastPrefix < subject.length() - 1)
-        {
+        if (lastPrefix > -1 && lastPrefix < subject.length() - 1) {
             return subject.substring(lastPrefix).trim();
-        }
-        else
-        {
+        } else {
             return subject.trim();
         }
     }
@@ -529,22 +452,15 @@ public class Utility
      * @param name
      *            Never <code>null</code>.
      */
-    public static void touchFile(final File parentDir, final String name)
-    {
+    public static void touchFile(final File parentDir, final String name) {
         final File file = new File(parentDir, name);
-        try
-        {
-            if (!file.exists())
-            {
+        try {
+            if (!file.exists()) {
                 file.createNewFile();
-            }
-            else
-            {
+            } else {
                 file.setLastModified(System.currentTimeMillis());
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
         }
     }
@@ -557,31 +473,24 @@ public class Utility
      * @param filename
      * @return
      */
-    public static File createUniqueFile(File directory, String filename)
-    {
+    public static File createUniqueFile(File directory, String filename) {
         File file = new File(directory, filename);
-        if (!file.exists())
-        {
+        if (!file.exists()) {
             return file;
         }
         // Get the extension of the file, if any.
         int index = filename.lastIndexOf('.');
         String format;
-        if (index != -1)
-        {
+        if (index != -1) {
             String name = filename.substring(0, index);
             String extension = filename.substring(index);
             format = name + "-%d" + extension;
-        }
-        else
-        {
+        } else {
             format = filename + "-%d";
         }
-        for (int i = 2; i < Integer.MAX_VALUE; i++)
-        {
+        for (int i = 2; i < Integer.MAX_VALUE; i++) {
             file = new File(directory, String.format(format, i));
-            if (!file.exists())
-            {
+            if (!file.exists()) {
                 return file;
             }
         }
@@ -595,31 +504,25 @@ public class Utility
      * @param to
      * @return
      */
-    public static boolean move(final File from, final File to)
-    {
-        if (to.exists())
-        {
+    public static boolean move(final File from, final File to) {
+        if (to.exists()) {
             to.delete();
         }
         to.getParentFile().mkdirs();
 
-        try
-        {
+        try {
             FileInputStream in = new FileInputStream(from);
             FileOutputStream out = new FileOutputStream(to);
             byte[] buffer = new byte[1024];
             int count = -1;
-            while ((count = in.read(buffer)) > 0)
-            {
+            while ((count = in.read(buffer)) > 0) {
                 out.write(buffer, 0, count);
             }
             out.close();
             in.close();
             from.delete();
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
             return false;
         }
@@ -630,59 +533,44 @@ public class Utility
      * @param fromDir
      * @param toDir
      */
-    public static void moveRecursive(final File fromDir, final File toDir)
-    {
-        if (!fromDir.exists())
-        {
+    public static void moveRecursive(final File fromDir, final File toDir) {
+        if (!fromDir.exists()) {
             return;
         }
-        if (!fromDir.isDirectory())
-        {
-            if (toDir.exists())
-            {
-                if (!toDir.delete())
-                {
+        if (!fromDir.isDirectory()) {
+            if (toDir.exists()) {
+                if (!toDir.delete()) {
                     Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath());
                 }
             }
-            if (!fromDir.renameTo(toDir))
-            {
+            if (!fromDir.renameTo(toDir)) {
                 Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
                 move(fromDir, toDir);
             }
             return;
         }
-        if (!toDir.exists() || !toDir.isDirectory())
-        {
-            if (toDir.exists() )
-            {
+        if (!toDir.exists() || !toDir.isDirectory()) {
+            if (toDir.exists()) {
                 toDir.delete();
             }
-            if (!toDir.mkdirs())
-            {
+            if (!toDir.mkdirs()) {
                 Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath());
             }
         }
         File[] files = fromDir.listFiles();
-        for (File file : files)
-        {
-            if (file.isDirectory())
-            {
+        for (File file : files) {
+            if (file.isDirectory()) {
                 moveRecursive(file, new File(toDir, file.getName()));
                 file.delete();
-            }
-            else
-            {
+            } else {
                 File target = new File(toDir, file.getName());
-                if (!file.renameTo(target))
-                {
+                if (!file.renameTo(target)) {
                     Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
                     move(file, target);
                 }
             }
         }
-        if (!fromDir.delete())
-        {
+        if (!fromDir.delete()) {
             Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath());
         }
     }
@@ -695,22 +583,17 @@ public class Utility
      * @param message Content to evaluate
      * @return True if it has external images; false otherwise.
      */
-    public static boolean hasExternalImages(final String message)
-    {
+    public static boolean hasExternalImages(final String message) {
         Matcher imgMatches = IMG_PATTERN.matcher(message);
-        while (imgMatches.find())
-        {
-            if (!imgMatches.group(1).equals("content"))
-            {
-                if (K9.DEBUG)
-                {
+        while (imgMatches.find()) {
+            if (!imgMatches.group(1).equals("content")) {
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "External images found");
                 }
                 return true;
             }
         }
-        if (K9.DEBUG)
-        {
+        if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "No external images.");
         }
         return false;
