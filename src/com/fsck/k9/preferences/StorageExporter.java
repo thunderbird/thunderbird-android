@@ -63,7 +63,7 @@ public class StorageExporter {
                     if (comps.length > 1) {
                         String keyUuid = comps[0];
                         if (accountUuids.contains(keyUuid) == false) {
-                            Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
+                            //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
                             continue;
                         }
                     }
