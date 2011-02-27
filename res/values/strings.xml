@@ -79,9 +79,9 @@
     <string name="search_results">Search results</string>
     <string name="preferences_action">Settings</string>
     <string name="open_action">Open</string>
-    <string name="account_settings_action">Account settings</string>
-    <string name="folder_settings_action">Folder settings</string>
-    <string name="global_settings_action">Global settings</string>
+    <string name="account_settings_action">Edit account settings</string>
+    <string name="folder_settings_action">Edit folder settings</string>
+    <string name="global_settings_action">Edit global settings</string>
     <string name="remove_account_action">Remove account</string>
     <string name="clear_pending_action">Clear pending actions (danger!)</string>
 
@@ -1028,4 +1028,17 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Unable to connect.</string>
+    
+    <string name="settings_encryption_password_prompt">Enter settings encryption password:</string>
+    <string name="settings_export_account">Export account settings</string>
+    <string name="settings_export_all">Export all settings</string>
+    <string name="settings_import">Import settings</string>
+    <string name="settings_exporting">Exporting settings...</string>
+    <string name="settings_importing">Importing settings...</string>
+    <string name="settings_export_success">Exported settings to <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Imported <xliff:g id="numAccounts">%s</xliff:g> accounts from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_failure">Failed to export settings: <xliff:g id="reason">%s</xliff:g></string>
+    <string name="settings_import_failure">Failed from import settings from <xliff:g id="filename">%s</xliff:g>:<xliff:g id="reason">%s</xliff:g></string>
+    
+    
 </resources>

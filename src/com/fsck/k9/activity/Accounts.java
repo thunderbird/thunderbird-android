@@ -3,11 +3,13 @@ package com.fsck.k9.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,6 +31,8 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.view.ColorChip;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,6 +63,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount unreadAccount = null;
     private SearchAccount integratedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
+    
+    private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
@@ -129,7 +135,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             });
         }
     }
-
+    
+    public void setProgress(boolean progress)
+    {
+        mHandler.progress(progress);
+    }
+    
     ActivityListener mListener = new ActivityListener() {
         @Override
         public void informUserOfStatus() {
@@ -582,6 +593,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case R.id.recreate:
             onRecreate(realAccount);
             break;
+        case R.id.export:
+            onExport(realAccount);
+            break;
         }
         return true;
     }
@@ -627,6 +641,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             break;
         case R.id.search:
             onSearchRequested();
+            break;
+        case R.id.export_all:
+            onExport(null);
+            break;
+        case R.id.import_settings:
+            onImport();
             break;
         default:
             return super.onOptionsItemSelected(item);
@@ -739,6 +759,97 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     item.setVisible(false);
                 }
             }
+        }
+    }
+    
+    private void onImport()
+    {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("*/*");
+        startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.i(K9.LOG_TAG, "onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
+        if (resultCode != RESULT_OK)
+            return;
+        if (data == null)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case ACTIVITY_REQUEST_PICK_SETTINGS_FILE:
+                onImport(data.getData());
+                break;
+        }
+    }
+    
+    private void onImport(Uri uri)
+    {
+        Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
+        try
+        {
+            final String fileName = uri.getPath();
+            ContentResolver resolver = getContentResolver();
+            final InputStream is = resolver.openInputStream(uri);
+            
+            PasswordEntryDialog dialog = new PasswordEntryDialog(this, getString(R.string.settings_encryption_password_prompt), 
+                    new PasswordEntryDialog.PasswordEntryListener()
+            {
+                public void passwordChosen(String chosenPassword)
+                {
+                    String toastText = Accounts.this.getString(R.string.settings_importing );
+                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, Toast.LENGTH_SHORT);
+                    toast.show();
+                    mHandler.progress(true);
+                    AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(is, chosenPassword, new ImportListener()
+                    {
+                        public void failure(final String message, Exception e)
+                        {
+                            Accounts.this.runOnUiThread(new Runnable()
+                            {
+                                public void run()
+                                {
+                                    mHandler.progress(false);
+                                    String toastText = Accounts.this.getString(R.string.settings_import_failure, fileName, message );
+                                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
+                                    toast.show();
+                                }
+                            });
+                        }
+    
+                        public void importSuccess(final int numAccounts)
+                        {
+                            Accounts.this.runOnUiThread(new Runnable()
+                            {
+                                public void run()
+                                {
+                                    mHandler.progress(false);
+                                    String toastText = Accounts.this.getString(R.string.settings_import_success, numAccounts, fileName );
+                                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
+                                    toast.show();
+                                    refresh();
+                                }
+                            });
+                        }
+                    });
+                }
+    
+                public void cancel()
+                {
+                }
+            });
+            dialog.show();
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            String toastText = Accounts.this.getString(R.string.settings_import_failure, uri.getPath(), fnfe.getMessage() );
+            Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
+            toast.show();
         }
     }
 

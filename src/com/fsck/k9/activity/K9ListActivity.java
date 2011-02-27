@@ -1,15 +1,17 @@
 package com.fsck.k9.activity;
 
 import android.app.ListActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.os.Bundle;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
-public class K9ListActivity extends ListActivity {
+public class K9ListActivity extends ListActivity implements Progressable {
     @Override
     public void onCreate(Bundle icicle) {
         K9Activity.setLanguage(this, K9.getK9Language());
@@ -87,4 +89,12 @@ public class K9ListActivity extends ListActivity {
         }
         return super.onKeyUp(keyCode, event);
     }
+
+    public void setProgress(boolean progress) {
+    }
+
+    public void onExport(final Account account) {
+        ExportHelper.exportSettings(this, this, account);
+    }
+
 }

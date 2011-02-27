@@ -21,7 +21,9 @@ import com.fsck.k9.view.ColorChip;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -435,6 +437,32 @@ public class Account implements BaseAccount {
         editor.commit();
     }
 
+    public static int findNewAccountNumber(List<Integer> accountNumbers) {
+        int newAccountNumber = -1;
+        Collections.sort(accountNumbers);
+        for (int accountNumber : accountNumbers) {
+            if (accountNumber > newAccountNumber + 1) {
+                break;
+            }
+            newAccountNumber = accountNumber;
+        }
+        newAccountNumber++;
+        return newAccountNumber;
+    }
+
+    public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
+        Account[] accounts = preferences.getAccounts();
+        List<Integer> accountNumbers = new LinkedList<Integer>();
+        for (int i = 0; i < accounts.length; i++) {
+            accountNumbers.add(accounts[i].getAccountNumber());
+        }
+        return accountNumbers;
+    }
+    public static int generateAccountNumber(Preferences preferences) {
+        List<Integer> accountNumbers = getExistingAccountNumbers(preferences);
+        return findNewAccountNumber(accountNumbers);
+    }
+
     public synchronized void save(Preferences preferences) {
         SharedPreferences.Editor editor = preferences.getPreferences().edit();
 
@@ -450,19 +478,7 @@ public class Account implements BaseAccount {
              *
              * I bet there is a much smarter way to do this. Anyone like to suggest it?
              */
-            Account[] accounts = preferences.getAccounts();
-            int[] accountNumbers = new int[accounts.length];
-            for (int i = 0; i < accounts.length; i++) {
-                accountNumbers[i] = accounts[i].getAccountNumber();
-            }
-            Arrays.sort(accountNumbers);
-            for (int accountNumber : accountNumbers) {
-                if (accountNumber > mAccountNumber + 1) {
-                    break;
-                }
-                mAccountNumber = accountNumber;
-            }
-            mAccountNumber++;
+            mAccountNumber = generateAccountNumber(preferences);
 
             String accountUuids = preferences.getPreferences().getString("accountUuids", "");
             accountUuids += (accountUuids.length() != 0 ? "," : "") + mUuid;
