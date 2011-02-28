@@ -12,6 +12,10 @@ import org.apache.commons.codec.binary.Base64;
 
 
 /**
+ * Copied from:
+ * http://www.androidsnippets.org/snippets/39/index.html
+ * a page which had no licensing or copyright notice
+ * and appeared to be intended for public use
  * package net.sf.andhsli.hotspotlogin;
  * Usage:
  * <pre>
