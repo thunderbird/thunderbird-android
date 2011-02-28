@@ -6,17 +6,8 @@
         android:title="@string/check_mail_action" />
     <item android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action" />
-    <item
-        android:id="@+id/settings"
-        android:title="@string/preferences_action"
-        android:icon="@drawable/ic_menu_preferences">
-        <menu>
-            <item android:id="@+id/edit_account"
-                android:title="@string/account_settings_action" />
-            <item android:id="@+id/export"
-                android:title="@string/settings_export_account" /> 
-        </menu>
-    </item>
+    <item android:id="@+id/edit_account"
+        android:title="@string/account_settings_action" />
     <item android:id="@+id/advanced"
         android:title="@string/advanced">
         <menu>
