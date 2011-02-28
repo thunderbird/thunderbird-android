@@ -547,6 +547,10 @@ public class MessageList
             });
         }
 
+        public void networkError() {
+            showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
+        }
+
 
         public void fetchingAttachment() {
             runOnUiThread(new Runnable() {
