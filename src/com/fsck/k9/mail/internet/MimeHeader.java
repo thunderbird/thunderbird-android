@@ -101,7 +101,12 @@ public class MimeHeader {
                 String v = field.value;
 
                 if (hasToBeEncoded(v)) {
-                    v = EncoderUtil.encodeEncodedWord(field.value, Charset.forName(mCharset));
+                    Charset charset = null;
+
+                    if (mCharset != null) {
+                        charset = Charset.forName(mCharset);
+                    }
+                    v = EncoderUtil.encodeEncodedWord(field.value, charset);
                 }
 
                 writer.write(field.name + ": " + v + "\r\n");
