@@ -922,7 +922,7 @@ public class MessageList
         mActionBar.setOnTitleClickListener(
         new OnClickListener() {
             @Override public void onClick(View v) {
-                onBackPressed();
+                onShowFolderList();
             }
         });
 

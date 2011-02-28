@@ -320,7 +320,7 @@ public class FolderList extends K9ListActivity {
         mActionBar.setOnTitleClickListener(
         new OnClickListener() {
             @Override public void onClick(View v) {
-                onBackPressed();
+                onAccounts();
             }
         });
         mActionBar.setDisplayHomeAsUpEnabled(true);
