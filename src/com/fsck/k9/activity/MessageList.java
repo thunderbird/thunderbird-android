@@ -539,27 +539,18 @@ public class MessageList
             });
         }
 
-        public void invalidIdError() {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageList.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
-                }
-            });
-        }
 
         public void networkError() {
             showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
         }
 
+        public void invalidIdError() {
+            showToast(getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
+        }
+
 
         public void fetchingAttachment() {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageList.this,
-                                   getString(R.string.message_view_fetching_attachment_toast),
-                                   Toast.LENGTH_SHORT).show();
-                }
-            });
+            showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
         }
 
 
@@ -734,7 +725,7 @@ public class MessageList
             List<String> segmentList = uri.getPathSegments();
             if (segmentList.size() != 3) {
                 //TODO: Use ressource to externalize message
-                Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
+                showToast("Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG);
                 return;
             }
 
@@ -750,7 +741,7 @@ public class MessageList
             }
             if (!found) {
                 //TODO: Use ressource to externalize message
-                Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
+                showToast("Invalid account id: " + accountId, Toast.LENGTH_LONG);
                 return;
             }
 
@@ -1128,6 +1119,15 @@ public class MessageList
     }
 
 
+        /* A helper for a set of "show a toast" methods */
+        private void showToast(final String message, final int toastLength)  {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MessageList.this, message, toastLength).show();
+                }
+            });
+        }
+
     private void clearMessageDisplay() {
         mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
@@ -1224,8 +1224,7 @@ public class MessageList
             return true;
         }
         case KeyEvent.KEYCODE_H: {
-            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
-            toast.show();
+            showToast(getString(R.string.message_list_help_key), Toast.LENGTH_LONG);
             return true;
         }
         }
@@ -1311,8 +1310,7 @@ public class MessageList
                     }
                         */
                     case KeyEvent.KEYCODE_H: {
-                        Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
-                        toast.show();
+                        showToast(getString(R.string.message_help_key), Toast.LENGTH_LONG);
                         return true;
                     }
                     }
@@ -1373,7 +1371,7 @@ public class MessageList
 
     private void gotoNextItem() {
         if (mNextMessage == null) {
-            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.end_of_folder), Toast.LENGTH_SHORT);
             return;
         }
         mLastDirection = NEXT;
@@ -1383,7 +1381,7 @@ public class MessageList
 
     private void gotoPreviousItem() {
         if (mPreviousMessage == null) {
-            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.end_of_folder), Toast.LENGTH_SHORT);
             return;
         }
         mLastDirection = PREVIOUS;
@@ -1468,10 +1466,8 @@ public class MessageList
     }
 
     private void reSort() {
-        int toastString = sortType.getToast(sortAscending);
 
-        Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
-        toast.show();
+               showToast(getString(sortType.getToast(sortAscending)), Toast.LENGTH_SHORT);
 
         mHandler.sortMessages();
     }
@@ -1533,8 +1529,7 @@ public class MessageList
         }
 
         if (!mController.isMoveCapable(holder.message)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
+                    showToast( getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
         }
 
@@ -1565,8 +1560,7 @@ public class MessageList
     private void onRefile(MessageInfoHolder holder, String folder) {
 
         if (!mController.isMoveCapable(holder.message)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
+            showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
         }
 
@@ -1591,8 +1585,7 @@ public class MessageList
         }
 
         if (!mController.isCopyCapable(holder.message)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
+                    showToast( getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
         }
 
@@ -3240,7 +3233,7 @@ public class MessageList
             }
         } else {
             // Should not happen
-            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.no_message_seletected_toast), Toast.LENGTH_SHORT);
         }
         mHandler.sortMessages();
     }
@@ -3323,9 +3316,7 @@ public class MessageList
                 if (holder.selected) {
                     Message message = holder.message;
                     if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
+                        showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
                         return;
                     }
                 }
@@ -3352,9 +3343,7 @@ public class MessageList
                 if (holder.selected) {
                     Message message = holder.message;
                     if (!mController.isMoveCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
+                        showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
                         return;
                     }
                     messageList.add(holder.message);
@@ -3395,9 +3384,7 @@ public class MessageList
                 if (holder.selected) {
                     Message message = holder.message;
                     if (!mController.isCopyCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
+                        showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
                         return;
                     }
                 }
@@ -3423,9 +3410,7 @@ public class MessageList
                 if (holder.selected) {
                     Message message = holder.message;
                     if (!mController.isCopyCapable(message)) {
-                        Toast toast = Toast.makeText(this,
-                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                        toast.show();
+                        showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
                         return;
                     }
                     messageList.add(holder.message);
