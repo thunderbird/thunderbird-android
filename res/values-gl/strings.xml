@@ -220,7 +220,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
 \n * Ordenación de mensaxes
 \n * ... e moitas máis.
 \n
-\nDate conta de que K-9 non soporta moitas das contas de hotmail, coma muchos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
+\nDate conta de que K-9 non soporta moitas das contas de hotmail, coma moitos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
 \n
 \n Por favor, envía os erros detectados, contribúe con novas funcionalidas e pregunta en http://k9mail.googlecode.com/
 
@@ -323,8 +323,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="global_settings_touchable_label">Previsualizar mensaxe</string>
     <string name="global_settings_touchable_summary">Listas espaciadas con previsualización de mensaxes</string>
     <string name="global_settings_preview_lines_label">Previsualizar liñas</string>
-    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
+    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Amosar nomes</string>-->
+    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Amosar os nomes correspondentes en lugar dos enderezos electrónicos</string>-->
     <string name="global_settings_show_contact_name_label">Ver nome de contactos</string>
     <string name="global_settings_show_contact_name_summary">Usar nome de destinatario dende contactos cando esté dispoñible</string>
     <string name="global_settings_registered_name_color_label">Colorear contactos</string>
