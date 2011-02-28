@@ -127,7 +127,7 @@
     <string name="folder_context_menu_title">Opcións de carpeta</string>
 
     <string name="general_no_subject">(sen Asunto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <!-- NEW: <string name="general_no_date">No date</string>-->
+    <string name="general_no_date">Sin data</string>
     <string name="general_no_sender">Sen Remitente</string>
     <string name="status_loading">Conectando</string>
     <string name="status_loading_folder">(Conexión <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -258,7 +258,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="message_compose_content_hint">Texto da Mensaxe</string>
     <string name="message_compose_quote_header_separator">-------- Mensaxe Orixianl --------</string>
     <string name="message_compose_quote_header_subject">Asunto:</string>
-    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <string name="message_compose_quote_header_send_date">Enviado:</string>
     <string name="message_compose_quote_header_from">Dende:</string>
     <string name="message_compose_quote_header_to">Para:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
@@ -323,8 +323,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="global_settings_touchable_label">Previsualizar mensaxe</string>
     <string name="global_settings_touchable_summary">Listas espaciadas con previsualización de mensaxes</string>
     <string name="global_settings_preview_lines_label">Previsualizar liñas</string>
-    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Amosar nomes</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Amosar os nomes correspondentes en lugar dos enderezos electrónicos</string>-->
+    <string name="global_settings_show_correspondent_names_label">Amosar nomes</string>
+    <string name="global_settings_show_correspondent_names_summary">Amosar os nomes correspondentes en lugar dos enderezos electrónicos</string>
     <string name="global_settings_show_contact_name_label">Ver nome de contactos</string>
     <string name="global_settings_show_contact_name_summary">Usar nome de destinatario dende contactos cando esté dispoñible</string>
     <string name="global_settings_registered_name_color_label">Colorear contactos</string>
@@ -541,8 +541,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_settings_notify_self_summary">Amosar notificacións durante o envío de correo</string>
     <string name="account_settings_notification_opens_unread_label">Abrir correo non lido</string>
     <string name="account_settings_notification_opens_unread_summary">Abrir correo non lido dende a notificación</string>
-    <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
-    <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
+    <string name="account_settings_notification_unread_count_label">Contar non lidas</string>-->
+    <string name="account_settings_notification_unread_count_summary">Amosar o número de mensaxes sin ler na barra de notificación.</string>-->
 
     <string name="account_settings_hide_buttons_label">Botóns de desprazamento</string>
     <string name="account_settings_hide_buttons_never">Nunca</string>
@@ -563,13 +563,13 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_settings_reply_after_quote_label">Resposta tras cita</string>
     <string name="account_settings_reply_after_quote_summary">Cando se responda a un correo, o texto orixinal estará por riba da sua resposta</string>
 
-    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
-    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
-    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+    <string name="account_settings_message_format_label">Formato da mensaxe</string>
+    <string name="account_settings_message_format_text">Só texto (eliminaránse as imaxes e o formato)</string>
+    <string name="account_settings_message_format_html">HTML (manteranse as imaxes e o formato)</string>
 
-    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
+    <string name="account_settings_quote_style_label">Contestar estilo cita</string>
+    <string name="account_settings_quote_style_prefix">Prefixo (coma Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">Encabezamento (coma Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configuración Xeral</string>
     <string name="account_settings_display_prefs_title">Visualización</string>
@@ -897,8 +897,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="gestures_title">Xestos</string>
     <string name="gestures_summary">Aceptar controles xestuáis</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+    <string name="compact_layouts_title">Formato compacto</string>
+    <string name="compact_layouts_summary">Axustar o formato para amosar máis en cada páxina</string>
 
     <string name="volume_navigation_title">Navegación con teclas de volume</string>
     <string name="volume_navigation_summary">Permite moverse polas opcións usando os botóns de volume</string>
@@ -955,7 +955,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="font_size_message_list_subject">Asunto</string>
     <string name="font_size_message_list_sender">Remitente</string>
     <string name="font_size_message_list_date">Data</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">Vista previa</string>
 
     <string name="font_size_message_view">mensaxes</string>
     <string name="font_size_message_view_sender">Remitente</string>
@@ -1017,7 +1017,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">Descargando adxunto</string>
 
     <string name="debug_logging_enabled">Opción de depuración activa</string>
 
