@@ -512,7 +512,7 @@ public class FolderList extends K9ListActivity {
 
     public void onCheckMail() {
         MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
-        MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+        sendMail(mAccount);
     }
 
 
@@ -523,23 +523,6 @@ public class FolderList extends K9ListActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.compose:
-            MessageCompose.actionCompose(this, mAccount);
-
-            return true;
-
-        case R.id.check_mail:
-            onCheckMail();
-            return true;
-
-        case R.id.send_messages:
-            sendMail(mAccount);
-            return true;
-        case R.id.accounts:
-            onAccounts();
-
-            return true;
-
         case R.id.list_folders:
             onRefresh(REFRESH_REMOTE);
 
@@ -552,11 +535,6 @@ public class FolderList extends K9ListActivity {
 
         case R.id.app_settings:
             onEditPrefs();
-
-            return true;
-
-        case R.id.empty_trash:
-            onEmptyTrash(mAccount);
 
             return true;
 
