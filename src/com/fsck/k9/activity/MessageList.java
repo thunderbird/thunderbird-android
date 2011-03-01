@@ -930,7 +930,7 @@ public class MessageList
 
     public void setActionBarTitle() {
         ActionBar actionBar = getActionBar();
-
+        String titleString = "";
         if (mAccount != null && mFolderName != null) {
             String displayName  = mFolderName;
 
@@ -940,10 +940,11 @@ public class MessageList
                 displayName = getString(R.string.special_mailbox_name_outbox);
             }
 
-            actionBar.setTitle(mAccount.getDescription() + " / " + displayName);
+            titleString = mAccount.getDescription() + " / " + displayName;
         } else if (mQueryString != null) {
-            actionBar.setTitle(getString(R.string.search_results) + " / " + mQueryString);
+            titleString = getString(R.string.search_results) + " / " + mQueryString;
         }
+        actionBar.setTitle( mAdapter.mListener.formatHeader(MessageList.this, titleString, mUnreadMessageCount,getTimeFormat()));
     }
 
     public class SearchAction extends AbstractAction {
