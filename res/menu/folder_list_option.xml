@@ -49,11 +49,6 @@
         />
         </menu>
     </item>
-	<item
-		android:id="@+id/send_messages"
-		android:title="@string/send_messages_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
 	<item android:id="@+id/advanced"
         android:title="@string/advanced">
         <menu>
