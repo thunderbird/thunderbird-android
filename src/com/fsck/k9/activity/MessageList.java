@@ -66,6 +66,8 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import net.londatiga.android.QuickAction;
 import net.londatiga.android.ActionItem;
+import org.miscwidgets.widget.Panel;
+
 /**
  * MessageList is the primary user interface for the program. This Activity
  * shows a list of messages.
@@ -240,6 +242,8 @@ public class MessageList
     private View mForward;
     private Contacts mContacts;
     private ActionBar mActionBar;
+
+    private Panel mPanel;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -874,6 +878,8 @@ public class MessageList
         setContentView(R.layout.message_list);
         initializeActionBar();
 
+        mPanel = (Panel) findViewById(R.id.panel);
+
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         mListView.setLongClickable(true);
@@ -909,6 +915,9 @@ public class MessageList
         };
 
         mListView.setOnTouchListener(gestureListener);
+
+        mPanel.setOpen(true,true);
+
     }
 
     private void initializeActionBar() {
