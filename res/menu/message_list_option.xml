@@ -105,12 +105,12 @@
     <item
         android:id="@+id/settings"
         android:title="@string/preferences_action"
-        android:icon="@drawable/ic_menu_preferences">
+        android:icon="@android:drawable/ic_menu_preferences">
         <menu>
             <item
                 android:id="@+id/folder_settings"
                 android:title="@string/folder_settings_action"
-                android:icon="@drawable/ic_menu_preferences"
+                android:icon="@android:drawable/ic_menu_preferences"
             />
             <item
                 android:id="@+id/account_settings"
