@@ -49,16 +49,6 @@
         />
         </menu>
     </item>
-	<item android:id="@+id/advanced"
-        android:title="@string/advanced">
-        <menu>
-		<item
-			android:id="@+id/compact"
-			android:title="@string/compact_action"
-			android:icon="@drawable/ic_menu_compact"
-		/>
-		</menu>
-    </item>
 	
 	
 </menu>

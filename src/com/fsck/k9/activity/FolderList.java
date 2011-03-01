@@ -538,11 +538,6 @@ public class FolderList extends K9ListActivity {
 
             return true;
 
-        case R.id.compact:
-            onCompact(mAccount);
-
-            return true;
-
         case R.id.display_1st_class: {
             setDisplayMode(FolderMode.FIRST_CLASS);
             return true;
@@ -569,11 +564,6 @@ public class FolderList extends K9ListActivity {
         if (K9.manageBack()) {
             finish();
         }
-    }
-
-    private void onCompact(Account account) {
-        mHandler.workingAccount(R.string.compacting_account);
-        MessagingController.getInstance(getApplication()).compact(account, null);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
