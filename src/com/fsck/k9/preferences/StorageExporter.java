@@ -21,7 +21,7 @@ public class StorageExporter {
     //public static String VALIDITY = "K-9MailExport";  // Does outputting a fixed string in a known location make the encrypted data easier to break?
     public static void exportPreferences(Context context, String uuid, String fileName, String encryptionKey) throws StorageImportExportException {
         try {
-            Base64 base64 = new Base64();
+            K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
             File outFile = new File(fileName);
             PrintWriter pf = new PrintWriter(outFile);
             long keysEvaluated = 0;
@@ -68,8 +68,8 @@ public class StorageExporter {
                         }
                     }
                 }
-                String keyEnc = SimpleCrypto.encrypt(encryptionKey, key, base64);
-                String valueEnc = SimpleCrypto.encrypt(encryptionKey, value, base64);
+                String keyEnc = krypto.encrypt(key);
+                String valueEnc = krypto.encrypt(value);
                 String output = keyEnc + ":" + valueEnc;
                 //Log.i(K9.LOG_TAG, "For key " + key + ", output is " + output);
                 pf.println(output);

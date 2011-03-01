@@ -20,7 +20,6 @@ import com.fsck.k9.Preferences;
 public class StorageImporterVersion1 implements IStorageImporter {
     public int importPreferences(Preferences preferences, SharedPreferences.Editor editor, String data, String encryptionKey) throws StorageImportExportException {
         try {
-            Base64 base64 = new Base64();
             List<Integer> accountNumbers = Account.getExistingAccountNumbers(preferences);
             Log.i(K9.LOG_TAG, "Existing accountNumbers = " + accountNumbers);
             Map<String, String> uuidMapping = new HashMap<String, String>();
@@ -31,6 +30,7 @@ public class StorageImporterVersion1 implements IStorageImporter {
             String line = null;
             int settingsImported = 0;
             int numAccounts = 0;
+            K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.DECRYPT);
             do {
                 line = br.readLine();
                 if (line != null) {
@@ -39,8 +39,8 @@ public class StorageImporterVersion1 implements IStorageImporter {
                     if (comps.length > 1) {
                         String keyEnc = comps[0];
                         String valueEnc = comps[1];
-                        String key = SimpleCrypto.decrypt(encryptionKey, keyEnc, base64);
-                        String value = SimpleCrypto.decrypt(encryptionKey, valueEnc, base64);
+                        String key = krypto.decrypt(keyEnc);
+                        String value = krypto.decrypt(valueEnc);
                         String[] keyParts = key.split("\\.");
                         if (keyParts.length > 1) {
                             String oldUuid = keyParts[0];
