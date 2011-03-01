@@ -916,7 +916,7 @@ public class MessageList
 
         mListView.setOnTouchListener(gestureListener);
 
-        mPanel.setOpen(true,true);
+        mPanel.setOpen(true,false);
 
     }
 
