@@ -1683,9 +1683,6 @@ public class MessageList
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
 
-    private void onExpunge(final Account account, String folderName) {
-        mController.expunge(account, folderName, null);
-    }
 
     // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
 
@@ -1935,12 +1932,6 @@ public class MessageList
             onMoveBatch();
             return true;
         }
-        case R.id.expunge: {
-            if (mCurrentFolder != null) {
-                onExpunge(mAccount, mCurrentFolder.name);
-            }
-            return true;
-        }
         case R.id.show_full_header:
             runOnUiThread(new Runnable() {
                 @Override
@@ -1984,7 +1975,6 @@ public class MessageList
         if (mQueryString != null) {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
-            menu.findItem(R.id.expunge).setVisible(false);
             menu.findItem(R.id.batch_archive_op).setVisible(false);
             menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
@@ -1992,9 +1982,6 @@ public class MessageList
             menu.findItem(R.id.folder_settings).setVisible(false);
             menu.findItem(R.id.account_settings).setVisible(false);
         } else {
-            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
-                menu.findItem(R.id.expunge).setVisible(false);
-            }
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
                 menu.findItem(R.id.batch_archive_op).setVisible(false);
             }
