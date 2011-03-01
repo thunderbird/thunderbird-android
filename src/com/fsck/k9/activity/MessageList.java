@@ -1825,10 +1825,6 @@ public class MessageList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-        case R.id.accounts: {
-            onAccounts();
-            return true;
-        }
         case R.id.set_sort_date: {
             changeSort(SORT_TYPE.SORT_DATE);
             return true;
