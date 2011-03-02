@@ -341,6 +341,7 @@ public class MimeUtility {
         { "jpm", "video/jpm"},
         { "js", "application/x-javascript"},
         { "json", "application/json"},
+        { "k9s", "application/x-k9settings"},
         { "kar", "audio/midi"},
         { "karbon", "application/vnd.kde.karbon"},
         { "kfo", "application/vnd.kde.kformula"},
