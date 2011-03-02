@@ -916,7 +916,7 @@ public class MessageList
 
         mListView.setOnTouchListener(gestureListener);
 
-        mPanel.setOpen(true,false);
+        mPanel.setOpen(true, false);
 
     }
 
@@ -1129,14 +1129,14 @@ public class MessageList
     }
 
 
-        /* A helper for a set of "show a toast" methods */
-        private void showToast(final String message, final int toastLength)  {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageList.this, message, toastLength).show();
-                }
-            });
-        }
+    /* A helper for a set of "show a toast" methods */
+    private void showToast(final String message, final int toastLength)  {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(MessageList.this, message, toastLength).show();
+            }
+        });
+    }
 
     private void clearMessageDisplay() {
         mTopView.setVisibility(View.GONE);
@@ -1477,7 +1477,7 @@ public class MessageList
 
     private void reSort() {
 
-               showToast(getString(sortType.getToast(sortAscending)), Toast.LENGTH_SHORT);
+        showToast(getString(sortType.getToast(sortAscending)), Toast.LENGTH_SHORT);
 
         mHandler.sortMessages();
     }
@@ -1539,7 +1539,7 @@ public class MessageList
         }
 
         if (!mController.isMoveCapable(holder.message)) {
-                    showToast( getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
+            showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
         }
 
@@ -1595,7 +1595,7 @@ public class MessageList
         }
 
         if (!mController.isCopyCapable(holder.message)) {
-                    showToast( getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
+            showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
         }
 
