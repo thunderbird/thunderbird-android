@@ -87,7 +87,7 @@ public class EncoderUtil {
         int encodedLength = bEncodedLength(bytes);
 
         int totalLength = prefix.length() + encodedLength
-                + ENC_WORD_SUFFIX.length();
+                          + ENC_WORD_SUFFIX.length();
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeB(bytes) + ENC_WORD_SUFFIX;
         } else {
@@ -111,7 +111,7 @@ public class EncoderUtil {
         int encodedLength = qEncodedLength(bytes);
 
         int totalLength = prefix.length() + encodedLength
-                + ENC_WORD_SUFFIX.length();
+                          + ENC_WORD_SUFFIX.length();
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes, org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
         } else {

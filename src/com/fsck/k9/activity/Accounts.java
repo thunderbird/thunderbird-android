@@ -66,7 +66,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount unreadAccount = null;
     private SearchAccount integratedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
-    
+
     private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
 
     class AccountsHandler extends Handler {
@@ -138,12 +138,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             });
         }
     }
-    
-    public void setProgress(boolean progress)
-    {
+
+    public void setProgress(boolean progress) {
         mHandler.progress(progress);
     }
-    
+
     ActivityListener mListener = new ActivityListener() {
         @Override
         public void informUserOfStatus() {
@@ -240,15 +239,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         intent.putExtra(EXTRA_STARTUP, false);
         context.startActivity(intent);
     }
-    
+
     @Override
-    public void onNewIntent(Intent intent)
-    {
+    public void onNewIntent(Intent intent) {
         Uri uri = intent.getData();
         Log.i(K9.LOG_TAG, "Accounts Activity got uri " + uri);
         if (uri != null) {
             ContentResolver contentResolver = getContentResolver();
-        
+
             Log.i(K9.LOG_TAG, "Accounts Activity got content of type " + contentResolver.getType(uri));
 
             String contentType = contentResolver.getType(uri);
@@ -273,7 +271,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         boolean startup = intent.getData() == null && intent.getBooleanExtra(EXTRA_STARTUP, true);
-        onNewIntent(intent);      
+        onNewIntent(intent);
         if (startup && K9.startIntegratedInbox()) {
             onOpenAccount(integratedInboxAccount);
             finish();
@@ -299,7 +297,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             restoreAccountStats(icicle);
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -782,76 +780,61 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
         }
     }
-    
-    private void onImport()
-    {
+
+    private void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
     }
-    
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(K9.LOG_TAG, "onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
         if (resultCode != RESULT_OK)
             return;
-        if (data == null)
-        {
+        if (data == null) {
             return;
         }
-        switch (requestCode)
-        {
-            case ACTIVITY_REQUEST_PICK_SETTINGS_FILE:
-                onImport(data.getData());
-                break;
+        switch (requestCode) {
+        case ACTIVITY_REQUEST_PICK_SETTINGS_FILE:
+            onImport(data.getData());
+            break;
         }
     }
-    
-    private void onImport(Uri uri)
-    {
+
+    private void onImport(Uri uri) {
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
-        try
-        {
+        try {
             final String fileName = uri.getPath();
             ContentResolver resolver = getContentResolver();
             final InputStream is = resolver.openInputStream(uri);
-            
-            PasswordEntryDialog dialog = new PasswordEntryDialog(this, getString(R.string.settings_encryption_password_prompt), 
-                    new PasswordEntryDialog.PasswordEntryListener()
-            {
-                public void passwordChosen(String chosenPassword)
-                {
-                    String toastText = Accounts.this.getString(R.string.settings_importing );
+
+            PasswordEntryDialog dialog = new PasswordEntryDialog(this, getString(R.string.settings_encryption_password_prompt),
+            new PasswordEntryDialog.PasswordEntryListener() {
+                public void passwordChosen(String chosenPassword) {
+                    String toastText = Accounts.this.getString(R.string.settings_importing);
                     Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, Toast.LENGTH_SHORT);
                     toast.show();
                     mHandler.progress(true);
-                    AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(is, chosenPassword, new ImportListener()
-                    {
-                        public void failure(final String message, Exception e)
-                        {
-                            Accounts.this.runOnUiThread(new Runnable()
-                            {
-                                public void run()
-                                {
+                    AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(is, chosenPassword, new ImportListener() {
+                        public void failure(final String message, Exception e) {
+                            Accounts.this.runOnUiThread(new Runnable() {
+                                public void run() {
                                     mHandler.progress(false);
                                     showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, message));
                                 }
                             });
                         }
-    
-                        public void importSuccess(final int numAccounts)
-                        {
-                            Accounts.this.runOnUiThread(new Runnable()
-                            {
-                                public void run()
-                                {
+
+                        public void importSuccess(final int numAccounts) {
+                            Accounts.this.runOnUiThread(new Runnable() {
+                                public void run() {
                                     mHandler.progress(false);
-                                    String messageText = 
-                                        numAccounts != 1 
-                                            ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName )
-                                            : Accounts.this.getString(R.string.settings_import_success_single, fileName );
+                                    String messageText =
+                                        numAccounts != 1
+                                        ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName)
+                                        : Accounts.this.getString(R.string.settings_import_success_single, fileName);
                                     showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
                                     refresh();
                                 }
@@ -859,23 +842,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         }
                     });
                 }
-    
-                public void cancel()
-                {
+
+                public void cancel() {
                 }
             });
             dialog.show();
-        }
-        catch (FileNotFoundException fnfe)
-        {
-            String toastText = Accounts.this.getString(R.string.settings_import_failure, uri.getPath(), fnfe.getMessage() );
+        } catch (FileNotFoundException fnfe) {
+            String toastText = Accounts.this.getString(R.string.settings_import_failure, uri.getPath(), fnfe.getMessage());
             Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
             toast.show();
         }
     }
-    
-    private static void showDialog(final Activity activity, int headerRes, String message)
-    {
+
+    private static void showDialog(final Activity activity, int headerRes, String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(headerRes);
         builder.setMessage(message);
@@ -886,7 +865,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 dialog.dismiss();
             }
         });
-       
+
         builder.show();
     }
 

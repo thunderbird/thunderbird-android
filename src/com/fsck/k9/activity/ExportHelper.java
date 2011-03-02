@@ -48,8 +48,7 @@ public class ExportHelper {
         });
         dialog.show();
     }
-    private static void showDialog(final Activity activity, int headerRes, String message)
-    {
+    private static void showDialog(final Activity activity, int headerRes, String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(headerRes);
         builder.setMessage(message);
@@ -60,7 +59,7 @@ public class ExportHelper {
                 dialog.dismiss();
             }
         });
-       
+
         builder.show();
     }
 }

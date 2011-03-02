@@ -943,13 +943,13 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
-            case R.id.dialog_confirm_delete:
-                return createConfirmDeleteDialog(id);
-            case R.id.dialog_attachment_progress:
-                ProgressDialog d = new ProgressDialog(this);
-                d.setIndeterminate(true);
-                d.setTitle(R.string.dialog_attachment_progress_title);
-                return d;
+        case R.id.dialog_confirm_delete:
+            return createConfirmDeleteDialog(id);
+        case R.id.dialog_attachment_progress:
+            ProgressDialog d = new ProgressDialog(this);
+            d.setIndeterminate(true);
+            d.setTitle(R.string.dialog_attachment_progress_title);
+            return d;
         }
         return super.onCreateDialog(id);
     }
