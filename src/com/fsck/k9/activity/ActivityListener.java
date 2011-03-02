@@ -204,6 +204,7 @@ public class ActivityListener extends MessagingListener {
         return mFolderCompleted;
     }
 
+
     public int getFolderTotal() {
         return mFolderTotal;
     }

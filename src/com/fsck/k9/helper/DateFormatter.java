@@ -75,10 +75,6 @@ public class DateFormatter {
         return sChosenFormat;
     }
 
-    public static void clearChosenFormat() {
-        sChosenFormat = null;
-    }
-
     public static DateFormat getDateFormat(Context context) {
         String formatString = getFormat(context);
         return getDateFormat(context, formatString);

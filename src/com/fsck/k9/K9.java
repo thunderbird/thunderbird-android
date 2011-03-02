@@ -447,9 +447,17 @@ public class K9 extends Application {
         fontSizes.save(editor);
     }
 
-    public static void loadPrefs(Preferences prefs) {
-        SharedPreferences sprefs = prefs.getPreferences();
+    @Override
+    public void onCreate() {
+        maybeSetupStrictMode();
+        super.onCreate();
+        app = this;
 
+
+        galleryBuggy = checkForBuggyGallery();
+
+        Preferences prefs = Preferences.getPreferences(this);
+        SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
@@ -497,18 +505,7 @@ public class K9 extends Application {
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-    }
 
-    @Override
-    public void onCreate() {
-        maybeSetupStrictMode();
-        super.onCreate();
-        app = this;
-
-
-        galleryBuggy = checkForBuggyGallery();
-
-        loadPrefs(Preferences.getPreferences(this));
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
          * doesn't work in Android and MimeMessage does not have access to a Context.
