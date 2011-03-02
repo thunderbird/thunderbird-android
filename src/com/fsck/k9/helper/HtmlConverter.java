@@ -1073,19 +1073,14 @@ public class HtmlConverter {
     }
 
     private static String htmlifyMessageHeader() {
-        if (K9.messageViewFixedWidthFont()) {
-            return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-        } else {
-            return "<div style=\"white-space: pre-wrap; word-wrap:break-word; \">";
-        }
+        final String font = K9.messageViewFixedWidthFont()
+            ? "monospace"
+            : "sans-serif";
+        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "\">";
     }
 
     private static String htmlifyMessageFooter() {
-        if (K9.messageViewFixedWidthFont()) {
-            return "</pre>";
-        } else {
-            return "</div>";
-        }
+        return "</pre>";
     }
 
     /**
