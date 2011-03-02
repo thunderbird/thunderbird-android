@@ -953,7 +953,7 @@ public class MessageList
         } else if (mQueryString != null) {
             titleString = getString(R.string.search_results) + " / " + mQueryString;
         }
-        actionBar.setTitle( mAdapter.mListener.formatHeader(MessageList.this, titleString, mUnreadMessageCount,getTimeFormat()));
+        actionBar.setTitle(mAdapter.mListener.formatHeader(MessageList.this, mAccount, titleString, mUnreadMessageCount, getTimeFormat()));
     }
 
     public class SearchAction extends AbstractAction {

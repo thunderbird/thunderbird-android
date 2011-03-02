@@ -23,9 +23,17 @@ public class ActivityListener extends MessagingListener {
     private String mProcessingCommandTitle = null;
 
 
-    public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat) {
+    public String formatHeader(Context context, Account account, String activityPrefix, int unreadMessageCount, DateFormat timeFormat) {
         String operation = null;
         String progress = null;
+
+        Boolean forCurrentAccount = false;
+
+        if (mAccount != null && account != null && mAccount.getDescription().equals(account.getDescription())) {
+            forCurrentAccount = true;
+        }
+
+
         if (mLoadingAccountDescription  != null
                 || mSendingAccountDescription != null
                 || mLoadingHeaderFolderName != null
@@ -42,17 +50,16 @@ public class ActivityListener extends MessagingListener {
                 }
 
                 if (mLoadingHeaderFolderName != null) {
-
-                    operation = context.getString(R.string.status_loading_account_folder_headers, mLoadingAccountDescription, displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder_headers, (forCurrentAccount ? "" :  mLoadingAccountDescription+":"), displayName, progress);
                 } else {
-                    operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder, (forCurrentAccount ? "" :  mLoadingAccountDescription+":"), displayName, progress);
                 }
             }
 
             else if (mSendingAccountDescription != null) {
-                operation = context.getString(R.string.status_sending_account, mSendingAccountDescription, progress);
+                operation = context.getString(R.string.status_sending_account, (forCurrentAccount ? "" : mSendingAccountDescription+":"), progress);
             } else if (mProcessingAccountDescription != null) {
-                operation = context.getString(R.string.status_processing_account, mProcessingAccountDescription,
+                operation = context.getString(R.string.status_processing, (forCurrentAccount ? "" : mProcessingAccountDescription+":"),
                                               mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
                                               progress);
             }
@@ -72,12 +79,7 @@ public class ActivityListener extends MessagingListener {
         //return context.getString(R.string.activity_header_format, activityPrefix,
         //                         (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
         //                         operation);
-        return context.getString(R.string.activity_header_format, activityPrefix,
-                                 "",
-                                 operation);
-
-
-
+        return context.getString(R.string.activity_header_format, activityPrefix, "", operation);
     }
 
     public void informUserOfStatus() {

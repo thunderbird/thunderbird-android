@@ -68,7 +68,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
-            String dispString = mListener.formatHeader(Accounts.this, getString(R.string.accounts_title), mUnreadMessageCount, getTimeFormat());
+            String dispString = mListener.formatHeader(Accounts.this, null, getString(R.string.accounts_title), mUnreadMessageCount, getTimeFormat());
 
             setTitle(dispString);
         }
