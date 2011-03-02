@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
 public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
 
-
+    public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -341,7 +341,7 @@ public class MimeUtility {
         { "jpm", "video/jpm"},
         { "js", "application/x-javascript"},
         { "json", "application/json"},
-        { "k9s", "application/x-k9settings"},
+        { "k9s", K9_SETTINGS_MIME_TYPE},
         { "kar", "audio/midi"},
         { "karbon", "application/vnd.kde.karbon"},
         { "kfo", "application/vnd.kde.kformula"},

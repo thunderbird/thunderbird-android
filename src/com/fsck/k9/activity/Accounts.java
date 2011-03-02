@@ -22,6 +22,7 @@ import android.webkit.WebView;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.fsck.k9.*;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -30,6 +31,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.view.ColorChip;
 
 import java.io.FileNotFoundException;
@@ -238,7 +240,23 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         intent.putExtra(EXTRA_STARTUP, false);
         context.startActivity(intent);
     }
+    
+    @Override
+    public void onNewIntent(Intent intent)
+    {
+        Uri uri = intent.getData();
+        Log.i(K9.LOG_TAG, "Accounts Activity got uri " + uri);
+        if (uri != null) {
+            ContentResolver contentResolver = getContentResolver();
+        
+            Log.i(K9.LOG_TAG, "Accounts Activity got content of type " + contentResolver.getType(uri));
 
+            String contentType = contentResolver.getType(uri);
+            if (MimeUtility.K9_SETTINGS_MIME_TYPE.equals(contentType)) {
+                onImport(uri);
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -254,7 +272,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
-        boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
+        boolean startup = intent.getData() == null && intent.getBooleanExtra(EXTRA_STARTUP, true);
+        onNewIntent(intent);      
         if (startup && K9.startIntegratedInbox()) {
             onOpenAccount(integratedInboxAccount);
             finish();
@@ -280,6 +299,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             restoreAccountStats(icicle);
         }
+        
     }
 
     @SuppressWarnings("unchecked")
