@@ -6,11 +6,10 @@
             android:background="@android:color/transparent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
- xmlns:android="http://schemas.android.com/apk/res/android">
+            xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Header area -->
     <com.fsck.k9.view.MessageHeader
         android:id="@+id/header_container"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="2dip"
