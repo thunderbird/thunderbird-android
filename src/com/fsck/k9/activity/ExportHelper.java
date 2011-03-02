@@ -1,6 +1,8 @@
 package com.fsck.k9.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -25,9 +27,7 @@ public class ExportHelper {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 progressable.setProgress(false);
-                                String toastText = activity.getString(R.string.settings_export_failure, message);
-                                Toast toast = Toast.makeText(activity.getApplication(), toastText, Toast.LENGTH_LONG);
-                                toast.show();
+                                showDialog(activity, R.string.settings_export_failed_header, activity.getString(R.string.settings_export_failure, message));
                             }
                         });
                     }
@@ -36,9 +36,7 @@ public class ExportHelper {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 progressable.setProgress(false);
-                                String toastText = activity.getString(R.string.settings_export_success, fileName);
-                                Toast toast = Toast.makeText(activity.getApplication(), toastText, Toast.LENGTH_LONG);
-                                toast.show();
+                                showDialog(activity, R.string.settings_export_success_header, activity.getString(R.string.settings_export_success, fileName));
                             }
                         });
                     }
@@ -50,5 +48,19 @@ public class ExportHelper {
         });
         dialog.show();
     }
-
+    private static void showDialog(final Activity activity, int headerRes, String message)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(headerRes);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.okay_action,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+       
+        builder.show();
+    }
 }

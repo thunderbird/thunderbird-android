@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -815,9 +816,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                 public void run()
                                 {
                                     mHandler.progress(false);
-                                    String toastText = Accounts.this.getString(R.string.settings_import_failure, fileName, message );
-                                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
-                                    toast.show();
+                                    showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, message));
                                 }
                             });
                         }
@@ -829,12 +828,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                 public void run()
                                 {
                                     mHandler.progress(false);
-                                    String toastText = 
+                                    String messageText = 
                                         numAccounts != 1 
                                             ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName )
                                             : Accounts.this.getString(R.string.settings_import_success_single, fileName );
-                                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
-                                    toast.show();
+                                    showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
                                     refresh();
                                 }
                             });
@@ -854,6 +852,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
             toast.show();
         }
+    }
+    
+    private static void showDialog(final Activity activity, int headerRes, String message)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(headerRes);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.okay_action,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+       
+        builder.show();
     }
 
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
