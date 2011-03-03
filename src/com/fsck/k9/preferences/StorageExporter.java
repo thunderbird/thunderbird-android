@@ -1,39 +1,62 @@
 package com.fsck.k9.preferences;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.codec.binary.Base64;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
 public class StorageExporter {
-    //public static String VALIDITY = "K-9MailExport";  // Does outputting a fixed string in a known location make the encrypted data easier to break?
     public static void exportPreferences(Context context, String uuid, String fileName, String encryptionKey) throws StorageImportExportException {
+
+        Log.i(K9.LOG_TAG, "Exporting preferences for account " + uuid + " to file " + fileName);
+        File outFile = new File(fileName);
+        OutputStream os = null;
         try {
+            os = new FileOutputStream(outFile);
+        } catch (FileNotFoundException e) {
+            throw new StorageImportExportException("Unable to export settings", e);
+        }
+
+        try {
+            exportPrefererences(context, uuid, os, encryptionKey);
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (Exception e) {
+                    Log.i(K9.LOG_TAG, "Unable to close OutputStream for file " + fileName + ": " + e.getLocalizedMessage());
+                }
+            }
+        }
+
+        Log.i(K9.LOG_TAG, "Exported preferences for account " + uuid + " to file " + fileName + " which is size " + outFile.length());
+    }
+
+    public static void exportPrefererences(Context context, String uuid, OutputStream os, String encryptionKey) throws StorageImportExportException {
+        try {
+            Log.i(K9.LOG_TAG, "Exporting preferences for account " + uuid + " to OutputStream");
             K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
-            File outFile = new File(fileName);
-            PrintWriter pf = new PrintWriter(outFile);
+            OutputStreamWriter sw = new OutputStreamWriter(os);
+            PrintWriter pf = new PrintWriter(sw);
             long keysEvaluated = 0;
             long keysExported = 0;
             pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 
-            //  String testval = SimpleCrypto.encrypt(encryptionKey, VALIDITY);
-
             pf.print("<k9settings version=\"1\"");
-            //pf.print(" validity=\"" + testval + "\"");
             pf.println(">");
-            Log.i(K9.LOG_TAG, "Exporting preferences for account " + uuid + " to file " + fileName);
 
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
@@ -78,12 +101,10 @@ public class StorageExporter {
             }
 
             pf.println("</k9settings>");
-            pf.close();
+            pf.flush();
 
             Log.i(K9.LOG_TAG, "Exported " + keysExported + " settings of " + keysEvaluated
-                  + " total for preferences for account " + uuid + " to file " + fileName + " which is size " + outFile.length());
-        } catch (IOException ie) {
-            throw new StorageImportExportException("Unable to export settings", ie);
+                  + " total for preferences for account " + uuid);
         } catch (Exception e) {
             throw new StorageImportExportException("Unable to encrypt settings", e);
         }
