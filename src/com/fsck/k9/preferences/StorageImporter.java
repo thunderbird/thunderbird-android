@@ -28,12 +28,26 @@ import com.fsck.k9.helper.DateFormatter;
 
 public class StorageImporter {
     public static int importPreferences(Context context, String fileName, String encryptionKey) throws StorageImportExportException {
+        InputStream is = null;
         try {
-            InputStream is = new FileInputStream(fileName);
-            return importPreferences(context, is, encryptionKey);
+            is = new FileInputStream(fileName);
         } catch (FileNotFoundException fnfe) {
-            throw new StorageImportExportException("Failure reading settings file " + fileName, fnfe);
+            throw new StorageImportExportException("Failure opening settings file " + fileName, fnfe);
         }
+
+        try {
+            int count = importPreferences(context, is, encryptionKey);
+            return count;
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (Exception e) {
+                    Log.i(K9.LOG_TAG, "Unable to close InputStream for file " + fileName + ": " + e.getLocalizedMessage());
+                }
+            }
+        }
+
     }
     public static int importPreferences(Context context, InputStream is, String encryptionKey) throws StorageImportExportException {
         try {
@@ -48,12 +62,10 @@ public class StorageImporter {
             xr.setContentHandler(handler);
 
             xr.parse(new InputSource(is));
-            is.close();
 
             Element dataset = handler.getRootElement();
             String version = dataset.attributes.get("version");
             Log.i(K9.LOG_TAG, "Got settings file version " + version);
-
 
             IStorageImporter storageImporter = null;
             if ("1".equals(version)) {
