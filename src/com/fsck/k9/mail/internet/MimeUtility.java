@@ -27,7 +27,10 @@ public class MimeUtility {
      * http://www.stdicon.com/mimetypes
      */
     public static final String[][] MIME_TYPE_BY_EXTENSION_MAP = new String[][] {
-        { "", "application/octet-stream" },
+        //* Do not delete the next two lines
+        { "", DEFAULT_ATTACHMENT_MIME_TYPE },
+        { "k9s", K9_SETTINGS_MIME_TYPE},
+        //* Do not delete the previous two lines
         { "123", "application/vnd.lotus-1-2-3"},
         { "323", "text/h323"},
         { "3dml", "text/vnd.in3d.3dml"},
@@ -341,7 +344,6 @@ public class MimeUtility {
         { "jpm", "video/jpm"},
         { "js", "application/x-javascript"},
         { "json", "application/json"},
-        { "k9s", K9_SETTINGS_MIME_TYPE},
         { "kar", "audio/midi"},
         { "karbon", "application/vnd.kde.karbon"},
         { "kfo", "application/vnd.kde.kformula"},
