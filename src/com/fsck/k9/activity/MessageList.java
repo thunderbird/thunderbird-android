@@ -1523,7 +1523,9 @@ public class MessageList
 
     private void delete(MessageInfoHolder holder) {
         mAdapter.removeMessage(holder);
-        mController.deleteMessages(new Message[] { holder.message }, null);
+        if (holder != null && holder.message != null) {
+            mController.deleteMessages(new Message[] { holder.message }, null);
+        }
         // only change the current message being viewed if the one deleted was the current one
         if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
             showNextMessage();
