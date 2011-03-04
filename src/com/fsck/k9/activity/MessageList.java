@@ -2109,7 +2109,7 @@ public class MessageList
             return;
         }
 
-        bar.setProgressBarVisibility( status ? View.VISIBLE : View.GONE);
+        bar.setProgressBarVisibility(status ? View.VISIBLE : View.GONE);
     }
 
     class MyGestureDetector extends SimpleOnGestureListener {

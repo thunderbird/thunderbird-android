@@ -50,16 +50,16 @@ public class ActivityListener extends MessagingListener {
                 }
 
                 if (mLoadingHeaderFolderName != null) {
-                    operation = context.getString(R.string.status_loading_account_folder_headers, (forCurrentAccount ? "" :  mLoadingAccountDescription+":"), displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder_headers, (forCurrentAccount ? "" :  mLoadingAccountDescription + ":"), displayName, progress);
                 } else {
-                    operation = context.getString(R.string.status_loading_account_folder, (forCurrentAccount ? "" :  mLoadingAccountDescription+":"), displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder, (forCurrentAccount ? "" :  mLoadingAccountDescription + ":"), displayName, progress);
                 }
             }
 
             else if (mSendingAccountDescription != null) {
-                operation = context.getString(R.string.status_sending_account, (forCurrentAccount ? "" : mSendingAccountDescription+":"), progress);
+                operation = context.getString(R.string.status_sending_account, (forCurrentAccount ? "" : mSendingAccountDescription + ":"), progress);
             } else if (mProcessingAccountDescription != null) {
-                operation = context.getString(R.string.status_processing, (forCurrentAccount ? "" : mProcessingAccountDescription+":"),
+                operation = context.getString(R.string.status_processing, (forCurrentAccount ? "" : mProcessingAccountDescription + ":"),
                                               mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
                                               progress);
             }
