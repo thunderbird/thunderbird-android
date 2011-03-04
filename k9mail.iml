@@ -106,9 +106,9 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Android 2.2 Platform" level="application" />
-    <orderEntry type="module" module-name="ActionBar" exported="" />
-    <orderEntry type="module" module-name="SplitView" exported="" />
-    <orderEntry type="module" module-name="QuickAction" exported="" />
+    <orderEntry type="module" module-name="ActionBar" />
+    <orderEntry type="module" module-name="SplitView" />
+    <orderEntry type="module" module-name="QuickAction" />
   </component>
 </module>
 
