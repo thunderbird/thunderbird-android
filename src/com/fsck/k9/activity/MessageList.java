@@ -2104,18 +2104,12 @@ public class MessageList
     }
 
     public void showProgressIndicator(boolean status) {
-        setProgressBarIndeterminateVisibility(status);
-        ProgressBar bar = (ProgressBar)mListView.findViewById(R.id.message_list_progress);
+        ActionBar bar = getActionBar();
         if (bar == null) {
             return;
         }
 
-        bar.setIndeterminate(true);
-        if (status) {
-            bar.setVisibility(ProgressBar.VISIBLE);
-        } else {
-            bar.setVisibility(ProgressBar.INVISIBLE);
-        }
+        bar.setProgressBarVisibility( status ? View.VISIBLE : View.GONE);
     }
 
     class MyGestureDetector extends SimpleOnGestureListener {
