@@ -35,28 +35,26 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+             <CheckBox android:id="@+id/flagged"
+                 android:layout_width="22dip"
+                 android:layout_height="22dip"
+                 android:background="@android:color/transparent"
+               android:focusable="false"
+               android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="4dip"
+               android:button="@drawable/star" />
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="5dip"
+        android:layout_below="@+id/flagged"
         android:singleLine="true"
         android:textColor="?android:attr/textColorSecondary"
         android:textAppearance="?android:attr/textAppearanceSmall"  />
 
-        >
-             <CheckBox android:id="@+id/flagged"
-                 android:layout_width="22dip"
-                 android:layout_height="22dip"
-                 android:background="@android:color/transparent"
-        android:layout_below="@+id/date"
-               android:focusable="false"
-               android:gravity="right"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-               android:button="@drawable/star" />
 
 
 
@@ -64,7 +62,7 @@
         android:id="@+id/subject"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/date"
+        android:layout_toLeftOf="@+id/flagged"
         android:layout_toRightOf="@+id/chip"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="1dip"
@@ -79,10 +77,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/subject"
-        android:layout_toLeftOf="@+id/flagged"
+        android:layout_toLeftOf="@+id/date"
         android:layout_toRightOf="@+id/chip"
         android:layout_marginLeft="1dip"
-        android:layout_marginRight="0dip"
+        android:layout_marginRight="1dip"
+        android:layout_alignTop="@+id/date"
         android:singleLine="false"
         android:bufferType="spannable"
         android:textColor="?android:attr/textColorTertiary"
