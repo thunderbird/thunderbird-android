@@ -915,14 +915,14 @@ public class MessageList
     }
 
     private void initializeActionBar() {
-        ActionBar mActionBar = getActionBar();
+        ActionBar actionBar = getActionBar();
         //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
         //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.addAction(new SearchAction());
-        mActionBar.addAction(new SyncAction());
-        mActionBar.addAction(new ComposeAction());
-        mActionBar.setOnTitleClickListener(
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.addAction(new SearchAction());
+        actionBar.addAction(new SyncAction());
+        actionBar.addAction(new ComposeAction());
+        actionBar.setOnTitleClickListener(
         new OnClickListener() {
             @Override public void onClick(View v) {
                 onShowFolderList();
