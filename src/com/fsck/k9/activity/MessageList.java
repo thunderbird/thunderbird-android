@@ -234,14 +234,8 @@ public class MessageList
     private View mNext;
     private View mPrevious;
     private View mDelete;
-    private View mArchive;
     private View mMove;
-    private View mSpam;
-    private View mReply;
-    private View mReplyAll;
-    private View mForward;
     private Contacts mContacts;
-    private ActionBar mActionBar;
 
     private Panel mPanel;
 
@@ -3152,23 +3146,8 @@ public class MessageList
 
 
         switch (v.getId()) {
-        case R.id.reply:
-            onReply(mCurrentMessageInfo);
-            return;
-        case R.id.reply_all:
-            onReplyAll(mCurrentMessageInfo);
-            return;
         case R.id.delete:
             onDelete(mCurrentMessageInfo);
-            return;
-        case R.id.forward:
-            onForward(mCurrentMessageInfo);
-            return;
-        case R.id.archive:
-            onRefile(mCurrentMessageInfo, mAccount.getArchiveFolderName());
-            return;
-        case R.id.spam:
-            onRefile(mCurrentMessageInfo, mAccount.getSpamFolderName());
             return;
         case R.id.move:
             onMove(mCurrentMessageInfo);
@@ -3474,13 +3453,8 @@ public class MessageList
 
     private void setupButtonViews() {
         setOnClickListener(R.id.from);
-        setOnClickListener(R.id.reply);
-        setOnClickListener(R.id.reply_all);
-        setOnClickListener(R.id.delete);
-        setOnClickListener(R.id.forward);
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
-        setOnClickListener(R.id.archive);
         setOnClickListener(R.id.move);
         setOnClickListener(R.id.spam);
         // To show full header
@@ -3498,10 +3472,6 @@ public class MessageList
         mPrevious.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if the Archive folder is not the current folder and not NONE.
-            //mArchive.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getArchiveFolderName()) && !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
-            // Only enable the button if the Spam folder is not the current folder and not NONE.
-            //mSpam.setEnabled(!mCurrentMessageInfo.folder.name.equals(mAccount.getSpamFolderName()) && !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
             mMove.setEnabled(true);
         } else {
         }
@@ -3511,10 +3481,7 @@ public class MessageList
         mNext = findViewById(R.id.next);
         mPrevious = findViewById(R.id.previous);
         mDelete = findViewById(R.id.delete);
-        mArchive = findViewById(R.id.archive);
         mMove = findViewById(R.id.move);
-        mSpam = findViewById(R.id.spam);
-        //hide the refile buttons until we actually want them
     }
 
 
@@ -3527,9 +3494,7 @@ public class MessageList
     }
 
     private void disableMoveButtons() {
-        //mArchive.setEnabled(false);
         mMove.setEnabled(false);
-        //mSpam.setEnabled(false);
     }
 
     private void setOnClickListener(int viewCode) {
