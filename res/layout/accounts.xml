@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
-    android:orientation="vertical"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
-    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
+              xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
+              android:orientation="vertical"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent">
+    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name"
+                                               style="@style/ActionBar"/>
 
     <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
-    <LinearLayout 
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    <LinearLayout
             android:id="@+id/empty"
             android:orientation="vertical"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent">
-    <ScrollView
-        android:layout_marginBottom="54dip" 
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:fadingEdge="none"
-        >
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="fill_parent"
+        <ScrollView
+                android:layout_marginBottom="54dip"
                 android:layout_height="fill_parent"
-                android:textSize="14sp"
-                android:text="@string/accounts_welcome"
-                android:textColor="?android:attr/textColorPrimary"
-                android:padding="8dip"/>
-            <View
                 android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </ScrollView>
-    <include layout="@layout/wizard_next" />
-</LinearLayout>
+                android:fadingEdge="none"
+                >
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:textSize="14sp"
+                        android:text="@string/accounts_welcome"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:padding="8dip"/>
+                <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+        </ScrollView>
+        <include layout="@layout/wizard_next"/>
+    </LinearLayout>
 </LinearLayout>
