@@ -29,44 +29,23 @@
         android:layout_width="300dp"
     android:orientation="vertical"
     android:id="@+id/message_list_holder"
-    >
-    <ListView
-        android:id="@+id/message_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:cacheColorHint="?android:attr/colorBackground"
-        android:layout_weight="5"
+	android:layout_height="fill_parent"
+	android:layout_width="300dp"
+    android:minWidth="3in"
+	android:orientation="vertical">
+      <ListView
+	android:id="@+id/message_list"
 
-    />
-    <include layout="@layout/message_list_batch_buttons"/>
-</LinearLayout>
-
-
-
-    <LinearLayout
-    android:id="@+id/panelHandleWrapper"
-    android:layout_height="fill_parent"
-    android:layout_width="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="left|center_vertical"
-    android:baselineAligned="true"
-    android:gravity="center_vertical|left"
-    >
-    <Button android:id="@+id/panelHandle"
-            android:layout_weight="1"
-            android:layout_height="fill_parent"
-        android:layout_width="16dip" />
-   </LinearLayout>
-
-
-
-</org.miscwidgets.widget.Panel>
-<LinearLayout
     android:layout_width="fill_parent"
-    android:orientation="vertical"
-    android:layout_height="fill_parent">
-<include layout="@layout/message_view" />
-    <include layout="@layout/message_view_buttons"/>
-</LinearLayout>
-</LinearLayout>
+	android:layout_height="fill_parent"
+	android:cacheColorHint="?android:attr/colorBackground"
+	android:layout_weight="5" />
+    </LinearLayout>
+    <ImageView
+	android:id="@+id/handle"
+	android:layout_height="fill_parent"
+    android:layout_width="16dip"
+	android:background="@drawable/shade_handlebar_vertical" />
+      <include layout="@layout/message_view" />
+  </com.fsck.splitview.SplitView>
 </LinearLayout>

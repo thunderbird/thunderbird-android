@@ -864,6 +864,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
 
     <string name="no_message_seletected_toast">No message selected</string>
+    <string name="n_messages_selected"><xliff:g id="count">%s</xliff:g> messages selected</string>
 
     <string name="date_format_label">Date format</string>
     <!--

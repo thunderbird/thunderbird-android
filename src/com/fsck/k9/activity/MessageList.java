@@ -314,12 +314,6 @@ public class MessageList
     private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
-    private View mBatchButtonArea;
-    private ImageButton mBatchReadButton;
-    private ImageButton mBatchDeleteButton;
-    private ImageButton mBatchFlagButton;
-    private ImageButton mBatchDoneButton;
-
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private Bundle mState = null;
@@ -368,7 +362,7 @@ public class MessageList
                     resetUnreadCountOnThread();
 
                     mAdapter.notifyDataSetChanged();
-                    toggleBatchButtons();
+                    toggleBatchMode();
                 }
             });
         }
@@ -895,7 +889,6 @@ public class MessageList
 
         initializeMessageView();
         setupButtonViews();
-        setupBatchButtonViews();
 
         // Gesture detection
         gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -916,6 +909,8 @@ public class MessageList
 
     private void initializeActionBar() {
         ActionBar actionBar = getActionBar();
+        actionBar.removeAllActions();
+        actionBar.clearHomeAction();
         //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
         //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -943,9 +938,54 @@ public class MessageList
 
     }
 
+    private void initializeBatchActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.removeAllActions();
+
+        final boolean newReadState = computeBatchDirection(false);
+        actionBar.addAction(new AbstractAction(newReadState ? R.drawable.ic_button_mark_read : R.drawable.ic_button_mark_unread) {
+            @Override public void performAction(View view) {
+                flagSelected(Flag.SEEN, newReadState);
+            }
+
+
+        });
+
+        final boolean newFlagState = computeBatchDirection(true);
+        actionBar.addAction(new AbstractAction(newFlagState ? R.drawable.ic_button_flag : R.drawable.ic_button_unflag) {
+            @Override public void performAction(View view) {
+                flagSelected(Flag.FLAGGED, newFlagState);
+            }
+
+
+        });
+        actionBar.addAction(new AbstractAction(R.drawable.ic_menu_delete) {
+            @Override public void performAction(View view) {
+                deleteSelected();
+            }
+        });
+
+
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeAction(new AbstractAction(R.drawable.ic_button_close_clear_cancel) {
+            @Override public void performAction(View view) {
+                setAllSelected(false);
+                toggleBatchMode();
+            }
+        });
+        actionBar.setOnTitleClickListener(null);
+    }
+
+
+
     public void setActionBarTitle() {
         ActionBar actionBar = getActionBar();
         String titleString = "";
+        if (mSelectedCount > 0)  {
+            actionBar.setTitle(getString(R.string.n_messages_selected, mSelectedCount));
+            return;
+        }
+
         if (mAccount != null && mFolderName != null) {
             String displayName  = mFolderName;
 
@@ -1102,20 +1142,6 @@ public class MessageList
                 return true;
             }
             return false;
-        }
-        case KeyEvent.KEYCODE_DPAD_LEFT: {
-            if (mBatchButtonArea.hasFocus()) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        case KeyEvent.KEYCODE_DPAD_RIGHT: {
-            if (mBatchButtonArea.hasFocus()) {
-                return false;
-            } else {
-                return true;
-            }
         }
         case KeyEvent.KEYCODE_C: {
             onCompose();
@@ -1843,12 +1869,12 @@ public class MessageList
         case R.id.select_all:
         case R.id.batch_select_all: {
             setAllSelected(true);
-            toggleBatchButtons();
+            toggleBatchMode();
             return true;
         }
         case R.id.batch_deselect_all: {
             setAllSelected(false);
-            toggleBatchButtons();
+            toggleBatchMode();
             return true;
         }
         case R.id.batch_delete_op: {
@@ -2121,7 +2147,7 @@ public class MessageList
                         msgInfoHolder.selected = selected;
                         mSelectedCount += (selected ? 1 : -1);
                         mAdapter.notifyDataSetChanged();
-                        toggleBatchButtons();
+                        toggleBatchMode();
                     }
                 }
             }
@@ -2482,7 +2508,7 @@ public class MessageList
                     if (holder.dirty) {
                         if (holder.selected) {
                             mSelectedCount--;
-                            toggleBatchButtons();
+                            toggleBatchMode();
                         }
                         mAdapter.removeMessage(holder);
                     }
@@ -2960,7 +2986,7 @@ public class MessageList
                             selected.setVisibility(View.GONE);
                         }
                     }
-                    toggleBatchButtons();
+                    toggleBatchMode();
                 }
             }
         }
@@ -3008,23 +3034,6 @@ public class MessageList
         }
     }
 
-    private void hideBatchButtons() {
-        if (mBatchButtonArea.getVisibility() != View.GONE) {
-            mBatchButtonArea.setVisibility(View.GONE);
-            mBatchButtonArea.startAnimation(
-                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
-        }
-    }
-
-    private void showBatchButtons() {
-        if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
-            mBatchButtonArea.setVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
-            animation.setAnimationListener(this);
-            mBatchButtonArea.startAnimation(animation);
-        }
-    }
-
     private void hideMessageList() {
         mListHolder.setVisibility(View.GONE);
     }
@@ -3035,7 +3044,7 @@ public class MessageList
 
 
 
-    private void toggleBatchButtons() {
+    private void toggleBatchMode() {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -3045,32 +3054,13 @@ public class MessageList
                     mSelectedCount = 0;
                 }
 
-                int readButtonIconId;
-                int flagButtonIconId;
-
                 if (mSelectedCount == 0) {
-                    readButtonIconId = R.drawable.ic_button_mark_read;
-                    flagButtonIconId = R.drawable.ic_button_flag;
-                    hideBatchButtons();
+                    initializeActionBar();
                 } else {
-                    boolean newReadState = computeBatchDirection(false);
-                    if (newReadState) {
-                        readButtonIconId = R.drawable.ic_button_mark_read;
-                    } else {
-                        readButtonIconId = R.drawable.ic_button_mark_unread;
-                    }
-                    boolean newFlagState = computeBatchDirection(true);
-                    if (newFlagState) {
-                        flagButtonIconId = R.drawable.ic_button_flag;
-                    } else {
-                        flagButtonIconId = R.drawable.ic_button_unflag;
-                    }
-                    showBatchButtons();
+                    initializeBatchActionBar();
                 }
 
-                mBatchReadButton.setImageResource(readButtonIconId);
-                mBatchFlagButton.setImageResource(flagButtonIconId);
-
+                setActionBarTitle();
 
             }
         });
@@ -3181,7 +3171,7 @@ public class MessageList
             if (v == mBatchDeleteButton) {
                 mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
                 mSelectedCount = 0;
-                toggleBatchButtons();
+                toggleBatchMode();
             } else {
                 mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
@@ -3212,7 +3202,7 @@ public class MessageList
             }
         }
         mAdapter.notifyDataSetChanged();
-        toggleBatchButtons();
+        toggleBatchMode();
     }
 
     private void setSelected(MessageInfoHolder holder, boolean newState) {
@@ -3221,26 +3211,9 @@ public class MessageList
             mSelectedCount += (newState ? 1 : -1);
         }
         mAdapter.notifyDataSetChanged();
-        toggleBatchButtons();
+        toggleBatchMode();
     }
 
-    private void flagSelected(Flag flag, boolean newState) {
-        List<Message> messageList = new ArrayList<Message>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    messageList.add(holder.message);
-                    if (flag == Flag.SEEN) {
-                        holder.read = newState;
-                    } else if (flag == Flag.FLAGGED) {
-                        holder.flagged = newState;
-                    }
-                }
-            }
-        }
-        mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
-        mHandler.sortMessages();
-    }
 
     private void deleteSelected() {
         List<Message> messageList = new ArrayList<Message>();
@@ -3257,8 +3230,33 @@ public class MessageList
 
         mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
         mSelectedCount = 0;
-        toggleBatchButtons();
+        toggleBatchMode();
     }
+
+    public void flagSelected(Flag flag, boolean  newFlagState) {
+        List<Message> messageList = new ArrayList<Message>();
+        synchronized (mAdapter.messages) {
+            for (MessageInfoHolder holder : mAdapter.messages) {
+                if (holder.selected) {
+                    if (Flag.FLAGGED == flag) {
+                        holder.flagged = newFlagState;
+                    } else if (Flag.SEEN == flag) {
+                        holder.read = newFlagState;
+                    }
+                    messageList.add(holder.message);
+                }
+            }
+        }
+        if (!messageList.isEmpty()) {
+            mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), flag, newFlagState);
+        } else {
+            // Should not happen
+            showToast(getString(R.string.no_message_seletected_toast), Toast.LENGTH_SHORT);
+        }
+        mHandler.sortMessages();
+        toggleBatchMode();
+    }
+
 
     private void onMoveBatch() {
         if (!mController.isMoveCapable(mAccount)) {
@@ -3309,7 +3307,7 @@ public class MessageList
 
         mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
         mSelectedCount = 0;
-        toggleBatchButtons();
+        toggleBatchMode();
     }
 
     private void onArchiveBatch() {
@@ -3418,18 +3416,6 @@ public class MessageList
 //
 //
 
-    private void setupBatchButtonViews() {
-        mBatchButtonArea = findViewById(R.id.batch_button_area);
-        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
-        mBatchReadButton.setOnClickListener(this);
-        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
-        mBatchDeleteButton.setOnClickListener(this);
-        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
-        mBatchFlagButton.setOnClickListener(this);
-        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-
-        mBatchDoneButton.setOnClickListener(this);
-    }
 
     private void setupButtonViews() {
         setOnClickListener(R.id.from);
