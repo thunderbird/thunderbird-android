@@ -72,7 +72,7 @@
     <string name="send_messages_action">Envia missatges</string>
     <string name="list_folders_action">Llista de carpetes</string>
     <string name="refresh_folders_action">Refresca carpetes</string>
-    <string name="mark_all_as_read_action">Marca missatges llegits</string>
+    <string name="mark_all_as_read_action">Marca missatges com a llegits</string>
     <string name="add_account_action">Afegeix un compte nou</string>
     <string name="compose_action">Redacta</string>
     <string name="search_action">Cerca</string>
@@ -872,7 +872,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="batch_ops">Operacions en lot</string>
     <string name="batch_delete_op">Esborra les seleccions</string>
-    <string name="batch_mark_read_op">Marca coma ha llegit les seleccion</string>
+    <string name="batch_mark_read_op">Marca com a ha llegit les seleccion</string>
     <string name="batch_mark_unread_op">Marca com a no llegit les seleccions</string>
     <string name="batch_flag_op">Afegeix un estel a les seleccions</string>
     <string name="batch_unflag_op">Treu l’estel del que s’ha seleccionat</string>
