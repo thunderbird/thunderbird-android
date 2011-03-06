@@ -83,6 +83,10 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
         mHomeLayout.setVisibility(View.VISIBLE);
     }
 
+    public void clearHomeAction() {
+        mHomeLayout.setVisibility(View.GONE);
+    }
+
     /**
      * Shows the provided logo to the left in the action bar.
      *
