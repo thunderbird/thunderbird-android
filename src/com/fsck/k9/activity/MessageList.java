@@ -3337,21 +3337,6 @@ public class MessageList
 // utilities
 
 
-    /** Wrapper-function taking a KeyCode.
-     * A complete KeyStroke is DOWN and UP Action on a key! */
-    private void simulateKeystroke(int KeyCode) {
-        doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyCode));
-        doInjectKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyCode));
-    }
-
-    /** This function actually handles the KeyStroke-Injection. */
-    private void doInjectKeyEvent(KeyEvent keyEvent) {
-
-        dispatchKeyEvent(keyEvent);
-
-    }
-
-
 // XXX do we actually need this? why? - presumably for API v ??? compatibility
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
