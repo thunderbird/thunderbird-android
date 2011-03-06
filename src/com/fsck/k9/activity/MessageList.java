@@ -982,7 +982,8 @@ public class MessageList
         ActionBar actionBar = getActionBar();
         String titleString = "";
         if (mSelectedCount > 0)  {
-            actionBar.setTitle(getString(R.string.n_messages_selected, mSelectedCount));
+            actionBar.setTitle( getResources().getQuantityString(R.plurals.selected_message_count,mSelectedCount, mSelectedCount));
+
             return;
         }
 
