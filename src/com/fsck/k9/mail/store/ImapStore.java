@@ -1116,7 +1116,7 @@ public class ImapStore extends Store
                 {
                     public List<ImapResponse> search() throws IOException, MessagingException
                     {
-                        return executeSimpleCommand(String.format("UID SEARCH *:* "));
+                        return executeSimpleCommand("UID SEARCH *:*");
                     }
                 };
                 Message[] messages = search(searcher, null);
