@@ -942,8 +942,14 @@ public class MessageList
         ActionBar actionBar = getActionBar();
         actionBar.removeAllActions();
 
+        actionBar.addAction(new AbstractAction(R.drawable.ic_actionbar_delete) {
+            @Override public void performAction(View view) {
+                deleteSelected();
+            }
+        });
+
         final boolean newReadState = computeBatchDirection(false);
-        actionBar.addAction(new AbstractAction(newReadState ? R.drawable.ic_button_mark_read : R.drawable.ic_button_mark_unread) {
+        actionBar.addAction(new AbstractAction(newReadState ? R.drawable.ic_actionbar_mark_read : R.drawable.ic_actionbar_mark_unread) {
             @Override public void performAction(View view) {
                 flagSelected(Flag.SEEN, newReadState);
             }
@@ -952,22 +958,16 @@ public class MessageList
         });
 
         final boolean newFlagState = computeBatchDirection(true);
-        actionBar.addAction(new AbstractAction(newFlagState ? R.drawable.ic_button_flag : R.drawable.ic_button_unflag) {
+        actionBar.addAction(new AbstractAction(newFlagState ? R.drawable.ic_actionbar_flag : R.drawable.ic_actionbar_unflag) {
             @Override public void performAction(View view) {
                 flagSelected(Flag.FLAGGED, newFlagState);
             }
 
 
         });
-        actionBar.addAction(new AbstractAction(R.drawable.ic_menu_delete) {
-            @Override public void performAction(View view) {
-                deleteSelected();
-            }
-        });
-
 
         actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setHomeAction(new AbstractAction(R.drawable.ic_button_close_clear_cancel) {
+        actionBar.setHomeAction(new AbstractAction(R.drawable.ic_actionbar_cancel) {
             @Override public void performAction(View view) {
                 setAllSelected(false);
                 toggleBatchMode();
@@ -3110,10 +3110,6 @@ public class MessageList
 
     @Override
     public void onClick(View v) {
-        boolean newState = false;
-        List<Message> messageList = new ArrayList<Message>();
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-
 
         switch (v.getId()) {
         case R.id.delete:
@@ -3139,47 +3135,6 @@ public class MessageList
             return;
         }
 
-
-        if (v == mBatchDoneButton) {
-            setAllSelected(false);
-            return;
-        }
-
-        if (v == mBatchFlagButton) {
-            newState = computeBatchDirection(true);
-        } else {
-            newState = computeBatchDirection(false);
-        }
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (v == mBatchDeleteButton) {
-                        removeHolderList.add(holder);
-                    } else if (v == mBatchFlagButton) {
-                        holder.flagged = newState;
-                    } else if (v == mBatchReadButton) {
-                        holder.read = newState;
-                    }
-                    messageList.add(holder.message);
-                }
-            }
-        }
-        mAdapter.removeMessages(removeHolderList);
-
-        if (!messageList.isEmpty()) {
-            if (v == mBatchDeleteButton) {
-                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-                mSelectedCount = 0;
-                toggleBatchMode();
-            } else {
-                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
-            }
-        } else {
-            // Should not happen
-            showToast(getString(R.string.no_message_seletected_toast), Toast.LENGTH_SHORT);
-        }
-        mHandler.sortMessages();
     }
 
     public void onAnimationEnd(Animation animation) {
@@ -3422,6 +3377,7 @@ public class MessageList
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
         setOnClickListener(R.id.move);
+        setOnClickListener(R.id.delete);
         setOnClickListener(R.id.spam);
         // To show full header
         setOnClickListener(R.id.header_container);
