@@ -243,6 +243,7 @@ public class MessageList
 
     private Panel mPanel;
 
+
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
     private int mLastDirection = PREVIOUS;
@@ -1100,7 +1101,7 @@ public class MessageList
         // or later, or by the code above on earlier versions of the
         // platform.
         //
-        if (!K9.isTablet() && mSplitView.isSecondaryContentMaximized()) {
+        if (mSplitView.isSecondaryContentMaximized()) {
            mSplitView.maximizePrimaryContent();
           return;
         } else if (K9.manageBack()) {
@@ -1345,6 +1346,9 @@ public class MessageList
         }
         mHandler.post(new Runnable() {
             public void run() {
+                if (mSplitView.isPrimaryContentMaximized()) {
+                    mSplitView.maximizeSecondaryContent();
+                }
                 displayMessage(message);
             }
         });
