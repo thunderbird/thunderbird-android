@@ -953,6 +953,11 @@ public class K9 extends Application {
         K9.compactLayouts = compactLayouts;
     }
 
+    public static boolean isTablet() {
+        return false;
+    }
+
+
     /**
      * Check if this system contains a buggy Gallery 3D package.
      *
