@@ -168,6 +168,7 @@ public class K9 extends Application {
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
+    private static boolean mHideSpecialAccounts = false;
     private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
     private static boolean mQuietTimeEnabled = false;
@@ -422,6 +423,7 @@ public class K9 extends Application {
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
+        editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
         editor.putBoolean("messageListStars", mMessageListStars);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable", mMessageListTouchable);
@@ -468,6 +470,7 @@ public class K9 extends Application {
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
+        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
@@ -898,6 +901,14 @@ public class K9 extends Application {
 
     public static void setCountSearchMessages(boolean countSearchMessages) {
         mCountSearchMessages = countSearchMessages;
+    }
+
+    public static boolean isHideSpecialAccounts() {
+        return mHideSpecialAccounts;
+    }
+
+    public static void setHideSpecialAccounts(boolean hideSpecialAccounts) {
+        mHideSpecialAccounts = hideSpecialAccounts;
     }
 
     public static boolean useGalleryBugWorkaround() {

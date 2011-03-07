@@ -911,6 +911,9 @@
     <!-- NEW: <string name="count_search_title">Count search results</string>-->
     <!-- NEW: <string name="count_search_summary">Turn off for faster display</string>-->
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <!-- NEW: <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>-->
     <!-- NEW: <string name="flagged_modifier"> - Starred</string>-->
     <!-- NEW: <string name="unread_modifier"> - Unread</string>-->

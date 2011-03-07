@@ -920,6 +920,9 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="count_search_title">Räkna sökresultat</string>
     <string name="count_search_summary">Avaktivera för snabbare visning</string>
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Stjärnmärkta</string>
     <string name="unread_modifier"> - Olästa</string>
