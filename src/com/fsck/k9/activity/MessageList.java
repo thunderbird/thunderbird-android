@@ -62,6 +62,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
+
+import com.fsck.splitview.SplitView;
+
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import net.londatiga.android.QuickAction;
@@ -225,6 +228,7 @@ public class MessageList
     private MessageInfoHolder mCurrentMessageInfo;
     private ToggleScrollView mToggleScrollView;
     private SingleMessageView mMessageView;
+    private SplitView mSplitView;
     private Message mMessage;
     private PgpData mPgpData = null;
 
@@ -866,7 +870,7 @@ public class MessageList
         setContentView(R.layout.message_list);
         initializeActionBar();
 
-        mPanel = (Panel) findViewById(R.id.panel);
+        mSplitView = (SplitView) findViewById(R.id.splitview);
 
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
@@ -932,7 +936,11 @@ public class MessageList
         actionBar.setOnTitleClickListener(
         new OnClickListener() {
             @Override public void onClick(View v) {
+        if (mSplitView.isSecondaryContentMaximized()) {
+           mSplitView.maximizePrimaryContent();
+          return; }  else {
                 onShowFolderList();
+          }
             }
         });
 
