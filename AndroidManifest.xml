@@ -32,30 +32,30 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="org.thialfihar.android.apg.permission.READ_KEY_DETAILS" />
 
-    <permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"
+    <permission android:name=".permission.READ_ATTACHMENT"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="dangerous"
                 android:label="@string/read_attachment_label"
                 android:description="@string/read_attachment_desc"/>
-    <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
-    <permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"
+    <uses-permission android:name=".permission.READ_ATTACHMENT"/>
+    <permission android:name=".permission.REMOTE_CONTROL"
                  android:permissionGroup="android.permission-group.MESSAGES"
                  android:protectionLevel="dangerous"
                  android:label="@string/remote_control_label"
                  android:description="@string/remote_control_desc"/>
-    <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
-    <permission android:name="com.fsck.k9.permission.READ_MESSAGES"
+    <uses-permission android:name=".permission.REMOTE_CONTROL"/>
+    <permission android:name=".permission.READ_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="normal"
                 android:label="@string/read_messages_label"
                 android:description="@string/read_messages_desc"/>
-    <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
-    <permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"
+    <uses-permission android:name=".permission.READ_MESSAGES"/>
+    <permission android:name=".permission.DELETE_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="normal"
                 android:label="@string/delete_messages_label"
                 android:description="@string/read_messages_desc"/>
-    <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
+    <uses-permission android:name=".permission.DELETE_MESSAGES"/>
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -67,7 +67,7 @@
                    android:value=".activity.Search" />
 
         <activity
-            android:name="com.fsck.k9.activity.Accounts"
+            android:name=".activity.Accounts"
             android:launchMode="singleInstance"
             android:configChanges="locale"
             android:label="@string/app_name">
@@ -79,87 +79,87 @@
         </activity>
 
         <activity
-            android:name="com.fsck.k9.activity.setup.Prefs"
+            android:name=".activity.setup.Prefs"
             android:label="@string/prefs_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.FontSizeSettings"
+            android:name=".activity.setup.FontSizeSettings"
             android:label="@string/font_size_settings_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
+            android:name=".activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupAccountType"
+            android:name=".activity.setup.AccountSetupAccountType"
             android:label="@string/account_setup_account_type_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupIncoming"
+            android:name=".activity.setup.AccountSetupIncoming"
             android:label="@string/account_setup_incoming_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupComposition"
+            android:name=".activity.setup.AccountSetupComposition"
             android:label="@string/account_settings_composition_title"
             android:configChanges="locale"
         >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupOutgoing"
+            android:name=".activity.setup.AccountSetupOutgoing"
             android:label="@string/account_setup_outgoing_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupOptions"
+            android:name=".activity.setup.AccountSetupOptions"
             android:label="@string/account_setup_options_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupNames"
+            android:name=".activity.setup.AccountSetupNames"
             android:label="@string/account_setup_names_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.ChooseFolder"
+            android:name=".activity.ChooseFolder"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_folder_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.ChooseIdentity"
+            android:name=".activity.ChooseIdentity"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_identity_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.ChooseAccount"
+            android:name=".activity.ChooseAccount"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_account_title"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.ManageIdentities"
+            android:name=".activity.ManageIdentities"
             android:label="@string/manage_identities_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.EditIdentity"
+            android:name=".activity.EditIdentity"
             android:label="@string/edit_identity_title"
             android:configChanges="locale"
             >
@@ -167,27 +167,27 @@
         <!-- XXX Note: this activity is hacked to ignore config changes,
              since it doesn't currently handle them correctly in code. -->
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSetupCheckSettings"
+            android:name=".activity.setup.AccountSetupCheckSettings"
             android:label="@string/account_setup_check_settings_title"
             android:configChanges="keyboardHidden|orientation|locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.setup.AccountSettings"
+            android:name=".activity.setup.AccountSettings"
             android:label="@string/account_settings_title_fmt"
             android:configChanges="locale"
             >
         </activity>
 
         <activity
-            android:name="com.fsck.k9.activity.setup.FolderSettings"
+            android:name=".activity.setup.FolderSettings"
             android:theme="@android:style/Theme.Dialog"
             android:label="@string/folder_settings_title"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.FolderList"
+            android:name=".activity.FolderList"
             android:launchMode="singleTask"
             android:configChanges="locale"
             >
@@ -197,13 +197,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.MessageList"
+            android:name=".activity.MessageList"
             android:launchMode="singleTask"
             android:configChanges="locale"
             >
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.MessageCompose"
+            android:name=".activity.MessageCompose"
             android:label="@string/app_name"
             android:enabled="false"
             android:configChanges="locale"
@@ -231,7 +231,7 @@
             </intent-filter>
         </activity>
         <!-- Search Activity - searchable -->
-        <activity android:name="com.fsck.k9.activity.Search"
+        <activity android:name=".activity.Search"
                   android:label="@string/search_action"
                   android:configChanges="locale"
                   >
@@ -243,7 +243,7 @@
                        android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.LauncherShortcuts"
+            android:name=".activity.LauncherShortcuts"
             android:label="@string/shortcuts_title"
             android:configChanges="locale"
             >
@@ -253,11 +253,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.AccessibleEmailContentActivity"
+            android:name=".activity.AccessibleEmailContentActivity"
             >
         </activity>
 
-        <receiver android:name="com.fsck.k9.service.BootReceiver"
+        <receiver android:name=".service.BootReceiver"
               android:enabled="true"
               >
             <intent-filter>
@@ -279,30 +279,30 @@
                 <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED" />
             </intent-filter>
               <intent-filter>
-                <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
+                <action android:name=".service.BroadcastReceiver.scheduleIntent"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.fsck.k9.service.RemoteControlReceiver"
+        <receiver android:name=".service.RemoteControlReceiver"
                android:enabled="true"
-               android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
+               android:permission=".permission.REMOTE_CONTROL"
                >
                <intent-filter>
-                 <action android:name="com.fsck.k9.K9RemoteControl.set"/>
+                 <action android:name=".K9RemoteControl.set"/>
 
              </intent-filter>
              <intent-filter>
-                <action android:name="com.fsck.k9.K9RemoteControl.requestAccounts"/>
+                <action android:name=".K9RemoteControl.requestAccounts"/>
 
              </intent-filter>
          </receiver>
-        <receiver android:name="com.fsck.k9.service.CoreReceiver"
+        <receiver android:name=".service.CoreReceiver"
               android:enabled="true"
               >
               <intent-filter>
-                <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
+                <action android:name=".service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.fsck.k9.service.StorageReceiver"
+        <receiver android:name=".service.StorageReceiver"
               android:enabled="true"
               >
             <intent-filter>
@@ -326,45 +326,45 @@ otherwise it would make K-9 start at the wrong time
             </intent-filter>
         </receiver>
         <service
-            android:name="com.fsck.k9.service.MailService"
+            android:name=".service.MailService"
             android:enabled="true"
             >
         </service>
         <service
-             android:name="com.fsck.k9.service.PushService"
+             android:name=".service.PushService"
              android:enabled="true"
              >
          </service>
          <service
-             android:name="com.fsck.k9.service.PollService"
+             android:name=".service.PollService"
              android:enabled="true"
             >
          </service>
          <service
-              android:name="com.fsck.k9.service.RemoteControlService"
+              android:name=".service.RemoteControlService"
               android:enabled="true"
-              android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
+              android:permission=".permission.REMOTE_CONTROL"
              >
           </service>
          <service
-             android:name="com.fsck.k9.service.SleepService"
+             android:name=".service.SleepService"
              android:enabled="true"
              >
          </service>
         <provider
-            android:name="com.fsck.k9.provider.AttachmentProvider"
-            android:authorities="com.fsck.k9.attachmentprovider"
+            android:name=".provider.AttachmentProvider"
+            android:authorities=".attachmentprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            android:readPermission=".permission.READ_ATTACHMENT"
             />
         <provider
-            android:name="com.fsck.k9.provider.MessageProvider"
-            android:authorities="com.fsck.k9.messageprovider"
+            android:name=".provider.MessageProvider"
+            android:authorities=".messageprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
-            android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
+            android:readPermission=".permission.READ_MESSAGES"
+            android:writePermission=".permission.DELETE_MESSAGES"
             />
     </application>
 </manifest>
