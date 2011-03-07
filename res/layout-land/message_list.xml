@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:splitview="http://schemas.android.com/apk/res/com.fsck.k9"
     xmlns:app="http://schemas.android.com/apk/res/com.fsck.k9"
-    xmlns:panel="http://schemas.android.com/apk/res/com.fsck.k9"
-    android:layout_width="fill_parent"
-    android:orientation="vertical"
-    android:layout_height="fill_parent">
-    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-                <org.miscwidgets.widget.Panel
-                    android:layout_height="fill_parent"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/panel"
-                    android:paddingRight="4dip"
-                    panel:handle="@+id/panelHandle"
-                    panel:handleWrapper="@+id/panelHandleWrapper"
-                    panel:content="@+id/message_list_holder"
-                    panel:position="left"
-                    panel:openedHandle="@drawable/shade_handlebar_vertical"
-                    panel:closedHandle="@drawable/shade_handlebar_vertical"
-
-                >
-<LinearLayout
-    android:layout_height="fill_parent"
-        android:minWidth="3in"
-        android:layout_width="300dp"
-    android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:orientation="vertical"
+	android:layout_height="fill_parent">
+  <com.markupartist.android.widget.ActionBar
+	android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
+  <com.fsck.splitview.SplitView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/splitview"
+    android:orientation="horizontal"
+    splitview:handle="@+id/handle"
+    splitview:primaryContent="@+id/message_list_holder"
+    splitview:secondaryContent="@+id/message_view_wrapper">
+    <LinearLayout
     android:id="@+id/message_list_holder"
 	android:layout_height="fill_parent"
-	android:layout_width="300dp"
-    android:minWidth="3in"
+	android:layout_width="270dp"
+    android:minWidth="2.7in"
 	android:orientation="vertical">
       <ListView
 	android:id="@+id/message_list"
