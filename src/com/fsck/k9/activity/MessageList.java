@@ -1100,9 +1100,9 @@ public class MessageList
         // or later, or by the code above on earlier versions of the
         // platform.
         //
-
-        if (mListView.getVisibility() != View.VISIBLE) {
-            //mListView.setVisibility(View.VISIBLE);
+        if (!K9.isTablet() && mSplitView.isSecondaryContentMaximized()) {
+           mSplitView.maximizePrimaryContent();
+          return;
         } else if (K9.manageBack()) {
 
 
