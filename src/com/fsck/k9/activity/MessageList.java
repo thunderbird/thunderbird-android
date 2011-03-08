@@ -1923,10 +1923,6 @@ public class MessageList
         }
 
         switch (itemId) {
-        case R.id.list_folders: {
-            onShowFolderList();
-            return true;
-        }
         case R.id.mark_all_as_read: {
             if (mFolderName != null) {
                 onMarkAllAsRead(mAccount, mFolderName);
@@ -2001,7 +1997,6 @@ public class MessageList
 
         if (mQueryString != null) {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
-            menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.batch_archive_op).setVisible(false);
             menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
