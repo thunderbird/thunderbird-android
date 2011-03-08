@@ -1,9 +1,6 @@
 package com.fsck.k9.view;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,12 +15,10 @@ import com.fsck.k9.R;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
-import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
@@ -159,9 +154,7 @@ public class MessageCryptoView extends LinearLayout {
                                                           pgpData);
 
                         } else {
-                            // TODO: use R.string
-                            Toast.makeText(mContext,
-                                           "Please download message first!", 10);
+                            Toast.makeText(mContext, R.string.download_message_before_decryption, 10).show();
                         }
                         return;
                     }
@@ -182,36 +175,14 @@ public class MessageCryptoView extends LinearLayout {
             mDecryptButton.setText(R.string.btn_verify);
             this.setVisibility(View.VISIBLE);
         } else {
-
+            this.setVisibility(View.GONE);
             try {
-                // check for PGP/MIME encryption
-                Part pgp = MimeUtility.findFirstPartByMimeType(message,
-                           "application/pgp-encrypted");
-
+                // check for PGP/MIME signature
+                Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-signature");
                 if (pgp != null) {
-
-                    mDecryptButton.setText("PGP/Mime decrypt"); // TODO:
-                    // R.string
-                    this.setVisibility(View.VISIBLE);
-
-                } else {
-                    // check for PGP/MIME signature
-                    pgp = MimeUtility.findFirstPartByMimeType(message,
-                            "application/pgp-signature");
-
-                    if (pgp != null) {
-                        mDecryptButton.setText("PGP/Mime verify"); // TODO:
-                        // R.string
-                        this.setVisibility(View.VISIBLE);
-
-                        Toast.makeText(mContext, R.string.pgp_mime_verification_unsupported, Toast.LENGTH_LONG).show();
-
-                    } else {
-                        this.setVisibility(View.GONE);
-                    }
-                }
+                    Toast.makeText(mContext, R.string.pgp_mime_verification_unsupported, Toast.LENGTH_LONG).show();
+                } 
             } catch (MessagingException e) {
-                this.setVisibility(View.GONE);
             }
         }
     }

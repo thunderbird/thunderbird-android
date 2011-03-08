@@ -1011,6 +1011,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
     <string name="pgp_mime_verification_unsupported">PGP/MIME signatures are not supported yet.</string>
     <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
+    <string name="download_message_before_decryption">Download message before decryption!</string>
     <string name="send_aborted">Send aborted.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>

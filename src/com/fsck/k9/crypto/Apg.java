@@ -494,6 +494,18 @@ public class Apg extends CryptoProvider {
 
     @Override
     public boolean isEncrypted(Message message) {
+        //check for PGP/Mime Encryption:
+        Part pgp;
+        try {
+            pgp = MimeUtility.findFirstPartByMimeType(message,
+                       "application/pgp-encrypted");
+            if (pgp != null) {
+                return true;
+            }
+        } catch (MessagingException e1) {
+        }
+
+        //check for PGP/Inline Encryption:      
         String data = null;
         try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");

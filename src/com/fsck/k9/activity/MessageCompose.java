@@ -1537,8 +1537,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Kick off a picker for the specified MIME type and let Android take over.
      */
     private void onAddAttachment2(final String mime_type) {
-        if (mAccount.getCryptoProvider().isAvailable(this)) {
-            Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
+        if (mAccount.getCryptoProvider().isAvailable(this) && (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
+            if(!mUsePGPMimeCheckbox.isChecked()) {
+                Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
+            }
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);

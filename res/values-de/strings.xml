@@ -1007,6 +1007,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="insufficient_apg_permissions">K-9 hat keinen Vollzugriff auf APG, bitte dafür K-9 neu installieren.</string>
     <string name="pgp_mime_unsupported">PGP/MIME Nachrichten werden noch nicht unterstützt.</string>
     <string name="attachment_encryption_unsupported">Achtung: Anlagen werden zur Zeit weder signiert noch verschlüsselt.</string>
+    <string name="download_message_before_decryption">Bitte laden Sie die Nachricht zunächst herunter.</string>
     <string name="send_aborted">Senden abgebrochen.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
