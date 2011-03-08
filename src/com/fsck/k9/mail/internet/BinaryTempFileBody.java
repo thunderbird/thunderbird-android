@@ -50,6 +50,10 @@ public class BinaryTempFileBody implements Body {
         base64Out.close();
         mFile.delete();
     }
+    
+    public long getSize() {
+        return mFile.length();
+    }
 
     class BinaryTempFileBodyInputStream extends FilterInputStream {
         public BinaryTempFileBodyInputStream(InputStream in) {

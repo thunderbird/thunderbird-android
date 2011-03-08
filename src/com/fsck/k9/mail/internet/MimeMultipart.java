@@ -71,18 +71,18 @@ public class MimeMultipart extends Multipart {
         }
 
         if (mParts.size() == 0) {
-            writer.write("--" + mBoundary + "\r\n");
+            writer.write("\r\n--" + mBoundary + "\r\n");
         }
 
         for (int i = 0, count = mParts.size(); i < count; i++) {
             BodyPart bodyPart = mParts.get(i);
-            writer.write("--" + mBoundary + "\r\n");
+            writer.write("\r\n--" + mBoundary + "\r\n");
             writer.flush();
             bodyPart.writeTo(out);
             writer.write("\r\n");
         }
 
-        writer.write("--" + mBoundary + "--\r\n");
+        writer.write("\r\n--" + mBoundary + "--\r\n");
         writer.flush();
     }
 

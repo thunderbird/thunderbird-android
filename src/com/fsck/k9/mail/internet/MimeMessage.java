@@ -133,7 +133,7 @@ public class MimeMessage extends Message {
         if (contentType == null) {
             return "text/plain";
         } else {
-            return contentType.toLowerCase();
+            return contentType;
         }
     }
 

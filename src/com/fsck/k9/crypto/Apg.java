@@ -1,5 +1,6 @@
 package com.fsck.k9.crypto;
 
+import java.io.InputStream;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 
 /**
@@ -58,7 +60,9 @@ public class Apg extends CryptoProvider {
     public static final String EXTRA_DATA = "data";
     public static final String EXTRA_ERROR = "error";
     public static final String EXTRA_DECRYPTED_MESSAGE = "decryptedMessage";
+    public static final String EXTRA_DECRYPTED_DATA = "decryptedData";
     public static final String EXTRA_ENCRYPTED_MESSAGE = "encryptedMessage";
+    public static final String EXTRA_ENCRYPTED_DATA = "encryptedData";
     public static final String EXTRA_SIGNATURE = "signature";
     public static final String EXTRA_SIGNATURE_KEY_ID = "signatureKeyId";
     public static final String EXTRA_SIGNATURE_USER_ID = "signatureUserId";
@@ -72,6 +76,8 @@ public class Apg extends CryptoProvider {
     public static final String EXTRA_INTENT_VERSION = "intentVersion";
 
     public static final String INTENT_VERSION = "1";
+
+    public static final String EXTRA_RESULT_URI = "resultUri";
 
     public static final int DECRYPT_MESSAGE = 0x21070001;
     public static final int ENCRYPT_MESSAGE = 0x21070002;
@@ -311,6 +317,16 @@ public class Apg extends CryptoProvider {
             if (pgpData.getEncryptedData() == null) {
                 pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
             }
+
+            if (pgpData.getEncryptedData() == null) {
+                // try to get byte[]
+                byte[] encryptedByteArray = data.getByteArrayExtra(Apg.EXTRA_ENCRYPTED_DATA);
+
+                String encrypted = encryptedByteArray.toString();
+
+                pgpData.setEncryptedData(encrypted);
+            }
+
             if (pgpData.getEncryptedData() != null) {
                 ((MessageCompose) activity).onEncryptDone();
             }
@@ -327,8 +343,29 @@ public class Apg extends CryptoProvider {
             pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
 
             pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-            ((MessageView) activity).onDecryptDone(pgpData);
 
+            String resultUri = data.getStringExtra(Apg.EXTRA_RESULT_URI);
+
+            Message message = null;
+            if (resultUri != null) {
+                Uri result = Uri.parse(resultUri);
+
+                try {
+                    InputStream in = activity.getContentResolver().openInputStream(result);
+                    message = new MimeMessage(in);
+
+                    in.close();
+                } catch (Exception e) {
+
+                }
+            }
+
+            MessageView mv = (MessageView) activity;
+            if (message == null) {
+                mv.onDecryptDone(pgpData);
+            } else {
+                mv.onDecryptDone(pgpData, message);
+            }
             break;
 
         default:
@@ -366,6 +403,31 @@ public class Apg extends CryptoProvider {
     }
 
     /**
+     * Start the encrypt activity.
+     *
+     * @param activity
+     * @param data
+     * @param pgpData
+     * @return success or failure
+     */
+    @Override
+    public boolean encrypt(Activity activity, byte[] data, PgpData pgpData) {
+        android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
+        intent.setType("text/plain");
+        intent.putExtra(Apg.EXTRA_DATA, data);
+        intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, pgpData.getEncryptionKeys());
+        intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, pgpData.getSignatureKeyId());
+        try {
+            activity.startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    /**
      * Start the decrypt activity.
      *
      * @param activity
@@ -383,6 +445,45 @@ public class Apg extends CryptoProvider {
         }
         try {
             intent.putExtra(EXTRA_TEXT, data);
+            activity.startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean decryptPgpMime(Activity activity, Uri uri, PgpData pgpData) {
+        android.content.Intent intent = new android.content.Intent(Apg.Intent.DECRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
+        intent.setType("application/pgp-encrypted");
+        intent.setData(uri);
+
+        try {
+            // intent.putExtra(EXTRA_TEXT, encryptedMessage);
+            // intent.putExtra(EXTRA_DATA,);
+            activity.startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(activity, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    /**
+     * TODO: DOES NOT WORK YET!
+     */
+    public boolean checkSignedPgpMime(Activity activity, String signedMessage, PgpData pgpData) {
+        android.content.Intent intent = new android.content.Intent(Apg.Intent.DECRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
+        intent.setType("text/plain");
+        // intent.setType("application/pgp-signature");
+        // intent.setData(uri);
+
+        try {
+            intent.putExtra(EXTRA_TEXT, signedMessage);
+            // intent.putExtra(EXTRA_DATA,);
             activity.startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
             return true;
         } catch (ActivityNotFoundException e) {

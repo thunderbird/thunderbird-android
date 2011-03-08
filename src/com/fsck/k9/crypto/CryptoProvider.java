@@ -3,6 +3,7 @@ package com.fsck.k9.crypto;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.fsck.k9.mail.Message;
 
@@ -35,4 +36,10 @@ abstract public class CryptoProvider {
 
         return None.createInstance();
     }
+
+    abstract public boolean decryptPgpMime(Activity mActivity, Uri uri,
+                                           PgpData pgpData);
+
+    abstract public boolean encrypt(Activity mActivity, byte[] data,
+                                    PgpData mPgpData);
 }

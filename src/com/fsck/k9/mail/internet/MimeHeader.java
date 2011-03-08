@@ -37,7 +37,9 @@ public class MimeHeader {
     };
 
     protected ArrayList<Field> mFields = new ArrayList<Field>();
-    private String mCharset = null;
+    
+    // use UTF-8 as standard to prevent NullPointerExceptions
+    private String mCharset = "UTF-8";
 
     public void clear() {
         mFields.clear();

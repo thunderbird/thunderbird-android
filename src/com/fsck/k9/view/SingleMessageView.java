@@ -24,6 +24,8 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 
@@ -180,14 +182,31 @@ public class SingleMessageView extends LinearLayout {
         // TODO - really this code  path? this is an odd place to put it
         removeAllAttachments();
 
-        String type;
+        String mime = message.getContentType();
+
+        String type = null;
         String text = pgpData.getDecryptedData();
         if (text != null) {
             type = "text/plain";
         } else {
             // getTextForDisplay() always returns HTML-ified content.
-            text = ((LocalStore.LocalMessage) message).getTextForDisplay();
-            type = "text/html";
+
+            if (message instanceof LocalStore.LocalMessage) {
+                text = ((LocalStore.LocalMessage) message).getTextForDisplay();
+                type = "text/html";
+            } else {
+                Part part = MimeUtility.findFirstPartByMimeType(message,
+                            "text/plain");
+                if (part == null) {
+                    part = MimeUtility.findFirstPartByMimeType(message,
+                            "text/html");
+                }
+                if (part != null) {
+                    text = MimeUtility.getTextFromPart(part);
+                    type = part.getContentType();
+                }
+            }
+
         }
         if (text != null) {
             final String emailText = text;
@@ -205,6 +224,12 @@ public class SingleMessageView extends LinearLayout {
                     showShowPicturesSection(true);
                 }
             }
+        } else if (mime.startsWith("multipart/encrypted")) {
+            final String emailText = text;
+            final String contentType = type;
+            loadBodyFromText(account.getCryptoProvider(), pgpData, message,
+                             emailText, contentType);
+            // TODO External Images ignored...
         } else {
             loadBodyFromUrl("file:///android_asset/empty.html");
         }
@@ -267,6 +292,19 @@ public class SingleMessageView extends LinearLayout {
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             if (view.populateFromPart(part, message, account, controller, listener)) {
                 addAttachment(view);
+            }
+        } else if (part instanceof MimeBodyPart) {
+
+            MimeBodyPart mimePart = (MimeBodyPart) part;
+
+            if (!mimePart.getContentType().startsWith("text")) {
+
+                AttachmentView view = (AttachmentView) mInflater.inflate(
+                                          R.layout.message_view_attachment, null);
+                if (view.populateFromPart(part, message, account, controller,
+                                          listener)) {
+                    addAttachment(view);
+                }
             }
         }
     }

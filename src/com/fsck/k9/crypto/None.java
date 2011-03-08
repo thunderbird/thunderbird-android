@@ -2,6 +2,7 @@ package com.fsck.k9.crypto;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import com.fsck.k9.mail.Message;
 
@@ -76,5 +77,15 @@ public class None extends CryptoProvider {
     @Override
     public boolean test(Context context) {
         return true;
+    }
+
+    @Override
+    public boolean decryptPgpMime(Activity mActivity, Uri uri, PgpData pgpData) {
+        return false;
+    }
+
+    @Override
+    public boolean encrypt(Activity mActivity, byte[] data, PgpData mPgpData) {
+        return false;
     }
 }
