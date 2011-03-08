@@ -11,6 +11,5 @@
 	<classpathentry kind="lib" path="compile-only-libs/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="compile-only-libs/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="src" path="ActionBar_src"/>
-	<classpathentry kind="src" path="QuickAction_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
