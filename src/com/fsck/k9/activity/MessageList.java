@@ -2487,7 +2487,7 @@ public class MessageList
         };
 
         private boolean updateForMe(Account account, String folder) {
-            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
+            if (mAccount != null && account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)) {
                 return true;
             } else {
                 return false;
