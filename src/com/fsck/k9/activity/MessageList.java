@@ -2626,23 +2626,6 @@ public class MessageList
             return null;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            MessageInfoHolder message = (MessageInfoHolder) getItem(position);
-            View view;
-        if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
-            view = convertView;
-        } else {
-            if (mTouchView) {
-                view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
-                view.setId(R.layout.message_list_item);
-            } else {
-                view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                view.setId(R.layout.message_list_item);
-            }
-        }
-            return view;
-        }
         public FolderInfoHolder getFolder(String folder, Account account) {
             LocalFolder local_folder = null;
             try {
@@ -2706,7 +2689,7 @@ public class MessageList
         }
 
 
-        public View getItemView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view;
 
@@ -2895,45 +2878,6 @@ public class MessageList
             }
         }
 
-
-        public View getFooterView(int position, View convertView, ViewGroup parent) {
-            if (footerView == null) {
-                footerView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                if (mQueryString != null) {
-                    footerView.setVisibility(View.GONE);
-                }
-                footerView.setId(R.layout.message_list_item_footer);
-                FooterViewHolder holder = new FooterViewHolder();
-                holder.progress = (ProgressBar)footerView.findViewById(R.id.message_list_progress);
-                holder.progress.setIndeterminate(true);
-                holder.main = (TextView)footerView.findViewById(R.id.main_text);
-                footerView.setTag(holder);
-            }
-
-            FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
-
-            if (mCurrentFolder != null && mAccount != null) {
-                if (mCurrentFolder.loading) {
-                    holder.main.setText(getString(R.string.status_loading_more));
-                    holder.progress.setVisibility(ProgressBar.VISIBLE);
-                } else {
-                    if (!mCurrentFolder.lastCheckFailed) {
-                        if (mAccount.getDisplayCount() == 0) {
-                            holder.main.setText(getString(R.string.message_list_load_more_messages_action));
-                        } else {
-                            holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
-                        }
-                    } else {
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
-                    holder.progress.setVisibility(ProgressBar.INVISIBLE);
-                }
-            } else {
-                holder.progress.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            return footerView;
-        }
 
         @Override
         public boolean hasStableIds() {
