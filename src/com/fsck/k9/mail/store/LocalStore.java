@@ -2909,20 +2909,8 @@ public class LocalStore extends Store implements Serializable {
             if (part == null) {
                 // If that fails, try and get a text part.
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part == null) {
-                    text = null;
-                } else {
-                    LocalStore.LocalTextBody body = null;
-                    try {
-                        body = (LocalStore.LocalTextBody) part.getBody();
-                    } catch (ClassCastException e) {
-                        Log.e(K9.LOG_TAG, "Could not turn the part's body into a LocalTextBody " + part + " " + e);
-                    }
-                    if (body == null) {
-                        text = null;
-                    } else {
-                        text = body.getBodyForDisplay();
-                    }
+                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
                 }
             } else {
                 // We successfully found an HTML part; do the necessary character set decoding.
