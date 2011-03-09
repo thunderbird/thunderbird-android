@@ -1030,4 +1030,11 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ist nicht verfügbar; Bitte SD-Karte prüfen.</string>
     
+    <string name="error_contact_address_not_found">Keine E-Mail Adresse zu finden für den Kontakt.</string>
+    <plurals name="selected_message_count">
+        <item quantity="one">1 Nachricht ausgewählt</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> Nachrichten ausgewählt
+        </item>
+    </plurals>
 </resources>
