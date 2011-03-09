@@ -2642,8 +2642,6 @@ public class MessageList
             }
         }
 
-        private static final int NON_MESSAGE_ITEMS = 1;
-
         private final OnClickListener flagClickListener = new OnClickListener() {
             public void onClick(View v) {
                 // Perform action on clicks
@@ -2654,7 +2652,7 @@ public class MessageList
 
         @Override
         public int getCount() {
-            return messages.size() + NON_MESSAGE_ITEMS;
+            return messages.size();
         }
 
         @Override
