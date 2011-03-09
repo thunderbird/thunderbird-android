@@ -527,15 +527,6 @@ public class MessageList
         }
 
         public void networkError() {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageList.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-
-        public void networkError() {
             showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
         }
 
