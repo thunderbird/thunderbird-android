@@ -3,6 +3,9 @@
 	<name>k9mail</name>
 	<comment></comment>
 	<projects>
+		<project>ActionBar</project>
+		<project>QuickAction</project>
+		<project>SplitView</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -35,6 +38,16 @@
 			<name>ActionBar_src</name>
 			<type>2</type>
 			<locationURI>_android_ActionBar_834371dd/src</locationURI>
+		</link>
+		<link>
+			<name>QuickAction_src</name>
+			<type>2</type>
+			<locationURI>_android_QuickAction_4ee25263/src</locationURI>
+		</link>
+		<link>
+			<name>SplitView_src</name>
+			<type>2</type>
+			<locationURI>_android_SplitView_8f8cccbf/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
