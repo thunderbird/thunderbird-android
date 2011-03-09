@@ -139,8 +139,7 @@
     <string name="status_sending">Enviando</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Repetindo carregamento de mensagens</string>
-
-    <string name="load_more_messages_fmt">Toque para ver mais<xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
+    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -661,7 +660,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="folder_settings_in_top_group_label">Mostrar no top group</string>
     <string name="folder_settings_in_top_group_summary">Mostrar perto do topo da lista de pastas</string>
 
-    <string name="folder_settings_folder_display_mode_label">Calsse de exibição para pasta</string>
+    <string name="folder_settings_folder_display_mode_label">Classe de exibição para pasta</string>
     <string name="folder_settings_folder_display_mode_normal">Nenhuma</string>
     <string name="folder_settings_folder_display_mode_first_class">Primeira Classe</string>
     <string name="folder_settings_folder_display_mode_second_class">Segunda Classe</string>
@@ -940,7 +939,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
 
-    <string name="font_size_settings_title">Tamanho da fornte</string>
+    <string name="font_size_settings_title">Tamanho da fonte</string>
     <string name="font_size_settings_description">Configurar tamanho da fonte</string>
 
     <string name="font_size_account_list">Lista de contas</string>
