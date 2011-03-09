@@ -5,7 +5,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#ffffff" >
-    <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" app:title="@string/app_name" style="@style/ActionBar" />
+    <com.markupartist.android.widget.ActionBar
+        android:id="@+id/actionbar"
+        app:title="@string/app_name"
+        style="@style/ActionBar" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -43,6 +46,8 @@
 	                <MultiAutoCompleteTextView
 	                    android:id="@+id/to"
 	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="6dip"
+	                    android:layout_marginRight="6dip"
 	                    android:inputType="textEmailAddress|textMultiLine"
 	                    android:imeOptions="actionNext"
 	                    android:hint="@string/message_compose_to_hint"
@@ -73,7 +78,7 @@
 	                    android:id="@+id/cc"
 	                    android:layout_width="fill_parent"
 	                    android:layout_height="wrap_content"
-                        android:layout_weight="5"
+	                    android:layout_marginLeft="6dip"
 	                    android:layout_marginRight="6dip"
 	                    android:inputType="textEmailAddress|textMultiLine"
 	                    android:imeOptions="actionNext"
@@ -103,8 +108,8 @@
 	                    android:id="@+id/bcc"
 	                    android:layout_width="fill_parent"
 	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="6dip"
 	                    android:layout_marginRight="6dip"
-                        android:layout_weight="5"
 	                    android:inputType="textEmailAddress|textMultiLine"
 	                    android:imeOptions="actionNext"
 	                    android:hint="@string/message_compose_bcc_hint"

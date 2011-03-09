@@ -26,6 +26,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+
 import android.provider.OpenableColumns;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -157,12 +160,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private String mSourceMessageBody;
 
     /**
-     * Indicates that the source message has been processed at least once and should not
-     * be processed on any subsequent loads. This protects us from adding attachments that
-     * have already been added from the restore of the view state.
+     * Indicates that the source message has been processed at least once and
+     * should not be processed on any subsequent loads. This protects us from
+     * adding attachments that have already been added from the restore of the
+     * view state.
      */
     private boolean mSourceMessageProcessed = false;
-
 
     private ActionBar mActionBar;
 
@@ -181,7 +184,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
     private MessageWebView mQuotedHTML;
-    private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
+    private InsertableHtmlContent mQuotedHtmlContent; // Container for HTML
+    // reply as it's being
+    // built.
     private View mEncryptLayout;
     private CheckBox mCryptoSignatureCheckbox;
     private CheckBox mEncryptCheckbox;
@@ -806,10 +811,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             attachments.add(attachment.uri);
         }
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
-        outState.putBoolean(STATE_KEY_CC_SHOWN, mCcView.getVisibility() == View.VISIBLE);
-        outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccView.getVisibility() == View.VISIBLE);
-        outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN, mQuotedTextBar.getVisibility() == View.VISIBLE);
-        outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
+        outState.putBoolean(STATE_KEY_CC_SHOWN,
+                            mCcView.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_BCC_SHOWN,
+                            mBccView.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN,
+                            mQuotedTextBar.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED,
+                            mSourceMessageProcessed);
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
@@ -1540,6 +1549,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
+<<<<<<< HEAD
             String email = mContacts.getEmailFromContactPicker(data);
             if (email.length() == 0) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
@@ -1556,13 +1566,66 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
 
+=======
+            Cursor cursor = null;
+            String email = "";
+            String name = "";
+            try {
+                Uri result = data.getData();
+                Log.v(K9.LOG_TAG, "Got a contact result: " + result.toString());
+
+                // get the contact id from the Uri
+                String id = result.getLastPathSegment();
+                Cursor c = managedQuery(result, null, null, null, null);
+
+                //  name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                // query for everything email
+                cursor = getContentResolver().query(Email.CONTENT_URI,
+                                                    null, Email.CONTACT_ID + "=?", new String[] { id },
+                                                    null);
+
+                int emailIdx = cursor.getColumnIndex(Email.DATA);
+
+                if (cursor.moveToFirst()) {
+                    email = cursor.getString(emailIdx);
+                }
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Failed to get email data", e);
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+                MultiAutoCompleteTextView emailEntry;
+                if (requestCode == CONTACT_PICKER_TO) {
+                    emailEntry = mToView;
+                } else if (requestCode == CONTACT_PICKER_CC) {
+                    emailEntry = mCcView;
+                } else if (requestCode == CONTACT_PICKER_BCC) {
+                    emailEntry = mBccView;
+                } else {
+                    return;
+                }
+
+
+                if (email.length() == 0) {
+                    Toast.makeText(this, "No email found for contact.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                addAddress(emailEntry, new Address(email, ""));
+            }
+>>>>>>> first pass "add a contact" buttons
 
             break;
         }
     }
 
     public void doLaunchContactPicker(int resultId) {
+<<<<<<< HEAD
         startActivityForResult(mContacts.contactPickerIntent(), resultId);
+=======
+        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  android.provider.ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(contactPickerIntent, resultId);
+>>>>>>> first pass "add a contact" buttons
     }
 
 
