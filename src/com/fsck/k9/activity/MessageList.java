@@ -69,7 +69,6 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.AbstractAction;
 import net.londatiga.android.QuickAction;
 import net.londatiga.android.ActionItem;
-import org.miscwidgets.widget.Panel;
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -241,7 +240,6 @@ public class MessageList
     private View mMove;
     private Contacts mContacts;
 
-    private Panel mPanel;
 
 
     private static final int PREVIOUS = 1;
@@ -908,7 +906,6 @@ public class MessageList
 
         mListView.setOnTouchListener(gestureListener);
 
-        mPanel.setOpen(true, false);
 
     }
 
