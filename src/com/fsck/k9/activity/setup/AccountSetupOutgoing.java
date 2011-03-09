@@ -29,7 +29,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private static final int smtpPorts[] = {
-        25, 465, 465, 25, 25
+        587, 465, 465, 587, 587
     };
 
     private static final String smtpSchemes[] = {
