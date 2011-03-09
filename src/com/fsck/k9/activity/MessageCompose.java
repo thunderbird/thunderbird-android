@@ -1608,7 +1608,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
 
                 if (email.length() == 0) {
-                    Toast.makeText(this, "No email found for contact.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                     return;
                 }
                 addAddress(emailEntry, new Address(email, ""));
