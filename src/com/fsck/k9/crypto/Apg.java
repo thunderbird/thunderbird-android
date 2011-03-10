@@ -1,9 +1,18 @@
 package com.fsck.k9.crypto;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.security.SecureRandom;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.IOUtils;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -18,11 +27,13 @@ import android.widget.Toast;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageView;
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.provider.SimpleFileProvider;
 
 /**
  * APG integration.
@@ -83,6 +94,8 @@ public class Apg extends CryptoProvider {
     public static final int ENCRYPT_MESSAGE = 0x21070002;
     public static final int SELECT_PUBLIC_KEYS = 0x21070003;
     public static final int SELECT_SECRET_KEY = 0x21070004;
+    
+    private static final String TEMP_FILE_NAME = "deleteThisFile";
 
     public static Pattern PGP_MESSAGE =
         Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
@@ -322,9 +335,39 @@ public class Apg extends CryptoProvider {
                 // try to get byte[]
                 byte[] encryptedByteArray = data.getByteArrayExtra(Apg.EXTRA_ENCRYPTED_DATA);
 
-                String encrypted = encryptedByteArray.toString();
+                if(encryptedByteArray != null) {
+                    String encrypted = encryptedByteArray.toString();
 
-                pgpData.setEncryptedData(encrypted);
+                    pgpData.setEncryptedData(encrypted);
+                }
+            }
+            
+            if (pgpData.getEncryptedData() == null) {
+                String resultUri = data.getStringExtra(Apg.EXTRA_RESULT_URI);
+                if (resultUri != null) {
+
+                    // those files contain private, unencrypted data and we don't trust android-file-permissions!
+                    deleteTemporaryFiles(activity.getApplicationContext(), true);
+                    
+                    
+                    Uri result = Uri.parse(resultUri);
+                    
+                    try {
+                        InputStream in = activity.getContentResolver().openInputStream(result);
+                        
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        
+                        IOUtils.copy(in, out);
+                        
+                        in.close();
+                        
+                        pgpData.setEncryptedData(out.toString());
+                        out.close();
+                        
+                    } catch (Exception e) {
+
+                    }
+                }
             }
 
             if (pgpData.getEncryptedData() != null) {
@@ -355,6 +398,9 @@ public class Apg extends CryptoProvider {
                     message = new MimeMessage(in);
 
                     in.close();
+                    
+                    // this is currently not implemented in APG (so this call does nothing, see Issue 45 on APG)
+                    activity.getContentResolver().delete(result, null, null);
                 } catch (Exception e) {
 
                 }
@@ -410,12 +456,56 @@ public class Apg extends CryptoProvider {
      * @param pgpData
      * @return success or failure
      */
-    @Override
-    public boolean encrypt(Activity activity, byte[] data, PgpData pgpData) {
+    public boolean encrypt(Activity activity, Body body, String contentType, PgpData pgpData) {
+        
+        String fileName = null;
+        Context context = activity.getApplicationContext();
+        try {
+            try {
+                int i=0;
+                while (true) {
+                    fileName = TEMP_FILE_NAME + i;
+                    context.openFileInput(fileName).close();
+                    i++;
+                }
+            } catch (FileNotFoundException e) {
+                // found a name that isn't used yet
+            }
+        
+        
+            OutputStream out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            String innerHeader = "Content-Type: " + contentType + "\r\n";
+            out.write(innerHeader.getBytes());
+
+            body.writeTo(out);
+            out.close();
+        
+            Uri uri = Uri.parse(SimpleFileProvider.CONTENT_URI + "/" + fileName);
+            return encrypt(activity, uri, pgpData);
+        } catch(IOException e) {
+            return false;
+        } catch (MessagingException e) {
+            return false;
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Start the encrypt activity.
+     *
+     * @param activity
+     * @param data
+     * @param pgpData
+     * @return success or failure
+     */
+    public boolean encrypt(Activity activity, Uri uri, PgpData pgpData) {
         android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
-        intent.setType("text/plain");
-        intent.putExtra(Apg.EXTRA_DATA, data);
+        
+        intent.setDataAndType(uri, "text/plain");
+      
         intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, pgpData.getEncryptionKeys());
         intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, pgpData.getSignatureKeyId());
         try {
@@ -593,5 +683,78 @@ public class Apg extends CryptoProvider {
         }
 
         return true;
+    }
+    
+    /** 
+     * run's in a new Thread
+     * @param context
+     */
+    private void deleteTemporaryFiles(final Context context, final boolean secureDelete) {
+        Thread deleteThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    int i=0;
+                    String fileName;
+                    
+                    //start at the highest number, else there would be dead files on application-crash
+                    while(true) {
+                        fileName = TEMP_FILE_NAME + i;
+                        if(!new File(context.getFilesDir().getAbsolutePath() + "/" + fileName).exists()) {
+                            i--;
+                            break;
+                        }
+                        i++;
+                    }
+                    
+                    while(true) {
+                        fileName = TEMP_FILE_NAME + i;
+                        if(secureDelete) {                            
+                            File file = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
+                            
+                            if(!file.exists()) {
+                                throw new FileNotFoundException();
+                            }
+                                                       
+                            deleteFileSecurely(file);
+                        } else {
+                            context.deleteFile(fileName);
+                        }
+                        i--;
+                        
+                    }
+                } catch(Exception e) {
+                    // that just means we're done.
+                }
+            }
+            
+        });
+        if(secureDelete) {
+            deleteThread.setName("Secure deletion thread");
+        } else {
+            deleteThread.setName("deleteThread");
+        }
+        deleteThread.start();
+    }
+    
+    private static void deleteFileSecurely(File file)
+            throws FileNotFoundException, IOException {
+        long length = file.length();
+        SecureRandom random = new SecureRandom();
+        RandomAccessFile raf = new RandomAccessFile(file, "rws");
+        raf.seek(0);
+        raf.getFilePointer();
+        byte[] data = new byte[1 << 16];
+        int pos = 0;
+        
+        while (pos < length) {
+//            progress.setProgress(msg, (int) (100 * pos / length), 100);
+            random.nextBytes(data);
+            raf.write(data);
+            pos += data.length;
+        }
+        raf.close();
+        file.delete();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
 
 /**
@@ -37,9 +38,7 @@ abstract public class CryptoProvider {
         return None.createInstance();
     }
 
-    abstract public boolean decryptPgpMime(Activity mActivity, Uri uri,
-                                           PgpData pgpData);
-
-    abstract public boolean encrypt(Activity mActivity, byte[] data,
-                                    PgpData mPgpData);
+    abstract public boolean decryptPgpMime(Activity mActivity, Uri uri, PgpData pgpData);
+    abstract public boolean encrypt(Activity activity, Body body, String contentType, PgpData pgpData);
+    
 }

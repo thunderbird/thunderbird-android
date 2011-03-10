@@ -1,7 +1,5 @@
 package com.fsck.k9.view;
 
-import java.io.ByteArrayOutputStream;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.*;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Flag;
@@ -117,7 +114,7 @@ public class MessageCryptoView extends LinearLayout {
                     if (part != null) {
                         data = MimeUtility.getTextFromPart(part);
                     }
-
+/*
                     // if PGP/Mime get signature
                     Part signaturePart = MimeUtility.findFirstPartByMimeType(
                                              message, "application/pgp-signature");
@@ -135,11 +132,11 @@ public class MessageCryptoView extends LinearLayout {
                                 mActivity, out.toString(), pgpData);
                             return;
                         } catch (Exception e) {
-                            // Wasn't able to check Signature
-                            e.printStackTrace();
+                            // Wasn't able to check Signature, make Toast?
+                            return;
                         }
                     }
-
+*/
                     // check if there is a PGP/Mime encrypted part
                     Part encryptedPart = MimeUtility.findFirstPartByMimeType(
                                              message, "application/octet-stream");
@@ -154,7 +151,7 @@ public class MessageCryptoView extends LinearLayout {
                                                           pgpData);
 
                         } else {
-                            Toast.makeText(mContext, R.string.download_message_before_decryption, 10).show();
+                            Toast.makeText(mContext, R.string.download_message_before_decryption, Toast.LENGTH_LONG).show();
                         }
                         return;
                     }

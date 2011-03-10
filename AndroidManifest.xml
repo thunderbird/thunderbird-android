@@ -379,5 +379,13 @@ otherwise it would make K-9 start at the wrong time
             android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
             android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
             />
+            
+        <provider
+            android:name="com.fsck.k9.provider.SimpleFileProvider"
+            android:authorities="com.fsck.k9.simplefileprovider"
+            android:multiprocess="true"
+            android:grantUriPermissions="true"
+            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            />
     </application>
 </manifest>

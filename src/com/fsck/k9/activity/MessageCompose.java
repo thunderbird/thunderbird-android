@@ -1,9 +1,7 @@
 
 package com.fsck.k9.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -1401,6 +1399,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
+        
+        // PGP/Mime signed-only mails are not supported yet
+        if(mUsePGPMimeCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked() && !mEncryptCheckbox.isChecked()) {
+            Toast.makeText(this, getString(R.string.pgp_mime_signed_only_messages_not_supported), Toast.LENGTH_LONG).show();
+            return;
+        }
+        
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
             // key selection before encryption
             String emails = "";
@@ -1443,27 +1448,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             mPGPMimeSignedMessage = innerMessage;
                         }
 
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-                        String innerHeader = "Content-Type: "
-                                             + innerMessage.getContentType() + "\r\n";
-                        out.write(innerHeader.getBytes());
-
-                        innerMessage.getBody().writeTo(out);
-                        String text = out.toString();
-
                         mPreventDraftSaving = true;
-                        if (!mAccount.getCryptoProvider().encrypt(this, text,
+                        if (!mAccount.getCryptoProvider().encrypt(this, innerMessage.getBody(), innerMessage.getContentType(),
                                 mPgpData)) {
                             mPreventDraftSaving = false;
                         }
                     } catch (MessagingException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    } 
                 } else {
                     // use PGP/Inline, String will be encrypted
                     String text = "";

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
 
 /**
@@ -85,7 +86,7 @@ public class None extends CryptoProvider {
     }
 
     @Override
-    public boolean encrypt(Activity mActivity, byte[] data, PgpData mPgpData) {
+    public boolean encrypt(Activity mActivity, Body body, String contentType, PgpData mPgpData) {
         return false;
     }
 }
