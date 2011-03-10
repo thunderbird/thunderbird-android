@@ -2889,11 +2889,17 @@ public class MessagingController implements Runnable {
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
     }
 
-    private void notifySendFailed(Account account, Exception lastFailure) {
+    private void notifySendTempFailed(Account account, Exception lastFailure) {
+        notifySendFailed(account, lastFailure, account.getOutboxFolderName());
+    }
+    private void notifySendPermFailed(Account account, Exception lastFailure) {
+        notifySendFailed(account, lastFailure, account.getDraftsFolderName());
+    }
+    private void notifySendFailed(Account account, Exception lastFailure, String openFolder) {
         NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
 
-        Intent i = FolderList.actionHandleNotification(mApplication, account, account.getOutboxFolderName());
+        Intent i = FolderList.actionHandleNotification(mApplication, account, openFolder);
 
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
