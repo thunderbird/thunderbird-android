@@ -1787,7 +1787,11 @@ public class MessagingController implements Runnable {
                 rootCause = nextCause;
             }
         } while (nextCause != null);
-        return rootCause.getMessage();
+        if (rootCause instanceof MessagingException) {
+            return rootCause.getMessage();
+        } else {
+            return rootCause.toString();
+        }
     }
 
     private void queuePendingCommand(Account account, PendingCommand command) {
