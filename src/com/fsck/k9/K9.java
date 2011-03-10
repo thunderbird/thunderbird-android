@@ -320,11 +320,7 @@ public class K9 extends Application {
 
     }
 
-    public static void setServicesEnabled(Context context, Integer wakeLockId) {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAvailableAccounts().size() > 0, wakeLockId);
-    }
-
-    public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
+    private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
 
         PackageManager pm = context.getPackageManager();
 
