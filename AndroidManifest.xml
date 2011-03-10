@@ -32,30 +32,30 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="org.thialfihar.android.apg.permission.READ_KEY_DETAILS" />
 
-    <permission android:name=".permission.READ_ATTACHMENT"
+    <permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="dangerous"
                 android:label="@string/read_attachment_label"
                 android:description="@string/read_attachment_desc"/>
-    <uses-permission android:name=".permission.READ_ATTACHMENT"/>
-    <permission android:name=".permission.REMOTE_CONTROL"
+    <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
+    <permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"
                  android:permissionGroup="android.permission-group.MESSAGES"
                  android:protectionLevel="dangerous"
                  android:label="@string/remote_control_label"
                  android:description="@string/remote_control_desc"/>
-    <uses-permission android:name=".permission.REMOTE_CONTROL"/>
-    <permission android:name=".permission.READ_MESSAGES"
+    <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
+    <permission android:name="com.fsck.k9.permission.READ_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="normal"
                 android:label="@string/read_messages_label"
                 android:description="@string/read_messages_desc"/>
-    <uses-permission android:name=".permission.READ_MESSAGES"/>
-    <permission android:name=".permission.DELETE_MESSAGES"
+    <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
+    <permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="normal"
                 android:label="@string/delete_messages_label"
                 android:description="@string/read_messages_desc"/>
-    <uses-permission android:name=".permission.DELETE_MESSAGES"/>
+    <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -279,19 +279,19 @@
                 <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED" />
             </intent-filter>
               <intent-filter>
-                <action android:name=".service.BroadcastReceiver.scheduleIntent"/>
+                <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".service.RemoteControlReceiver"
                android:enabled="true"
-               android:permission=".permission.REMOTE_CONTROL"
+               android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
                >
                <intent-filter>
-                 <action android:name=".K9RemoteControl.set"/>
+                 <action android:name="com.fsck.k9.K9RemoteControl.set"/>
 
              </intent-filter>
              <intent-filter>
-                <action android:name=".K9RemoteControl.requestAccounts"/>
+                <action android:name="com.fsck.k9.K9RemoteControl.requestAccounts"/>
 
              </intent-filter>
          </receiver>
@@ -299,7 +299,7 @@
               android:enabled="true"
               >
               <intent-filter>
-                <action android:name=".service.CoreReceiver.wakeLockRelease"/>
+                <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".service.StorageReceiver"
@@ -343,7 +343,7 @@ otherwise it would make K-9 start at the wrong time
          <service
               android:name=".service.RemoteControlService"
               android:enabled="true"
-              android:permission=".permission.REMOTE_CONTROL"
+              android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
              >
           </service>
          <service
@@ -352,19 +352,19 @@ otherwise it would make K-9 start at the wrong time
              >
          </service>
         <provider
-            android:name=".provider.AttachmentProvider"
-            android:authorities=".attachmentprovider"
+            android:name="com.fsck.k9.provider.AttachmentProvider"
+            android:authorities="com.fsck.k9.attachmentprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission=".permission.READ_ATTACHMENT"
+            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
             />
         <provider
-            android:name=".provider.MessageProvider"
-            android:authorities=".messageprovider"
+            android:name="com.fsck.k9.provider.MessageProvider"
+            android:authorities="com.fsck.k9.messageprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission=".permission.READ_MESSAGES"
-            android:writePermission=".permission.DELETE_MESSAGES"
+            android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
+            android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
             />
     </application>
 </manifest>
