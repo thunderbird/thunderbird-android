@@ -66,23 +66,30 @@ public class MimeMultipart extends Multipart {
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
 
+       /*RFC 1521:
+          NOTE: The CRLF preceding the encapsulation line is conceptually
+          attached to the boundary so that it is possible to have a part
+          that does not end with a CRLF (line break)
+        */
+        String boundaryWithCRLF = "\r\n--" + mBoundary + "\r\n";
+        
         if (mPreamble != null) {
             writer.write(mPreamble + "\r\n");
         }
 
         if (mParts.size() == 0) {
-            writer.write("\r\n--" + mBoundary + "\r\n");
+            writer.write(boundaryWithCRLF);
         }
 
         for (int i = 0, count = mParts.size(); i < count; i++) {
             BodyPart bodyPart = mParts.get(i);
-            writer.write("\r\n--" + mBoundary + "\r\n");
+            writer.write(boundaryWithCRLF);
             writer.flush();
             bodyPart.writeTo(out);
             writer.write("\r\n");
         }
 
-        writer.write("\r\n--" + mBoundary + "--\r\n");
+        writer.write(boundaryWithCRLF);
         writer.flush();
     }
 
