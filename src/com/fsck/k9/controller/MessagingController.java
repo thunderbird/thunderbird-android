@@ -3489,7 +3489,7 @@ public class MessagingController implements Runnable
 
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
-        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
+        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), getRootCauseMessage(lastFailure), pi);
 
         configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
