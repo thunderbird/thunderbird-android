@@ -3624,6 +3624,14 @@ public class MessagingController implements Runnable
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
 
+                    if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
+                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after "+ K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
+                        notifySendTempFailed(account, new MessagingException(message.getSubject()));
+                        continue;
+                    }
+
+
+
                     localFolder.fetch(new Message[] { message }, fp, null);
                     try
                     {
