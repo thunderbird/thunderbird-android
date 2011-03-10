@@ -3665,6 +3665,15 @@ public class MessagingController implements Runnable
                     }
                     catch (Exception e)
                     {
+                        // 5.x.x errors from the SMTP server are "PERMFAIL"
+                        // move the message over to drafts rather than leaving it in the outbox
+                        // This is a complete hack, but is worlds better than the previous
+                        // "don't even bother" functionality
+                        if (getRootCauseMessage(e).startsWith("5")) {
+                            localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
+                        } else {
+                        }
+
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(K9.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners())
@@ -3688,9 +3697,12 @@ public class MessagingController implements Runnable
             {
                 l.sendPendingMessagesCompleted(account);
             }
-            if (lastFailure != null)
-            {
-                notifySendFailed(account, lastFailure);
+            if (lastFailure != null) {
+                if (getRootCauseMessage(lastFailure).startsWith("5")) {
+                    notifySendPermFailed(account, lastFailure);
+                } else {
+                    notifySendTempFailed(account, lastFailure);
+                }
             }
         }
         catch (UnavailableStorageException e)
