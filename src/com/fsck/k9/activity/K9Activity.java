@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -25,6 +26,9 @@ public class K9Activity extends Activity {
     private GestureDetector gestureDetector;
 
     protected ScrollView mTopView;
+
+    private double mScreenSize = 0;
+
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -171,5 +175,16 @@ public class K9Activity extends Activity {
         }
     }
 
+    public double getScreenSizeInInches () {
+        if (mScreenSize == 0 )  {
+         DisplayMetrics metrics = new DisplayMetrics();
+         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+         mScreenSize = Math.sqrt(Math.pow( (metrics.heightPixels/metrics.ydpi), 2 ) +
+         Math.pow((metrics.widthPixels/metrics.xdpi), 2) );
+        }
+
+        return mScreenSize;
+    }
 
 }
