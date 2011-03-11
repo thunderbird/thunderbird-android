@@ -104,37 +104,69 @@ public class SplitView extends LinearLayout implements OnTouchListener {
             } else {
                 mPointerOffset = me.getRawX() - mPrimaryContent.getMeasuredWidth();
             }
+            return true;
         }
-        if (me.getAction() == MotionEvent.ACTION_UP) {
+        else if (me.getAction() == MotionEvent.ACTION_UP) {
             mDragging = false;
+            return true;
         } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
-            ViewGroup.LayoutParams params = mPrimaryContent.getLayoutParams();
             if (getOrientation() == VERTICAL) {
-                int newHeight = (int)(me.getRawY() - mPointerOffset);
-                if (mSecondaryContent.getMeasuredHeight() < 1 && newHeight > params.height) {
-                    return false;
-                }
-                if (newHeight >= 0) {
-                    params.height = newHeight;
-                }
+                return setPrimaryContentHeight( (int)(me.getRawY() - mPointerOffset));
             } else {
-                int newWidth = (int)(me.getRawX() - mPointerOffset);
-                if (mSecondaryContent.getMeasuredWidth() < 1 && newWidth > params.width) {
-                    return false;
-                }
-                if (newWidth >= 0) {
-                    params.width = newWidth;
-                }
+                return setPrimaryContentWidth( (int)(me.getRawX() - mPointerOffset) );
             }
-            mPrimaryContent.setLayoutParams(params);
         }
-
         return true;
     }
 
+
+    public int getPrimaryContentSize() {
+            if (getOrientation() == VERTICAL) {
+                return mPrimaryContent.getMeasuredHeight();
+            } else {
+             return mPrimaryContent.getMeasuredWidth();
+            }
+
+    }
+
+    public boolean setPrimaryContentSize(int newSize) {
+        if (getOrientation() == VERTICAL) {
+            return setPrimaryContentHeight(newSize);
+        } else {
+            return setPrimaryContentWidth(newSize);
+        }
+    }
+
+
+    private boolean setPrimaryContentHeight(int newHeight) {
+        ViewGroup.LayoutParams params = mPrimaryContent.getLayoutParams();
+        if (mSecondaryContent.getMeasuredHeight() < 1 && newHeight > params.height) {
+            return false;
+        }
+        if (newHeight >= 0) {
+            params.height = newHeight;
+        }
+        mPrimaryContent.setLayoutParams(params);
+        return true;
+
+    }
+
+    private boolean setPrimaryContentWidth(int newWidth) {
+        ViewGroup.LayoutParams params = mPrimaryContent.getLayoutParams();
+
+
+        if (mSecondaryContent.getMeasuredWidth() < 1 && newWidth > params.width) {
+            return false;
+        }
+        if (newWidth >= 0) {
+            params.width = newWidth;
+        }
+        mPrimaryContent.setLayoutParams(params);
+        return true;
+    }
     public boolean isPrimaryContentMaximized() {
         if ( (getOrientation() == VERTICAL && (mSecondaryContent.getMeasuredHeight() < MAXIMIZED_VIEW_TOLERANCE_DIP) ) ||
-             (getOrientation() == HORIZONTAL && (mSecondaryContent.getMeasuredWidth() < MAXIMIZED_VIEW_TOLERANCE_DIP) )) {
+                (getOrientation() == HORIZONTAL && (mSecondaryContent.getMeasuredWidth() < MAXIMIZED_VIEW_TOLERANCE_DIP) )) {
             return true;
         } else {
             return false;
@@ -145,7 +177,7 @@ public class SplitView extends LinearLayout implements OnTouchListener {
 
     public boolean isSecondaryContentMaximized() {
         if ( (getOrientation() == VERTICAL && (mPrimaryContent.getMeasuredHeight() < MAXIMIZED_VIEW_TOLERANCE_DIP) ) ||
-             (getOrientation() == HORIZONTAL && (mPrimaryContent.getMeasuredWidth() < MAXIMIZED_VIEW_TOLERANCE_DIP) )) {
+                (getOrientation() == HORIZONTAL && (mPrimaryContent.getMeasuredWidth() < MAXIMIZED_VIEW_TOLERANCE_DIP) )) {
             return true;
         } else {
             return false;
