@@ -364,9 +364,16 @@ public class Apg extends CryptoProvider {
                         pgpData.setEncryptedData(out.toString());
                         out.close();
                         
+                    } catch(OutOfMemoryError e) {
+                        // attachment size is too large TODO: better notification
+                        // (because encryption took so long, Toast.LENGTH_LONG might 
+                        // be too short, the user probably doesn't look at the phone at that moment..)
+                        Toast.makeText(activity, "E-Mail too large for encryption..", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
 
                     }
+                    // this is currently not implemented in APG (so this call does nothing, see Issue 45 on APG)
+                    activity.getContentResolver().delete(result, null, null);
                 }
             }
 
@@ -694,38 +701,25 @@ public class Apg extends CryptoProvider {
 
             @Override
             public void run() {
-                try {
-                    int i=0;
-                    String fileName;
-                    
-                    //start at the highest number, else there would be dead files on application-crash
-                    while(true) {
-                        fileName = TEMP_FILE_NAME + i;
-                        if(!new File(context.getFilesDir().getAbsolutePath() + "/" + fileName).exists()) {
-                            i--;
-                            break;
-                        }
-                        i++;
-                    }
-                    
-                    while(true) {
-                        fileName = TEMP_FILE_NAME + i;
+           
+                                         
+                File test = new File(context.getFilesDir().getAbsolutePath());
+                // get all files in filesDir
+                String[] files = test.list();
+                        
+                for(String fileName: files) {
+                    if(fileName.startsWith(TEMP_FILE_NAME)) {
                         if(secureDelete) {                            
                             File file = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
-                            
-                            if(!file.exists()) {
-                                throw new FileNotFoundException();
+                            try {
+                                deleteFileSecurely(file);
+                            } catch(Exception e) {
+                                //ignore
                             }
-                                                       
-                            deleteFileSecurely(file);
                         } else {
                             context.deleteFile(fileName);
                         }
-                        i--;
-                        
                     }
-                } catch(Exception e) {
-                    // that just means we're done.
                 }
             }
             
