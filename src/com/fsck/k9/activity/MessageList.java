@@ -1868,10 +1868,12 @@ public class MessageList
 
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
+        private Drawable mEncryptedIcon;
 
         MessageListAdapter() {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
+            mEncryptedIcon = getResources().getDrawable(R.drawable.encrypted_small);
         }
 
         public void markAllMessagesAsDirty() {
@@ -2238,10 +2240,15 @@ public class MessageList
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
+
+            Drawable right = message.message.hasAttachments() ? mAttachmentIcon : null;
+            // because encrypted mails always have attachments we can overwrite that icon
+            right = message.isEncrypted ? mEncryptedIcon : right;
+            
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
-                message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                right, // right
                 null); // bottom
             holder.position = position;
         }

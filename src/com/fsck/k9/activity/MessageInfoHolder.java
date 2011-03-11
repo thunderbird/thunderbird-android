@@ -24,6 +24,10 @@ public class MessageInfoHolder {
     public boolean selected;
     public String account;
     public String uri;
+    
+    /* adds for PGP */
+    public boolean isEncrypted;
+    public boolean isSigned;
 
     // Empty constructor for comparison
     public MessageInfoHolder() {

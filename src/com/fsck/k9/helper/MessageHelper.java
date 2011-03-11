@@ -17,6 +17,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.helper.DateFormatter;
 
@@ -88,6 +89,13 @@ public class MessageHelper {
             target.account = account.getDescription();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();
 
+            /** check encryption **/
+//          CryptoProvider crypto = account.getCryptoProvider(); TODO: disable this feature if crypto instanceof None ?
+            String mimeType = m.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+            target.isEncrypted = mimeType.startsWith("multipart/encrypted");
+            target.isSigned = mimeType.startsWith("multipart/signed");
+            
+            
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
         }
