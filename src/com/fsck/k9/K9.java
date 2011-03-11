@@ -176,6 +176,7 @@ public class K9 extends Application {
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
 
+    private static int mPrimaryMessageListContentSize = 300;
 
 
     private static boolean useGalleryBugWorkaround = false;
@@ -449,6 +450,8 @@ public class K9 extends Application {
 
         editor.putBoolean("compactLayouts", compactLayouts);
 
+        editor.putInt("primaryMessageListContentSize", mPrimaryMessageListContentSize);
+
         fontSizes.save(editor);
     }
 
@@ -500,6 +503,8 @@ public class K9 extends Application {
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
+
+        mPrimaryMessageListContentSize = sprefs.getInt("primaryMessageListContentSize", 300);
 
         fontSizes.load(sprefs);
 
@@ -871,6 +876,14 @@ public class K9 extends Application {
 
     public static void setMessageViewReturnToList(boolean messageViewReturnToList) {
         mMessageViewReturnToList = messageViewReturnToList;
+    }
+
+    public static void setPrimaryMessageListContentSize(int size) {
+        mPrimaryMessageListContentSize = size;
+    }
+
+    public static int getPrimaryMessageListContentSize() {
+        return mPrimaryMessageListContentSize;
     }
 
     public static Method getMethod(Class<?> classObject, String methodName) {
