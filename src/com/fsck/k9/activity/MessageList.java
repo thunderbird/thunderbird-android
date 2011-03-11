@@ -2448,7 +2448,12 @@ public class MessageList
                 if (mMessage == null || mMessage != message) {
                     return;
                 }
-                mMessageView.setAttachmentsEnabled(false);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageView.setAttachmentsEnabled(false);
+                    }
+                });
                 mHandler.progress(true);
                 if (requiresDownload) {
                     mHandler.fetchingAttachment();
@@ -2460,8 +2465,13 @@ public class MessageList
                 if (mMessage != message) {
                     return;
                 }
-                mMessageView.setAttachmentsEnabled(true);
-                mHandler.progress(false);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageView.setAttachmentsEnabled(true);
+                        mHandler.progress(false);
+                    }
+                });
                 Object[] params = (Object[]) tag;
                 boolean download = (Boolean) params[0];
                 AttachmentView attachment = (AttachmentView) params[1];
@@ -2479,9 +2489,14 @@ public class MessageList
                 if (mMessage != message) {
                     return;
                 }
-                mMessageView.setAttachmentsEnabled(true);
-                mHandler.progress(false);
-                mHandler.networkError();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageView.setAttachmentsEnabled(true);
+                        mHandler.progress(false);
+                        mHandler.networkError();
+                    }
+                });
             }
 
 
