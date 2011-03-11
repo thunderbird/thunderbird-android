@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -861,6 +863,7 @@ public class MessageList
         initializeActionBar();
 
         mSplitView = (SplitView) findViewById(R.id.splitview);
+        mSplitView.maximizePrimaryContent();
 
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
@@ -925,11 +928,12 @@ public class MessageList
         actionBar.setOnTitleClickListener(
         new OnClickListener() {
             @Override public void onClick(View v) {
-        if (mSplitView.isSecondaryContentMaximized()) {
-           mSplitView.maximizePrimaryContent();
-          return; }  else {
-                onShowFolderList();
-          }
+                if (mSplitView.isSecondaryContentMaximized()) {
+                    mSplitView.maximizePrimaryContent();
+                    return;
+                }  else {
+                    onShowFolderList();
+                }
             }
         });
 
@@ -1090,19 +1094,25 @@ public class MessageList
         // platform.
         //
         if (mSplitView.isSecondaryContentMaximized()) {
-           mSplitView.maximizePrimaryContent();
-          return;
-        } else if (K9.manageBack()) {
-
-
-
-            if (mQueryString == null) {
-                onShowFolderList();
-            } else {
-                onAccounts();
-            }
+            mSplitView.maximizePrimaryContent();
+            return;
         } else {
-            finish();
+	        if (!mSplitView.isPrimaryContentMaximized()) {
+	            SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+	            K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
+	            Editor editor = preferences.edit();
+	            K9.save(editor);
+	        }
+            if (K9.manageBack()) {
+
+                if (mQueryString == null) {
+                    onShowFolderList();
+                } else {
+                    onAccounts();
+                }
+            } else {
+                finish();
+            }
         }
     }
 
@@ -1335,7 +1345,11 @@ public class MessageList
         mHandler.post(new Runnable() {
             public void run() {
                 if (mSplitView.isPrimaryContentMaximized()) {
-                    mSplitView.maximizeSecondaryContent();
+                    if (getScreenSizeInInches() < 6) {
+                        mSplitView.maximizeSecondaryContent();
+                    } else {
+                        mSplitView.setPrimaryContentSize(K9.getPrimaryMessageListContentSize());
+                    }
                 }
                 displayMessage(message);
             }
