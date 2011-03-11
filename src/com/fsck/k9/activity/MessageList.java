@@ -982,7 +982,7 @@ public class MessageList
         ActionBar actionBar = getActionBar();
         String titleString = "";
         if (mSelectedCount > 0)  {
-            actionBar.setTitle( getResources().getQuantityString(R.plurals.selected_message_count,mSelectedCount, mSelectedCount));
+            actionBar.setTitle(getResources().getQuantityString(R.plurals.selected_message_count, mSelectedCount, mSelectedCount));
 
             return;
         }
@@ -1096,12 +1096,12 @@ public class MessageList
             mSplitView.maximizePrimaryContent();
             return;
         } else {
-	        if (!mSplitView.isPrimaryContentMaximized()) {
-	            SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
-	            K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
-	            Editor editor = preferences.edit();
-	            K9.save(editor);
-	        }
+            if (!mSplitView.isPrimaryContentMaximized()) {
+                SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+                K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
+                Editor editor = preferences.edit();
+                K9.save(editor);
+            }
             if (K9.manageBack()) {
 
                 if (mQueryString == null) {
