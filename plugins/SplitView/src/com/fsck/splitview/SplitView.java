@@ -147,6 +147,7 @@ public class SplitView extends LinearLayout implements OnTouchListener {
             params.height = newHeight;
         }
         mPrimaryContent.setLayoutParams(params);
+        unMinimizeSecondaryContent();
         return true;
 
     }
@@ -197,8 +198,21 @@ public class SplitView extends LinearLayout implements OnTouchListener {
         }
         mPrimaryContent.setLayoutParams(params);
         mSecondaryContent.setLayoutParams(secondaryParams);
+        unMinimizeSecondaryContent();
+    }
+
+    private void unMinimizeSecondaryContent() {
+        ViewGroup.LayoutParams secondaryParams = mSecondaryContent.getLayoutParams();
+        if (getOrientation() == VERTICAL) {
+            secondaryParams.height = LayoutParams.FILL_PARENT;
+        } else {
+            secondaryParams.width = LayoutParams.FILL_PARENT;
+
+        }
+        mSecondaryContent.setLayoutParams(secondaryParams);
 
     }
+
     public void maximizeSecondaryContent() {
         ViewGroup.LayoutParams params = mPrimaryContent.getLayoutParams();
         ViewGroup.LayoutParams secondaryParams = mSecondaryContent.getLayoutParams();
