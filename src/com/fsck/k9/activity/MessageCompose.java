@@ -504,7 +504,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (!ACTION_EDIT_DRAFT.equals(action)) {
                 String bccAddress = mAccount.getAlwaysBcc();
                 if ((bccAddress != null) && !("".equals(bccAddress))) {
-                    addAddress(mBccView, new Address(bccAddress, ""));
+			String[] bccAddresses = bccAddress.split(",");
+			for (String oneBccAddress : bccAddresses) {
+				addAddress(mBccView, new Address(oneBccAddress, ""));
+					}
                 }
             }
 
