@@ -13,27 +13,20 @@
 	android:id="@+id/splitview"
     android:orientation="horizontal"
     splitview:handle="@+id/handle"
-    splitview:primaryContent="@+id/message_list_holder"
+    splitview:primaryContent="@+id/message_list"
     splitview:secondaryContent="@+id/message_view_wrapper">
-    <LinearLayout
-    android:id="@+id/message_list_holder"
-	android:layout_height="fill_parent"
-	android:layout_width="270dp"
-    android:minWidth="2.7in"
-	android:orientation="vertical">
       <ListView
 	android:id="@+id/message_list"
-
-    android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+    android:layout_height="fill_parent"
+	android:layout_width="270dp"
+    android:minWidth="2.7in"
 	android:cacheColorHint="?android:attr/colorBackground"
-	android:layout_weight="5" />
-    </LinearLayout>
+   />
     <ImageView
 	android:id="@+id/handle"
 	android:layout_height="fill_parent"
     android:layout_width="16dip"
 	android:background="@drawable/shade_handlebar_vertical" />
-      <include layout="@layout/message_view" />
+    <include layout="@layout/message_view" />
   </com.fsck.splitview.SplitView>
 </LinearLayout>

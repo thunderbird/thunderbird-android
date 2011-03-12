@@ -13,21 +13,15 @@
     android:id="@+id/splitview"
 	android:orientation="vertical"
     splitview:handle="@+id/handle"
-    splitview:primaryContent="@+id/message_list_holder"
+    splitview:primaryContent="@+id/message_list"
     splitview:secondaryContent="@+id/message_view_wrapper">
-    <LinearLayout
-	android:id="@+id/message_list_holder"
-	android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-	android:orientation="vertical">
       <ListView
 	android:id="@+id/message_list"
-	android:minHeight="2.5in"
 	android:layout_height="200dp"
 	android:layout_width="fill_parent"
+	android:minHeight="2.5in"
 	android:cacheColorHint="?android:attr/colorBackground"
-	android:layout_weight="5" />
-    </LinearLayout>
+   />
     <ImageView
 	android:id="@+id/handle"
 	android:layout_height="16dip"

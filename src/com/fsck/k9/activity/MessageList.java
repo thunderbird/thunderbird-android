@@ -234,7 +234,6 @@ public class MessageList
     private PgpData mPgpData = null;
 
 
-    private View mListHolder;
 
     private View mNext;
     private View mPrevious;
@@ -877,7 +876,6 @@ public class MessageList
         mListView.setItemsCanFocus(false);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        mListHolder = findViewById(R.id.message_list_holder);
 
 
         registerForContextMenu(mListView);
@@ -2999,14 +2997,6 @@ public class MessageList
         } else {
             holder.progress.setVisibility(ProgressBar.INVISIBLE);
         }
-    }
-
-    private void hideMessageList() {
-        mListHolder.setVisibility(View.GONE);
-    }
-
-    private void showMessageList() {
-        mListHolder.setVisibility(View.VISIBLE);
     }
 
 
