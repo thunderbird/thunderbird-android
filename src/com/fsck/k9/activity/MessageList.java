@@ -861,7 +861,9 @@ public class MessageList
         initializeActionBar();
 
         mSplitView = (SplitView) findViewById(R.id.splitview);
-        mSplitView.maximizePrimaryContent();
+        if (getScreenSizeInInches() < K9.TABLET_MIN_SIZE) {
+            mSplitView.maximizePrimaryContent();
+        }
 
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
@@ -1091,7 +1093,11 @@ public class MessageList
         // platform.
         //
         if (mSplitView.isSecondaryContentMaximized()) {
-            mSplitView.maximizePrimaryContent();
+                    if (getScreenSizeInInches() < K9.TABLET_MIN_SIZE) {
+                        mSplitView.maximizePrimaryContent();
+                    } else {
+                        mSplitView.setPrimaryContentSize(K9.getPrimaryMessageListContentSize());
+                    }
             return;
         } else {
 	        if (!mSplitView.isPrimaryContentMaximized()) {
@@ -1342,7 +1348,7 @@ public class MessageList
         mHandler.post(new Runnable() {
             public void run() {
                 if (mSplitView.isPrimaryContentMaximized()) {
-                    if (getScreenSizeInInches() < 6) {
+                    if (getScreenSizeInInches() < K9.TABLET_MIN_SIZE) {
                         mSplitView.maximizeSecondaryContent();
                     } else {
                         mSplitView.setPrimaryContentSize(K9.getPrimaryMessageListContentSize());

@@ -144,6 +144,8 @@ public class K9 extends Application {
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
 
+    public static int TABLET_MIN_SIZE = 5;
+
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
@@ -985,5 +987,6 @@ public class K9 extends Application {
             return false;
         }
     }
+
 
 }

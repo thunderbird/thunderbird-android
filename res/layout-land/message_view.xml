@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_alignParentRight="true"
     >
     <com.fsck.k9.view.ToggleScrollView
         android:id="@+id/top_view"
