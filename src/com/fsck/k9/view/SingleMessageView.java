@@ -208,7 +208,7 @@ public class SingleMessageView extends LinearLayout {
                 }
             }
         } else {
-            loadBodyFromUrl("file:///android_asset/empty.html");
+        //    loadBodyFromUrl("file:///android_asset/empty.html");
         }
     }
 
@@ -297,7 +297,6 @@ public class SingleMessageView extends LinearLayout {
     public void resetView() {
         setLoadPictures(false);
         mMessageContentView.scrollTo(0, 0);
-        mHeaderContainer.setVisibility(View.GONE);
         mMessageContentView.clearView();
         mAttachments.removeAllViews();
     }
