@@ -921,7 +921,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="count_search_summary">Apaga-ho perquè es mostri més ràpid</string>
 
     <string name="hide_special_accounts_title">Amaga comptes especials</string>
-    <string name="hide_special_accounts_summary">Amaga la bústia d'entrada unificada i tots els missatges dels comptes</string>
+    <string name="hide_special_accounts_summary">Amaga la bústia d\'entrada unificada i tots els missatges dels comptes</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier">- Senyalat</string>
