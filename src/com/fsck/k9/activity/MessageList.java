@@ -1895,26 +1895,6 @@ public class MessageList
             toggleBatchMode();
             return true;
         }
-        case R.id.batch_delete_op: {
-            deleteSelected();
-            return true;
-        }
-        case R.id.batch_mark_read_op: {
-            flagSelected(Flag.SEEN, true);
-            return true;
-        }
-        case R.id.batch_mark_unread_op: {
-            flagSelected(Flag.SEEN, false);
-            return true;
-        }
-        case R.id.batch_flag_op: {
-            flagSelected(Flag.FLAGGED, true);
-            return true;
-        }
-        case R.id.batch_unflag_op: {
-            flagSelected(Flag.FLAGGED, false);
-            return true;
-        }
         case R.id.app_settings: {
             onEditPrefs();
             return true;
@@ -1978,8 +1958,7 @@ public class MessageList
         }
     }
 
-    private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
-                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op,
+    private final int[] batch_ops = { R.id.batch_copy_op,
                                       R.id.batch_archive_op, R.id.batch_spam_op, R.id.batch_move_op,
                                       R.id.batch_select_all, R.id.batch_deselect_all
                                     };
@@ -2019,10 +1998,6 @@ public class MessageList
 
         boolean newFlagState = computeBatchDirection(true);
         boolean newReadState = computeBatchDirection(false);
-        menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
-        menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
-        menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
-        menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
         menu.findItem(R.id.batch_deselect_all).setVisible(anySelected);
         menu.findItem(R.id.batch_select_all).setEnabled(true);
 

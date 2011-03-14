@@ -42,36 +42,6 @@
         android:icon="@drawable/ic_menu_batch">
         <menu>
             <item
-                android:id="@+id/batch_flag_mode"
-                android:title="@string/batch_flag_mode"
-                android:visible="false"
-            />
-            <item
-                android:id="@+id/batch_plain_mode"
-                android:title="@string/batch_plain_mode"
-                android:visible="false"
-            />
-            <item
-                android:id="@+id/batch_delete_op"
-                android:title="@string/batch_delete_op"
-            />
-            <item
-                android:id="@+id/batch_mark_read_op"
-                android:title="@string/batch_mark_read_op"
-            />
-            <item
-                android:id="@+id/batch_flag_op"
-                android:title="@string/batch_flag_op"
-            />
-            <item
-                android:id="@+id/batch_mark_unread_op"
-                android:title="@string/batch_mark_unread_op"
-            />
-            <item
-                android:id="@+id/batch_unflag_op"
-                android:title="@string/batch_unflag_op"
-            />
-            <item
                 android:id="@+id/batch_archive_op"
                 android:title="@string/batch_archive_op"
             />
