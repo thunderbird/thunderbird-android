@@ -610,7 +610,6 @@ public class MessageList
             setSelected(message, !message.selected);
         } else {
             onOpenMessage(message);
-            //mListView.setVisibility(View.GONE);
         }
     }
 
@@ -906,8 +905,6 @@ public class MessageList
         ActionBar actionBar = getActionBar();
         actionBar.removeAllActions();
         actionBar.clearHomeAction();
-        //actionBar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
-        //actionBar.addAction(new IntentAction(this, createShareIntent(), R.drawable.ic_title_share_default));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.addAction(new AbstractAction(R.drawable.ic_actionbar_search) {
             @Override public void performAction(View view) {
@@ -2365,7 +2362,7 @@ public class MessageList
 
 
                 displayMessageBody(account, folder, uid, message);
-            }//loadMessageForViewBodyAvailable
+            }
 
 
             @Override
@@ -3286,14 +3283,6 @@ public class MessageList
         }
         return ret;
     }
-
-
-
-// Message Buttons
-//
-//
-//
-
 
     private void setupButtonViews() {
         setOnClickListener(R.id.from);
