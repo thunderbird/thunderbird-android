@@ -208,7 +208,7 @@ public class SingleMessageView extends LinearLayout {
                 }
             }
         } else {
-        //    loadBodyFromUrl("file:///android_asset/empty.html");
+            //    loadBodyFromUrl("file:///android_asset/empty.html");
         }
     }
 

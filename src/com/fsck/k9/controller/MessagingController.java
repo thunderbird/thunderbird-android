@@ -847,8 +847,8 @@ public class MessagingController implements Runnable {
         /*
          * We don't ever sync the Outbox or errors folder
          */
-        if ( folder != null && account != null &&
-               ( folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName()))) {
+        if (folder != null && account != null &&
+                (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName()))) {
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFinished(account, folder, 0, 0);
             }

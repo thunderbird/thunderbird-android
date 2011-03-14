@@ -175,13 +175,13 @@ public class K9Activity extends Activity {
         }
     }
 
-    public double getScreenSizeInInches () {
-        if (mScreenSize == 0 )  {
-         DisplayMetrics metrics = new DisplayMetrics();
-         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    public double getScreenSizeInInches() {
+        if (mScreenSize == 0)  {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-         mScreenSize = Math.sqrt(Math.pow( (metrics.heightPixels/metrics.ydpi), 2 ) +
-         Math.pow((metrics.widthPixels/metrics.xdpi), 2) );
+            mScreenSize = Math.sqrt(Math.pow((metrics.heightPixels / metrics.ydpi), 2) +
+                                    Math.pow((metrics.widthPixels / metrics.xdpi), 2));
         }
 
         return mScreenSize;

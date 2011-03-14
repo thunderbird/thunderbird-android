@@ -862,7 +862,7 @@ public class MessageList
         mSplitView = (SplitView) findViewById(R.id.splitview);
 
 
-       setInitialListViewSize();
+        setInitialListViewSize();
 
         mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
@@ -973,7 +973,7 @@ public class MessageList
         actionBar.setOnTitleClickListener(null);
     }
 
-      private void setInitialListViewSize() {
+    private void setInitialListViewSize() {
 
 
         if (getScreenSizeInInches() < K9.TABLET_MIN_SIZE) {
@@ -981,14 +981,14 @@ public class MessageList
         } else {
             mSplitView.setPrimaryContentSize(K9.getPrimaryMessageListContentSize());
         }
-      }
+    }
 
 
     public void setActionBarTitle() {
         ActionBar actionBar = getActionBar();
         String titleString = "";
         if (mSelectedCount > 0)  {
-            actionBar.setTitle( getResources().getQuantityString(R.plurals.selected_message_count,mSelectedCount, mSelectedCount));
+            actionBar.setTitle(getResources().getQuantityString(R.plurals.selected_message_count, mSelectedCount, mSelectedCount));
 
             return;
         }
@@ -1102,9 +1102,9 @@ public class MessageList
             setInitialListViewSize();
             return;
         } else {
-	        if (!mSplitView.isPrimaryContentMaximized()) {
+            if (!mSplitView.isPrimaryContentMaximized()) {
                 saveListViewSize();
-	        }
+            }
             if (K9.manageBack()) {
                 if (mQueryString == null) {
                     onShowFolderList();
@@ -3305,7 +3305,7 @@ public class MessageList
         mDelete.setEnabled(true);
         mNext.setEnabled(mNextMessage != null);
         mPrevious.setEnabled(mPreviousMessage != null);
-        mMove.setEnabled( mController.isMoveCapable(mAccount));
+        mMove.setEnabled(mController.isMoveCapable(mAccount));
     }
 
 
@@ -3332,10 +3332,10 @@ public class MessageList
         mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
     }
 
-                private void saveListViewSize() {
-	            SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
-	            K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
-	            Editor editor = preferences.edit();
-	            K9.save(editor);
-                }
+    private void saveListViewSize() {
+        SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+        K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
+        Editor editor = preferences.edit();
+        K9.save(editor);
+    }
 }
