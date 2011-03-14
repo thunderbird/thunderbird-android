@@ -3294,39 +3294,29 @@ public class MessageList
         setOnClickListener(R.id.download_remainder);
 
 
-        staticButtons();
-    }
-
-    private void setupDisplayMessageButtons() {
-        mDelete.setEnabled(true);
-        mNext.setEnabled(mNextMessage != null);
-        mPrevious.setEnabled(mPreviousMessage != null);
-        // If moving isn't support at all, then all of them must be disabled anyway.
-        if (mController.isMoveCapable(mAccount)) {
-            mMove.setEnabled(true);
-        } else {
-        }
-    }
-
-    private void staticButtons() {
         mNext = findViewById(R.id.next);
         mPrevious = findViewById(R.id.previous);
         mDelete = findViewById(R.id.delete);
         mMove = findViewById(R.id.move);
     }
 
+    private void setupDisplayMessageButtons() {
+        mDelete.setEnabled(true);
+        mNext.setEnabled(mNextMessage != null);
+        mPrevious.setEnabled(mPreviousMessage != null);
+        mMove.setEnabled( mController.isMoveCapable(mAccount));
+    }
+
+
 
     private void disableButtons() {
         mMessageView.setLoadPictures(false);
-        disableMoveButtons();
+        mMove.setEnabled(false);
         mNext.setEnabled(false);
         mPrevious.setEnabled(false);
         mDelete.setEnabled(false);
     }
 
-    private void disableMoveButtons() {
-        mMove.setEnabled(false);
-    }
 
     private void setOnClickListener(int viewCode) {
         View thisView = findViewById(viewCode);
