@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.FolderInfoHolder;
@@ -93,6 +94,7 @@ public class FolderList extends K9ListActivity {
                 public void run() {
                     mAdapter.mFolders.clear();
                     mAdapter.mFolders.addAll(newFolders);
+                    mAdapter.mFilteredFolders = mAdapter.mFolders;
                     mHandler.dataChanged();
                 }
             });
@@ -245,7 +247,7 @@ public class FolderList extends K9ListActivity {
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(id)).name);
+                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);
             }
         });
         registerForContextMenu(mListView);
@@ -299,6 +301,7 @@ public class FolderList extends K9ListActivity {
         restorePreviousData();
 
         setListAdapter(mAdapter);
+        getListView().setTextFilterEnabled(mAdapter.getFilter() != null); // should never be false but better safe then sorry
 
         setTitle(mAccount.getDescription());
 
@@ -310,6 +313,7 @@ public class FolderList extends K9ListActivity {
 
         if (previousData != null) {
             mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+            mAdapter.mFilteredFolders = Collections.unmodifiableList(mAdapter.mFolders); 
         }
     }
 
@@ -714,24 +718,26 @@ public class FolderList extends K9ListActivity {
         menu.setHeaderTitle(folder.displayName);
     }
 
-    class FolderListAdapter extends BaseAdapter {
+    class FolderListAdapter extends BaseAdapter implements Filterable {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
+        private Filter mFilter = new FolderListFilter();
 
         public Object getItem(long position) {
             return getItem((int)position);
         }
 
         public Object getItem(int position) {
-            return mFolders.get(position);
+            return mFilteredFolders.get(position);
         }
 
 
         public long getItemId(int position) {
-            return position ;
+            return mFilteredFolders.get(position).folder.getName().hashCode() ;
         }
 
         public int getCount() {
-            return mFolders.size();
+            return mFilteredFolders.size();
         }
 
         @Override
@@ -1002,7 +1008,7 @@ public class FolderList extends K9ListActivity {
         public int getFolderIndex(String folder) {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.name = folder;
-            return   mFolders.indexOf(searchHolder);
+            return   mFilteredFolders.indexOf(searchHolder);
         }
 
         public FolderInfoHolder getFolder(String folder) {
@@ -1022,7 +1028,8 @@ public class FolderList extends K9ListActivity {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
             } else {
-                // XXX TODO - should catch an exception here
+                Log.e(K9.LOG_TAG, "getView with illegal positon=" + position
+                		+ " called! count is only " + getCount());
                 return null;
             }
         }
@@ -1122,13 +1129,84 @@ public class FolderList extends K9ListActivity {
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
 
         public boolean isItemSelectable(int position) {
             return true;
         }
 
+		public void setFilter(final Filter filter) {
+			this.mFilter = filter;
+		}
+
+		public Filter getFilter() {
+			return mFilter;
+		}
+
+		/**
+		 * Filter to search for occurences of the search-expression in any place of the
+		 * folder-name instead of doing jsut a prefix-search.
+		 *
+		 * @author Marcus@Wolschon.biz
+		 */
+		public class FolderListFilter extends Filter {
+
+			/**
+		     * Do the actual search.
+		     * {@inheritDoc}
+		     *
+		     * @see #publishResults(CharSequence, FilterResults)
+		     */
+		    @Override
+		    protected FilterResults performFiltering(CharSequence searchTerm) {
+		        FilterResults results = new FilterResults();
+
+		        if ((searchTerm == null) || (searchTerm.length() == 0)) {
+		            ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+		            results.values = list;
+		            results.count = list.size();
+		            } else {
+		            final String searchTermString = searchTerm.toString().toLowerCase();
+		            final String[] words = searchTermString.split(" ");
+		            final int wordCount = words.length;
+
+		            final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+
+		            for (final FolderInfoHolder value : mFolders) {
+		            	if (value.displayName == null) {
+		            		continue;
+		            	}
+		                final String valueText = value.displayName.toLowerCase();
+
+		                for (int k = 0; k < wordCount; k++) {
+		                    if (valueText.contains(words[k])) {
+		                    	newValues.add(value);
+		                        break;
+		                    }
+		                }
+		            }
+
+		            results.values = newValues;
+		            results.count = newValues.size();
+		        }
+
+		        return results;
+		    }
+
+		    /**
+		     * Publish the results to the user-interface.
+		     * {@inheritDoc}
+		     */
+		    @SuppressWarnings("unchecked")
+		    @Override
+		    protected void publishResults(CharSequence constraint, FilterResults results) {
+		        //noinspection unchecked
+		        mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
+		        // Send notification that the data set changed now
+		        notifyDataSetChanged();
+		    }
+		}
     }
 
     static class FolderViewHolder {
