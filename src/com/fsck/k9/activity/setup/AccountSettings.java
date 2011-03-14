@@ -857,7 +857,7 @@ public class AccountSettings extends K9PreferenceActivity {
             while (iter.hasNext())
             {
                 Folder folder = iter.next();
-                if (mAccount.getOutboxFolderName().equals(folder.getName()))
+                if (mAccount.getOutboxFolderName().equalsIgnoreCase(folder.getName()))
                 {
                     iter.remove();
                 }

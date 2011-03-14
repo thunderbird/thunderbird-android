@@ -20,7 +20,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.service.MailService;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access
@@ -659,6 +658,8 @@ public class StorageManager {
         sync.writeLock.lock();
         sync.unmounting = false;
         sync.writeLock.unlock();
+
+        K9.setServicesEnabled(K9.app);
     }
 
     /**
@@ -684,7 +685,7 @@ public class StorageManager {
         }
 
         // XXX we should reset mail service ONLY if there are accounts using the storage (this is not done in a regular listener because it has to be invoked afterward)
-        MailService.actionReset(mApplication, null);
+        K9.setServicesEnabled(K9.app);
     }
 
     /**

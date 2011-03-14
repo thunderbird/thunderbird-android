@@ -139,8 +139,7 @@
     <string name="status_sending">Enviando</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Repetindo carregamento de mensagens</string>
-
-    <string name="load_more_messages_fmt">Toque para ver mais<xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
+    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -200,10 +199,10 @@
     <string name="end_of_folder">Sem mais mensagens</string>
 
     <string name="accounts_welcome">
-Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalemente baseado no cliente de e-mail padrão do Android.
+Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
 \n
 \n\nK-9\'s recursor aprimorados incluídos:
-\n * Puchar e-mail usando IMAP IDLE
+\n * Puxar e-mail usando IMAP IDLE
 \n * Melhor performance
 \n * Reclassificação de mensagens
 \n * E-mails com assinaturas
@@ -661,7 +660,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="folder_settings_in_top_group_label">Mostrar no top group</string>
     <string name="folder_settings_in_top_group_summary">Mostrar perto do topo da lista de pastas</string>
 
-    <string name="folder_settings_folder_display_mode_label">Calsse de exibição para pasta</string>
+    <string name="folder_settings_folder_display_mode_label">Classe de exibição para pasta</string>
     <string name="folder_settings_folder_display_mode_normal">Nenhuma</string>
     <string name="folder_settings_folder_display_mode_first_class">Primeira Classe</string>
     <string name="folder_settings_folder_display_mode_second_class">Segunda Classe</string>
@@ -702,7 +701,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_led_summary">Piscar LED quando chegar e-mail</string>
 
 
-    <string name="account_settings_servers">Configução de servidor</string>
+    <string name="account_settings_servers">Configuração de servidor</string>
 
     <string name="account_settings_composition_title">Opções para composição de uma mensagem</string>
     <string name="account_settings_composition_label">Composição padrão</string>
@@ -786,10 +785,10 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_clear_dlg_title">Limpar conta</string>
     <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
 
-    <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP
-        permitindo este programa se conecte. Se não estiver conseguinto logar nela com seu
+    <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP,
+        permitindo que este programa se conecte. Se não estiver conseguindo logar nela com seu
         endereço de e-mail e senha corretos, talvez você não tenha uma conta \"Plus\" paga.
-		Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
+        Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
 
     <string name="provider_note_yahoojp">Se desejar utilizar POP3 para este provedor, você deverá permitir o uso deste na página de configurações de se e-mail Yahoo.</string>
 
@@ -822,7 +821,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
 
 
-    <string name="account_settings_signature__location_label">Loca da Assinatura</string>
+    <string name="account_settings_signature__location_label">Local da Assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes de escrever o texto</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois do texto escrito</string>
     <string name="setting_theme_dark">Escuro</string>
@@ -868,7 +867,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="batch_delete_op">Excluir selecionados</string>
     <string name="batch_mark_read_op">Marcar selecionados como lidos</string>
     <string name="batch_mark_unread_op">Marcar selecionados como não lidos</string>
-    <string name="batch_flag_op">Incuir estrela para selecionados</string>
+    <string name="batch_flag_op">Incluir estrela para selecionados</string>
     <string name="batch_unflag_op">Remover estrela dos selecionados</string>
     <string name="batch_archive_op">Mover selecionados para arquivo</string>
     <string name="batch_spam_op">Mover selecionados para Spam</string>
@@ -918,7 +917,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Favoritado</string>
+    <string name="flagged_modifier"> - Favorito</string>
     <string name="unread_modifier"> - Não lido</string>
 
     <string name="search_all_messages_title">Todas as mensagens</string>
@@ -940,7 +939,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
 
-    <string name="font_size_settings_title">Tamanho da fornte</string>
+    <string name="font_size_settings_title">Tamanho da fonte</string>
     <string name="font_size_settings_description">Configurar tamanho da fonte</string>
 
     <string name="font_size_account_list">Lista de contas</string>

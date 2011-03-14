@@ -245,6 +245,13 @@ public class K9 extends Application {
      */
     public static final int MAX_ATTACHMENT_DOWNLOAD_SIZE = (128 * 1024 * 1024);
 
+
+    /* How many times should K-9 try to deliver a message before giving up
+     * until the app is killed and restarted
+     */
+
+    public static int MAX_SEND_ATTEMPTS = 5;
+
     /**
      * Max time (in millis) the wake lock will be held for when background sync is happening
      */
@@ -321,11 +328,7 @@ public class K9 extends Application {
 
     }
 
-    public static void setServicesEnabled(Context context, Integer wakeLockId) {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAvailableAccounts().size() > 0, wakeLockId);
-    }
-
-    public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
+    private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
 
         PackageManager pm = context.getPackageManager();
 

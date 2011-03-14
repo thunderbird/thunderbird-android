@@ -1787,7 +1787,11 @@ public class MessagingController implements Runnable {
                 rootCause = nextCause;
             }
         } while (nextCause != null);
-        return rootCause.getMessage();
+        if (rootCause instanceof MessagingException) {
+            return rootCause.getMessage();
+        } else {
+            return rootCause.toString();
+        }
     }
 
     private void queuePendingCommand(Account account, PendingCommand command) {
@@ -2889,15 +2893,21 @@ public class MessagingController implements Runnable {
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
     }
 
-    private void notifySendFailed(Account account, Exception lastFailure) {
+    private void notifySendTempFailed(Account account, Exception lastFailure) {
+        notifySendFailed(account, lastFailure, account.getOutboxFolderName());
+    }
+    private void notifySendPermFailed(Account account, Exception lastFailure) {
+        notifySendFailed(account, lastFailure, account.getDraftsFolderName());
+    }
+    private void notifySendFailed(Account account, Exception lastFailure, String openFolder) {
         NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
 
-        Intent i = FolderList.actionHandleNotification(mApplication, account, account.getOutboxFolderName());
+        Intent i = FolderList.actionHandleNotification(mApplication, account, openFolder);
 
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
-        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
+        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), getRootCauseMessage(lastFailure), pi);
 
         configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -3005,6 +3015,14 @@ public class MessagingController implements Runnable {
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
 
+                    if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
+                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after "+ K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
+                        notifySendTempFailed(account, new MessagingException(message.getSubject()));
+                        continue;
+                    }
+
+
+
                     localFolder.fetch(new Message[] { message }, fp, null);
                     try {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
@@ -3039,6 +3057,15 @@ public class MessagingController implements Runnable {
                         }
 
                     } catch (Exception e) {
+                        // 5.x.x errors from the SMTP server are "PERMFAIL"
+                        // move the message over to drafts rather than leaving it in the outbox
+                        // This is a complete hack, but is worlds better than the previous
+                        // "don't even bother" functionality
+                        if (getRootCauseMessage(e).startsWith("5")) {
+                            localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
+                        } else {
+                        }
+
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(K9.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners()) {
@@ -3058,7 +3085,11 @@ public class MessagingController implements Runnable {
                 l.sendPendingMessagesCompleted(account);
             }
             if (lastFailure != null) {
-                notifySendFailed(account, lastFailure);
+                if (getRootCauseMessage(lastFailure).startsWith("5")) {
+                    notifySendPermFailed(account, lastFailure);
+                } else {
+                    notifySendTempFailed(account, lastFailure);
+                }
             }
         } catch (UnavailableStorageException e) {
             Log.i(K9.LOG_TAG, "Failed to send pending messages because storage is not available - trying again later.");
