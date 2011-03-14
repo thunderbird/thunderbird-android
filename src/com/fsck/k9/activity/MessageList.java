@@ -1103,13 +1103,9 @@ public class MessageList
             return;
         } else {
 	        if (!mSplitView.isPrimaryContentMaximized()) {
-	            SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
-	            K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
-	            Editor editor = preferences.edit();
-	            K9.save(editor);
+                saveListViewSize();
 	        }
             if (K9.manageBack()) {
-
                 if (mQueryString == null) {
                     onShowFolderList();
                 } else {
@@ -3336,4 +3332,10 @@ public class MessageList
         mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
     }
 
+                private void saveListViewSize() {
+	            SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+	            K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
+	            Editor editor = preferences.edit();
+	            K9.save(editor);
+                }
 }
