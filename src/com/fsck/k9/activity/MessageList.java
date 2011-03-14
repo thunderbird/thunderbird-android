@@ -3177,6 +3177,9 @@ public class MessageList
         if (!mController.isMoveCapable(mAccount)) {
             return;
         }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
+            return;
+        }
         List<Message> messageList = new ArrayList<Message>();
 
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
@@ -3202,17 +3205,11 @@ public class MessageList
 
     private void onArchiveBatch() {
         String folderName = mAccount.getArchiveFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
         onMoveChosenBatch(folderName);
     }
 
     private void onSpamBatch() {
         String folderName = mAccount.getSpamFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
         onMoveChosenBatch(folderName);
     }
 
