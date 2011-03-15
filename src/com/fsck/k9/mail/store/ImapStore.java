@@ -1453,15 +1453,20 @@ public class ImapStore extends Store {
                  */
 
                 /*
-                 body type
-                 body subtype
-                 body parameter parenthesized list
-                 body id
-                 body description
-                 body encoding
-                 body size
+                 *  0| 0  body type
+                 *  1| 1  body subtype
+                 *  2| 2  body parameter parenthesized list
+                 *  3| 3  body id (unused)
+                 *  4| 4  body description (unused)
+                 *  5| 5  body encoding
+                 *  6| 6  body size
+                 *  -| 7  text lines (only for type TEXT, unused)
+                 * Extensions (optional):
+                 *  7| 8  body MD5 (unused)
+                 *  8| 9  body disposition
+                 *  9|10  body language (unused)
+                 * 10|11  body location (unused)
                  */
-
 
                 String type = bs.getString(0);
                 String subType = bs.getString(1);
@@ -1508,11 +1513,11 @@ public class ImapStore extends Store {
                 // Extension items
                 ImapList bodyDisposition = null;
                 if (("text".equalsIgnoreCase(type))
-                        && (bs.size() > 8)
+                        && (bs.size() > 9)
                         && (bs.get(9) instanceof ImapList)) {
                     bodyDisposition = bs.getList(9);
                 } else if (!("text".equalsIgnoreCase(type))
-                           && (bs.size() > 7)
+                           && (bs.size() > 8)
                            && (bs.get(8) instanceof ImapList)) {
                     bodyDisposition = bs.getList(8);
                 }
