@@ -110,6 +110,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_MESSAGE_FORMAT = "com.fsck.k9.activity.MessageCompose.messageFormat";
 
+    final static Intent CONTACT_PICKER_INTENT = new Intent(Intent.ACTION_PICK,  android.provider.ContactsContract.Contacts.CONTENT_URI);
+
+
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
     private static final int MSG_UPDATE_TITLE = 3;
@@ -1549,7 +1552,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
-<<<<<<< HEAD
             String email = mContacts.getEmailFromContactPicker(data);
             if (email.length() == 0) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
@@ -1566,66 +1568,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
 
-=======
-            Cursor cursor = null;
-            String email = "";
-            String name = "";
-            try {
-                Uri result = data.getData();
-                Log.v(K9.LOG_TAG, "Got a contact result: " + result.toString());
-
-                // get the contact id from the Uri
-                String id = result.getLastPathSegment();
-                Cursor c = managedQuery(result, null, null, null, null);
-
-                //  name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-                // query for everything email
-                cursor = getContentResolver().query(Email.CONTENT_URI,
-                                                    null, Email.CONTACT_ID + "=?", new String[] { id },
-                                                    null);
-
-                int emailIdx = cursor.getColumnIndex(Email.DATA);
-
-                if (cursor.moveToFirst()) {
-                    email = cursor.getString(emailIdx);
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Failed to get email data", e);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-                MultiAutoCompleteTextView emailEntry;
-                if (requestCode == CONTACT_PICKER_TO) {
-                    emailEntry = mToView;
-                } else if (requestCode == CONTACT_PICKER_CC) {
-                    emailEntry = mCcView;
-                } else if (requestCode == CONTACT_PICKER_BCC) {
-                    emailEntry = mBccView;
-                } else {
-                    return;
-                }
-
-
-                if (email.length() == 0) {
-                    Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                addAddress(emailEntry, new Address(email, ""));
-            }
->>>>>>> first pass "add a contact" buttons
 
             break;
         }
     }
 
     public void doLaunchContactPicker(int resultId) {
-<<<<<<< HEAD
         startActivityForResult(mContacts.contactPickerIntent(), resultId);
-=======
-        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  android.provider.ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(contactPickerIntent, resultId);
->>>>>>> first pass "add a contact" buttons
     }
 
 
