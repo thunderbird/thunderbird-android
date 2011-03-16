@@ -32,6 +32,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 
 import java.io.FileNotFoundException;
@@ -171,6 +172,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             if (stats == null) {
                 stats = new AccountStats(); // empty stats for unavailable accounts
+                stats.available = false;
             }
             accountStats.put(account.getUuid(), stats);
             if (account instanceof Account) {
@@ -297,6 +299,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             restoreAccountStats(icicle);
         }
+        
+        
 
     }
 
@@ -319,18 +323,37 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
+    private StorageManager.StorageListener storageListener = new StorageManager.StorageListener()
+        {
+            
+            @Override
+            public void onUnmount(String providerId)
+            {
+                refresh();
+            }
+            
+            @Override
+            public void onMount(String providerId)
+            {
+                refresh();
+            }
+        };
+    
     @Override
     public void onResume() {
         super.onResume();
 
         refresh();
         MessagingController.getInstance(getApplication()).addListener(mListener);
+        StorageManager.getInstance(getApplication()).addListener(storageListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
+        StorageManager.getInstance(getApplication()).removeListener(storageListener);
+        
     }
 
     private void refresh() {
@@ -431,6 +454,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         } else {
             Account realAccount = (Account)account;
             if (!realAccount.isAvailable(this)) {
+                String toastText = getString(R.string.account_unavailable, account.getDescription());
+                Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+                toast.show();
+                
                 Log.i(K9.LOG_TAG, "refusing to open account that is not available");
                 return false;
             }
@@ -900,24 +927,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
 
-            /*
-                        // 20101024/fiouzy: the following code throws NullPointerException because Background is null
-
-                        // display unavailable accounts translucent
-                        if (account instanceof Account) {
-                            Account realAccount = (Account) account;
-                            if (realAccount.isAvailable(Accounts.this)) {
-                                holder.email.getBackground().setAlpha(255);
-                                holder.description.getBackground().setAlpha(255);
-                            } else {
-                                holder.email.getBackground().setAlpha(127);
-                                holder.description.getBackground().setAlpha(127);
-                            }
-                        } else {
-                            holder.email.getBackground().setAlpha(255);
-                            holder.description.getBackground().setAlpha(255);
-                        }
-            */
             if (stats != null && account instanceof Account && stats.size >= 0) {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));
                 holder.email.setVisibility(View.VISIBLE);
@@ -948,6 +957,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 holder.flaggedMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.FLAGGED));
                 holder.newMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.UNREAD));
+                
+                view.getBackground().setAlpha(stats.available ? 0 : 127);
 
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
@@ -960,6 +971,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             } else {
                 holder.newMessageCount.setVisibility(View.GONE);
                 holder.flaggedMessageCount.setVisibility(View.GONE);
+                view.getBackground().setAlpha(0);
             }
             if (account instanceof Account) {
                 Account realAccount = (Account)account;

@@ -9,7 +9,8 @@
     android:paddingRight="6dip"
     android:paddingBottom="2dip"
     android:descendantFocusability="blocksDescendants"
-    android:gravity="center_vertical" >
+    android:gravity="center_vertical"
+    android:background="#ccc" >
 
     <View
         android:id="@+id/chip"
@@ -18,7 +19,8 @@
         android:layout_marginTop="2dip"
         android:layout_marginBottom="1dip"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent" />
 
         
     <LinearLayout
