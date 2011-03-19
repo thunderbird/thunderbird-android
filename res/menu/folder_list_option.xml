@@ -70,10 +70,12 @@
             android:title="@string/global_settings_action"
             android:icon="@android:drawable/ic_menu_preferences"
         />
+        <!-- Please leave this here in case it is desired later 
         <item android:id="@+id/export"
                android:title="@string/settings_export_account" /> 
         <item android:id="@+id/export_all"
-               android:title="@string/settings_export_all" /> 
+               android:title="@string/settings_export_all" />
+        --> 
         </menu>
     </item>
 	<item
