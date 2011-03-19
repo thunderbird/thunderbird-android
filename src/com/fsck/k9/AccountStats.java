@@ -10,4 +10,5 @@ public class AccountStats implements Serializable {
     public long size = -1;
     public int unreadMessageCount = 0;
     public int flaggedMessageCount = 0;
+    public boolean available = true;
 }
