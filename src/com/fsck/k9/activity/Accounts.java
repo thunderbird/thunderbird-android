@@ -293,22 +293,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
-    private StorageManager.StorageListener storageListener = new StorageManager.StorageListener()
-        {
-            
-            @Override
-            public void onUnmount(String providerId)
-            {
-                refresh();
-            }
-            
-            @Override
-            public void onMount(String providerId)
-            {
-                refresh();
-            }
-        };
-    
+    private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {
+
+        @Override
+        public void onUnmount(String providerId) {
+            refresh();
+        }
+
+        @Override
+        public void onMount(String providerId) {
+            refresh();
+        }
+    };
+
     @Override
     public void onResume() {
         super.onResume();
@@ -323,7 +320,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
-        
+
     }
 
     private void refresh() {
@@ -331,12 +328,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts()
-            && accounts.length > 0) {
+                && accounts.length > 0) {
             newAccounts = new ArrayList<BaseAccount>(accounts.length + 2);
             newAccounts.add(integratedInboxAccount);
             newAccounts.add(unreadAccount);
-        }
-        else {
+        } else {
             newAccounts = new ArrayList<BaseAccount>(accounts.length);
         }
 
@@ -432,7 +428,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 String toastText = getString(R.string.account_unavailable, account.getDescription());
                 Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
                 toast.show();
-                
+
                 Log.i(K9.LOG_TAG, "refusing to open account that is not available");
                 return false;
             }
@@ -835,7 +831,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 holder.flaggedMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.FLAGGED));
                 holder.newMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.UNREAD));
-                
+
                 view.getBackground().setAlpha(stats.available ? 0 : 127);
 
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
