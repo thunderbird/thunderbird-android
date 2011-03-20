@@ -47,12 +47,11 @@ public class StorageImporter {
             {
                 throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version));
             }
-            if (providedEncryptionKey != null || storageImporter.needsKey() == false) {
-                Log.i(K9.LOG_TAG, "Version " + version + " settings file needs encryption key");
-                    finishImport(activity, storageImporter, dataset, providedEncryptionKey, listener);
+            if (storageImporter.needsKey() && providedEncryptionKey == null) {
+                gatherPassword(activity, storageImporter, dataset, listener);
             }
             else {
-                gatherPassword(activity, storageImporter, dataset, listener);
+                finishImport(activity, storageImporter, dataset, providedEncryptionKey, listener);
             }
         }
         catch (Exception e)
