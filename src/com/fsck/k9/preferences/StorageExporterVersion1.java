@@ -85,8 +85,7 @@ public class StorageExporterVersion1 implements IStorageExporter {
     }
 
     @Override
-    public boolean needsKey()
-    {
+    public boolean needsKey() {
         return true;
     }
 }

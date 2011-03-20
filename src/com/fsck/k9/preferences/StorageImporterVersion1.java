@@ -88,8 +88,7 @@ public class StorageImporterVersion1 implements IStorageImporter {
     }
 
     @Override
-    public boolean needsKey()
-    {
+    public boolean needsKey() {
         return true;
     }
 }

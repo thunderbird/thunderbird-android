@@ -323,8 +323,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             restoreAccountStats(icicle);
         }
-        
-        
+
+
 
     }
 
@@ -347,22 +347,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
-    private StorageManager.StorageListener storageListener = new StorageManager.StorageListener()
-        {
-            
-            @Override
-            public void onUnmount(String providerId)
-            {
-                refresh();
-            }
-            
-            @Override
-            public void onMount(String providerId)
-            {
-                refresh();
-            }
-        };
-    
+    private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {
+
+        @Override
+        public void onUnmount(String providerId) {
+            refresh();
+        }
+
+        @Override
+        public void onMount(String providerId) {
+            refresh();
+        }
+    };
+
     @Override
     public void onResume() {
         super.onResume();
@@ -377,7 +374,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
-        
+
     }
 
     private void refresh() {
@@ -481,7 +478,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 String toastText = getString(R.string.account_unavailable, account.getDescription());
                 Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
                 toast.show();
-                
+
                 Log.i(K9.LOG_TAG, "refusing to open account that is not available");
                 return false;
             }
@@ -856,13 +853,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onImport(Uri uri) {
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
-        
+
         final String fileName = uri.getPath();
-        AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(this, uri, new ImportListener()
-        {
+        AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(this, uri, new ImportListener() {
             @Override
-            public void success(int numAccounts)
-            {
+            public void success(int numAccounts) {
                 mHandler.progress(false);
                 String messageText =
                     numAccounts != 1
@@ -871,48 +866,42 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         refresh();
                     }
                 });
             }
-            
+
             @Override
-            public void failure(String message, Exception e)
-            {
+            public void failure(String message, Exception e) {
                 mHandler.progress(false);
                 showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, e.getLocalizedMessage()));
             }
-            
+
             @Override
-            public void canceled()
-            {
+            public void canceled() {
                 mHandler.progress(false);
             }
 
             @Override
-            public void started()
-            {
+            public void started() {
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         mHandler.progress(true);
                         String toastText = Accounts.this.getString(R.string.settings_importing);
                         Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
-                
+
             }
         });
     }
     private void showDialog(final Context context, final int headerRes, final String message) {
         this.runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(headerRes);
                 builder.setMessage(message);
@@ -927,7 +916,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
         });
     }
-     
+
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
         public AccountsAdapter(BaseAccount[] accounts) {
             super(Accounts.this, 0, accounts);
@@ -989,7 +978,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 holder.flaggedMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.FLAGGED));
                 holder.newMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.UNREAD));
-                
+
                 view.getBackground().setAlpha(stats.available ? 0 : 127);
 
                 holder.activeIcons.setOnClickListener(new OnClickListener() {

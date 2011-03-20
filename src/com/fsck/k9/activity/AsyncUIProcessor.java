@@ -63,7 +63,7 @@ public class AsyncUIProcessor {
                           );
 
     }
-    
+
     public void importSettings(final Activity activity, final Uri uri, final ImportListener listener) {
         threadPool.execute(new Runnable() {
             @Override
@@ -72,12 +72,11 @@ public class AsyncUIProcessor {
                 try {
                     ContentResolver resolver = mApplication.getContentResolver();
                     is = resolver.openInputStream(uri);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Log.w(K9.LOG_TAG, "Exception while resolving Uri to InputStream", e);
                     if (listener != null) {
                         listener.failure(e.getLocalizedMessage(), e);
-                    } 
+                    }
                     return;
                 }
                 final InputStream myIs = is;
@@ -107,29 +106,26 @@ public class AsyncUIProcessor {
                     }
 
                     @Override
-                    public void started()
-                    {
+                    public void started() {
                         if (listener != null) {
                             listener.started();
                         }
                     }
-                });  
+                });
             }
         }
-        );
+                          );
     }
-    
-    private void quietClose(InputStream is)
-    {
+
+    private void quietClose(InputStream is) {
         if (is != null) {
             try {
                 is.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Unable to close inputStream", e);
             }
         }
     }
-               
-    
+
+
 }

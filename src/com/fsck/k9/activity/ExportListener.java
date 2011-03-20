@@ -5,9 +5,9 @@ public interface ExportListener {
     public void success();
 
     public void failure(String message, Exception e);
-    
+
     public void canceled();
-    
+
     public void started();
 
 }

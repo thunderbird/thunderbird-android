@@ -20,16 +20,14 @@ public class ExportHelper {
         AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, version, uuid, new ExportListener() {
 
             @Override
-            public void canceled()
-            {
+            public void canceled() {
                 if (listener != null) {
                     listener.canceled();
                 }
             }
 
             @Override
-            public void failure(String message, Exception e)
-            {
+            public void failure(String message, Exception e) {
                 if (listener != null) {
                     listener.failure(message, e);
                 }
@@ -37,16 +35,14 @@ public class ExportHelper {
             }
 
             @Override
-            public void started()
-            {
+            public void started() {
                 if (listener != null) {
                     listener.started();
                 }
                 activity.runOnUiThread(new Runnable() {
 
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         String toastText = activity.getString(R.string.settings_exporting);
                         Toast toast = Toast.makeText(activity, toastText, Toast.LENGTH_SHORT);
                         toast.show();
@@ -55,8 +51,7 @@ public class ExportHelper {
             }
 
             @Override
-            public void success(String fileName)
-            {
+            public void success(String fileName) {
                 if (listener != null) {
                     listener.success(fileName);
                 }
@@ -64,19 +59,17 @@ public class ExportHelper {
             }
 
             @Override
-            public void success()
-            {
+            public void success() {
                 // This one should never be called here because the AsyncUIProcessor will generate a filename
             }
         });
     }
-          
+
     private static void showDialog(final Activity activity, final int headerRes, final String message) {
         activity.runOnUiThread(new Runnable() {
 
             @Override
-            public void run()
-            {
+            public void run() {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle(headerRes);
                 builder.setMessage(message);
@@ -91,6 +84,6 @@ public class ExportHelper {
                 builder.show();
             }
         });
-        
+
     }
 }

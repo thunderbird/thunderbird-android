@@ -167,36 +167,30 @@ public class K9Activity extends Activity {
     }
 
     public void onExport(final Account account) {
-        ExportHelper.exportSettings(this, account, new ExportListener()
-        {
+        ExportHelper.exportSettings(this, account, new ExportListener() {
 
             @Override
-            public void canceled()
-            {
+            public void canceled() {
                 setProgress(false);
             }
 
             @Override
-            public void failure(String message, Exception e)
-            {
+            public void failure(String message, Exception e) {
                 setProgress(false);
             }
 
             @Override
-            public void started()
-            {
+            public void started() {
                 setProgress(true);
             }
 
             @Override
-            public void success(String fileName)
-            {
+            public void success(String fileName) {
                 setProgress(false);
             }
 
             @Override
-            public void success()
-            {
+            public void success() {
                 setProgress(false);
             }
         });

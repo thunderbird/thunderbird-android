@@ -43,25 +43,21 @@ public class StorageImporter {
             Log.i(K9.LOG_TAG, "Got settings file version " + version);
 
             IStorageImporter storageImporter = StorageVersioning.createImporter(version);
-            if (storageImporter == null)
-            {
+            if (storageImporter == null) {
                 throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version));
             }
             if (storageImporter.needsKey() && providedEncryptionKey == null) {
                 gatherPassword(activity, storageImporter, dataset, listener);
-            }
-            else {
+            } else {
                 finishImport(activity, storageImporter, dataset, providedEncryptionKey, listener);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             if (listener != null) {
                 listener.failure(e.getLocalizedMessage(), e);
             }
         }
     }
-    
+
     private static void finishImport(Activity context, IStorageImporter storageImporter, ImportElement dataset, String encryptionKey, ImportListener listener) throws StorageImportExportException {
         if (listener != null) {
             listener.started();
@@ -82,46 +78,42 @@ public class StorageImporter {
             listener.success(numAccounts);
         }
     }
-    
+
     private static void gatherPassword(final Activity activity, final IStorageImporter storageImporter, final ImportElement dataset, final ImportListener listener) {
-        activity.runOnUiThread(new Runnable()
-        {
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_encryption_password_prompt),
-                        new PasswordEntryDialog.PasswordEntryListener() {
-                            public void passwordChosen(final String chosenPassword) {
-                                AsyncUIProcessor.getInstance(activity.getApplication()).execute(new Runnable() {
-                                    @Override
-                                    public void run()
-                                    {
-                                        try {
-                                            finishImport(activity, storageImporter, dataset, chosenPassword, listener);
-                                        }
-                                        catch (Exception e) {
-                                            Log.w(K9.LOG_TAG, "Failure during import", e);
-                                            if (listener != null) {
-                                                listener.failure(e.getLocalizedMessage(), e);
-                                            } 
-                                        }
+                new PasswordEntryDialog.PasswordEntryListener() {
+                    public void passwordChosen(final String chosenPassword) {
+                        AsyncUIProcessor.getInstance(activity.getApplication()).execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    finishImport(activity, storageImporter, dataset, chosenPassword, listener);
+                                } catch (Exception e) {
+                                    Log.w(K9.LOG_TAG, "Failure during import", e);
+                                    if (listener != null) {
+                                        listener.failure(e.getLocalizedMessage(), e);
                                     }
-                                });
-                            }
-    
-                            public void cancel() {
-                                if (listener != null) {
-                                    listener.canceled();
                                 }
                             }
                         });
-    
+                    }
+
+                    public void cancel() {
+                        if (listener != null) {
+                            listener.canceled();
+                        }
+                    }
+                });
+
                 dialog.show();
             }
         });
-       
+
     };
-    
+
 
     public static class ImportElement {
         String name;
