@@ -21,7 +21,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
 
-public class K9Activity extends Activity implements Progressable {
+public class K9Activity extends Activity {
     private GestureDetector gestureDetector;
 
     protected ScrollView mTopView;
@@ -167,7 +167,39 @@ public class K9Activity extends Activity implements Progressable {
     }
 
     public void onExport(final Account account) {
-        ExportHelper.exportSettings(this, this, account);
+        ExportHelper.exportSettings(this, account, new ExportListener()
+        {
+
+            @Override
+            public void canceled()
+            {
+                setProgress(false);
+            }
+
+            @Override
+            public void failure(String message, Exception e)
+            {
+                setProgress(false);
+            }
+
+            @Override
+            public void started()
+            {
+                setProgress(true);
+            }
+
+            @Override
+            public void success(String fileName)
+            {
+                setProgress(false);
+            }
+
+            @Override
+            public void success()
+            {
+                setProgress(false);
+            }
+        });
     }
 
 }

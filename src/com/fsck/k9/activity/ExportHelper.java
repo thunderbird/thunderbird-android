@@ -7,59 +7,90 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
+import com.fsck.k9.preferences.StorageVersioning;
 
 public class ExportHelper {
-    public static void exportSettings(final Activity activity, final Progressable progressable, final Account account) {
-        PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_encryption_password_prompt),
-        new PasswordEntryDialog.PasswordEntryListener() {
-            public void passwordChosen(String chosenPassword) {
-                String toastText = activity.getString(R.string.settings_exporting);
-                Toast toast = Toast.makeText(activity, toastText, Toast.LENGTH_SHORT);
-                toast.show();
-                progressable.setProgress(true);
-                String uuid = null;
-                if (account != null) {
-                    uuid = account.getUuid();
-                }
-                AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(uuid, chosenPassword,
-                new ExportListener() {
-                    public void failure(final String message, Exception e) {
-                        activity.runOnUiThread(new Runnable() {
-                            public void run() {
-                                progressable.setProgress(false);
-                                showDialog(activity, R.string.settings_export_failed_header, activity.getString(R.string.settings_export_failure, message));
-                            }
-                        });
-                    }
+    public static void exportSettings(final Activity activity, final Account account, final ExportListener listener) {
+        // Once there are more versions, build a UI to select which one to use.  For now, use the encrypted/encoded version:
+        String version = StorageVersioning.STORAGE_VERSION.VERSION1.getVersionString();
+        String uuid = null;
+        if (account != null) {
+            uuid = account.getUuid();
+        }
+        AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, version, uuid, new ExportListener() {
 
-                    public void exportSuccess(final String fileName) {
-                        activity.runOnUiThread(new Runnable() {
-                            public void run() {
-                                progressable.setProgress(false);
-                                showDialog(activity, R.string.settings_export_success_header, activity.getString(R.string.settings_export_success, fileName));
-                            }
-                        });
+            @Override
+            public void canceled()
+            {
+                if (listener != null) {
+                    listener.canceled();
+                }
+            }
+
+            @Override
+            public void failure(String message, Exception e)
+            {
+                if (listener != null) {
+                    listener.failure(message, e);
+                }
+                showDialog(activity, R.string.settings_export_failed_header, activity.getString(R.string.settings_export_failure, message));
+            }
+
+            @Override
+            public void started()
+            {
+                if (listener != null) {
+                    listener.started();
+                }
+                activity.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run()
+                    {
+                        String toastText = activity.getString(R.string.settings_exporting);
+                        Toast toast = Toast.makeText(activity, toastText, Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 });
             }
 
-            public void cancel() {
-            }
-        });
-        dialog.show();
-    }
-    private static void showDialog(final Activity activity, int headerRes, String message) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(headerRes);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.okay_action,
-        new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void success(String fileName)
+            {
+                if (listener != null) {
+                    listener.success(fileName);
+                }
+                showDialog(activity, R.string.settings_export_success_header, activity.getString(R.string.settings_export_success, fileName));
+            }
+
+            @Override
+            public void success()
+            {
+                // This one should never be called here because the AsyncUIProcessor will generate a filename
             }
         });
+    }
+          
+    private static void showDialog(final Activity activity, final int headerRes, final String message) {
+        activity.runOnUiThread(new Runnable() {
 
-        builder.show();
+            @Override
+            public void run()
+            {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(headerRes);
+                builder.setMessage(message);
+                builder.setPositiveButton(R.string.okay_action,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+        
     }
 }

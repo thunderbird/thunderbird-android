@@ -14,10 +14,13 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.preferences.StorageImporter.ImportElement;
 
 public class StorageImporterVersion1 implements IStorageImporter {
-    public int importPreferences(Preferences preferences, SharedPreferences.Editor editor, String data, String encryptionKey) throws StorageImportExportException {
+    public int importPreferences(Preferences preferences, SharedPreferences.Editor editor, ImportElement dataset, String encryptionKey) throws StorageImportExportException {
         try {
+
+            String data = dataset.data.toString();
             List<Integer> accountNumbers = Account.getExistingAccountNumbers(preferences);
             Log.i(K9.LOG_TAG, "Existing accountNumbers = " + accountNumbers);
             Map<String, String> uuidMapping = new HashMap<String, String>();
@@ -82,5 +85,11 @@ public class StorageImporterVersion1 implements IStorageImporter {
         } catch (Exception e) {
             throw new StorageImportExportException("Unable to decrypt settings", e);
         }
+    }
+
+    @Override
+    public boolean needsKey()
+    {
+        return true;
     }
 }

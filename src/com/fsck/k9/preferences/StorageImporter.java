@@ -1,14 +1,10 @@
 package com.fsck.k9.preferences;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -18,43 +14,22 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.activity.AsyncUIProcessor;
+import com.fsck.k9.activity.ImportListener;
+import com.fsck.k9.activity.PasswordEntryDialog;
 import com.fsck.k9.helper.DateFormatter;
 
 public class StorageImporter {
-    public static int importPreferences(Context context, String fileName, String encryptionKey) throws StorageImportExportException {
-        InputStream is = null;
-        try {
-            is = new FileInputStream(fileName);
-        } catch (FileNotFoundException fnfe) {
-            throw new StorageImportExportException("Failure opening settings file " + fileName, fnfe);
-        }
 
+    public static void importPreferences(Activity activity, InputStream is, String providedEncryptionKey, ImportListener listener) {
         try {
-            int count = importPreferences(context, is, encryptionKey);
-            return count;
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e) {
-                    Log.i(K9.LOG_TAG, "Unable to close InputStream for file " + fileName + ": " + e.getLocalizedMessage());
-                }
-            }
-        }
-
-    }
-    public static int importPreferences(Context context, InputStream is, String encryptionKey) throws StorageImportExportException {
-        try {
-            Preferences preferences = Preferences.getPreferences(context);
-            SharedPreferences storage = preferences.getPreferences();
-            SharedPreferences.Editor editor = storage.edit();
-
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
@@ -63,48 +38,104 @@ public class StorageImporter {
 
             xr.parse(new InputSource(is));
 
-            Element dataset = handler.getRootElement();
+            ImportElement dataset = handler.getRootElement();
             String version = dataset.attributes.get("version");
             Log.i(K9.LOG_TAG, "Got settings file version " + version);
 
-            IStorageImporter storageImporter = null;
-            if ("1".equals(version)) {
-                storageImporter = new StorageImporterVersion1();
-            } else {
-                throw new StorageImportExportException("Unable to read file of version " + version
-                                                       + "; (only version 1 is readable)");
+            IStorageImporter storageImporter = StorageVersioning.createImporter(version);
+            if (storageImporter == null)
+            {
+                throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version));
             }
-            int numAccounts = 0;
-            if (storageImporter != null) {
-                String data = dataset.data.toString();
-                numAccounts = storageImporter.importPreferences(preferences, editor, data, encryptionKey);
+            if (providedEncryptionKey != null || storageImporter.needsKey() == false) {
+                Log.i(K9.LOG_TAG, "Version " + version + " settings file needs encryption key");
+                    finishImport(activity, storageImporter, dataset, providedEncryptionKey, listener);
             }
-            editor.commit();
-            Preferences.getPreferences(context).refreshAccounts();
-            DateFormatter.clearChosenFormat();
-            K9.loadPrefs(Preferences.getPreferences(context));
-            return numAccounts;
-        } catch (SAXException se) {
-            throw new StorageImportExportException("Failure reading settings file", se);
-        } catch (IOException ie) {
-            throw new StorageImportExportException("Failure reading settings file", ie);
-        } catch (ParserConfigurationException pce) {
-            throw new StorageImportExportException("Failure reading settings file", pce);
+            else {
+                gatherPassword(activity, storageImporter, dataset, listener);
+            }
+        }
+        catch (Exception e)
+        {
+            if (listener != null) {
+                listener.failure(e.getLocalizedMessage(), e);
+            }
         }
     }
+    
+    private static void finishImport(Activity context, IStorageImporter storageImporter, ImportElement dataset, String encryptionKey, ImportListener listener) throws StorageImportExportException {
+        if (listener != null) {
+            listener.started();
+        }
+        Preferences preferences = Preferences.getPreferences(context);
+        SharedPreferences storage = preferences.getPreferences();
+        SharedPreferences.Editor editor = storage.edit();
+        int numAccounts = 0;
+        if (storageImporter != null) {
+            numAccounts = storageImporter.importPreferences(preferences, editor, dataset, encryptionKey);
+        }
+        editor.commit();
+        Preferences.getPreferences(context).refreshAccounts();
+        DateFormatter.clearChosenFormat();
+        K9.loadPrefs(Preferences.getPreferences(context));
+        K9.setServicesEnabled(context);
+        if (listener != null) {
+            listener.success(numAccounts);
+        }
+    }
+    
+    private static void gatherPassword(final Activity activity, final IStorageImporter storageImporter, final ImportElement dataset, final ImportListener listener) {
+        activity.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_encryption_password_prompt),
+                        new PasswordEntryDialog.PasswordEntryListener() {
+                            public void passwordChosen(final String chosenPassword) {
+                                AsyncUIProcessor.getInstance(activity.getApplication()).execute(new Runnable() {
+                                    @Override
+                                    public void run()
+                                    {
+                                        try {
+                                            finishImport(activity, storageImporter, dataset, chosenPassword, listener);
+                                        }
+                                        catch (Exception e) {
+                                            Log.w(K9.LOG_TAG, "Failure during import", e);
+                                            if (listener != null) {
+                                                listener.failure(e.getLocalizedMessage(), e);
+                                            } 
+                                        }
+                                    }
+                                });
+                            }
+    
+                            public void cancel() {
+                                if (listener != null) {
+                                    listener.canceled();
+                                }
+                            }
+                        });
+    
+                dialog.show();
+            }
+        });
+       
+    };
+    
 
-    private static class Element {
+    public static class ImportElement {
         String name;
         Map<String, String> attributes = new HashMap<String, String>();
-        Map<String, Element> subElements = new HashMap<String, Element>();
+        Map<String, ImportElement> subElements = new HashMap<String, ImportElement>();
         StringBuilder data = new StringBuilder();
     }
 
     private static class StorageImporterHandler extends DefaultHandler {
-        private Element rootElement = new Element();
-        private Stack<Element> mOpenTags = new Stack<Element>();
+        private ImportElement rootElement = new ImportElement();
+        private Stack<ImportElement> mOpenTags = new Stack<ImportElement>();
 
-        public Element getRootElement() {
+        public ImportElement getRootElement() {
             return this.rootElement;
         }
 
@@ -121,7 +152,7 @@ public class StorageImporter {
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes attributes) throws SAXException {
             Log.i(K9.LOG_TAG, "Starting element " + localName);
-            Element element = new Element();
+            ImportElement element = new ImportElement();
             element.name = localName;
             mOpenTags.push(element);
             for (int i = 0; i < attributes.getLength(); i++) {
@@ -135,8 +166,8 @@ public class StorageImporter {
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
             Log.i(K9.LOG_TAG, "Ending element " + localName);
-            Element element = mOpenTags.pop();
-            Element superElement = mOpenTags.empty() ? null : mOpenTags.peek();
+            ImportElement element = mOpenTags.pop();
+            ImportElement superElement = mOpenTags.empty() ? null : mOpenTags.peek();
             if (superElement != null) {
                 superElement.subElements.put(element.name, element);
             } else {

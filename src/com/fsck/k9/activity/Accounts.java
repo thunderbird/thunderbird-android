@@ -1,7 +1,16 @@
 
 package com.fsck.k9.activity;
 
-import android.app.Activity;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -15,30 +24,45 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.fsck.k9.*;
-import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.SearchAccount;
+import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
 
@@ -832,70 +856,78 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onImport(Uri uri) {
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
-        try {
-            final String fileName = uri.getPath();
-            ContentResolver resolver = getContentResolver();
-            final InputStream is = resolver.openInputStream(uri);
-
-            PasswordEntryDialog dialog = new PasswordEntryDialog(this, getString(R.string.settings_encryption_password_prompt),
-            new PasswordEntryDialog.PasswordEntryListener() {
-                public void passwordChosen(String chosenPassword) {
-                    String toastText = Accounts.this.getString(R.string.settings_importing);
-                    Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, Toast.LENGTH_SHORT);
-                    toast.show();
-                    mHandler.progress(true);
-                    AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(is, chosenPassword, new ImportListener() {
-                        public void failure(final String message, Exception e) {
-                            Accounts.this.runOnUiThread(new Runnable() {
-                                public void run() {
-                                    mHandler.progress(false);
-                                    showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, message));
-                                }
-                            });
-                        }
-
-                        public void importSuccess(final int numAccounts) {
-                            Accounts.this.runOnUiThread(new Runnable() {
-                                public void run() {
-                                    mHandler.progress(false);
-                                    String messageText =
-                                        numAccounts != 1
-                                        ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName)
-                                        : Accounts.this.getString(R.string.settings_import_success_single, fileName);
-                                    showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
-                                    refresh();
-                                }
-                            });
-                        }
-                    });
-                }
-
-                public void cancel() {
-                }
-            });
-            dialog.show();
-        } catch (FileNotFoundException fnfe) {
-            String toastText = Accounts.this.getString(R.string.settings_import_failure, uri.getPath(), fnfe.getMessage());
-            Toast toast = Toast.makeText(Accounts.this.getApplication(), toastText, 1);
-            toast.show();
-        }
-    }
-
-    private static void showDialog(final Activity activity, int headerRes, String message) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(headerRes);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.okay_action,
-        new DialogInterface.OnClickListener() {
+        
+        final String fileName = uri.getPath();
+        AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(this, uri, new ImportListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void success(int numAccounts)
+            {
+                mHandler.progress(false);
+                String messageText =
+                    numAccounts != 1
+                    ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName)
+                    : Accounts.this.getString(R.string.settings_import_success_single, fileName);
+                showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        refresh();
+                    }
+                });
+            }
+            
+            @Override
+            public void failure(String message, Exception e)
+            {
+                mHandler.progress(false);
+                showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, e.getLocalizedMessage()));
+            }
+            
+            @Override
+            public void canceled()
+            {
+                mHandler.progress(false);
+            }
+
+            @Override
+            public void started()
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        mHandler.progress(true);
+                        String toastText = Accounts.this.getString(R.string.settings_importing);
+                        Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                
             }
         });
-
-        builder.show();
     }
-
+    private void showDialog(final Context context, final int headerRes, final String message) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run()
+            {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(headerRes);
+                builder.setMessage(message);
+                builder.setPositiveButton(R.string.okay_action,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+     
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
         public AccountsAdapter(BaseAccount[] accounts) {
             super(Accounts.this, 0, accounts);
