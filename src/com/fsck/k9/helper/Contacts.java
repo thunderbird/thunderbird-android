@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.content.Intent;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
@@ -166,4 +167,42 @@ public abstract class Contacts {
      *        contacts to be marked as contacted.
      */
     public abstract void markAsContacted(final Address[] addresses);
+
+
+    /*
+     * Returns the intent necessary to open a contact picker
+     *
+     */
+    public abstract Intent contactPickerIntent();
+
+
+    /* Given a contact picker intent, returns the primary email
+     * address of that contact
+     *
+     * @param intent The {@link Intent} returned by this contact picker
+     */
+
+
+
+    public abstract String getEmailFromContactPicker(final Intent intent);
+
+
+
+    /*
+     * Does the device actually have a Contacts application suitable
+     * for picking a contact. As hard as it is to believe, some
+     * vendors ship without it.
+     */
+
+    public boolean hasContactPicker() {
+
+        if (mContext.getPackageManager().queryIntentActivities(contactPickerIntent(), 0).size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
 }

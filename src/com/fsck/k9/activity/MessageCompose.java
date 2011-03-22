@@ -115,6 +115,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
     private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
+    private static final int CONTACT_PICKER_TO = 4;
+    private static final int CONTACT_PICKER_CC = 5;
+    private static final int CONTACT_PICKER_BCC = 6;
+
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -128,6 +132,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * The account used for message composition.
      */
     private Account mAccount;
+
+
+    private Contacts mContacts;
 
     /**
      * This identity's settings are used for message composition.
@@ -156,6 +163,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
 
     private TextView mFromView;
+    private LinearLayout mCcWrapper;
+    private LinearLayout mBccWrapper;
     private MultiAutoCompleteTextView mToView;
     private MultiAutoCompleteTextView mCcView;
     private MultiAutoCompleteTextView mBccView;
@@ -174,6 +183,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
+
+    private ImageButton mAddToFromContacts;
+    private ImageButton mAddCcFromContacts;
+    private ImageButton mAddBccFromContacts;
 
     private PgpData mPgpData = null;
 
@@ -354,15 +367,23 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return;
         }
 
+        mContacts = Contacts.getInstance(MessageCompose.this);
+
         mAddressAdapter = EmailAddressAdapter.getInstance(this);
         mAddressValidator = new EmailAddressValidator();
 
-        mFromView = (TextView)findViewById(R.id.from);
-        mToView = (MultiAutoCompleteTextView)findViewById(R.id.to);
-        mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
-        mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
-        mSubjectView = (EditText)findViewById(R.id.subject);
+        mFromView = (TextView) findViewById(R.id.from);
+        mToView = (MultiAutoCompleteTextView) findViewById(R.id.to);
+        mCcView = (MultiAutoCompleteTextView) findViewById(R.id.cc);
+        mBccView = (MultiAutoCompleteTextView) findViewById(R.id.bcc);
+        mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
+
+        mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
+        mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
+        mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+        mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
+        mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
@@ -420,6 +441,28 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mMessageContentView.addTextChangedListener(watcher);
         mQuotedText.addTextChangedListener(watcher);
 
+        /* Yes, there really are poeple who ship versions of android without a contact picker */
+        if (mContacts.hasContactPicker()) {
+            mAddToFromContacts.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    doLaunchContactPicker(CONTACT_PICKER_TO);
+                }
+            });
+            mAddCcFromContacts.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    doLaunchContactPicker(CONTACT_PICKER_CC);
+                }
+            });
+            mAddBccFromContacts.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    doLaunchContactPicker(CONTACT_PICKER_BCC);
+                }
+            });
+        } else {
+            mAddToFromContacts.setVisibility(View.GONE);
+            mAddCcFromContacts.setVisibility(View.GONE);
+            mAddBccFromContacts.setVisibility(View.GONE);
+        }
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
          * needed.
@@ -780,9 +823,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addAttachment(uri);
         }
 
-        mMessageFormat = (MessageFormat)savedInstanceState.getSerializable(STATE_KEY_MESSAGE_FORMAT);
-        mCcView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ? View.VISIBLE : View.GONE);
-        mBccView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
+        mMessageFormat = (MessageFormat) savedInstanceState
+                         .getSerializable(STATE_KEY_MESSAGE_FORMAT);
+        mCcWrapper.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ? View.VISIBLE
+                                 : View.GONE);
+        mBccWrapper.setVisibility(savedInstanceState
+                                  .getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
         if (mMessageFormat == MessageFormat.HTML) {
             mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
             mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ? View.VISIBLE : View.GONE);
@@ -1354,8 +1400,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void onAddCcBcc() {
-        mCcView.setVisibility(View.VISIBLE);
-        mBccView.setVisibility(View.VISIBLE);
+        mCcWrapper.setVisibility(View.VISIBLE);
+        mBccWrapper.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -1484,8 +1530,35 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case ACTIVITY_CHOOSE_ACCOUNT:
             onAccountChosen(data);
             break;
+        case CONTACT_PICKER_TO:
+        case CONTACT_PICKER_CC:
+        case CONTACT_PICKER_BCC:
+            String email = mContacts.getEmailFromContactPicker(data);
+            if (email.length() == 0) {
+                Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (requestCode == CONTACT_PICKER_TO) {
+                addAddress(mToView, new Address(email, ""));
+            } else if (requestCode == CONTACT_PICKER_CC) {
+                addAddress(mCcView, new Address(email, ""));
+            } else if (requestCode == CONTACT_PICKER_BCC) {
+                addAddress(mBccView, new Address(email, ""));
+            } else {
+                return;
+            }
+
+
+
+            break;
         }
     }
+
+    public void doLaunchContactPicker(int resultId) {
+        startActivityForResult(mContacts.contactPickerIntent(), resultId);
+    }
+
+
 
     private void onAccountChosen(final Intent intent) {
         final Bundle extras = intent.getExtras();
@@ -2451,10 +2524,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             try {
-                final Contacts contacts = Contacts.getInstance(MessageCompose.this);
-                contacts.markAsContacted(message.getRecipients(RecipientType.TO));
-                contacts.markAsContacted(message.getRecipients(RecipientType.CC));
-                contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
+                mContacts.markAsContacted(message.getRecipients(RecipientType.TO));
+                mContacts.markAsContacted(message.getRecipients(RecipientType.CC));
+                mContacts.markAsContacted(message.getRecipients(RecipientType.BCC));
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Failed to mark contact as contacted.", e);
             }
