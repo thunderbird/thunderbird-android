@@ -1074,8 +1074,8 @@ public class HtmlConverter {
 
     private static String htmlifyMessageHeader() {
         final String font = K9.messageViewFixedWidthFont()
-            ? "monospace"
-            : "sans-serif";
+                            ? "monospace"
+                            : "sans-serif";
         return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "\">";
     }
 

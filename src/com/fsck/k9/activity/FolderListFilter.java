@@ -101,24 +101,24 @@ public class FolderListFilter<T> extends Filter {
         mFolders.setNotifyOnChange(false);
         try {
 
-        	//noinspection unchecked
-        	final List<T> folders = (List<T>) results.values;
-        	mFolders.clear();
-        	if (folders != null) {
-        		for (T folder : folders) {
-        			if (folder != null) {
-        				mFolders.add(folder);
-        			}
-        		}
-        	} else {
-        		Log.w(K9.LOG_TAG, "FolderListFilter.publishResults - null search-result ");
-        	}
+            //noinspection unchecked
+            final List<T> folders = (List<T>) results.values;
+            mFolders.clear();
+            if (folders != null) {
+                for (T folder : folders) {
+                    if (folder != null) {
+                        mFolders.add(folder);
+                    }
+                }
+            } else {
+                Log.w(K9.LOG_TAG, "FolderListFilter.publishResults - null search-result ");
+            }
 
-        	// Send notification that the data set changed now
-        	mFolders.notifyDataSetChanged();
+            // Send notification that the data set changed now
+            mFolders.notifyDataSetChanged();
         } finally {
-        	// restore notification status
-        	mFolders.setNotifyOnChange(true);
+            // restore notification status
+            mFolders.setNotifyOnChange(true);
         }
     }
 

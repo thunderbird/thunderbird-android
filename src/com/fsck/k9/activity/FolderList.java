@@ -313,7 +313,7 @@ public class FolderList extends K9ListActivity {
 
         if (previousData != null) {
             mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-            mAdapter.mFilteredFolders = Collections.unmodifiableList(mAdapter.mFolders); 
+            mAdapter.mFilteredFolders = Collections.unmodifiableList(mAdapter.mFolders);
         }
     }
 
@@ -1029,7 +1029,7 @@ public class FolderList extends K9ListActivity {
                 return  getItemView(position, convertView, parent);
             } else {
                 Log.e(K9.LOG_TAG, "getView with illegal positon=" + position
-                		+ " called! count is only " + getCount());
+                      + " called! count is only " + getCount());
                 return null;
             }
         }
@@ -1136,77 +1136,77 @@ public class FolderList extends K9ListActivity {
             return true;
         }
 
-		public void setFilter(final Filter filter) {
-			this.mFilter = filter;
-		}
+        public void setFilter(final Filter filter) {
+            this.mFilter = filter;
+        }
 
-		public Filter getFilter() {
-			return mFilter;
-		}
+        public Filter getFilter() {
+            return mFilter;
+        }
 
-		/**
-		 * Filter to search for occurences of the search-expression in any place of the
-		 * folder-name instead of doing jsut a prefix-search.
-		 *
-		 * @author Marcus@Wolschon.biz
-		 */
-		public class FolderListFilter extends Filter {
+        /**
+         * Filter to search for occurences of the search-expression in any place of the
+         * folder-name instead of doing jsut a prefix-search.
+         *
+         * @author Marcus@Wolschon.biz
+         */
+        public class FolderListFilter extends Filter {
 
-			/**
-		     * Do the actual search.
-		     * {@inheritDoc}
-		     *
-		     * @see #publishResults(CharSequence, FilterResults)
-		     */
-		    @Override
-		    protected FilterResults performFiltering(CharSequence searchTerm) {
-		        FilterResults results = new FilterResults();
+            /**
+             * Do the actual search.
+             * {@inheritDoc}
+             *
+             * @see #publishResults(CharSequence, FilterResults)
+             */
+            @Override
+            protected FilterResults performFiltering(CharSequence searchTerm) {
+                FilterResults results = new FilterResults();
 
-		        if ((searchTerm == null) || (searchTerm.length() == 0)) {
-		            ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
-		            results.values = list;
-		            results.count = list.size();
-		            } else {
-		            final String searchTermString = searchTerm.toString().toLowerCase();
-		            final String[] words = searchTermString.split(" ");
-		            final int wordCount = words.length;
+                if ((searchTerm == null) || (searchTerm.length() == 0)) {
+                    ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+                    results.values = list;
+                    results.count = list.size();
+                } else {
+                    final String searchTermString = searchTerm.toString().toLowerCase();
+                    final String[] words = searchTermString.split(" ");
+                    final int wordCount = words.length;
 
-		            final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+                    final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
 
-		            for (final FolderInfoHolder value : mFolders) {
-		            	if (value.displayName == null) {
-		            		continue;
-		            	}
-		                final String valueText = value.displayName.toLowerCase();
+                    for (final FolderInfoHolder value : mFolders) {
+                        if (value.displayName == null) {
+                            continue;
+                        }
+                        final String valueText = value.displayName.toLowerCase();
 
-		                for (int k = 0; k < wordCount; k++) {
-		                    if (valueText.contains(words[k])) {
-		                    	newValues.add(value);
-		                        break;
-		                    }
-		                }
-		            }
+                        for (int k = 0; k < wordCount; k++) {
+                            if (valueText.contains(words[k])) {
+                                newValues.add(value);
+                                break;
+                            }
+                        }
+                    }
 
-		            results.values = newValues;
-		            results.count = newValues.size();
-		        }
+                    results.values = newValues;
+                    results.count = newValues.size();
+                }
 
-		        return results;
-		    }
+                return results;
+            }
 
-		    /**
-		     * Publish the results to the user-interface.
-		     * {@inheritDoc}
-		     */
-		    @SuppressWarnings("unchecked")
-		    @Override
-		    protected void publishResults(CharSequence constraint, FilterResults results) {
-		        //noinspection unchecked
-		        mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
-		        // Send notification that the data set changed now
-		        notifyDataSetChanged();
-		    }
-		}
+            /**
+             * Publish the results to the user-interface.
+             * {@inheritDoc}
+             */
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                //noinspection unchecked
+                mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
+                // Send notification that the data set changed now
+                notifyDataSetChanged();
+            }
+        }
     }
 
     static class FolderViewHolder {

@@ -37,8 +37,7 @@ public class ActivityListener extends MessagingListener {
                 String displayName = mLoadingFolderName;
                 if (K9.INBOX.equalsIgnoreCase(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
-                }
-                else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
+                } else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_outbox);
                 }
 

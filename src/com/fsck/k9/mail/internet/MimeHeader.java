@@ -147,8 +147,7 @@ public class MimeHeader {
         }
     }
 
-    public void setCharset(String charset)
-    {
+    public void setCharset(String charset) {
         mCharset = charset;
     }
 }

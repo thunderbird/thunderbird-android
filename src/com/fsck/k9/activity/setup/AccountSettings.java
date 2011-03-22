@@ -853,12 +853,10 @@ public class AccountSettings extends K9PreferenceActivity {
 
             // TODO: In the future the call above should be changed to only return remote folders.
             // For now we just remove the Outbox folder if present.
-            Iterator<? extends Folder> iter = folders.iterator();
-            while (iter.hasNext())
-            {
+            Iterator <? extends Folder > iter = folders.iterator();
+            while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (mAccount.getOutboxFolderName().equalsIgnoreCase(folder.getName()))
-                {
+                if (mAccount.getOutboxFolderName().equalsIgnoreCase(folder.getName())) {
                     iter.remove();
                 }
             }
