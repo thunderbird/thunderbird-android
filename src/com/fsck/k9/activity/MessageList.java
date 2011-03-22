@@ -19,6 +19,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -784,7 +785,11 @@ public class MessageList
         } else {
             mListView.setSelection(pos);
             mListView.setItemChecked(pos, true);
-            mListView.smoothScrollToPosition(pos);
+
+            // smoothScrollToPosition came in with API level 8
+           if (Integer.parseInt(Build.VERSION.SDK) >= Build.VERSION_CODES.FROYO) {
+                mListView.smoothScrollToPosition(pos);
+           }
             onOpenMessage((MessageInfoHolder) mAdapter.getItem(pos));
         }
     }
