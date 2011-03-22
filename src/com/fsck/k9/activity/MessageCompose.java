@@ -455,6 +455,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         /* Yes, there really are poeple who ship versions of android without a contact picker */
         if (mContacts.hasContactPicker()) {
+
             mAddToFromContacts.setOnClickListener(new OnClickListener() {
                 @Override public void onClick(View v) {
                     doLaunchContactPicker(CONTACT_PICKER_TO);
