@@ -53,9 +53,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
-    private static final String PREFERENCE_HIDE_MOVE_BUTTONS = "hide_move_buttons_enum";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
-    private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
@@ -118,9 +116,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountScrollButtons;
-    private ListPreference mAccountScrollMoveButtons;
     private ListPreference mAccountShowPictures;
-    private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private CheckBoxPreference mAccountLed;
@@ -416,22 +412,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 int index = mAccountScrollButtons.findIndexOfValue(summary);
                 mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntries()[index]);
                 mAccountScrollButtons.setValue(summary);
-                return false;
-            }
-        });
-
-        mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
-        mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
-
-        mAccountScrollMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
-        mAccountScrollMoveButtons.setValue("" + mAccount.getScrollMessageViewMoveButtons());
-        mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntry());
-        mAccountScrollMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mAccountScrollMoveButtons.findIndexOfValue(summary);
-                mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntries()[index]);
-                mAccountScrollMoveButtons.setValue(summary);
                 return false;
             }
         });
@@ -732,9 +712,7 @@ public class AccountSettings extends K9PreferenceActivity {
         }
 
         mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
-        mAccount.setScrollMessageViewMoveButtons(Account.ScrollButtons.valueOf(mAccountScrollMoveButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
-        mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.save(Preferences.getPreferences(this));
 
         if (needsRefresh && needsPushRestart) {

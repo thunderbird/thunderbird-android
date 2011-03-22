@@ -78,22 +78,6 @@
                 android:entryValues="@array/account_settings_hide_buttons_values"
                 android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="enable_move_buttons"
-                android:title="@string/account_settings_enable_move_buttons_label"
-                android:defaultValue="true"
-                android:summary="@string/account_settings_enable_move_buttons_summary" />
-
-            <ListPreference
-                android:persistent="false"
-                android:key="hide_move_buttons_enum"
-                android:dependency="enable_move_buttons"
-                android:title="@string/account_settings_hide_move_buttons_label"
-                android:entries="@array/account_settings_hide_move_buttons_entries"
-                android:entryValues="@array/account_settings_hide_move_buttons_values"
-                android:dialogTitle="@string/account_settings_hide_move_buttons_label" />
-
         </PreferenceCategory>
 
     </PreferenceScreen>

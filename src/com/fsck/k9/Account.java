@@ -95,9 +95,7 @@ public class Account implements BaseAccount {
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private ScrollButtons mScrollMessageViewButtons;
-    private ScrollButtons mScrollMessageViewMoveButtons;
     private ShowPictures mShowPictures;
-    private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
@@ -175,9 +173,7 @@ public class Account implements BaseAccount {
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mScrollMessageViewButtons = ScrollButtons.NEVER;
-        mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         mShowPictures = ShowPictures.NEVER;
-        mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
@@ -291,20 +287,12 @@ public class Account implements BaseAccount {
         }
 
         try {
-            mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                            ScrollButtons.NEVER.name()));
-        } catch (Exception e) {
-            mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
-        }
-
-        try {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
                                                  ShowPictures.NEVER.name()));
         } catch (Exception e) {
             mShowPictures = ShowPictures.NEVER;
         }
 
-        mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
 
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
@@ -426,8 +414,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".replyAfterQuote");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
-        editor.remove(mUuid + ".enableMoveButtons");
-        editor.remove(mUuid + ".hideMoveButtonsEnum");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -493,9 +479,7 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
-        editor.putString(mUuid + ".hideMoveButtonsEnum", mScrollMessageViewMoveButtons.name());
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
-        editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
@@ -893,14 +877,6 @@ public class Account implements BaseAccount {
         mScrollMessageViewButtons = scrollMessageViewButtons;
     }
 
-    public synchronized ScrollButtons getScrollMessageViewMoveButtons() {
-        return mScrollMessageViewMoveButtons;
-    }
-
-    public synchronized void setScrollMessageViewMoveButtons(ScrollButtons scrollMessageViewButtons) {
-        mScrollMessageViewMoveButtons = scrollMessageViewButtons;
-    }
-
     public synchronized ShowPictures getShowPictures() {
         return mShowPictures;
     }
@@ -1276,14 +1252,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setReplyAfterQuote(boolean replyAfterQuote) {
         mReplyAfterQuote = replyAfterQuote;
-    }
-
-    public boolean getEnableMoveButtons() {
-        return mEnableMoveButtons;
-    }
-
-    public void setEnableMoveButtons(boolean enableMoveButtons) {
-        mEnableMoveButtons = enableMoveButtons;
     }
 
     public String getCryptoApp() {
