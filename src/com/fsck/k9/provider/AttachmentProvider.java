@@ -105,7 +105,11 @@ public class AttachmentProvider extends ContentProvider {
 
             try {
                 final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
-                return localStore.getAttachmentType(id);
+                if (localStore.getAttachmentType(id).equals("image/jpg")) {
+                	return "image/jpeg";
+                } else {
+                	return localStore.getAttachmentType(id);
+                }
             } catch (MessagingException e) {
                 Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
                 return null;
