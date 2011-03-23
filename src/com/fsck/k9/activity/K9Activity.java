@@ -187,4 +187,22 @@ public class K9Activity extends Activity {
         return mScreenSize;
     }
 
+    public float getAspectRatio() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return ((float)metrics.heightPixels / (float) metrics.widthPixels);
+
+    }
+
+    public boolean isScreenLandscape() {
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
 }
