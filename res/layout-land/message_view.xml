@@ -25,5 +25,5 @@
             <include layout="@layout/message" />
         </LinearLayout>
     </com.fsck.k9.view.ToggleScrollView>
-    <include layout="@layout/message_view_buttons" />
+    <include layout="@layout/message_view_buttons_vertical" />
 </LinearLayout>
