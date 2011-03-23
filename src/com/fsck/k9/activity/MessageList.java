@@ -861,7 +861,18 @@ public class MessageList
     }
     private void initializeLayout() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.message_list);
+
+        float aspectRatio = getAspectRatio();
+        // If we have a large, square screen, then move around the
+        // button bar to be somewhere more useful
+        if (getScreenSizeInInches() > K9.TABLET_MIN_SIZE
+                && (1.34 > aspectRatio && aspectRatio >= 0.75)) {
+
+            setContentView(R.layout.message_list_square_device);
+
+        } else {
+            setContentView(R.layout.message_list);
+        }
         initializeActionBar();
 
         mSplitView = (SplitView) findViewById(R.id.splitview);
@@ -1033,7 +1044,9 @@ public class MessageList
     }
 
     private void initializeMessageView() {
+
         mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
+
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
         mMessageView.initialize(this);
