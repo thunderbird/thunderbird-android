@@ -572,7 +572,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_settings_general_title">Allgemeine Einstellungen</string>
     <string name="account_settings_display_prefs_title">Anzeige</string>
-    <string name="account_settings_sync">Ordner synchronisieren</string>
+    <string name="account_settings_sync">Emails abrufen</string>
     <string name="account_settings_folders">Ordner</string>
     <string name="account_settings_message_lists">Liste der Nachrichten</string>
     <string name="account_settings_message_view">Anzeige der Nachricht</string>
