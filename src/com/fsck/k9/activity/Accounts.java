@@ -832,7 +832,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("*/*");
+        i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
     }
 
