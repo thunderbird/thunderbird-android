@@ -859,10 +859,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             @Override
             public void success(int numAccounts) {
                 mHandler.progress(false);
-                String messageText =
-                    numAccounts != 1
-                    ? Accounts.this.getString(R.string.settings_import_success_multiple, numAccounts, fileName)
-                    : Accounts.this.getString(R.string.settings_import_success_single, fileName);
+                String accountQtyText = getResources().getQuantityString(R.plurals.settings_import_success, numAccounts, numAccounts);
+                String messageText = getString(R.string.settings_import_success, accountQtyText, fileName);
                 showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
                 runOnUiThread(new Runnable() {
                     @Override
