@@ -2707,11 +2707,11 @@ public class MessageList
             } else {
                 if (mTouchView) {
                     view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
-                    view.setId(R.layout.message_list_item);
                 } else {
                     view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                    view.setId(R.layout.message_list_item);
                 }
+
+                view.setId(R.layout.message_list_item);
             }
 
             MessageViewHolder holder = (MessageViewHolder) view.getTag();
