@@ -168,41 +168,34 @@ public abstract class Contacts {
      */
     public abstract void markAsContacted(final Address[] addresses);
 
-
-    /*
-     * Returns the intent necessary to open a contact picker
+    /**
+     * Creates the intent necessary to open a contact picker.
      *
+     * @return The intent necessary to open a contact picker.
      */
     public abstract Intent contactPickerIntent();
 
-
-    /* Given a contact picker intent, returns the primary email
-     * address of that contact
+    /**
+     * Given a contact picker intent, returns the primary email address of that
+     * contact.
      *
-     * @param intent The {@link Intent} returned by this contact picker
+     * @param intent The {@link Intent} returned by this contact picker.
+     * @return The primary email address of the picked contact.
      */
-
-
-
     public abstract String getEmailFromContactPicker(final Intent intent);
 
-
-
-    /*
-     * Does the device actually have a Contacts application suitable
-     * for picking a contact. As hard as it is to believe, some
-     * vendors ship without it.
+    /**
+     * Does the device actually have a Contacts application suitable for
+     * picking a contact. As hard as it is to believe, some vendors ship
+     * without it.
+     *
+     * @return True, if the device supports picking contacts. False, otherwise.
      */
-
     public boolean hasContactPicker() {
-
         if (mContext.getPackageManager().queryIntentActivities(contactPickerIntent(), 0).size() > 0) {
             return true;
         } else {
             return false;
         }
     }
-
-
-
 }
