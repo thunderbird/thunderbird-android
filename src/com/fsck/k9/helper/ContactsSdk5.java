@@ -192,22 +192,20 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
         }
     }
 
-
     @Override
     public Intent contactPickerIntent() {
-        return new Intent(Intent.ACTION_PICK,  android.provider.ContactsContract.Contacts.CONTENT_URI);
+        return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
     }
 
     @Override
     public String getEmailFromContactPicker(final Intent data) {
-
         Cursor cursor = null;
         String email = "";
+
         try {
             Uri result = data.getData();
-            Log.v(K9.LOG_TAG, "Got a contact result: " + result.toString());
 
-            // get the contact id from the Uri
+            // Get the contact id from the Uri
             String id = result.getLastPathSegment();
             cursor = mContentResolver.query(Email.CONTENT_URI,
                                             null, Email.CONTACT_ID + "=?", new String[] { id },

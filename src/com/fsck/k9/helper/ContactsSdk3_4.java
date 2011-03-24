@@ -225,30 +225,30 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
     @Override
     public Intent contactPickerIntent() {
         return new Intent(Intent.ACTION_PICK, Contacts.People.CONTENT_URI);
-
     }
-
 
     @Override
     public String getEmailFromContactPicker(final Intent data) {
-
         Cursor cursor = null;
         Cursor cursor2 = null;
         String email = "";
 
         try {
-
             Uri result = data.getData();
-            cursor =  mContentResolver.query(result, null, null, null, null);
+            cursor = mContentResolver.query(result, null, null, null, null);
             if (cursor.moveToFirst()) {
                 String emailId = cursor.getString(cursor.getColumnIndex(Contacts.People.PRIMARY_EMAIL_ID));
-                cursor2 = mContext.getContentResolver().query(ContactMethods.CONTENT_EMAIL_URI, new String[] { ContactMethods.DATA }, "contact_methods._id=?", new String[] { emailId }, null);
+                cursor2 = mContext.getContentResolver().query(
+                        ContactMethods.CONTENT_EMAIL_URI,
+                        new String[] { ContactMethods.DATA },
+                        "contact_methods._id=?",
+                        new String[] { emailId },
+                        null);
+
                 if (cursor2.moveToFirst()) {
                     email = cursor2.getString(0);
                 }
-
             }
-
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
         } finally {
@@ -262,8 +262,6 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
 
         return email;
     }
-
-
 
     /**
      * Return a {@link Cursor} instance that can be used to fetch information
