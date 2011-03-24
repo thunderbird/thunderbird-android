@@ -1183,16 +1183,16 @@ public class MimeUtility {
         // If the MIME type set by the user's mailer is application/octet-stream, try to figure
         // out whether there's a sane file type extension.
         if (returnedType != null && !DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(returnedType)) {
-            return getCorrectedMimeType(returnedType);
+            return returnedType;
         } else if (extension != null) {
             for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
                 if (contentTypeMapEntry[0].equals(extension)) {
-                    return getCorrectedMimeType(contentTypeMapEntry[1]);
+                    return contentTypeMapEntry[1];
                 }
             }
         }
 
-        return getCorrectedMimeType(DEFAULT_ATTACHMENT_MIME_TYPE);
+        return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
     
     /**
@@ -1202,7 +1202,7 @@ public class MimeUtility {
      * @param mimeType the MIME type
      * @return the corrected MIME type
      */
-    public static String getCorrectedMimeType(String mimeType) {
+    public static String canonicalizeMimeType(String mimeType) {
 		for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
 			if (mimeTypeMapEntry[0].equals(mimeType)) {
 				return mimeTypeMapEntry[1];
