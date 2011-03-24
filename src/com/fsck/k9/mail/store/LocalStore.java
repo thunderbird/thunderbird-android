@@ -988,49 +988,18 @@ public class LocalStore extends Store implements Serializable {
 
     }
 
-    public String getAttachmentType(final String attachmentId) throws UnavailableStorageException {
-        return database.execute(false, new DbCallback<String>() {
-            @Override
-            public String doDbWork(final SQLiteDatabase db) throws WrappedException {
-                Cursor cursor = null;
-                try {
-                    cursor = db.query(
-                                 "attachments",
-                                 new String[] { "mime_type", "name" },
-                                 "id = ?",
-                                 new String[] { attachmentId },
-                                 null,
-                                 null,
-                                 null);
-                    cursor.moveToFirst();
-                    String type = cursor.getString(0);
-                    String name = cursor.getString(1);
-                    cursor.close();
-
-                    if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(type)) {
-                        type = MimeUtility.getMimeTypeByExtension(name);
-                    }
-                    return type;
-                } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
-                }
-            }
-        });
-    }
-
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException {
         return database.execute(false, new DbCallback<AttachmentInfo>() {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException {
                 String name;
+                String type;
                 int size;
                 Cursor cursor = null;
                 try {
                     cursor = db.query(
                                  "attachments",
-                                 new String[] { "name", "size" },
+                                 new String[] { "name", "size", "mime_type" },
                                  "id = ?",
                                  new String[] { attachmentId },
                                  null,
@@ -1041,9 +1010,11 @@ public class LocalStore extends Store implements Serializable {
                     }
                     name = cursor.getString(0);
                     size = cursor.getInt(1);
+                    type = cursor.getString(2);
                     final AttachmentInfo attachmentInfo = new AttachmentInfo();
                     attachmentInfo.name = name;
                     attachmentInfo.size = size;
+                    attachmentInfo.type = type;
                     return attachmentInfo;
                 } finally {
                     if (cursor != null) {
@@ -1057,6 +1028,7 @@ public class LocalStore extends Store implements Serializable {
     public static class AttachmentInfo {
         public String name;
         public int size;
+        public String type;
     }
 
     public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {

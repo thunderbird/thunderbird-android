@@ -105,8 +105,17 @@ public class AttachmentProvider extends ContentProvider {
 
             try {
                 final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
-                return MimeUtility.canonicalizeMimeType(localStore.getAttachmentType(id));
-               
+
+                AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
+                if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(attachmentInfo.type)) {
+                    // If the MIME type is the generic "application/octet-stream"
+                    // we try to find a better one by looking at the file extension.
+                    return MimeUtility.getMimeTypeByExtension(attachmentInfo.name);
+                } else {
+                    // Some messages contain wrong MIME types. See if we know better.
+                    return MimeUtility.canonicalizeMimeType(attachmentInfo.type);
+                }
+
             } catch (MessagingException e) {
                 Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
                 return null;
