@@ -85,6 +85,7 @@ public abstract class Contacts {
 
     protected Context mContext;
     protected ContentResolver mContentResolver;
+    protected Boolean mHasContactPicker;
 
     /**
      * Constructor
@@ -192,10 +193,10 @@ public abstract class Contacts {
      * @return True, if the device supports picking contacts. False, otherwise.
      */
     public boolean hasContactPicker() {
-        if (mContext.getPackageManager().queryIntentActivities(contactPickerIntent(), 0).size() > 0) {
-            return true;
-        } else {
-            return false;
+        if (mHasContactPicker == null) {
+            mHasContactPicker = (mContext.getPackageManager().
+                    queryIntentActivities(contactPickerIntent(), 0).size() > 0);
         }
+        return mHasContactPicker;
     }
 }
