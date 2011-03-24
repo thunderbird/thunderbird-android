@@ -875,10 +875,15 @@ public class MimeUtility {
         { "zirz", "application/vnd.zul"},
         { "zmm", "application/vnd.handheld-entertainment+xml"}
     };
-    
+
+    /**
+     * Table for MIME type replacements.
+     *
+     * Table format: wrong type, correct type
+     */
     private static final String[][] MIME_TYPE_REPLACEMENT_MAP = new String[][] {
-		{"image/jpg","image/jpeg"}
-	};
+        {"image/jpg", "image/jpeg"}
+    };
 
     public static String unfold(String s) {
         if (s == null) {
@@ -1194,13 +1199,17 @@ public class MimeUtility {
 
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
-    
+
     /**
-     * Table lookup for MIME type replacement, enabling easy fixes for issues similar to issue 873.
-     * To map any MIME type to a different one, add a {originalMimeType, replacementMimeType} string pair to MIME_TYPE_REPLACEMENT_MAP.
+     * Convert some wrong MIME types encountered in the wild to canonical MIME
+     * types.
      *
-     * @param mimeType the MIME type
-     * @return the corrected MIME type
+     * @param mimeType The original MIME type
+     * @return If {@code mimeType} is known to be wrong the correct MIME type
+     *         is returned. Otherwise the value of {@code mimeType} is returned
+     *         unmodified.
+     *
+     * @see #MIME_TYPE_REPLACEMENT_MAP
      */
     public static String canonicalizeMimeType(String mimeType) {
 		for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
