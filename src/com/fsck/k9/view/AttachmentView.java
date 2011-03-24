@@ -196,7 +196,7 @@ public class AttachmentView extends FrameLayout {
 
 
     public void showFile() {
-        Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
+        Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -227,7 +227,7 @@ public class AttachmentView extends FrameLayout {
             return;
         }
         try {
-            Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
+            Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
