@@ -1010,7 +1010,7 @@ public class LocalStore extends Store implements Serializable {
                     if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(type)) {
                         type = MimeUtility.getMimeTypeByExtension(name);
                     }
-                    return type;
+                    return MimeUtility.getCorrectedMimeType(type);
                 } finally {
                     if (cursor != null) {
                         cursor.close();

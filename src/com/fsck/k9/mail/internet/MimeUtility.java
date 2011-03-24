@@ -875,8 +875,10 @@ public class MimeUtility {
         { "zirz", "application/vnd.zul"},
         { "zmm", "application/vnd.handheld-entertainment+xml"}
     };
-
-
+    
+    private static final String[][] MIME_TYPE_REPLACEMENT_MAP = new String[][] {
+		{"image/jpg","image/jpeg"}
+	};
 
     public static String unfold(String s) {
         if (s == null) {
@@ -1181,17 +1183,33 @@ public class MimeUtility {
         // If the MIME type set by the user's mailer is application/octet-stream, try to figure
         // out whether there's a sane file type extension.
         if (returnedType != null && !DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(returnedType)) {
-            return returnedType;
+            return getCorrectedMimeType(returnedType);
         } else if (extension != null) {
             for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
                 if (contentTypeMapEntry[0].equals(extension)) {
-                    return contentTypeMapEntry[1];
+                    return getCorrectedMimeType(contentTypeMapEntry[1]);
                 }
             }
         }
 
-        return DEFAULT_ATTACHMENT_MIME_TYPE;
+        return getCorrectedMimeType(DEFAULT_ATTACHMENT_MIME_TYPE);
     }
+    
+    /**
+     * Table lookup for MIME type replacement, enabling easy fixes for issues similar to issue 873.
+     * To map any MIME type to a different one, add a {originalMimeType, replacementMimeType} string pair to MIME_TYPE_REPLACEMENT_MAP.
+     *
+     * @param mimeType the MIME type
+     * @return the corrected MIME type
+     */
+    public static String getCorrectedMimeType(String mimeType) {
+		for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
+			if (mimeTypeMapEntry[0].equals(mimeType)) {
+				return mimeTypeMapEntry[1];
+			}
+		}
+		return mimeType;
+	}
 
     private static Message getMessageFromPart(Part part) {
         while (part != null) {
