@@ -1220,6 +1220,26 @@ public class MimeUtility {
 		return mimeType;
 	}
 
+    /**
+     * When viewing the attachment we want the MIME type to be as sensible as
+     * possible. So we fix it up if necessary.
+     *
+     * @param mimeType The original MIME type of the attachment.
+     * @param name The (file)name of the attachment.
+     *
+     * @return The best MIME type we can come up with.
+     */
+    public static String getMimeTypeForViewing(String mimeType, String name) {
+        if (DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(mimeType)) {
+            // If the MIME type is the generic "application/octet-stream"
+            // we try to find a better one by looking at the file extension.
+            return getMimeTypeByExtension(name);
+        } else {
+            // Some messages contain wrong MIME types. See if we know better.
+            return canonicalizeMimeType(mimeType);
+        }
+    }
+
     private static Message getMessageFromPart(Part part) {
         while (part != null) {
             if (part instanceof Message)

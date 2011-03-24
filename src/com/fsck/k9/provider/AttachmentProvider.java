@@ -118,16 +118,7 @@ public class AttachmentProvider extends ContentProvider {
 
                 AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
                 if (FORMAT_VIEW.equals(format)) {
-                    // When viewing the attachment we want the MIME type to be
-                    // as sensible as possible. So we fix it up if necessary.
-                    if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(attachmentInfo.type)) {
-                        // If the MIME type is the generic "application/octet-stream"
-                        // we try to find a better one by looking at the file extension.
-                        return MimeUtility.getMimeTypeByExtension(attachmentInfo.name);
-                    } else {
-                        // Some messages contain wrong MIME types. See if we know better.
-                        return MimeUtility.canonicalizeMimeType(attachmentInfo.type);
-                    }
+                    return MimeUtility.getMimeTypeForViewing(attachmentInfo.type, attachmentInfo.name);
                 } else {
                     // When accessing the "raw" message we deliver the original MIME type.
                     return attachmentInfo.type;
