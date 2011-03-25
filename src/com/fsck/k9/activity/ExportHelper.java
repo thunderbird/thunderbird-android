@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+import java.util.HashSet;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,14 +11,10 @@ import com.fsck.k9.R;
 import com.fsck.k9.preferences.StorageVersioning;
 
 public class ExportHelper {
-    public static void exportSettings(final Activity activity, final Account account, final ExportListener listener) {
+    public static void exportSettings(final Activity activity, final HashSet<String> accountUuids, final ExportListener listener) {
         // Once there are more versions, build a UI to select which one to use.  For now, use the encrypted/encoded version:
         String version = StorageVersioning.STORAGE_VERSION.VERSION1.getVersionString();
-        String uuid = null;
-        if (account != null) {
-            uuid = account.getUuid();
-        }
-        AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, version, uuid, new ExportListener() {
+        AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, version, accountUuids, new ExportListener() {
 
             @Override
             public void canceled() {

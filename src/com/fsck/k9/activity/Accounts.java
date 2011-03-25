@@ -1113,7 +1113,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     public void onExport(final Account account) {
-        ExportHelper.exportSettings(this, account, new ExportListener() {
+
+        // TODO, prompt to allow a user to choose which accounts to export
+        HashSet<String> accountUuids;
+        accountUuids = new HashSet<String>();
+        if (account != null) {
+            accountUuids.add(account.getUuid());
+        }
+
+        ExportHelper.exportSettings(this, accountUuids, new ExportListener() {
 
             @Override
             public void canceled() {

@@ -19,9 +19,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
 public class StorageExporterVersion1 implements IStorageExporter {
-    public void exportPreferences(Context context, String uuid, OutputStream os, String encryptionKey) throws StorageImportExportException {
+    public void exportPreferences(Context context, HashSet<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
         try {
-            Log.i(K9.LOG_TAG, "Exporting preferences for account " + uuid + " to OutputStream");
+            Log.i(K9.LOG_TAG, "Exporting preferences");
             K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
             OutputStreamWriter sw = new OutputStreamWriter(os);
             PrintWriter pf = new PrintWriter(sw);
@@ -35,10 +35,12 @@ public class StorageExporterVersion1 implements IStorageExporter {
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
 
-            Account[] accounts = preferences.getAccounts();
-            Set<String> accountUuids = new HashSet<String>();
-            for (Account account : accounts) {
-                accountUuids.add(account.getUuid());
+            if (accountUuids == null) {
+                Account[] accounts = preferences.getAccounts();
+                accountUuids = new HashSet<String>();
+                for (Account account : accounts) {
+                    accountUuids.add(account.getUuid());
+                }
             }
 
             Map < String, ? extends Object > prefs = storage.getAll();
@@ -47,22 +49,12 @@ public class StorageExporterVersion1 implements IStorageExporter {
                 String value = entry.getValue().toString();
                 //Log.i(K9.LOG_TAG, "Evaluating key " + key);
                 keysEvaluated++;
-                if (uuid != null) {
-                    String[] comps = key.split("\\.");
+                String[] comps = key.split("\\.");
+                if (comps.length > 1) {
                     String keyUuid = comps[0];
-                    //Log.i(K9.LOG_TAG, "Got key uuid " + keyUuid);
-                    if (uuid.equals(keyUuid) == false) {
-                        //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is for another account or global");
+                    if (accountUuids.contains(keyUuid) == false) {
+                        //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
                         continue;
-                    }
-                } else {
-                    String[] comps = key.split("\\.");
-                    if (comps.length > 1) {
-                        String keyUuid = comps[0];
-                        if (accountUuids.contains(keyUuid) == false) {
-                            //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
-                            continue;
-                        }
                     }
                 }
                 String keyEnc = krypto.encrypt(key);
@@ -77,8 +69,7 @@ public class StorageExporterVersion1 implements IStorageExporter {
             pf.println("</k9settings>");
             pf.flush();
 
-            Log.i(K9.LOG_TAG, "Exported " + keysExported + " settings of " + keysEvaluated
-                  + " total for preferences for account " + uuid);
+            Log.i(K9.LOG_TAG, "Exported " + keysExported + " of " + keysEvaluated + " settings.");
         } catch (Exception e) {
             throw new StorageImportExportException("Unable to encrypt settings", e);
         }

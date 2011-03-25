@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.HashSet;
 
 import android.app.Activity;
 import android.app.Application;
@@ -40,7 +41,7 @@ public class AsyncUIProcessor {
     public void execute(Runnable runnable) {
         threadPool.execute(runnable);
     }
-    public void exportSettings(final Activity activity, final String version, final String uuid, final ExportListener listener) {
+    public void exportSettings(final Activity activity, final String version, final HashSet<String> accountUuids, final ExportListener listener) {
         threadPool.execute(new Runnable() {
 
             @Override
@@ -53,7 +54,7 @@ public class AsyncUIProcessor {
                     dir.mkdirs();
                     File file = Utility.createUniqueFile(dir, "settings.k9s");
                     String fileName = file.getAbsolutePath();
-                    StorageExporter.exportPreferences(activity, version, uuid, fileName, null, listener);
+                    StorageExporter.exportPreferences(activity, version, accountUuids, fileName, null, listener);
                 } catch (Exception e) {
                     Log.w(K9.LOG_TAG, "Exception during export", e);
                     listener.failure(e.getLocalizedMessage(), e);
