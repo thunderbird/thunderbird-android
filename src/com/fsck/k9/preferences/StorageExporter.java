@@ -48,7 +48,7 @@ public class StorageExporter {
 
             @Override
             public void run() {
-                PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_encryption_password_prompt),
+                PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_export_encryption_password_prompt),
                 new PasswordEntryDialog.PasswordEntryListener() {
                     public void passwordChosen(final String chosenPassword) {
 

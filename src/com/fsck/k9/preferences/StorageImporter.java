@@ -83,7 +83,7 @@ public class StorageImporter {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_encryption_password_prompt),
+                PasswordEntryDialog dialog = new PasswordEntryDialog(activity, activity.getString(R.string.settings_import_encryption_password_prompt),
                 new PasswordEntryDialog.PasswordEntryListener() {
                     public void passwordChosen(final String chosenPassword) {
                         AsyncUIProcessor.getInstance(activity.getApplication()).execute(new Runnable() {
