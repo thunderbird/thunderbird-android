@@ -519,10 +519,6 @@ public class MessageList
         }
     }
 
-    public void setProgress(boolean progress) {
-        mHandler.progress(progress);
-    }
-
     public static void actionHandleFolder(Context context, Account account, String folder) {
         Intent intent = actionHandleFolderIntent(context, account, folder);
         context.startActivity(intent);
@@ -1399,14 +1395,6 @@ public class MessageList
         }
         case R.id.app_settings: {
             onEditPrefs();
-            return true;
-        }
-        case R.id.export: {
-            onExport(mAccount);
-            return true;
-        }
-        case R.id.export_all: {
-            onExport(null);
             return true;
         }
         }
