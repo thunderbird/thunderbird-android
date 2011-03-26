@@ -20,7 +20,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.service.MailService;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access

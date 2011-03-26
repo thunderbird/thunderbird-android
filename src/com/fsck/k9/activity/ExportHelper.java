@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.preferences.StorageVersioning;
 

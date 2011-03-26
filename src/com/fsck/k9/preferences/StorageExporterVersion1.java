@@ -1,14 +1,10 @@
 package com.fsck.k9.preferences;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;

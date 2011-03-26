@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
