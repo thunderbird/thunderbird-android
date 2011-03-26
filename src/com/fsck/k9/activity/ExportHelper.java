@@ -7,12 +7,12 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.fsck.k9.R;
-import com.fsck.k9.preferences.StorageVersioning;
+import com.fsck.k9.preferences.StorageFormat;
 
 public class ExportHelper {
     public static void exportSettings(final Activity activity, final HashSet<String> accountUuids, final ExportListener listener) {
         // Once there are more versions, build a UI to select which one to use.  For now, use the encrypted/encoded version:
-        String version = StorageVersioning.ENCRYPTED_XML_FILE;
+        String version = StorageFormat.ENCRYPTED_XML_FILE;
         AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, version, accountUuids, new ExportListener() {
 
             @Override

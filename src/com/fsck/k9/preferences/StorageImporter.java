@@ -42,7 +42,7 @@ public class StorageImporter {
             String version = dataset.attributes.get("version");
             Log.i(K9.LOG_TAG, "Got settings file version " + version);
 
-            IStorageImporter storageImporter = StorageVersioning.createImporter(version);
+            IStorageImporter storageImporter = StorageFormat.createImporter(version);
             if (storageImporter == null) {
                 throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version));
             }

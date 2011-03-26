@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class StorageVersioning {
+public class StorageFormat {
     // Never, ever re-use these numbers!
     public static final String ENCRYPTED_XML_FILE = "1";
 
-    public static Map<String, StorageVersioning> versionMap = new HashMap<String, StorageVersioning>();
+    public static Map<String, StorageFormat> versionMap = new HashMap<String, StorageFormat>();
     static {
-        versionMap.put(ENCRYPTED_XML_FILE, new StorageVersioning(StorageImporterVersion1.class, StorageExporterVersion1.class, true));
+        versionMap.put(ENCRYPTED_XML_FILE, new StorageFormat(StorageImporterVersion1.class, StorageExporterVersion1.class, true));
     }
 
     public static IStorageImporter createImporter(String version) throws InstantiationException, IllegalAccessException {
-        StorageVersioning storageVersion = versionMap.get(version);
+        StorageFormat storageVersion = versionMap.get(version);
         if (storageVersion == null) {
             return null;
         }
@@ -22,7 +22,7 @@ public class StorageVersioning {
     }
 
     public static IStorageExporter createExporter(String version) throws InstantiationException, IllegalAccessException {
-        StorageVersioning storageVersion = versionMap.get(version);
+        StorageFormat storageVersion = versionMap.get(version);
         if (storageVersion == null) {
             return null;
         }
@@ -30,7 +30,7 @@ public class StorageVersioning {
     }
 
     public static Boolean needsKey(String version) {
-        StorageVersioning storageVersion = versionMap.get(version);
+        StorageFormat storageVersion = versionMap.get(version);
         if (storageVersion == null) {
             return null;
         }
@@ -42,7 +42,7 @@ public class StorageVersioning {
     private final Class <? extends IStorageExporter > exporterClass;
     private final boolean needsKey;
 
-    private StorageVersioning(Class <? extends IStorageImporter > imclass, Class <? extends IStorageExporter > exclass, boolean nk) {
+    private StorageFormat(Class <? extends IStorageImporter > imclass, Class <? extends IStorageExporter > exclass, boolean nk) {
         importerClass = imclass;
         exporterClass = exclass;
         needsKey = nk;

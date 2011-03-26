@@ -17,7 +17,7 @@ import com.fsck.k9.activity.PasswordEntryDialog;
 public class StorageExporter {
     private static void exportPreferences(Activity activity, String version, HashSet<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
         try {
-            IStorageExporter storageExporter = StorageVersioning.createExporter(version);
+            IStorageExporter storageExporter = StorageFormat.createExporter(version);
             if (storageExporter == null) {
                 throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version), null);
             }
