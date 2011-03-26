@@ -14,7 +14,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
-public class StorageExporterVersion1 implements IStorageExporter {
+public class StorageExporterEncryptedXml implements IStorageExporter {
     public void exportPreferences(Context context, HashSet<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
         try {
             Log.i(K9.LOG_TAG, "Exporting preferences");

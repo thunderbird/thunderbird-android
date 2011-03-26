@@ -15,11 +15,11 @@ import com.fsck.k9.activity.ExportListener;
 import com.fsck.k9.activity.PasswordEntryDialog;
 
 public class StorageExporter {
-    private static void exportPreferences(Activity activity, String version, HashSet<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
+    private static void exportPreferences(Activity activity, String storageFormat, HashSet<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
         try {
-            IStorageExporter storageExporter = StorageFormat.createExporter(version);
+            IStorageExporter storageExporter = StorageFormat.createExporter(storageFormat);
             if (storageExporter == null) {
-                throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, version), null);
+                throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, storageFormat), null);
             }
             if (storageExporter.needsKey() && encryptionKey == null) {
                 gatherPassword(activity, storageExporter, accountUuids, fileName, os, listener);
@@ -35,12 +35,12 @@ public class StorageExporter {
         }
     }
 
-    public static void exportPreferences(Activity activity, String version, HashSet<String> accountUuids, String fileName, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
-        exportPreferences(activity, version, accountUuids, fileName, null, encryptionKey, listener);
+    public static void exportPreferences(Activity activity, String storageFormat, HashSet<String> accountUuids, String fileName, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
+        exportPreferences(activity, storageFormat, accountUuids, fileName, null, encryptionKey, listener);
     }
 
-    public static void exportPrefererences(Activity activity, String version, HashSet<String> accountUuids, OutputStream os, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
-        exportPreferences(activity, version, accountUuids, null, os, encryptionKey, listener);
+    public static void exportPrefererences(Activity activity, String storageFormat, HashSet<String> accountUuids, OutputStream os, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
+        exportPreferences(activity, storageFormat, accountUuids, null, os, encryptionKey, listener);
     }
 
     private static void gatherPassword(final Activity activity, final IStorageExporter storageExporter, final HashSet<String> accountUuids, final String fileName, final OutputStream os, final ExportListener listener) {

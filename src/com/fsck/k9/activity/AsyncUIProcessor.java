@@ -41,7 +41,7 @@ public class AsyncUIProcessor {
     public void execute(Runnable runnable) {
         threadPool.execute(runnable);
     }
-    public void exportSettings(final Activity activity, final String version, final HashSet<String> accountUuids, final ExportListener listener) {
+    public void exportSettings(final Activity activity, final String storageFormat, final HashSet<String> accountUuids, final ExportListener listener) {
         threadPool.execute(new Runnable() {
 
             @Override
@@ -54,7 +54,7 @@ public class AsyncUIProcessor {
                     dir.mkdirs();
                     File file = Utility.createUniqueFile(dir, "settings.k9s");
                     String fileName = file.getAbsolutePath();
-                    StorageExporter.exportPreferences(activity, version, accountUuids, fileName, null, listener);
+                    StorageExporter.exportPreferences(activity, storageFormat, accountUuids, fileName, null, listener);
                 } catch (Exception e) {
                     Log.w(K9.LOG_TAG, "Exception during export", e);
                     listener.failure(e.getLocalizedMessage(), e);

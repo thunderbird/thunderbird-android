@@ -16,7 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.preferences.StorageImporter.ImportElement;
 
-public class StorageImporterVersion1 implements IStorageImporter {
+public class StorageImporterEncryptedXml implements IStorageImporter {
     public int importPreferences(Preferences preferences, SharedPreferences.Editor editor, ImportElement dataset, String encryptionKey) throws StorageImportExportException {
         try {
 
