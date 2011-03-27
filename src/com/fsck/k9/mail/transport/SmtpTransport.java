@@ -13,6 +13,7 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.TrustManagerFactory;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -241,11 +242,11 @@ public class SmtpTransport extends Transport {
                 }
                 if (result.matches(".*SIZE \\d*$")) {
                     try {
-                        mLargestAcceptableMessage = Integer.parseInt( result.substring(result.lastIndexOf(' ') + 1));
+                        mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
                     } catch (Exception e) {
-                       if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Tried to parse "+result+" and get an int out of the last word: "+e);
-                       }
+                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
+                        }
                     }
                 }
             }
@@ -306,13 +307,23 @@ public class SmtpTransport extends Transport {
 
     private void sendMessageTo(ArrayList<String> addresses, Message message)
     throws MessagingException {
+        boolean possibleSend = false;
+
         close();
         open();
 
         message.setEncoding(m8bitEncodingAllowed ? "8bit" : null);
+        // If the message has attachments and our server has told us about a limit on
+        // the size of messages, count the message's size before sending it
+        if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
+            if (message.calculateSize() > mLargestAcceptableMessage) {
+                MessagingException me = new MessagingException("Message too large for server");
+                me.setPermanentFailure(possibleSend);
+                throw me;
+            }
+        }
 
         Address[] from = message.getFrom();
-        boolean possibleSend = false;
         try {
             //TODO: Add BODY=8BITMIME parameter if appropriate?
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
