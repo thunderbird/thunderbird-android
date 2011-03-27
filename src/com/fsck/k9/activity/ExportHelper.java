@@ -1,6 +1,5 @@
 package com.fsck.k9.activity;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;

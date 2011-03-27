@@ -3,7 +3,6 @@ package com.fsck.k9.preferences;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
@@ -40,7 +39,7 @@ public class StorageExporter {
         exportPreferences(activity, storageFormat, includeGlobals, accountUuids, fileName, null, encryptionKey, listener);
     }
 
-    public static void exportPrefererences(Activity activity, String storageFormat, boolean includeGlobals, HashSet<String> accountUuids, OutputStream os, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
+    public static void exportPrefererences(Activity activity, String storageFormat, boolean includeGlobals, Set<String> accountUuids, OutputStream os, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
         exportPreferences(activity, storageFormat, includeGlobals, accountUuids, null, os, encryptionKey, listener);
     }
 
