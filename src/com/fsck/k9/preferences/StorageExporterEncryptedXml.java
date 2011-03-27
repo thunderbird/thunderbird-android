@@ -24,11 +24,7 @@ public class StorageExporterEncryptedXml implements IStorageExporter {
             PrintWriter pf = new PrintWriter(sw);
             long keysEvaluated = 0;
             long keysExported = 0;
-            pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-
-            pf.print("<k9settings version=\"1\"");
-            pf.println(">");
-
+            
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
 
@@ -66,7 +62,6 @@ public class StorageExporterEncryptedXml implements IStorageExporter {
 
             }
 
-            pf.println("</k9settings>");
             pf.flush();
 
             Log.i(K9.LOG_TAG, "Exported " + keysExported + " of " + keysEvaluated + " settings.");

@@ -3,6 +3,8 @@ package com.fsck.k9.preferences;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Set;
 
 import android.app.Activity;
@@ -22,9 +24,9 @@ public class StorageExporter {
                 throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, storageFormat), null);
             }
             if (storageExporter.needsKey() && encryptionKey == null) {
-                gatherPassword(activity, storageExporter,  includeGlobals, accountUuids, fileName, os, listener);
+                gatherPassword(activity, storageFormat, storageExporter,  includeGlobals, accountUuids, fileName, os, listener);
             } else {
-                finishExport(activity, storageExporter, includeGlobals, accountUuids, fileName, os, encryptionKey, listener);
+                finishExport(activity, storageFormat, storageExporter, includeGlobals, accountUuids, fileName, os, encryptionKey, listener);
             }
         }
 
@@ -43,7 +45,7 @@ public class StorageExporter {
         exportPreferences(activity, storageFormat, includeGlobals, accountUuids, null, os, encryptionKey, listener);
     }
 
-    private static void gatherPassword(final Activity activity, final IStorageExporter storageExporter, final boolean includeGlobals, final Set<String> accountUuids, final String fileName, final OutputStream os, final ExportListener listener) {
+    private static void gatherPassword(final Activity activity, final String storageFormat, final IStorageExporter storageExporter, final boolean includeGlobals, final Set<String> accountUuids, final String fileName, final OutputStream os, final ExportListener listener) {
         activity.runOnUiThread(new Runnable() {
 
             @Override
@@ -57,7 +59,7 @@ public class StorageExporter {
                             @Override
                             public void run() {
                                 try {
-                                    finishExport(activity, storageExporter, includeGlobals, accountUuids, fileName, os, chosenPassword, listener);
+                                    finishExport(activity, storageFormat, storageExporter, includeGlobals, accountUuids, fileName, os, chosenPassword, listener);
                                 } catch (Exception e) {
                                     Log.w(K9.LOG_TAG, "Exception while finishing export", e);
                                     if (listener != null) {
@@ -81,7 +83,7 @@ public class StorageExporter {
     }
 
 
-    private static void finishExport(Activity activity, IStorageExporter storageExporter, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, ExportListener listener) throws StorageImportExportException {
+    private static void finishExport(Activity activity, String storageFormat, IStorageExporter storageExporter, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, ExportListener listener) throws StorageImportExportException {
         boolean needToClose = false;
         if (listener != null) {
             listener.started();
@@ -95,7 +97,18 @@ public class StorageExporter {
                 os = new FileOutputStream(outFile);
             }
             if (os != null) {
+
+                OutputStreamWriter sw = new OutputStreamWriter(os);
+                PrintWriter pf = new PrintWriter(sw);
+                pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                
+                pf.println("<k9settings version=\"" + storageFormat + "\">");
+                pf.flush();
+
                 storageExporter.exportPreferences(activity, includeGlobals, accountUuids, os, encryptionKey);
+
+                pf.println("</k9settings>");
+                pf.flush();
                 if (listener != null) {
                     if (fileName != null) {
                         listener.success(fileName);
