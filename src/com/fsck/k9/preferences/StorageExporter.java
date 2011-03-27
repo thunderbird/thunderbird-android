@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.util.Log;
@@ -15,7 +16,7 @@ import com.fsck.k9.activity.ExportListener;
 import com.fsck.k9.activity.PasswordEntryDialog;
 
 public class StorageExporter {
-    private static void exportPreferences(Activity activity, String storageFormat, HashSet<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
+    private static void exportPreferences(Activity activity, String storageFormat, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
         try {
             IStorageExporter storageExporter = StorageFormat.createExporter(storageFormat);
             if (storageExporter == null) {
@@ -35,7 +36,7 @@ public class StorageExporter {
         }
     }
 
-    public static void exportPreferences(Activity activity, String storageFormat, HashSet<String> accountUuids, String fileName, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
+    public static void exportPreferences(Activity activity, String storageFormat, Set<String> accountUuids, String fileName, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
         exportPreferences(activity, storageFormat, accountUuids, fileName, null, encryptionKey, listener);
     }
 
@@ -43,7 +44,7 @@ public class StorageExporter {
         exportPreferences(activity, storageFormat, accountUuids, null, os, encryptionKey, listener);
     }
 
-    private static void gatherPassword(final Activity activity, final IStorageExporter storageExporter, final HashSet<String> accountUuids, final String fileName, final OutputStream os, final ExportListener listener) {
+    private static void gatherPassword(final Activity activity, final IStorageExporter storageExporter, final Set<String> accountUuids, final String fileName, final OutputStream os, final ExportListener listener) {
         activity.runOnUiThread(new Runnable() {
 
             @Override
@@ -81,7 +82,7 @@ public class StorageExporter {
     }
 
 
-    private static void finishExport(Activity activity, IStorageExporter storageExporter, HashSet<String> accountUuids, String fileName, OutputStream os, String encryptionKey, ExportListener listener) throws StorageImportExportException {
+    private static void finishExport(Activity activity, IStorageExporter storageExporter, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, ExportListener listener) throws StorageImportExportException {
         boolean needToClose = false;
         if (listener != null) {
             listener.started();

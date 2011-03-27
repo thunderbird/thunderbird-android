@@ -1,6 +1,8 @@
 package com.fsck.k9.activity;
 
 import java.util.HashSet;
+import java.util.Set;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,7 +12,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.preferences.StorageFormat;
 
 public class ExportHelper {
-    public static void exportSettings(final Activity activity, final HashSet<String> accountUuids, final ExportListener listener) {
+    public static void exportSettings(final Activity activity, final Set<String> accountUuids, final ExportListener listener) {
         // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
         String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
         AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, storageFormat, accountUuids, new ExportListener() {

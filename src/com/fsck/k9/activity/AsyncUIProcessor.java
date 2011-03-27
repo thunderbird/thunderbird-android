@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class AsyncUIProcessor {
     public void execute(Runnable runnable) {
         threadPool.execute(runnable);
     }
-    public void exportSettings(final Activity activity, final String storageFormat, final HashSet<String> accountUuids, final ExportListener listener) {
+    public void exportSettings(final Activity activity, final String storageFormat, final Set<String> accountUuids, final ExportListener listener) {
         threadPool.execute(new Runnable() {
 
             @Override

@@ -5,6 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,7 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
 public class StorageExporterEncryptedXml implements IStorageExporter {
-    public void exportPreferences(Context context, HashSet<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
+    public void exportPreferences(Context context, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
         try {
             Log.i(K9.LOG_TAG, "Exporting preferences");
             K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
