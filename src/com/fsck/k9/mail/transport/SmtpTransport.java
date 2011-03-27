@@ -62,6 +62,8 @@ public class SmtpTransport extends Transport {
     OutputStream mOut;
     private boolean m8bitEncodingAllowed;
 
+    private int mLargestAcceptableMessage;
+
     /**
      * smtp://user:password@server:port CONNECTION_SECURITY_NONE
      * smtp+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -185,6 +187,8 @@ public class SmtpTransport extends Transport {
 
             m8bitEncodingAllowed = results.contains("8BITMIME");
 
+
+
             /*
              * TODO may need to add code to fall back to HELO I switched it from
              * using HELO on non STARTTLS connections because of AOL's mail
@@ -234,6 +238,15 @@ public class SmtpTransport extends Transport {
                 }
                 if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5")) {
                     authCramMD5Supported = true;
+                }
+                if (result.matches(".*SIZE \\d*$")) {
+                    try {
+                        mLargestAcceptableMessage = Integer.parseInt( result.substring(result.lastIndexOf(' ') + 1));
+                    } catch (Exception e) {
+                       if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Tried to parse "+result+" and get an int out of the last word: "+e);
+                       }
+                    }
                 }
             }
 
