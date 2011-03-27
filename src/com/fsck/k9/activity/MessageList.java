@@ -770,7 +770,9 @@ public class MessageList
 
 
         mPgpData = (PgpData) mState.getSerializable(STATE_PGP_DATA);
-        mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
+        if (mAccount != null && mPgpData != null) {
+            mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
+        }
         mMessageView.setLoadPictures(mState.getBoolean(SHOW_PICTURES));
 
 
