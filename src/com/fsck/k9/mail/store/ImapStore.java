@@ -74,7 +74,6 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.Hex;
@@ -1582,22 +1581,17 @@ public class ImapStore extends Store {
             checkOpen();
             try {
                 for (Message message : messages) {
-                    CountingOutputStream out = new CountingOutputStream();
-                    EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
-                    message.writeTo(eolOut);
-                    eolOut.flush();
-
                     mConnection.sendCommand(
                         String.format("APPEND %s (%s) {%d}",
                                       encodeString(encodeFolderName(getPrefixedName())),
                                       combineFlags(message.getFlags()),
-                                      out.getCount()), false);
+                                      message.calculateSize()), false);
                     ImapResponse response;
                     do {
                         response = mConnection.readResponse();
                         handleUntaggedResponse(response);
                         if (response.mCommandContinuationRequested) {
-                            eolOut = new EOLConvertingOutputStream(mConnection.mOut);
+                            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.mOut);
                             message.writeTo(eolOut);
                             eolOut.write('\r');
                             eolOut.write('\n');
