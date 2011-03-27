@@ -1120,28 +1120,38 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public void onExport(final boolean includeGlobals, final Account account) {
 
         // TODO, prompt to allow a user to choose which accounts to export
-        HashSet<String> accountUuids;
-        accountUuids = new HashSet<String>();
+        final Set<String> accountUuids = new HashSet<String>();
         if (account != null) {
             accountUuids.add(account.getUuid());
         }
 
-        // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
-        String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
-        new ExportAsyncTask(storageFormat, includeGlobals, accountUuids).execute();
+        // Prompt the user for a password
+        new PasswordEntryDialog(this,
+                getString(R.string.settings_export_encryption_password_prompt),
+                new PasswordEntryDialog.PasswordEntryListener() {
+                    public void passwordChosen(final String chosenPassword) {
+                        // Got the password. Now run export task in the background.
+                        new ExportAsyncTask(includeGlobals, accountUuids, chosenPassword).execute();
+                    }
+
+                    public void cancel() {
+                        // User cancelled the export. Nothing more to do.
+                    }
+                })
+        .show();
     }
 
     private class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
-        private String mStorageFormat;
+        private String mEncryptionKey;
         private String mFileName;
 
-        private ExportAsyncTask(String storageFormat, boolean includeGlobals,
-                Set<String> accountUuids) {
-            mStorageFormat = storageFormat;
+        private ExportAsyncTask(boolean includeGlobals, Set<String> accountUuids,
+                String encryptionKey) {
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
+            mEncryptionKey = encryptionKey;
         }
 
         @Override
@@ -1163,8 +1173,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 dir.mkdirs();
                 File file = Utility.createUniqueFile(dir, "settings.k9s");
                 mFileName = file.getAbsolutePath();
-                StorageExporter.exportPreferences(Accounts.this, mStorageFormat, mIncludeGlobals,
-                        mAccountUuids, mFileName, null, null);
+                StorageExporter.exportPreferences(Accounts.this, StorageFormat.ENCRYPTED_XML_FILE,
+                        mIncludeGlobals, mAccountUuids, mFileName, mEncryptionKey, null);
             } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
@@ -1185,5 +1195,4 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
         }
     }
-
 }
