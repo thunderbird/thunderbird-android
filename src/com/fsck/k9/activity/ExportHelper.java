@@ -12,10 +12,10 @@ import com.fsck.k9.R;
 import com.fsck.k9.preferences.StorageFormat;
 
 public class ExportHelper {
-    public static void exportSettings(final Activity activity, final Set<String> accountUuids, final ExportListener listener) {
+    public static void exportSettings(final Activity activity, final boolean includeGlobals, final Set<String> accountUuids, final ExportListener listener) {
         // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
         String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
-        AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, storageFormat, accountUuids, new ExportListener() {
+        AsyncUIProcessor.getInstance(activity.getApplication()).exportSettings(activity, storageFormat, includeGlobals, accountUuids, new ExportListener() {
 
             @Override
             public void canceled() {

@@ -659,7 +659,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             onRecreate(realAccount);
             break;
         case R.id.export:
-            onExport(realAccount);
+            onExport(false, realAccount);
             break;
         }
         return true;
@@ -708,7 +708,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             onSearchRequested();
             break;
         case R.id.export_all:
-            onExport(null);
+            onExport(true, null);
             break;
         case R.id.import_settings:
             onImport();
@@ -1110,7 +1110,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     }
 
-    public void onExport(final Account account) {
+    public void onExport(final boolean includeGlobals, final Account account) {
 
         // TODO, prompt to allow a user to choose which accounts to export
         HashSet<String> accountUuids;
@@ -1119,7 +1119,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(account.getUuid());
         }
 
-        ExportHelper.exportSettings(this, accountUuids, new ExportListener() {
+        ExportHelper.exportSettings(this, includeGlobals, accountUuids, new ExportListener() {
 
             @Override
             public void canceled() {

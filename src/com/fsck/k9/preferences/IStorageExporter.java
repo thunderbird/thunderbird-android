@@ -8,5 +8,5 @@ import android.content.Context;
 
 public interface IStorageExporter {
     public boolean needsKey();
-    public void exportPreferences(Context context, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException;
+    public void exportPreferences(Context context, boolean includeGlobals, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException;
 }

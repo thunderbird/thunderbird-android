@@ -16,7 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
 public class StorageExporterEncryptedXml implements IStorageExporter {
-    public void exportPreferences(Context context, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
+    public void exportPreferences(Context context, boolean includeGlobals, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
         try {
             Log.i(K9.LOG_TAG, "Exporting preferences");
             K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
@@ -53,6 +53,9 @@ public class StorageExporterEncryptedXml implements IStorageExporter {
                         //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
                         continue;
                     }
+                } else if (!includeGlobals) {
+                    // Skip global config entries if the user didn't request them
+                        continue;
                 }
                 String keyEnc = krypto.encrypt(key);
                 String valueEnc = krypto.encrypt(value);
