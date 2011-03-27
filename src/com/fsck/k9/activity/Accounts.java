@@ -61,6 +61,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
+import com.fsck.k9.preferences.StorageFormat;
+
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
 
@@ -1119,7 +1121,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(account.getUuid());
         }
 
-        ExportHelper.exportSettings(this, includeGlobals, accountUuids, new ExportListener() {
+        // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
+        String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
+        AsyncUIProcessor.getInstance(this.getApplication()).exportSettings(this, storageFormat, includeGlobals, accountUuids, new ExportListener() {
 
             @Override
             public void canceled() {
@@ -1129,23 +1133,38 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             @Override
             public void failure(String message, Exception e) {
                 setProgress(false);
+                showDialog(Accounts.this, R.string.settings_export_failed_header, Accounts.this.getString(R.string.settings_export_failure, message));
             }
 
             @Override
             public void started() {
                 setProgress(true);
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        String toastText = Accounts.this.getString(R.string.settings_exporting);
+                        Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }
 
             @Override
             public void success(String fileName) {
                 setProgress(false);
+                showDialog(Accounts.this, R.string.settings_export_success_header, Accounts.this.getString(R.string.settings_export_success, fileName));
             }
 
             @Override
             public void success() {
+                // This one should never be called here because the AsyncUIProcessor will generate a filename
                 setProgress(false);
             }
         });
+
+
+
     }
 
 }
