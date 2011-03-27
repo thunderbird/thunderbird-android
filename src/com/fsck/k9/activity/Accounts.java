@@ -656,6 +656,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         showDialog(DIALOG_RECREATE_ACCOUNT);
     }
     private void onMove(final Account account, final boolean up) {
+        mHandler.progress(true);
         AsyncUIProcessor.getInstance(getApplication()).execute(
                 new Runnable()
                 {
@@ -666,6 +667,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                             @Override
                             public void run() {
                                 refresh();
+                                mHandler.progress(false);
                             }
                         });
                     }
