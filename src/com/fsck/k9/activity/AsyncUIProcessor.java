@@ -1,22 +1,16 @@
 package com.fsck.k9.activity;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.HashSet;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.preferences.StorageExporter;
 import com.fsck.k9.preferences.StorageImporter;
 
 /**
@@ -41,29 +35,6 @@ public class AsyncUIProcessor {
     }
     public void execute(Runnable runnable) {
         threadPool.execute(runnable);
-    }
-    public void exportSettings(final Activity activity, final String storageFormat, final boolean includeGlobals, final Set<String> accountUuids, final ExportListener listener) {
-        threadPool.execute(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    // Do not store with application files.  Settings exports should *not* be
-                    // deleted when the application is uninstalled
-                    File dir = new File(Environment.getExternalStorageDirectory() + File.separator
-                                        + mApplication.getPackageName());
-                    dir.mkdirs();
-                    File file = Utility.createUniqueFile(dir, "settings.k9s");
-                    String fileName = file.getAbsolutePath();
-                    StorageExporter.exportPreferences(activity, storageFormat, includeGlobals, accountUuids, fileName, null, listener);
-                } catch (Exception e) {
-                    Log.w(K9.LOG_TAG, "Exception during export", e);
-                    listener.failure(e.getLocalizedMessage(), e);
-                }
-            }
-        }
-                          );
-
     }
 
     public void importSettings(final Activity activity, final Uri uri, final ImportListener listener) {

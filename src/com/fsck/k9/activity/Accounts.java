@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,7 +19,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
@@ -57,10 +60,12 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
+import com.fsck.k9.preferences.StorageExporter;
 import com.fsck.k9.preferences.StorageFormat;
 
 
@@ -1123,48 +1128,62 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
         String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
-        AsyncUIProcessor.getInstance(this.getApplication()).exportSettings(this, storageFormat, includeGlobals, accountUuids, new ExportListener() {
+        new ExportAsyncTask(storageFormat, includeGlobals, accountUuids).execute();
+    }
 
-            @Override
-            public void canceled() {
-                setProgress(false);
+    private class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        private boolean mIncludeGlobals;
+        private Set<String> mAccountUuids;
+        private String mStorageFormat;
+        private String mFileName;
+
+        private ExportAsyncTask(String storageFormat, boolean includeGlobals,
+                Set<String> accountUuids) {
+            mStorageFormat = storageFormat;
+            mIncludeGlobals = includeGlobals;
+            mAccountUuids = accountUuids;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress bar instead of displaying toast
+            String toastText = Accounts.this.getString(R.string.settings_exporting);
+            Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                //FIXME: this code doesn't belong here!
+                // Do not store with application files.  Settings exports should *not* be
+                // deleted when the application is uninstalled.
+                File dir = new File(Environment.getExternalStorageDirectory() + File.separator
+                                    + Accounts.this.getApplication().getPackageName());
+                dir.mkdirs();
+                File file = Utility.createUniqueFile(dir, "settings.k9s");
+                mFileName = file.getAbsolutePath();
+                StorageExporter.exportPreferences(Accounts.this, mStorageFormat, mIncludeGlobals,
+                        mAccountUuids, mFileName, null, null);
+            } catch (Exception e) {
+                Log.w(K9.LOG_TAG, "Exception during export", e);
+                return false;
             }
+            return true;
+        }
 
-            @Override
-            public void failure(String message, Exception e) {
-                setProgress(false);
-                showDialog(Accounts.this, R.string.settings_export_failed_header, Accounts.this.getString(R.string.settings_export_failure, message));
+        @Override
+        protected void onPostExecute(Boolean success) {
+            setProgress(false);
+            if (success) {
+                showDialog(Accounts.this, R.string.settings_export_success_header,
+                        Accounts.this.getString(R.string.settings_export_success, mFileName));
+            } else {
+                //TODO: make the exporter return an error code; translate that error code to a localized string here
+                showDialog(Accounts.this, R.string.settings_export_failed_header,
+                        Accounts.this.getString(R.string.settings_export_failure, "Something went wrong"));
             }
-
-            @Override
-            public void started() {
-                setProgress(true);
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        String toastText = Accounts.this.getString(R.string.settings_exporting);
-                        Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                });
-            }
-
-            @Override
-            public void success(String fileName) {
-                setProgress(false);
-                showDialog(Accounts.this, R.string.settings_export_success_header, Accounts.this.getString(R.string.settings_export_success, fileName));
-            }
-
-            @Override
-            public void success() {
-                // This one should never be called here because the AsyncUIProcessor will generate a filename
-                setProgress(false);
-            }
-        });
-
-
-
+        }
     }
 
 }
