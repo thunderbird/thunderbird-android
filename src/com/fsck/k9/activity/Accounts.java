@@ -1174,7 +1174,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 File file = Utility.createUniqueFile(dir, "settings.k9s");
                 mFileName = file.getAbsolutePath();
                 StorageExporter.exportPreferences(Accounts.this, StorageFormat.ENCRYPTED_XML_FILE,
-                        mIncludeGlobals, mAccountUuids, mFileName, mEncryptionKey, null);
+                        mIncludeGlobals, mAccountUuids, mFileName, mEncryptionKey);
             } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;

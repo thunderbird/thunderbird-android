@@ -12,10 +12,9 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.ExportListener;
 
 public class StorageExporter {
-    private static void exportPreferences(Activity activity, String storageFormat, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, final ExportListener listener)  {
+    private static void exportPreferences(Activity activity, String storageFormat, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey) throws StorageImportExportException  {
         try {
             IStorageExporter storageExporter = StorageFormat.createExporter(storageFormat);
             if (storageExporter == null) {
@@ -24,26 +23,21 @@ public class StorageExporter {
             if (storageExporter.needsKey() && encryptionKey == null) {
                 throw new StorageImportExportException("Encryption key required, but none supplied");
             } else {
-                finishExport(activity, storageFormat, storageExporter, includeGlobals, accountUuids, fileName, os, encryptionKey, listener);
+                finishExport(activity, storageFormat, storageExporter, includeGlobals, accountUuids, fileName, os, encryptionKey);
             }
         }
-
         catch (Exception e) {
-            if (listener != null) {
-                listener.failure(e.getLocalizedMessage(), e);
-            }
+            //FIXME: get this right
+            throw new StorageImportExportException();
         }
     }
 
-    public static void exportPreferences(Activity activity, String storageFormat, boolean includeGlobals, Set<String> accountUuids, String fileName, String encryptionKey, final ExportListener listener) throws StorageImportExportException {
-        exportPreferences(activity, storageFormat, includeGlobals, accountUuids, fileName, null, encryptionKey, listener);
+    public static void exportPreferences(Activity activity, String storageFormat, boolean includeGlobals, Set<String> accountUuids, String fileName, String encryptionKey) throws StorageImportExportException {
+        exportPreferences(activity, storageFormat, includeGlobals, accountUuids, fileName, null, encryptionKey);
     }
 
-    private static void finishExport(Activity activity, String storageFormat, IStorageExporter storageExporter, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey, ExportListener listener) throws StorageImportExportException {
+    private static void finishExport(Activity activity, String storageFormat, IStorageExporter storageExporter, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey) throws StorageImportExportException {
         boolean needToClose = false;
-        if (listener != null) {
-            listener.started();
-        }
         try {
             // This needs to be after the password prompt.  If the user cancels the password, we do not want
             // to create the file needlessly
@@ -65,13 +59,6 @@ public class StorageExporter {
 
                 pf.println("</k9settings>");
                 pf.flush();
-                if (listener != null) {
-                    if (fileName != null) {
-                        listener.success(fileName);
-                    } else {
-                        listener.success();
-                    }
-                }
             } else {
                 throw new StorageImportExportException("Internal error; no fileName or OutputStream", null);
             }
