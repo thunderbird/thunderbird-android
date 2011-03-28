@@ -854,6 +854,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onImport(Uri uri) {
+        Toast.makeText(this, "Import is disabled for now", Toast.LENGTH_SHORT).show();
+        /*
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
 
         final String fileName = uri.getPath();
@@ -897,6 +899,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             }
         });
+        */
     }
     private void showDialog(final Context context, final int headerRes, final String message) {
         this.runOnUiThread(new Runnable() {
