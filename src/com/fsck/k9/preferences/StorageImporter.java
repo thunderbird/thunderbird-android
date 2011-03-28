@@ -42,10 +42,7 @@ public class StorageImporter {
             String storageFormat = dataset.attributes.get("version");
             Log.i(K9.LOG_TAG, "Got settings file version " + storageFormat);
 
-            IStorageImporter storageImporter = StorageFormat.createImporter(storageFormat);
-            if (storageImporter == null) {
-                throw new StorageImportExportException(activity.getString(R.string.settings_unknown_version, storageFormat));
-            }
+            IStorageImporter storageImporter = new StorageImporterEncryptedXml();
             if (storageImporter.needsKey() && providedEncryptionKey == null) {
                 gatherPassword(activity, storageImporter, dataset, listener);
             } else {

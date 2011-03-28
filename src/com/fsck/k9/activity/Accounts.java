@@ -66,7 +66,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.StorageExporter;
-import com.fsck.k9.preferences.StorageFormat;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
@@ -1173,8 +1172,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 dir.mkdirs();
                 File file = Utility.createUniqueFile(dir, "settings.k9s");
                 mFileName = file.getAbsolutePath();
-                StorageExporter.exportPreferences(Accounts.this, StorageFormat.ENCRYPTED_XML_FILE,
-                        mIncludeGlobals, mAccountUuids, mFileName, mEncryptionKey);
+                StorageExporter.exportPreferences(Accounts.this,  mIncludeGlobals,
+                        mAccountUuids, mFileName, mEncryptionKey);
             } catch (Exception e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
