@@ -2,74 +2,72 @@ package com.fsck.k9.preferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import android.app.Activity;
-import android.util.Log;
+import android.content.Context;
+import android.os.Environment;
 
-import com.fsck.k9.K9;
+import com.fsck.k9.helper.Utility;
+
 
 public class StorageExporter {
-    private static void exportPreferences(Activity activity, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey) throws StorageImportExportException  {
-        try {
-            IStorageExporter storageExporter = new StorageExporterEncryptedXml();
-            if (storageExporter.needsKey() && encryptionKey == null) {
-                throw new StorageImportExportException("Encryption key required, but none supplied");
-            } else {
-                finishExport(activity, storageExporter, includeGlobals, accountUuids, fileName, os, encryptionKey);
-            }
-        }
-        catch (Exception e) {
-            //FIXME: get this right
-            throw new StorageImportExportException();
-        }
-    }
+    private static final String EXPORT_FILENAME = "settings.k9s";
 
-    public static void exportPreferences(Activity activity, boolean includeGlobals, Set<String> accountUuids, String fileName, String encryptionKey) throws StorageImportExportException {
-        exportPreferences(activity, includeGlobals, accountUuids, fileName, null, encryptionKey);
-    }
 
-    private static void finishExport(Activity activity, IStorageExporter storageExporter, boolean includeGlobals, Set<String> accountUuids, String fileName, OutputStream os, String encryptionKey) throws StorageImportExportException {
-        boolean needToClose = false;
-        try {
-            // This needs to be after the password prompt.  If the user cancels the password, we do not want
-            // to create the file needlessly
-            if (os == null && fileName != null) {
-                needToClose = true;
-                File outFile = new File(fileName);
-                os = new FileOutputStream(outFile);
-            }
-            if (os != null) {
+    public static String exportToFile(Context context, boolean includeGlobals,
+            Set<String> accountUuids, String encryptionKey)
+            throws StorageImportExportException {
 
-                OutputStreamWriter sw = new OutputStreamWriter(os);
-                PrintWriter pf = new PrintWriter(sw);
-                pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+        OutputStream os = null;
+        try
+        {
+            File dir = new File(Environment.getExternalStorageDirectory() + File.separator
+                                + context.getPackageName());
+            dir.mkdirs();
+            File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
+            String fileName = file.getAbsolutePath();
+            os = new FileOutputStream(fileName);
+            exportPreferences(context, os, includeGlobals, accountUuids, encryptionKey);
 
-                pf.println("<k9settings version=\"" + 1 + "\">");
-                pf.flush();
-
-                storageExporter.exportPreferences(activity, includeGlobals, accountUuids, os, encryptionKey);
-
-                pf.println("</k9settings>");
-                pf.flush();
-            } else {
-                throw new StorageImportExportException("Internal error; no fileName or OutputStream", null);
-            }
+            // If all went well, we return the name of the file just written.
+            return fileName;
         } catch (Exception e) {
-            throw new StorageImportExportException(e.getLocalizedMessage(), e);
+            throw new StorageImportExportException();
         } finally {
-            if (needToClose && os != null) {
+            if (os != null) {
                 try {
                     os.close();
-                } catch (Exception e) {
-                    Log.w(K9.LOG_TAG, "Unable to close OutputStream", e);
-                }
+                } catch (IOException ioe) {}
             }
         }
-
     }
 
+    public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
+            Set<String> accountUuids, String encryptionKey) throws StorageImportExportException  {
+
+        IStorageExporter storageExporter = new StorageExporterEncryptedXml();
+        if (storageExporter.needsKey() && encryptionKey == null) {
+            throw new StorageImportExportException("Encryption key required, but none supplied");
+        }
+
+        try {
+            OutputStreamWriter sw = new OutputStreamWriter(os);
+            PrintWriter pf = new PrintWriter(sw);
+            pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+
+            pf.println("<k9settings version=\"" + 1 + "\">");
+            pf.flush();
+
+            storageExporter.exportPreferences(context, includeGlobals, accountUuids, os, encryptionKey);
+
+            pf.println("</k9settings>");
+            pf.flush();
+        } catch (Exception e) {
+            throw new StorageImportExportException(e.getLocalizedMessage(), e);
+        }
+    }
 }

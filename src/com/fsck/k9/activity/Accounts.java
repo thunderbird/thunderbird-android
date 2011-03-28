@@ -1,7 +1,6 @@
 
 package com.fsck.k9.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
@@ -60,12 +58,12 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.StorageExporter;
+import com.fsck.k9.preferences.StorageImportExportException;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
@@ -1164,17 +1162,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                //FIXME: this code doesn't belong here!
-                // Do not store with application files.  Settings exports should *not* be
-                // deleted when the application is uninstalled.
-                File dir = new File(Environment.getExternalStorageDirectory() + File.separator
-                                    + Accounts.this.getApplication().getPackageName());
-                dir.mkdirs();
-                File file = Utility.createUniqueFile(dir, "settings.k9s");
-                mFileName = file.getAbsolutePath();
-                StorageExporter.exportPreferences(Accounts.this,  mIncludeGlobals,
-                        mAccountUuids, mFileName, mEncryptionKey);
-            } catch (Exception e) {
+                mFileName = StorageExporter.exportToFile(Accounts.this, mIncludeGlobals,
+                        mAccountUuids, mEncryptionKey);
+            } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
             }
