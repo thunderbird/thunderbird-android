@@ -24,6 +24,15 @@ import com.fsck.k9.helper.Utility;
 public class StorageExporter {
     private static final String EXPORT_FILENAME = "settings.k9s";
 
+    private static final String ROOT_ELEMENT = "k9settings";
+    private static final String VERSION_ATTRIBUTE = "version";
+    private static final String SETTINGS_ELEMENT = "settings";
+    private static final String ACCOUNTS_ELEMENT = "accounts";
+    private static final String ACCOUNT_ELEMENT = "account";
+    private static final String UUID_ATTRIBUTE = "uuid";
+    private static final String VALUE_ELEMENT = "value";
+    private static final String KEY_ATTRIBUTE = "key";
+
 
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids, String encryptionKey)
@@ -65,9 +74,8 @@ public class StorageExporter {
             // Output with indentation
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 
-            // Root tag
-            serializer.startTag(null, "k9settings");
-            serializer.attribute(null, "version", "x");
+            serializer.startTag(null, ROOT_ELEMENT);
+            serializer.attribute(null, VERSION_ATTRIBUTE, "x");
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
@@ -85,18 +93,18 @@ public class StorageExporter {
             Map<String, ? extends Object> prefs = storage.getAll();
 
             if (includeGlobals) {
-                serializer.startTag(null, "settings");
+                serializer.startTag(null, SETTINGS_ELEMENT);
                 writeSettings(serializer, prefs);
-                serializer.endTag(null, "settings");
+                serializer.endTag(null, SETTINGS_ELEMENT);
             }
 
-            serializer.startTag(null, "accounts");
+            serializer.startTag(null, ACCOUNTS_ELEMENT);
             for (String accountUuid : accountUuids) {
                 writeAccount(serializer, accountUuid, prefs);
             }
-            serializer.endTag(null, "accounts");
+            serializer.endTag(null, ACCOUNTS_ELEMENT);
 
-            serializer.endTag(null, "k9settings");
+            serializer.endTag(null, ROOT_ELEMENT);
             serializer.endDocument();
             serializer.flush();
 
@@ -115,18 +123,18 @@ public class StorageExporter {
                 // Skip account entries
                 continue;
             }
-            serializer.startTag(null, "value");
-            serializer.attribute(null, "key", key);
+            serializer.startTag(null, VALUE_ELEMENT);
+            serializer.attribute(null, KEY_ATTRIBUTE, key);
             serializer.text(value);
-            serializer.endTag(null, "value");
+            serializer.endTag(null, VALUE_ELEMENT);
         }
     }
 
     private static void writeAccount(XmlSerializer serializer, String accountUuid,
             Map<String, ? extends Object> prefs) throws IOException {
 
-        serializer.startTag(null, "account");
-        serializer.attribute(null, "uuid", accountUuid);
+        serializer.startTag(null, ACCOUNT_ELEMENT);
+        serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
         for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
@@ -144,11 +152,11 @@ public class StorageExporter {
             // Strip account UUID from key
             String keyPart = key.substring(comps[0].length() + 1);
 
-            serializer.startTag(null, "value");
-            serializer.attribute(null, "key", keyPart);
+            serializer.startTag(null, VALUE_ELEMENT);
+            serializer.attribute(null, KEY_ATTRIBUTE, keyPart);
             serializer.text(value);
-            serializer.endTag(null, "value");
+            serializer.endTag(null, VALUE_ELEMENT);
         }
-        serializer.endTag(null, "account");
+        serializer.endTag(null, ACCOUNT_ELEMENT);
     }
 }
