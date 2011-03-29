@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
+import android.util.Xml;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -61,12 +61,17 @@ public class StorageExporter {
         }
 
         try {
-            OutputStreamWriter sw = new OutputStreamWriter(os);
-            PrintWriter pf = new PrintWriter(sw);
-            pf.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            XmlSerializer serializer = Xml.newSerializer();
+            serializer.setOutput(os, "UTF-8");
 
-            pf.println("<k9settings version=\"" + 1 + "\">");
-            pf.flush();
+            serializer.startDocument(null, Boolean.valueOf(true));
+
+            // Output with indentation
+            serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+
+            // Root tag
+            serializer.startTag(null, "k9settings");
+            serializer.attribute(null, "version", "1");
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
             K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
@@ -105,17 +110,17 @@ public class StorageExporter {
                 String valueEnc = krypto.encrypt(value);
                 String output = keyEnc + ":" + valueEnc;
                 //Log.i(K9.LOG_TAG, "For key " + key + ", output is " + output);
-                pf.println(output);
+                serializer.text(output + "\n");
                 keysExported++;
 
             }
 
-            pf.flush();
-
             Log.i(K9.LOG_TAG, "Exported " + keysExported + " of " + keysEvaluated + " settings.");
 
-            pf.println("</k9settings>");
-            pf.flush();
+            serializer.endTag(null, "k9settings");
+            serializer.endDocument();
+            serializer.flush();
+
         } catch (Exception e) {
             throw new StorageImportExportException(e.getLocalizedMessage(), e);
         }
