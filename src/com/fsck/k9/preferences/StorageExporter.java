@@ -38,7 +38,7 @@ public class StorageExporter {
             File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
             String fileName = file.getAbsolutePath();
             os = new FileOutputStream(fileName);
-            exportPreferences(context, os, includeGlobals, accountUuids, encryptionKey);
+            exportPreferences(context, os, includeGlobals, accountUuids);
 
             // If all went well, we return the name of the file just written.
             return fileName;
@@ -54,11 +54,7 @@ public class StorageExporter {
     }
 
     public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids, String encryptionKey) throws StorageImportExportException  {
-
-        if (encryptionKey == null) {
-            throw new StorageImportExportException("Encryption key required, but none supplied");
-        }
+            Set<String> accountUuids) throws StorageImportExportException  {
 
         try {
             XmlSerializer serializer = Xml.newSerializer();
@@ -71,10 +67,9 @@ public class StorageExporter {
 
             // Root tag
             serializer.startTag(null, "k9settings");
-            serializer.attribute(null, "version", "1");
+            serializer.attribute(null, "version", "x");
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
-            K9Krypto krypto = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
             long keysEvaluated = 0;
             long keysExported = 0;
 
@@ -106,11 +101,11 @@ public class StorageExporter {
                     // Skip global config entries if the user didn't request them
                         continue;
                 }
-                String keyEnc = krypto.encrypt(key);
-                String valueEnc = krypto.encrypt(value);
-                String output = keyEnc + ":" + valueEnc;
+                serializer.startTag(null, "value");
+                serializer.attribute(null, "key", key);
+                serializer.text(value);
+                serializer.endTag(null, "value");
                 //Log.i(K9.LOG_TAG, "For key " + key + ", output is " + output);
-                serializer.text(output + "\n");
                 keysExported++;
 
             }

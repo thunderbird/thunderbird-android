@@ -1125,6 +1125,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(account.getUuid());
         }
 
+        /* Disabled for now
         // Prompt the user for a password
         new PasswordEntryDialog(this,
                 getString(R.string.settings_export_encryption_password_prompt),
@@ -1139,6 +1140,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     }
                 })
         .show();
+        */
+        new ExportAsyncTask(includeGlobals, accountUuids, null).execute();
     }
 
     private class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
