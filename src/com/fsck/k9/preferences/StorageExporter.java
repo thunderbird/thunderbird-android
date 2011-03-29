@@ -70,8 +70,6 @@ public class StorageExporter {
             serializer.attribute(null, "version", "x");
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
-            long keysEvaluated = 0;
-            long keysExported = 0;
 
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
@@ -84,33 +82,19 @@ public class StorageExporter {
                 }
             }
 
-            Map < String, ? extends Object > prefs = storage.getAll();
-            for (Map.Entry < String, ? extends Object > entry : prefs.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue().toString();
-                //Log.i(K9.LOG_TAG, "Evaluating key " + key);
-                keysEvaluated++;
-                String[] comps = key.split("\\.");
-                if (comps.length > 1) {
-                    String keyUuid = comps[0];
-                    if (accountUuids.contains(keyUuid) == false) {
-                        //Log.i(K9.LOG_TAG, "Skipping key " + key + " which is not for any current account");
-                        continue;
-                    }
-                } else if (!includeGlobals) {
-                    // Skip global config entries if the user didn't request them
-                        continue;
-                }
-                serializer.startTag(null, "value");
-                serializer.attribute(null, "key", key);
-                serializer.text(value);
-                serializer.endTag(null, "value");
-                //Log.i(K9.LOG_TAG, "For key " + key + ", output is " + output);
-                keysExported++;
+            Map<String, ? extends Object> prefs = storage.getAll();
 
+            if (includeGlobals) {
+                serializer.startTag(null, "settings");
+                writeSettings(serializer, prefs);
+                serializer.endTag(null, "settings");
             }
 
-            Log.i(K9.LOG_TAG, "Exported " + keysExported + " of " + keysEvaluated + " settings.");
+            serializer.startTag(null, "accounts");
+            for (String accountUuid : accountUuids) {
+                writeAccount(serializer, accountUuid, prefs);
+            }
+            serializer.endTag(null, "accounts");
 
             serializer.endTag(null, "k9settings");
             serializer.endDocument();
@@ -119,5 +103,52 @@ public class StorageExporter {
         } catch (Exception e) {
             throw new StorageImportExportException(e.getLocalizedMessage(), e);
         }
+    }
+
+    private static void writeSettings(XmlSerializer serializer,
+            Map<String, ? extends Object> prefs) throws IOException {
+
+        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
+            if (key.indexOf('.') != -1) {
+                // Skip account entries
+                continue;
+            }
+            serializer.startTag(null, "value");
+            serializer.attribute(null, "key", key);
+            serializer.text(value);
+            serializer.endTag(null, "value");
+        }
+    }
+
+    private static void writeAccount(XmlSerializer serializer, String accountUuid,
+            Map<String, ? extends Object> prefs) throws IOException {
+
+        serializer.startTag(null, "account");
+        serializer.attribute(null, "uuid", accountUuid);
+        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
+            String[] comps = key.split("\\.");
+            if (comps.length > 1) {
+                String keyUuid = comps[0];
+                if (!keyUuid.equals(accountUuid)) {
+                    continue;
+                }
+            } else {
+                // Skip global config entries
+                continue;
+            }
+
+            // Strip account UUID from key
+            String keyPart = key.substring(comps[0].length() + 1);
+
+            serializer.startTag(null, "value");
+            serializer.attribute(null, "key", keyPart);
+            serializer.text(value);
+            serializer.endTag(null, "value");
+        }
+        serializer.endTag(null, "account");
     }
 }
