@@ -609,6 +609,9 @@ public class MessageList
             // In multiselect mode make sure that clicking on the item results
             // in toggling the 'selected' checkbox.
             setSelected(message, !message.selected);
+            if (!mSplitView.isPrimaryContentMaximized()) { 
+                onOpenMessage(message);
+            }
         } else {
             onOpenMessage(message);
         }
@@ -687,7 +690,9 @@ public class MessageList
 
                 mListView.setItemChecked(position, true);
                 mCurrentMessageInfo = (MessageInfoHolder) mAdapter.getItem(position);
-                onOpenMessage(mCurrentMessageInfo);
+                if (!mSplitView.isPrimaryContentMaximized()) { 
+                    onOpenMessage(mCurrentMessageInfo);
+                }
             }
 
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -1341,7 +1346,10 @@ public class MessageList
         }
         mLastDirection = NEXT;
         mListView.setSelection(mAdapter.messages.indexOf(mNextMessage));
-        onOpenMessage(mNextMessage);
+
+        if (!mSplitView.isPrimaryContentMaximized()) { 
+            onOpenMessage(mNextMessage);
+        }
     }
 
     private void gotoPreviousItem() {
@@ -1351,7 +1359,9 @@ public class MessageList
         }
         mLastDirection = PREVIOUS;
         mListView.setSelection(mAdapter.messages.indexOf(mPreviousMessage));
-        onOpenMessage(mPreviousMessage);
+        if (!mSplitView.isPrimaryContentMaximized()) { 
+            onOpenMessage(mPreviousMessage);
+        }
     }
 
 
