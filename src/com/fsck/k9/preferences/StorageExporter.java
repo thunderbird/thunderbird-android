@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.crypto.CipherOutputStream;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -123,7 +124,7 @@ public class StorageExporter {
                 }
             }
 
-            Map<String, ? extends Object> prefs = storage.getAll();
+            Map<String, Object> prefs = new TreeMap<String, Object>(storage.getAll());
 
             if (includeGlobals) {
                 serializer.startTag(null, GLOBAL_ELEMENT);
@@ -147,9 +148,9 @@ public class StorageExporter {
     }
 
     private static void writeSettings(XmlSerializer serializer,
-            Map<String, ? extends Object> prefs) throws IOException {
+            Map<String, Object> prefs) throws IOException {
 
-        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+        for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             if (key.indexOf('.') != -1) {
@@ -164,7 +165,7 @@ public class StorageExporter {
     }
 
     private static void writeAccount(XmlSerializer serializer, String accountUuid,
-            Map<String, ? extends Object> prefs) throws IOException {
+            Map<String, Object> prefs) throws IOException {
 
         Set<Integer> identities = new HashSet<Integer>();
         Set<String> folders = new HashSet<String>();
@@ -180,7 +181,7 @@ public class StorageExporter {
         }
 
         serializer.startTag(null, SETTINGS_ELEMENT);
-        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+        for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             String[] comps = key.split("\\.");
@@ -251,7 +252,7 @@ public class StorageExporter {
     }
 
     private static void writeIdentity(XmlSerializer serializer, String accountUuid,
-            String identity, Map<String, ? extends Object> prefs) throws IOException {
+            String identity, Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
 
@@ -276,7 +277,7 @@ public class StorageExporter {
         }
 
         serializer.startTag(null, SETTINGS_ELEMENT);
-        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+        for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             String[] comps = key.split("\\.");
@@ -307,11 +308,11 @@ public class StorageExporter {
     }
 
     private static void writeFolder(XmlSerializer serializer, String accountUuid,
-            String folder, Map<String, ? extends Object> prefs) throws IOException {
+            String folder, Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, FOLDER_ELEMENT);
         serializer.attribute(null, NAME_ATTRIBUTE, folder);
-        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+        for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             String[] comps = key.split("\\.");
