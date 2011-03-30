@@ -30,23 +30,23 @@ import com.fsck.k9.mail.store.LocalStore;
 public class StorageExporter {
     private static final String EXPORT_FILENAME = "settings.k9s";
 
-    private static final String ROOT_ELEMENT = "k9settings";
-    private static final String VERSION_ATTRIBUTE = "version";
-    private static final String GLOBAL_ELEMENT = "global";
-    private static final String SETTINGS_ELEMENT = "settings";
-    private static final String ACCOUNTS_ELEMENT = "accounts";
-    private static final String ACCOUNT_ELEMENT = "account";
-    private static final String UUID_ATTRIBUTE = "uuid";
-    private static final String IDENTITIES_ELEMENT = "identities";
-    private static final String IDENTITY_ELEMENT = "identity";
-    private static final String FOLDERS_ELEMENT = "folders";
-    private static final String FOLDER_ELEMENT = "folder";
-    private static final String NAME_ATTRIBUTE = "name";
-    private static final String VALUE_ELEMENT = "value";
-    private static final String KEY_ATTRIBUTE = "key";
-    private static final String NAME_ELEMENT = "name";
-    private static final String EMAIL_ELEMENT = "email";
-    private static final String DESCRIPTION_ELEMENT = "description";
+    public static final String ROOT_ELEMENT = "k9settings";
+    public static final String VERSION_ATTRIBUTE = "version";
+    public static final String GLOBAL_ELEMENT = "global";
+    public static final String SETTINGS_ELEMENT = "settings";
+    public static final String ACCOUNTS_ELEMENT = "accounts";
+    public static final String ACCOUNT_ELEMENT = "account";
+    public static final String UUID_ATTRIBUTE = "uuid";
+    public static final String IDENTITIES_ELEMENT = "identities";
+    public static final String IDENTITY_ELEMENT = "identity";
+    public static final String FOLDERS_ELEMENT = "folders";
+    public static final String FOLDER_ELEMENT = "folder";
+    public static final String NAME_ATTRIBUTE = "name";
+    public static final String VALUE_ELEMENT = "value";
+    public static final String KEY_ATTRIBUTE = "key";
+    public static final String NAME_ELEMENT = "name";
+    public static final String EMAIL_ELEMENT = "email";
+    public static final String DESCRIPTION_ELEMENT = "description";
 
 
     public static String exportToFile(Context context, boolean includeGlobals,
