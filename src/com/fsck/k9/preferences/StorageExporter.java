@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.xmlpull.v1.XmlSerializer;
@@ -140,7 +143,7 @@ public class StorageExporter {
     private static void writeAccount(XmlSerializer serializer, String accountUuid,
             Map<String, ? extends Object> prefs) throws IOException {
 
-        Set<String> identities = new HashSet<String>();
+        Set<Integer> identities = new HashSet<Integer>();
         Set<String> folders = new HashSet<String>();
 
         serializer.startTag(null, ACCOUNT_ELEMENT);
@@ -162,7 +165,9 @@ public class StorageExporter {
 
                     if (Account.IDENTITY_KEYS.contains(secondPart)) {
                         // This is an identity key. Save identity index for later...
-                        identities.add(thirdPart);
+                        try {
+                            identities.add(Integer.parseInt(thirdPart));
+                        } catch (NumberFormatException e) { /* ignore */ }
                         // ... but don't write it now.
                         continue;
                     }
@@ -191,8 +196,13 @@ public class StorageExporter {
 
         if (identities.size() > 0) {
             serializer.startTag(null, IDENTITIES_ELEMENT);
-            for (String identityIndex : identities) {
-                writeIdentity(serializer, accountUuid, identityIndex, prefs);
+
+            // Sort identity indices (that's why we store them as Integers)
+            List<Integer> sortedIdentities = new ArrayList<Integer>(identities);
+            Collections.sort(sortedIdentities);
+
+            for (Integer identityIndex : sortedIdentities) {
+                writeIdentity(serializer, accountUuid, identityIndex.toString(), prefs);
             }
             serializer.endTag(null, IDENTITIES_ELEMENT);
         }
