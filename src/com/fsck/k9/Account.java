@@ -55,11 +55,17 @@ public class Account implements BaseAccount {
     private static final String DEFAULT_QUOTE_PREFIX = ">";
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
+    public static final String ACCOUNT_DESCRIPTION_KEY = "description";
+
+    public static final String IDENTITY_NAME_KEY = "name";
+    public static final String IDENTITY_EMAIL_KEY = "email";
+    public static final String IDENTITY_DESCRIPTION_KEY = "description";
+
     public static final Set<String> IDENTITY_KEYS = new HashSet<String>();
     static {
-        IDENTITY_KEYS.add("name");
-        IDENTITY_KEYS.add("email");
-        IDENTITY_KEYS.add("description");
+        IDENTITY_KEYS.add(IDENTITY_NAME_KEY);
+        IDENTITY_KEYS.add(IDENTITY_EMAIL_KEY);
+        IDENTITY_KEYS.add(IDENTITY_DESCRIPTION_KEY);
         IDENTITY_KEYS.add("signatureUse");
         IDENTITY_KEYS.add("signature");
         IDENTITY_KEYS.add("replyTo");
@@ -1036,11 +1042,11 @@ public class Account implements BaseAccount {
         boolean gotOne = false;
         do {
             gotOne = false;
-            String name = prefs.getString(mUuid + ".name." + ident, null);
-            String email = prefs.getString(mUuid + ".email." + ident, null);
+            String name = prefs.getString(mUuid + "." + IDENTITY_NAME_KEY + "." + ident, null);
+            String email = prefs.getString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
             boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse." + ident, true);
             String signature = prefs.getString(mUuid + ".signature." + ident, null);
-            String description = prefs.getString(mUuid + ".description." + ident, null);
+            String description = prefs.getString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, null);
             final String replyTo = prefs.getString(mUuid + ".replyTo." + ident, null);
             if (email != null) {
                 Identity identity = new Identity();
@@ -1078,13 +1084,13 @@ public class Account implements BaseAccount {
         boolean gotOne = false;
         do {
             gotOne = false;
-            String email = prefs.getString(mUuid + ".email." + ident, null);
+            String email = prefs.getString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
             if (email != null) {
-                editor.remove(mUuid + ".name." + ident);
-                editor.remove(mUuid + ".email." + ident);
+                editor.remove(mUuid + "." + IDENTITY_NAME_KEY + "." + ident);
+                editor.remove(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident);
                 editor.remove(mUuid + ".signatureUse." + ident);
                 editor.remove(mUuid + ".signature." + ident);
-                editor.remove(mUuid + ".description." + ident);
+                editor.remove(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident);
                 editor.remove(mUuid + ".replyTo." + ident);
                 gotOne = true;
             }
@@ -1097,11 +1103,11 @@ public class Account implements BaseAccount {
         int ident = 0;
 
         for (Identity identity : identities) {
-            editor.putString(mUuid + ".name." + ident, identity.getName());
-            editor.putString(mUuid + ".email." + ident, identity.getEmail());
+            editor.putString(mUuid + "." + IDENTITY_NAME_KEY + "." + ident, identity.getName());
+            editor.putString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, identity.getEmail());
             editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
             editor.putString(mUuid + ".signature." + ident, identity.getSignature());
-            editor.putString(mUuid + ".description." + ident, identity.getDescription());
+            editor.putString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, identity.getDescription());
             editor.putString(mUuid + ".replyTo." + ident, identity.getReplyTo());
             ident++;
         }

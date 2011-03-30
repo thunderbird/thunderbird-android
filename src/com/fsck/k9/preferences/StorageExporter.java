@@ -43,6 +43,9 @@ public class StorageExporter {
     private static final String NAME_ATTRIBUTE = "name";
     private static final String VALUE_ELEMENT = "value";
     private static final String KEY_ATTRIBUTE = "key";
+    private static final String NAME_ELEMENT = "name";
+    private static final String EMAIL_ELEMENT = "email";
+    private static final String DESCRIPTION_ELEMENT = "description";
 
 
     public static String exportToFile(Context context, boolean includeGlobals,
@@ -169,6 +172,13 @@ public class StorageExporter {
         serializer.startTag(null, ACCOUNT_ELEMENT);
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
 
+        String name = (String) prefs.get(accountUuid + "." + Account.ACCOUNT_DESCRIPTION_KEY);
+        if (name != null) {
+            serializer.startTag(null, NAME_ELEMENT);
+            serializer.text(name);
+            serializer.endTag(null, NAME_ELEMENT);
+        }
+
         serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
@@ -176,11 +186,13 @@ public class StorageExporter {
             String[] comps = key.split("\\.");
             if (comps.length >= 2) {
                 String keyUuid = comps[0];
-                if (!keyUuid.equals(accountUuid)) {
+                String secondPart = comps[1];
+
+                if (!keyUuid.equals(accountUuid)
+                        || Account.ACCOUNT_DESCRIPTION_KEY.equals(secondPart)) {
                     continue;
                 }
                 if (comps.length == 3) {
-                    String secondPart = comps[1];
                     String thirdPart = comps[2];
 
                     if (Account.IDENTITY_KEYS.contains(secondPart)) {
@@ -242,6 +254,28 @@ public class StorageExporter {
             String identity, Map<String, ? extends Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
+
+        String name = (String) prefs.get(accountUuid + "." + Account.IDENTITY_NAME_KEY +
+                "." + identity);
+        serializer.startTag(null, NAME_ELEMENT);
+        serializer.text(name);
+        serializer.endTag(null, NAME_ELEMENT);
+
+        String email = (String) prefs.get(accountUuid + "." + Account.IDENTITY_EMAIL_KEY +
+                "." + identity);
+        serializer.startTag(null, EMAIL_ELEMENT);
+        serializer.text(email);
+        serializer.endTag(null, EMAIL_ELEMENT);
+
+        String description = (String) prefs.get(accountUuid + "." +
+                Account.IDENTITY_DESCRIPTION_KEY + "." + identity);
+        if (description != null) {
+            serializer.startTag(null, DESCRIPTION_ELEMENT);
+            serializer.text(description);
+            serializer.endTag(null, DESCRIPTION_ELEMENT);
+        }
+
+        serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
@@ -251,7 +285,10 @@ public class StorageExporter {
                 String identityKey = comps[1];
                 String identityIndex = comps[2];
                 if (!keyUuid.equals(accountUuid) || !identityIndex.equals(identity)
-                        || !Account.IDENTITY_KEYS.contains(identityKey)) {
+                        || !Account.IDENTITY_KEYS.contains(identityKey)
+                        || Account.IDENTITY_NAME_KEY.equals(identityKey)
+                        || Account.IDENTITY_EMAIL_KEY.equals(identityKey)
+                        || Account.IDENTITY_DESCRIPTION_KEY.equals(identityKey)) {
                     continue;
                 }
             } else {
@@ -264,6 +301,8 @@ public class StorageExporter {
             serializer.text(value);
             serializer.endTag(null, VALUE_ELEMENT);
         }
+        serializer.endTag(null, SETTINGS_ELEMENT);
+
         serializer.endTag(null, IDENTITY_ELEMENT);
     }
 
