@@ -19,6 +19,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.store.LocalStore;
 
 
 public class StorageExporter {
@@ -30,9 +31,12 @@ public class StorageExporter {
     private static final String SETTINGS_ELEMENT = "settings";
     private static final String ACCOUNTS_ELEMENT = "accounts";
     private static final String ACCOUNT_ELEMENT = "account";
+    private static final String UUID_ATTRIBUTE = "uuid";
     private static final String IDENTITIES_ELEMENT = "identities";
     private static final String IDENTITY_ELEMENT = "identity";
-    private static final String UUID_ATTRIBUTE = "uuid";
+    private static final String FOLDERS_ELEMENT = "folders";
+    private static final String FOLDER_ELEMENT = "folder";
+    private static final String NAME_ATTRIBUTE = "name";
     private static final String VALUE_ELEMENT = "value";
     private static final String KEY_ATTRIBUTE = "key";
 
@@ -137,6 +141,7 @@ public class StorageExporter {
             Map<String, ? extends Object> prefs) throws IOException {
 
         Set<String> identities = new HashSet<String>();
+        Set<String> folders = new HashSet<String>();
 
         serializer.startTag(null, ACCOUNT_ELEMENT);
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
@@ -152,12 +157,19 @@ public class StorageExporter {
                     continue;
                 }
                 if (comps.length == 3) {
-                    String identityKey = comps[1];
-                    String identityIndex = comps[2];
+                    String secondPart = comps[1];
+                    String thirdPart = comps[2];
 
-                    if (Account.IDENTITY_KEYS.contains(identityKey)) {
+                    if (Account.IDENTITY_KEYS.contains(secondPart)) {
                         // This is an identity key. Save identity index for later...
-                        identities.add(identityIndex);
+                        identities.add(thirdPart);
+                        // ... but don't write it now.
+                        continue;
+                    }
+
+                    if (LocalStore.FOLDER_SETTINGS_KEYS.contains(thirdPart)) {
+                        // This is a folder key. Save folder name for later...
+                        folders.add(secondPart);
                         // ... but don't write it now.
                         continue;
                     }
@@ -183,6 +195,14 @@ public class StorageExporter {
                 writeIdentity(serializer, accountUuid, identityIndex, prefs);
             }
             serializer.endTag(null, IDENTITIES_ELEMENT);
+        }
+
+        if (folders.size() > 0) {
+            serializer.startTag(null, FOLDERS_ELEMENT);
+            for (String folder : folders) {
+                writeFolder(serializer, accountUuid, folder, prefs);
+            }
+            serializer.endTag(null, FOLDERS_ELEMENT);
         }
 
         serializer.endTag(null, ACCOUNT_ELEMENT);
@@ -215,5 +235,35 @@ public class StorageExporter {
             serializer.endTag(null, VALUE_ELEMENT);
         }
         serializer.endTag(null, IDENTITY_ELEMENT);
+    }
+
+    private static void writeFolder(XmlSerializer serializer, String accountUuid,
+            String folder, Map<String, ? extends Object> prefs) throws IOException {
+
+        serializer.startTag(null, FOLDER_ELEMENT);
+        serializer.attribute(null, NAME_ATTRIBUTE, folder);
+        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
+            String[] comps = key.split("\\.");
+            if (comps.length >= 3) {
+                String keyUuid = comps[0];
+                String folderName = comps[1];
+                String folderKey = comps[2];
+                if (!keyUuid.equals(accountUuid) || !folderName.equals(folder)
+                        || !LocalStore.FOLDER_SETTINGS_KEYS.contains(folderKey)) {
+                    continue;
+                }
+            } else {
+                // Skip non-folder config entries
+                continue;
+            }
+
+            serializer.startTag(null, VALUE_ELEMENT);
+            serializer.attribute(null, KEY_ATTRIBUTE, comps[2]);
+            serializer.text(value);
+            serializer.endTag(null, VALUE_ELEMENT);
+        }
+        serializer.endTag(null, FOLDER_ELEMENT);
     }
 }
