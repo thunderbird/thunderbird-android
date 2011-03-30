@@ -26,6 +26,7 @@ public class StorageExporter {
 
     private static final String ROOT_ELEMENT = "k9settings";
     private static final String VERSION_ATTRIBUTE = "version";
+    private static final String GLOBAL_ELEMENT = "global";
     private static final String SETTINGS_ELEMENT = "settings";
     private static final String ACCOUNTS_ELEMENT = "accounts";
     private static final String ACCOUNT_ELEMENT = "account";
@@ -95,9 +96,9 @@ public class StorageExporter {
             Map<String, ? extends Object> prefs = storage.getAll();
 
             if (includeGlobals) {
-                serializer.startTag(null, SETTINGS_ELEMENT);
+                serializer.startTag(null, GLOBAL_ELEMENT);
                 writeSettings(serializer, prefs);
-                serializer.endTag(null, SETTINGS_ELEMENT);
+                serializer.endTag(null, GLOBAL_ELEMENT);
             }
 
             serializer.startTag(null, ACCOUNTS_ELEMENT);
