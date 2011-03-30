@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.crypto.CipherOutputStream;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
@@ -57,7 +58,13 @@ public class StorageExporter {
             File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
             String fileName = file.getAbsolutePath();
             os = new FileOutputStream(fileName);
-            exportPreferences(context, os, includeGlobals, accountUuids);
+
+            if (encryptionKey == null) {
+                exportPreferences(context, os, includeGlobals, accountUuids);
+            } else {
+                exportPreferencesEncrypted(context, os, includeGlobals, accountUuids,
+                        encryptionKey);
+            }
 
             // If all went well, we return the name of the file just written.
             return fileName;
@@ -69,6 +76,19 @@ public class StorageExporter {
                     os.close();
                 } catch (IOException ioe) {}
             }
+        }
+    }
+
+    public static void exportPreferencesEncrypted(Context context, OutputStream os, boolean includeGlobals,
+            Set<String> accountUuids, String encryptionKey) throws StorageImportExportException  {
+
+        try {
+            K9Krypto k = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
+            CipherOutputStream cos = new CipherOutputStream(os, k.mCipher);
+
+            exportPreferences(context, cos, includeGlobals, accountUuids);
+        } catch (Exception e) {
+            throw new StorageImportExportException();
         }
     }
 
