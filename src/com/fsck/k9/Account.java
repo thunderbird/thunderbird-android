@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,6 +54,16 @@ public class Account implements BaseAccount {
     private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
+
+    public static final Set<String> IDENTITY_KEYS = new HashSet<String>();
+    static {
+        IDENTITY_KEYS.add("name");
+        IDENTITY_KEYS.add("email");
+        IDENTITY_KEYS.add("description");
+        IDENTITY_KEYS.add("signatureUse");
+        IDENTITY_KEYS.add("signature");
+        IDENTITY_KEYS.add("replyTo");
+    }
 
     /**
      * <pre>
@@ -1017,7 +1029,6 @@ public class Account implements BaseAccount {
     public int hashCode() {
         return mUuid.hashCode();
     }
-
 
     private synchronized List<Identity> loadIdentities(SharedPreferences prefs) {
         List<Identity> newIdentities = new ArrayList<Identity>();

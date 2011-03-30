@@ -29,6 +29,8 @@ public class StorageExporter {
     private static final String SETTINGS_ELEMENT = "settings";
     private static final String ACCOUNTS_ELEMENT = "accounts";
     private static final String ACCOUNT_ELEMENT = "account";
+    private static final String IDENTITIES_ELEMENT = "identities";
+    private static final String IDENTITY_ELEMENT = "identity";
     private static final String UUID_ATTRIBUTE = "uuid";
     private static final String VALUE_ELEMENT = "value";
     private static final String KEY_ATTRIBUTE = "key";
@@ -133,19 +135,34 @@ public class StorageExporter {
     private static void writeAccount(XmlSerializer serializer, String accountUuid,
             Map<String, ? extends Object> prefs) throws IOException {
 
+        Set<String> identities = new HashSet<String>();
+
         serializer.startTag(null, ACCOUNT_ELEMENT);
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
+
+        serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             String[] comps = key.split("\\.");
-            if (comps.length > 1) {
+            if (comps.length >= 2) {
                 String keyUuid = comps[0];
                 if (!keyUuid.equals(accountUuid)) {
                     continue;
                 }
+                if (comps.length == 3) {
+                    String identityKey = comps[1];
+                    String identityIndex = comps[2];
+
+                    if (Account.IDENTITY_KEYS.contains(identityKey)) {
+                        // This is an identity key. Save identity index for later...
+                        identities.add(identityIndex);
+                        // ... but don't write it now.
+                        continue;
+                    }
+                }
             } else {
-                // Skip global config entries
+                // Skip global config entries and identity entries
                 continue;
             }
 
@@ -157,6 +174,45 @@ public class StorageExporter {
             serializer.text(value);
             serializer.endTag(null, VALUE_ELEMENT);
         }
+        serializer.endTag(null, SETTINGS_ELEMENT);
+
+        if (identities.size() > 0) {
+            serializer.startTag(null, IDENTITIES_ELEMENT);
+            for (String identityIndex : identities) {
+                writeIdentity(serializer, accountUuid, identityIndex, prefs);
+            }
+            serializer.endTag(null, IDENTITIES_ELEMENT);
+        }
+
         serializer.endTag(null, ACCOUNT_ELEMENT);
+    }
+
+    private static void writeIdentity(XmlSerializer serializer, String accountUuid,
+            String identity, Map<String, ? extends Object> prefs) throws IOException {
+
+        serializer.startTag(null, IDENTITY_ELEMENT);
+        for (Map.Entry<String, ? extends Object> entry : prefs.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
+            String[] comps = key.split("\\.");
+            if (comps.length >= 3) {
+                String keyUuid = comps[0];
+                String identityKey = comps[1];
+                String identityIndex = comps[2];
+                if (!keyUuid.equals(accountUuid) || !identityIndex.equals(identity)
+                        || !Account.IDENTITY_KEYS.contains(identityKey)) {
+                    continue;
+                }
+            } else {
+                // Skip non-identity config entries
+                continue;
+            }
+
+            serializer.startTag(null, VALUE_ELEMENT);
+            serializer.attribute(null, KEY_ATTRIBUTE, comps[1]);
+            serializer.text(value);
+            serializer.endTag(null, VALUE_ELEMENT);
+        }
+        serializer.endTag(null, IDENTITY_ELEMENT);
     }
 }
