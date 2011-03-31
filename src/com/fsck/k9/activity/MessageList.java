@@ -1868,7 +1868,7 @@ public class MessageList
         try {
             holder.flagged = !holder.flagged;
             holder.message.setFlag(Flag.FLAGGED, holder.flagged);
-            if (holder.uid == mCurrentMessageInfo.uid) {
+            if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
                 mCurrentMessageInfo = holder;
                 mMessageView.setHeaders(holder.message, holder.message.getFolder().getAccount());
             }
