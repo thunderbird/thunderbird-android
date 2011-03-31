@@ -181,8 +181,9 @@ public class Prefs extends K9PreferenceActivity {
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
-        mConfirmActions.setItems(new CharSequence[] {getString(R.string.global_settings_confirm_action_delete)});
-        mConfirmActions.setCheckedItems(new boolean[] {K9.confirmDelete()});
+        mConfirmActions.setItems(new CharSequence[] {getString(R.string.global_settings_confirm_action_delete),
+        		getString(R.string.global_settings_confirm_action_spam)});
+        mConfirmActions.setCheckedItems(new boolean[] {K9.confirmDelete(), K9.confirmSpam()});
 
         mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
         mPrivacyMode.setChecked(K9.keyguardPrivacy());
@@ -305,6 +306,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setManageBack(mManageBack.isChecked());
         K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
+        K9.setConfirmSpam(mConfirmActions.getCheckedItems()[1]);
         K9.setKeyguardPrivacy(mPrivacyMode.isChecked());
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
