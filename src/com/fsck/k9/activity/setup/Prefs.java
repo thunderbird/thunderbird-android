@@ -32,6 +32,7 @@ import com.fsck.k9.service.MailService;
 public class Prefs extends K9PreferenceActivity {
 
     /**
+     * 
      * Immutable empty {@link CharSequence} array
      */
     private static final CharSequence[] EMPTY_CHAR_SEQUENCE_ARRAY = new CharSequence[0];

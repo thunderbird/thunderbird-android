@@ -44,6 +44,7 @@ public class K9 extends Application {
      */
     public static interface ApplicationAware {
         /**
+         * 
          * Called when the Application instance is available and ready.
          *
          * @param application

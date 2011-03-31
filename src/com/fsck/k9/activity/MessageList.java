@@ -74,6 +74,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
 
 /**
+ * 
  * MessageList is the primary user interface for the program. This Activity
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
