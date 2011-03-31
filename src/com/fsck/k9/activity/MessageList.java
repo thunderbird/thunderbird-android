@@ -1131,15 +1131,20 @@ public class MessageList
     }
 
     private void onSpam(MessageInfoHolder holder) {
-
-        if (!mController.isMoveCapable(holder.message)) {
+    	if (K9.confirmSpam()) {
+            showDialog(R.id.dialog_confirm_spam);
+        } else
+        	spam(holder);
+    }
+    
+    private void spam(MessageInfoHolder holder){
+   	 if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
-
-        onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
-    }
+   	 onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
+   }
 
     private void onCopy(MessageInfoHolder holder) {
         if (!mController.isCopyCapable(holder.message.getFolder().getAccount())) {
@@ -1257,6 +1262,8 @@ public class MessageList
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return createMarkAllAsReadDialog();
+        case R.id.dialog_confirm_spam:
+            return createConfirmSpamDialog(id);
         }
 
         return super.onCreateDialog(id);
@@ -1307,6 +1314,28 @@ public class MessageList
             }
         })
                .create();
+    }
+    
+    private Dialog createConfirmSpamDialog(final int id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_confirm_spam_title);
+        builder.setMessage(R.string.dialog_confirm_spam_message);
+        builder.setPositiveButton(R.string.dialog_confirm_spam_confirm_button,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismissDialog(id);
+                spam(mSelectedMessage);
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_confirm_spam_cancel_button,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismissDialog(id);
+            }
+        });
+        return builder.create();
     }
 
     private void onToggleRead(MessageInfoHolder holder) {
@@ -1541,7 +1570,7 @@ public class MessageList
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         MessageInfoHolder holder = mSelectedMessage;
         // don't need this anymore
-        mSelectedMessage = null;
+        //mSelectedMessage = null;
         if (holder == null) {
             holder = (MessageInfoHolder) mAdapter.getItem(info.position);
         }

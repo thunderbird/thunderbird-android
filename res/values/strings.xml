@@ -1024,6 +1024,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
     <string name="dialog_confirm_delete_confirm_button">Delete</string>
     <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
+    
+    <string name="dialog_confirm_spam_title">Confirm Spam</string>
+    <string name="dialog_confirm_spam_message">Do you really want to mark this conversation as Spam?</string>
+    <string name="dialog_confirm_spam_confirm_button">Report Spam</string>
+    <string name="dialog_confirm_spam_cancel_button">No</string>
 
     <string name="dialog_attachment_progress_title">Downloading attachment</string>
 
