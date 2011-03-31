@@ -326,9 +326,9 @@ public class SmtpTransport extends Transport {
         Address[] from = message.getFrom();
         try {
             //TODO: Add BODY=8BITMIME parameter if appropriate?
-            executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
+            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">");
             for (String address : addresses) {
-                executeSimpleCommand("RCPT TO: " + "<" + address + ">");
+                executeSimpleCommand("RCPT TO:" + "<" + address + ">");
             }
             executeSimpleCommand("DATA");
 
