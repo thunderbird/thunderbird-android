@@ -341,6 +341,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_confirm_action_archive">Archivieren</string>
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Senden</string>
 
     <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>

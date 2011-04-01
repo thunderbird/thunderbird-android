@@ -340,6 +340,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_confirm_action_archive">Arquivo</string>
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Enviar</string>
 
     <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>

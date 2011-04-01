@@ -340,6 +340,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="global_settings_confirm_action_archive">Arkistoi</string>
     <string name="global_settings_confirm_action_delete">Poista (vain viestilistassa)</string>
     <string name="global_settings_confirm_action_spam">Roskaposti</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Lähetä</string>
 
     <string name="global_settings_privacy_mode_title">Lukitusnäytön ilmoitukset</string>

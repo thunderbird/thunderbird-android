@@ -344,6 +344,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="global_settings_confirm_action_archive">Arkivera</string>
     <string name="global_settings_confirm_action_delete">Radera (endast meddelandevyn)</string>
     <string name="global_settings_confirm_action_spam">Skräp</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Skicka</string>
 
     <string name="global_settings_privacy_mode_title">Privatläge</string>

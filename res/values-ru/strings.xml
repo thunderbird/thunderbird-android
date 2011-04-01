@@ -342,6 +342,7 @@
     <!-- NEW: <string name="global_settings_confirm_action_archive">Archive</string>-->
     <!-- NEW: <string name="global_settings_confirm_action_delete">Delete (message view only)</string>-->
     <!-- NEW: <string name="global_settings_confirm_action_spam">Spam</string>-->
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <!-- NEW: <string name="global_settings_confirm_action_send">Send</string>-->
 
     <!-- NEW: <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>-->

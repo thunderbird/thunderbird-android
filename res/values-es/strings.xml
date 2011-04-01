@@ -342,6 +342,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="global_settings_confirm_action_archive">Archivar</string>
     <string name="global_settings_confirm_action_delete">Borrar (Mensajes en la vista)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Enviados</string>
 
     <string name="global_settings_privacy_mode_title">Bloquear notificaciones</string>

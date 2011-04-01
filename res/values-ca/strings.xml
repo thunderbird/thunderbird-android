@@ -344,6 +344,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="global_settings_confirm_action_archive">Arxiva</string>
     <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
     <string name="global_settings_confirm_action_spam">Brossa</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Envia</string>
 
     <string name="global_settings_privacy_mode_title">Bloca notificacions</string>

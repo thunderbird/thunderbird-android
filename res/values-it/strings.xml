@@ -344,6 +344,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_confirm_action_archive">Archivia</string>
     <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Invia</string>
 
     <string name="global_settings_privacy_mode_title">Notifiche con blocco dello schermo</string>

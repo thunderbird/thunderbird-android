@@ -342,6 +342,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_action_archive">アーカイブ</string>
     <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">送信</string>
 
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>

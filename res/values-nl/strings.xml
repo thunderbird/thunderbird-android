@@ -343,6 +343,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="global_settings_confirm_action_archive">Archief</string>
     <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Verzonden</string>
 
     <string name="global_settings_privacy_mode_title">Lock-screen meldingen</string>

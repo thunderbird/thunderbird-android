@@ -331,6 +331,7 @@
     <string name="global_settings_confirm_action_archive">归档</string>
     <string name="global_settings_confirm_action_delete">删除（仅用于邮件视图）</string>
     <string name="global_settings_confirm_action_spam">标记为垃圾</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">发送</string>
 
     <string name="global_settings_privacy_mode_title">锁屏通知</string>
