@@ -631,9 +631,21 @@ public class FolderList extends K9ListActivity {
 
     private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextFolder = mAdapter.getFolder(folder);
-        showDialog(DIALOG_MARK_ALL_AS_READ);
+        if (K9.confirmMarkAllAsRead()) {
+            showDialog(DIALOG_MARK_ALL_AS_READ);
+        } else {
+            markAllAsRead();
+        }
     }
 
+    private void markAllAsRead() {
+        try {
+            MessagingController.getInstance(getApplication())
+                .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
+            mSelectedContextFolder.unreadMessageCount = 0;
+            mHandler.dataChanged();
+        } catch (Exception e) { /* Ignore */ }
+    }
 
     @Override
     public Dialog onCreateDialog(int id) {
@@ -648,12 +660,7 @@ public class FolderList extends K9ListActivity {
                     new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                MessagingController.getInstance(getApplication())
-                                    .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
-                                mSelectedContextFolder.unreadMessageCount = 0;
-                                mHandler.dataChanged();
-                            } catch (Exception e) { /* Ignore */ }
+                            markAllAsRead();
                         }
                     });
         }

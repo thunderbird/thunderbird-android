@@ -1252,7 +1252,26 @@ public class MessageList
     }
 
     private void onMarkAllAsRead(final Account account, final String folder) {
-        showDialog(DIALOG_MARK_ALL_AS_READ);
+        if (K9.confirmMarkAllAsRead()) {
+            showDialog(DIALOG_MARK_ALL_AS_READ);
+        } else {
+            markAllAsRead();
+        }
+    }
+
+    private void markAllAsRead() {
+        try {
+            mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
+
+            synchronized (mAdapter.messages) {
+                for (MessageInfoHolder holder : mAdapter.messages) {
+                    holder.read = true;
+                }
+            }
+            mHandler.sortMessages();
+        } catch (Exception e) {
+            // Ignore
+        }
     }
 
     private void onExpunge(final Account account, String folderName) {
@@ -1272,18 +1291,7 @@ public class MessageList
                     new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
-
-                                synchronized (mAdapter.messages) {
-                                    for (MessageInfoHolder holder : mAdapter.messages) {
-                                        holder.read = true;
-                                    }
-                                }
-                                mHandler.sortMessages();
-                            } catch (Exception e) {
-                                // Ignore
-                            }
+                            markAllAsRead();
                         }
                     });
         case R.id.dialog_confirm_spam:
