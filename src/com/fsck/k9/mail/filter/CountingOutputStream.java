@@ -21,9 +21,13 @@ public class CountingOutputStream extends OutputStream {
     public void write(int oneByte) throws IOException {
         mCount++;
     }
+
+    @Override
     public void write(byte b[], int offset, int len) throws IOException {
         mCount += len;
     }
+
+    @Override
     public void write(byte[] b) throws IOException {
         mCount += b.length;
     }
