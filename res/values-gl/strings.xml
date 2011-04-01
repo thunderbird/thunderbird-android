@@ -960,7 +960,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="font_size_message_list_subject">Asunto</string>
     <string name="font_size_message_list_sender">Remitente</string>
     <string name="font_size_message_list_date">Data</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">Vista previa</string>
 
     <string name="font_size_message_view">mensaxes</string>
     <string name="font_size_message_view_sender">Remitente</string>
@@ -1022,12 +1022,11 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
-
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
+    <string name="dialog_confirm_spam_message">Queres mover esta mensaxe á carpeta spam?</string>
+    <string name="dialog_confirm_spam_confirm_button">Si</string>
+    <string name="dialog_confirm_spam_cancel_button">Non</string>
+    <string name="dialog_attachment_progress_title">Descargando adxunto</string>
 
     <string name="debug_logging_enabled">Opción de depuración activa</string>
 
@@ -1035,6 +1034,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Imposible conectar.</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" non está dispoñible; verifica o almacenamento</string>
 
 </resources>
