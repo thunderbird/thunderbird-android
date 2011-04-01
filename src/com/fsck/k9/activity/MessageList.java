@@ -11,7 +11,6 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -1262,9 +1261,41 @@ public class MessageList
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
-            return createMarkAllAsReadDialog();
+            return ConfirmationDialog.create(this, id,
+                    R.string.mark_all_as_read_dlg_title,
+                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                            mCurrentFolder.displayName),
+                    R.string.okay_action,
+                    R.string.cancel_action,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
+
+                                synchronized (mAdapter.messages) {
+                                    for (MessageInfoHolder holder : mAdapter.messages) {
+                                        holder.read = true;
+                                    }
+                                }
+                                mHandler.sortMessages();
+                            } catch (Exception e) {
+                                // Ignore
+                            }
+                        }
+                    });
         case R.id.dialog_confirm_spam:
-            return createConfirmSpamDialog(id);
+            return ConfirmationDialog.create(this, id,
+                    R.string.dialog_confirm_spam_title,
+                    R.string.dialog_confirm_spam_message,
+                    R.string.dialog_confirm_spam_confirm_button,
+                    R.string.dialog_confirm_spam_cancel_button,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            moveToSpamFolder(mSelectedMessage);
+                        }
+                    });
         }
 
         return super.onCreateDialog(id);
@@ -1284,59 +1315,6 @@ public class MessageList
             super.onPrepareDialog(id, dialog);
         }
         }
-    }
-
-    private Dialog createMarkAllAsReadDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.mark_all_as_read_dlg_title)
-               .setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                     mCurrentFolder.displayName))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_MARK_ALL_AS_READ);
-
-                try {
-                    mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
-
-                    synchronized (mAdapter.messages) {
-                        for (MessageInfoHolder holder : mAdapter.messages) {
-                            holder.read = true;
-                        }
-                    }
-                    mHandler.sortMessages();
-                } catch (Exception e) {
-                    // Ignore
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_MARK_ALL_AS_READ);
-            }
-        })
-               .create();
-    }
-
-    private Dialog createConfirmSpamDialog(final int id) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_confirm_spam_title);
-        builder.setMessage(R.string.dialog_confirm_spam_message);
-        builder.setPositiveButton(R.string.dialog_confirm_spam_confirm_button,
-        new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismissDialog(id);
-                moveToSpamFolder(mSelectedMessage);
-            }
-        });
-        builder.setNegativeButton(R.string.dialog_confirm_spam_cancel_button,
-        new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismissDialog(id);
-            }
-        });
-        return builder.create();
     }
 
     private void onToggleRead(MessageInfoHolder holder) {

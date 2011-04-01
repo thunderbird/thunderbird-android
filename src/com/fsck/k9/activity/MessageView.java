@@ -1,10 +1,8 @@
 package com.fsck.k9.activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -563,32 +561,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
     }
 
-    /**
-     * @param id
-     * @return Never <code>null</code>
-     */
-    protected Dialog createConfirmDeleteDialog(final int id) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_confirm_delete_title);
-        builder.setMessage(R.string.dialog_confirm_delete_message);
-        builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
-        new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismissDialog(id);
-                delete();
-            }
-        });
-        builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
-        new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismissDialog(id);
-            }
-        });
-        return builder.create();
-    }
-
     private void delete() {
         if (mMessage != null) {
             // Disable the delete button after it's tapped (to try to prevent
@@ -944,7 +916,17 @@ public class MessageView extends K9Activity implements OnClickListener {
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
         case R.id.dialog_confirm_delete:
-            return createConfirmDeleteDialog(id);
+            return ConfirmationDialog.create(this, id,
+                    R.string.dialog_confirm_delete_title,
+                    R.string.dialog_confirm_delete_message,
+                    R.string.dialog_confirm_delete_confirm_button,
+                    R.string.dialog_confirm_delete_cancel_button,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            delete();
+                        }
+                    });
         case R.id.dialog_attachment_progress:
             ProgressDialog d = new ProgressDialog(this);
             d.setIndeterminate(true);
