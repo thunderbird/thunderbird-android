@@ -61,6 +61,12 @@ public class MessageView extends K9Activity implements OnClickListener {
     private MessageViewHandler mHandler = new MessageViewHandler();
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
 
+    /**
+     * Used to temporarily store the destination folder for refile operations if a confirmation
+     * dialog is shown.
+     */
+    private String mDstFolder;
+
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
         public void onUnmount(String providerId) {
@@ -581,16 +587,25 @@ public class MessageView extends K9Activity implements OnClickListener {
             toast.show();
             return;
         }
-        String srcFolder = mMessageReference.folderName;
-        Message messageToMove = mMessage;
+
         if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
             return;
         }
+
+        if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
+            mDstFolder = dstFolder;
+            showDialog(R.id.dialog_confirm_spam);
+        } else {
+            refileMessage(dstFolder);
+        }
+    }
+
+    private void refileMessage(String dstFolder) {
+        String srcFolder = mMessageReference.folderName;
+        Message messageToMove = mMessage;
         showNextMessageOrReturn();
         mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
-
-
 
     private void showNextMessageOrReturn() {
         if (K9.messageViewReturnToList()) {
@@ -925,6 +940,19 @@ public class MessageView extends K9Activity implements OnClickListener {
                         @Override
                         public void run() {
                             delete();
+                        }
+                    });
+        case R.id.dialog_confirm_spam:
+            return ConfirmationDialog.create(this, id,
+                    R.string.dialog_confirm_spam_title,
+                    R.string.dialog_confirm_spam_message,
+                    R.string.dialog_confirm_spam_confirm_button,
+                    R.string.dialog_confirm_spam_cancel_button,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            refileMessage(mDstFolder);
+                            mDstFolder = null;
                         }
                     });
         case R.id.dialog_attachment_progress:
