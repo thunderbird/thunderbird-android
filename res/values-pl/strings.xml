@@ -1031,6 +1031,11 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <!-- NEW: <string name="dialog_confirm_delete_confirm_button">Delete</string>-->
     <!-- NEW: <string name="dialog_confirm_delete_cancel_button">Do not delete</string>-->
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <!-- NEW: <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>-->
