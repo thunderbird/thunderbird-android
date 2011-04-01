@@ -263,6 +263,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n\n</string>
     <string name="message_compose_quoted_text_label">Lainattu teksti</string>
     <string name="message_compose_error_no_recipients">Valitse ainakin yksi vastaanottaja.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Kaikkia liitteitä ei ladattu. Ne ladataan automaattisest ennen tämän viestin lähettämistä.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida jatkolähettää, koska niitä ei ole ladattu.</string>
 
@@ -1029,4 +1030,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Yhteyden muodostus epäonnistui.</string>
-  </resources>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+</resources>

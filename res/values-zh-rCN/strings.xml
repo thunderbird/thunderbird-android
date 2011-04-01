@@ -254,6 +254,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n\n</string>
     <string name="message_compose_quoted_text_label">引用文本</string>
     <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">一些附件没有被下载。在这个邮件发送前会自动的下载这些附件。</string>
     <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
 
@@ -1016,4 +1017,7 @@
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>

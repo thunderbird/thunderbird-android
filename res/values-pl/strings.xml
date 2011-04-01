@@ -189,7 +189,7 @@
     <!-- NEW: <string name="special_mailbox_name_spam">Spam</string>-->
     <!-- Mailbox names displayed to user -->
 
-        <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Śmietnik)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Wysłane)</string>
     <!-- NEW: <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>-->
@@ -276,6 +276,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
     <string name="message_compose_quoted_text_label">Cytowany tekst</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Niektóre załączniki nie zostały pobrane. Zostaną pobrane automatycznie przed wysłaniem tej wiadomości.</string>
     <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą byc przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
 
@@ -1043,4 +1044,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>
