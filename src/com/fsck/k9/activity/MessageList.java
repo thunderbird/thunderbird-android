@@ -1131,20 +1131,21 @@ public class MessageList
     }
 
     private void onSpam(MessageInfoHolder holder) {
-    	if (K9.confirmSpam()) {
+        if (K9.confirmSpam()) {
             showDialog(R.id.dialog_confirm_spam);
-        } else
-        	spam(holder);
+        } else {
+            moveToSpamFolder(holder);
+        }
     }
-    
-    private void spam(MessageInfoHolder holder){
-   	 if (!mController.isMoveCapable(holder.message)) {
+
+    private void moveToSpamFolder(MessageInfoHolder holder){
+        if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
-   	 onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
-   }
+        onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
+    }
 
     private void onCopy(MessageInfoHolder holder) {
         if (!mController.isCopyCapable(holder.message.getFolder().getAccount())) {
@@ -1315,7 +1316,7 @@ public class MessageList
         })
                .create();
     }
-    
+
     private Dialog createConfirmSpamDialog(final int id) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_confirm_spam_title);
@@ -1325,7 +1326,7 @@ public class MessageList
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismissDialog(id);
-                spam(mSelectedMessage);
+                moveToSpamFolder(mSelectedMessage);
             }
         });
         builder.setNegativeButton(R.string.dialog_confirm_spam_cancel_button,
