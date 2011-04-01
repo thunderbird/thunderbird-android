@@ -1131,6 +1131,8 @@ public class MessageList
 
     private void onSpam(MessageInfoHolder holder) {
         if (K9.confirmSpam()) {
+            // The action handler needs this to move the message later
+            mSelectedMessage = holder;
             showDialog(R.id.dialog_confirm_spam);
         } else {
             moveToSpamFolder(holder);
@@ -1294,6 +1296,8 @@ public class MessageList
                         @Override
                         public void run() {
                             moveToSpamFolder(mSelectedMessage);
+                            // No further need for this reference
+                            mSelectedMessage = null;
                         }
                     });
         }
@@ -1549,7 +1553,7 @@ public class MessageList
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         MessageInfoHolder holder = mSelectedMessage;
         // don't need this anymore
-        //mSelectedMessage = null;
+        mSelectedMessage = null;
         if (holder == null) {
             holder = (MessageInfoHolder) mAdapter.getItem(info.position);
         }
