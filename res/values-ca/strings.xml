@@ -3,7 +3,7 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d'Android.</string>
     <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
     <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
@@ -1030,7 +1030,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
     <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">S'està descarregant adjunt</string>
 
     <string name="debug_logging_enabled">Activada la depuració del registre al sistema de registre d’Android</string>
 
