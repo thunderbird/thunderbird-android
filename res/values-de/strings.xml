@@ -205,7 +205,7 @@
 Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
 \n
 \n\nVerbesserte Funktionen in K-9:
-\n * Laden von Nachrichten durch IMAP IDLE
+\n * Benachrichtigung über neue Nachrichten per IMAP IDLE
 \n * Höhere Performance
 \n * E-Mail-Signaturen
 \n * Automatische Blindkopie an sich selbst
@@ -301,7 +301,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="new_mailbox_dlg_title">Neuer Ordnername</string>
 
-    <string name="folder_push_active_symbol">(Laden)</string>
+    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Mehr von diesem Absender</string>
 
