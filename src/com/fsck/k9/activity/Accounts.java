@@ -1121,8 +1121,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(account.getUuid());
         }
 
-        // Once there are more file formats, build a UI to select which one to use.  For now, use the encrypted/encoded format:
-        String storageFormat = StorageFormat.ENCRYPTED_XML_FILE;
+        // Once there are more file formats, build a UI to select which one to use.
+        String storageFormat = StorageFormat.ENCRYPTED_BLOB;
         AsyncUIProcessor.getInstance(this.getApplication()).exportSettings(this, storageFormat, includeGlobals, accountUuids, new ExportListener() {
 
             @Override
