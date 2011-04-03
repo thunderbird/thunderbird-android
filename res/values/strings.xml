@@ -1050,6 +1050,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="settings_export_failed_header">Export failed</string>
     <string name="settings_import_success_header">Import succeeded</string>
     <string name="settings_import_failed_header">Import failed</string>
+    <string name="settings_export_no_available_formats">There are no available export formats</string>
+    <string name="settings_format_obsolete">The chosen export format is no longer supported</string>
     
     <string name="settings_format_encrypted">Encrypted</string>
     <string name="settings_format_unencrypted">Unencrypted</string>

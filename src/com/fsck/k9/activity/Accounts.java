@@ -1139,6 +1139,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         else if (formats.size() == 1) {
             finishExport(formats.get(0), includeGlobals, accountUuids, allAccounts);
         }
+        else {
+            showDialog(Accounts.this, R.string.settings_export_failed_header, Accounts.this.getString(R.string.settings_export_no_available_formats));
+        }
     }
     
     private void chooseFormat(final List<String> formats, final boolean includeGlobals, final Set<String> accountUuids, final boolean allAccounts) {
