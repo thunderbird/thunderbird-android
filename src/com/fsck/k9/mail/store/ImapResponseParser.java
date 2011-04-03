@@ -347,12 +347,24 @@ public class ImapResponseParser {
         }
 
         public Date getDate(int index) throws MessagingException {
+            return getDate(getString(index));
+        }
+
+        public Date getKeyedDate(Object key) throws MessagingException {
+            return getDate(getKeyedString(key));
+        }
+
+        private Date getDate(String value) throws MessagingException {
             try {
-                return parseDate(getString(index));
+                if (value == null) {
+                    return null;
+                }
+                return parseDate(value);
             } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime", pe);
+                throw new MessagingException("Unable to parse IMAP datetime '"+value+"' ", pe);
             }
         }
+
 
         public Object getKeyedValue(Object key) {
             for (int i = 0, count = size(); i < count; i++) {
@@ -377,18 +389,6 @@ public class ImapResponseParser {
 
         public int getKeyedNumber(Object key) {
             return Integer.parseInt(getKeyedString(key));
-        }
-
-        public Date getKeyedDate(Object key) throws MessagingException {
-            try {
-                String value = getKeyedString(key);
-                if (value == null) {
-                    return null;
-                }
-                return parseDate(value);
-            } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime", pe);
-            }
         }
 
         public boolean containsKey(Object key) {
