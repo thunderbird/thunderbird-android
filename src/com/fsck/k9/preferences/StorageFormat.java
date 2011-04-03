@@ -62,29 +62,6 @@ public class StorageFormat {
         return storageVersion.exporterClass.newInstance();
     }
 
-    public static Boolean exportNeedsKey(String storageFormat) {
-        StorageFormat storageVersion = storageFormatMap.get(storageFormat);
-        if (storageVersion == null) {
-            return null;
-        }
-        try {
-            Method method = storageVersion.exporterClass.getMethod("needsKey");
-            if (method == null) {
-                return null;
-            }
-            Object obj = method.invoke(null);
-            if (obj != null && obj instanceof Boolean) {
-                return (Boolean)obj;
-            }
-        }
-        catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to reflectively invoke needsKey on exporter for format " + storageFormat);
-            return null;
-        }
-        return null;
-    }
-
-
     private final Class <? extends IStorageImporter > importerClass;
     private final Class <? extends IStorageExporter > exporterClass;
     private final Integer presentableResource;
