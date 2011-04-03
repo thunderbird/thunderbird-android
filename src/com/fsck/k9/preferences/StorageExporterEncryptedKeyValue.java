@@ -2,7 +2,7 @@ package com.fsck.k9.preferences;
 
 import java.io.PrintWriter;
 
-public class StorageExporterEncryptedKeyValue extends BaseExporter implements IStorageExporter {
+public class StorageExporterEncryptedKeyValue extends BaseStorageExporter implements IStorageExporter {
     K9Krypto krypto = null;
    
     @Override

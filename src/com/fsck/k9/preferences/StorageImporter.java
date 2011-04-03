@@ -2,6 +2,8 @@ package com.fsck.k9.preferences;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -118,7 +120,7 @@ public class StorageImporter {
     public static class ImportElement {
         String name;
         Map<String, String> attributes = new HashMap<String, String>();
-        Map<String, ImportElement> subElements = new HashMap<String, ImportElement>();
+        List<ImportElement> subElements = new LinkedList<ImportElement>();
         StringBuilder data = new StringBuilder();
     }
 
@@ -142,25 +144,25 @@ public class StorageImporter {
         @Override
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes attributes) throws SAXException {
-            Log.i(K9.LOG_TAG, "Starting element " + localName);
+            //Log.i(K9.LOG_TAG, "Starting element " + localName);
             ImportElement element = new ImportElement();
             element.name = localName;
             mOpenTags.push(element);
             for (int i = 0; i < attributes.getLength(); i++) {
                 String key = attributes.getLocalName(i);
                 String value = attributes.getValue(i);
-                Log.i(K9.LOG_TAG, "Got attribute " + key + " = " + value);
+                //Log.i(K9.LOG_TAG, "Got attribute " + key + " = " + value);
                 element.attributes.put(key, value);
             }
         }
 
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
-            Log.i(K9.LOG_TAG, "Ending element " + localName);
+            //Log.i(K9.LOG_TAG, "Ending element " + localName);
             ImportElement element = mOpenTags.pop();
             ImportElement superElement = mOpenTags.empty() ? null : mOpenTags.peek();
             if (superElement != null) {
-                superElement.subElements.put(element.name, element);
+                superElement.subElements.add(element);
             } else {
                 rootElement = element;
             }

@@ -27,10 +27,6 @@
 		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-	<!-- 
-		<item android:id="@+id/search"
-		android:title="@string/search_action" />
-	-->
             <item android:id="@+id/edit_prefs"
                 android:title="@string/global_settings_action"  />
         <item android:id="@+id/import_export"
@@ -40,6 +36,8 @@
                android:title="@string/settings_export_all" /> 
             <item android:id="@+id/import_settings"
                android:title="@string/settings_import" /> 
+            <item android:id="@+id/export_only_globals"
+               android:title="@string/settings_export_only_globals" />
         </menu>
     </item>
 </menu>

@@ -3,7 +3,7 @@ package com.fsck.k9.preferences;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,15 +11,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 
-public abstract class BaseExporter {
+public abstract class BaseStorageExporter {
     public void exportPreferences(Context context, boolean includeGlobals, Set<String> accountUuids, OutputStream os, String encryptionKey) throws StorageImportExportException {
         try {
             initialize(encryptionKey);
-            Log.i(K9.LOG_TAG, "Exporting preferences");
             OutputStreamWriter sw = new OutputStreamWriter(os);
             PrintWriter pf = new PrintWriter(sw);
             long keysEvaluated = 0;
@@ -29,12 +27,10 @@ public abstract class BaseExporter {
             SharedPreferences storage = preferences.getPreferences();
 
             if (accountUuids == null) {
-                Account[] accounts = preferences.getAccounts();
-                accountUuids = new HashSet<String>();
-                for (Account account : accounts) {
-                    accountUuids.add(account.getUuid());
-                }
+                accountUuids = Collections.emptySet();
             }
+            Log.i(K9.LOG_TAG, "Exporting preferences for " + accountUuids.size() + " accounts and "
+                    + (includeGlobals ? "" : "not ") + " globals");
 
             Map < String, ? extends Object > prefs = storage.getAll();
             for (Map.Entry < String, ? extends Object > entry : prefs.entrySet()) {

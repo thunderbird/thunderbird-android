@@ -8,11 +8,13 @@ public class StorageFormat {
     // Never, ever re-use these numbers!
     public static final String ENCRYPTED_KEY_VALUE = "1";
     public static final String ENCRYPTED_BLOB = "2";
+    public static final String ENCRYPTED_URL_ENCODED = "3";
 
     public static Map<String, StorageFormat> storageFormatMap = new HashMap<String, StorageFormat>();
     static {
         storageFormatMap.put(ENCRYPTED_KEY_VALUE, new StorageFormat(StorageImporterEncryptedKeyValue.class, StorageExporterEncryptedKeyValue.class, true));
         storageFormatMap.put(ENCRYPTED_BLOB, new StorageFormat(StorageImporterEncryptedBlob.class, StorageExporterEncryptedBlob.class, true));
+        storageFormatMap.put(ENCRYPTED_URL_ENCODED, new StorageFormat(StorageImporterUrlEncoded.class, StorageExporterUrlEncoded.class, false));
     }
 
     public static IStorageImporter createImporter(String storageFormat) throws InstantiationException, IllegalAccessException {

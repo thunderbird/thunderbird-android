@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class StorageExporterEncryptedBlob extends BaseExporter implements IStorageExporter {
+public class StorageExporterEncryptedBlob extends BaseStorageExporter implements IStorageExporter {
     K9Krypto krypto = null;
     StringBuilder builder = null;
     Base64 mBase64 = null;

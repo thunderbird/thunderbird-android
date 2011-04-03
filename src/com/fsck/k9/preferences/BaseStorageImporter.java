@@ -53,6 +53,11 @@ public abstract class BaseStorageImporter implements IStorageImporter {
     public abstract void importPreferences(Editor editor, ImportElement dataset, String encryptionKey) throws StorageImportExportException ;
 
     public void incorporate(SharedPreferences.Editor editor, String key, String value) {
+        if ("defaultAccountUuid".equals(key))
+        {
+            Log.i(K9.LOG_TAG, "Skipping import of \"defaultAccountUuid\"");
+            return;
+        }
         String[] keyParts = key.split("\\.");
         if (keyParts.length > 1) {
             String oldUuid = keyParts[0];
@@ -66,6 +71,7 @@ public abstract class BaseStorageImporter implements IStorageImporter {
             keyParts[0] = newUuid;
             if ("accountNumber".equals(keyParts[1])) {
                 int accountNumber = Account.findNewAccountNumber(accountNumbers);
+                Log.i(K9.LOG_TAG, "Assigning new account number " + accountNumber);
                 accountNumbers.add(accountNumber);
                 value = Integer.toString(accountNumber);
                 accountUuids += (accountUuids.length() != 0 ? "," : "") + newUuid;
