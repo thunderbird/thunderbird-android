@@ -2368,6 +2368,14 @@ public class LocalStore extends Store implements Serializable {
                             String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
 
                             String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
+                            String dispositionType = contentDisposition;
+
+                            int pos = dispositionType.indexOf(';');
+                            if (pos != -1) {
+                                // extract the disposition-type, "attachment", "inline" or extension-token (see the RFC 2183)
+                                dispositionType = dispositionType.substring(0, pos);
+                            }
+
                             if (name == null && contentDisposition != null) {
                                 name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
                             }
@@ -2380,7 +2388,7 @@ public class LocalStore extends Store implements Serializable {
                                 cv.put("name", name);
                                 cv.put("mime_type", attachment.getMimeType());
                                 cv.put("content_id", contentId);
-                                cv.put("content_disposition", contentDisposition);
+                                cv.put("content_disposition", dispositionType);
 
                                 attachmentId = db.insert("attachments", "message_id", cv);
                             } else {
