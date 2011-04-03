@@ -1130,8 +1130,33 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(singleAccount.getUuid());
         }
 
-        // Once there are more file formats, build a UI to select which one to use.
+        List<String> formats = StorageFormat.getPresentableFormats();
+        Log.i(K9.LOG_TAG, "Got formats to present to user: " + formats);
+       
+        if (formats.size() > 1) {
+            chooseFormat(formats, includeGlobals, accountUuids, allAccounts);
+        }
+        else if (formats.size() == 1) {
+            finishExport(formats.get(0), includeGlobals, accountUuids, allAccounts);
+        }
+    }
+    
+    private void chooseFormat(final List<String> formats, final boolean includeGlobals, final Set<String> accountUuids, final boolean allAccounts) {
+        for (String format : formats) {
+            Integer res = StorageFormat.getPresentableResource(format);
+            if (res != null) {
+                String presentableString = getString(res);
+                Log.i(K9.LOG_TAG, "For format \'" + format + "\' got presentable String \"" + presentableString + "\"");
+            }
+        }
+     // TODO: Once there are more file formats, build a UI to select which one to use.  For now, use the safe one.
         String storageFormat = StorageFormat.ENCRYPTED_BLOB;
+
+        Log.i(K9.LOG_TAG, "Chosen format is \'" + storageFormat + "\'");
+        finishExport(storageFormat, includeGlobals, accountUuids, allAccounts);
+    }
+    
+    private void finishExport(final String storageFormat, final boolean includeGlobals, final Set<String> accountUuids, final boolean allAccounts) {
         AsyncUIProcessor.getInstance(this.getApplication()).exportSettings(this, storageFormat, includeGlobals, accountUuids, new ExportListener() {
 
             @Override
