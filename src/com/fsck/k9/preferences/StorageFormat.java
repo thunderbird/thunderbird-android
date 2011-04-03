@@ -17,7 +17,7 @@ public class StorageFormat {
     public static Map<String, StorageFormat> storageFormatMap = new HashMap<String, StorageFormat>();
     public static List<String> presentableVersions = new LinkedList<String>();
     static {
-        storageFormatMap.put(ENCRYPTED_KEY_VALUE, new StorageFormat(StorageImporterEncryptedKeyValue.class, StorageExporterEncryptedKeyValue.class, true, null));
+        storageFormatMap.put(ENCRYPTED_KEY_VALUE, new StorageFormat(StorageImporterEncryptedKeyValue.class, StorageExporterObsolete.class, false, null));
         storageFormatMap.put(ENCRYPTED_BLOB, new StorageFormat(StorageImporterEncryptedBlob.class, StorageExporterEncryptedBlob.class, true, R.string.settings_format_encrypted));
         storageFormatMap.put(ENCRYPTED_URL_ENCODED, new StorageFormat(StorageImporterUrlEncoded.class, StorageExporterUrlEncoded.class, false, null /*R.string.settings_format_unencrypted */));  // Uncomment resource id when made release-ready
         
