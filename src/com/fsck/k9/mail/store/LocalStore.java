@@ -366,7 +366,7 @@ public class LocalStore extends Store implements Serializable {
             Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
             boolean inTopGroup = false;
             boolean integrate = false;
-            if (K9.INBOX.equals(name)) {
+            if (mAccount.getInboxFolderName().equals(name)) {
                 displayClass = Folder.FolderClass.FIRST_CLASS;
                 syncClass =  Folder.FolderClass.FIRST_CLASS;
                 pushClass =  Folder.FolderClass.FIRST_CLASS;
@@ -515,7 +515,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX
+                                                 mAccount.getInboxFolderName()
                                              }
 
                                             );
@@ -526,7 +526,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name()
                                              });
 
 
@@ -537,7 +537,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     } else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS) {
                         cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[] {
@@ -547,7 +547,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     } else if (displayMode == Account.FolderMode.ALL) {
                         cursor = db.rawQuery(baseQuery,  new String[] {
@@ -1047,14 +1047,14 @@ public class LocalStore extends Store implements Serializable {
                     if (mAccount.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(K9.INBOX)) {
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                             prefHolder.integrate = true;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(K9.INBOX) ||
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
                                 name.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
@@ -1104,7 +1104,8 @@ public class LocalStore extends Store implements Serializable {
             super(LocalStore.this.mAccount);
             this.mName = name;
 
-            if (K9.INBOX.equals(getName())) {
+            if (LocalStore.this.mAccount.getInboxFolderName().equals(getName())) {
+
                 mSyncClass =  FolderClass.FIRST_CLASS;
                 mPushClass =  FolderClass.FIRST_CLASS;
                 mInTopGroup = true;
@@ -1484,19 +1485,19 @@ public class LocalStore extends Store implements Serializable {
             String id = getPrefId();
 
             // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-            if (mDisplayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName())) {
+            if (mDisplayClass == FolderClass.NO_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".displayMode");
             } else {
                 editor.putString(id + ".displayMode", mDisplayClass.name());
             }
 
-            if (mSyncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName())) {
+            if (mSyncClass == FolderClass.INHERITED && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".syncMode");
             } else {
                 editor.putString(id + ".syncMode", mSyncClass.name());
             }
 
-            if (mPushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName())) {
+            if (mPushClass == FolderClass.SECOND_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".pushMode");
             } else {
                 editor.putString(id + ".pushMode", mPushClass.name());
