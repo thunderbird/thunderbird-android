@@ -719,7 +719,7 @@ public class MessagingController implements Runnable {
                                 }
                             }
                             // Never exclude the INBOX (see issue 1817)
-                            else if (noSpecialFolders && !localFolderName.equalsIgnoreCase(K9.INBOX) &&
+                            else if (noSpecialFolders && !localFolderName.equalsIgnoreCase(account.getInboxFolderName()) &&
                                      !localFolderName.equals(account.getArchiveFolderName()) && account.isSpecialFolder(localFolderName)) {
                                 include = false;
                             } else if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass())) {
@@ -2880,7 +2880,7 @@ public class MessagingController implements Runnable {
             (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.ic_menu_refresh,
                                               mApplication.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, K9.INBOX);
+        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, account.getInboxFolderName());
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_send_title),
                                  account.getDescription() , pi);
@@ -2922,7 +2922,7 @@ public class MessagingController implements Runnable {
             Notification notif = new Notification(R.drawable.ic_menu_refresh,
                                                   mApplication.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
                                                   System.currentTimeMillis());
-            Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, K9.INBOX);
+            Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, account.getInboxFolderName());
             PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
             notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_sync_title), account.getDescription()
                                      + mApplication.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
@@ -3867,7 +3867,7 @@ public class MessagingController implements Runnable {
             // No notification for new messages in Trash, Drafts, Spam or Sent folder.
             // But do notify if it's the INBOX (see issue 1817).
             String folderName = folder.getName();
-            if (!K9.INBOX.equals(folderName) &&
+            if (!account.getInboxFolderName().equals(folderName) &&
                     (account.getTrashFolderName().equals(folderName)
                      || account.getDraftsFolderName().equals(folderName)
                      || account.getSpamFolderName().equals(folderName)
