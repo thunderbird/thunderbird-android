@@ -700,7 +700,13 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+        // In webdav account we use the exact folder name also for inbox,
+        // since it varies because of internationalization
+        if(mAccount.getStoreUri().startsWith("webdav"))
+		mAccount.setAutoExpandFolderName(mAutoExpandFolder.getValue());
+        else
+		mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+
         mAccount.setArchiveFolderName(mArchiveFolder.getValue());
         mAccount.setDraftsFolderName(mDraftsFolder.getValue());
         mAccount.setSentFolderName(mSentFolder.getValue());
@@ -826,7 +832,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (K9.INBOX.equalsIgnoreCase(in)) {
+        if (mAccount.getInboxFolderName().equalsIgnoreCase(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
@@ -835,7 +841,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private String reverseTranslateFolder(String in) {
         if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return K9.INBOX;
+            return mAccount.getInboxFolderName();
         } else {
             return in;
         }
