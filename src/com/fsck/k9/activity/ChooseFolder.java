@@ -248,7 +248,8 @@ public class ChooseFolder extends K9ListActivity {
                 String name = folder.getName();
 
                 // Inbox needs to be compared case-insensitively
-                if (hideCurrentFolder && (name.equals(mFolder) || (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))) {
+                if (hideCurrentFolder && (name.equals(mFolder) || 
+                    	(mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) && mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
                     continue;
                 }
                 try {
@@ -282,10 +283,10 @@ public class ChooseFolder extends K9ListActivity {
                     if (K9.FOLDER_NONE.equalsIgnoreCase(bName)) {
                         return 1;
                     }
-                    if (K9.INBOX.equalsIgnoreCase(aName)) {
+                    if (mAccount.getInboxFolderName().equalsIgnoreCase(aName)) {
                         return -1;
                     }
-                    if (K9.INBOX.equalsIgnoreCase(bName)) {
+                    if (mAccount.getInboxFolderName().equalsIgnoreCase(bName)) {
                         return 1;
                     }
 
@@ -298,7 +299,7 @@ public class ChooseFolder extends K9ListActivity {
                 mAdapter.clear();
                 int position = 0;
                 for (String name : localFolders) {
-                    if (K9.INBOX.equalsIgnoreCase(name)) {
+                    if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
                         mAdapter.add(getString(R.string.special_mailbox_name_inbox));
                         heldInbox = name;
                     } else if (!K9.ERROR_FOLDER_NAME.equals(name) && !account.getOutboxFolderName().equals(name)) {
@@ -315,7 +316,7 @@ public class ChooseFolder extends K9ListActivity {
                             selectedFolder = position;
                         }
                     } else if (name.equals(mFolder) ||
-                    (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name))) {
+                        (mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) && mAccount.getInboxFolderName().equalsIgnoreCase(name))) {
                         selectedFolder = position;
                     }
                     position++;
