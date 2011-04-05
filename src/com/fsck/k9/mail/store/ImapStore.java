@@ -380,7 +380,7 @@ public class ImapStore extends Store {
                     mCombinedPrefix = null;
                 }
 
-                if (folder.equalsIgnoreCase(K9.INBOX)) {
+                if (folder.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                     continue;
                 } else if (folder.equalsIgnoreCase(K9.OUTBOX)) {
                     /*
@@ -413,7 +413,7 @@ public class ImapStore extends Store {
                 }
             }
         }
-        folders.add(getFolder("INBOX"));
+        folders.add(getFolder(mAccount.getInboxFolderName()));
         return folders;
 
     }
@@ -548,7 +548,7 @@ public class ImapStore extends Store {
 
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
-            if (!K9.INBOX.equalsIgnoreCase(mName)) {
+            if (!mAccount.getInboxFolderName().equalsIgnoreCase(mName)) {
                 ImapConnection connection = null;
                 synchronized (this) {
                     if (mConnection == null) {
