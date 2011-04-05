@@ -112,13 +112,13 @@ public class Pop3Store extends Store {
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder("INBOX"));
+        folders.add(getFolder(mAccount.getInboxFolderName()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder("INBOX");
+        Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());       
         folder.open(OpenMode.READ_WRITE);
         if (!mCapabilities.uidl) {
             /*
@@ -149,8 +149,9 @@ public class Pop3Store extends Store {
         public Pop3Folder(String name) {
             super(Pop3Store.this.mAccount);
             this.mName = name;
-            if (mName.equalsIgnoreCase("INBOX")) {
-                mName = "INBOX";
+
+            if (mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+                mName = mAccount.getInboxFolderName();
             }
         }
 
@@ -160,7 +161,7 @@ public class Pop3Store extends Store {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase("INBOX")) {
+            if (!mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
@@ -305,7 +306,7 @@ public class Pop3Store extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase("INBOX");
+            return mName.equalsIgnoreCase(mAccount.getInboxFolderName());
         }
 
         @Override
