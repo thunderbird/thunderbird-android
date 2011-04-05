@@ -699,7 +699,7 @@ public class MessageList
     @Override
     public void onResume() {
         super.onResume();
-
+        
         if (mAccount != null && !mAccount.isAvailable(this)) {
             onAccountUnavailable();
             return;
@@ -727,6 +727,12 @@ public class MessageList
             }
 
         } else {
+        	// issue 2955
+        	// if dateformat was changed we have to update our already initialised MessgageHelper
+        	// we update anyway since this isn't a big overhead if the format wasn't changed
+        	// ( we could add a property to K9 class: dateFormatChanged and check it too )
+        	mMessageHelper.refresh();
+        	
             new Thread() {
                 @Override
                 public void run() {
