@@ -234,8 +234,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
@@ -409,7 +407,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
                 userInfo = authType + ":" + userEnc + ":" + passwordEnc;
             } else {
-                userInfo = userEnc + ":" + passwordEnc;
+                String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+                if (!authType.equalsIgnoreCase("plain")) {
+                	userInfo = authType + ":" + userEnc + ":" + passwordEnc;
+                } else {
+                	userInfo = userEnc + ":" + passwordEnc;
+                }
             }
             URI uri = new URI(
                 mAccountSchemes[securityType],

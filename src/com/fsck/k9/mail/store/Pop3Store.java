@@ -9,6 +9,8 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import javax.net.ssl.SSLContext;
@@ -17,6 +19,8 @@ import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +42,7 @@ public class Pop3Store extends Store {
     private int mPort;
     private String mUsername;
     private String mPassword;
+    private boolean useCramMd5;
     private int mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
@@ -85,12 +90,20 @@ public class Pop3Store extends Store {
             mPort = uri.getPort();
         }
 
+        useCramMd5 = false;
         if (uri.getUserInfo() != null) {
             try {
+                int userIndex = 0, passwordIndex = 1;
                 String[] userInfoParts = uri.getUserInfo().split(":");
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                if (userInfoParts.length > 2)
+                {
+                	userIndex++;
+                	passwordIndex++;
+                	useCramMd5 = true;
+                }
+                mUsername = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
+                if (userInfoParts.length > passwordIndex) {
+                    mPassword = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -215,11 +228,57 @@ public class Pop3Store extends Store {
                     }
                 }
 
-                try {
-                    executeSimpleCommand("USER " + mUsername);
-                    executeSimpleCommand("PASS " + mPassword, true);
-                } catch (MessagingException me) {
-                    throw new AuthenticationFailedException(null, me);
+                if (useCramMd5)
+                {
+                    try {
+                        String nonce64, plainCRAM, b64CRAM;
+                        MessageDigest md;
+                        byte[] ipad = new byte[64];
+                        byte[] opad = new byte[64];
+                        byte[] nonce, secretBytes, firstPass, result;
+
+                        nonce64 = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+                        nonce = Base64.decodeBase64(nonce64.getBytes("US-ASCII"));
+
+                        secretBytes = mPassword.getBytes("US-ASCII");
+                        try {
+                            md = MessageDigest.getInstance("MD5");
+                        } catch (NoSuchAlgorithmException nsae) {
+                            throw new AuthenticationFailedException("MD5 Not Available.");
+                        }
+
+                        if (secretBytes.length > 64) {
+                            secretBytes = md.digest(secretBytes);
+                        }
+
+                        System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
+                        System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
+                        for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
+                        for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
+
+                        md.update(ipad);
+                        firstPass = md.digest(nonce);
+
+                        md.update(opad);
+                        result = md.digest(firstPass);
+
+                        plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
+                        b64CRAM = new String(Base64.encodeBase64(plainCRAM.getBytes("US-ASCII")), "US-ASCII");
+
+                        executeSimpleCommand(b64CRAM);
+
+                    } catch (MessagingException me) {
+                        throw new AuthenticationFailedException(null, me);
+                    }
+                }
+                else
+                {
+                    try {
+                        executeSimpleCommand("USER " + mUsername);
+                        executeSimpleCommand("PASS " + mPassword, true);
+                    } catch (MessagingException me) {
+                        throw new AuthenticationFailedException(null, me);
+                    }
                 }
 
                 mCapabilities = getCapabilities();
