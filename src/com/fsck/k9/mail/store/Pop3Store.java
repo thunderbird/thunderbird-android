@@ -9,8 +9,6 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import javax.net.ssl.SSLContext;
@@ -19,8 +17,6 @@ import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
@@ -231,40 +227,9 @@ public class Pop3Store extends Store {
                 if (useCramMd5)
                 {
                     try {
-                        String nonce64, plainCRAM, b64CRAM;
-                        MessageDigest md;
-                        byte[] ipad = new byte[64];
-                        byte[] opad = new byte[64];
-                        byte[] nonce, secretBytes, firstPass, result;
+                        String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 
-                        nonce64 = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
-                        nonce = Base64.decodeBase64(nonce64.getBytes("US-ASCII"));
-
-                        secretBytes = mPassword.getBytes("US-ASCII");
-                        try {
-                            md = MessageDigest.getInstance("MD5");
-                        } catch (NoSuchAlgorithmException nsae) {
-                            throw new AuthenticationFailedException("MD5 Not Available.");
-                        }
-
-                        if (secretBytes.length > 64) {
-                            secretBytes = md.digest(secretBytes);
-                        }
-
-                        System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
-                        System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
-                        for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
-                        for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
-
-                        md.update(ipad);
-                        firstPass = md.digest(nonce);
-
-                        md.update(opad);
-                        result = md.digest(firstPass);
-
-                        plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
-                        b64CRAM = new String(Base64.encodeBase64(plainCRAM.getBytes("US-ASCII")), "US-ASCII");
-
+                        String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
                         executeSimpleCommand(b64CRAM);
 
                     } catch (MessagingException me) {
