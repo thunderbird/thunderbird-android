@@ -1,38 +1,58 @@
 package com.fsck.k9.mail.store;
 
-import java.io.*;
-import java.net.*;
-import java.security.*;
-import java.text.*;
-import java.util.*;
-import java.util.zip.*;
+import android.util.Log;
 
-import javax.net.ssl.*;
-import javax.xml.parsers.*;
-
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.client.entity.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.client.protocol.*;
-import org.apache.http.conn.scheme.*;
-import org.apache.http.entity.*;
-import org.apache.http.impl.client.*;
-import org.apache.http.message.*;
-import org.apache.http.protocol.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-
-import android.util.*;
-
-import com.fsck.k9.*;
-import com.fsck.k9.controller.*;
-import com.fsck.k9.helper.*;
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.filter.*;
-import com.fsck.k9.mail.internet.*;
-import com.fsck.k9.mail.transport.*;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.transport.TrustedSocketFactory;
+import org.apache.http.*;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.net.ssl.SSLException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+import java.util.zip.GZIPInputStream;
 
 /**
  * <pre>
@@ -59,13 +79,15 @@ public class WebDavStore extends Store {
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
-    private static final Object DAV_MAIL_INBOX_FOLDER = "inbox";
-    private static final Object DAV_MAIL_DRAFTS_FOLDER = "drafts";
-    private static final String DAV_MAIL_SPAM_FOLDER = "spam";
+    // These are the ids used from Exchange server to identify the special folders
+    // http://social.technet.microsoft.com/Forums/en/exchangesvrdevelopment/thread/1cd2e98c-8a12-44bd-a3e3-9c5ee9e4e14d
+    private static final String DAV_MAIL_INBOX_FOLDER = "inbox";
+    private static final String DAV_MAIL_DRAFTS_FOLDER = "drafts";
+    private static final String DAV_MAIL_SPAM_FOLDER = "junkemail";
     private static final String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
-	private static final Object DAV_MAIL_TRASH_FOLDER = "deleteditems";
-	private static final Object DAV_MAIL_OUTBOX_FOLDER = "outbox";
-	private static final Object DAV_MAIL_SENT_FOLDER = "sentitems";
+	private static final String DAV_MAIL_TRASH_FOLDER = "deleteditems";
+	private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
+	private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
 
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
@@ -270,14 +292,23 @@ public class WebDavStore extends Store {
 
         for (int i = 0; i < folderUrls.length; i++) {
             String tempUrl = folderUrls[i];
-            createFolder(tempUrl, folderList);
+            WebDavFolder folder = createFolder(tempUrl);
+            if(folder != null)
+		folderList.add(folder);
         }
 
         return folderList;
     }
 
-    private WebDavFolder createFolder(String folderUrl, LinkedList<Folder> folderList) {
-	if(folderUrl == null || folderList == null)
+    /**
+     * Creates a folder using the URL passed as parameter (only if it has not been
+     * already created) and adds this to our store folder map.
+     *
+     * @param folderUrl
+     * @return
+     */
+    private WebDavFolder createFolder(String folderUrl) {
+	if(folderUrl == null)
 		return null;
 
 	WebDavFolder wdFolder=null;
@@ -286,7 +317,6 @@ public class WebDavStore extends Store {
 			if(!this.mFolderList.containsKey(folderName)) {
                 wdFolder = new WebDavFolder(this, folderName);
                 wdFolder.setUrl(folderUrl);
-		folderList.add(wdFolder);
 		mFolderList.put(folderName, wdFolder);
 			}
         }
@@ -299,6 +329,9 @@ public class WebDavStore extends Store {
 	if(folderUrl == null)
 		return null;
 
+	// Here we extract the folder name starting from the complete url.
+	// folderUrl is in the form http://mail.domain.com/exchange/username/foldername
+	// so we need "foldername" which is the string after the fifth slash
         int folderSlash=-1;
         for(int j=0; j < 5; j++) {
 		folderSlash=folderUrl.indexOf('/', folderSlash+1);
@@ -310,11 +343,13 @@ public class WebDavStore extends Store {
 		String folderName;
 		String fullPathName;
 
+		// Removes the final slash if present
 		if(folderUrl.charAt(folderUrl.length()-1) == '/')
 			fullPathName = folderUrl.substring(folderSlash+1, folderUrl.length()-1);
 		else
 			fullPathName = folderUrl.substring(folderSlash+1);
 
+		// Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
 			try {
 				folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
 			} catch (UnsupportedEncodingException uee) {
@@ -372,8 +407,7 @@ public class WebDavStore extends Store {
 		// This should always be ##DavMailSubmissionURI## for which we already have a constant
 		// buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
 
-		//TODO: What is the id of the spam folder???
-		//buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+		buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
 
 		buffer.append("</prop>");
 		buffer.append("</propfind>");
