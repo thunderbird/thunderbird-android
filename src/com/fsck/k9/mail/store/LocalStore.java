@@ -2375,10 +2375,12 @@ public class LocalStore extends Store implements Serializable {
                             String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
                             String dispositionType = contentDisposition;
 
-                            int pos = dispositionType.indexOf(';');
-                            if (pos != -1) {
-                                // extract the disposition-type, "attachment", "inline" or extension-token (see the RFC 2183)
-                                dispositionType = dispositionType.substring(0, pos);
+                            if (dispositionType != null) {
+                                int pos = dispositionType.indexOf(';');
+                                if (pos != -1) {
+                                    // extract the disposition-type, "attachment", "inline" or extension-token (see the RFC 2183)
+                                    dispositionType = dispositionType.substring(0, pos);
+                                }
                             }
 
                             if (name == null && contentDisposition != null) {
