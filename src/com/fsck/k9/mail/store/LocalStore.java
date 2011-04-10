@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
@@ -2429,7 +2430,7 @@ public class LocalStore extends Store implements Serializable {
                                         String new_html;
 
                                         new_html = cursor.getString(0);
-                                        new_html = new_html.replaceAll("cid:" + contentId,
+                                        new_html = new_html.replaceAll(Pattern.quote("cid:" + contentId),
                                                                        contentUri.toString());
 
                                         ContentValues cv = new ContentValues();
