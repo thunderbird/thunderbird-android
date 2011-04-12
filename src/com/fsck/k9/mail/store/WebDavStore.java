@@ -85,9 +85,9 @@ public class WebDavStore extends Store {
     private static final String DAV_MAIL_DRAFTS_FOLDER = "drafts";
     private static final String DAV_MAIL_SPAM_FOLDER = "junkemail";
     private static final String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
-	private static final String DAV_MAIL_TRASH_FOLDER = "deleteditems";
-	private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
-	private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
+    private static final String DAV_MAIL_TRASH_FOLDER = "deleteditems";
+    private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
+    private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
 
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
@@ -256,30 +256,30 @@ public class WebDavStore extends Store {
 
         HashMap<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
-        if(folderName != null) {
-		mAccount.setAutoExpandFolderName(folderName);
-		mAccount.setInboxFolderName(folderName);
+        if (folderName != null) {
+            mAccount.setAutoExpandFolderName(folderName);
+            mAccount.setInboxFolderName(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_DRAFTS_FOLDER));
-        if(folderName != null)
-		mAccount.setDraftsFolderName(folderName);
+        if (folderName != null)
+            mAccount.setDraftsFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_TRASH_FOLDER));
-        if(folderName != null)
-		mAccount.setTrashFolderName(folderName);
+        if (folderName != null)
+            mAccount.setTrashFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SPAM_FOLDER));
-        if(folderName != null)
-		mAccount.setSpamFolderName(folderName);
+        if (folderName != null)
+            mAccount.setSpamFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
-        if(folderName != null)
-		mAccount.setOutboxFolderName(folderName);
+        if (folderName != null)
+            mAccount.setOutboxFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
-        if(folderName != null)
-		mAccount.setSentFolderName(folderName);
+        if (folderName != null)
+            mAccount.setSentFolderName(folderName);
 
         /**
          * Next we get all the folders (including "special" ones)
@@ -293,8 +293,8 @@ public class WebDavStore extends Store {
         for (int i = 0; i < folderUrls.length; i++) {
             String tempUrl = folderUrls[i];
             WebDavFolder folder = createFolder(tempUrl);
-            if(folder != null)
-		folderList.add(folder);
+            if (folder != null)
+                folderList.add(folder);
         }
 
         return folderList;
@@ -308,60 +308,60 @@ public class WebDavStore extends Store {
      * @return
      */
     private WebDavFolder createFolder(String folderUrl) {
-	if(folderUrl == null)
-		return null;
+        if (folderUrl == null)
+            return null;
 
-	WebDavFolder wdFolder=null;
-	String folderName = getFolderName(folderUrl);
-	if(folderName != null) {
-			if(!this.mFolderList.containsKey(folderName)) {
+        WebDavFolder wdFolder = null;
+        String folderName = getFolderName(folderUrl);
+        if (folderName != null) {
+            if (!this.mFolderList.containsKey(folderName)) {
                 wdFolder = new WebDavFolder(this, folderName);
                 wdFolder.setUrl(folderUrl);
-		mFolderList.put(folderName, wdFolder);
-			}
+                mFolderList.put(folderName, wdFolder);
+            }
         }
-	// else: Unknown URL format => NO Folder created
+        // else: Unknown URL format => NO Folder created
 
-	return wdFolder;
-	}
+        return wdFolder;
+    }
 
     private String getFolderName(String folderUrl) {
-	if(folderUrl == null)
-		return null;
+        if (folderUrl == null)
+            return null;
 
-	// Here we extract the folder name starting from the complete url.
-	// folderUrl is in the form http://mail.domain.com/exchange/username/foldername
-	// so we need "foldername" which is the string after the fifth slash
-        int folderSlash=-1;
-        for(int j=0; j < 5; j++) {
-		folderSlash=folderUrl.indexOf('/', folderSlash+1);
-		if(folderSlash < 0)
-			break;
+        // Here we extract the folder name starting from the complete url.
+        // folderUrl is in the form http://mail.domain.com/exchange/username/foldername
+        // so we need "foldername" which is the string after the fifth slash
+        int folderSlash = -1;
+        for (int j = 0; j < 5; j++) {
+            folderSlash = folderUrl.indexOf('/', folderSlash + 1);
+            if (folderSlash < 0)
+                break;
         }
 
-        if(folderSlash > 0) {
-		String folderName;
-		String fullPathName;
+        if (folderSlash > 0) {
+            String folderName;
+            String fullPathName;
 
-		// Removes the final slash if present
-		if(folderUrl.charAt(folderUrl.length()-1) == '/')
-			fullPathName = folderUrl.substring(folderSlash+1, folderUrl.length()-1);
-		else
-			fullPathName = folderUrl.substring(folderSlash+1);
+            // Removes the final slash if present
+            if (folderUrl.charAt(folderUrl.length() - 1) == '/')
+                fullPathName = folderUrl.substring(folderSlash + 1, folderUrl.length() - 1);
+            else
+                fullPathName = folderUrl.substring(folderSlash + 1);
 
-		// Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
-			try {
-				folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-			} catch (UnsupportedEncodingException uee) {
-				/**
-				 * If we don't support UTF-8 there's a problem, don't decode
-				 * it then
-				 */
-				folderName = fullPathName;
-			}
+            // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
+            try {
+                folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
+            } catch (UnsupportedEncodingException uee) {
+                /**
+                 * If we don't support UTF-8 there's a problem, don't decode
+                 * it then
+                 */
+                folderName = fullPathName;
+            }
 
-			return folderName;
-		}
+            return folderName;
+        }
 
         return null;
     }
@@ -378,10 +378,10 @@ public class WebDavStore extends Store {
     }
 
     public Folder getSendSpoolFolder() throws MessagingException {
-		if (mSendFolder == null)
-			mSendFolder = getFolder(DAV_MAIL_SEND_FOLDER);
+        if (mSendFolder == null)
+            mSendFolder = getFolder(DAV_MAIL_SEND_FOLDER);
 
-		return mSendFolder;
+        return mSendFolder;
     }
 
     @Override
@@ -394,25 +394,25 @@ public class WebDavStore extends Store {
         return true;
     }
 
-	private String getSpecialFoldersList() {
-		StringBuffer buffer = new StringBuffer(200);
-		buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
-		buffer.append("<propfind xmlns=\"DAV:\">");
-		buffer.append("<prop>");
-		buffer.append("<").append(DAV_MAIL_INBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-		buffer.append("<").append(DAV_MAIL_DRAFTS_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-		buffer.append("<").append(DAV_MAIL_OUTBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-		buffer.append("<").append(DAV_MAIL_SENT_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-		buffer.append("<").append(DAV_MAIL_TRASH_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-		// This should always be ##DavMailSubmissionURI## for which we already have a constant
-		// buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
+    private String getSpecialFoldersList() {
+        StringBuffer buffer = new StringBuffer(200);
+        buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
+        buffer.append("<propfind xmlns=\"DAV:\">");
+        buffer.append("<prop>");
+        buffer.append("<").append(DAV_MAIL_INBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_DRAFTS_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_OUTBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_SENT_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_TRASH_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        // This should always be ##DavMailSubmissionURI## for which we already have a constant
+        // buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
 
-		buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
 
-		buffer.append("</prop>");
-		buffer.append("</propfind>");
-		return buffer.toString();
-	}
+        buffer.append("</prop>");
+        buffer.append("</propfind>");
+        return buffer.toString();
+    }
 
     /***************************************************************
      * WebDAV XML Request body retrieval functions
@@ -1081,7 +1081,7 @@ public class WebDavStore extends Store {
 
     @Override
     public void sendMessages(Message[] messages) throws MessagingException {
-		WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
+        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(OpenMode.READ_WRITE);
             Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
@@ -2072,17 +2072,17 @@ public class WebDavStore extends Store {
         }
 
         /**
-		 * Returns a hashmap of special folder name => special folder url
-		 */
-		public HashMap<String, String> getSpecialFolderToUrl() {
-			// We return the first (and only) map
-			for (HashMap<String, String> folderMap : mData.values()) {
-				return folderMap;
-			}
-			return new HashMap<String, String>();
-		}
+         * Returns a hashmap of special folder name => special folder url
+         */
+        public HashMap<String, String> getSpecialFolderToUrl() {
+            // We return the first (and only) map
+            for (HashMap<String, String> folderMap : mData.values()) {
+                return folderMap;
+            }
+            return new HashMap<String, String>();
+        }
 
-		/**
+        /**
          * Returns a hashmap of Message UID => Message Url
          */
         public HashMap<String, String> getUidToUrl() {

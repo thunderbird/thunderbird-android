@@ -702,10 +702,10 @@ public class AccountSettings extends K9PreferenceActivity {
 
         // In webdav account we use the exact folder name also for inbox,
         // since it varies because of internationalization
-        if(mAccount.getStoreUri().startsWith("webdav"))
-		mAccount.setAutoExpandFolderName(mAutoExpandFolder.getValue());
+        if (mAccount.getStoreUri().startsWith("webdav"))
+            mAccount.setAutoExpandFolderName(mAutoExpandFolder.getValue());
         else
-		mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+            mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
 
         mAccount.setArchiveFolderName(mArchiveFolder.getValue());
         mAccount.setDraftsFolderName(mDraftsFolder.getValue());
