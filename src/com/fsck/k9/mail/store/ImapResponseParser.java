@@ -15,6 +15,7 @@ public class ImapResponseParser {
     private static final SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
+    private static final SimpleDateFormat badDateTimeFormat3 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 
     private PeekableInputStream mIn;
     private ImapResponse mResponse;
@@ -426,8 +427,14 @@ public class ImapResponseParser {
                         return badDateTimeFormat.parse(value);
                     }
                 } catch (Exception e2) {
-                    synchronized (badDateTimeFormat2) {
-                        return badDateTimeFormat2.parse(value);
+                    try {
+                    	synchronized (badDateTimeFormat2) {
+                            return badDateTimeFormat2.parse(value);
+                        }
+                    } catch (Exception e3) {
+                        synchronized (badDateTimeFormat3) {
+                            return badDateTimeFormat3.parse(value);
+                        }
                     }
                 }
             }
