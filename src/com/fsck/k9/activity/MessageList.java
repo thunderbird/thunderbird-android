@@ -698,7 +698,7 @@ public class MessageList
     @Override
     public void onResume() {
         super.onResume();
-
+        
         if (mAccount != null && !mAccount.isAvailable(this)) {
             onAccountUnavailable();
             return;
@@ -726,6 +726,9 @@ public class MessageList
             }
 
         } else {
+        	// reread the selected date format preference in case it has changed
+        	mMessageHelper.refresh();
+        	
             new Thread() {
                 @Override
                 public void run() {
