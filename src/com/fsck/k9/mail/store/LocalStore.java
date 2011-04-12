@@ -1675,7 +1675,7 @@ public class LocalStore extends Store implements Serializable {
                                             }
 
                                             String encoded_name = EncoderUtil.encodeIfNecessary(name,
-                                                    EncoderUtil.Usage.WORD_ENTITY, 7);
+                                                                  EncoderUtil.Usage.WORD_ENTITY, 7);
 
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,

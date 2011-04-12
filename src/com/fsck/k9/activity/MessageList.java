@@ -698,7 +698,7 @@ public class MessageList
     @Override
     public void onResume() {
         super.onResume();
-        
+
         if (mAccount != null && !mAccount.isAvailable(this)) {
             onAccountUnavailable();
             return;
@@ -726,9 +726,9 @@ public class MessageList
             }
 
         } else {
-        	// reread the selected date format preference in case it has changed
-        	mMessageHelper.refresh();
-        	
+            // reread the selected date format preference in case it has changed
+            mMessageHelper.refresh();
+
             new Thread() {
                 @Override
                 public void run() {
@@ -1142,7 +1142,7 @@ public class MessageList
         }
     }
 
-    private void moveToSpamFolder(MessageInfoHolder holder){
+    private void moveToSpamFolder(MessageInfoHolder holder) {
         if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1286,31 +1286,31 @@ public class MessageList
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return ConfirmationDialog.create(this, id,
-                    R.string.mark_all_as_read_dlg_title,
-                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                            mCurrentFolder.displayName),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            markAllAsRead();
-                        }
-                    });
+                                             R.string.mark_all_as_read_dlg_title,
+                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mCurrentFolder.displayName),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    markAllAsRead();
+                }
+            });
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
-                    R.string.dialog_confirm_spam_title,
-                    R.string.dialog_confirm_spam_message,
-                    R.string.dialog_confirm_spam_confirm_button,
-                    R.string.dialog_confirm_spam_cancel_button,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            moveToSpamFolder(mSelectedMessage);
-                            // No further need for this reference
-                            mSelectedMessage = null;
-                        }
-                    });
+                                             R.string.dialog_confirm_spam_title,
+                                             R.string.dialog_confirm_spam_message,
+                                             R.string.dialog_confirm_spam_confirm_button,
+                                             R.string.dialog_confirm_spam_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    moveToSpamFolder(mSelectedMessage);
+                    // No further need for this reference
+                    mSelectedMessage = null;
+                }
+            });
         }
 
         return super.onCreateDialog(id);

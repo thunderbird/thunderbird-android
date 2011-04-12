@@ -362,7 +362,7 @@ public class ImapResponseParser {
                 }
                 return parseDate(value);
             } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime '"+value+"' ", pe);
+                throw new MessagingException("Unable to parse IMAP datetime '" + value + "' ", pe);
             }
         }
 
@@ -428,7 +428,7 @@ public class ImapResponseParser {
                     }
                 } catch (Exception e2) {
                     try {
-                    	synchronized (badDateTimeFormat2) {
+                        synchronized (badDateTimeFormat2) {
                             return badDateTimeFormat2.parse(value);
                         }
                     } catch (Exception e3) {

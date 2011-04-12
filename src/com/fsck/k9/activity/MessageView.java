@@ -932,29 +932,29 @@ public class MessageView extends K9Activity implements OnClickListener {
         switch (id) {
         case R.id.dialog_confirm_delete:
             return ConfirmationDialog.create(this, id,
-                    R.string.dialog_confirm_delete_title,
-                    R.string.dialog_confirm_delete_message,
-                    R.string.dialog_confirm_delete_confirm_button,
-                    R.string.dialog_confirm_delete_cancel_button,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            delete();
-                        }
-                    });
+                                             R.string.dialog_confirm_delete_title,
+                                             R.string.dialog_confirm_delete_message,
+                                             R.string.dialog_confirm_delete_confirm_button,
+                                             R.string.dialog_confirm_delete_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    delete();
+                }
+            });
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
-                    R.string.dialog_confirm_spam_title,
-                    R.string.dialog_confirm_spam_message,
-                    R.string.dialog_confirm_spam_confirm_button,
-                    R.string.dialog_confirm_spam_cancel_button,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            refileMessage(mDstFolder);
-                            mDstFolder = null;
-                        }
-                    });
+                                             R.string.dialog_confirm_spam_title,
+                                             R.string.dialog_confirm_spam_message,
+                                             R.string.dialog_confirm_spam_confirm_button,
+                                             R.string.dialog_confirm_spam_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    refileMessage(mDstFolder);
+                    mDstFolder = null;
+                }
+            });
         case R.id.dialog_attachment_progress:
             ProgressDialog d = new ProgressDialog(this);
             d.setIndeterminate(true);

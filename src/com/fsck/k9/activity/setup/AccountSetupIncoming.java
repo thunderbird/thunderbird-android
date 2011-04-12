@@ -409,9 +409,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else {
                 String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
                 if (!authType.equalsIgnoreCase("plain")) {
-                	userInfo = authType + ":" + userEnc + ":" + passwordEnc;
+                    userInfo = authType + ":" + userEnc + ":" + passwordEnc;
                 } else {
-                	userInfo = userEnc + ":" + passwordEnc;
+                    userInfo = userEnc + ":" + passwordEnc;
                 }
             }
             URI uri = new URI(

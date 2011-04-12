@@ -20,14 +20,13 @@ package com.fsck.k9.mail.filter;
  * This code was copied from the Apache Commons project.
  * The unnecessary parts have been left out.
  */
-public class Hex
-{
+public class Hex {
     /**
      * Used building output as Hex
      */
     private static final char[] DIGITS = {
         '0', '1', '2', '3', '4', '5', '6', '7',
-           '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
 
     /**
@@ -43,15 +42,15 @@ public class Hex
 
         int l = data.length;
 
-           char[] out = new char[l << 1];
+        char[] out = new char[l << 1];
 
-           // two characters form the hex value.
-           for (int i = 0, j = 0; i < l; i++) {
-               out[j++] = DIGITS[(0xF0 & data[i]) >>> 4 ];
-               out[j++] = DIGITS[ 0x0F & data[i] ];
-           }
+        // two characters form the hex value.
+        for (int i = 0, j = 0; i < l; i++) {
+            out[j++] = DIGITS[(0xF0 & data[i]) >>> 4 ];
+            out[j++] = DIGITS[ 0x0F & data[i] ];
+        }
 
-           return out;
+        return out;
     }
 
 }

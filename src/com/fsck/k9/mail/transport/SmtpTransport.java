@@ -520,9 +520,9 @@ public class SmtpTransport extends Transport {
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
 
-    	List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
+        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) {
-        	throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
+            throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
         }
 
         String b64Nonce = respList.get(0);

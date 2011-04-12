@@ -2098,7 +2098,7 @@ public class ImapStore extends Store {
                 System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
 
                 byte[] b64CRAM = Authentication.computeCramMd5Bytes(mSettings.getUsername(),
-                		mSettings.getPassword(), b64NonceTrim);
+                                 mSettings.getPassword(), b64NonceTrim);
 
                 mOut.write(b64CRAM);
                 mOut.write(new byte[] { 0x0d, 0x0a });

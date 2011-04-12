@@ -239,11 +239,11 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
             if (cursor.moveToFirst()) {
                 String emailId = cursor.getString(cursor.getColumnIndex(Contacts.People.PRIMARY_EMAIL_ID));
                 cursor2 = mContext.getContentResolver().query(
-                        ContactMethods.CONTENT_EMAIL_URI,
-                        new String[] { ContactMethods.DATA },
-                        "contact_methods._id=?",
-                        new String[] { emailId },
-                        null);
+                              ContactMethods.CONTENT_EMAIL_URI,
+                              new String[] { ContactMethods.DATA },
+                              "contact_methods._id=?",
+                              new String[] { emailId },
+                              null);
 
                 if (cursor2.moveToFirst()) {
                     email = cursor2.getString(0);

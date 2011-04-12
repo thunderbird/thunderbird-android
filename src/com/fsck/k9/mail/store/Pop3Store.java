@@ -91,11 +91,10 @@ public class Pop3Store extends Store {
             try {
                 int userIndex = 0, passwordIndex = 1;
                 String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length > 2)
-                {
-                	userIndex++;
-                	passwordIndex++;
-                	useCramMd5 = true;
+                if (userInfoParts.length > 2) {
+                    userIndex++;
+                    passwordIndex++;
+                    useCramMd5 = true;
                 }
                 mUsername = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
                 if (userInfoParts.length > passwordIndex) {
@@ -224,8 +223,7 @@ public class Pop3Store extends Store {
                     }
                 }
 
-                if (useCramMd5)
-                {
+                if (useCramMd5) {
                     try {
                         String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 
@@ -235,9 +233,7 @@ public class Pop3Store extends Store {
                     } catch (MessagingException me) {
                         throw new AuthenticationFailedException(null, me);
                     }
-                }
-                else
-                {
+                } else {
                     try {
                         executeSimpleCommand("USER " + mUsername);
                         executeSimpleCommand("PASS " + mPassword, true);

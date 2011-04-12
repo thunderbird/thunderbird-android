@@ -182,15 +182,15 @@ public class Prefs extends K9PreferenceActivity {
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
         mConfirmActions.setItems(new CharSequence[] {
-                getString(R.string.global_settings_confirm_action_delete),
-                getString(R.string.global_settings_confirm_action_spam),
-                getString(R.string.global_settings_confirm_action_mark_all_as_read)
-                });
+                                     getString(R.string.global_settings_confirm_action_delete),
+                                     getString(R.string.global_settings_confirm_action_spam),
+                                     getString(R.string.global_settings_confirm_action_mark_all_as_read)
+                                 });
         mConfirmActions.setCheckedItems(new boolean[] {
-                K9.confirmDelete(),
-                K9.confirmSpam(),
-                K9.confirmMarkAllAsRead()
-                });
+                                            K9.confirmDelete(),
+                                            K9.confirmSpam(),
+                                            K9.confirmMarkAllAsRead()
+                                        });
 
         mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
         mPrivacyMode.setChecked(K9.keyguardPrivacy());

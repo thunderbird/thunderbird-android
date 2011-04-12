@@ -457,66 +457,66 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         switch (id) {
         case DIALOG_REMOVE_ACCOUNT:
             return ConfirmationDialog.create(this, id,
-                    R.string.account_delete_dlg_title,
-                    getString(R.string.account_delete_dlg_instructions_fmt,
-                            mSelectedContextAccount.getDescription()),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mSelectedContextAccount instanceof Account) {
-                                Account realAccount = (Account)mSelectedContextAccount;
-                                try {
-                                    realAccount.getLocalStore().delete();
-                                } catch (Exception e) {
-                                    // Ignore, this may lead to localStores on sd-cards that are
-                                    // currently not inserted to be left
-                                }
-                                MessagingController.getInstance(getApplication())
-                                    .notifyAccountCancel(Accounts.this, realAccount);
-                                Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
-                                K9.setServicesEnabled(Accounts.this);
-                                refresh();
-                            }
+                                             R.string.account_delete_dlg_title,
+                                             getString(R.string.account_delete_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        try {
+                            realAccount.getLocalStore().delete();
+                        } catch (Exception e) {
+                            // Ignore, this may lead to localStores on sd-cards that are
+                            // currently not inserted to be left
                         }
-                    });
+                        MessagingController.getInstance(getApplication())
+                        .notifyAccountCancel(Accounts.this, realAccount);
+                        Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
+                        K9.setServicesEnabled(Accounts.this);
+                        refresh();
+                    }
+                }
+            });
 
         case DIALOG_CLEAR_ACCOUNT:
             return ConfirmationDialog.create(this, id,
-                    R.string.account_clear_dlg_title,
-                    getString(R.string.account_clear_dlg_instructions_fmt,
-                            mSelectedContextAccount.getDescription()),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mSelectedContextAccount instanceof Account) {
-                                Account realAccount = (Account)mSelectedContextAccount;
-                                mHandler.workingAccount(realAccount, R.string.clearing_account);
-                                MessagingController.getInstance(getApplication()).clear(realAccount, null);
-                            }
-                        }
-                    });
+                                             R.string.account_clear_dlg_title,
+                                             getString(R.string.account_clear_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.clearing_account);
+                        MessagingController.getInstance(getApplication()).clear(realAccount, null);
+                    }
+                }
+            });
 
         case DIALOG_RECREATE_ACCOUNT:
             return ConfirmationDialog.create(this, id,
-                    R.string.account_recreate_dlg_title,
-                    getString(R.string.account_recreate_dlg_instructions_fmt,
-                            mSelectedContextAccount.getDescription()),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mSelectedContextAccount instanceof Account) {
-                                Account realAccount = (Account)mSelectedContextAccount;
-                                mHandler.workingAccount(realAccount, R.string.recreating_account);
-                                MessagingController.getInstance(getApplication()).recreate(realAccount, null);
-                            }
-                        }
-                    });
+                                             R.string.account_recreate_dlg_title,
+                                             getString(R.string.account_recreate_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.recreating_account);
+                        MessagingController.getInstance(getApplication()).recreate(realAccount, null);
+                    }
+                }
+            });
         }
         return super.onCreateDialog(id);
     }

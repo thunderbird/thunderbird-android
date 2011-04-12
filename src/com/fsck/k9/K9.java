@@ -942,11 +942,11 @@ public class K9 extends Application {
     }
 
     public static boolean confirmSpam() {
-    	return mConfirmSpam;
+        return mConfirmSpam;
     }
 
     public static void setConfirmSpam(final boolean confirm) {
-    	mConfirmSpam = confirm;
+        mConfirmSpam = confirm;
     }
 
     public static boolean confirmMarkAllAsRead() {

@@ -100,8 +100,8 @@ public class MessageHelper {
         }
     }
 
-	public void refresh() {
+    public void refresh() {
         mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);	
-	}
+        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+    }
 }

@@ -1121,7 +1121,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
                              "attachment;\n filename=\"%s\";\n size=%d",
-                             EncoderUtil.encodeIfNecessary(attachment.name, 
+                             EncoderUtil.encodeIfNecessary(attachment.name,
                                      EncoderUtil.Usage.WORD_ENTITY, 7),
                              attachment.size));
 
