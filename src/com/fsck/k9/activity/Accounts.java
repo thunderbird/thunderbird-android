@@ -1,6 +1,8 @@
 
 package com.fsck.k9.activity;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -34,14 +37,17 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -64,6 +70,9 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.StorageExporter;
 import com.fsck.k9.preferences.StorageImportExportException;
+import com.fsck.k9.preferences.StorageImporter;
+import com.fsck.k9.preferences.StorageImporter.AccountDescription;
+import com.fsck.k9.preferences.StorageImporter.ImportContents;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
@@ -854,53 +863,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onImport(Uri uri) {
-        Toast.makeText(this, "Import is disabled for now", Toast.LENGTH_SHORT).show();
-        /*
-        Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.getPath());
+        //Toast.makeText(this, "Import is disabled for now", Toast.LENGTH_SHORT).show();
 
-        final String fileName = uri.getPath();
-        AsyncUIProcessor.getInstance(Accounts.this.getApplication()).importSettings(this, uri, new ImportListener() {
-            @Override
-            public void success(int numAccounts) {
-                mHandler.progress(false);
-                String accountQtyText = getResources().getQuantityString(R.plurals.settings_import_success, numAccounts, numAccounts);
-                String messageText = getString(R.string.settings_import_success, accountQtyText, fileName);
-                showDialog(Accounts.this, R.string.settings_import_success_header, messageText);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        refresh();
-                    }
-                });
-            }
+        Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.toString());
 
-            @Override
-            public void failure(String message, Exception e) {
-                mHandler.progress(false);
-                showDialog(Accounts.this, R.string.settings_import_failed_header, Accounts.this.getString(R.string.settings_import_failure, fileName, e.getLocalizedMessage()));
-            }
-
-            @Override
-            public void canceled() {
-                mHandler.progress(false);
-            }
-
-            @Override
-            public void started() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.progress(true);
-                        String toastText = Accounts.this.getString(R.string.settings_importing);
-                        Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                });
-
-            }
-        });
-        */
+        new ListImportContentsAsyncTask(uri, null).execute();
     }
+
     private void showDialog(final Context context, final int headerRes, final String message) {
         this.runOnUiThread(new Runnable() {
             @Override
@@ -1180,7 +1149,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         protected void onPostExecute(Boolean success) {
-            setProgress(false);
             if (success) {
                 showDialog(Accounts.this, R.string.settings_export_success_header,
                         Accounts.this.getString(R.string.settings_export_success, mFileName));
@@ -1188,6 +1156,168 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 //TODO: make the exporter return an error code; translate that error code to a localized string here
                 showDialog(Accounts.this, R.string.settings_export_failed_header,
                         Accounts.this.getString(R.string.settings_export_failure, "Something went wrong"));
+            }
+        }
+    }
+
+    private class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        private boolean mIncludeGlobals;
+        private Set<String> mAccountUuids;
+        private boolean mOverwrite;
+        private String mEncryptionKey;
+        private InputStream mInputStream;
+
+        private ImportAsyncTask(boolean includeGlobals, Set<String> accountUuids,
+                boolean overwrite, String encryptionKey, InputStream is) {
+            mIncludeGlobals = includeGlobals;
+            mAccountUuids = accountUuids;
+            mOverwrite = overwrite;
+            mEncryptionKey = encryptionKey;
+            mInputStream = is;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress bar instead of displaying toast
+            String toastText = Accounts.this.getString(R.string.settings_importing);
+            Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                StorageImporter.importSettings(Accounts.this, mInputStream, mEncryptionKey,
+                        mIncludeGlobals, mAccountUuids, mOverwrite);
+            } catch (StorageImportExportException e) {
+                Log.w(K9.LOG_TAG, "Exception during export", e);
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                showDialog(Accounts.this, R.string.settings_import_success_header,
+                        //FIXME: use correct number of imported accounts
+                        Accounts.this.getString(R.string.settings_import_success, 3, "unknown"));
+                refresh();
+            } else {
+                //TODO: make the importer return an error code; translate that error code to a localized string here
+                showDialog(Accounts.this, R.string.settings_import_failed_header,
+                        Accounts.this.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
+            }
+        }
+    }
+
+    ImportContents mImportContents;
+    private class ListImportContentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        private Uri mUri;
+        private String mEncryptionKey;
+        private InputStream mInputStream;
+
+        private ListImportContentsAsyncTask(Uri uri, String encryptionKey) {
+            mUri = uri;
+            mEncryptionKey = encryptionKey;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress bar
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+
+                InputStream is = getContentResolver().openInputStream(mUri);
+                mImportContents = StorageImporter.getImportStreamContents(
+                        Accounts.this, is, mEncryptionKey);
+
+                // Open another InputStream in the background. This is used later by ImportAsyncTask
+                mInputStream = getContentResolver().openInputStream(mUri);
+
+            } catch (StorageImportExportException e) {
+                Log.w(K9.LOG_TAG, "Exception during export", e);
+                return false;
+            }
+            catch (FileNotFoundException e) {
+                Log.w(K9.LOG_TAG, "Couldn't read content from URI " + mUri);
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                final ListView importSelectionView = new ListView(Accounts.this);
+                List<String> contents = new ArrayList<String>();
+                if (mImportContents.globalSettings) {
+                    contents.add("Global settings");
+                }
+                for (AccountDescription account : mImportContents.accounts) {
+                    contents.add(account.name);
+                }
+                importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+                importSelectionView.setAdapter(new ArrayAdapter<String>(Accounts.this, android.R.layout.simple_list_item_checked, contents));
+                importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                        CheckedTextView ctv = (CheckedTextView)view;
+                        ctv.setChecked(!ctv.isChecked());
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {}
+                });
+
+                //TODO: listview header: "Please select the settings you wish to import"
+                //TODO: listview footer: "Select all" / "Select none" buttons?
+                //TODO: listview footer: "Overwrite existing accounts?" checkbox
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Accounts.this);
+                builder.setTitle("Import selection");
+                builder.setView(importSelectionView);
+                builder.setInverseBackgroundForced(true);
+                builder.setPositiveButton(R.string.okay_action,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ListAdapter adapter = importSelectionView.getAdapter();
+                            int count = adapter.getCount();
+                            SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
+
+                            boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                            Set<String> accountUuids = new HashSet<String>();
+                            for (int i = 1; i < count; i++) {
+                                if (pos.get(i)) {
+                                    accountUuids.add(mImportContents.accounts.get(i-1).uuid);
+                                }
+                            }
+
+                            boolean overwrite = false; //TODO: get value from dialog
+
+                            dialog.dismiss();
+                            new ImportAsyncTask(includeGlobals, accountUuids, overwrite, mEncryptionKey, mInputStream).execute();
+                        }
+                    });
+                builder.setNegativeButton(R.string.cancel_action,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                try {
+                                    mInputStream.close();
+                                } catch (Exception e) { /* Ignore */ }
+                            }
+                        });
+                builder.show();
+            } else {
+                //TODO: make the importer return an error code; translate that error code to a localized string here
+                showDialog(Accounts.this, R.string.settings_import_failed_header,
+                        Accounts.this.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
             }
         }
     }
