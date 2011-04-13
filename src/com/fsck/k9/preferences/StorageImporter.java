@@ -178,7 +178,7 @@ public class StorageImporter {
                 throw new StorageImportExportException("Couldn't save imported settings");
             }
 
-            preferences.refreshAccounts();
+            preferences.loadAccounts();
             DateFormatter.clearChosenFormat();
             K9.loadPrefs(preferences);
             K9.setServicesEnabled(context);

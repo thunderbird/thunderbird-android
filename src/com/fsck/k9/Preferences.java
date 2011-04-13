@@ -49,36 +49,23 @@ public class Preferences {
         }
     }
 
-    private synchronized void loadAccounts() {
+    public synchronized void loadAccounts() {
         accounts = new HashMap<String, Account>();
-        refreshAccounts();
-    }
-
-    public synchronized void refreshAccounts() {
-        Map<String, Account> newAccountMap = new HashMap<String, Account>();
         accountsInOrder = new LinkedList<Account>();
         String accountUuids = getPreferences().getString("accountUuids", null);
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
             for (String uuid : uuids) {
-                Account account = accounts.get(uuid);
-                if (account != null) {
-                    newAccountMap.put(uuid, account);
-                    accountsInOrder.add(account);
-                } else {
-                    Account newAccount = new Account(this, uuid);
-                    newAccountMap.put(uuid, newAccount);
-                    accountsInOrder.add(newAccount);
-                }
+                Account newAccount = new Account(this, uuid);
+                accounts.put(uuid, newAccount);
+                accountsInOrder.add(newAccount);
             }
         }
         if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
-            newAccountMap.put(newAccount.getUuid(), newAccount);
+            accounts.put(newAccount.getUuid(), newAccount);
             accountsInOrder.add(newAccount);
             newAccount = null;
         }
-
-        accounts = newAccountMap;
     }
 
     /**
