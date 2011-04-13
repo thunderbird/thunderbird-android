@@ -259,14 +259,14 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_content_hint">本文</string>
     <string name="message_compose_quote_header_separator">-------- 元メール --------</string>
     <string name="message_compose_quote_header_subject">件名:</string>
-    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <string name="message_compose_quote_header_send_date">送信日:</string>
     <string name="message_compose_quote_header_from">送信者:</string>
     <string name="message_compose_quote_header_to">宛先:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">テキスト引用</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
+    <string name="error_contact_address_not_found">メールアドレスが登録されていません</string>
     <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません．このメールが送信される前に自動的にダウンロードされます．</string>
     <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません．</string>
 
@@ -342,7 +342,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_action_archive">アーカイブ</string>
     <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
 
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
@@ -910,13 +910,13 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="start_integrated_inbox_summary">起動後に統合フォルダを表示する</string>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
-    <string name="measure_accounts_summary">表示を早くしたい場合はチェックをはずしてください</string>
+    <string name="measure_accounts_summary">表示を速くしたい場合はチェックをはずしてください</string>
 
     <string name="count_search_title">検索結果の件数表示</string>
-    <string name="count_search_summary">表示を早くしたい場合はチェックをはずしてください</string>
+    <string name="count_search_summary">表示を速くしたい場合はチェックをはずしてください</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">特殊なアカウントを隠す</string>
+    <string name="hide_special_accounts_summary">統合フォルダと全メッセージを隠す</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - スター</string>
@@ -1018,12 +1018,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_delete_confirm_button">削除する</string>
     <string name="dialog_confirm_delete_cancel_button">削除しない</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_title">迷惑メールフォルダへの移動の確認</string>
+    <string name="dialog_confirm_spam_message">本当にこのメッセージを迷惑メールフォルダに移動しますか？</string>
+    <string name="dialog_confirm_spam_confirm_button">はい</string>
+    <string name="dialog_confirm_spam_cancel_button">いいえ</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">添付ファイルをダウンロードしています</string>
 
     <string name="debug_logging_enabled">Android のログにデバッグ用のログを出力するように設定しました。</string>
 
@@ -1031,6 +1031,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="messagelist_sent_cc_me_sigil">\u203a</string>
     <string name="error_unable_to_connect">接続できません</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">アカウント \"<xliff:g id="account">%s</xliff:g>\" は利用できません。ストレージを確認してください。</string>
 
 </resources>
