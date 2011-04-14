@@ -1212,13 +1212,13 @@ public class MimeUtility {
      * @see #MIME_TYPE_REPLACEMENT_MAP
      */
     public static String canonicalizeMimeType(String mimeType) {
-		for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
-			if (mimeTypeMapEntry[0].equals(mimeType)) {
-				return mimeTypeMapEntry[1];
-			}
-		}
-		return mimeType;
-	}
+        for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
+            if (mimeTypeMapEntry[0].equals(mimeType)) {
+                return mimeTypeMapEntry[1];
+            }
+        }
+        return mimeType;
+    }
 
     /**
      * When viewing the attachment we want the MIME type to be as sensible as

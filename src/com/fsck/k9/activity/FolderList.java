@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -625,15 +624,40 @@ public class FolderList extends K9ListActivity {
 
     private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextFolder = mAdapter.getFolder(folder);
-        showDialog(DIALOG_MARK_ALL_AS_READ);
+        if (K9.confirmMarkAllAsRead()) {
+            showDialog(DIALOG_MARK_ALL_AS_READ);
+        } else {
+            markAllAsRead();
+        }
     }
 
+    private void markAllAsRead() {
+        try {
+            MessagingController.getInstance(getApplication())
+            .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
+            mSelectedContextFolder.unreadMessageCount = 0;
+            mHandler.dataChanged();
+        } catch (Exception e) {
+            /* Ignore */
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
-            return createMarkAllAsReadDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.mark_all_as_read_dlg_title,
+                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mSelectedContextFolder.displayName),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    markAllAsRead();
+                }
+            });
         }
 
         return super.onCreateDialog(id);
@@ -652,40 +676,6 @@ public class FolderList extends K9ListActivity {
             super.onPrepareDialog(id, dialog);
         }
     }
-
-    private Dialog createMarkAllAsReadDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.mark_all_as_read_dlg_title)
-               .setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                     mSelectedContextFolder.displayName))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_MARK_ALL_AS_READ);
-
-                try {
-
-                    MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mSelectedContextFolder.name);
-
-                    mSelectedContextFolder.unreadMessageCount = 0;
-
-                    mHandler.dataChanged();
-
-
-                } catch (Exception e) {
-                    // Ignore
-                }
-            }
-        })
-
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_MARK_ALL_AS_READ);
-            }
-        })
-
-               .create();
-    }
-
 
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);

@@ -19,6 +19,7 @@ import java.util.List;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.Account.ScrollButtons;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -102,6 +103,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
 
     private Account mAccount;
+    private boolean mIsMoveCapable = false;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
 
@@ -173,6 +175,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         try {
             final Store store = mAccount.getRemoteStore();
+            mIsMoveCapable = store.isMoveCapable();
             mIsPushCapable = store.isPushCapable();
             mIsExpungeCapable = store.isExpungeCapable();
         } catch (Exception e) {
@@ -675,7 +678,13 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+        // In webdav account we use the exact folder name also for inbox,
+        // since it varies because of internationalization
+        if (mAccount.getStoreUri().startsWith("webdav"))
+            mAccount.setAutoExpandFolderName(mAutoExpandFolder.getValue());
+        else
+            mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+
         mAccount.setArchiveFolderName(mArchiveFolder.getValue());
         mAccount.setDraftsFolderName(mDraftsFolder.getValue());
         mAccount.setSentFolderName(mSentFolder.getValue());
@@ -793,7 +802,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (K9.INBOX.equalsIgnoreCase(in)) {
+        if (mAccount.getInboxFolderName().equalsIgnoreCase(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
@@ -802,7 +811,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private String reverseTranslateFolder(String in) {
         if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return K9.INBOX;
+            return mAccount.getInboxFolderName();
         } else {
             return in;
         }

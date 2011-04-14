@@ -139,6 +139,7 @@
     <string name="status_sending">Enviando</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Repetindo carregamento de mensagens</string>
+
     <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
 
     <string name="abbrev_gigabytes">GB</string>
@@ -262,6 +263,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n\n</string>
     <string name="message_compose_quoted_text_label">Texto citado</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alguns anexos não foram incluídos. Eles poderão ser incluídos automaticamente antes desta mensagem ser enviada.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
 
@@ -338,6 +340,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_confirm_action_archive">Arquivo</string>
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Enviar</string>
 
     <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>
@@ -1016,6 +1019,11 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="dialog_confirm_delete_confirm_button">Excluir</string>
     <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">O log de depuração para o sistema Android foi habilitado</string>
@@ -1023,5 +1031,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <string name="error_unable_to_connect">Não é possível conectar.</string>
-</resources>
 
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+</resources>

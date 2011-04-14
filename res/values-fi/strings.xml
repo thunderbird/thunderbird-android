@@ -263,6 +263,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n\n</string>
     <string name="message_compose_quoted_text_label">Lainattu teksti</string>
     <string name="message_compose_error_no_recipients">Valitse ainakin yksi vastaanottaja.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Kaikkia liitteitä ei ladattu. Ne ladataan automaattisest ennen tämän viestin lähettämistä.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida jatkolähettää, koska niitä ei ole ladattu.</string>
 
@@ -339,6 +340,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="global_settings_confirm_action_archive">Arkistoi</string>
     <string name="global_settings_confirm_action_delete">Poista (vain viestilistassa)</string>
     <string name="global_settings_confirm_action_spam">Roskaposti</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Lähetä</string>
 
     <string name="global_settings_privacy_mode_title">Lukitusnäytön ilmoitukset</string>
@@ -1017,6 +1019,11 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="dialog_confirm_delete_confirm_button">Poista</string>
     <string name="dialog_confirm_delete_cancel_button">Älä poista</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Vianselvitys lokikirjoitus Androidin lokiin otettu käyttöön</string>
@@ -1024,4 +1031,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Yhteyden muodostus epäonnistui.</string>
-  </resources>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+</resources>

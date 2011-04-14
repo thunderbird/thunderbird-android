@@ -266,6 +266,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">Ge-quote tekst</string>
     <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Sommige bijlage zijn niet gedownload. Deze worden automatisch gedownload voor dat dit bericht is verzonden.</string>
     <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd, omdat ze niet zijn gedownload.</string>
 
@@ -342,6 +343,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="global_settings_confirm_action_archive">Archief</string>
     <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Verzonden</string>
 
     <string name="global_settings_privacy_mode_title">Lock-screen meldingen</string>
@@ -1020,6 +1022,11 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="dialog_confirm_delete_confirm_button">Verwijder</string>
     <string name="dialog_confirm_delete_cancel_button">Niet verwijderen</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Debug logging van Android logging systeem ingeschakeld</string>
@@ -1027,4 +1034,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>

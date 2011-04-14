@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.EncoderUtil;
 
 import android.app.Application;
 import android.content.ContentValues;
@@ -364,7 +366,7 @@ public class LocalStore extends Store implements Serializable {
             Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
             boolean inTopGroup = false;
             boolean integrate = false;
-            if (K9.INBOX.equals(name)) {
+            if (mAccount.getInboxFolderName().equals(name)) {
                 displayClass = Folder.FolderClass.FIRST_CLASS;
                 syncClass =  Folder.FolderClass.FIRST_CLASS;
                 pushClass =  Folder.FolderClass.FIRST_CLASS;
@@ -513,7 +515,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX
+                                                 mAccount.getInboxFolderName()
                                              }
 
                                             );
@@ -524,7 +526,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name()
                                              });
 
 
@@ -535,7 +537,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     } else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS) {
                         cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[] {
@@ -545,7 +547,7 @@ public class LocalStore extends Store implements Serializable {
                                                  mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
                                                  mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
                                                  mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
+                                                 mAccount.getInboxFolderName(), Folder.FolderClass.SECOND_CLASS.name()
                                              });
                     } else if (displayMode == Account.FolderMode.ALL) {
                         cursor = db.rawQuery(baseQuery,  new String[] {
@@ -1045,14 +1047,14 @@ public class LocalStore extends Store implements Serializable {
                     if (mAccount.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(K9.INBOX)) {
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                             prefHolder.integrate = true;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(K9.INBOX) ||
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
                                 name.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
@@ -1102,7 +1104,8 @@ public class LocalStore extends Store implements Serializable {
             super(LocalStore.this.mAccount);
             this.mName = name;
 
-            if (K9.INBOX.equals(getName())) {
+            if (LocalStore.this.mAccount.getInboxFolderName().equals(getName())) {
+
                 mSyncClass =  FolderClass.FIRST_CLASS;
                 mPushClass =  FolderClass.FIRST_CLASS;
                 mInTopGroup = true;
@@ -1482,19 +1485,19 @@ public class LocalStore extends Store implements Serializable {
             String id = getPrefId();
 
             // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-            if (mDisplayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName())) {
+            if (mDisplayClass == FolderClass.NO_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".displayMode");
             } else {
                 editor.putString(id + ".displayMode", mDisplayClass.name());
             }
 
-            if (mSyncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName())) {
+            if (mSyncClass == FolderClass.INHERITED && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".syncMode");
             } else {
                 editor.putString(id + ".syncMode", mSyncClass.name());
             }
 
-            if (mPushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName())) {
+            if (mPushClass == FolderClass.SECOND_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".pushMode");
             } else {
                 editor.putString(id + ".pushMode", mPushClass.name());
@@ -1671,16 +1674,20 @@ public class LocalStore extends Store implements Serializable {
                                             if (contentUri != null) {
                                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
                                             }
+
+                                            String encoded_name = EncoderUtil.encodeIfNecessary(name,
+                                                                  EncoderUtil.Usage.WORD_ENTITY, 7);
+
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                                                          String.format("%s;\n name=\"%s\"",
                                                                        type,
-                                                                       name));
+                                                                       encoded_name));
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
                                                          String.format("%s;\n filename=\"%s\";\n size=%d",
                                                                        contentDisposition,
-                                                                       name,
+                                                                       encoded_name, // TODO: Should use encoded word defined in RFC 2231.
                                                                        size));
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
@@ -2364,12 +2371,22 @@ public class LocalStore extends Store implements Serializable {
                                 Utility.combine(attachment.getHeader(
                                                     MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
 
-                            String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
+                            String name = MimeUtility.unfoldAndDecode(MimeUtility.getHeaderParameter(attachment.getContentType(), "name"));
                             String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
 
                             String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
+                            String dispositionType = contentDisposition;
+
+                            if (dispositionType != null) {
+                                int pos = dispositionType.indexOf(';');
+                                if (pos != -1) {
+                                    // extract the disposition-type, "attachment", "inline" or extension-token (see the RFC 2183)
+                                    dispositionType = dispositionType.substring(0, pos);
+                                }
+                            }
+
                             if (name == null && contentDisposition != null) {
-                                name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+                                name = MimeUtility.unfoldAndDecode(MimeUtility.getHeaderParameter(contentDisposition, "filename"));
                             }
                             if (attachmentId == -1) {
                                 ContentValues cv = new ContentValues();
@@ -2380,7 +2397,7 @@ public class LocalStore extends Store implements Serializable {
                                 cv.put("name", name);
                                 cv.put("mime_type", attachment.getMimeType());
                                 cv.put("content_id", contentId);
-                                cv.put("content_disposition", contentDisposition);
+                                cv.put("content_disposition", dispositionType);
 
                                 attachmentId = db.insert("attachments", "message_id", cv);
                             } else {
@@ -2414,7 +2431,7 @@ public class LocalStore extends Store implements Serializable {
                                         String new_html;
 
                                         new_html = cursor.getString(0);
-                                        new_html = new_html.replaceAll("cid:" + contentId,
+                                        new_html = new_html.replaceAll(Pattern.quote("cid:" + contentId),
                                                                        contentUri.toString());
 
                                         ContentValues cv = new ContentValues();

@@ -8,6 +8,7 @@
 <!--  ## This is draft. Send all your notes or suggestions to address given above.      ## -->
 <!--  ##                                                                                ## -->
 <!--  ## Latest update: (YYYY-MM-DD): 2010.07.03                                        ## -->
+<!--  ## Modified by rabbbit, 2011.03.03												## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 
@@ -26,16 +27,16 @@
 
     <string name="read_attachment_label">Odczyt załączników</string>
     <string name="read_attachment_desc">Zezwalaj tej aplikacji na czytanie załaczników z Twoich maili.</string>
-    <!-- NEW: <string name="read_messages_label">read Emails</string>-->
-    <!-- NEW: <string name="read_messages_desc">Allows this application to read your Emails.</string>-->
-    <!-- NEW: <string name="delete_messages_label">Delete Emails</string>-->
-    <!-- NEW: <string name="delete_messages_desc">Allows this application to delete your Emails.</string>-->
+    <string name="read_messages_label">Odczytaj maile</string>
+    <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich maili</string>
+    <string name="delete_messages_label">Usuń emaile</string>
+    <string name="delete_messages_desc">Zezwalaj tej aplikacji na usuwanie Twoich maili.</string>
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konta</string>
     <string name="advanced">Zaawansowane</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <!-- NEW: <string name="shortcuts_title">K-9 Accounts</string>-->
+    <string name="shortcuts_title">Konta K-9</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -48,28 +49,28 @@
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">\u0020(Pobieram <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <!-- NEW: <string name="status_loading_account_folder_headers">\u0020(Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>-->
+    <string name="status_loading_account_folder_headers">\u0020(Pobieranie nagłówków <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_sending_account">\u0020(Wysyłam <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_processing_account">\u0020(Przetw. <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(Sprawdzę o <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <!-- NEW: <string name="status_syncing_off">\u0020(Sync disabled)</string>-->
+    <string name="status_syncing_off">\u0020(Synchronizacja wyłączona)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Dalej</string> <!-- Used as part of a multi-step process -->
-    <!-- NEW: <string name="previous_action">Previous</string>--> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Cofnij</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Anuluj</string>
     <string name="send_action">Wyślij</string>
-    <!-- NEW: <string name="send_again_action">Send Again</string>-->
+    <string name="send_again_action">Prześlij ponownie</string>
     <string name="select_action">Zaznacz</string>
     <string name="deselect_action">Odznacz</string>
     <string name="reply_action">Odpowiedz</string>
     <string name="reply_all_action">Odpowiedz wszystkim</string>
     <string name="delete_action">Usuń</string>
     <string name="archive_action">Archiwizuj</string>
-    <!-- NEW: <string name="spam_action">Spam</string>-->
+    <string name="spam_action">Spam</string>
     <string name="delete_all_action">Wyczyśc folder</string>
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
@@ -93,7 +94,7 @@
     <string name="open_action">Otwórz</string>
     <string name="account_settings_action">Ustawienia konta</string>
     <string name="folder_settings_action">Ustawienia folderu</string>
-    <!-- NEW: <string name="global_settings_action">Global settings</string>-->
+    <string name="global_settings_action">Ustawienia globalne</string>
     <string name="remove_account_action">Usuń konto</string>
     <string name="clear_pending_action">Anuluj oczekujące zadania (niebezpieczne!)</string>
 
@@ -104,7 +105,7 @@
     <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Otwórz</string>
     <string name="mark_as_read_action">Ozn. jako przeczytane</string>
-    <string name="send_alternate_action">Przślij dalej (alternatywne)</string>
+    <string name="send_alternate_action">Prześlij dalej (alternatywne)</string>
     <string name="send_alternate_chooser_title">Wybierz nadawcę</string>
 
     <string name="mark_all_as_read_dlg_title">Wszystkie jako przeczytane</string>
@@ -116,7 +117,7 @@
     <string name="copy_action">Skopiuj</string>
     <string name="show_full_header_action">Pokaż pełne nagłówki</string>
     <string name="hide_full_header_action">Ukryj pełne nagłówki</string>
-    <!-- NEW: <string name="select_text_action">Select text</string>-->
+    <string name="select_text_action">Wybierz text</string>
 
     <string name="mark_as_unread_action">Jako nieprzeczytane</string>
     <string name="move_to_action">Przenieś do</string>
@@ -129,8 +130,8 @@
     <string name="add_attachment_action_video">Add załącznik (Film)</string>
     <string name="dump_settings_action">Zapisz ustawienia</string>
     <string name="empty_trash_action">Opróżnij śmietnik</string>
-    <string name="expunge_action">Expunge</string> <!-- FIXME -->
-    <!-- NEW: <string name="clear_local_folder_action">Clear local messages</string>-->
+    <string name="expunge_action">Wyczyść</string> <!-- FIXME - probably-->
+    <string name="clear_local_folder_action">Wyczyść wiadomości lokalne</string>
     <string name="set_sort_action">Wybierz sortowanie</string>
     <string name="reverse_sort_action">Sortuj malejąco</string>
     <string name="about_action">O programie</string>
@@ -140,7 +141,7 @@
     <string name="folder_context_menu_title">Opcje folderu</string>
 
     <string name="general_no_subject">(Brak tematu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <!-- NEW: <string name="general_no_date">No date</string>-->
+    <string name="general_no_date">Brak daty</string>
     <string name="general_no_sender">Brak nadawcy</string>
     <string name="status_loading">Poll <xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -185,15 +186,15 @@
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
-    <!-- NEW: <string name="special_mailbox_name_archive">Archive</string>-->
-    <!-- NEW: <string name="special_mailbox_name_spam">Spam</string>-->
+    <string name="special_mailbox_name_archive">Archiwizuj</string>
+    <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
-        <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Śmietnik)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Wysłane)</string>
-    <!-- NEW: <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>-->
-    <!-- NEW: <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>-->
+    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archiwum)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
     <string name="send_failure_body_abbrev">Dalsze informacje znajdziesz w folderze <xliff:g id="errorFolder">%s</xliff:g>.</string>
@@ -269,13 +270,14 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_compose_content_hint">Treść wiadomości</string>
     <string name="message_compose_quote_header_separator">-------- Wiadomość oryginalna --------</string>
     <string name="message_compose_quote_header_subject">Temat:</string>
-    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <string name="message_compose_quote_header_send_date">Wysłane:</string>
     <string name="message_compose_quote_header_from">Od:</string>
     <string name="message_compose_quote_header_to">Do:</string>
     <string name="message_compose_quote_header_cc">DW:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
     <string name="message_compose_quoted_text_label">Cytowany tekst</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
+    <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
     <string name="message_compose_downloading_attachments_toast">Niektóre załączniki nie zostały pobrane. Zostaną pobrane automatycznie przed wysłaniem tej wiadomości.</string>
     <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą byc przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
 
@@ -288,9 +290,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_view_attachment_download_action">Zapisz</string>
     <string name="message_view_prev_action">\u25BC</string>
     <string name="message_view_next_action">\u25B2</string>
-    <!-- NEW: <string name="message_view_archive_action">Archive</string>-->
-    <!-- NEW: <string name="message_view_move_action">Move</string>-->
-    <!-- NEW: <string name="message_view_spam_action">Spam</string>-->
+    <string name="message_view_archive_action">Archiwizuj</string>
+    <string name="message_view_move_action">Przenieś</string>
+    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Załącznik zapisano na karcie SD jako <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Zapisywanie załącznika na karcie SD nie powiodło się.</string>
@@ -300,7 +302,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
 
 
-    <!-- NEW: <string name="message_view_download_remainder">Download complete message</string>-->
+    <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Nie wszystkie nagłówki zostały pobrane lub zapisane. Wybierz \"Zapisuj nagłówki lokalnie\" w ustawieniach serwera poczty przychodzącej aby tę funcje aktywować</string>
@@ -333,35 +335,36 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="global_settings_checkbox_summary">Opcja zaznaczania dostępna zawsze w trybie wielokrotnego wyboru</string>
     <string name="global_settings_touchable_label">Widok Touch-friendly</string>
     <string name="global_settings_touchable_summary">Lista z podglądem treści wiadomości</string>
-    <!-- NEW: <string name="global_settings_preview_lines_label">Preview lines</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_name_label">Show contact names</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>-->
-    <!-- NEW: <string name="global_settings_registered_name_color_label">Colorize contacts</string>-->
-    <!-- NEW: <string name="global_settings_registered_name_color_default">Don\'t colorize names in your contact list</string>-->
-    <!-- NEW: <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>-->
+    <string name="global_settings_preview_lines_label">Podglądaj linie</string>
+    <string name="global_settings_show_correspondent_names_label">Pokazuj nazwiska korespondentów</string>
+    <string name="global_settings_show_correspondent_names_summary">Pokazuj nazwiska korespondentów zamiast ich adresów email</string>
+    <string name="global_settings_show_contact_name_label">Pokazuj nazwiska kontaktów</string>
+    <string name="global_settings_show_contact_name_summary">Użyj nazwisk odbiorców z kontaktów kiedy to możliwe</string>
+    <string name="global_settings_registered_name_color_label">Koloruj kontakty</string>
+    <string name="global_settings_registered_name_color_default">Nie koloruj nazwisk na liście kontaktów</string>
+    <string name="global_settings_registered_name_color_changed">Koloruj nazwiska na liście kontaktów</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Czcionka o stałej szer.</string>
     <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania maili tekstowych</string>
     <string name="global_settings_messageview_return_to_list_label">Skasuj i wróć do listy</string>
     <string name="global_settings_messageview_return_to_list_summary">Wraca do listy wiadomości po usunięciu danego maila</string>
 
-    <!-- NEW: <string name="global_settings_confirm_actions_title">Confirm actions</string>-->
-    <!-- NEW: <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>-->
-    <!-- NEW: <string name="global_settings_confirm_action_archive">Archive</string>-->
-    <!-- NEW: <string name="global_settings_confirm_action_delete">Delete (message view only)</string>-->
-    <!-- NEW: <string name="global_settings_confirm_action_spam">Spam</string>-->
-    <!-- NEW: <string name="global_settings_confirm_action_send">Send</string>-->
+    <string name="global_settings_confirm_actions_title">Potwierdź akcje</string>
+    <string name="global_settings_confirm_actions_summary">Pokaż okno dialogowe kiedy wykonujesz wybrane akcje</string>
+    <string name="global_settings_confirm_action_archive">Archiwizuj</string>
+    <string name="global_settings_confirm_action_delete">Usuń (tylko widok wiadomości)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
+    <string name="global_settings_confirm_action_send">Wyślij</string>
 
-    <!-- NEW: <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>-->
-    <!-- NEW: <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>-->
+    <string name="global_settings_privacy_mode_title">Powiadomienia ekranowe przy zablokowanym ekranie</string>
+    <string name="global_settings_privacy_mode_summary">Nie pokazuj tematu wiadomości w pasku powiadimień gdy ekran jest zablokowany</string>
 
 
-    <!-- NEW: <string name="quiet_time">Quiet Time</string>-->
-    <!-- NEW: <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>-->
-    <!-- NEW: <string name="quiet_time_starts">Quiet Time starts</string>-->
-    <!-- NEW: <string name="quiet_time_ends">Quiet Time ends</string>-->
+    <string name="quiet_time">Okres ciszy</string>
+    <string name="quiet_time_description">Wyłącz dzwonienie, wibracje i mruganie w nocy</string>
+    <string name="quiet_time_starts">Początek okresu ciszy</string>
+    <string name="quiet_time_ends">Koniec okresu ciszy</string>
 
 
     <string name="account_setup_basics_title">Dodaj konto</string>
@@ -378,8 +381,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_check_settings_retr_info_msg">Pobieram informacje\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Sprawdzam ustawienia serwera\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzam ustawienia serwera\u2026</string>
-    <!-- NEW: <string name="account_setup_check_settings_authenticate">Authenticating\u2026</string>-->
-    <!-- NEW: <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>-->
+    <string name="account_setup_check_settings_authenticate">Autentykacja\u2026</string>
+    <string name="account_setup_check_settings_fetch">Pobieranie ustawień konta\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">Kończę\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Przerywam\u2026</string>
 
@@ -425,10 +428,10 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_incoming_save_all_headers_title">Pobieranie nagłówków wiadomości</string>
     <string name="account_setup_incoming_save_all_headers_label">Zapisuj nagłówki lokalnie</string>
 
-    <!-- NEW: <string name="local_storage_provider_external_label">External storage (SD card)</string>-->
-    <!-- NEW: <string name="local_storage_provider_internal_label">Regular internal storage</string>-->
-    <!-- NEW: <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>-->
-    <!-- NEW: <string name="local_storage_provider_label">Storage location</string>-->
+    <string name="local_storage_provider_external_label">Pamięć zewnętrzna (karta SD)</string>
+    <string name="local_storage_provider_internal_label">Zwykła pamięc wewnętrzna</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s dodatkowa pamięć wewnętrzna</string>
+    <string name="local_storage_provider_label">Lokalizacja pamięci</string>
 
     <string name="account_setup_expunge_policy_label">Usuwanie wiadomości</string>
     <string name="account_setup_expunge_policy_immediately">Od razu po skasowaniu lub przeniesieniu</string>
@@ -438,11 +441,11 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_incoming_imap_path_prefix_label">Prefiks ścieżki IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(K-9 użyje NAMESPACE, jeśli funkcjonalność jest dostępna)</string>
 
-    <string name="drafts_folder_label">Drafts folder name</string>
-    <string name="sent_folder_label">Sent folder name</string>
-    <string name="trash_folder_label">Trash folder name</string>
-    <!-- NEW: <string name="archive_folder_label">Archive folder</string>-->
-    <!-- NEW: <string name="spam_folder_label">Spam folder</string>-->
+    <string name="drafts_folder_label">Szkice</string>
+    <string name="sent_folder_label">Wysłane</string>
+    <string name="trash_folder_label">Kosz</string>
+    <string name="archive_folder_label">Archiwum</string>
+    <string name="spam_folder_label">Spam</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
     <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
@@ -525,7 +528,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_options_mail_display_count_250">250 wiadomości</string>
     <string name="account_setup_options_mail_display_count_500">500 wiadomości</string>
     <string name="account_setup_options_mail_display_count_1000">1000 wiadomości</string>
-    <!-- NEW: <string name="account_setup_options_mail_display_count_all">all messages</string>-->
+    <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
 
 
     <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
@@ -552,54 +555,54 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_notify_self_summary">Powiadamiaj o mailach wysłanych przeze mnie</string>
     <string name="account_settings_notification_opens_unread_label">Notyfikacja otwiera nieprz. wiadomości</string> <!-- FIXME -->
     <string name="account_settings_notification_opens_unread_summary">Notifikacja wyszukuje nieprz. wiadomości</string> <!-- FIXME -->
-    <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
-    <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
+    <string name="account_settings_notification_unread_count_label">Pokaż liczbę nieprzeczytanych</string>
+    <string name="account_settings_notification_unread_count_summary">Pokaż liczbę nieprzeczytanych wiadomości w pasku powiadomień.</string>
 
     <string name="account_settings_hide_buttons_label">Przyciski nawigacyjne</string>
     <string name="account_settings_hide_buttons_never">Przyciski nie są nigdy przesuwalne</string>
     <string name="account_settings_hide_buttons_keyboard_avail">Przesuwalne, gdy jest klawiatura</string>
     <string name="account_settings_hide_buttons_always">Przyciski są zawsze przesuwalne</string>
 
-    <!-- NEW: <string name="account_settings_enable_move_buttons_label">Enable refile buttons</string>-->
-    <!-- NEW: <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam buttons.</string>-->
-    <!-- NEW: <string name="account_settings_hide_move_buttons_label">Scroll refile buttons</string>-->
+    <string name="account_settings_enable_move_buttons_label">Użyj przycisków refile </string> <!-- FIXME -->
+    <string name="account_settings_enable_move_buttons_summary">Pokaż przyciski Archiwum, Przenieś, Spam.</string>
+    <string name="account_settings_hide_move_buttons_label">Przewijaj przyciski refile </string> <!-- FIXME -->
 
-    <!-- NEW: <string name="account_settings_show_pictures_label">Always show images</string>-->
-    <!-- NEW: <string name="account_settings_show_pictures_never">No</string>-->
-    <!-- NEW: <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>-->
-    <!-- NEW: <string name="account_settings_show_pictures_always">From anyone</string>-->
+    <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
+    <string name="account_settings_show_pictures_never">Nie</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>
+    <string name="account_settings_show_pictures_always">Od każdego</string>
 
     <string name="account_settings_composition">Tworzenie wiadomości</string>
 
-    <!-- NEW: <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>-->
-    <!-- NEW: <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will appear above your reply.</string>-->
+    <string name="account_settings_reply_after_quote_label">Odpowiadaj po cytowanym tekście</string>
+    <string name="account_settings_reply_after_quote_summary">Podczas odpowiadania, wiadomość oryginalna pojawi się nad Twoją odpowiedzią.</string>
 
-    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
-    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
-    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+    <string name="account_settings_message_format_label">Format wiadomości</string>
+    <string name="account_settings_message_format_text">Czysty tekst (bez obrazków i formatowania)</string>
+    <string name="account_settings_message_format_html">HTML (z obrazkami i formatowaniem)</string>
 
-    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
+    <string name="account_settings_quote_style_label">Styl cytowania podczas odpowiedzi</string>
+    <string name="account_settings_quote_style_prefix">Prefix (jak Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">Nagłówek (jak Outlook, Yahoo!, Hotmail)</string>
 
-    <!-- NEW: <string name="account_settings_general_title">General settings</string>-->
-    <!-- NEW: <string name="account_settings_display_prefs_title">Display</string>-->
+    <string name="account_settings_general_title">Ustawienia ogólne</string>
+    <string name="account_settings_display_prefs_title">Wyświetlacz</string>
     <string name="account_settings_sync">Synchronizacja folderów</string>
     <string name="account_settings_folders">Foldery</string>
     <string name="account_settings_message_lists">Lista wiadomości</string>
     <string name="account_settings_message_view">Wyświetlanie wiadomości</string>
     <string name="account_settings_quote_prefix_label">Prefiks cytowania</string>
-    <!-- NEW: <string name="account_settings_crypto">Cryptography</string>-->
-    <!-- NEW: <string name="account_settings_crypto_app">OpenPGP Provider</string>-->
-    <!-- NEW: <string name="account_settings_crypto_app_none">None</string>-->
-    <!-- NEW: <string name="account_settings_crypto_app_not_available">not available</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_signature">Auto-sign</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>-->
+    <string name="account_settings_crypto">Kryptografia</string>
+    <string name="account_settings_crypto_app">Dostawca OpenPGP</string>
+    <string name="account_settings_crypto_app_none">Bez</string>
+    <string name="account_settings_crypto_app_not_available">nie dostępny</string>
+    <string name="account_settings_crypto_auto_signature">Automatyczny podpis</string>
+    <string name="account_settings_crypto_auto_signature_summary">Użyj adresu email do zgadnięcia klucza podpisu.</string>
 
     <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
     <string name="account_settings_second_class_check_frequency_label">Cykliczne sprawdzanie folderów klasy 2</string>
 
-    <!-- NEW: <string name="account_settings_storage_title">Storage</string>-->
+    <string name="account_settings_storage_title">Przechowanie</string>
 
 
     <string name="account_settings_color_label">Kolor konta</string>
@@ -610,20 +613,20 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
 
-    <!-- NEW: <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_1">1Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_2">2Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_4">4Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_8">8Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_16">16Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_32">32Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_64">64Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_128">128Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_256">256Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_512">512Kb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_1024">1Mb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_2048">2Mb</string>-->
-    <!-- NEW: <string name="account_settings_autodownload_message_size_any">any size (no limit)</string>-->
+    <string name="account_settings_autodownload_message_size_label">Pobierz wiadomośći aż do</string>
+    <string name="account_settings_autodownload_message_size_1">1Kb</string>
+    <string name="account_settings_autodownload_message_size_2">2Kb</string>
+    <string name="account_settings_autodownload_message_size_4">4Kb</string>
+    <string name="account_settings_autodownload_message_size_8">8Kb</string>
+    <string name="account_settings_autodownload_message_size_16">16Kb</string>
+    <string name="account_settings_autodownload_message_size_32">32Kb</string>
+    <string name="account_settings_autodownload_message_size_64">64Kb</string>
+    <string name="account_settings_autodownload_message_size_128">128Kb</string>
+    <string name="account_settings_autodownload_message_size_256">256Kb</string>
+    <string name="account_settings_autodownload_message_size_512">512Kb</string>
+    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_any">dowolny rozmiar (bez limitu)</string>
 
     <string name="account_settings_message_age_label">Synchronizuj nowsze niż</string>
     <string name="account_settings_message_age_any">Wielki Wybuch</string>
@@ -666,8 +669,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_folder_target_mode_first_and_second_class">Foldery klasy 1 oraz 2</string>
     <string name="account_settings_folder_target_mode_not_second_class">Wszystkich poza klasą 2</string>
 
-    <!-- NEW: <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>-->
-    <!-- NEW: <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>-->
+    <string name="account_settings_sync_remote_deletetions_label">Synchronizacja usunięć na serwerze</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
 
     <string name="folder_settings_title">Ustawienia folderu</string>
 
@@ -711,8 +714,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_vibrate_pattern_5">Schemat 5</string>
     <string name="account_settings_vibrate_times">Liczba wibracji</string>
     <string name="account_settings_ringtone">Sygnał dzwiękowy</string>
-    <!-- NEW: <string name="account_settings_led_label">Blink LED</string>-->
-    <!-- NEW: <string name="account_settings_led_summary">Blink LED when mail arrives</string>-->
+    <string name="account_settings_led_label">Mrugaj diodą</string>
+    <string name="account_settings_led_summary">Zamrugaj diodą przy nowej wiadomości</string>
 
 
     <string name="account_settings_servers">Ustawienia serwera</string>
@@ -759,8 +762,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="default_identity_description">Tożsamość domyślna</string>
     <string name="choose_identity">Wybierz tożsamość</string>
     <string name="choose_identity_title">Wybierz tożsamość</string>
-    <!-- NEW: <string name="choose_account_title">Choose account/identity</string>-->
-    <!-- NEW: <string name="send_as">Send as</string>-->
+    <string name="choose_account_title">Wybierz konto/tożsamość</string>
+    <string name="send_as">Wyślij jako</string>
 
 
     <string name="no_identities">Przejdź do "Ustawienia Konta" -&gt; "Tożsamości" aby utworzyć tożsamość</string>
@@ -805,7 +808,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
         nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
         korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
 
-    <!-- NEW: <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>-->
+    <string name="provider_note_yahoojp">Jeśli chcesz uzywać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
@@ -842,25 +845,25 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="setting_theme_dark">Ciemna</string>
     <string name="setting_theme_light">Jasna</string>
     <string name="display_preferences">Ustawienia globalne</string>
-    <!-- NEW: <string name="global_preferences">Global</string>-->
+    <string name="global_preferences">Globalne</string>
     <string name="debug_preferences">Debugging</string>
-    <!-- NEW: <string name="privacy_preferences">Privacy</string>-->
-    <!-- NEW: <string name="network_preferences">Network</string>-->
-    <!-- NEW: <string name="interaction_preferences">Interaction</string>-->
+    <string name="privacy_preferences">Prywatność</string>
+    <string name="network_preferences">Sieć</string>
+    <string name="interaction_preferences">Interakcja</string>
     <string name="accountlist_preferences">Lista kont</string>
     <string name="messagelist_preferences">Listy widomości</string>
     <string name="messageview_preferences">Wiadomości</string>
     <string name="settings_theme_label">Kolorystyka</string>
-    <!-- NEW: <string name="settings_language_label">Language</string>-->
+    <string name="settings_language_label">Język</string>
 
-    <!-- NEW: <string name="settings_messageview_mobile_layout_label">Single-column layout</string>-->
-    <!-- NEW: <string name="settings_messageview_mobile_layout_summary">Reformat HTML messages for smaller screens</string>-->
-    <!-- NEW: <string name="settings_messageview_zoom_controls_label">System zoom controls</string>-->
-    <!-- NEW: <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>-->
+    <string name="settings_messageview_mobile_layout_label">Ułożenie z 1 kolumną</string>
+    <string name="settings_messageview_mobile_layout_summary">Przeformatuj wiadomości HTML dla mniejszych ekranów</string>
+    <string name="settings_messageview_zoom_controls_label">Systemowe powiększenie</string>
+    <string name="settings_messageview_zoom_controls_summary">Użyj zoom widgets i pinch-zoom jeśli Twoje urzędzenie je obsługuje</string>  <!-- FIXME -->
 
 
 
-    <!-- NEW: <string name="setting_language_system">System default</string>-->
+    <string name="setting_language_system">Domyślny systemowy</string>
 
     <string name="background_ops_label">Synchronizacja w tle</string>
     <string name="background_ops_never">Nigdy</string>
@@ -884,8 +887,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="batch_mark_unread_op">Ustaw jako nieprzeczytane</string>
     <string name="batch_flag_op">Dodaj gwiazdkę</string>
     <string name="batch_unflag_op">Usuń gwiazdkę</string>
-    <!-- NEW: <string name="batch_archive_op">Move selected to Archive</string>-->
-    <!-- NEW: <string name="batch_spam_op">Move selected to Spam</string>-->
+    <string name="batch_archive_op">Przenieś wybrane do archiwum</string>
+    <string name="batch_spam_op">Przenieś wybrane do Spamu</string>
     <string name="batch_move_op">Przenieś</string>
     <string name="batch_copy_op">Skopiuj</string>
     <string name="batch_flag_mode">Star mode</string>
@@ -908,13 +911,13 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="gestures_title">Gesty</string>
     <string name="gestures_summary">Pozwól na sterowanie gestami</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
+    <string name="compact_layouts_title">Wygląd kopaktowy</string>
+    <string name="compact_layouts_summary">Dopaduj wygląd, aby wyświetlać więcej na każdej stronie</string>
 
-    <!-- NEW: <string name="volume_navigation_title">Volume key navigation</string>-->
-    <!-- NEW: <string name="volume_navigation_summary">Flip through items using the volume controls</string>-->
-    <!-- NEW: <string name="volume_navigation_message">Message view</string>-->
-    <!-- NEW: <string name="volume_navigation_list">Various list views</string>-->
+    <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
+    <string name="volume_navigation_summary">Przeskakuj między rzeczami używając przycisków głośności</string>
+    <string name="volume_navigation_message">Wygląd wiadomości</string>
+    <string name="volume_navigation_list">Różne widoki list</string>
 
     <string name="manage_back_title">Przycisk \"Cofnij\"</string>
     <string name="manage_back_summary">Przycisk \"Cofnij\" zawsze cofa o jeden poziom wyżej</string>
@@ -928,8 +931,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="count_search_title">Zliczaj wyniki szukania</string>
     <string name="count_search_summary">Wyłącz by przyspieszyć wyświetlanie</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">Ukryj konta specjalne</string>
+    <string name="hide_special_accounts_summary">Ukryj zunifikowaną skrzynkę odbiorczą i wszystkie konta wiadomości</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Z gwiazdka</string>
@@ -969,7 +972,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="font_size_message_list_subject">Temat</string>
     <string name="font_size_message_list_sender">Nadawca</string>
     <string name="font_size_message_list_date">Data wiadomości</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">Pogdląd</string>
 
     <string name="font_size_message_view">Wyświetlanie wiadomość</string>
     <string name="font_size_message_view_sender">Nadawca</string>
@@ -1006,36 +1009,44 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="misc_preferences_attachment_description">Wyświetla przyciski dodawania zdjęć oraz filmów jako załączników</string>
 
     <!-- APG related -->
-    <!-- NEW: <string name="error_activity_not_found">No suitable application for this action found.</string>-->
-    <!-- NEW: <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>-->
-    <!-- NEW: <string name="btn_crypto_sign">Sign</string>-->
-    <!-- NEW: <string name="btn_encrypt">Encrypt</string>-->
-    <!-- NEW: <string name="btn_decrypt">Decrypt</string>-->
-    <!-- NEW: <string name="btn_verify">Verify</string>-->
-    <!-- NEW: <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>-->
-    <!-- NEW: <string name="key_id">id: %s</string>-->
-    <!-- NEW: <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>-->
-    <!-- NEW: <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>-->
-    <!-- NEW: <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>-->
-    <!-- NEW: <string name="send_aborted">Send aborted.</string>-->
+    <string name="error_activity_not_found">Nie znaleiono odpowiedniej aplikacji.</string>
+    <string name="error_apg_version_not_supported">Zainstalowana wersja APG nie jest wspierana.</string>
+    <string name="btn_crypto_sign">Podpisz</string>
+    <string name="btn_encrypt">Zakoduj</string>
+    <string name="btn_decrypt">Zdekoduj</string>
+    <string name="btn_verify">Potwiedź</string>
+    <string name="unknown_crypto_signature_user_id">&lt;nieznany&gt;</string>
+    <string name="key_id">id: %s</string>
+    <string name="insufficient_apg_permissions">K-9 nie ma pełnego dostępu do APG, aby naprawić przeinstaluj K-9.</string>
+    <string name="pgp_mime_unsupported">Wiadomości PGP/MIME nie są jeszcze wspierane.</string>
+    <string name="attachment_encryption_unsupported">Uwaga: załączniki nie są jeszcze podpisane i kodowane.</string>
+    <string name="send_aborted">Anulowano.</string>
 
-    <!-- NEW: <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>-->
-    <!-- NEW: <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>-->
+    <string name="save_or_discard_draft_message_dlg_title">Zapisać szkic?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Zapisać czy porzucić wiadomość?</string>
 
-    <!-- NEW: <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>-->
+    <string name="charset_not_found">Nie można wyświetlić wiadomości, ponieważ kodowanie \"<xliff:g id="charset">%s</xliff:g>\" nie zostało znalezione.</string>
 
-    <!-- NEW: <string name="select_text_now">Select text to copy.</string>-->
+    <string name="select_text_now">Wybierz tekst do skopiowania.</string>
 
-    <!-- NEW: <string name="dialog_confirm_delete_title">Confirm deletion</string>-->
-    <!-- NEW: <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>-->
-    <!-- NEW: <string name="dialog_confirm_delete_confirm_button">Delete</string>-->
-    <!-- NEW: <string name="dialog_confirm_delete_cancel_button">Do not delete</string>-->
+    <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
+    <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
+    <string name="dialog_confirm_delete_confirm_button">Usuń</string>
+    <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
+    <string name="dialog_confirm_spam_message">Na pewno przenieśc do spamu?</string>
+    <string name="dialog_confirm_spam_confirm_button">Tak</string>
+    <string name="dialog_confirm_spam_cancel_button">Nie</string>
 
-    <!-- NEW: <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>-->
+    <string name="dialog_attachment_progress_title">Pobieranie załącznika</string>
 
-    <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
-    <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
+    <string name="debug_logging_enabled">Włączono logowanie debug\'u do logu Androida</string>
+
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
     <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+
+    <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź pamięc</string>
+
 </resources>

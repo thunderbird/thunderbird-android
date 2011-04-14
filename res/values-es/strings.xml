@@ -265,6 +265,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribió:\n\n</string>
     <string name="message_compose_quoted_text_label">Citado</string>
     <string name="message_compose_error_no_recipients">Debes añadir un destinatario</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Algunos adjuntos no se han descargado. Serán descargados automáticamente antes de que se envíe el mensaje</string>
     <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no han sido descargados.</string>
 
@@ -341,6 +342,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="global_settings_confirm_action_archive">Archivar</string>
     <string name="global_settings_confirm_action_delete">Borrar (Mensajes en la vista)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Enviados</string>
 
     <string name="global_settings_privacy_mode_title">Bloquear notificaciones</string>
@@ -1020,6 +1022,11 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">No borrar</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <string name="dialog_attachment_progress_title">Descargando adjunto</string>
 
     <string name="debug_logging_enabled">Opción de depuración activa</string>
@@ -1027,4 +1034,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Imposible conectar.</string>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>

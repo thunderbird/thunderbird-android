@@ -25,7 +25,18 @@ public class TimePickerPreference extends DialogPreference implements
      * The default value for this preference
      */
     private String defaultValue;
-
+    /**
+     * Store the original value, in case the user
+     * chooses to abort the {@link DialogPreference}
+     * after making a change.
+     */
+    private int originalHour = 0;
+    /**
+     * Store the original value, in case the user
+     * chooses to abort the {@link DialogPreference}
+     * after making a change.
+     */
+    private int originalMinute = 0;
     /**
      * @param context
      * @param attrs
@@ -64,11 +75,12 @@ public class TimePickerPreference extends DialogPreference implements
         TimePicker tp = new TimePicker(getContext());
         tp.setOnTimeChangedListener(this);
 
-        int h = getHour();
-        int m = getMinute();
-        if (h >= 0 && m >= 0) {
-            tp.setCurrentHour(h);
-            tp.setCurrentMinute(m);
+        originalHour = getHour();
+        originalMinute = getMinute();
+        if (originalHour >= 0 && originalMinute >= 0)
+        {
+            tp.setCurrentHour(originalHour);
+            tp.setCurrentMinute(originalMinute);
         }
 
         return tp;
@@ -87,6 +99,17 @@ public class TimePickerPreference extends DialogPreference implements
         persistString(String.format("%02d:%02d", hour, minute));
         callChangeListener(String.format("%02d:%02d", hour, minute));
     }
+
+    @Override
+	protected void onDialogClosed(boolean positiveResult) {
+    	// Bug #1185 "[SE-QS] GMX: Nach Abbruch der Einstellungen der Ruhezeiten werden diese trotzdem uebernommen"
+
+		if (!positiveResult) {
+			persistString(String.format("%02d:%02d", originalHour, originalMinute));
+	        callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
+		}
+		super.onDialogClosed(positiveResult);
+	}
 
     /*
      * (non-Javadoc)

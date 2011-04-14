@@ -254,6 +254,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n\n</string>
     <string name="message_compose_quoted_text_label">引用文本</string>
     <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">一些附件没有被下载。在这个邮件发送前会自动的下载这些附件。</string>
     <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
 
@@ -330,6 +331,7 @@
     <string name="global_settings_confirm_action_archive">归档</string>
     <string name="global_settings_confirm_action_delete">删除（仅用于邮件视图）</string>
     <string name="global_settings_confirm_action_spam">标记为垃圾</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">发送</string>
 
     <string name="global_settings_privacy_mode_title">锁屏通知</string>
@@ -1004,6 +1006,11 @@
     <string name="dialog_confirm_delete_confirm_button">删除</string>
     <string name="dialog_confirm_delete_cancel_button">不要删除</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">已经启用将调试日志写入Andorid日志系统</string>
@@ -1011,4 +1018,7 @@
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>

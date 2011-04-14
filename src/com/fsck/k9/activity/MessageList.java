@@ -519,6 +519,8 @@ public class MessageList
             });
         }
 
+
+
         public void addAttachment(final View attachmentView) {
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -837,6 +839,9 @@ public class MessageList
             }
 
         } else {
+            // reread the selected date format preference in case it has changed
+            mMessageHelper.refresh();
+
             new Thread() {
                 @Override
                 public void run() {
@@ -1018,11 +1023,10 @@ public class MessageList
 
         if (mAccount != null && mFolderName != null) {
             String displayName  = mFolderName;
-
-            if (K9.INBOX.equalsIgnoreCase(displayName)) {
-                displayName = getString(R.string.special_mailbox_name_inbox);
-            } else if (mAccount.getOutboxFolderName().equals(displayName)) {
-                displayName = getString(R.string.special_mailbox_name_outbox);
+                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
+                    displayName = getString(R.string.special_mailbox_name_inbox);
+              } else if (mAccount.getOutboxFolderName().equals(displayName)) {
+                    displayName = getString(R.string.special_mailbox_name_outbox);
             }
 
             titleString = mAccount.getDescription() + " / " + displayName;
@@ -1618,11 +1622,17 @@ public class MessageList
         if (holder == null) {
             return;
         }
-        onRefile(holder, holder.message.getFolder().getAccount().getSpamFolderName());
+
+        if (K9.confirmSpam()) {
+            // The action handler needs this to move the message later
+            mSelectedMessage = holder;
+            showDialog(R.id.dialog_confirm_spam);
+        } else {
+            onRefile(holder, holder.message.getFolder().getAccount().getSpamFolderName());
+        }
     }
 
     private void onRefile(MessageInfoHolder holder, String folder) {
-
         if (!mController.isMoveCapable(holder.message)) {
             showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
             return;
@@ -1744,7 +1754,26 @@ public class MessageList
     }
 
     private void onMarkAllAsRead(final Account account, final String folder) {
-        showDialog(DIALOG_MARK_ALL_AS_READ);
+        if (K9.confirmMarkAllAsRead()) {
+            showDialog(DIALOG_MARK_ALL_AS_READ);
+        } else {
+            markAllAsRead();
+        }
+    }
+
+    private void markAllAsRead() {
+        try {
+            mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
+
+            synchronized (mAdapter.messages) {
+                for (MessageInfoHolder holder : mAdapter.messages) {
+                    holder.read = true;
+                }
+            }
+            mHandler.sortMessages();
+        } catch (Exception e) {
+            // Ignore
+        }
     }
 
 
@@ -1760,9 +1789,22 @@ public class MessageList
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return createMarkAllAsReadDialog();
-        case R.id.dialog_confirm_delete: {
+        case R.id.dialog_confirm_delete:
             return createConfirmDeleteDialog(id);
-        }
+        case R.id.dialog_confirm_spam:
+            return ConfirmationDialog.create(this, id,
+                                             R.string.dialog_confirm_spam_title,
+                                             R.string.dialog_confirm_spam_message,
+                                             R.string.dialog_confirm_spam_confirm_button,
+                                             R.string.dialog_confirm_spam_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    // No further need for this reference
+                    onRefile(mSelectedMessage, mSelectedMessage.message.getFolder().getAccount().getSpamFolderName());
+                    mSelectedMessage = null;
+                }
+            });
         }
 
         return super.onCreateDialog(id);

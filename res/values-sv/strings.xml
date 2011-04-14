@@ -267,6 +267,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n\n</string>
     <string name="message_compose_quoted_text_label">Citerad text</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Några bilagor hämtades inte. De kommer att hämtas automatiskt innan detta brev sänds.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
 
@@ -343,6 +344,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="global_settings_confirm_action_archive">Arkivera</string>
     <string name="global_settings_confirm_action_delete">Radera (endast meddelandevyn)</string>
     <string name="global_settings_confirm_action_spam">Skräp</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Skicka</string>
 
     <string name="global_settings_privacy_mode_title">Privatläge</string>
@@ -1023,6 +1025,11 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="dialog_confirm_delete_confirm_button">Radera</string>
     <string name="dialog_confirm_delete_cancel_button">Radera inte</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Debug-loggning till Androids loggsystem är aktiverat</string>
@@ -1030,4 +1037,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Kan inte ansluta.</string>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
 </resources>

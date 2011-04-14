@@ -502,11 +502,67 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_REMOVE_ACCOUNT:
-            return createRemoveAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_delete_dlg_title,
+                                             getString(R.string.account_delete_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        try {
+                            realAccount.getLocalStore().delete();
+                        } catch (Exception e) {
+                            // Ignore, this may lead to localStores on sd-cards that are
+                            // currently not inserted to be left
+                        }
+                        MessagingController.getInstance(getApplication())
+                        .notifyAccountCancel(Accounts.this, realAccount);
+                        Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
+                        K9.setServicesEnabled(Accounts.this);
+                        refresh();
+                    }
+                }
+            });
+
         case DIALOG_CLEAR_ACCOUNT:
-            return createClearAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_clear_dlg_title,
+                                             getString(R.string.account_clear_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.clearing_account);
+                        MessagingController.getInstance(getApplication()).clear(realAccount, null);
+                    }
+                }
+            });
+
         case DIALOG_RECREATE_ACCOUNT:
-            return createRecreateAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_recreate_dlg_title,
+                                             getString(R.string.account_recreate_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.recreating_account);
+                        MessagingController.getInstance(getApplication()).recreate(realAccount, null);
+                    }
+                }
+            });
         }
         return super.onCreateDialog(id);
     }
@@ -531,89 +587,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
 
         super.onPrepareDialog(id, d);
-    }
-
-
-    private Dialog createRemoveAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_delete_dlg_title)
-               .setMessage(getString(R.string.account_delete_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_REMOVE_ACCOUNT);
-                removeDialog(DIALOG_REMOVE_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    try {
-                        realAccount.getLocalStore().delete();
-                    } catch (Exception e) {
-                        // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
-                    }
-                    MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, realAccount);
-                    Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
-                    K9.setServicesEnabled(Accounts.this);
-                    refresh();
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_REMOVE_ACCOUNT);
-                removeDialog(DIALOG_REMOVE_ACCOUNT);
-            }
-        })
-               .create();
-    }
-
-    private Dialog createClearAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_clear_dlg_title)
-               .setMessage(getString(R.string.account_clear_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_CLEAR_ACCOUNT);
-                removeDialog(DIALOG_CLEAR_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    mHandler.workingAccount(realAccount, R.string.clearing_account);
-                    MessagingController.getInstance(getApplication()).clear(realAccount, null);
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_CLEAR_ACCOUNT);
-                removeDialog(DIALOG_CLEAR_ACCOUNT);
-            }
-        })
-               .create();
-    }
-
-    private Dialog createRecreateAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_recreate_dlg_title)
-               .setMessage(getString(R.string.account_recreate_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_RECREATE_ACCOUNT);
-                removeDialog(DIALOG_RECREATE_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    mHandler.workingAccount(realAccount, R.string.recreating_account);
-                    MessagingController.getInstance(getApplication()).recreate(realAccount, null);
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_RECREATE_ACCOUNT);
-                removeDialog(DIALOG_RECREATE_ACCOUNT);
-            }
-        })
-               .create();
     }
 
     @Override

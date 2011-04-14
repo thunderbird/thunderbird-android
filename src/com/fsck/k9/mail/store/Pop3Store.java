@@ -38,6 +38,7 @@ public class Pop3Store extends Store {
     private int mPort;
     private String mUsername;
     private String mPassword;
+    private boolean useCramMd5;
     private int mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
@@ -85,12 +86,19 @@ public class Pop3Store extends Store {
             mPort = uri.getPort();
         }
 
+        useCramMd5 = false;
         if (uri.getUserInfo() != null) {
             try {
+                int userIndex = 0, passwordIndex = 1;
                 String[] userInfoParts = uri.getUserInfo().split(":");
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                if (userInfoParts.length > 2) {
+                    userIndex++;
+                    passwordIndex++;
+                    useCramMd5 = true;
+                }
+                mUsername = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
+                if (userInfoParts.length > passwordIndex) {
+                    mPassword = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -112,13 +120,13 @@ public class Pop3Store extends Store {
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder("INBOX"));
+        folders.add(getFolder(mAccount.getInboxFolderName()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder("INBOX");
+        Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
         folder.open(OpenMode.READ_WRITE);
         if (!mCapabilities.uidl) {
             /*
@@ -149,8 +157,9 @@ public class Pop3Store extends Store {
         public Pop3Folder(String name) {
             super(Pop3Store.this.mAccount);
             this.mName = name;
-            if (mName.equalsIgnoreCase("INBOX")) {
-                mName = "INBOX";
+
+            if (mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+                mName = mAccount.getInboxFolderName();
             }
         }
 
@@ -160,7 +169,7 @@ public class Pop3Store extends Store {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase("INBOX")) {
+            if (!mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
@@ -215,11 +224,23 @@ public class Pop3Store extends Store {
                     }
                 }
 
-                try {
-                    executeSimpleCommand("USER " + mUsername);
-                    executeSimpleCommand("PASS " + mPassword, true);
-                } catch (MessagingException me) {
-                    throw new AuthenticationFailedException(null, me);
+                if (useCramMd5) {
+                    try {
+                        String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+
+                        String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
+                        executeSimpleCommand(b64CRAM);
+
+                    } catch (MessagingException me) {
+                        throw new AuthenticationFailedException(null, me);
+                    }
+                } else {
+                    try {
+                        executeSimpleCommand("USER " + mUsername);
+                        executeSimpleCommand("PASS " + mPassword, true);
+                    } catch (MessagingException me) {
+                        throw new AuthenticationFailedException(null, me);
+                    }
                 }
 
                 mCapabilities = getCapabilities();
@@ -305,7 +326,7 @@ public class Pop3Store extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase("INBOX");
+            return mName.equalsIgnoreCase(mAccount.getInboxFolderName());
         }
 
         @Override

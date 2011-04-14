@@ -205,7 +205,7 @@
 Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
 \n
 \n\nVerbesserte Funktionen in K-9:
-\n * Laden von Nachrichten durch IMAP IDLE
+\n * Benachrichtigung über neue Nachrichten per IMAP IDLE
 \n * Höhere Performance
 \n * E-Mail-Signaturen
 \n * Automatische Blindkopie an sich selbst
@@ -264,6 +264,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
     <string name="message_compose_quoted_text_label">Zitierter Text</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Einige Anhänge wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
 
@@ -300,7 +301,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="new_mailbox_dlg_title">Neuer Ordnername</string>
 
-    <string name="folder_push_active_symbol">(Laden)</string>
+    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Mehr von diesem Absender</string>
 
@@ -340,6 +341,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_confirm_action_archive">Archivieren</string>
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Senden</string>
 
     <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>
@@ -1020,6 +1022,11 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="dialog_confirm_delete_confirm_button">Löschen</string>
     <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
@@ -1029,7 +1036,6 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="error_unable_to_connect">Verbindungsfehler.</string>
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ist nicht verfügbar; Bitte SD-Karte prüfen.</string>
-    
     <string name="error_contact_address_not_found">Keine E-Mail Adresse zu finden für den Kontakt.</string>
     <plurals name="selected_message_count">
         <item quantity="one">1 Nachricht ausgewählt</item>
