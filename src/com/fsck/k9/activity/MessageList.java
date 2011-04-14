@@ -611,7 +611,7 @@ public class MessageList
             // In multiselect mode make sure that clicking on the item results
             // in toggling the 'selected' checkbox.
             setSelected(message, !message.selected);
-            if (!mSplitView.isPrimaryContentMaximized()) { 
+            if (!mSplitView.isPrimaryContentMaximized()) {
                 onOpenMessage(message);
             }
         } else {
@@ -692,7 +692,7 @@ public class MessageList
 
                 mListView.setItemChecked(position, true);
                 mCurrentMessageInfo = (MessageInfoHolder) mAdapter.getItem(position);
-                if (!mSplitView.isPrimaryContentMaximized()) { 
+                if (!mSplitView.isPrimaryContentMaximized()) {
                     onOpenMessage(mCurrentMessageInfo);
                 }
             }
@@ -796,9 +796,9 @@ public class MessageList
             mListView.setItemChecked(pos, true);
 
             // smoothScrollToPosition came in with API level 8
-           if (Integer.parseInt(Build.VERSION.SDK) >= Build.VERSION_CODES.FROYO) {
+            if (Integer.parseInt(Build.VERSION.SDK) >= Build.VERSION_CODES.FROYO) {
                 mListView.smoothScrollToPosition(pos);
-           }
+            }
             onOpenMessage((MessageInfoHolder) mAdapter.getItem(pos));
         }
     }
@@ -1023,10 +1023,10 @@ public class MessageList
 
         if (mAccount != null && mFolderName != null) {
             String displayName  = mFolderName;
-                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_inbox);
-              } else if (mAccount.getOutboxFolderName().equals(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_outbox);
+            if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_inbox);
+            } else if (mAccount.getOutboxFolderName().equals(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_outbox);
             }
 
             titleString = mAccount.getDescription() + " / " + displayName;
@@ -1351,7 +1351,7 @@ public class MessageList
         mLastDirection = NEXT;
         mListView.setSelection(mAdapter.messages.indexOf(mNextMessage));
 
-        if (!mSplitView.isPrimaryContentMaximized()) { 
+        if (!mSplitView.isPrimaryContentMaximized()) {
             onOpenMessage(mNextMessage);
         }
     }
@@ -1363,7 +1363,7 @@ public class MessageList
         }
         mLastDirection = PREVIOUS;
         mListView.setSelection(mAdapter.messages.indexOf(mPreviousMessage));
-        if (!mSplitView.isPrimaryContentMaximized()) { 
+        if (!mSplitView.isPrimaryContentMaximized()) {
             onOpenMessage(mPreviousMessage);
         }
     }

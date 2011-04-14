@@ -77,8 +77,7 @@ public class TimePickerPreference extends DialogPreference implements
 
         originalHour = getHour();
         originalMinute = getMinute();
-        if (originalHour >= 0 && originalMinute >= 0)
-        {
+        if (originalHour >= 0 && originalMinute >= 0) {
             tp.setCurrentHour(originalHour);
             tp.setCurrentMinute(originalMinute);
         }
@@ -101,15 +100,15 @@ public class TimePickerPreference extends DialogPreference implements
     }
 
     @Override
-	protected void onDialogClosed(boolean positiveResult) {
-    	// Bug #1185 "[SE-QS] GMX: Nach Abbruch der Einstellungen der Ruhezeiten werden diese trotzdem uebernommen"
+    protected void onDialogClosed(boolean positiveResult) {
+        // Bug #1185 "[SE-QS] GMX: Nach Abbruch der Einstellungen der Ruhezeiten werden diese trotzdem uebernommen"
 
-		if (!positiveResult) {
-			persistString(String.format("%02d:%02d", originalHour, originalMinute));
-	        callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
-		}
-		super.onDialogClosed(positiveResult);
-	}
+        if (!positiveResult) {
+            persistString(String.format("%02d:%02d", originalHour, originalMinute));
+            callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
+        }
+        super.onDialogClosed(positiveResult);
+    }
 
     /*
      * (non-Javadoc)

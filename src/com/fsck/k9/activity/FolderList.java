@@ -200,7 +200,7 @@ public class FolderList extends K9ListActivity {
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut) {
         Intent intent = new Intent(context, FolderList.class);
         // You wouldn't think this could be null, but jesse's seen  the stack traces
-        if (account != null ) {
+        if (account != null) {
             intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
         }
 
