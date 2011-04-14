@@ -41,7 +41,7 @@ public class TimePickerPreference extends DialogPreference implements
      * @param context
      * @param attrs
      */
-    public TimePickerPreference(Context context, AttributeSet attrs) {
+    public TimePickerPreference(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         initialize();
     }
@@ -51,8 +51,8 @@ public class TimePickerPreference extends DialogPreference implements
      * @param attrs
      * @param defStyle
      */
-    public TimePickerPreference(Context context, AttributeSet attrs,
-                                int defStyle) {
+    public TimePickerPreference(final Context context, final AttributeSet attrs,
+    		final int defStyle) {
         super(context, attrs, defStyle);
         initialize();
     }
@@ -86,23 +86,24 @@ public class TimePickerPreference extends DialogPreference implements
         return tp;
     }
 
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see
      * android.widget.TimePicker.OnTimeChangedListener#onTimeChanged(android
      * .widget.TimePicker, int, int)
      */
     @Override
-    public void onTimeChanged(TimePicker view, int hour, int minute) {
+    public void onTimeChanged(final TimePicker view, final int hour, final int minute) {
 
         persistString(String.format("%02d:%02d", hour, minute));
         callChangeListener(String.format("%02d:%02d", hour, minute));
     }
 
+    /**
+     * If not a positive result, restore the original value
+     * before going to super.onDialogClosed(positiveResult).
+     */
     @Override
 	protected void onDialogClosed(boolean positiveResult) {
-    	// Bug #1185 "[SE-QS] GMX: Nach Abbruch der Einstellungen der Ruhezeiten werden diese trotzdem uebernommen"
 
 		if (!positiveResult) {
 			persistString(String.format("%02d:%02d", originalHour, originalMinute));
@@ -111,13 +112,11 @@ public class TimePickerPreference extends DialogPreference implements
 		super.onDialogClosed(positiveResult);
 	}
 
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see android.preference.Preference#setDefaultValue(java.lang.Object)
      */
     @Override
-    public void setDefaultValue(Object defaultValue) {
+    public void setDefaultValue(final Object defaultValue) {
         // BUG this method is never called if you use the 'android:defaultValue' attribute in your XML preference file, not sure why it isn't
 
         super.setDefaultValue(defaultValue);
@@ -136,10 +135,10 @@ public class TimePickerPreference extends DialogPreference implements
     /**
      * Get the hour value (in 24 hour time)
      *
-     * @return The hour value, will be 0 to 23 (inclusive)
+     * @return The hour value, will be 0 to 23 (inclusive) or -1 if illegal
      */
     private int getHour() {
-        String time = getPersistedString(this.defaultValue);
+        String time = getTime();
         if (time == null || !time.matches(VALIDATION_EXPRESSION)) {
             return -1;
         }
@@ -150,10 +149,10 @@ public class TimePickerPreference extends DialogPreference implements
     /**
      * Get the minute value
      *
-     * @return the minute value, will be 0 to 59 (inclusive)
+     * @return the minute value, will be 0 to 59 (inclusive) or -1 if illegal
      */
     private int getMinute() {
-        String time = getPersistedString(this.defaultValue);
+        String time = getTime();
         if (time == null || !time.matches(VALIDATION_EXPRESSION)) {
             return -1;
         }
@@ -161,6 +160,12 @@ public class TimePickerPreference extends DialogPreference implements
         return Integer.valueOf(time.split(":")[1]);
     }
 
+    /**
+     * Get the time. It is only legal, if it matches
+     * {@link #VALIDATION_EXPRESSION}.
+     *
+     * @return the time as hh:mm
+     */
     public String getTime() {
         return getPersistedString(this.defaultValue);
     }
