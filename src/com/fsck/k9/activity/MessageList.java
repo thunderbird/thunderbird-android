@@ -12,13 +12,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.TextAppearanceSpan;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.animation.Animation;
@@ -2159,13 +2159,14 @@ public class MessageList
                     holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable) holder.preview.getText();
 
-                    ColorStateList color = holder.subject.getTextColors();
-                    ColorStateList linkColor = holder.subject.getLinkTextColors();
-                    str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
+                    str.setSpan(new StyleSpan(Typeface.NORMAL),
                                 0,
                                 noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                               );
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     holder.from.setText(noSender);
                     holder.from.setTypeface(null, Typeface.NORMAL);
@@ -2247,13 +2248,14 @@ public class MessageList
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
-                ColorStateList color = holder.subject.getTextColors();
-                ColorStateList linkColor = holder.subject.getLinkTextColors();
-                str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
+                str.setSpan(new StyleSpan(senderTypeface),
                             0,
                             message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                           );
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                            0,
+                            message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
 
