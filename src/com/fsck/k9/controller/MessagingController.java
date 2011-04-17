@@ -3633,8 +3633,17 @@ public class MessagingController implements Runnable
 
 
                     localFolder.fetch(new Message[] { message }, fp, null);
-                    try
-                    {
+                    try {
+
+
+                        if (message.getHeader(K9.IDENTITY_HEADER) != null) {
+                            Log.v(K9.LOG_TAG, "The user has set the Outbox and Drafts folder to the same thing. " +
+                                  "This message appears to be a draft, so K-9 will not send it");
+                            continue;
+
+                        }
+
+
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
