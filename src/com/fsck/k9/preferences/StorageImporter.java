@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -105,6 +104,8 @@ public class StorageImporter {
                 }
             }
 
+            //TODO: throw exception if neither global settings nor account settings could be found
+
             return new ImportContents(globalSettings, accounts);
 
         } catch (StorageImportExportException e) {
@@ -127,7 +128,7 @@ public class StorageImporter {
      * @throws StorageImportExportException
      */
     public static void importSettings(Context context, InputStream inputStream, String encryptionKey,
-            boolean globalSettings, Set<String> accountUuids, boolean overwrite)
+            boolean globalSettings, List<String> accountUuids, boolean overwrite)
     throws StorageImportExportException {
 
         try
@@ -160,6 +161,7 @@ public class StorageImporter {
                                     accountUuid + ". But this account wasn't found.");
                         }
                     }
+
                     if (newUuids.size() > 0) {
                         String oldAccountUuids = storage.getString("accountUuids", "");
                         String appendUuids = Utility.combine(newUuids.toArray(new String[0]), ',');
@@ -169,6 +171,12 @@ public class StorageImporter {
                         }
                         editor.putString("accountUuids", prefix + appendUuids);
                     }
+
+                    String defaultAccountUuid = storage.getString("defaultAccountUuid", null);
+                    if (defaultAccountUuid == null) {
+                        editor.putString("defaultAccountUuid", accountUuids.get(0));
+                    }
+
                 } else {
                     Log.w(K9.LOG_TAG, "Was asked to import at least one account but none found.");
                 }
@@ -364,7 +372,7 @@ public class StorageImporter {
     }
 
     private static Imported parseSettings(InputStream inputStream, boolean globalSettings,
-            Set<String> accountUuids, boolean overwrite, boolean overview)
+            List<String> accountUuids, boolean overwrite, boolean overview)
     throws StorageImportExportException {
 
         if (!overview && accountUuids == null) {
@@ -427,7 +435,7 @@ public class StorageImporter {
     }
 
     private static Imported parseRoot(XmlPullParser xpp, boolean globalSettings,
-            Set<String> accountUuids, boolean overview)
+            List<String> accountUuids, boolean overview)
     throws XmlPullParserException, IOException {
 
         Imported result = new Imported();
@@ -507,7 +515,7 @@ public class StorageImporter {
     }
 
     private static Map<String, ImportedAccount> parseAccounts(XmlPullParser xpp,
-            Set<String> accountUuids, boolean overview)
+            List<String> accountUuids, boolean overview)
     throws XmlPullParserException, IOException {
 
         Map<String, ImportedAccount> accounts = null;
@@ -541,7 +549,7 @@ public class StorageImporter {
         return accounts;
     }
 
-    private static ImportedAccount parseAccount(XmlPullParser xpp, Set<String> accountUuids,
+    private static ImportedAccount parseAccount(XmlPullParser xpp, List<String> accountUuids,
             boolean overview)
     throws XmlPullParserException, IOException {
 

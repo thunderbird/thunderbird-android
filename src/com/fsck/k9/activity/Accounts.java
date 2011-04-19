@@ -1162,12 +1162,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
-        private Set<String> mAccountUuids;
+        private List<String> mAccountUuids;
         private boolean mOverwrite;
         private String mEncryptionKey;
         private InputStream mInputStream;
 
-        private ImportAsyncTask(boolean includeGlobals, Set<String> accountUuids,
+        private ImportAsyncTask(boolean includeGlobals, List<String> accountUuids,
                 boolean overwrite, String encryptionKey, InputStream is) {
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
@@ -1290,7 +1290,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                             SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
 
                             boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
-                            Set<String> accountUuids = new HashSet<String>();
+                            List<String> accountUuids = new ArrayList<String>();
                             for (int i = 1; i < count; i++) {
                                 if (pos.get(i)) {
                                     accountUuids.add(mImportContents.accounts.get(i-1).uuid);
