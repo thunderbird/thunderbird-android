@@ -6,6 +6,7 @@ package com.fsck.k9.preferences;
 
 import android.content.Context;
 import android.preference.DialogPreference;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -73,8 +74,8 @@ public class TimePickerPreference extends DialogPreference implements
     protected View onCreateDialogView() {
 
         TimePicker tp = new TimePicker(getContext());
+        tp.setIs24HourView(DateFormat.is24HourFormat(getContext()));
         tp.setOnTimeChangedListener(this);
-
         originalHour = getHour();
         originalMinute = getMinute();
         if (originalHour >= 0 && originalMinute >= 0)
