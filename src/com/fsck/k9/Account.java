@@ -50,10 +50,10 @@ public class Account implements BaseAccount {
     public static final String TYPE_OTHER = "OTHER";
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
-    private static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
-    private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
-    private static final String DEFAULT_QUOTE_PREFIX = ">";
-    private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
+    public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    public static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
+    public static final String DEFAULT_QUOTE_PREFIX = ">";
+    public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
 

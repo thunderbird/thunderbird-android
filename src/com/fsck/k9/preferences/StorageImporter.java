@@ -200,15 +200,13 @@ public class StorageImporter {
 
     private static void importGlobalSettings(SharedPreferences.Editor editor,
             ImportedSettings settings) {
-        //TODO: input validation
 
-        for (Map.Entry<String, String> setting : settings.settings.entrySet()) {
+        Map<String, String> writeSettings = GlobalSettings.validate(settings.settings);
+
+        for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
             String key = setting.getKey();
             String value = setting.getValue();
-            //FIXME: drop this key during input validation. then remove this check
-            if ("accountUuids".equals(key)) {
-                continue;
-            }
+            Log.v(K9.LOG_TAG, "Write " + key + "=" + value);
             editor.putString(key, value);
         }
     }
@@ -216,8 +214,14 @@ public class StorageImporter {
     private static String importAccount(Context context, SharedPreferences.Editor editor,
             ImportedAccount account, boolean overwrite) {
 
-        //TODO: input validation
-        //TODO: remove latestOldMessageSeenTime?
+        // Validate input and ignore malformed values when possible
+        Map<String, String> validatedSettings =
+            AccountSettings.validate(account.settings.settings);
+
+        //TODO: validate account name
+        //TODO: validate identity settings
+        //TODO: validate folder settings
+
 
         Preferences prefs = Preferences.getPreferences(context);
         Account[] accounts = prefs.getAccounts();
@@ -246,12 +250,7 @@ public class StorageImporter {
         editor.putString(accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
         // Write account settings
-        for (Map.Entry<String, String> setting : account.settings.settings.entrySet()) {
-            //FIXME: drop this key during input validation. then remove this check
-            if ("accountNumber".equals(setting.getKey())) {
-                continue;
-            }
-
+        for (Map.Entry<String, String> setting : validatedSettings.entrySet()) {
             String key = accountKeyPrefix + setting.getKey();
             String value = setting.getValue();
             editor.putString(key, value);
@@ -429,7 +428,7 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         if (eventType != XmlPullParser.TEXT) {
-            return null;
+            return "";
         }
         return xpp.getText();
     }
