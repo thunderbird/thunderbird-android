@@ -508,7 +508,6 @@ public class LocalStore extends Store implements Serializable {
                 try {
                     String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
                     List<String> queryParam = new ArrayList<String>();
-                    String []squeryParam = null;
                     queryParam.add((mAccount.getTrashFolderName() != null && !mAccount.getTrashFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getTrashFolderName() : "");
                     queryParam.add((mAccount.getDraftsFolderName() != null && !mAccount.getTrashFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getDraftsFolderName() : "");
                     queryParam.add((mAccount.getSpamFolderName() != null && !mAccount.getSpamFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getSpamFolderName() : "");
