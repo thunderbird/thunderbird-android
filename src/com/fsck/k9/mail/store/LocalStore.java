@@ -506,13 +506,14 @@ public class LocalStore extends Store implements Serializable {
             public Integer doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
                 try {
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ((name = ?) or ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? )) ";
                     List<String> queryParam = new ArrayList<String>();
-                    queryParam.add((mAccount.getTrashFolderName() != null && !mAccount.getTrashFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getTrashFolderName() : "");
-                    queryParam.add((mAccount.getDraftsFolderName() != null && !mAccount.getTrashFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getDraftsFolderName() : "");
-                    queryParam.add((mAccount.getSpamFolderName() != null && !mAccount.getSpamFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getSpamFolderName() : "");
-                    queryParam.add((mAccount.getOutboxFolderName() != null && !mAccount.getOutboxFolderName().equals(mAccount.getInboxFolderName())) ?  mAccount.getOutboxFolderName() : "");
-                    queryParam.add((mAccount.getSentFolderName() != null && !mAccount.getSentFolderName().equals(mAccount.getInboxFolderName())) ? mAccount.getSentFolderName() : "");
+                    queryParam.add(mAccount.getInboxFolderName());
+                    queryParam.add((mAccount.getTrashFolderName() != null) ? mAccount.getTrashFolderName() : "");
+                    queryParam.add((mAccount.getDraftsFolderName() != null) ? mAccount.getDraftsFolderName() : "");
+                    queryParam.add((mAccount.getSpamFolderName() != null) ? mAccount.getSpamFolderName() : "");
+                    queryParam.add((mAccount.getOutboxFolderName() != null) ?  mAccount.getOutboxFolderName() : "");
+                    queryParam.add((mAccount.getSentFolderName() != null) ? mAccount.getSentFolderName() : "");
 
                     if (displayMode == Account.FolderMode.NONE) {
                         queryParam.add(mAccount.getInboxFolderName());
