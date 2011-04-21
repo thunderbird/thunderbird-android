@@ -231,7 +231,11 @@
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
-
+		<Preference 
+			android:persistent="false"
+			android:title="@string/settings_attachment_def_path"
+			android:key="attachment_default_path"
+			android:summary="- PATH - set by activty -"/>
     </PreferenceScreen>
 
     <PreferenceScreen 

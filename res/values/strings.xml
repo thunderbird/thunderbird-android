@@ -1041,4 +1041,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
+	<string name="settings_attachment_def_path">Attachments Default Path</string>
+	<string name="attachment_save_title">Save to</string>
+	<string name="attachment_save_desc">No filebrowser installed. Please enter destination foldername</string>
 </resources>
