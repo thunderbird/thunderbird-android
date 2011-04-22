@@ -28,7 +28,6 @@ import com.fsck.k9.mail.filter.Hex;
 
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
@@ -280,10 +279,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 							      case 0:
 							    	  Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
 							    	  continue;
-							      case 1: // RFC822Name 
+							      case 1: // RFC822Name
 							    	  name = (String)value;
 							        break;
-							      case 2:  // DNSName 
+							      case 2:  // DNSName
 							    	  name = (String)value;
 							        break;
 							      case 3:
