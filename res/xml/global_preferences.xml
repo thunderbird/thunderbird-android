@@ -233,7 +233,7 @@
             android:negativeButtonText="@android:string/cancel" />
 		<Preference
 			android:persistent="false"
-			android:title="@string/settings_attachment_def_path"
+			android:title="@string/settings_attachment_default_path"
 			android:key="attachment_default_path"
 			android:summary="- PATH - set by activty -"/>
     </PreferenceScreen>
