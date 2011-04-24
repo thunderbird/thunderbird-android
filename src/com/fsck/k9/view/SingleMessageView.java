@@ -44,7 +44,7 @@ public class SingleMessageView extends LinearLayout {
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
-
+    private AttachmentView.AttachmentFileDownloadCallback attachmentCallback;
 
     public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -265,6 +265,7 @@ public class SingleMessageView extends LinearLayout {
                 return;
             }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
+            view.setCallback(attachmentCallback);
             if (view.populateFromPart(part, message, account, controller, listener)) {
                 addAttachment(view);
             }
@@ -299,4 +300,14 @@ public class SingleMessageView extends LinearLayout {
         mMessageContentView.clearView();
         mAttachments.removeAllViews();
     }
+
+    public AttachmentView.AttachmentFileDownloadCallback getAttachmentCallback() {
+        return attachmentCallback;
+    }
+
+    public void setAttachmentCallback(
+        AttachmentView.AttachmentFileDownloadCallback attachmentCallback) {
+        this.attachmentCallback = attachmentCallback;
+    }
+
 }

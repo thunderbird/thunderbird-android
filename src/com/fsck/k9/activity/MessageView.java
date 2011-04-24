@@ -17,12 +17,16 @@ import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.FileBrowserHelper;
+import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
 import com.fsck.k9.view.SingleMessageView;
+import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 
+import java.io.File;
 import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener {
@@ -33,7 +37,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-
+    private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
     private SingleMessageView mMessageView;
 
@@ -60,6 +64,12 @@ public class MessageView extends K9Activity implements OnClickListener {
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    /** this variable is used to save the calling AttachmentView
+     *  until the onActivityResult is called.
+     *  => with this reference we can identity the caller
+     */
+    private AttachmentView attachmentTmpStore;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -295,6 +305,32 @@ public class MessageView extends K9Activity implements OnClickListener {
         mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
+        //set a callback for the attachment view. With this callback the attachmentview
+        //request the start of a filebrowser activity.
+        mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
+
+            @Override
+            public void showFileBrowser(final AttachmentView caller) {
+                FileBrowserHelper.getInstance()
+                .showFileBrowserActivity(MessageView.this,
+                                         null,
+                                         MessageView.ACTIVITY_CHOOSE_DIRECTORY,
+                                         callback);
+                attachmentTmpStore = caller;
+            }
+            FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
+
+                @Override
+                public void onPathEntered(String path) {
+                    attachmentTmpStore.writeFile(new File(path));
+                }
+
+                @Override
+                public void onCancel() {
+                    // canceled, do nothing
+                }
+            };
+        });
         mMessageView.initialize(this);
 
         setTitle("");
@@ -712,6 +748,19 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (resultCode != RESULT_OK)
             return;
         switch (requestCode) {
+        case ACTIVITY_CHOOSE_DIRECTORY:
+            if (resultCode == RESULT_OK && data != null) {
+                // obtain the filename
+                Uri fileUri = data.getData();
+                if (fileUri != null) {
+                    String filePath = fileUri.getPath();
+                    if (filePath != null) {
+                        attachmentTmpStore.writeFile(new File(filePath));
+                    }
+                }
+            }
+
+            break;
         case ACTIVITY_CHOOSE_FOLDER_MOVE:
         case ACTIVITY_CHOOSE_FOLDER_COPY:
             if (data == null)
