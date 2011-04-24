@@ -18,6 +18,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
@@ -177,7 +178,7 @@ public class K9 extends Application {
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
-
+    private static String mAttachmentDefaultPath = "";
 
 
     private static boolean useGalleryBugWorkaround = false;
@@ -452,7 +453,7 @@ public class K9 extends Application {
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
         editor.putBoolean("compactLayouts", compactLayouts);
-
+        editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         fontSizes.save(editor);
     }
 
@@ -507,7 +508,7 @@ public class K9 extends Application {
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
-
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
 
         try {
@@ -993,6 +994,14 @@ public class K9 extends Application {
         } catch (NameNotFoundException e) {
             return false;
         }
+    }
+
+    public static String getAttachmentDefaultPath() {
+        return mAttachmentDefaultPath;
+    }
+
+    public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
+        K9.mAttachmentDefaultPath = attachmentDefaultPath;
     }
 
 }
