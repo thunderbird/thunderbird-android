@@ -1,7 +1,16 @@
 package com.fsck.k9.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,7 +18,12 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -23,9 +37,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
-import org.apache.commons.io.IOUtils;
-
-import java.io.*;
 
 public class AttachmentView extends FrameLayout {
 
@@ -42,6 +53,8 @@ public class AttachmentView extends FrameLayout {
     public long size;
     public ImageView iconView;
 
+    private AttachmentFileDownloadCallback callback;
+
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
@@ -56,7 +69,18 @@ public class AttachmentView extends FrameLayout {
     }
 
 
-
+    public interface AttachmentFileDownloadCallback {
+        /**
+         * this method i called by the attachmentview when
+         * he wants to show a filebrowser
+         * the provider should show the filebrowser activity
+         * and save the reference to the attachment view for later.
+         * in his onActivityResult he can get the saved reference and
+         * call the saveFile method of AttachmentView
+         * @param view
+         */
+        public void showFileBrowser(AttachmentView caller);
+    }
     public boolean populateFromPart(Part inputPart, Message message, Account account, MessagingController controller, MessagingListener listener) {
         try {
             part = (LocalAttachmentBodyPart) inputPart;
@@ -113,6 +137,14 @@ public class AttachmentView extends FrameLayout {
                     return;
                 }
             });
+            downloadButton.setOnLongClickListener(new OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    callback.showFileBrowser(AttachmentView.this);
+                    return true;
+                }
+            });
 
             attachmentName.setText(name);
             attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
@@ -158,9 +190,13 @@ public class AttachmentView extends FrameLayout {
         saveFile();
     }
 
-    public void writeFile() {
+    /**
+     * Writes the attachment onto the given path
+     * @param directory: the base dir where the file should be saved.
+     */
+    public void writeFile(File directory) {
         try {
-            File file = Utility.createUniqueFile(Environment.getExternalStorageDirectory(), name);
+            File file = Utility.createUniqueFile(directory, name);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);
@@ -168,14 +204,22 @@ public class AttachmentView extends FrameLayout {
             out.flush();
             out.close();
             in.close();
-            attachmentSaved(file.getName());
+            attachmentSaved(file.toString());
             new MediaScannerNotifier(mContext, file);
         } catch (IOException ioe) {
             attachmentNotSaved();
         }
     }
+    /**
+     * saves the file to the defaultpath setting in the config, or if the config
+     * is not set => to the Environment
+     */
+    public void writeFile() {
+        writeFile(new File(K9.getAttachmentDefaultPath()));
+    }
 
     public void saveFile() {
+        //TODO: Can the user save attachments on the internal filesystem or sd card only?
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             /*
              * Abort early if there's no place to save the attachment. We don't want to spend
@@ -248,4 +292,11 @@ public class AttachmentView extends FrameLayout {
                        mContext.getString(R.string.message_view_status_attachment_not_saved),
                        Toast.LENGTH_LONG).show();
     }
+    public AttachmentFileDownloadCallback getCallback() {
+        return callback;
+    }
+    public void setCallback(AttachmentFileDownloadCallback callback) {
+        this.callback = callback;
+    }
+
 }
