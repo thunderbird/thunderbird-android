@@ -39,6 +39,14 @@ public class SmtpTransport extends Transport {
 
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    public static final String AUTH_PLAIN = "PLAIN";
+
+    public static final String AUTH_CRAM_MD5 = "CRAM_MD5";
+
+    public static final String AUTH_LOGIN = "LOGIN";
+
+    public static final String AUTH_AUTOMATIC = "AUTOMATIC";
+
     String mHost;
 
     int mPort;
@@ -227,22 +235,29 @@ public class SmtpTransport extends Transport {
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
-            for (String result : results) {
-                if (result.matches(".*AUTH.*LOGIN.*$")) {
-                    authLoginSupported = true;
-                }
-                if (result.matches(".*AUTH.*PLAIN.*$")) {
-                    authPlainSupported = true;
-                }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5")) {
-                    authCramMD5Supported = true;
-                }
-                if (result.matches(".*SIZE \\d*$")) {
-                    try {
-                        mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
-                    } catch (Exception e) {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
+            if (mAuthType != null) {
+                authLoginSupported = mAuthType.equals(AUTH_LOGIN);
+                authPlainSupported = mAuthType.equals(AUTH_PLAIN);
+                authCramMD5Supported = mAuthType.equals(AUTH_CRAM_MD5);
+            }
+            if (mAuthType == null || mAuthType.equals(AUTH_AUTOMATIC)) {
+                for (String result : results) {
+                    if (result.matches(".*AUTH.*LOGIN.*$")) {
+                        authLoginSupported = true;
+                    }
+                    if (result.matches(".*AUTH.*PLAIN.*$")) {
+                        authPlainSupported = true;
+                    }
+                    if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
+                        authCramMD5Supported = true;
+                    }
+                    if (result.matches(".*SIZE \\d*$")) {
+                        try {
+                            mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
+                        } catch (Exception e) {
+                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                                Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
+                            }
                         }
                     }
                 }
