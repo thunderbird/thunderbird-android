@@ -229,47 +229,53 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            /*
-             * result contains the results of the EHLO in concatenated form
-             */
+            boolean useAuthLogin = AUTH_LOGIN.equals(mAuthType);
+            boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
+            boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
+
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
-            if (mAuthType != null) {
-                authLoginSupported = mAuthType.equals(AUTH_LOGIN);
-                authPlainSupported = mAuthType.equals(AUTH_PLAIN);
-                authCramMD5Supported = mAuthType.equals(AUTH_CRAM_MD5);
-            }
-            if (mAuthType == null || mAuthType.equals(AUTH_AUTOMATIC)) {
-                for (String result : results) {
-                    if (result.matches(".*AUTH.*LOGIN.*$")) {
-                        authLoginSupported = true;
-                    }
-                    if (result.matches(".*AUTH.*PLAIN.*$")) {
-                        authPlainSupported = true;
-                    }
-                    if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
-                        authCramMD5Supported = true;
-                    }
-                    if (result.matches(".*SIZE \\d*$")) {
-                        try {
-                            mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
-                        } catch (Exception e) {
-                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                                Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
-                            }
+            for (String result : results) {
+                if (result.matches(".*AUTH.*LOGIN.*$")) {
+                    authLoginSupported = true;
+                }
+                if (result.matches(".*AUTH.*PLAIN.*$")) {
+                    authPlainSupported = true;
+                }
+                if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
+                    authCramMD5Supported = true;
+                }
+                if (result.matches(".*SIZE \\d*$")) {
+                    try {
+                        mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
+                    } catch (Exception e) {
+                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
                         }
                     }
                 }
             }
 
-            if (mUsername != null && mUsername.length() > 0 && mPassword != null
-                    && mPassword.length() > 0) {
-                if (authCramMD5Supported) {
+            if (mUsername != null && mUsername.length() > 0 &&
+                    mPassword != null && mPassword.length() > 0) {
+                if (useAuthCramMD5 || authCramMD5Supported) {
+                    if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthCramMD5(mUsername, mPassword);
-                } else if (authPlainSupported) {
+                } else if (useAuthPlain || authPlainSupported) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthPlain(mUsername, mPassword);
-                } else if (authLoginSupported) {
+                } else if (useAuthLogin || authLoginSupported) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthLogin(mUsername, mPassword);
                 } else {
                     throw new MessagingException("No valid authentication mechanism found.");
