@@ -12,12 +12,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
@@ -2255,6 +2257,12 @@ public class MessageList
                 str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
                             0,
                             message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                // set span for preview message.
+                str.setSpan(new ForegroundColorSpan(Color.rgb(128, 128, 128)), // How do I can specify the android.R.attr.textColorTertiary
+                            message.sender.length() + 1,
+                            str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
