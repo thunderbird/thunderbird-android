@@ -233,6 +233,9 @@ public class SmtpTransport extends Transport {
             boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
             boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
 
+            // Automatically choose best authentication method if none was explicitly selected
+            boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
+
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
@@ -259,19 +262,19 @@ public class SmtpTransport extends Transport {
 
             if (mUsername != null && mUsername.length() > 0 &&
                     mPassword != null && mPassword.length() > 0) {
-                if (useAuthCramMD5 || authCramMD5Supported) {
+                if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
                     if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
                                 "server didn't advertise support for it in EHLO response.");
                     }
                     saslAuthCramMD5(mUsername, mPassword);
-                } else if (useAuthPlain || authPlainSupported) {
+                } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
                     if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
                                 "server didn't advertise support for it in EHLO response.");
                     }
                     saslAuthPlain(mUsername, mPassword);
-                } else if (useAuthLogin || authLoginSupported) {
+                } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
                     if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
                                 "server didn't advertise support for it in EHLO response.");
