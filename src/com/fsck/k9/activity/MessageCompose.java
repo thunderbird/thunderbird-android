@@ -888,26 +888,35 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return Address.parseUnencoded(view.getText().toString().trim());
     }
 
-    /*
+    /**
+     * @see MessageCompose.buildText(boolean isDraft,boolean forceNoneHtml)
+     * @param isDraft
+     * @return
+     */
+    private TextBody buildText(boolean isDraft) {
+        return buildText(isDraft, false);
+    }
+    /**
      * Build the Body that will contain the text of the message. We'll decide where to
      * include it later. Draft messages are treated somewhat differently in that signatures are not
      * appended and HTML separators between composed text and quoted text are not added.
      * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
+     * @param forceNoneHtml if true than there will be no html output
+     * @return the generated body
      */
-    private TextBody buildText(boolean isDraft) {
+    private TextBody buildText(boolean isDraft, boolean forceNoneHtml) {
         boolean replyAfterQuote = false;
         String action = getIntent().getAction();
         if (mAccount.isReplyAfterQuote() &&
                 (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))) {
             replyAfterQuote = true;
         }
-
         String text = mMessageContentView.getText().toString();
 
         // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
-        if (mMessageFormat == MessageFormat.HTML) {
+        if (mMessageFormat == MessageFormat.HTML && !forceNoneHtml) {
             // Add the signature.
             if (!isDraft) {
                 text = appendSignature(text);
@@ -955,7 +964,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 body.setComposedMessageOffset(0);
                 return body;
             }
-        } else if (mMessageFormat == MessageFormat.TEXT) {
+        } else if (mMessageFormat == MessageFormat.TEXT || forceNoneHtml) {
             // Capture composed message length before we start attaching quoted parts and signatures.
             Integer composedMessageLength = text.length();
             Integer composedMessageOffset = 0;
@@ -1027,16 +1036,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // Build the body.
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
+        boolean inlineGPG = false;
         if (mPgpData.getEncryptedData() != null) {
             String text = mPgpData.getEncryptedData();
             body = new TextBody(text);
+            inlineGPG = true;
         } else {
             body = buildText(isDraft);
         }
 
         final boolean hasAttachments = mAttachments.getChildCount() > 0;
 
-        if (mMessageFormat == MessageFormat.HTML) {
+        if (mMessageFormat == MessageFormat.HTML && !inlineGPG) {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
@@ -1364,7 +1375,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
             if (mPgpData.getEncryptedData() == null) {
-                String text = buildText(false).getText();
+                String text = buildText(false, true).getText();
                 mPreventDraftSaving = true;
                 if (!mAccount.getCryptoProvider().encrypt(this, text, mPgpData)) {
                     mPreventDraftSaving = false;
