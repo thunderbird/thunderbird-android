@@ -1672,20 +1672,22 @@ public class LocalStore extends Store implements Serializable {
                                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
                                             }
 
-                                            String encoded_name = EncoderUtil.encodeIfNecessary(name,
-                                                                  EncoderUtil.Usage.WORD_ENTITY, 7);
-
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                         String.format("%s;\n name=\"%s\"",
-                                                                       type,
-                                                                       encoded_name));
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                         String.format("%s;\n filename=\"%s\";\n size=%d",
-                                                                       contentDisposition,
-                                                                       encoded_name, // TODO: Should use encoded word defined in RFC 2231.
-                                                                       size));
+                                            if (name != null) {
+                                                String encoded_name = EncoderUtil.encodeIfNecessary(name,
+                                                                                                    EncoderUtil.Usage.WORD_ENTITY, 7);
+
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                                                             String.format("%s;\n name=\"%s\"",
+                                                                           type,
+                                                                           encoded_name));
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                                             String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                                           contentDisposition,
+                                                                           encoded_name, // TODO: Should use encoded word defined in RFC 2231.
+                                                                           size));
+                                            }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                                             /*
