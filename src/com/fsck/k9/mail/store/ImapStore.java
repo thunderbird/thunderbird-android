@@ -18,7 +18,10 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -373,7 +376,20 @@ public class ImapStore extends Store {
         for (ImapResponse response : responses) {
             if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
                 boolean includeFolder = true;
-                String folder = decodeFolderName(response.getString(3));
+
+                String folder;
+                try {
+                    folder = decodeFolderName(response.getString(3));
+                } catch (CharacterCodingException e) {
+                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                            "as defined by RFC 3501: " + response.getString(3), e);
+
+                    //TODO: Use the raw name returned by the server for all commands that require
+                    //      a folder name. Use the decoded name only for showing it to the user.
+
+                    // We currently just skip folders with malformed names.
+                    continue;
+                }
 
                 if (mPathDelimeter == null) {
                     mPathDelimeter = response.getString(2);
@@ -395,7 +411,7 @@ public class ImapStore extends Store {
                         if (folder.length() >= getCombinedPrefix().length()) {
                             folder = folder.substring(getCombinedPrefix().length());
                         }
-                        if (!decodeFolderName(response.getString(3)).equalsIgnoreCase(getCombinedPrefix() + folder)) {
+                        if (!folder.equalsIgnoreCase(getCombinedPrefix() + folder)) {
                             includeFolder = false;
                         }
                     }
@@ -492,14 +508,15 @@ public class ImapStore extends Store {
         }
     }
 
-    private String decodeFolderName(String name) {
+    private String decodeFolderName(String name) throws CharacterCodingException {
         /*
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
         try {
-            byte[] encoded = name.getBytes("US-ASCII");
-            CharBuffer cb = mModifiedUtf7Charset.decode(ByteBuffer.wrap(encoded));
+            // Make sure the decoder throws an exception if it encounters an invalid encoding.
+            CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+            CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
             return cb.toString();
         } catch (UnsupportedEncodingException uee) {
             /*
