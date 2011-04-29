@@ -1048,18 +1048,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // Build the body.
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
-        boolean inlineGPG = false;
+        boolean inlinePgp = false;
         if (mPgpData.getEncryptedData() != null) {
             String text = mPgpData.getEncryptedData();
             body = new TextBody(text);
-            inlineGPG = true;
+            inlinePgp = true;
         } else {
             body = buildText(isDraft);
         }
 
         final boolean hasAttachments = mAttachments.getChildCount() > 0;
 
-        if (mMessageFormat == MessageFormat.HTML && !inlineGPG) {
+        if (mMessageFormat == MessageFormat.HTML && !inlinePgp) {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
