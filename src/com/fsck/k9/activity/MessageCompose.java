@@ -753,13 +753,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mCryptoSignatureUserIdRest.setVisibility(View.INVISIBLE);
         } else {
             //we force plain text, when the user wants to reply + sign
-            mMessageFormat = MessageFormat.TEXT;
-            try {
-                populateUIWithQuotedMessage();
-            } catch (MessagingException e) {
-                // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
-                deleteQuotedText();
-                Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
+            if (mMessageFormat != MessageFormat.TEXT && mQuotedTextBar.getVisibility() == View.VISIBLE) {
+                mMessageFormat = MessageFormat.TEXT;
+                try {
+                    //only do this if we are quoting
+                    populateUIWithQuotedMessage();
+                } catch (MessagingException e) {
+                    // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
+                    deleteQuotedText();
+                    Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
+                }
             }
             // if a signature key is selected, then the checkbox itself has no text
             mCryptoSignatureCheckbox.setText("");
