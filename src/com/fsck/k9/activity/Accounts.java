@@ -73,6 +73,7 @@ import com.fsck.k9.preferences.StorageImportExportException;
 import com.fsck.k9.preferences.StorageImporter;
 import com.fsck.k9.preferences.StorageImporter.AccountDescription;
 import com.fsck.k9.preferences.StorageImporter.ImportContents;
+import com.fsck.k9.preferences.StorageImporter.ImportResults;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
@@ -1166,6 +1167,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private boolean mOverwrite;
         private String mEncryptionKey;
         private InputStream mInputStream;
+        private ImportResults mImportResults;
 
         private ImportAsyncTask(boolean includeGlobals, List<String> accountUuids,
                 boolean overwrite, String encryptionKey, InputStream is) {
@@ -1187,8 +1189,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                StorageImporter.importSettings(Accounts.this, mInputStream, mEncryptionKey,
-                        mIncludeGlobals, mAccountUuids, mOverwrite);
+                mImportResults = StorageImporter.importSettings(Accounts.this, mInputStream,
+                        mEncryptionKey, mIncludeGlobals, mAccountUuids, mOverwrite);
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
@@ -1199,9 +1201,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
+                int imported = mImportResults.importedAccounts.size();
+
+                //TODO: display names of imported accounts (name from file *and* possibly new name)
+
                 showDialog(Accounts.this, R.string.settings_import_success_header,
-                        //FIXME: use correct number of imported accounts
-                        Accounts.this.getString(R.string.settings_import_success, 3, "unknown"));
+                        //FIXME: use correct file name
+                        Accounts.this.getString(R.string.settings_import_success, imported, "filename"));
                 refresh();
             } else {
                 //TODO: make the importer return an error code; translate that error code to a localized string here

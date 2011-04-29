@@ -70,6 +70,30 @@ public class StorageImporter {
         }
     }
 
+    public static class AccountDescriptionPair {
+        public final AccountDescription original;
+        public final AccountDescription imported;
+
+        private AccountDescriptionPair(AccountDescription original, AccountDescription imported) {
+            this.original = original;
+            this.imported = imported;
+        }
+    }
+
+    public static class ImportResults {
+        public final boolean globalSettings;
+        public final List<AccountDescriptionPair> importedAccounts;
+        public final List<AccountDescription> errorneousAccounts;
+
+        private ImportResults(boolean globalSettings,
+                List<AccountDescriptionPair> importedAccounts,
+                List<AccountDescription> errorneousAccounts) {
+           this.globalSettings = globalSettings;
+           this.importedAccounts = importedAccounts;
+           this.errorneousAccounts = errorneousAccounts;
+        }
+    }
+
     public static boolean isImportStreamEncrypted(Context context, InputStream inputStream) {
         return false;
     }
@@ -127,23 +151,34 @@ public class StorageImporter {
      * @param overwrite
      * @throws StorageImportExportException
      */
-    public static void importSettings(Context context, InputStream inputStream, String encryptionKey,
+    public static ImportResults importSettings(Context context, InputStream inputStream, String encryptionKey,
             boolean globalSettings, List<String> accountUuids, boolean overwrite)
     throws StorageImportExportException {
 
         try
         {
+            boolean globalSettingsImported = false;
+            List<AccountDescriptionPair> importedAccounts = new ArrayList<AccountDescriptionPair>();
+            List<AccountDescription> errorneousAccounts = new ArrayList<AccountDescription>();
+
             Imported imported = parseSettings(inputStream, globalSettings, accountUuids, overwrite, false);
 
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
-            SharedPreferences.Editor editor = storage.edit();
 
             if (globalSettings) {
-                if (imported.globalSettings != null) {
-                    importGlobalSettings(editor, imported.globalSettings);
-                } else {
-                    Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
+                try {
+                    SharedPreferences.Editor editor = storage.edit();
+                    if (imported.globalSettings != null) {
+                        importGlobalSettings(editor, imported.globalSettings);
+                    } else {
+                        Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
+                    }
+                    if (editor.commit()) {
+                        globalSettingsImported = true;
+                    }
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Exception while importing global settings", e);
                 }
             }
 
@@ -152,15 +187,32 @@ public class StorageImporter {
                     List<String> newUuids = new ArrayList<String>();
                     for (String accountUuid : accountUuids) {
                         if (imported.accounts.containsKey(accountUuid)) {
-                            String newUuid = importAccount(context, editor, imported.accounts.get(accountUuid), overwrite);
-                            if (newUuid != null) {
-                                newUuids.add(newUuid);
+                            ImportedAccount account = imported.accounts.get(accountUuid);
+                            try {
+                                SharedPreferences.Editor editor = storage.edit();
+
+                                AccountDescriptionPair importResult = importAccount(context,
+                                        editor, account, overwrite);
+
+                                String newUuid = importResult.imported.uuid;
+                                if (!newUuid.equals(importResult.original.uuid)) {
+                                    newUuids.add(newUuid);
+                                }
+                                if (editor.commit()) {
+                                    importedAccounts.add(importResult);
+                                } else {
+                                    errorneousAccounts.add(importResult.original);
+                                }
+                            } catch (Exception e) {
+                                errorneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             }
                         } else {
                             Log.w(K9.LOG_TAG, "Was asked to import account with UUID " +
                                     accountUuid + ". But this account wasn't found.");
                         }
                     }
+
+                    SharedPreferences.Editor editor = storage.edit();
 
                     if (newUuids.size() > 0) {
                         String oldAccountUuids = storage.getString("accountUuids", "");
@@ -177,19 +229,20 @@ public class StorageImporter {
                         editor.putString("defaultAccountUuid", accountUuids.get(0));
                     }
 
+                    if (!editor.commit()) {
+                        throw new StorageImportExportException("Failed to set default account");
+                    }
                 } else {
                     Log.w(K9.LOG_TAG, "Was asked to import at least one account but none found.");
                 }
-            }
-
-            if (!editor.commit()) {
-                throw new StorageImportExportException("Couldn't save imported settings");
             }
 
             preferences.loadAccounts();
             DateFormatter.clearChosenFormat();
             K9.loadPrefs(preferences);
             K9.setServicesEnabled(context);
+
+            return new ImportResults(globalSettingsImported, importedAccounts, errorneousAccounts);
 
         } catch (StorageImportExportException e) {
             throw e;
@@ -211,8 +264,10 @@ public class StorageImporter {
         }
     }
 
-    private static String importAccount(Context context, SharedPreferences.Editor editor,
-            ImportedAccount account, boolean overwrite) {
+    private static AccountDescriptionPair importAccount(Context context,
+            SharedPreferences.Editor editor, ImportedAccount account, boolean overwrite) {
+
+        AccountDescription original = new AccountDescription(account.name, account.uuid);
 
         // Validate input and ignore malformed values when possible
         Map<String, String> validatedSettings =
@@ -280,7 +335,8 @@ public class StorageImporter {
 
         //TODO: sync folder settings with localstore?
 
-        return (overwrite && existingAccount != null) ? null : uuid;
+        AccountDescription imported = new AccountDescription(accountName, uuid);
+        return new AccountDescriptionPair(original, imported);
     }
 
     private static void importIdentities(SharedPreferences.Editor editor, String uuid,
