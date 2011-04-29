@@ -903,14 +903,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @return
      */
     private TextBody buildText(boolean isDraft) {
-        return buildText(isDraft, null);
+        return buildText(isDraft, mMessageFormat);
     }
     /**
      * Build the Body that will contain the text of the message. We'll decide where to
      * include it later. Draft messages are treated somewhat differently in that signatures are not
      * appended and HTML separators between composed text and quoted text are not added.
      * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
-     * @param messageformat if != null than it temporary overrides the messageformat
+     * @param messageformat the format to use (to use the current format use mMessageFormat)
      * @return the generated body
      */
     private TextBody buildText(boolean isDraft, MessageFormat messageformat) {
@@ -921,10 +921,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             replyAfterQuote = true;
         }
         String text = mMessageContentView.getText().toString();
-        if (messageformat == null) {
-            //if parameter is unset, use the default one
-            messageformat = mMessageFormat;
-        }
         // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
