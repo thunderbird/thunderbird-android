@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 
 
 public class MimeUtility {
@@ -1381,13 +1382,19 @@ public class MimeUtility {
 
         /*
          * See if there is conversion from the MIME charset to the Java one.
+         * this function may also throw an exception if the charset name is not known
          */
-        if (!Charset.isSupported(charset)) {
+        try {
+            if (!Charset.isSupported(charset)) {
+                Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
+                ". Falling back to US-ASCII");
+                charset = "US-ASCII";
+            }
+        } catch (IllegalCharsetNameException e) {
             Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
             ". Falling back to US-ASCII");
             charset = "US-ASCII";
         }
-
         /*
          * Convert and return as new String
          */
