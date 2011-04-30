@@ -1033,4 +1033,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_unavailable">アカウント \"<xliff:g id="account">%s</xliff:g>\" は利用できません。ストレージを確認してください。</string>
 
+    <string name="settings_attachment_default_path">添付ファイルの保存先</string>
+    <string name="attachment_save_title">添付ファイルの保存先</string>
+    <string name="attachment_save_desc">ファイルブラウザがインストールされていません。添付ファイルの保存場所を直接入力してください。</string>
 </resources>
