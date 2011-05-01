@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,6 +60,8 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.FileBrowserHelper;
+import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
@@ -66,6 +69,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
+import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
@@ -213,6 +217,9 @@ public class MessageList
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
+    private static final int ACTIVITY_CHOOSE_DIRECTORY = 5;
+
+
 
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
@@ -332,6 +339,13 @@ public class MessageList
 
     /* package visibility for faster inner class access */
     MessageHelper mMessageHelper = MessageHelper.getInstance(this);
+
+    /** this variable is used to save the calling AttachmentView
+     *  until the onActivityResult is called.
+     *  => with this reference we can identity the caller
+     */
+    private AttachmentView attachmentTmpStore;
+
 
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
 
@@ -1064,6 +1078,28 @@ public class MessageList
         mTopView = mToggleScrollView = (ToggleScrollView) findViewById(R.id.top_view);
 
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
+        //set a callback for the attachment view. With this callback the attachmentview
+        //request the start of a filebrowser activity.
+        mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
+
+            @Override
+            public void showFileBrowser(final AttachmentView caller) {
+                FileBrowserHelper.getInstance()
+                .showFileBrowserActivity(MessageList.this, null, MessageList.ACTIVITY_CHOOSE_DIRECTORY, callback);
+                attachmentTmpStore = caller;
+            }
+            FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
+
+                @Override
+                public void onPathEntered(String path) {
+                    attachmentTmpStore.writeFile(new File(path));
+                }
+
+                    // canceled, do nothing
+                @Override public void onCancel() { }
+            };
+        });
+
 
         mMessageView.initialize(this);
 
@@ -1729,6 +1765,23 @@ public class MessageList
                 break;
             }
         }
+
+        case ACTIVITY_CHOOSE_DIRECTORY: {
+            if (resultCode == RESULT_OK && data != null) {
+                // obtain the filename
+                Uri fileUri = data.getData();
+                if (fileUri != null) {
+                    String filePath = fileUri.getPath();
+                    if (filePath != null) {
+                        attachmentTmpStore.writeFile(new File(filePath));
+                    }
+                }
+            }
+
+            break;
+
+        }
+
         }
     }
 
