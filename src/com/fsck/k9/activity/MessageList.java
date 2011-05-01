@@ -567,9 +567,10 @@ public class MessageList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Use mListView.getAdapter() to get the WrapperListAdapter that includes the footer view.
-        if (mCurrentFolder != null && ((position + 1) == mListView.getAdapter().getCount())) {
-            mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+        if (view == mFooterView) {
+            if (mCurrentFolder != null) {
+                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+            }
             return;
         }
 
