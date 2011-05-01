@@ -39,6 +39,14 @@ public class SmtpTransport extends Transport {
 
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    public static final String AUTH_PLAIN = "PLAIN";
+
+    public static final String AUTH_CRAM_MD5 = "CRAM_MD5";
+
+    public static final String AUTH_LOGIN = "LOGIN";
+
+    public static final String AUTH_AUTOMATIC = "AUTOMATIC";
+
     String mHost;
 
     int mPort;
@@ -221,9 +229,13 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            /*
-             * result contains the results of the EHLO in concatenated form
-             */
+            boolean useAuthLogin = AUTH_LOGIN.equals(mAuthType);
+            boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
+            boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
+
+            // Automatically choose best authentication method if none was explicitly selected
+            boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
+
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
@@ -234,7 +246,7 @@ public class SmtpTransport extends Transport {
                 if (result.matches(".*AUTH.*PLAIN.*$")) {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5")) {
+                if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
                     authCramMD5Supported = true;
                 }
                 if (result.matches(".*SIZE \\d*$")) {
@@ -248,13 +260,25 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            if (mUsername != null && mUsername.length() > 0 && mPassword != null
-                    && mPassword.length() > 0) {
-                if (authCramMD5Supported) {
+            if (mUsername != null && mUsername.length() > 0 &&
+                    mPassword != null && mPassword.length() > 0) {
+                if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
+                    if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthCramMD5(mUsername, mPassword);
-                } else if (authPlainSupported) {
+                } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthPlain(mUsername, mPassword);
-                } else if (authLoginSupported) {
+                } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
+                                "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthLogin(mUsername, mPassword);
                 } else {
                     throw new MessagingException("No valid authentication mechanism found.");

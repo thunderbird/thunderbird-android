@@ -18,6 +18,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
@@ -179,8 +180,8 @@ public class K9 extends Application {
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
-
     private static int mPrimaryMessageListContentSize = 300;
+    private static String mAttachmentDefaultPath = "";
 
 
     private static boolean useGalleryBugWorkaround = false;
@@ -455,9 +456,8 @@ public class K9 extends Application {
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
         editor.putBoolean("compactLayouts", compactLayouts);
-
         editor.putInt("primaryMessageListContentSize", mPrimaryMessageListContentSize);
-
+        editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         fontSizes.save(editor);
     }
 
@@ -514,7 +514,7 @@ public class K9 extends Application {
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
 
         mPrimaryMessageListContentSize = sprefs.getInt("primaryMessageListContentSize", 300);
-
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
 
         try {
@@ -1011,5 +1011,12 @@ public class K9 extends Application {
         }
     }
 
+    public static String getAttachmentDefaultPath() {
+        return mAttachmentDefaultPath;
+    }
+
+    public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
+        K9.mAttachmentDefaultPath = attachmentDefaultPath;
+    }
 
 }

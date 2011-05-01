@@ -56,7 +56,7 @@
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
-    <string name="archive_action">Sichern</string>
+    <string name="archive_action">Archivieren</string>
     <string name="spam_action">Spam</string>
     <string name="delete_all_action">Ordner leeren</string>
     <string name="forward_action">Weiterleiten</string>

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -506,64 +507,60 @@ public class LocalStore extends Store implements Serializable {
             public Integer doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
                 try {
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
-                    if (displayMode == Account.FolderMode.NONE) {
-                        cursor = db.rawQuery(baseQuery + "AND (name = ? )", new String[] {
+                    // Always count messages in the INBOX but exclude special folders and possibly
+                    // more (depending on the folder display mode)
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) " +
+                            "FROM folders " +
+                            "WHERE (name = ?)" +  /* INBOX */
+                            " OR (" +
+                            "name NOT IN (?, ?, ?, ?, ?)" +  /* special folders */
+                            "%s)";  /* placeholder for additional constraints */
 
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 mAccount.getInboxFolderName()
-                                             }
+                    List<String> queryParam = new ArrayList<String>();
+                    queryParam.add(mAccount.getInboxFolderName());
 
-                                            );
-                    } else if (displayMode == Account.FolderMode.FIRST_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ?)", new String[] {
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name()
-                                             });
+                    queryParam.add((mAccount.getTrashFolderName() != null) ?
+                            mAccount.getTrashFolderName() : "");
+                    queryParam.add((mAccount.getDraftsFolderName() != null) ?
+                            mAccount.getDraftsFolderName() : "");
+                    queryParam.add((mAccount.getSpamFolderName() != null) ?
+                            mAccount.getSpamFolderName() : "");
+                    queryParam.add((mAccount.getOutboxFolderName() != null) ?
+                            mAccount.getOutboxFolderName() : "");
+                    queryParam.add((mAccount.getSentFolderName() != null) ?
+                            mAccount.getSentFolderName() : "");
 
-
-                    } else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ? OR display_class = ? )", new String[] {
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 mAccount.getInboxFolderName(), Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
-                                             });
-                    } else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[] {
-
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 mAccount.getInboxFolderName(), Folder.FolderClass.SECOND_CLASS.name()
-                                             });
-                    } else if (displayMode == Account.FolderMode.ALL) {
-                        cursor = db.rawQuery(baseQuery,  new String[] {
-
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                             });
-                    } else {
-                        Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
-                        stats.unreadMessageCount = 0;
-                        stats.flaggedMessageCount = 0;
-                        return null;
+                    final String extraWhere;
+                    switch (displayMode) {
+                        case FIRST_CLASS:
+                            // Count messages in the INBOX and non-special first class folders
+                            extraWhere = " AND (display_class = ?)";
+                            queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                            break;
+                        case FIRST_AND_SECOND_CLASS:
+                            // Count messages in the INBOX and non-special first and second class folders
+                            extraWhere = " AND (display_class IN (?, ?))";
+                            queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                            queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                            break;
+                        case NOT_SECOND_CLASS:
+                            // Count messages in the INBOX and non-special non-second-class folders
+                            extraWhere = " AND (display_class != ?)";
+                            queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                            break;
+                        case ALL:
+                            // Count messages in the INBOX and non-special folders
+                            extraWhere = "";
+                            break;
+                        default:
+                            Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
+                            stats.unreadMessageCount = 0;
+                            stats.flaggedMessageCount = 0;
+                            return null;
                     }
+
+                    String query = String.format(Locale.US, baseQuery, extraWhere);
+                    cursor = db.rawQuery(query, queryParam.toArray(EMPTY_STRING_ARRAY));
 
                     cursor.moveToFirst();
                     stats.unreadMessageCount = cursor.getInt(0);

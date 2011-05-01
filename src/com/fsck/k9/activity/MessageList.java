@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -26,6 +27,9 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.animation.Animation;
@@ -600,9 +604,10 @@ public class MessageList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Use mListView.getAdapter() to get the WrapperListAdapter that includes the footer view.
-        if (mCurrentFolder != null && ((position + 1) == mListView.getAdapter().getCount())) {
-            mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+        if (view == mFooterView) {
+            if (mCurrentFolder != null) {
+                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+            }
             return;
         }
 
@@ -2834,13 +2839,14 @@ public class MessageList
                     holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable) holder.preview.getText();
 
-                    ColorStateList color = holder.subject.getTextColors();
-                    ColorStateList linkColor = holder.subject.getLinkTextColors();
-                    str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
+                    str.setSpan(new StyleSpan(Typeface.NORMAL),
                                 0,
                                 noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                               );
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     holder.from.setText(noSender);
                     holder.from.setTypeface(null, Typeface.NORMAL);
@@ -2922,13 +2928,20 @@ public class MessageList
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
-                ColorStateList color = holder.subject.getTextColors();
-                ColorStateList linkColor = holder.subject.getLinkTextColors();
-                str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
+                str.setSpan(new StyleSpan(senderTypeface),
                             0,
                             message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                           );
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                            0,
+                            message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                // set span for preview message.
+                str.setSpan(new ForegroundColorSpan(Color.rgb(128, 128, 128)), // How do I can specify the android.R.attr.textColorTertiary
+                            message.sender.length() + 1,
+                            str.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
 

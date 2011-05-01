@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.setup;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Vector;
@@ -8,11 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.FileBrowserHelper;
+import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
@@ -76,7 +81,9 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
+    private static final String PREFERENCE_ATTACHMENT_DEF_PATH = "attachment_default_path";
 
+    private static final int ACTIVITY_CHOOSE_FOLDER = 1;
     private ListPreference mLanguage;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -110,7 +117,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
-
+    private Preference mAttachmentPathPreference;
 
 
     public static void actionPrefs(Context context) {
@@ -298,6 +305,36 @@ public class Prefs extends K9PreferenceActivity {
 
         mDebugLogging.setChecked(K9.DEBUG);
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
+
+        mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
+        mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
+        mAttachmentPathPreference
+        .setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                FileBrowserHelper
+                .getInstance()
+                .showFileBrowserActivity(Prefs.this,
+                                         new File(K9.getAttachmentDefaultPath()),
+                                         ACTIVITY_CHOOSE_FOLDER, callback);
+
+                return true;
+            }
+
+            FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
+
+                @Override
+                public void onPathEntered(String path) {
+                    mAttachmentPathPreference.setSummary(path);
+                    K9.setAttachmentDefaultPath(path);
+                }
+
+                @Override
+                public void onCancel() {
+                    // canceled, do nothing
+                }
+            };
+        });
     }
 
     private void saveSettings() {
@@ -336,7 +373,7 @@ public class Prefs extends K9PreferenceActivity {
 
 
         K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
-
+        K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
 
@@ -380,5 +417,26 @@ public class Prefs extends K9PreferenceActivity {
             }
         },
         K9.getContactNameColor()).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case ACTIVITY_CHOOSE_FOLDER:
+            if (resultCode == RESULT_OK && data != null) {
+                // obtain the filename
+                Uri fileUri = data.getData();
+                if (fileUri != null) {
+                    String filePath = fileUri.getPath();
+                    if (filePath != null) {
+                        mAttachmentPathPreference.setSummary(filePath.toString());
+                        K9.setAttachmentDefaultPath(filePath.toString());
+                    }
+                }
+            }
+            break;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
