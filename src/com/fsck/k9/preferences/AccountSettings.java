@@ -158,8 +158,9 @@ public class AccountSettings {
         return new SettingsDescription(type, defaultValue, validator);
     }
 
-    public static Map<String, String> validate(Map<String, String> importedSettings) {
-        return Settings.validate(SETTINGS, importedSettings);
+    public static Map<String, String> validate(Map<String, String> importedSettings,
+            boolean useDefaultValues) {
+        return Settings.validate(SETTINGS, importedSettings, useDefaultValues);
     }
 
     public static class StorageProviderDefaultValue implements IDefaultValue {

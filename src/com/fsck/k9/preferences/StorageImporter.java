@@ -170,7 +170,7 @@ public class StorageImporter {
                 try {
                     SharedPreferences.Editor editor = storage.edit();
                     if (imported.globalSettings != null) {
-                        importGlobalSettings(editor, imported.globalSettings);
+                        importGlobalSettings(storage, editor, imported.globalSettings);
                     } else {
                         Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
                     }
@@ -251,12 +251,18 @@ public class StorageImporter {
         }
     }
 
-    private static void importGlobalSettings(SharedPreferences.Editor editor,
-            ImportedSettings settings) {
+    private static void importGlobalSettings(SharedPreferences storage,
+            SharedPreferences.Editor editor, ImportedSettings settings) {
 
-        Map<String, String> writeSettings = GlobalSettings.validate(settings.settings);
+        Map<String, String> validatedSettings = GlobalSettings.validate(settings.settings);
 
-        for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
+        // Use current global settings as base and overwrite with validated settings read from the
+        // import file.
+        Map<String, String> mergedSettings =
+            new HashMap<String, String>(GlobalSettings.getGlobalSettings(storage));
+        mergedSettings.putAll(validatedSettings);
+
+        for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
             String key = setting.getKey();
             String value = setting.getValue();
             Log.v(K9.LOG_TAG, "Write " + key + "=" + value);
@@ -271,7 +277,7 @@ public class StorageImporter {
 
         // Validate input and ignore malformed values when possible
         Map<String, String> validatedSettings =
-            AccountSettings.validate(account.settings.settings);
+            AccountSettings.validate(account.settings.settings, true);
 
         //TODO: validate account name
         //TODO: validate identity settings

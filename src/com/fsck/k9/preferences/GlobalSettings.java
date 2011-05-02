@@ -1,8 +1,10 @@
 package com.fsck.k9.preferences;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import android.content.SharedPreferences;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -129,8 +131,20 @@ public class GlobalSettings {
     }
 
     public static Map<String, String> validate(Map<String, String> importedSettings) {
-        return Settings.validate(SETTINGS, importedSettings);
+        return Settings.validate(SETTINGS, importedSettings, false);
     }
+
+    public static Map<String, String> getGlobalSettings(SharedPreferences storage) {
+        Map<String, String> result = new HashMap<String, String>();
+        for (String key : SETTINGS.keySet()) {
+            String value = storage.getString(key, null);
+            if (value != null) {
+                result.put(key, value);
+            }
+        }
+        return result;
+    }
+
 
     public static class GalleryBugWorkaroundDefaultValue implements IDefaultValue {
         @Override

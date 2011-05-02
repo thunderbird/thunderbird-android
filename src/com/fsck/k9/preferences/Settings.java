@@ -28,7 +28,7 @@ public class Settings {
     public static final ISettingValidator SOLID_COLOR_VALIDATOR = new SolidColorValidator();
 
     public static Map<String, String> validate(Map<String, SettingsDescription> settings,
-            Map<String, String> importedSettings) {
+            Map<String, String> importedSettings, boolean useDefaultValues) {
 
         Map<String, String> validatedSettings = new HashMap<String, String>();
         for (Map.Entry<String, SettingsDescription> setting : settings.entrySet()) {
@@ -37,17 +37,19 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file. Using default value.");
-                useDefaultValue = true;
+                Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
+                        ((useDefaultValues) ? " Using default value." : ""));
+                useDefaultValue = useDefaultValues;
             } else {
                 String importedValue = importedSettings.get(key);
                 if (Settings.isValid(desc, key, importedValue, validatedSettings)) {
                     validatedSettings.put(key, importedValue);
                     useDefaultValue = false;
                 } else {
-                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + importedValue + "\" in " +
-                            "imported file. Using default value.");
-                    useDefaultValue = true;
+                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + importedValue +
+                            "\" in imported file. " +
+                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                    useDefaultValue = useDefaultValues;
                 }
             }
 
