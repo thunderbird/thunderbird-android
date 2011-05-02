@@ -17,6 +17,7 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
@@ -75,7 +76,7 @@ public class MessageProvider extends ContentProvider {
         /**
          * <P>Type: BOOLEAN</P>
          */
-        String READED = "readed";
+        String UNREAD = "unread";
         
         String ACCOUNT = "account";
         String URI = "uri";
@@ -187,10 +188,10 @@ public class MessageProvider extends ContentProvider {
         }
     }
     
-    public static class ReadedExtractor implements FieldExtractor<MessageInfoHolder, Boolean> {
+    public static class UnreadExtractor implements FieldExtractor<MessageInfoHolder, Boolean> {
         @Override
         public Boolean getField(final MessageInfoHolder source) {
-            return source.read;
+            return !source.read;
         }
     }
 
@@ -302,8 +303,8 @@ public class MessageProvider extends ContentProvider {
                     extractors.put(field, new DeleteUriExtractor());
                 } else if (MessageColumns.ACCOUNT.equals(field)) {
                     extractors.put(field, new AccountExtractor());
-                } else if (MessageColumns.READED.equals(field)) {
-                    extractors.put(field, new ReadedExtractor());
+                } else if (MessageColumns.UNREAD.equals(field)) {
+                    extractors.put(field, new UnreadExtractor());
                 } else if (MessageColumns.INCREMENT.equals(field)) {
                     extractors.put(field, new IncrementExtractor());
                 }
@@ -819,7 +820,7 @@ public class MessageProvider extends ContentProvider {
         MessageColumns.SUBJECT,
         MessageColumns.PREVIEW,
         MessageColumns.ACCOUNT,
-        MessageColumns.READED,
+        MessageColumns.UNREAD,
         MessageColumns.URI,
         MessageColumns.DELETE_URI
     };
