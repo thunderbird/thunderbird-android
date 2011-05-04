@@ -44,6 +44,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         ((Button)findViewById(R.id.pop)).setOnClickListener(this);
         ((Button)findViewById(R.id.imap)).setOnClickListener(this);
         ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
+        ((Button)findViewById(R.id.eas)).setOnClickListener(this);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -89,6 +90,19 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
     }
 
+    private void onEas() {
+        try {
+            URI uri = new URI(mAccount.getStoreUri());
+            uri = new URI("eas", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+            mAccount.setStoreUri(uri.toString());
+            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+            finish();
+        } catch (Exception use) {
+            failure(use);
+        }
+
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.pop:
@@ -99,6 +113,9 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             break;
         case R.id.webdav:
             onWebDav();
+            break;
+        case R.id.eas:
+            onEas();
             break;
         }
     }

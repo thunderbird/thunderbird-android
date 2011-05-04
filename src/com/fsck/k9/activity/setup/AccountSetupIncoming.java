@@ -45,6 +45,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
 
+    private static final int easPorts[] = {
+        80, 443, 443, 443, 443
+    };
+    private static final String easSchemes[] = {
+        "eas", "eas+ssl", "eas+ssl+", "eas+tls", "eas+tls+"
+    };
+
     private static final String authTypes[] = {
         "PLAIN", "CRAM_MD5"
     };
@@ -290,6 +297,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         }
                     }
                 }
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+            } else if (uri.getScheme().startsWith("eas")) {
+                serverLabelView.setText(R.string.account_setup_incoming_eas_server_label);
+                mAccountPorts = easPorts;
+                mAccountSchemes = easSchemes;
+                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+                findViewById(R.id.compression_section).setVisibility(View.GONE);
+                findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());

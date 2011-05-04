@@ -389,6 +389,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+    <string name="account_setup_account_type_eas_action">Exchange (ActiveSync)</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
     <string name="account_setup_incoming_username_label">Username</string>
@@ -396,6 +397,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_pop_server_label">POP3 server</string>
     <string name="account_setup_incoming_imap_server_label">IMAP server</string>
     <string name="account_setup_incoming_webdav_server_label">Exchange server</string>
+    <string name="account_setup_incoming_eas_server_label">Exchange server</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Security type</string>
     <string name="account_setup_incoming_auth_type_label">Authentication type</string>
