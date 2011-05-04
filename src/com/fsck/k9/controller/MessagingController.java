@@ -3982,7 +3982,8 @@ public class MessagingController implements Runnable {
         Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, account.getDescription());
+        String accountDescr = (account.getDescription() != null) ? account.getDescription() : account.getEmail(); 
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, accountDescr);
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
