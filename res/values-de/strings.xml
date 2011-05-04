@@ -1037,4 +1037,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ist nicht verfügbar; Bitte SD-Karte prüfen.</string>
 
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
 </resources>
