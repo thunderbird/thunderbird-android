@@ -824,6 +824,9 @@ public class MessageList
         }
     }
 
+    // for J/K keyboard navigation
+    final int DIRECTION_UP=0, DIRECTION_DOWN=1;
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (
@@ -837,7 +840,7 @@ public class MessageList
             onBackPressed();
             return true;
         }
-
+        
         // Shortcuts that work no matter what is selected
         switch (keyCode) {
 
@@ -960,13 +963,80 @@ public class MessageList
                         onToggleRead(message);
                         return true;
                     }
+                    // move down: puts the second visible line in the first visible slot
+                    case KeyEvent.KEYCODE_J: {
+		      setOurSelection(position, DIRECTION_DOWN);
+                    	return true;
+                    }
+                    // move up: puts the first visible line in the second visible slot
+                    case KeyEvent.KEYCODE_K: {
+                        setOurSelection(position, DIRECTION_UP);
+                        return true;
+                    } 
                     }
                 }
             }
         } finally {
+            // if we haven't moved the trackball, the position will be -1,
+            // so choose the first if the user touches either the K or J keys:
+            if (position == -1 &&
+                (keyCode == KeyEvent.KEYCODE_K || keyCode == KeyEvent.KEYCODE_J)) {
+        	mListView.setSelection( 0 );
+        	return true;
+            }
+            // move up: puts the first visible line in the second visible slot
+            // if we ran off the bottom, we come here because message == null
+            int this_count = mListView.getCount();
+            if (keyCode == KeyEvent.KEYCODE_K &&
+                position == (this_count - 1)) {  // position is 0-based, count is 1-based
+                setOurSelection(position, DIRECTION_UP);
+        	return true;
+            } 
             retval = super.onKeyDown(keyCode, event);
         }
         return retval;
+    }
+    
+    // Positioning a fixed distance from the top works fine but does not
+    // change the visible list when the user scrolls off the screen. So,
+    // we check for that, select the new first-visible item, and then
+    // select the one we want.
+    private void setOurSelection(int position, int direction) {
+    	
+        int first_visible_position = mListView.getFirstVisiblePosition();
+        int last_visible_position  = mListView.getLastVisiblePosition();
+        int num_visible_items      = last_visible_position - first_visible_position + 1;
+        int item_height            = findViewById(R.layout.message_list_item).getHeight();
+        
+        int position_save = position;  // we will try to put the new selected line where the old one was
+        switch( direction ) {
+    	    case DIRECTION_DOWN: 
+    	        position = position + 1; 
+    	        if (position > mListView.getCount()) { position = position - 1; }
+    	        if (position > last_visible_position && position <= mListView.getCount()) {
+    		    // this is the one the user wants, after all, so let's select it
+    		    // but the user wants it at the bottom of the screen. 
+    		    mListView.setSelectionFromTop(position, item_height * (num_visible_items - 1));
+    		    return;
+                }
+    	        break;
+            case DIRECTION_UP:   
+    	        position = position - 1; 
+    		if (position < first_visible_position) { 
+    		    if (position < 0) { 
+    	                position = 0;
+    	            } else {
+    	    	        position = first_visible_position - 1;
+    	            }
+     	            // this is the one the user wants, after all, so let's select it
+    	            mListView.setSelection(position); 
+    	            return;
+                }
+    		break;
+        }
+        // if we didn't run off either end of the visible screen, move the 
+        // selected item to where the previously selected item was.
+    	mListView.setSelectionFromTop(position,((position_save - first_visible_position) * item_height));
     }
 
     @Override
