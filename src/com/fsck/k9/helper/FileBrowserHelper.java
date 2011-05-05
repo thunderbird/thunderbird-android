@@ -15,6 +15,16 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 
 public class FileBrowserHelper {
+    /**
+     * A string array that specifies the name of the intent to use, and the scheme to use with it
+     * when setting the data for the intent.
+     */
+    private static final String[][] PICK_DIRECTORY_INTENTS =
+        { { "org.openintents.action.PICK_DIRECTORY", "file://" },   // OI File Manager (maybe others)
+          { "com.estrongs.action.PICK_DIRECTORY", "file://" },      // ES File Explorer
+          { Intent.ACTION_PICK, "folder://" },                      // Blackmoon File Browser (maybe others)
+          { "com.androidworkz.action.PICK_DIRECTORY", "file://" }}; // SystemExplorer
+
     private static FileBrowserHelper sInstance;
 
     /**
@@ -62,14 +72,6 @@ public class FileBrowserHelper {
      *
      */
     public boolean showFileBrowserActivity(Activity c, File startPath, int requestcode, FileBrowserFailOverCallback callback) {
-        // A string array that specifies the name of the intent to use, and
-        // the scheme to use with it when setting the data for the intent.
-        String[][] intentDetails =
-            { { "org.openintents.action.PICK_DIRECTORY", "file://" },   // OI File Manager (maybe others)
-              { "com.estrongs.action.PICK_DIRECTORY", "file://" },      // ES File Explorer
-              { Intent.ACTION_PICK, "folder://" },                      // Blackmoon File Browser (maybe others)
-              { "com.androidworkz.action.PICK_DIRECTORY", "file://" }}; // SystemExplorer
-
         boolean success = false;
 
         if (startPath == null) {
@@ -78,9 +80,11 @@ public class FileBrowserHelper {
 
         int listIndex = 0;
         do {
-        	Intent intent = new Intent(intentDetails[listIndex][0]);
+            String intentAction = PICK_DIRECTORY_INTENTS[listIndex][0];
+            String uriPrefix = PICK_DIRECTORY_INTENTS[listIndex][1];
+        	Intent intent = new Intent(intentAction);
         	if (startPath != null) {
-                intent.setData(Uri.parse(intentDetails[listIndex][1] + startPath.getPath()));
+                intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
         	}
         	try {
                 c.startActivityForResult(intent, requestcode);
@@ -89,9 +93,9 @@ public class FileBrowserHelper {
             	// Try the next intent in the list
             	listIndex++;
             };
-        } while (!success && (listIndex < intentDetails.length));
+        } while (!success && (listIndex < PICK_DIRECTORY_INTENTS.length));
 
-        if (listIndex == intentDetails.length) {
+        if (listIndex == PICK_DIRECTORY_INTENTS.length) {
             //No Filebrowser is installed => show a fallback textdialog
             showPathTextInput(c, startPath, callback);
             success = false;
