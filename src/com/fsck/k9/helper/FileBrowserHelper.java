@@ -83,9 +83,8 @@ public class FileBrowserHelper {
             String intentAction = PICK_DIRECTORY_INTENTS[listIndex][0];
             String uriPrefix = PICK_DIRECTORY_INTENTS[listIndex][1];
         	Intent intent = new Intent(intentAction);
-        	if (startPath != null) {
-                intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
-        	}
+        	intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
+
         	try {
                 c.startActivityForResult(intent, requestcode);
                 success = true;
