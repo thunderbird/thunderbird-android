@@ -62,13 +62,13 @@ public class FileBrowserHelper {
      *
      */
     public boolean showFileBrowserActivity(Activity c, File startPath, int requestcode, FileBrowserFailOverCallback callback) {
-    	// A string array that specifies the name of the intent to use, and
-    	// the scheme to use with it when setting the data for the intent.
-        String[][] intentDetails = 
-            { { "org.openintents.action.PICK_DIRECTORY", "file://" },  // OI File Manager (maybe others)
-              { "com.androidworkz.action.PICK_DIRECTORY", "file://" }, // SystemExplorer
-              { "com.estrongs.action.PICK_DIRECTORY", "file://" },     // ES File Explorer
-              { Intent.ACTION_PICK, "folder://" } };                   // Blackmoon File Browser (maybe others)
+        // A string array that specifies the name of the intent to use, and
+        // the scheme to use with it when setting the data for the intent.
+        String[][] intentDetails =
+            { { "org.openintents.action.PICK_DIRECTORY", "file://" },   // OI File Manager (maybe others)
+              { "com.estrongs.action.PICK_DIRECTORY", "file://" },      // ES File Explorer
+              { Intent.ACTION_PICK, "folder://" },                      // Blackmoon File Browser (maybe others)
+              { "com.androidworkz.action.PICK_DIRECTORY", "file://" }}; // SystemExplorer
 
         boolean success = false;
 
