@@ -509,6 +509,7 @@ public class FolderList extends K9ListActivity {
             }
         }
 
+        onRefresh(!REFRESH_REMOTE);
     }
 
 
