@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Store;
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
@@ -148,6 +149,17 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                 getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false)) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
+        
+        // Start synchronization immediately (initial sync) - only if push is disabled
+    	new Thread() {
+    		@Override
+    		public void run() {
+                if (!mPushEnable.isChecked()) {
+                	MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
+                }
+    		};
+    	}.start();
+        
         K9.setServicesEnabled(this);
         AccountSetupNames.actionSetNames(this, mAccount);
         finish();
