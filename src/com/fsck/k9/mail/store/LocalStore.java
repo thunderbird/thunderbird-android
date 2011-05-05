@@ -2705,19 +2705,26 @@ public class LocalStore extends Store implements Serializable {
                 text = text.substring(0, 8192);
             }
 
-
+            // try to remove lines of dashes in the preview
             text = text.replaceAll("(?m)^----.*?$", "");
+            // remove quoted text from the preview
             text = text.replaceAll("(?m)^[#>].*$", "");
+            // Remove a common quote header from the preview
             text = text.replaceAll("(?m)^On .*wrote.?$", "");
+            // Remove a more generic quote header from the preview
             text = text.replaceAll("(?m)^.*\\w+:$", "");
+
+            // URLs in the preview should just be shown as "..." - They're not
+            // clickable and they usually overwhelm the preview
             text = text.replaceAll("https?://\\S+", "...");
+            // Don't show newlines in the preview
             text = text.replaceAll("(\\r|\\n)+", " ");
+            // Collapse whitespace in the preview
             text = text.replaceAll("\\s+", " ");
             if (text.length() <= 512) {
                 return text;
             } else {
-                text = text.substring(0, 512);
-                return text;
+                return text.substring(0, 512);
             }
 
         }

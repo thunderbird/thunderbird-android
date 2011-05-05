@@ -1049,4 +1049,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź pamięc</string>
 
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
 </resources>

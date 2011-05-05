@@ -1037,4 +1037,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
 
     <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" non está dispoñible; verifica o almacenamento</string>
 
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
 </resources>
