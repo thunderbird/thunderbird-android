@@ -965,7 +965,7 @@ public class MessageList
                     }
                     // move down: puts the second visible line in the first visible slot
                     case KeyEvent.KEYCODE_J: {
-		      setOurSelection(position, DIRECTION_DOWN);
+                        setOurSelection(position, DIRECTION_DOWN);
                     	return true;
                     }
                     // move up: puts the first visible line in the second visible slot
@@ -981,8 +981,8 @@ public class MessageList
             // so choose the first if the user touches either the K or J keys:
             if (position == -1 &&
                 (keyCode == KeyEvent.KEYCODE_K || keyCode == KeyEvent.KEYCODE_J)) {
-        	mListView.setSelection( 0 );
-        	return true;
+                mListView.setSelection( 0 );
+                return true;
             }
             // move up: puts the first visible line in the second visible slot
             // if we ran off the bottom, we come here because message == null
@@ -990,7 +990,7 @@ public class MessageList
             if (keyCode == KeyEvent.KEYCODE_K &&
                 position == (this_count - 1)) {  // position is 0-based, count is 1-based
                 setOurSelection(position, DIRECTION_UP);
-        	return true;
+                return true;
             } 
             retval = super.onKeyDown(keyCode, event);
         }
