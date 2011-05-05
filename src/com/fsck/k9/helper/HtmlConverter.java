@@ -142,7 +142,9 @@ public class HtmlConverter {
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
-                    buff.append("<br/>\n");
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
                     break;
                 case '\r':
                     break;
@@ -182,7 +184,9 @@ public class HtmlConverter {
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
-                    buff.append("<br/>\n");
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
                     break;
                 case '&':
                     buff.append("&amp;");
@@ -1112,7 +1116,7 @@ public class HtmlConverter {
         final String font = K9.messageViewFixedWidthFont()
                             ? "monospace"
                             : "sans-serif";
-        return "<pre style=\"white-space: normal; word-wrap:break-word; font-family: " + font + "\">";
+        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "\">";
     }
 
     private static String htmlifyMessageFooter() {
