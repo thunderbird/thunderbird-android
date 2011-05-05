@@ -2724,8 +2724,7 @@ public class LocalStore extends Store implements Serializable {
             if (text.length() <= 512) {
                 return text;
             } else {
-                text = text.substring(0, 512);
-                return text;
+                return text.substring(0, 512);
             }
 
         }
