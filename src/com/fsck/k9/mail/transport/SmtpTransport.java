@@ -273,7 +273,22 @@ public class SmtpTransport extends Transport {
                         Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
                                 "server didn't advertise support for it in EHLO response.");
                     }
-                    saslAuthPlain(mUsername, mPassword);
+                    try {
+                        saslAuthPlain(mUsername, mPassword);
+                    } catch(MessagingException ex) {
+                        // PLAIN is a special case.  Historically, PLAIN has represented both PLAIN and LOGIN; only the
+                        // protocol being advertised by the server would be used, with PLAIN taking precedence.  Instead
+                        // of using only the requested protocol, we'll try PLAIN and then try LOGIN.
+                        if (useAuthPlain && authLoginSupported) {
+                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                                Log.d(K9.LOG_TAG, "Using legacy PLAIN authentication behavior and trying LOGIN.");
+                            }
+                            saslAuthLogin(mUsername, mPassword);
+                        } else {
+                            // If it was auto detected and failed, continue throwing the exception back up.
+                            throw ex;
+                        }
+                    }
                 } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
                     if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
