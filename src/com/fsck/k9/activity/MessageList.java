@@ -997,18 +997,31 @@ public class MessageList
         return retval;
     }
 
-    // Positioning a fixed distance from the top works fine but does not
-    // change the visible list when the user scrolls off the screen. So,
-    // we check for that, select the new first-visible item, and then
-    // select the one we want.
+    // This function can implement any of three methods for moving the
+    // highlight from item to item. One is active; two (A and B) are
+    // commented out.
+    //   The active code mimics the behavior of the trackball: the message
+    // stays stationary but the highlighted item moves until it reaches the
+    // top or bottom of the screen, then the appropriate new item appears
+    // at the top or bottom, respectively, of the screen one line at a time.
+    //   The (A) commented positioning code scrolls the message list so that
+    // the position of the highlighted message item stays the same on
+    // the screen, whereever the user put it with a focus method such
+    // as the trackball.
+    //   The (B) commented code keeps the message list unmoving (more or less)
+    // until the user scrolls to the bottom, then shifts the whole page
+    // and goes to the top of the new page. The reverse happens when
+    // the user scrolls to the top of the page. This method results in a
+    // long delay before the new page appears in either direction.
     private void setOurSelection(int position, int direction) {
 
         int first_visible_position = mListView.getFirstVisiblePosition();
         int last_visible_position  = mListView.getLastVisiblePosition();
+        last_visible_position      = last_visible_position - 1; // sometimes this is 1 too high
         int num_visible_items      = last_visible_position - first_visible_position + 1;
         int item_height            = findViewById(R.layout.message_list_item).getHeight();
 
-        int position_save = position;  // we will try to put the new selected line where the old one was
+        // (A) int position_save = position;  // we will try to put the new selected line where the old one was
         switch (direction) {
         case DIRECTION_DOWN:
             position = position + 1;
@@ -1017,7 +1030,11 @@ public class MessageList
             }
             if (position > last_visible_position && position <= mListView.getCount()) {
                 // this is the one the user wants, after all, so let's select it
-                // but the user wants it at the bottom of the screen.
+                // and the user wants it at the bottom of the screen.
+                // (B) we just ran off the bottom of the screen, so display the next num_visible_items
+                // messages and highlight the first one (which is the one after the bottom of
+                // the list the user currently sees).
+                // (B) mListView.setSelectionFromTop(position, 0);
                 mListView.setSelectionFromTop(position, item_height *(num_visible_items - 1));
                 return;
             }
@@ -1031,14 +1048,19 @@ public class MessageList
                     position = first_visible_position - 1;
                 }
                 // this is the one the user wants, after all, so let's select it
+                // we want to display the num_visible_items messsages that precede the one
+                // the user sees at the top of the display, with the first (new) item highlighted.
+                // (B) with the *last* item highlighted.
+                // (B) mListView.setSelectionFromTop(position, item_height *(num_visible_items - 1));
                 mListView.setSelection(position);
                 return;
             }
             break;
         }
-        // if we didn't run off either end of the visible screen, move the
-        // selected item to where the previously selected item was.
-        mListView.setSelectionFromTop(position, ((position_save - first_visible_position) * item_height));
+        // if we didn't run off either end of the visible screen, leave the
+        // selected item where it was, just highlight it.
+        mListView.setSelectionFromTop(position, ((position - first_visible_position) * item_height));
+        // (A) mListView.setSelectionFromTop(position, ((position_save - first_visible_position) * item_height));
     }
 
     @Override
