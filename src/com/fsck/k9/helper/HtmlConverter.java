@@ -142,7 +142,9 @@ public class HtmlConverter {
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
-                    buff.append("<br/>\n");
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
                     break;
                 case '\r':
                     break;
@@ -182,7 +184,9 @@ public class HtmlConverter {
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
-                    buff.append("<br/>\n");
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
                     break;
                 case '&':
                     buff.append("&amp;");
@@ -204,8 +208,14 @@ public class HtmlConverter {
             Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
         }
         text = buff.toString();
+
+        // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
+
+        // TODO: reverse engineer (or troll history) and document
         text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])", "$1 ");
+
+        // Compress four or more newlines down to two newlines
         text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\n\n");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
@@ -1112,7 +1122,7 @@ public class HtmlConverter {
         final String font = K9.messageViewFixedWidthFont()
                             ? "monospace"
                             : "sans-serif";
-        return "<pre style=\"white-space: normal; word-wrap:break-word; font-family: " + font + "\">";
+        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "\">";
     }
 
     private static String htmlifyMessageFooter() {
