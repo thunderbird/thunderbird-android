@@ -1015,11 +1015,15 @@ public class MessageList
     // long delay before the new page appears in either direction.
     private void setOurSelection(int position, int direction) {
 
+        int item_height            = findViewById(R.layout.message_list_item).getHeight();
         int first_visible_position = mListView.getFirstVisiblePosition();
         int last_visible_position  = mListView.getLastVisiblePosition();
-        last_visible_position      = last_visible_position - 1; // sometimes this is 1 too high
+        // check whether GUI reported incorrect number of visible items
+        int widget_height          = mListView.getHeight();
+        if (widget_height < (last_visible_position - first_visible_position + 1) * item_height) {
+            last_visible_position      = last_visible_position - 1; // sometimes this is 1 too high
+        }
         int num_visible_items      = last_visible_position - first_visible_position + 1;
-        int item_height            = findViewById(R.layout.message_list_item).getHeight();
 
         // (A) int position_save = position;  // we will try to put the new selected line where the old one was
         switch (direction) {
