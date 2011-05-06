@@ -152,7 +152,6 @@
 
                             <TextView
                                 android:id="@+id/userId"
-                                android:text=""
                                 android:ellipsize="end"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@android:color/primary_text_light"
@@ -161,7 +160,6 @@
 
                             <TextView
                                 android:id="@+id/userIdRest"
-                                android:text=""
                                 android:textSize="10sp"
                                 android:ellipsize="end"
                                 android:textColor="@android:color/primary_text_light"
