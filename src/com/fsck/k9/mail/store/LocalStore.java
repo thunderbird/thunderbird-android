@@ -2425,16 +2425,18 @@ public class LocalStore extends Store implements Serializable {
                                                          { Long.toString(messageId) }, null, null, null);
                                 try {
                                     if (cursor.moveToNext()) {
-                                        String new_html;
+                                        String htmlContent = cursor.getString(0);
 
-                                        new_html = cursor.getString(0);
-                                        new_html = new_html.replaceAll(Pattern.quote("cid:" + contentId),
-                                                                       contentUri.toString());
+                                        if (htmlContent != null) {
+                                            String newHtmlContent = htmlContent.replaceAll(
+                                                    Pattern.quote("cid:" + contentId),
+                                                    contentUri.toString());
 
-                                        ContentValues cv = new ContentValues();
-                                        cv.put("html_content", new_html);
-                                        db.update("messages", cv, "id = ?", new String[]
-                                                  { Long.toString(messageId) });
+                                            ContentValues cv = new ContentValues();
+                                            cv.put("html_content", newHtmlContent);
+                                            db.update("messages", cv, "id = ?", new String[]
+                                                      { Long.toString(messageId) });
+                                        }
                                     }
                                 } finally {
                                     if (cursor != null) {
