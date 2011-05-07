@@ -873,7 +873,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (mAccount.getOutboxFolderName() != null && mAccount.getOutboxFolderName().equalsIgnoreCase(folder.getName())) {
+                if (mAccount.getOutboxFolderName().equals(folder.getName())) {
                     iter.remove();
                 }
             }
