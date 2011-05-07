@@ -272,9 +272,12 @@ public class WebDavStore extends Store {
         if (folderName != null)
             mAccount.setSpamFolderName(folderName);
 
+        // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
+        /*
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
         if (folderName != null)
             mAccount.setOutboxFolderName(folderName);
+        */
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
         if (folderName != null)
