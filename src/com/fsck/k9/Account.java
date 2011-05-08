@@ -33,6 +33,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
 public class Account implements BaseAccount {
+    /**
+     * Default value for the inbox folder (never changes for POP3 and IMAP)
+     */
+    public static final String INBOX = "INBOX";
+
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -181,8 +186,8 @@ public class Account implements BaseAccount {
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
-        mAutoExpandFolderName = K9.INBOX;
-        mInboxFolderName = K9.INBOX;
+        mAutoExpandFolderName = INBOX;
+        mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         goToUnreadMessageSearch = false;
@@ -248,7 +253,7 @@ public class Account implements BaseAccount {
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
-        mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", K9.INBOX);
+        mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", INBOX);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
@@ -273,7 +278,7 @@ public class Account implements BaseAccount {
             compressionMap.put(type, useCompression);
         }
 
-        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName", K9.INBOX);
+        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName", INBOX);
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 

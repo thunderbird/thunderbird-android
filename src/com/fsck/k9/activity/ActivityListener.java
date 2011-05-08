@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
@@ -35,7 +34,7 @@ public class ActivityListener extends MessagingListener {
 
             if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
                 String displayName = mLoadingFolderName;
-                if (K9.INBOX.equalsIgnoreCase(displayName)) {
+                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
                 } else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_outbox);
