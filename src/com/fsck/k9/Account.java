@@ -38,6 +38,11 @@ public class Account implements BaseAccount {
      */
     public static final String INBOX = "INBOX";
 
+    /**
+     * This local folder is used to store messages to be sent.
+     */
+    public static final String OUTBOX = "OUTBOX";
+
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -832,7 +837,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getOutboxFolderName() {
-        return K9.OUTBOX;
+        return OUTBOX;
     }
 
     public synchronized String getAutoExpandFolderName() {

@@ -398,7 +398,7 @@ public class ImapStore extends Store {
 
                 if (folder.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                     continue;
-                } else if (folder.equalsIgnoreCase(K9.OUTBOX)) {
+                } else if (folder.equals(mAccount.getOutboxFolderName())) {
                     /*
                      * There is a folder on the server with the same name as our local
                      * outbox. Until we have a good plan to deal with this situation
