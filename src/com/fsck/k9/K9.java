@@ -217,12 +217,6 @@ public class K9 extends Application {
     };
 
     /**
-     * The special name "INBOX" is used throughout the application to mean "Whatever folder
-     * the server refers to as the user's Inbox. Placed here to ease use.
-     */
-    public static final String INBOX = "INBOX";
-
-    /**
      * For use when displaying that no folder is selected
      */
     public static final String FOLDER_NONE = "-NONE-";
