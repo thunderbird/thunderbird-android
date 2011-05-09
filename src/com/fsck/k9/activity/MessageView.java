@@ -823,7 +823,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     private void onMarkAsUnread() {
         if (mMessage != null) {
-            mController.setFlag(mAccount, mMessageReference.folderName, new String[] { mMessage.getUid() }, Flag.SEEN, false);
+// (Issue 3319)            mController.setFlag(mAccount, mMessageReference.folderName, new String[] { mMessage.getUid() }, Flag.SEEN, false);
             try {
                 mMessage.setFlag(Flag.SEEN, false);
                 mMessageView.setHeaders(mMessage, mAccount);
