@@ -237,6 +237,16 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <ImageButton
+                android:id="@+id/quoted_text_show"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:background="@drawable/btn_dialog" />
+
             <!-- Quoted text bar -->
             <RelativeLayout
                 android:id="@+id/quoted_text_bar"
