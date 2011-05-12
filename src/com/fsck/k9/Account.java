@@ -33,6 +33,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
 public class Account implements BaseAccount {
+    /**
+     * Default value for the inbox folder (never changes for POP3 and IMAP)
+     */
+    public static final String INBOX = "INBOX";
+
+    /**
+     * This local folder is used to store messages to be sent.
+     */
+    public static final String OUTBOX = "OUTBOX";
+
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -86,7 +96,6 @@ public class Account implements BaseAccount {
     private String mTrashFolderName;
     private String mArchiveFolderName;
     private String mSpamFolderName;
-    private String mOutboxFolderName;
     private String mAutoExpandFolderName;
     private FolderMode mFolderDisplayMode;
     private FolderMode mFolderSyncMode;
@@ -178,8 +187,8 @@ public class Account implements BaseAccount {
         mShowPictures = ShowPictures.NEVER;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
-        mAutoExpandFolderName = K9.INBOX;
-        mInboxFolderName = K9.INBOX;
+        mAutoExpandFolderName = INBOX;
+        mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         goToUnreadMessageSearch = false;
@@ -245,13 +254,12 @@ public class Account implements BaseAccount {
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
-        mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", K9.INBOX);
+        mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", INBOX);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
         mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
-        mOutboxFolderName = prefs.getString(mUuid + ".outboxFolderName", "Outbox");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
@@ -271,7 +279,7 @@ public class Account implements BaseAccount {
             compressionMap.put(type, useCompression);
         }
 
-        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName", K9.INBOX);
+        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName", INBOX);
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
@@ -386,7 +394,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".trashFolderName");
         editor.remove(mUuid + ".archiveFolderName");
         editor.remove(mUuid + ".spamFolderName");
-        editor.remove(mUuid + ".outboxFolderName");
         editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
@@ -482,7 +489,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
         editor.putString(mUuid + ".archiveFolderName", mArchiveFolderName);
         editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
-        editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
@@ -815,11 +821,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getOutboxFolderName() {
-        return mOutboxFolderName;
-    }
-
-    public synchronized void setOutboxFolderName(String outboxFolderName) {
-        mOutboxFolderName = outboxFolderName;
+        return OUTBOX;
     }
 
     public synchronized String getAutoExpandFolderName() {

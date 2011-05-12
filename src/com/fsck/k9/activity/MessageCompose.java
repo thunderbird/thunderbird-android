@@ -1159,7 +1159,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         NAME("n"),
         EMAIL("e"),
         // TODO - store a reference to the message being replied so we can mark it at the time of send.
-        ORIGINAL_MESSAGE("m");
+        ORIGINAL_MESSAGE("m"),
+        CURSOR_POSITION("p");   // Where in the message your cursor was when you saved.
 
         private final String value;
 
@@ -1221,6 +1222,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mMessageReference != null) {
             uri.appendQueryParameter(IdentityField.ORIGINAL_MESSAGE.value(), mMessageReference.toIdentityString());
         }
+
+        uri.appendQueryParameter(IdentityField.CURSOR_POSITION.value(), Integer.toString(mMessageContentView.getSelectionStart()));
 
         String k9identity = IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
@@ -2061,6 +2064,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
 
+                int cursorPosition = 0;
+                if(k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
+                    try {
+                        cursorPosition = Integer.valueOf(k9identity.get(IdentityField.CURSOR_POSITION)).intValue();
+                    } catch(Exception e) {
+                        Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
+                    }
+                }
+
                 mIdentity = newIdentity;
 
                 updateSignature();
@@ -2164,6 +2176,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     } else {
                         Log.e(K9.LOG_TAG, "Unhandled message format.");
                     }
+                }
+
+                // Set the cursor position if we have it.
+                try {
+                    mMessageContentView.setSelection(cursorPosition);
+                } catch(Exception e) {
+                    Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
                 }
             }
         } catch (MessagingException me) {
