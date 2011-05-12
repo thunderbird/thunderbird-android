@@ -3,146 +3,146 @@
 
 ##  Account List
 
-    Unavailable accounts are now greyed out
+ * Unavailable accounts are now greyed out
 
 ##  Folder List
 
-    You can now start typing to filter K-9's folder list
+ * You can now start typing to filter K-9's folder list
 
 
 ##  Message List
 
-    Fixed display of colorized name in the message list.
-    The date format preference is now refreshed each time the messages get listed.  Previously, changes to the date format preference weren't noticed until the app restarted.
-    Mark messages as ANSWERED only upon send. 
+ * Fixed display of colorized name in the message list.
+ * The date format preference is now refreshed each time the messages get listed.  Previously, changes to the date format preference weren't noticed until the app restarted.
+ * Mark messages as ANSWERED only upon send. 
 
 ##  Message Display
 
-    JPEG images with the MIME type "image/jpg" now open correctly on Motorola devices.
-    Fixes for downloading attachments
+ * JPEG images with the MIME type "image/jpg" now open correctly on Motorola devices.
+ * Fixes for downloading attachments
 
 ##  Composing Messages
 
-    Added an addressbook lookup button
-    Explicitly set focus to "To:" input field when composing or forwarding a message.
-    Made it possible to BCC to more than 1 address
+ * Added an addressbook lookup button
+ * Explicitly set focus to "To:" input field when composing or forwarding a message.
+ * Made it possible to BCC to more than 1 address
 
 ##  About box
 
-    Fix display of icon in About box on Android 2.1 and earlier
+ * Fix display of icon in About box on Android 2.1 and earlier
 
 ##  HTML Mail
 
-    Use <pre> instead of <div> so that plain text clients get line wrapping correct.
+ * Use <pre> instead of <div> so that plain text clients get line wrapping correct.
 
 ##  MIME Internals
 
-    Correct encoding and decoding for the filename parameter in the Content-Disposition.
-    Should store the disposition-type without Content-Disposition parameters.
+ * Correct encoding and decoding for the filename parameter in the Content-Disposition.
+ * Should store the disposition-type without Content-Disposition parameters.
 
 ##  Configurability
 
-    Implemented option to hide special accounts (issue 3060)
-    Added option to disable confirmation dialog for "mark all as read" (issue 1415)
-    Added "move to spam folder" confirmation dialog to MessageList
+ * Implemented option to hide special accounts (issue 3060)
+ * Added option to disable confirmation dialog for "mark all as read" (issue 1415)
+ * Added "move to spam folder" confirmation dialog to MessageList
 
 ##  Internationalization
 
-    Updated Brazilian Portugese translation from noeczisto
-    Added Catalan translation from David Valls
-    Added a Galician (Galego) translation from fernando.coello@gmail.com
-    Updated Chinese translation update from sunnavy
-    Updated Finnish translation from Patrik Selin
-    Updated Italian translation with patch provided by paolo.maccione
-    Updated Japanese translation
-    Added a Korean translation (from sungguk)
-    Updated Polish translation from alekhavoc and rabbbit
-    Updated Swedish translation from daniel.malmgren.DM
-    Updated Spanish translation with changes provided by Hayawata
-    Added support for emoji input in message subjects (on Japanese Devices only)
-    Improved support for iso-2022-jp messages
+ * Updated Brazilian Portugese translation from noeczisto
+ * Added Catalan translation from David Valls
+ * Added a Galician (Galego) translation from fernando.coello@gmail.com
+ * Updated Chinese translation update from sunnavy
+ * Updated Finnish translation from Patrik Selin
+ * Updated Italian translation with patch provided by paolo.maccione
+ * Updated Japanese translation
+ * Added a Korean translation (from sungguk)
+ * Updated Polish translation from alekhavoc and rabbbit
+ * Updated Swedish translation from daniel.malmgren.DM
+ * Updated Spanish translation with changes provided by Hayawata
+ * Added support for emoji input in message subjects (on Japanese Devices only)
+ * Improved support for iso-2022-jp messages
 
 # Protocol support 
 
 ##  IMAP
 
-    Remove trailing space from IMAP command This could be the cause of the error reported in issue 3089.
-    Fix length-check of BODYSTRUCTURE reply. Fixes issue 3116
-    Unify two IMAP date parsing paths, improving the exception so we can learn what date format we don't cope with.
-    Added another badDateTimeFormat to ImapResponseParser.  Some IMAP servers generate timestamps without timezones. :/ Fixes gcode issue 3179
-    Fix bug with partitioning of IMAP FETCH commands
+ * Remove trailing space from IMAP command This could be the cause of the error reported in issue 3089.
+ * Fix length-check of BODYSTRUCTURE reply. Fixes issue 3116
+ * Unify two IMAP date parsing paths, improving the exception so we can learn what date format we don't cope with.
+ * Added another badDateTimeFormat to ImapResponseParser.  Some IMAP servers generate timestamps without timezones. :/ Fixes gcode issue 3179
+ * Fix bug with partitioning of IMAP FETCH commands
 
 ##  WebDAV (Exchange)
 
-    In getPersonalNameSpaces now we ask the server for the real folder names corresponding to the special folders ids (for which we have constants), so we can map the account folders using the real names.
-    Support non-English Exchange installations.
-    Fix the ability to accept invalid SSL certificates for exchange support.
+ * In getPersonalNameSpaces now we ask the server for the real folder names corresponding to the special folders ids (for which we have constants), so we can map the account folders using the real names.
+ * Support non-English Exchange installations.
+ * Fix the ability to accept invalid SSL certificates for exchange support.
 
 ##  POP3
 
-    Made the minor modifications to support CRAM-MD5 authentication in POP3 accounts.
-    Disable "Enable refile buttons" preference for POP3 users
+ * Made the minor modifications to support CRAM-MD5 authentication in POP3 accounts.
+ * Disable "Enable refile buttons" preference for POP3 users
 
 ##  SMTP
 
-    New acounts now default to using the SMTP submission port (587) rather than the regular server-to-server (25) transport port.
-    Permanent failures when trying to deliver a message move it back to drafts.
-    Tempfail outgoing messages after 5 delivery attempts
-    Opening a "permfail" message takes you to the drafts folder
-    Split out "tempfail" and "permfail" message delivery errors
-    Fix "sending message failed" notifications to actually report the server error
-    If an SMTP server tells us how big the biggest message they accept is, don't even try to deliver a message to them if it's bigger than that size
-    For a while, it was possible for users to configure their outbox and drafts folders to be the same folder. This could result in drafts being sent over and over.  This change uses the K-9 Identity header as a shibboleth for drafts, as it's not actually set when a message is sent.
-    Removed some extra spaces from SMTP commands which picky servers rejected Fixed gcode #3182
-    K-9 no longer sends double-quoted empty string in From headers.
+ * New acounts now default to using the SMTP submission port (587) rather than the regular server-to-server (25) transport port.
+ * Permanent failures when trying to deliver a message move it back to drafts.
+ * Tempfail outgoing messages after 5 delivery attempts
+ * Opening a "permfail" message takes you to the drafts folder
+ * Split out "tempfail" and "permfail" message delivery errors
+ * Fix "sending message failed" notifications to actually report the server error
+ * If an SMTP server tells us how big the biggest message they accept is, don't even try to deliver a message to them if it's bigger than that size
+ * For a while, it was possible for users to configure their outbox and drafts folders to be the same folder. This could result in drafts being sent over and over.  This change uses the K-9 Identity header as a shibboleth for drafts, as it's not actually set when a message is sent.
+ * Removed some extra spaces from SMTP commands which picky servers rejected Fixed gcode #3182
+ * K-9 no longer sends double-quoted empty string in From headers.
 
 # For developers
 
 ##  Attachment Provider 
-    AttachmentProvider can now return an attachment with an unmodified MIME type. However, when viewing attachments this is not desirable. So we try hard to return a sensible MIME type (use extension to look up a MIME type if it's originally "application/octet-stream"; or replace with canonical MIME type if it's known to be wrong, e.g.  "image/jpg" -> "image/jpeg")
+ * AttachmentProvider can now return an attachment with an unmodified MIME type. However, when viewing attachments this is not desirable. So we try hard to return a sensible MIME type (use extension to look up a MIME type if it's originally "application/octet-stream"; or replace with canonical MIME type if it's known to be wrong, e.g.  "image/jpg" -> "image/jpeg")
 
 ##  Sharing Messages
 
-    Add extra for the sender address(es) to the "Share intent"
-    Get rid of the "Fwd: " prefix when sharing a message. Add recipients to the intent ("To:" -> EXTRA_EMAIL, "CC:" -> EXTRA_CC)
+ * Add extra for the sender address(es) to the "Share intent"
+ * Get rid of the "Fwd: " prefix when sharing a message. Add recipients to the intent ("To:" -> EXTRA_EMAIL, "CC:" -> EXTRA_CC)
 
 ##  Portability
 
-    Change our technique for sending \r\n at the end of smtp commands to deal with a weird failure on honeycomb
+ * Change our technique for sending \r\n at the end of smtp commands to deal with a weird failure on honeycomb
 
 ##  Testing
 
-    We have a test suite that can run (thanks to achen's start)
+ * We have a test suite that can run (thanks to achen's start)
 
 ##  Build Infrastructure
  
-    Added an 'astyle' build target
-    Switched the code's style back to something resembling AOSP standards
-    switch build infrastructure to git
-    Restore tools/build-beta to its former glory. It can now build a "K9 beta with different keys" that can sit next to an installed K-9.
-    K-9 now compiles in the libs we only need at build time when building with eclipse.  This is an annoying default, but it'll make life easier for newbies starting out with K-9 for eclipse.  We should ALWAYS do release builds with ant
+ * Added an 'astyle' build target
+ * Switched the code's style back to something resembling AOSP standards
+ * switch build infrastructure to git
+ * Restore tools/build-beta to its former glory. It can now build a "K9 beta with different keys" that can sit next to an installed K-9.
+ * K-9 now compiles in the libs we only need at build time when building with eclipse.  This is an annoying default, but it'll make life easier for newbies starting out with K-9 for eclipse.  We should ALWAYS do release builds with ant
 
 
 ##  Bug fixes
-    Fixed polling schedule after SD cards are mounted or unmounted
-    Fixed several NullPointerExceptions
+ * Fixed polling schedule after SD cards are mounted or unmounted
+ * Fixed several NullPointerExceptions
 
 ##  Performance
 
-    Destroy all messages in one SQLite transaction
-    Perf improvement: use parcels instead of serializable. Standard Java serialization is slow on Android. Replacing it w/ parcelable makes it around 10x faster (on a N1, with ~ 500 messages in the list).
+ * Destroy all messages in one SQLite transaction
+ * Perf improvement: use parcels instead of serializable. Standard Java serialization is slow on Android. Replacing it w/ parcelable makes it around 10x faster (on a N1, with ~ 500 messages in the list).
 
 ##  Third-party libraries
 
-    Replaced our local copy of jzlib with a clean jar built from jzlib 1.0.7 downloaded from jcraft: http://www.jcraft.com/jzlib/jzlib-1.0.7.tar.gz
-    Replaced local version of jutf7 with a homebuilt jar from:
-    Replaced Apache Commons IO with v2.01 downloaded from apache.org as a prebuilt JAR
-    Tell eclipse to bundle JARs in libs but NOT to bundle libs in compile-only-libs. (Results in Eclipse building something much closer to what ant does)
-    Start building using a JAR of MIME4J
-    Add support for building with precompiled JARs
-    Removed dependency on (external) commons-codec and commons-logging
-    Get rid of now unnecessary BouncyCastle jar
-    Use SslCertificate that is part of the official Android API instead of BouncyCastle's X509Name (which is not shipped anymore in Android 3.0) to verify domain names on SSL/TLS connections.
-    Use java.util.zip for inflating (Can't use it for deflating since it doesn't have Z_PARTIAL_FLUSH)
+ * Replaced our local copy of jzlib with a clean jar built from jzlib 1.0.7 downloaded from jcraft: http://www.jcraft.com/jzlib/jzlib-1.0.7.tar.gz
+ * Replaced local version of jutf7 with a homebuilt jar from:
+ * Replaced Apache Commons IO with v2.01 downloaded from apache.org as a prebuilt JAR
+ * Tell eclipse to bundle JARs in libs but NOT to bundle libs in compile-only-libs. (Results in Eclipse building something much closer to what ant does)
+ * Start building using a JAR of MIME4J
+ * Add support for building with precompiled JARs
+ * Removed dependency on (external) commons-codec and commons-logging
+ * Get rid of now unnecessary BouncyCastle jar
+ * Use SslCertificate that is part of the official Android API instead of BouncyCastle's X509Name (which is not shipped anymore in Android 3.0) to verify domain names on SSL/TLS connections.
+ * Use java.util.zip for inflating (Can't use it for deflating since it doesn't have Z_PARTIAL_FLUSH)
 
 
