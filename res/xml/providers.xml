@@ -276,6 +276,33 @@
         <outgoing uri="smtp://smtp.mail.yahoo.co.jp:587" username="$user" />
     </provider>
 
+   <!-- Korean -->
+    <provider id="naver" label="Naver" domain="naver.com"
+			  note="@string/provider_note_naver">
+        <incoming uri="imap+ssl://imap.naver.com"  username="$user" />
+        <outgoing uri="smtp+tls://smtp.naver.com:587" username="$user" />
+    </provider>
+    <provider id="hanmail" label="Hanmail" domain="hanmail.net"
+			  note="@string/provider_note_hanmail">
+        <incoming uri="imap+ssl://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl://smtp.hanmail.net" username="$user" />
+    </provider>
+    <provider id="daum" label="Hanmail" domain="daum.net"
+			  note="@string/provider_note_hanmail">
+        <incoming uri="imap+ssl://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl://smtp.hanmail.net" username="$user" />
+    </provider>
+    <provider id="paran" label="Paran" domain="paran.com"
+			  note="@string/provider_note_paran">
+        <incoming uri="imap+ssl://imap.paran.com"  username="$email" />
+        <outgoing uri="smtp+tls://smtp.paran.com" username="$email" />
+    </provider>
+    <provider id="nate" label="Nate" domain="nate.com"
+			  note="@string/provider_note_nate">
+        <incoming uri="imap+ssl://imap.nate.com"  username="$user" />
+        <outgoing uri="smtp+tls://smtp.mail.nate.com" username="$user" />
+    </provider>
+    
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
         <incoming uri="imap+ssl://fsck.com"  username="$user" />
