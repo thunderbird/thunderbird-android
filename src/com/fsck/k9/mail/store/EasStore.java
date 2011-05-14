@@ -690,9 +690,12 @@ public class EasStore extends Store {
         if (folderName != null)
             mAccount.setSpamFolderName(folderName);
 
+        // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
+        /*
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
         if (folderName != null)
             mAccount.setOutboxFolderName(folderName);
+        */
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
         if (folderName != null)
@@ -785,13 +788,7 @@ public class EasStore extends Store {
 
     @Override
     public Folder getFolder(String name) {
-        WebDavFolder folder;
-
-        if ((folder = this.mFolderList.get(name)) == null) {
-            folder = new WebDavFolder(this, name);
-        }
-
-        return folder;
+        return null;
     }
 
     public Folder getSendSpoolFolder() throws MessagingException {

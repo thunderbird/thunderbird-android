@@ -89,7 +89,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
-            if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
+        	String scheme = new URI(mAccount.getStoreUri()).getScheme();
+            if (scheme.startsWith("webdav") || scheme.startsWith("eas")) {
                 mAccount.setTransportUri(mAccount.getStoreUri());
                 AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
             }

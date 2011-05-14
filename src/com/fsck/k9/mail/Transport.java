@@ -2,6 +2,7 @@
 package com.fsck.k9.mail;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.mail.transport.EasTransport;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
 
@@ -17,6 +18,8 @@ public abstract class Transport {
             return new SmtpTransport(uri);
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(account);
+        } else if (uri.startsWith("eas")) {
+            return new EasTransport(account);
         } else {
             throw new MessagingException("Unable to locate an applicable Transport for " + uri);
         }
