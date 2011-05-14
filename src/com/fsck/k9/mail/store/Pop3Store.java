@@ -754,10 +754,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void setFlags(Flag[] flags, boolean value)
-        throws MessagingException {
-            Message[] messages = getMessages(null);
-            setFlags(messages, flags, value);
+        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+            throw new UnsupportedOperationException("POP3: No setFlags(Flag[],boolean)");
         }
 
         @Override
