@@ -2378,7 +2378,7 @@ public class MessagingController implements Runnable {
             Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
 
-            if (!remoteFolder.exists()) {
+            if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(Flag.SEEN)) {
                 return;
             }
             remoteFolder.open(OpenMode.READ_WRITE);

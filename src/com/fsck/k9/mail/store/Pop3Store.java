@@ -283,7 +283,9 @@ public class Pop3Store extends Store {
         @Override
         public void close() {
             try {
-                executeSimpleCommand("QUIT");
+                if (isOpen()) {
+                    executeSimpleCommand("QUIT");
+                }
             } catch (Exception e) {
                 /*
                  * QUIT may fail if the connection is already closed. We don't care. It's just
