@@ -236,6 +236,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
+                subscribedFoldersOnly.setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
