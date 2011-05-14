@@ -1966,7 +1966,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
 
                 // Quote the message and setup the UI.
-                populateUIWithQuotedMessage();
+                populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
 
                 if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action)) {
                     Identity useIdentity = null;
@@ -2021,7 +2021,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
 
                 // Quote the message and setup the UI.
-                populateUIWithQuotedMessage();
+                populateUIWithQuotedMessage(true);
 
                 if (!mSourceMessageProcessed) {
                     if (!loadAttachments(message, 0)) {
@@ -2218,7 +2218,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Build and populate the UI with the quoted message.
      * @throws MessagingException
      */
-    private void populateUIWithQuotedMessage() throws MessagingException {
+    private void populateUIWithQuotedMessage(boolean shown) throws MessagingException {
         // TODO -- I am assuming that mSourceMessageBody will always be a text part.  Is this a safe assumption?
 
         // Handle the original message in the reply
@@ -2232,11 +2232,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Load the message with the reply header.
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
 
-            showOrHideQuotedText(QuotedTextMode.SHOW);
         } else if (mMessageFormat == MessageFormat.TEXT) {
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
+        }
 
+        if (shown) {
             showOrHideQuotedText(QuotedTextMode.SHOW);
+        }
+        else {
+            showOrHideQuotedText(QuotedTextMode.HIDE);
         }
     }
 
@@ -2448,7 +2452,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     // part).
                     if (mSourceProcessed) {
                         try {
-                            populateUIWithQuotedMessage();
+                            populateUIWithQuotedMessage(true);
                         } catch (MessagingException e) {
                             // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                             showOrHideQuotedText(QuotedTextMode.HIDE);
