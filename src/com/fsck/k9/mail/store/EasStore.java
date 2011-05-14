@@ -1,48 +1,21 @@
 package com.fsck.k9.mail.store;
 
-import android.util.Log;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.transport.TrustedSocketFactory;
-import org.apache.http.*;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.net.ssl.SSLException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +24,64 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-import java.util.zip.GZIPInputStream;
+
+import javax.net.ssl.SSLException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import android.content.Context;
+import android.util.Base64;
+import android.util.Log;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.store.WebDavStore.WebDavHttpClient;
+import com.fsck.k9.mail.store.exchange.Eas;
+import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
+import com.fsck.k9.mail.store.exchange.adapter.Serializer;
+import com.fsck.k9.mail.store.exchange.adapter.Tags;
+import com.fsck.k9.mail.transport.TrustedSocketFactory;
 
 /**
  * <pre>
@@ -88,11 +118,36 @@ public class EasStore extends Store {
     private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
     private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
 
+    static private final String PING_COMMAND = "Ping";
+    // Command timeout is the the time allowed for reading data from an open connection before an
+    // IOException is thrown.  After a small added allowance, our watchdog alarm goes off (allowing
+    // us to detect a silently dropped connection).  The allowance is defined below.
+    static private final int COMMAND_TIMEOUT = 30*1000;
+
+    // MSFT's custom HTTP result code indicating the need to provision
+    static private final int HTTP_NEED_PROVISIONING = 449;
+
+    // The EAS protocol Provision status for "we implement all of the policies"
+    static private final String PROVISION_STATUS_OK = "1";
+    // The EAS protocol Provision status meaning "we partially implement the policies"
+    static private final String PROVISION_STATUS_PARTIAL = "2";
+
+    static public final String EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML";
+    static public final String EAS_2_POLICY_TYPE = "MS-WAP-Provisioning-XML";
+
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
     private String mAlias; /* Stores the alias for the user's mailbox */
     private String mPassword; /* Stores the password for authentications */
     private String mUrl; /* Stores the base URL for the server */
+
+    // Reasonable default
+    public String mProtocolVersion = Eas.DEFAULT_PROTOCOL_VERSION;
+    public Double mProtocolVersionDouble;
+    protected String mDeviceId = null;
+    protected String mDeviceType = "Android";
+    private String mCmdString = null;
+    
     private String mHost; /* Stores the host name for the server */
     private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
@@ -100,7 +155,7 @@ public class EasStore extends Store {
     private URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
 
     private boolean mSecure;
-    private WebDavHttpClient mHttpClient = null;
+    private HttpClient mHttpClient = null;
     private HttpContext mContext = null;
     private String mAuthString;
     private CookieStore mAuthCookies = null;
@@ -232,7 +287,370 @@ public class EasStore extends Store {
 
     @Override
     public void checkSettings() throws MessagingException {
-        authenticate();
+        boolean ssl = true;
+        
+		boolean trustCertificates = true;
+		
+		validateAccount(
+        		mHost,
+        		mUsername,
+        		mPassword,
+        		mUri.getPort(),
+        		ssl,
+        		trustCertificates,
+        		K9.app);
+    }
+    
+    public void validateAccount(String hostAddress, String userName, String password, int port,
+            boolean ssl, boolean trustCertificates, Context context) throws MessagingException {
+        try {
+        	Log.i(K9.LOG_TAG, "Testing EAS: " + hostAddress + ", " + userName + ", ssl = " + (ssl ? "1" : "0"));
+            
+//        	Account account = Preferences.getPreferences(context).newAccount();
+//            account.setName("%TestAccount%");
+//            account.setStoreUri(mUri.toString());
+			EasStore svc = new EasStore(mAccount);
+            svc.mContext = mContext;
+            svc.mHost = hostAddress;
+            svc.mUsername = userName;
+            svc.mPassword = password;
+//            svc.mSsl = ssl;
+//            svc.mTrustSsl = trustCertificates;
+            // We mustn't use the "real" device id or we'll screw up current accounts
+            // Any string will do, but we'll go for "validate"
+            svc.mDeviceId = "validate";
+            HttpResponse resp = svc.sendHttpClientOptions();
+            int code = resp.getStatusLine().getStatusCode();
+            Log.e(K9.LOG_TAG, "Validation (OPTIONS) response: " + code);
+            if (code == HttpStatus.SC_OK) {
+                // No exception means successful validation
+                Header commands = resp.getFirstHeader("MS-ASProtocolCommands");
+                Header versions = resp.getFirstHeader("ms-asprotocolversions");
+                if (commands == null || versions == null) {
+                	Log.e(K9.LOG_TAG, "OPTIONS response without commands or versions; reporting I/O error");
+                    throw new MessagingException("MessagingException.IOERROR");
+                }
+
+                // Make sure we've got the right protocol version set up
+                setupProtocolVersion(svc, versions);
+
+                // Run second test here for provisioning failures...
+                Serializer s = new Serializer();
+                Log.e(K9.LOG_TAG, "Validate: try folder sync");
+                s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY).text("0")
+                    .end().end().done();
+                resp = svc.sendHttpClientPost("FolderSync", s.toByteArray());
+                code = resp.getStatusLine().getStatusCode();
+                // We'll get one of the following responses if policies are required by the server
+                if (code == HttpStatus.SC_FORBIDDEN || code == HTTP_NEED_PROVISIONING) {
+                    // Get the policies and see if we are able to support them
+                	Log.e(K9.LOG_TAG, "Validate: provisioning required");
+                    if (svc.canProvision() != null) {
+                        // If so, send the advisory Exception (the account may be created later)
+                    	Log.e(K9.LOG_TAG, "Validate: provisioning is possible");
+                        //throw new MessagingException("MessagingException.SECURITY_POLICIES_REQUIRED");
+                    	return;
+                    } else
+                    	Log.e(K9.LOG_TAG, "Validate: provisioning not possible");
+                        // If not, send the unsupported Exception (the account won't be created)
+                        throw new MessagingException(
+                                "MessagingException.SECURITY_POLICIES_UNSUPPORTED");
+                } else if (code == HttpStatus.SC_NOT_FOUND) {
+                	Log.e(K9.LOG_TAG, "Wrong address or bad protocol version");
+                    // We get a 404 from OWA addresses (which are NOT EAS addresses)
+                    throw new MessagingException("MessagingException.PROTOCOL_VERSION_UNSUPPORTED");
+                } else if (code != HttpStatus.SC_OK) {
+                    // Fail generically with anything other than success
+                	Log.e(K9.LOG_TAG, "Unexpected response for FolderSync: " + code);
+                    throw new MessagingException("MessagingException.UNSPECIFIED_EXCEPTION");
+                }
+                Log.e(K9.LOG_TAG, "Validation successful");
+                return;
+            }
+            if (isAuthError(code)) {
+            	Log.e(K9.LOG_TAG, "Authentication failed");
+                throw new AuthenticationFailedException("Validation failed");
+            } else {
+                // TODO Need to catch other kinds of errors (e.g. policy) For now, report the code.
+            	Log.e(K9.LOG_TAG, "Validation failed, reporting I/O error: " + code);
+                throw new MessagingException("MessagingException.IOERROR");
+            }
+        } catch (IOException e) {
+            Throwable cause = e.getCause();
+            if (cause != null && cause instanceof CertificateException) {
+            	Log.e(K9.LOG_TAG, "CertificateException caught: ", e);
+                throw new MessagingException("MessagingException.GENERAL_SECURITY");
+            }
+            Log.e(K9.LOG_TAG, "IOException caught: ", e);
+            throw new MessagingException("MessagingException.IOERROR");
+        }
+
+    }
+    
+    private String getPolicyType() {
+        return (mProtocolVersionDouble >=
+            Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) ? EAS_12_POLICY_TYPE : EAS_2_POLICY_TYPE;
+    }
+
+    /**
+     * Obtain a set of policies from the server and determine whether those policies are supported
+     * by the device.
+     * @return the ProvisionParser (holds policies and key) if we receive policies and they are
+     * supported by the device; null otherwise
+     * @throws IOException
+     */
+    private ProvisionParser canProvision() throws IOException, MessagingException {
+        Serializer s = new Serializer();
+        s.start(Tags.PROVISION_PROVISION).start(Tags.PROVISION_POLICIES);
+        s.start(Tags.PROVISION_POLICY).data(Tags.PROVISION_POLICY_TYPE, getPolicyType())
+            .end().end().end().done();
+        HttpResponse resp = sendHttpClientPost("Provision", s.toByteArray());
+        int code = resp.getStatusLine().getStatusCode();
+        if (code == HttpStatus.SC_OK) {
+            InputStream is = resp.getEntity().getContent();
+            ProvisionParser pp = new ProvisionParser(is);
+            if (pp.parse()) {
+                // The PolicySet in the ProvisionParser will have the requirements for all KNOWN
+                // policies.  If others are required, hasSupportablePolicySet will be false
+                if (pp.hasSupportablePolicySet()) {
+                    // If the policies are supportable (in this context, meaning that there are no
+                    // completely unimplemented policies required), just return the parser itself
+                    return pp;
+                } else {
+                    // Try to acknowledge using the "partial" status (i.e. we can partially
+                    // accommodate the required policies).  The server will agree to this if the
+                    // "allow non-provisionable devices" setting is enabled on the server
+                    String policyKey = acknowledgeProvision(pp.getPolicyKey(),
+                            PROVISION_STATUS_PARTIAL);
+                    // Return either the parser (success) or null (failure)
+                    return (policyKey != null) ? pp : null;
+                }
+            }
+        }
+        // On failures, simply return null
+        return null;
+    }
+    
+    private String acknowledgeProvision(String tempKey, String result) throws IOException, MessagingException {
+        return acknowledgeProvisionImpl(tempKey, result, false);
+     }
+
+    private String acknowledgeProvisionImpl(String tempKey, String status,
+            boolean remoteWipe) throws IOException, MessagingException {
+        Serializer s = new Serializer();
+        s.start(Tags.PROVISION_PROVISION).start(Tags.PROVISION_POLICIES);
+        s.start(Tags.PROVISION_POLICY);
+
+        // Use the proper policy type, depending on EAS version
+        s.data(Tags.PROVISION_POLICY_TYPE, getPolicyType());
+
+        s.data(Tags.PROVISION_POLICY_KEY, tempKey);
+        s.data(Tags.PROVISION_STATUS, status);
+        s.end().end(); // PROVISION_POLICY, PROVISION_POLICIES
+        if (remoteWipe) {
+            s.start(Tags.PROVISION_REMOTE_WIPE);
+            s.data(Tags.PROVISION_STATUS, PROVISION_STATUS_OK);
+            s.end();
+        }
+        s.end().done(); // PROVISION_PROVISION
+        HttpResponse resp = sendHttpClientPost("Provision", s.toByteArray());
+        int code = resp.getStatusLine().getStatusCode();
+        if (code == HttpStatus.SC_OK) {
+            InputStream is = resp.getEntity().getContent();
+            ProvisionParser pp = new ProvisionParser(is);
+            if (pp.parse()) {
+                // Return the final policy key from the ProvisionParser
+                return pp.getPolicyKey();
+            }
+        }
+        // On failures, return null
+        return null;
+    }
+
+
+
+    /**
+     * Determine whether an HTTP code represents an authentication error
+     * @param code the HTTP code returned by the server
+     * @return whether or not the code represents an authentication error
+     */
+    protected boolean isAuthError(int code) {
+        return (code == HttpStatus.SC_UNAUTHORIZED) || (code == HttpStatus.SC_FORBIDDEN);
+    }
+
+    
+    private void setupProtocolVersion(EasStore service, Header versionHeader)
+		    throws MessagingException {
+		// The string is a comma separated list of EAS versions in ascending order
+		// e.g. 1.0,2.0,2.5,12.0,12.1
+		String supportedVersions = versionHeader.getValue();
+		Log.i(K9.LOG_TAG, "Server supports versions: " + supportedVersions);
+		String[] supportedVersionsArray = supportedVersions.split(",");
+		String ourVersion = null;
+		// Find the most recent version we support
+		for (String version: supportedVersionsArray) {
+		    if (version.equals(Eas.SUPPORTED_PROTOCOL_EX2003) ||
+		            version.equals(Eas.SUPPORTED_PROTOCOL_EX2007)) {
+		        ourVersion = version;
+		    }
+		}
+		// If we don't support any of the servers supported versions, throw an exception here
+		// This will cause validation to fail
+		if (ourVersion == null) {
+		    Log.w(K9.LOG_TAG, "No supported EAS versions: " + supportedVersions);
+		    throw new MessagingException("MessagingException.PROTOCOL_VERSION_UNSUPPORTED");
+		} else {
+		    service.mProtocolVersion = ourVersion;
+		    service.mProtocolVersionDouble = Double.parseDouble(ourVersion);
+		}
+	}
+
+
+    
+    protected HttpResponse sendHttpClientPost(String cmd, byte[] bytes) throws IOException, MessagingException {
+        return sendHttpClientPost(cmd, new ByteArrayEntity(bytes), COMMAND_TIMEOUT);
+    }
+
+    protected HttpResponse sendHttpClientPost(String cmd, HttpEntity entity) throws IOException, MessagingException {
+        return sendHttpClientPost(cmd, entity, COMMAND_TIMEOUT);
+    }
+
+    /**
+     * Convenience method for executePostWithTimeout for use other than with the Ping command
+     */
+    protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout)
+            throws IOException {
+        return executePostWithTimeout(client, method, timeout, false);
+    }
+
+    /**
+     * Handle executing an HTTP POST command with proper timeout, watchdog, and ping behavior
+     * @param client the HttpClient
+     * @param method the HttpPost
+     * @param timeout the timeout before failure, in ms
+     * @param isPingCommand whether the POST is for the Ping command (requires wakelock logic)
+     * @return the HttpResponse
+     * @throws IOException
+     */
+    protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout,
+            boolean isPingCommand) throws IOException {
+//        synchronized(getSynchronizer()) {
+//            mPendingPost = method;
+//            long alarmTime = timeout + WATCHDOG_TIMEOUT_ALLOWANCE;
+//            if (isPingCommand) {
+//                SyncManager.runAsleep(mMailboxId, alarmTime);
+//            } else {
+//                SyncManager.setWatchdogAlarm(mMailboxId, alarmTime);
+//            }
+//        }
+//        try {
+            return client.execute(method);
+//        } finally {
+//            synchronized(getSynchronizer()) {
+//                if (isPingCommand) {
+//                    SyncManager.runAwake(mMailboxId);
+//                } else {
+//                    SyncManager.clearWatchdogAlarm(mMailboxId);
+//                }
+//                mPendingPost = null;
+//            }
+//        }
+    }
+
+    protected HttpResponse sendHttpClientPost(String cmd, HttpEntity entity, int timeout)
+		    throws IOException, MessagingException {
+		HttpClient client = getHttpClient();
+		boolean isPingCommand = cmd.equals(PING_COMMAND);
+		
+		// Split the mail sending commands
+		String extra = null;
+		boolean msg = false;
+		if (cmd.startsWith("SmartForward&") || cmd.startsWith("SmartReply&")) {
+		    int cmdLength = cmd.indexOf('&');
+		    extra = cmd.substring(cmdLength);
+		    cmd = cmd.substring(0, cmdLength);
+		    msg = true;
+		} else if (cmd.startsWith("SendMail&")) {
+		    msg = true;
+		}
+		
+		String us = makeUriString(cmd, extra);
+		HttpPost method = new HttpPost(URI.create(us));
+		// Send the proper Content-Type header
+		// If entity is null (e.g. for attachments), don't set this header
+		if (msg) {
+		    method.setHeader("Content-Type", "message/rfc822");
+		} else if (entity != null) {
+		    method.setHeader("Content-Type", "application/vnd.ms-sync.wbxml");
+		}
+		setHeaders(method, !cmd.equals(PING_COMMAND));
+		method.setEntity(entity);
+		return executePostWithTimeout(client, method, timeout, isPingCommand);
+	}
+
+    protected HttpResponse sendHttpClientOptions() throws IOException, MessagingException {
+        HttpClient client = getHttpClient();
+        String us = makeUriString("OPTIONS", null);
+        HttpOptions method = new HttpOptions(URI.create(us));
+        setHeaders(method, false);
+        return client.execute(method);
+    }
+    
+    /**
+     * Set standard HTTP headers, using a policy key if required
+     * @param method the method we are going to send
+     * @param usePolicyKey whether or not a policy key should be sent in the headers
+     */
+    /*package*/ void setHeaders(HttpRequestBase method, boolean usePolicyKey) {
+        method.setHeader("Authorization", mAuthString);
+        method.setHeader("MS-ASProtocolVersion", mProtocolVersion);
+        method.setHeader("Connection", "keep-alive");
+        method.setHeader("User-Agent", mDeviceType + '/' + Eas.VERSION);
+        if (usePolicyKey) {
+            // If there's an account in existence, use its key; otherwise (we're creating the
+            // account), send "0".  The server will respond with code 449 if there are policies
+            // to be enforced
+            String key = "0";
+//            if (mAccount != null) {
+//                String accountKey = mSecuritySyncKey;
+//                if (!TextUtils.isEmpty(accountKey)) {
+//                    key = accountKey;
+//                }
+//            }
+            method.setHeader("X-MS-PolicyKey", key);
+        }
+    }
+
+    private String makeUriString(String cmd, String extra) throws IOException {
+        // Cache the authentication string and the command string
+       if (mAuthString == null || mCmdString == null) {
+           cacheAuthAndCmdString();
+       }
+       boolean mSsl = true;
+       boolean mTrustSsl = false;
+       String us = (mSsl ? (mTrustSsl ? "httpts" : "https") : "http") + "://" + mHost +
+           "/Microsoft-Server-ActiveSync";
+       if (cmd != null) {
+           us += "?Cmd=" + cmd + mCmdString;
+       }
+       if (extra != null) {
+           us += extra;
+       }
+       return us;
+   }
+
+    /**
+     * Using mUserName and mPassword, create and cache mAuthString and mCacheString, which are used
+     * in all HttpPost commands.  This should be called if these strings are null, or if mUserName
+     * and/or mPassword are changed
+     */
+    @SuppressWarnings("deprecation")
+    private void cacheAuthAndCmdString() {
+        String safeUserName = URLEncoder.encode(mUsername);
+        String cs = mUsername + ':' + mPassword;
+        mAuthString = "Basic " + Base64.encodeToString(cs.getBytes(), Base64.NO_WRAP);
+        mCmdString = "&User=" + safeUserName + "&DeviceId=" + mDeviceId +
+            "&DeviceType=" + mDeviceType;
     }
 
     @Override
@@ -594,15 +1012,10 @@ public class EasStore extends Store {
                         throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
                                                      " during request processing: " + response.getStatusLine().toString());
                     }
-                } else if (info.requiredAuthType == AUTH_TYPE_FORM_BASED) {
-                    doFBA(info);
                 }
             } else if (mAuthentication == AUTH_TYPE_BASIC) {
                 // Nothing to do, we authenticate with every request when
                 // using basic authentication.
-            } else if (mAuthentication == AUTH_TYPE_FORM_BASED) {
-                // Our cookie expired, re-authenticate.
-                doFBA(null);
             }
         } catch (IOException ioe) {
             Log.e(K9.LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + processException(ioe));
@@ -632,13 +1045,13 @@ public class EasStore extends Store {
         // The latter two indicate form-based authentication.
         ConnectionInfo info = new ConnectionInfo();
 
-        WebDavHttpClient httpClient = getHttpClient();
+        HttpClient httpClient = getHttpClient();
 
         HttpGeneric request = new HttpGeneric(mUrl);
         request.setMethod("GET");
 
         try {
-            HttpResponse response = httpClient.executeOverride(request, mContext);
+            HttpResponse response = httpClient.execute(request, mContext);
             info.statusCode = response.getStatusLine().getStatusCode();
 
             if (info.statusCode == 401) {
@@ -682,204 +1095,6 @@ public class EasStore extends Store {
         return info;
     }
 
-    /**
-     * Performs form-based authentication.
-     *
-     * @throws MessagingException
-     */
-    public void doFBA(ConnectionInfo info)
-    throws IOException, MessagingException {
-        // Clear out cookies from any previous authentication.
-        mAuthCookies.clear();
-
-        WebDavHttpClient httpClient = getHttpClient();
-
-        String loginUrl;
-        if (info != null) {
-            loginUrl = info.guessedAuthUrl;
-        } else if (mCachedLoginUrl != null && !mCachedLoginUrl.equals("")) {
-            loginUrl = mCachedLoginUrl;
-        } else {
-            throw new MessagingException("No valid login URL available for form-based authentication.");
-        }
-
-        HttpGeneric request = new HttpGeneric(loginUrl);
-        request.setMethod("POST");
-
-        // Build the POST data.
-        ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
-        pairs.add(new BasicNameValuePair("destination", mUrl));
-        pairs.add(new BasicNameValuePair("username", mUsername));
-        pairs.add(new BasicNameValuePair("password", mPassword));
-        pairs.add(new BasicNameValuePair("flags", "0"));
-        pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
-        pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
-        pairs.add(new BasicNameValuePair("trusted", "0"));
-
-        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
-        request.setEntity(formEntity);
-
-        HttpResponse response = httpClient.executeOverride(request, mContext);
-        boolean authenticated = testAuthenticationResponse(response);
-        if (!authenticated) {
-            // Check the response from the authentication request above for a form action.
-            String formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
-            if (formAction == null) {
-                // If there is no form action, try using our redirect URL from the initial connection.
-                if (info != null && info.redirectUrl != null && !info.redirectUrl.equals("")) {
-                    loginUrl = info.redirectUrl;
-
-                    request = new HttpGeneric(loginUrl);
-                    request.setMethod("GET");
-
-                    response = httpClient.executeOverride(request, mContext);
-                    formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
-                }
-            }
-            if (formAction != null) {
-                try {
-                    URI formActionUri = new URI(formAction);
-                    URI loginUri = new URI(loginUrl);
-
-                    if (formActionUri.isAbsolute()) {
-                        // The form action is an absolute URL, just use it.
-                        loginUrl = formAction;
-                    } else {
-                        // Append the form action to our current URL, minus the file name.
-                        String urlPath;
-                        if (formAction.startsWith("/")) {
-                            urlPath = formAction;
-                        } else {
-                            urlPath = loginUri.getPath();
-                            int lastPathPos = urlPath.lastIndexOf('/');
-                            if (lastPathPos > -1) {
-                                urlPath = urlPath.substring(0, lastPathPos + 1);
-                                urlPath = urlPath.concat(formAction);
-                            }
-                        }
-
-                        // Reconstruct the login URL based on the original login URL and the form action.
-                        URI finalUri = new URI(loginUri.getScheme(),
-                                               loginUri.getUserInfo(),
-                                               loginUri.getHost(),
-                                               loginUri.getPort(),
-                                               urlPath,
-                                               null,
-                                               null);
-                        loginUrl = finalUri.toString();
-                    }
-
-                    // Retry the login using our new URL.
-                    request = new HttpGeneric(loginUrl);
-                    request.setMethod("POST");
-                    request.setEntity(formEntity);
-
-                    response = httpClient.executeOverride(request, mContext);
-                    authenticated = testAuthenticationResponse(response);
-                } catch (URISyntaxException e) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
-                    throw new MessagingException("URISyntaxException caught", e);
-                }
-            } else {
-                throw new MessagingException("A valid URL for Exchange authentication could not be found.");
-            }
-        }
-
-        if (authenticated) {
-            mAuthentication = AUTH_TYPE_FORM_BASED;
-            mCachedLoginUrl = loginUrl;
-        } else {
-            throw new MessagingException("Invalid credentials provided for authentication.");
-        }
-    }
-
-    /**
-     * Searches the specified stream for an HTML form and returns the form's action target.
-     *
-     * @throws IOException
-     */
-    private String findFormAction(InputStream istream)
-    throws IOException {
-        String formAction = null;
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
-        String tempText;
-
-        // Read line by line until we find something like: <form action="owaauth.dll"...>.
-        while ((tempText = reader.readLine()) != null &&
-                formAction == null) {
-            if (tempText.indexOf(" action=") > -1) {
-                String[] actionParts = tempText.split(" action=");
-                if (actionParts.length > 1 && actionParts[1].length() > 1) {
-                    char openQuote = actionParts[1].charAt(0);
-                    int closePos = actionParts[1].indexOf(openQuote, 1);
-                    if (closePos > 1) {
-                        formAction = actionParts[1].substring(1, closePos);
-                        // Remove any GET parameters.
-                        int quesPos = formAction.indexOf('?');
-                        if (quesPos != -1) {
-                            formAction = formAction.substring(0, quesPos);
-                        }
-                    }
-                }
-            }
-        }
-
-        return formAction;
-    }
-
-    private boolean testAuthenticationResponse(HttpResponse response)
-    throws MessagingException {
-        boolean authenticated = false;
-        int statusCode = response.getStatusLine().getStatusCode();
-
-        // Exchange 2007 will return a 302 status code no matter what.
-        if (((statusCode >= 200 && statusCode < 300) || statusCode == 302) &&
-                mAuthCookies != null && !mAuthCookies.getCookies().isEmpty()) {
-            // We may be authenticated, we need to send a test request to know for sure.
-            // Exchange 2007 adds the same cookies whether the username and password were valid or not.
-            ConnectionInfo info = doInitialConnection();
-            if (info.statusCode >= 200 && info.statusCode < 300) {
-                authenticated = true;
-            } else if (info.statusCode == 302) {
-                // If we are successfully authenticated, Exchange will try to redirect us to our OWA inbox.
-                // Otherwise, it will redirect us to a logon page.
-                // Our URL is in the form: https://hostname:port/Exchange/alias.
-                // The redirect is in the form: https://hostname:port/owa/alias.
-                // Do a simple replace and compare the resulting strings.
-                try {
-                    String thisPath = new URI(mUrl).getPath();
-                    String redirectPath = new URI(info.redirectUrl).getPath();
-
-                    if (!thisPath.endsWith("/")) {
-                        thisPath = thisPath.concat("/");
-                    }
-                    if (!redirectPath.endsWith("/")) {
-                        redirectPath = redirectPath.concat("/");
-                    }
-
-                    if (redirectPath.equalsIgnoreCase(thisPath)) {
-                        authenticated = true;
-                    } else {
-                        int found = thisPath.indexOf('/', 1);
-                        if (found != -1) {
-                            String replace = thisPath.substring(0, found + 1);
-                            redirectPath = redirectPath.replace("/owa/", replace);
-                            if (redirectPath.equalsIgnoreCase(thisPath)) {
-                                authenticated = true;
-                            }
-                        }
-                    }
-                } catch (URISyntaxException e) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
-                    throw new MessagingException("URISyntaxException caught", e);
-                }
-            }
-        }
-
-        return authenticated;
-    }
-
     public CookieStore getAuthCookies() {
         return mAuthCookies;
     }
@@ -892,10 +1107,10 @@ public class EasStore extends Store {
         return mUrl;
     }
 
-    public WebDavHttpClient getHttpClient() throws MessagingException {
+    public HttpClient getHttpClient() throws MessagingException {
         if (mHttpClient == null) {
-            mHttpClient = new WebDavHttpClient();
-            // Disable automatic redirects on the http client.
+            mHttpClient = new DefaultHttpClient();
+            // Disable automatDic redirects on the http client.
             mHttpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
 
             // Setup a cookie store for forms-based authentication.
@@ -927,7 +1142,7 @@ public class EasStore extends Store {
             return istream;
         }
 
-        WebDavHttpClient httpclient = getHttpClient();
+        HttpClient httpclient = getHttpClient();
 
         try {
             int statusCode = -1;
@@ -954,7 +1169,7 @@ public class EasStore extends Store {
             }
 
             httpmethod.setMethod(method);
-            response = httpclient.executeOverride(httpmethod, mContext);
+            response = httpclient.execute(httpmethod, mContext);
             statusCode = response.getStatusLine().getStatusCode();
 
             entity = response.getEntity();
@@ -962,20 +1177,14 @@ public class EasStore extends Store {
             if (statusCode == 401) {
                 throw new MessagingException("Invalid username or password for Basic authentication.");
             } else if (statusCode == 440) {
-                if (tryAuth && mAuthentication == AUTH_TYPE_FORM_BASED) {
-                    // Our cookie expired, re-authenticate.
-                    doFBA(null);
-                    sendRequest(url, method, messageBody, headers, false);
-                } else {
-                    throw new MessagingException("Authentication failure in sendRequest().");
-                }
+                throw new MessagingException("Authentication failure in sendRequest().");
             } else if (statusCode < 200 || statusCode >= 300) {
                 throw new IOException("Error with code " + statusCode + " during request processing: " +
                                       response.getStatusLine().toString());
             }
 
             if (entity != null) {
-                istream = WebDavHttpClient.getUngzippedContent(entity);
+                istream = entity.getContent();
             }
         } catch (UnsupportedEncodingException uee) {
             Log.e(K9.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
@@ -1419,7 +1628,7 @@ public class EasStore extends Store {
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
         throws MessagingException {
-            WebDavHttpClient httpclient;
+            HttpClient httpclient;
             httpclient = getHttpClient();
 
             /**
@@ -1463,7 +1672,7 @@ public class EasStore extends Store {
                     if (mAuthentication == AUTH_TYPE_BASIC) {
                         httpget.setHeader("Authorization", mAuthString);
                     }
-                    response = httpclient.executeOverride(httpget, mContext);
+                    response = httpclient.execute(httpget, mContext);
 
                     statusCode = response.getStatusLine().getStatusCode();
 
@@ -1732,7 +1941,7 @@ public class EasStore extends Store {
             Message[] retMessages = new Message[messages.length];
             int ind = 0;
 
-            WebDavHttpClient httpclient = getHttpClient();
+            HttpClient httpclient = getHttpClient();
 
             for (Message message : messages) {
                 HttpGeneric httpmethod;
@@ -1772,7 +1981,7 @@ public class EasStore extends Store {
                         httpmethod.setHeader("Authorization", mAuthString);
                     }
 
-                    response = httpclient.executeOverride(httpmethod, mContext);
+                    response = httpclient.execute(httpmethod, mContext);
                     statusCode = response.getStatusLine().getStatusCode();
 
                     if (statusCode < 200 ||
@@ -2291,49 +2500,6 @@ public class EasStore extends Store {
             if (method != null) {
                 METHOD_NAME = method;
             }
-        }
-    }
-
-    public static class WebDavHttpClient extends DefaultHttpClient {
-        /*
-         * Copyright (C) 2007 The Android Open Source Project
-         *
-         * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
-         * compliance with the License. You may obtain a copy of the License at
-         *
-         * http://www.apache.org/licenses/LICENSE-2.0
-         *
-         * Unless required by applicable law or agreed to in writing, software distributed under the License is
-         * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
-         * the License for the specific language governing permissions and limitations under the License.
-         */
-        public static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
-            Log.i(K9.LOG_TAG, "Requesting gzipped data");
-            request.addHeader("Accept-Encoding", "gzip");
-        }
-
-        public static InputStream getUngzippedContent(HttpEntity entity)
-        throws IOException {
-            InputStream responseStream = entity.getContent();
-            if (responseStream == null)
-                return responseStream;
-            Header header = entity.getContentEncoding();
-            if (header == null)
-                return responseStream;
-            String contentEncoding = header.getValue();
-            if (contentEncoding == null)
-                return responseStream;
-            if (contentEncoding.contains("gzip")) {
-                Log.i(K9.LOG_TAG, "Response is gzipped");
-                responseStream = new GZIPInputStream(responseStream);
-            }
-            return responseStream;
-        }
-
-        public HttpResponse executeOverride(HttpUriRequest request, HttpContext context)
-        throws IOException {
-            modifyRequestToAcceptGzipResponse(request);
-            return super.execute(request, context);
         }
     }
 
