@@ -902,6 +902,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="animations_summary">Use gaudy visual effects</string>
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
+    
+	<string name="default_account_title">Start account on load</string>
+    <string name="default_account_summary">Select an account which will open automatically when K-9 Mail starts</string>
+    <string name="default_account_dialog">Choose default inbox to log into</string>
 
     <string name="compact_layouts_title">Compact layouts</string>
     <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>

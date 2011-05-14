@@ -3,10 +3,10 @@
 	<classpathentry excluding="**/.svn/**|.svn/**" kind="src" path="src"/>
 	<classpathentry excluding="**/.svn/**|.svn/**" kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="lib" path="libs/apache-mime4j-core-0.7-SNAPSHOT.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/apache-mime4j-dom-0.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/apache-mime4j-core-0.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/apache-mime4j-dom-0.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="libs/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="libs/jzlib-1.0.7.jar"/>
 	<classpathentry kind="lib" path="libs/jutf7-1.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/jzlib-1.0.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

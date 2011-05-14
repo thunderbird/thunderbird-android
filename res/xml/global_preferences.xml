@@ -231,6 +231,12 @@
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
+            
+        <ListPreference
+            android:persistent="false"
+            android:key="default_account"
+            android:title="@string/default_account_title"
+            android:dialogTitle="@string/default_account_dialog" />
 
     </PreferenceScreen>
 

@@ -45,6 +45,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_GESTURES = "gestures";
+    private static final String PREFERENCE_DEFAULT_ACCOUNT = "default_account";
     private static final String PREFERENCE_VOLUME_NAVIGATION = "volumeNavigation";
     private static final String PREFERENCE_MANAGE_BACK = "manage_back";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
@@ -82,6 +83,7 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
+    private ListPreference mDefaultAccount;
     private CheckBoxListPreference mVolumeNavigation;
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
@@ -166,6 +168,22 @@ public class Prefs extends K9PreferenceActivity {
 
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
+        
+        mDefaultAccount = (ListPreference) findPreference(PREFERENCE_DEFAULT_ACCOUNT);
+        mDefaultAccount.setEntries(K9.getDefaultAccountsEntries());
+        CharSequence[] entryValues = K9.getDefaultAccountEntryValues();
+        mDefaultAccount.setEntryValues(entryValues);
+        mDefaultAccount.setValueIndex(getDefaultAccountPreferredIndex(entryValues));
+        
+        mDefaultAccount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            	final String summary = newValue.toString();
+                int index = mDefaultAccount.findIndexOfValue(summary);
+                mDefaultAccount.setSummary(mDefaultAccount.getEntries()[index]);
+                mDefaultAccount.setValue(summary);
+                return false;
+            }
+        });
 
         compactLayouts = (CheckBoxPreference)findPreference(PREFERENCE_COMPACT_LAYOUTS);
         compactLayouts.setChecked(K9.useCompactLayouts());
@@ -307,6 +325,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
+        K9.setDefaultAccount(mDefaultAccount.getValue());
         K9.setCompactLayouts(compactLayouts.isChecked());
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
@@ -380,5 +399,19 @@ public class Prefs extends K9PreferenceActivity {
             }
         },
         K9.getContactNameColor()).show();
+    }
+    
+    private int getDefaultAccountPreferredIndex(CharSequence[] entryValues){
+    	
+    	String UUID = K9.getDefaultAccount();
+    	
+    	for(int i=0; i<entryValues.length; i++){
+    		if(entryValues[i].equals(UUID)){
+    			return i;
+    		}    		
+    	}
+    	
+    	
+    	return 0;
     }
 }

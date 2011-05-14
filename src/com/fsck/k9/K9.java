@@ -164,6 +164,7 @@ public class K9 extends Application {
     private static boolean mMessageViewReturnToList = false;
 
     private static boolean mGesturesEnabled = true;
+    private static String mDefaultAccount = "0";
     private static boolean mUseVolumeKeysForNavigation = false;
     private static boolean mUseVolumeKeysForListNavigation = false;
     private static boolean mManageBack = false;
@@ -416,6 +417,7 @@ public class K9 extends Application {
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
+        editor.putString("defaultAccount", mDefaultAccount);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
@@ -471,6 +473,7 @@ public class K9 extends Application {
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mDefaultAccount = sprefs.getString("defaultAccount", "0");
         mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
         mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
         mManageBack = sprefs.getBoolean("manageBack", false);
@@ -674,6 +677,14 @@ public class K9 extends Application {
     public static void setGesturesEnabled(boolean gestures) {
         mGesturesEnabled = gestures;
     }
+    
+    public static String getDefaultAccount() {
+        return mDefaultAccount;
+    }
+    
+    public static void setDefaultAccount(String defaultAccount) {
+        mDefaultAccount = defaultAccount;
+    }  
 
     public static boolean useVolumeKeysForNavigationEnabled() {
         return mUseVolumeKeysForNavigation;
@@ -975,6 +986,37 @@ public class K9 extends Application {
     public static void setCompactLayouts(boolean compactLayouts) {
         K9.compactLayouts = compactLayouts;
     }
+    
+    public static CharSequence[] getDefaultAccountsEntries()
+    {
+    	Account[] accounts = Preferences.getPreferences(null).getAccounts();
+        
+        CharSequence[] default_email_entries = new CharSequence[accounts.length + 1];
+        default_email_entries[0] = "None";
+        
+        for(int i=0; i<accounts.length; i++)
+        {        	
+        	default_email_entries[i+1] = ((Account)accounts[i]).getEmail();
+        }        
+    	
+        return default_email_entries;
+    }
+    
+    public static CharSequence[] getDefaultAccountEntryValues()
+    {
+    	Account[] accounts = Preferences.getPreferences(null).getAccounts();
+    	
+    	CharSequence[] default_email_entryValues = new CharSequence[accounts.length + 1];
+        default_email_entryValues[0] = "0";
+        
+        for(int i=0; i<accounts.length; i++)
+        {
+        	default_email_entryValues[i+1] = ((Account)accounts[i]).getUuid().toString();        	
+        }        
+        
+    	return default_email_entryValues;
+    }
+    
 
     /**
      * Check if this system contains a buggy Gallery 3D package.
