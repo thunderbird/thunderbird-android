@@ -892,6 +892,11 @@ public class Pop3Store extends Store {
         }
 
         @Override
+        public boolean isFlagSupported(Flag flag) {
+            return (flag == Flag.DELETED);
+        }
+
+        @Override
         public boolean supportsFetchingFlags() {
             return false;
         }

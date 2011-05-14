@@ -2174,14 +2174,7 @@ public class MessagingController implements Runnable {
 
         Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists() ||
-                /*
-                 * Don't proceed if the remote folder doesn't support flags and
-                 * the flag to be changed isn't the deleted flag. This avoids
-                 * unnecessary connections to POP3 servers.
-                 */
-                // TODO: This should actually call a supportsSettingFlag(flag) method.
-                (!remoteFolder.supportsFetchingFlags() && !Flag.DELETED.equals(flag))) {
+        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
             return;
         }
 
@@ -3982,7 +3975,7 @@ public class MessagingController implements Runnable {
         Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountDescr = (account.getDescription() != null) ? account.getDescription() : account.getEmail(); 
+        String accountDescr = (account.getDescription() != null) ? account.getDescription() : account.getEmail();
         String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, accountDescr);
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
