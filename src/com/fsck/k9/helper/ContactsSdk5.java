@@ -1,7 +1,5 @@
 package com.fsck.k9.helper;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -85,22 +83,6 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
         }
 
         mContext.startActivity(contactIntent);
-    }
-
-    @Override
-    public String getOwnerName() {
-        String name = null;
-
-        // Get the name of the first account that has one.
-        Account[] accounts = AccountManager.get(mContext).getAccounts();
-        for (final Account account : accounts) {
-            if (account.name != null) {
-                name = account.name;
-                break;
-            }
-        }
-
-        return name;
     }
 
     @Override

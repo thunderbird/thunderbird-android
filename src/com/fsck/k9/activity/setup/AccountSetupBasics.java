@@ -18,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -134,20 +133,11 @@ public class AccountSetupBasics extends K9Activity
     private String getOwnerName() {
         String name = null;
         try {
-            // TODO - find some way to get the user's real name
-            // what we did here didn't work on recent android
-            // and would print things like their gmail address
-            //  name = Contacts.getInstance(this).getOwnerName();
+            name = getDefaultAccountName();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get owner name, using default account name", e);
+            Log.e(K9.LOG_TAG, "Could not get default account name", e);
         }
-        if (name == null || name.length() == 0) {
-            try {
-                name = getDefaultAccountName();
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not get default account name", e);
-            }
-        }
+
         if (name == null) {
             name = "";
         }

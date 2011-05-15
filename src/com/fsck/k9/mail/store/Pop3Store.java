@@ -44,6 +44,13 @@ public class Pop3Store extends Store {
     private Pop3Capabilities mCapabilities;
 
     /**
+     * This value is {@code true} if the server supports the CAPA command but doesn't advertise
+     * support for the TOP command OR if the server doesn't support the CAPA command and we
+     * already unsuccessfully tried to use the TOP command.
+     */
+    private boolean mTopNotSupported;
+
+    /**
      * pop3://user:password@server:port CONNECTION_SECURITY_NONE
      * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
      * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
@@ -276,7 +283,9 @@ public class Pop3Store extends Store {
         @Override
         public void close() {
             try {
-                executeSimpleCommand("QUIT");
+                if (isOpen()) {
+                    executeSimpleCommand("QUIT");
+                }
             } catch (Exception e) {
                 /*
                  * QUIT may fail if the connection is already closed. We don't care. It's just
@@ -656,41 +665,67 @@ public class Pop3Store extends Store {
         }
 
         /**
-         * Fetches the body of the given message, limiting the stored data
-         * to the specified number of lines. If lines is -1 the entire message
-         * is fetched. This is implemented with RETR for lines = -1 or TOP
-         * for any other value. If the server does not support TOP it is
-         * emulated with RETR and extra lines are thrown away.
-         * @param message
-         * @param lines
+         * Fetches the body of the given message, limiting the downloaded data to the specified
+         * number of lines if possible.
+         *
+         * If lines is -1 the entire message is fetched. This is implemented with RETR for
+         * lines = -1 or TOP for any other value. If the server does not support TOP, RETR is used
+         * instead.
          */
         private void fetchBody(Pop3Message message, int lines)
         throws IOException, MessagingException {
             String response = null;
-            if (lines == -1 || !mCapabilities.top) {
+
+            // Try hard to use the TOP command if we're not asked to download the whole message.
+            if (lines != -1 && (!mTopNotSupported || mCapabilities.top)) {
+                try {
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
+                        Log.d(K9.LOG_TAG, "This server doesn't support the CAPA command. " +
+                                "Checking to see if the TOP command is supported nevertheless.");
+                    }
+
+                    response = executeSimpleCommand(String.format("TOP %d %d",
+                            mUidToMsgNumMap.get(message.getUid()), lines));
+
+                    // TOP command is supported. Remember this for the next time.
+                    mCapabilities.top = true;
+                } catch (Pop3ErrorResponse e) {
+                    if (mCapabilities.top) {
+                        // The TOP command should be supported but something went wrong.
+                        throw e;
+                    } else {
+                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
+                            Log.d(K9.LOG_TAG, "The server really doesn't support the TOP " +
+                                    "command. Using RETR instead.");
+                        }
+
+                        // Don't try to use the TOP command again.
+                        mTopNotSupported = true;
+                    }
+                }
+            }
+
+            if (response == null) {
                 response = executeSimpleCommand(String.format("RETR %d",
                                                 mUidToMsgNumMap.get(message.getUid())));
-            } else {
-                response = executeSimpleCommand(String.format("TOP %d %d",
-                                                mUidToMsgNumMap.get(message.getUid()),
-                                                lines));
             }
-            if (response != null) {
-                try {
-                    message.parse(new Pop3ResponseInputStream(mIn));
-                    if (lines == -1 || !mCapabilities.top) {
-                        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                    }
-                } catch (MessagingException me) {
-                    /*
-                     * If we're only downloading headers it's possible
-                     * we'll get a broken MIME message which we're not
-                     * real worried about. If we've downloaded the body
-                     * and can't parse it we need to let the user know.
-                     */
-                    if (lines == -1) {
-                        throw me;
-                    }
+
+            try {
+                message.parse(new Pop3ResponseInputStream(mIn));
+
+                // TODO: if we've received fewer lines than requested we also have the complete message.
+                if (lines == -1 || !mCapabilities.top) {
+                    message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                }
+            } catch (MessagingException me) {
+                /*
+                 * If we're only downloading headers it's possible
+                 * we'll get a broken MIME message which we're not
+                 * real worried about. If we've downloaded the body
+                 * and can't parse it we need to let the user know.
+                 */
+                if (lines == -1) {
+                    throw me;
                 }
             }
         }
@@ -719,10 +754,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void setFlags(Flag[] flags, boolean value)
-        throws MessagingException {
-            Message[] messages = getMessages(null);
-            setFlags(messages, flags, value);
+        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+            throw new UnsupportedOperationException("POP3: No setFlags(Flag[],boolean)");
         }
 
         @Override
@@ -806,6 +839,14 @@ public class Pop3Store extends Store {
                         capabilities.top = true;
                     }
                 }
+
+                if (!capabilities.top) {
+                    /*
+                     * If the CAPA command is supported but it doesn't advertise support for the
+                     * TOP command, we won't check for it manually.
+                     */
+                    mTopNotSupported = true;
+                }
             } catch (MessagingException me) {
                 /*
                  * The server may not support the CAPA command, so we just eat this Exception
@@ -838,7 +879,7 @@ public class Pop3Store extends Store {
 
                 String response = readLine();
                 if (response.length() > 1 && response.charAt(0) == '-') {
-                    throw new MessagingException(response);
+                    throw new Pop3ErrorResponse(response);
                 }
 
                 return response;
@@ -848,6 +889,11 @@ public class Pop3Store extends Store {
                 closeIO();
                 throw new MessagingException("Unable to execute POP3 command", e);
             }
+        }
+
+        @Override
+        public boolean isFlagSupported(Flag flag) {
+            return (flag == Flag.DELETED);
         }
 
         @Override
@@ -951,6 +997,15 @@ public class Pop3Store extends Store {
             mStartOfLine = (d == '\n');
 
             return d;
+        }
+    }
+
+    /**
+     * Exception that is thrown if the server returns an error response.
+     */
+    static class Pop3ErrorResponse extends MessagingException {
+        public Pop3ErrorResponse(String message) {
+            super(message, true);
         }
     }
 }

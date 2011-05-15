@@ -98,13 +98,6 @@ public abstract class Contacts {
     }
 
     /**
-     * Get the name of the device's owner.
-     *
-     * @return The name of the owner if available. <tt>null</tt>, otherwise.
-     */
-    public abstract String getOwnerName();
-
-    /**
      * Start the activity to add information to an existing contact or add a
      * new one.
      *
