@@ -2074,6 +2074,15 @@ public class LocalStore extends Store implements Serializable {
                                 for (Part viewable : viewables) {
                                     try {
                                         String text = MimeUtility.getTextFromPart(viewable);
+
+                                        /*
+                                         * Small hack to make sure the string "null" doesn't end up
+                                         * in one of the StringBuffers.
+                                         */
+                                        if (text == null) {
+                                            text = "";
+                                        }
+
                                         /*
                                          * Anything with MIME type text/html will be stored as such. Anything
                                          * else will be stored as text/plain.
@@ -2179,6 +2188,15 @@ public class LocalStore extends Store implements Serializable {
                                 Part viewable = viewables.get(i);
                                 try {
                                     String text = MimeUtility.getTextFromPart(viewable);
+
+                                    /*
+                                     * Small hack to make sure the string "null" doesn't end up
+                                     * in one of the StringBuffers.
+                                     */
+                                    if (text == null) {
+                                        text = "";
+                                    }
+
                                     /*
                                      * Anything with MIME type text/html will be stored as such. Anything
                                      * else will be stored as text/plain.
