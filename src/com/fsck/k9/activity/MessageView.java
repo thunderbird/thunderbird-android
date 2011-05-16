@@ -668,15 +668,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
     }
 
-    private boolean isUnCheckedPgpMessage() {
-        if (mMessage != null && mPgpData.getDecryptedData() == null) {
-            if (mAccount.getCryptoProvider().isSigned(mMessage) || mAccount.getCryptoProvider().isEncrypted(mMessage)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void onReply() {
         if (mMessage != null) {
             MessageCompose.actionReply(this, mAccount, mMessage, false, mPgpData.getDecryptedData());
