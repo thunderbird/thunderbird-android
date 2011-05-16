@@ -588,6 +588,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_crypto_app_not_available">not available</string>
     <string name="account_settings_crypto_auto_signature">Auto-sign</string>
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
+    <string name="account_settings_crypto_auto_verify_decrypt">Auto verify/decrypt</string>
+    <string name="account_settings_crypto_auto_verify_decrypt_summary">Auto verify/decrypt an PGP signed/encrypted mail</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>

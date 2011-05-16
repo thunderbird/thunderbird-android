@@ -130,6 +130,7 @@ public class Account implements BaseAccount {
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
+    private boolean mCryptoAutoVerifyDecrypt;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -367,6 +368,7 @@ public class Account implements BaseAccount {
 
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
+        mCryptoAutoVerifyDecrypt = prefs.getBoolean(mUuid + ".cryptoAutoVerifyDecrypt", false);
     }
 
 
@@ -530,6 +532,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
+        editor.putBoolean(mUuid + ".cryptoAutoVerifyDecrypt", mCryptoAutoVerifyDecrypt);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -1315,6 +1318,15 @@ public class Account implements BaseAccount {
 
     public void setCryptoAutoSignature(boolean cryptoAutoSignature) {
         mCryptoAutoSignature = cryptoAutoSignature;
+    }
+
+
+    public boolean getCryptoAutoVerifyEncrypt() {
+        return mCryptoAutoVerifyDecrypt;
+    }
+
+    public void setCryptoAutoVerifyEncrypt(boolean mCryptoAutoVerifyEncrypt) {
+        this.mCryptoAutoVerifyDecrypt = mCryptoAutoVerifyEncrypt;
     }
 
     public String getInboxFolderName() {
