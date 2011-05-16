@@ -22,7 +22,6 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
@@ -1145,20 +1144,9 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                 }
 
-
-                if (isUnCheckedPgpMessage() && mAccount.getCryptoAutoVerifyEncrypt()) {
+                if (mAccount.getCryptoAutoVerifyEncrypt()) {
                     try {
-                        String data = null;
-                        Part part;
-                        part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-
-                        if (part == null) {
-                            part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-                        }
-                        if (part != null) {
-                            data = MimeUtility.getTextFromPart(part);
-                        }
-                        mAccount.getCryptoProvider().decrypt(MessageView.this, data, mPgpData);
+                        mAccount.getCryptoProvider().decrypt(MessageView.this, mMessage, mPgpData);
                     } catch (MessagingException e) {
                         Log.e(K9.LOG_TAG, "Unable to decrypt email.", e);
                     }
