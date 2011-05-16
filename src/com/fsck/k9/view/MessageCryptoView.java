@@ -103,15 +103,7 @@ public class MessageCryptoView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 try {
-                    String data = null;
-                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                    if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-                    }
-                    if (part != null) {
-                        data = MimeUtility.getTextFromPart(part);
-                    }
-                    cryptoProvider.decrypt(mActivity, data, pgpData);
+                    cryptoProvider.decrypt(mActivity, message, pgpData);
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
                 }
