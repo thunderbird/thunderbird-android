@@ -38,6 +38,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AutoCompleteTextView.Validator;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -179,7 +180,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private EditText mSignatureView;
     private EditText mMessageContentView;
     private LinearLayout mAttachments;
-    private ImageButton mQuotedTextShow;
+    private Button mQuotedTextShow;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextEdit;
     private ImageButton mQuotedTextDelete;
@@ -399,7 +400,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
-        mQuotedTextShow = (ImageButton)findViewById(R.id.quoted_text_show);
+        mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
