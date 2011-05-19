@@ -1685,7 +1685,9 @@ public class MessageList
         mAdapter.removeMessage(holder);
         // TODO showNextMessageOrReturn();
         mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folder, null);
-        if (holder.uid == mCurrentMessageInfo.uid) {
+        if (    holder != null
+             && mCurrentMessageInfo  != null
+             && holder.uid == mCurrentMessageInfo.uid) {
             showNextMessage();
         }
     }
