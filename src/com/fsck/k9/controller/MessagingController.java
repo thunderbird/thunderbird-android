@@ -1161,11 +1161,31 @@ public class MessagingController implements Runnable {
         }
     }
 
+    /**
+     * Fetches the messages described by inputMessages from the remote store and writes them to
+     * local storage.
+     *
+     * @param account
+     *            The account the remote store belongs to.
+     * @param remoteFolder
+     *            The remote folder to download messages from.
+     * @param localFolder
+     *            The {@link LocalFolder} instance corresponding to the remote folder.
+     * @param inputMessages
+     *            A list of messages objects that store the UIDs of which messages to download.
+     * @param flagSyncOnly
+     *            Only flags will be fetched from the remote store if this is {@code true}.
+     *
+     * @return The number of downloaded messages that are not flagged as {@link Flag#SEEN}.
+     *
+     * @throws MessagingException
+     */
     private int downloadMessages(final Account account, final Folder remoteFolder,
-                                 final LocalFolder localFolder, List<Message> inputMessages, boolean flagSyncOnly) throws MessagingException {
+                                 final LocalFolder localFolder, List<Message> inputMessages,
+                                 boolean flagSyncOnly) throws MessagingException {
+
         final Date earliestDate = account.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
-
 
         if (earliestDate != null) {
             if (K9.DEBUG) {
@@ -1541,7 +1561,7 @@ public class MessagingController implements Runnable {
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
         fp, new MessageRetrievalListener() {
             @Override
-            public void messageFinished(Message message, int number, int ofTotal) {
+            public void messageFinished(final Message message, int number, int ofTotal) {
                 try {
 
                     if (!shouldImportMessage(account, folder, message, progress, earliestDate)) {
@@ -1557,6 +1577,13 @@ public class MessagingController implements Runnable {
                             progress.incrementAndGet();
                         }
                     });
+
+                    // Increment the number of "new messages" if the newly downloaded message is
+                    // not marked as read.
+                    if (!localMessage.isSet(Flag.SEEN)) {
+                        newMessages.incrementAndGet();
+                    }
+
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
                               + account + ":" + folder + ":" + message.getUid());
@@ -1572,7 +1599,6 @@ public class MessagingController implements Runnable {
                     // Send a notification of this message
 
                     if (shouldNotifyForMessage(account, localFolder, message)) {
-                        newMessages.incrementAndGet();
                         notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
                     }
 
@@ -1691,6 +1717,13 @@ public class MessagingController implements Runnable {
             // Update the listener with what we've found
             progress.incrementAndGet();
             Message localMessage = localFolder.getMessage(message.getUid());
+
+            // Increment the number of "new messages" if the newly downloaded message is
+            // not marked as read.
+            if (!localMessage.isSet(Flag.SEEN)) {
+                newMessages.incrementAndGet();
+            }
+
             for (MessagingListener l : getListeners()) {
                 l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                 l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
@@ -1701,7 +1734,6 @@ public class MessagingController implements Runnable {
 
             // Send a notification of this message
             if (shouldNotifyForMessage(account, localFolder, message)) {
-                newMessages.incrementAndGet();
                 notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
             }
 
