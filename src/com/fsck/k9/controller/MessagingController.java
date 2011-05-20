@@ -3859,16 +3859,29 @@ public class MessagingController implements Runnable {
 
 
     private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
-        // Do not notify if the user does not have notifications
-        // enabled or if the message has been read
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || (account.getName() == null)) {
+        // If we don't even have an account name, don't show the notification.
+        // (This happens during initial account setup)
+        if (account.getName() == null) {
             return false;
         }
 
+        // Do not notify if the user does not have notifications enabled or if the message has
+        // been read.
+        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN)) {
+            return false;
+        }
+
+        // If the account is a POP3 account and the message is older than the oldest message we've
+        // previously seen, then don't notify about it.
+        if (account.getStoreUri().startsWith("pop3") &&
+                message.olderThan(new Date(account.getLatestOldMessageSeenTime()))) {
+            return false;
+        }
+
+        // No notification for new messages in Trash, Drafts, Spam or Sent folder.
+        // But do notify if it's the INBOX (see issue 1817).
         Folder folder = message.getFolder();
         if (folder != null) {
-            // No notification for new messages in Trash, Drafts, Spam or Sent folder.
-            // But do notify if it's the INBOX (see issue 1817).
             String folderName = folder.getName();
             if (!account.getInboxFolderName().equals(folderName) &&
                     (account.getTrashFolderName().equals(folderName)
@@ -3884,7 +3897,8 @@ public class MessagingController implements Runnable {
                 Integer messageUid = Integer.parseInt(message.getUid());
                 if (messageUid <= localFolder.getLastUid()) {
                     if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Message uid is " + messageUid + ", max message uid is " + localFolder.getLastUid() + ".  Skipping notification.");
+                        Log.d(K9.LOG_TAG, "Message uid is " + messageUid + ", max message uid is " +
+                                localFolder.getLastUid() + ".  Skipping notification.");
                     return false;
                 }
             } catch (NumberFormatException e) {
@@ -3892,31 +3906,22 @@ public class MessagingController implements Runnable {
             }
         }
 
-        return true;
+        // Don't notify if the sender address matches one of our identities and the user chose not
+        // to be notified for such messages.
+        if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
+            return false;
+        }
 
+        return true;
     }
 
 
 
-    /** Creates a notification of new email messages
-      * ringtone, lights, and vibration to be played
-    */
-    private boolean notifyAccount(Context context, Account account, Message message, int previousUnreadMessageCount, AtomicInteger newMessageCount) {
-        // If we don't even have an account name, don't show the notification
-        // (This happens during initial account setup)
-        //
-        if (account.getName() == null) {
-            return false;
-        }
-
-        // If the account us a POP3 account and the message is older than
-        // the oldest message we've previously seen then don't notify about it
-        if (account.getStoreUri().startsWith("pop3")) {
-            if (message.olderThan(new Date(account.getLatestOldMessageSeenTime()))) {
-                return false;
-            }
-        }
-
+    /**
+     * Creates a notification of a newly received message.
+     */
+    private void notifyAccount(Context context, Account account, Message message,
+            int previousUnreadMessageCount, AtomicInteger newMessageCount) {
 
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuilder messageNotice = new StringBuilder();
@@ -3937,19 +3942,13 @@ public class MessagingController implements Runnable {
                     }
                     // show To: if the message was sent from me
                     else {
-                        if (!account.isNotifySelfNewMail()) {
-                            return false;
-                        }
-
                         Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
                         if (to != null) {
                             messageNotice.append(String.format(context.getString(R.string.message_to_fmt), to)).append(": ").append(subject);
                         } else {
                             messageNotice.append(context.getString(R.string.general_no_sender)).append(": ").append(subject);
-
                         }
-
                     }
                 }
             }
@@ -3992,7 +3991,6 @@ public class MessagingController implements Runnable {
         configureNotification(notif, (n.shouldRing() ?  n.getRingtone() : null), (n.shouldVibrate() ? n.getVibration() : null), (n.isLed() ?  n.getLedColor()  : null), K9.NOTIFICATION_LED_BLINK_SLOW, ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), notif);
-        return true;
     }
 
     /**
