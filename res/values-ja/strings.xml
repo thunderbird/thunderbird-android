@@ -23,7 +23,7 @@
     <string name="accounts_title">アカウント一覧</string>
     <string name="advanced">拡張機能</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">K-9 Accounts</string>
+    <string name="shortcuts_title">K-9 アカウント</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
