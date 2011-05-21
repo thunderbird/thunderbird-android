@@ -55,6 +55,7 @@ public class FolderList extends K9ListActivity {
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
     private static final String EXTRA_FROM_NOTIFICATION = "fromNotification";
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
+    private static final String EXTRA_CHECK_MAIL = "checkMail";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -186,14 +187,14 @@ public class FolderList extends K9ListActivity {
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account) {
-        return actionHandleAccountIntent(context, account, null, false);
+        return actionHandleAccountIntent(context, account, null, false, false);
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
-        return actionHandleAccountIntent(context, account, initialFolder, false);
+        return actionHandleAccountIntent(context, account, initialFolder, false, false);
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut) {
+    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut, boolean checkMail) {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
@@ -203,6 +204,10 @@ public class FolderList extends K9ListActivity {
 
         if (fromShortcut) {
             intent.putExtra(EXTRA_FROM_SHORTCUT, true);
+        }
+
+        if (checkMail) {
+            intent.putExtra(EXTRA_CHECK_MAIL, true);
         }
 
         return intent;
@@ -290,8 +295,10 @@ public class FolderList extends K9ListActivity {
             onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();
         } else {
-
             initializeActivityView();
+            if (intent.getBooleanExtra(EXTRA_CHECK_MAIL, false)) {
+                checkMail(mAccount);
+            }
         }
     }
 
@@ -493,6 +500,9 @@ public class FolderList extends K9ListActivity {
 
 
 
+    private void checkMail(Account account) {
+        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
+    }
 
     private void sendMail(Account account) {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
@@ -506,7 +516,7 @@ public class FolderList extends K9ListActivity {
             return true;
 
         case R.id.check_mail:
-            MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
+            checkMail(mAccount);
 
             return true;
 
