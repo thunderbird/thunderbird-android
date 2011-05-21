@@ -910,10 +910,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="start_integrated_inbox_summary">起動後に統合フォルダを表示する</string>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
-    <string name="measure_accounts_summary">表示を速くしたい場合はチェックをはずす</string>
+    <string name="measure_accounts_summary">表示を速くしたい場合はチェックしない</string>
 
     <string name="count_search_title">検索結果の件数表示</string>
-    <string name="count_search_summary">表示を速くしたい場合はチェックをはずす</string>
+    <string name="count_search_summary">表示を速くしたい場合はチェックしない</string>
 
     <string name="hide_special_accounts_title">特殊なアカウントを隠す</string>
     <string name="hide_special_accounts_summary">統合フォルダと全メッセージを隠す</string>
