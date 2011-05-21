@@ -272,8 +272,12 @@ public class FolderList extends K9ListActivity {
         String initialFolder;
 
         mUnreadMessageCount = 0;
-        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        String accountUuidOrDesc = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuidOrDesc);
+
+        if (mAccount == null) {
+            mAccount = Preferences.getPreferences(this).getAccountByName(accountUuidOrDesc);
+        }
 
         if (mAccount == null) {
             // This shouldn't normally happen. But apparently it does. See issue 2261.
@@ -341,7 +345,7 @@ public class FolderList extends K9ListActivity {
     @Override public void onResume() {
         super.onResume();
 
-        if (!mAccount.isAvailable(this)) {
+        if (mAccount == null || !mAccount.isAvailable(this)) {
             Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
             startActivity(new Intent(this, Accounts.class));
             finish();

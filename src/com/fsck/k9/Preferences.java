@@ -117,6 +117,24 @@ public class Preferences {
         return null;
     }
 
+    public synchronized Account getAccountByName(String name) {
+        if (accounts == null) {
+            loadAccounts();
+        }
+
+        for (Account account : accounts) {
+            if (account.getDescription().equalsIgnoreCase(name)) {
+                return account;
+            }
+        }
+
+        if ((newAccount != null) && newAccount.getDescription().equals(name)) {
+            return newAccount;
+        }
+
+        return null;
+    }
+
     public synchronized Account newAccount() {
         newAccount = new Account(K9.app);
 
