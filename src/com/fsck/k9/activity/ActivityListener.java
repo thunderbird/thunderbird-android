@@ -28,7 +28,7 @@ public class ActivityListener extends MessagingListener {
 
         Boolean forCurrentAccount = false;
 
-        if (mAccount != null && account != null && mAccount.getDescription().equals(account.getDescription())) {
+        if (mAccount != null && account != null && mAccount.equals(account)) {
             forCurrentAccount = true;
         }
 
