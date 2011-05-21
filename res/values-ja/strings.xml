@@ -293,7 +293,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_view_download_remainder">すべてダウンロード</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません。ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「すべてのヘッダを端末に保存」をチェックしてください。</string>
+    <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません。ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「ヘッダのダウンロード」をチェックしてください。</string>
     <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
     <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
 
