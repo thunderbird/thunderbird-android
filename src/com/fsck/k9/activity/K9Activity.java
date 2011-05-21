@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -177,11 +178,24 @@ public class K9Activity extends Activity {
 
     public double getScreenSizeInInches() {
         if (mScreenSize == 0)  {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-            mScreenSize = Math.sqrt(Math.pow((metrics.heightPixels / metrics.ydpi), 2) +
+
+            // It turns out that the sholes ("milestone" or original "droid") from
+            // motorola misreports its DPI to be 96 instead of 240. YAY!
+            // http://comments.gmane.org/gmane.comp.handhelds.android.devel/110221
+
+            if(Build.DEVICE.equals("sholes") || Build.DEVICE.equals("umts_sholes")) {
+                mScreenSize = 3.7;
+            } else {
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                mScreenSize = Math.sqrt(Math.pow((metrics.heightPixels / metrics.ydpi), 2) +
                                     Math.pow((metrics.widthPixels / metrics.xdpi), 2));
+
+            }
+
+
+
         }
 
         return mScreenSize;
