@@ -387,6 +387,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         setupButtonViews();
         displayMessage(mMessageReference);
+
     }
 
     private void setupButtonViews() {
@@ -666,7 +667,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             finish();
         }
     }
-
 
     private void onReply() {
         if (mMessage != null) {
@@ -1047,6 +1047,15 @@ public class MessageView extends K9Activity implements OnClickListener {
                         Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
                     }
                 }
+
+                if (mAccount.getCryptoAutoVerifyEncrypt()) {
+                    try {
+                        mAccount.getCryptoProvider().decrypt(MessageView.this, mMessage, mPgpData);
+                    } catch (MessagingException e) {
+                        Log.e(K9.LOG_TAG, "Unable to decrypt email.", e);
+                    }
+                }
+
             }
         });
     }

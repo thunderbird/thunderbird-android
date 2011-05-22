@@ -83,7 +83,7 @@ public class Apg extends CryptoProvider {
                         Pattern.DOTALL);
 
     public static Pattern PGP_SIGNED_MESSAGE =
-        Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
+        Pattern.compile("(?s)(?m).*?(-----BEGIN PGP SIGNED MESSAGE-----(.|[\r\n])*?[^>]-----BEGIN PGP SIGNATURE-----(.|[\r\n])*?[^>]-----END PGP SIGNATURE-----).*",
                         Pattern.DOTALL);
 
     public static Apg createInstance() {
