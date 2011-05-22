@@ -1001,7 +1001,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <!-- APG related -->
     <string name="error_activity_not_found">No s’ha trobat cap aplicació idònia per a aquesta acció.</string>
-    <string name="error_apg_version_not_supported">Versió APG instal lada no suportada.</string>
+    <string name="error_apg_version_not_supported">Versió APG instal·lada no suportada.</string>
     <string name="btn_crypto_sign">Inicia</string>
     <string name="btn_encrypt">Encripta</string>
     <string name="btn_decrypt">Desencripta</string>
@@ -1040,7 +1040,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="account_unavailable">Compte \"<xliff:g id="account">%s</xliff:g>\" no és disponible; comprova emmagatzematge</string>
 
-    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
-    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="settings_attachment_default_path">Desa adjunts a...</string>
+    <string name="attachment_save_title">Desa adjunt</string>
+    <string name="attachment_save_desc">No s\'ha trobat l\'arxiu al navegador. On vols desar l\'adjunt?</string>
 </resources>

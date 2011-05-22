@@ -171,7 +171,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(null);
 
             InetAddress localAddress = mSocket.getLocalAddress();
-            String localHost = localAddress.getHostName();
+            String localHost = localAddress.getCanonicalHostName();
             String ipAddr = localAddress.getHostAddress();
 
             if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
