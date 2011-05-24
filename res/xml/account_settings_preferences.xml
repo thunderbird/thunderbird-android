@@ -241,6 +241,13 @@
 
         <CheckBoxPreference
             android:persistent="false"
+            android:key="default_quoted_text_shown"
+            android:title="@string/account_settings_default_quoted_text_shown_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_default_quoted_text_shown_summary" />
+
+        <CheckBoxPreference
+            android:persistent="false"
             android:key="reply_after_quote"
             android:title="@string/account_settings_reply_after_quote_label"
             android:defaultValue="false"
