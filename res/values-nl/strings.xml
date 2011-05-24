@@ -899,7 +899,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="gestures_title">Gebaren</string>
     <string name="gestures_summary">Accepteer gebaren sturing</string>
 
-    <string name="compact_layouts_title">Compacte layout</string>-
+    <string name="compact_layouts_title">Compacte layout</string>
     <string name="compact_layouts_summary">Pas layout aan zodat er meer op een pagina past</string>
 
     <string name="volume_navigation_title">Volume op/neer navigatie</string>
