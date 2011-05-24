@@ -840,13 +840,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                   .getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
         showOrHideQuotedText((QuotedTextMode)savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
-        if (mQuotedTextMode != QuotedTextMode.NONE) {
-            if (mMessageFormat == MessageFormat.HTML) {
-                mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
-                if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
-                    mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
-                    mQuotedTextEdit.setVisibility(View.VISIBLE);
-                }
+        if (mQuotedTextMode != QuotedTextMode.NONE && mMessageFormat == MessageFormat.HTML) {
+            mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
+            if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
+                mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
             }
         }
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
