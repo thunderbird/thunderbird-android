@@ -237,6 +237,17 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <Button
+                android:id="@+id/quoted_text_show"
+                android:text="@string/message_compose_show_quoted_text_action"
+                android:textSize="16dip"
+                android:padding="0dip"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" />
+
             <!-- Quoted text bar -->
             <RelativeLayout
                 android:id="@+id/quoted_text_bar"
