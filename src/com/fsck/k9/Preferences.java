@@ -118,18 +118,10 @@ public class Preferences {
     }
 
     public synchronized Account getAccountByName(String name) {
-        if (accounts == null) {
-            loadAccounts();
-        }
-
-        for (Account account : accounts) {
+        for (Account account : getAccounts()) {
             if (account.getDescription().equalsIgnoreCase(name)) {
                 return account;
             }
-        }
-
-        if ((newAccount != null) && newAccount.getDescription().equals(name)) {
-            return newAccount;
         }
 
         return null;
