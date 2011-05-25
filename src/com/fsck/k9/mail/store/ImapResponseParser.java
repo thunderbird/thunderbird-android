@@ -195,7 +195,7 @@ public class ImapResponseParser {
     }
 
     private String parseAtom() throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         while (true) {
             ch = mIn.peek();
