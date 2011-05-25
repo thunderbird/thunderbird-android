@@ -393,9 +393,9 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="account_setup_incoming_auth_type_label">인증 방식</string>
     <string name="account_setup_incoming_security_none_label">없음</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (유효할경우)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (항상)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL (모든 인증서 허용)</string>
     <string name="account_setup_incoming_security_tls_optional_label">TLS (유효할경우)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (항상)</string>
+    <string name="account_setup_incoming_security_tls_label">TLS (모든 인증서 허용)</string>
 
     <string name="account_setup_incoming_delete_policy_label">메시지 삭제시</string>
     <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지않음</string>
@@ -448,7 +448,7 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="account_setup_outgoing_security_none_label">없음</string>
     <string name="account_setup_outgoing_security_ssl_label">SSL</string>
     <string name="account_setup_outgoing_security_tls_optional_label">TLS (유효할 경우)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (항상)</string>
+    <string name="account_setup_outgoing_security_tls_label">TLS (모든 인증서 허용)</string>
     <string name="account_setup_outgoing_require_login_label">sign-in 필요.</string>
     <string name="account_setup_outgoing_username_label">이름</string>
     <string name="account_setup_outgoing_password_label">비밀번호</string>
@@ -531,8 +531,8 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="account_settings_notify_label">새 메일 알림</string>
     <string name="account_settings_notify_sync_label">동기화 알림</string>
     <string name="account_settings_email_label">당신의 이메일 주소</string>
-    <string name="account_settings_notify_summary">메일 도착시 상태바에 표시</string>
-    <string name="account_settings_notify_sync_summary">동기화 확인중일때 상태바에 표시</string>
+    <string name="account_settings_notify_summary">메일 도착시 상태바에 알림</string>
+    <string name="account_settings_notify_sync_summary">동기화 확인중일때 상태바에 알림</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     <string name="account_settings_notify_self_label">보낸편지함 포함</string>
     <string name="account_settings_notify_self_summary">내가 보낸 메시지에대해 알림 보기</string>
@@ -684,7 +684,7 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="account_settings_add_account_label">Add another account</string>
     <string name="account_settings_description_label">계정 이름</string>
     <string name="account_settings_name_label">당신의 이름</string>
-    <string name="notifications_title">통지</string>
+    <string name="notifications_title">알림</string>
     <string name="account_settings_ring_summary">메일 도착시 벨울림</string>
     <string name="account_settings_vibrate_enable">진동</string>
     <string name="account_settings_vibrate_summary">메일 도착시 진동</string>
