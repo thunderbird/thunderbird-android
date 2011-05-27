@@ -1718,6 +1718,10 @@ public class MessageList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mPgpData)) {
+            return;
+        }
+
         if (resultCode != RESULT_OK)
             return;
 
