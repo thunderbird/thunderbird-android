@@ -18,7 +18,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -2166,7 +2165,7 @@ public class MessageList
                                 0,
                                 noSender.length(),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                    str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
                                 0,
                                 noSender.length(),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2255,7 +2254,7 @@ public class MessageList
                             0,
                             message.sender.length() + 1,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
+                str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
                             0,
                             message.sender.length() + 1,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
