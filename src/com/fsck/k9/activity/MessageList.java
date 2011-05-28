@@ -3481,5 +3481,6 @@ public class MessageList
         K9.setPrimaryMessageListContentSize(mSplitView.getPrimaryContentSize());
         Editor editor = preferences.edit();
         K9.save(editor);
+        editor.commit();
     }
 }
