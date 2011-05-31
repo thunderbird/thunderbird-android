@@ -57,24 +57,25 @@ public class Utility {
     }
 
     /**
-     * Combines the given array of Objects into a single string using the
-     * seperator character and each Object's toString() method. between each
-     * part.
+     * Combines the given array of Objects into a single String using
+     * each Object's toString() method and the separator character
+     * between each part.
      *
      * @param parts
-     * @param seperator
-     * @return
+     * @param separator
+     * @return new String
      */
-    public static String combine(Object[] parts, char seperator) {
+    public static String combine(Object[] parts, char separator) {
         if (parts == null) {
             return null;
+        } else if (parts.length == 0) {
+            return "";
         }
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < parts.length; i++) {
-            sb.append(parts[i].toString());
-            if (i < parts.length - 1) {
-                sb.append(seperator);
-            }
+        StringBuilder sb = new StringBuilder();
+        sb.append(parts[0]);
+        for (int i = 1; i < parts.length; ++i) {
+            sb.append(separator);
+            sb.append(parts[i]);
         }
         return sb.toString();
     }
