@@ -352,11 +352,20 @@ public class SmtpTransport extends Transport {
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
-            if (message.calculateSize() > mLargestAcceptableMessage) {
+        	if (K9.DEBUG_PROTOCOL_SMTP) {
+        		Log.d(K9.LOG_TAG, "calculating message size");
+        	}
+        	close(); // (prevent timeouts while calculating the size)
+            final long calculatedSize = message.calculateSize();
+			if (calculatedSize > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 me.setPermanentFailure(possibleSend);
                 throw me;
             }
+        	open(); // (prevent timeouts while calculating the size)
+        	if (K9.DEBUG_PROTOCOL_SMTP) {
+        		Log.d(K9.LOG_TAG, "calculating message size DONE size=" + calculatedSize + " max allowed=" + mLargestAcceptableMessage);
+        	}
         }
 
         Address[] from = message.getFrom();
