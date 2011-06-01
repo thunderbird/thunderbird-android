@@ -265,17 +265,17 @@ public class SmtpTransport extends Transport {
                 if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
                     if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
-                                "server didn't advertise support for it in EHLO response.");
+                              "server didn't advertise support for it in EHLO response.");
                     }
                     saslAuthCramMD5(mUsername, mPassword);
                 } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
                     if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
-                                "server didn't advertise support for it in EHLO response.");
+                              "server didn't advertise support for it in EHLO response.");
                     }
                     try {
                         saslAuthPlain(mUsername, mPassword);
-                    } catch(MessagingException ex) {
+                    } catch (MessagingException ex) {
                         // PLAIN is a special case.  Historically, PLAIN has represented both PLAIN and LOGIN; only the
                         // protocol being advertised by the server would be used, with PLAIN taking precedence.  Instead
                         // of using only the requested protocol, we'll try PLAIN and then try LOGIN.
@@ -292,7 +292,7 @@ public class SmtpTransport extends Transport {
                 } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
                     if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
                         Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
-                                "server didn't advertise support for it in EHLO response.");
+                              "server didn't advertise support for it in EHLO response.");
                     }
                     saslAuthLogin(mUsername, mPassword);
                 } else {
@@ -352,20 +352,20 @@ public class SmtpTransport extends Transport {
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
-        	if (K9.DEBUG_PROTOCOL_SMTP) {
-        		Log.d(K9.LOG_TAG, "calculating message size");
-        	}
-        	close(); // (prevent timeouts while calculating the size)
+            if (K9.DEBUG_PROTOCOL_SMTP) {
+                Log.d(K9.LOG_TAG, "calculating message size");
+            }
+            close(); // (prevent timeouts while calculating the size)
             final long calculatedSize = message.calculateSize();
-			if (calculatedSize > mLargestAcceptableMessage) {
+            if (calculatedSize > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 me.setPermanentFailure(possibleSend);
                 throw me;
             }
-        	open(); // (prevent timeouts while calculating the size)
-        	if (K9.DEBUG_PROTOCOL_SMTP) {
-        		Log.d(K9.LOG_TAG, "calculating message size DONE size=" + calculatedSize + " max allowed=" + mLargestAcceptableMessage);
-        	}
+            open(); // (prevent timeouts while calculating the size)
+            if (K9.DEBUG_PROTOCOL_SMTP) {
+                Log.d(K9.LOG_TAG, "calculating message size DONE size=" + calculatedSize + " max allowed=" + mLargestAcceptableMessage);
+            }
         }
 
         Address[] from = message.getFrom();
@@ -396,8 +396,8 @@ public class SmtpTransport extends Transport {
             // "5xx text" -responses are permanent failures
             String msg = e.getMessage();
             if (msg != null && msg.startsWith("5")) {
-            	Log.w(K9.LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
-            	possibleSend=false;
+                Log.w(K9.LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
+                possibleSend = false;
             }
 
             me.setPermanentFailure(possibleSend);

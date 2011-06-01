@@ -505,53 +505,53 @@ public class LocalStore extends Store implements Serializable {
                     // Always count messages in the INBOX but exclude special folders and possibly
                     // more (depending on the folder display mode)
                     String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) " +
-                            "FROM folders " +
-                            "WHERE (name = ?)" +  /* INBOX */
-                            " OR (" +
-                            "name NOT IN (?, ?, ?, ?, ?)" +  /* special folders */
-                            "%s)";  /* placeholder for additional constraints */
+                                       "FROM folders " +
+                                       "WHERE (name = ?)" +  /* INBOX */
+                                       " OR (" +
+                                       "name NOT IN (?, ?, ?, ?, ?)" +  /* special folders */
+                                       "%s)";  /* placeholder for additional constraints */
 
                     List<String> queryParam = new ArrayList<String>();
                     queryParam.add(mAccount.getInboxFolderName());
 
                     queryParam.add((mAccount.getTrashFolderName() != null) ?
-                            mAccount.getTrashFolderName() : "");
+                                   mAccount.getTrashFolderName() : "");
                     queryParam.add((mAccount.getDraftsFolderName() != null) ?
-                            mAccount.getDraftsFolderName() : "");
+                                   mAccount.getDraftsFolderName() : "");
                     queryParam.add((mAccount.getSpamFolderName() != null) ?
-                            mAccount.getSpamFolderName() : "");
+                                   mAccount.getSpamFolderName() : "");
                     queryParam.add((mAccount.getOutboxFolderName() != null) ?
-                            mAccount.getOutboxFolderName() : "");
+                                   mAccount.getOutboxFolderName() : "");
                     queryParam.add((mAccount.getSentFolderName() != null) ?
-                            mAccount.getSentFolderName() : "");
+                                   mAccount.getSentFolderName() : "");
 
                     final String extraWhere;
                     switch (displayMode) {
-                        case FIRST_CLASS:
-                            // Count messages in the INBOX and non-special first class folders
-                            extraWhere = " AND (display_class = ?)";
-                            queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
-                            break;
-                        case FIRST_AND_SECOND_CLASS:
-                            // Count messages in the INBOX and non-special first and second class folders
-                            extraWhere = " AND (display_class IN (?, ?))";
-                            queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
-                            queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
-                            break;
-                        case NOT_SECOND_CLASS:
-                            // Count messages in the INBOX and non-special non-second-class folders
-                            extraWhere = " AND (display_class != ?)";
-                            queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
-                            break;
-                        case ALL:
-                            // Count messages in the INBOX and non-special folders
-                            extraWhere = "";
-                            break;
-                        default:
-                            Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
-                            stats.unreadMessageCount = 0;
-                            stats.flaggedMessageCount = 0;
-                            return null;
+                    case FIRST_CLASS:
+                        // Count messages in the INBOX and non-special first class folders
+                        extraWhere = " AND (display_class = ?)";
+                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                        break;
+                    case FIRST_AND_SECOND_CLASS:
+                        // Count messages in the INBOX and non-special first and second class folders
+                        extraWhere = " AND (display_class IN (?, ?))";
+                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                        break;
+                    case NOT_SECOND_CLASS:
+                        // Count messages in the INBOX and non-special non-second-class folders
+                        extraWhere = " AND (display_class != ?)";
+                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                        break;
+                    case ALL:
+                        // Count messages in the INBOX and non-special folders
+                        extraWhere = "";
+                        break;
+                    default:
+                        Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
+                        stats.unreadMessageCount = 0;
+                        stats.flaggedMessageCount = 0;
+                        return null;
                     }
 
                     String query = String.format(Locale.US, baseQuery, extraWhere);
@@ -1671,7 +1671,7 @@ public class LocalStore extends Store implements Serializable {
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
                                             if (name != null) {
                                                 String encoded_name = EncoderUtil.encodeIfNecessary(name,
-                                                                                                    EncoderUtil.Usage.WORD_ENTITY, 7);
+                                                                      EncoderUtil.Usage.WORD_ENTITY, 7);
 
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                                                              String.format("%s;\n name=\"%s\"",
@@ -2444,8 +2444,8 @@ public class LocalStore extends Store implements Serializable {
 
                                         if (htmlContent != null) {
                                             String newHtmlContent = htmlContent.replaceAll(
-                                                    Pattern.quote("cid:" + contentId),
-                                                    contentUri.toString());
+                                                                        Pattern.quote("cid:" + contentId),
+                                                                        contentUri.toString());
 
                                             ContentValues cv = new ContentValues();
                                             cv.put("html_content", newHtmlContent);

@@ -382,7 +382,7 @@ public class ImapStore extends Store {
                     decodedFolderName = decodeFolderName(response.getString(3));
                 } catch (CharacterCodingException e) {
                     Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                            "as defined by RFC 3501: " + response.getString(3), e);
+                          "as defined by RFC 3501: " + response.getString(3), e);
 
                     //TODO: Use the raw name returned by the server for all commands that require
                     //      a folder name. Use the decoded name only for showing it to the user.

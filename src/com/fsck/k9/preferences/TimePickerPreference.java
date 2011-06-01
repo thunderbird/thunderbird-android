@@ -53,7 +53,7 @@ public class TimePickerPreference extends DialogPreference implements
      * @param defStyle
      */
     public TimePickerPreference(final Context context, final AttributeSet attrs,
-    		final int defStyle) {
+                                final int defStyle) {
         super(context, attrs, defStyle);
         initialize();
     }
@@ -78,8 +78,7 @@ public class TimePickerPreference extends DialogPreference implements
         tp.setOnTimeChangedListener(this);
         originalHour = getHour();
         originalMinute = getMinute();
-        if (originalHour >= 0 && originalMinute >= 0)
-        {
+        if (originalHour >= 0 && originalMinute >= 0) {
             tp.setCurrentHour(originalHour);
             tp.setCurrentMinute(originalMinute);
         }
@@ -104,14 +103,14 @@ public class TimePickerPreference extends DialogPreference implements
      * before going to super.onDialogClosed(positiveResult).
      */
     @Override
-	protected void onDialogClosed(boolean positiveResult) {
+    protected void onDialogClosed(boolean positiveResult) {
 
-		if (!positiveResult) {
-			persistString(String.format("%02d:%02d", originalHour, originalMinute));
-	        callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
-		}
-		super.onDialogClosed(positiveResult);
-	}
+        if (!positiveResult) {
+            persistString(String.format("%02d:%02d", originalHour, originalMinute));
+            callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
+        }
+        super.onDialogClosed(positiveResult);
+    }
 
     /**
      * @see android.preference.Preference#setDefaultValue(java.lang.Object)
