@@ -100,6 +100,7 @@ public class ChooseFolder extends K9ListActivity {
         setListAdapter(mAdapter);
 
 
+        mMode = mAccount.getFolderTargetMode();
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
 
 

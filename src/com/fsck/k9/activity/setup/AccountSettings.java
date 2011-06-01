@@ -86,6 +86,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
+    private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
@@ -141,6 +142,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMessageFormat;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
@@ -221,6 +223,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mAccountDefaultQuotedTextShown = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN);
+        mAccountDefaultQuotedTextShown.setChecked(mAccount.isDefaultQuotedTextShown());
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
@@ -673,6 +678,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
+        mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());

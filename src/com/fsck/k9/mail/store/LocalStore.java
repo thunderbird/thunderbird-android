@@ -485,9 +485,6 @@ public class LocalStore extends Store implements Serializable {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
                     return cursor.getInt(0);   // message count
-
-
-
                 } finally {
                     if (cursor != null) {
                         cursor.close();
@@ -496,8 +493,6 @@ public class LocalStore extends Store implements Serializable {
             }
         });
     }
-
-
 
     public void getMessageCounts(final AccountStats stats) throws MessagingException {
         final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
@@ -1269,7 +1264,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
@@ -1672,9 +1667,23 @@ public class LocalStore extends Store implements Serializable {
                                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
                                             }
 
-
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+                                            if (name != null) {
+                                                String encoded_name = EncoderUtil.encodeIfNecessary(name,
+                                                                                                    EncoderUtil.Usage.WORD_ENTITY, 7);
+
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                                                             String.format("%s;\n name=\"%s\"",
+                                                                           type,
+                                                                           encoded_name));
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                                             String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                                           contentDisposition,
+                                                                           encoded_name, // TODO: Should use encoded word defined in RFC 2231.
+                                                                           size));
+                                            }
+
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
 
                                             if (name != null) {
@@ -2577,6 +2586,7 @@ public class LocalStore extends Store implements Serializable {
             setPushState(null);
             setLastPush(0);
             setLastChecked(0);
+            setVisibleLimit(mAccount.getDisplayCount());
         }
 
         private void resetUnreadAndFlaggedCounts() {

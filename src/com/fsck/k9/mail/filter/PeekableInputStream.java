@@ -30,7 +30,7 @@ public class PeekableInputStream extends InputStream {
 
     public int peek() throws IOException {
         if (!mPeeked) {
-            mPeekedByte = read();
+            mPeekedByte = mIn.read();
             mPeeked = true;
         }
         return mPeekedByte;
