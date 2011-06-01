@@ -383,6 +383,14 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("\r\n.");
         } catch (Exception e) {
             MessagingException me = new MessagingException("Unable to send message", e);
+
+            // "5xx text" -responses are permanent failures
+            String msg = e.getMessage();
+            if (msg != null && msg.startsWith("5")) {
+            	Log.w(K9.LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
+            	possibleSend=false;
+            }
+
             me.setPermanentFailure(possibleSend);
             throw me;
         } finally {
