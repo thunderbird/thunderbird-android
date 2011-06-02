@@ -17,7 +17,6 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
@@ -50,7 +49,6 @@ import com.fsck.k9.mail.store.LocalStore;
 public class MessageProvider extends ContentProvider {
 
     public static interface MessageColumns extends BaseColumns {
-    	
         /**
          * The number of milliseconds since Jan. 1, 1970, midnight GMT.
          *
@@ -77,7 +75,7 @@ public class MessageProvider extends ContentProvider {
          * <P>Type: BOOLEAN</P>
          */
         String UNREAD = "unread";
-        
+
         String ACCOUNT = "account";
         String URI = "uri";
         String DELETE_URI = "delUri";
@@ -187,14 +185,13 @@ public class MessageProvider extends ContentProvider {
             return source.message.getFolder().getAccount().getDescription();
         }
     }
-    
+
     public static class UnreadExtractor implements FieldExtractor<MessageInfoHolder, Boolean> {
         @Override
         public Boolean getField(final MessageInfoHolder source) {
-            return !source.read;
+            return Boolean.valueOf(!source.read); // avoid autoboxing
         }
     }
-
 
     /**
      * @deprecated having an incremential value has no real interest,
@@ -820,7 +817,6 @@ public class MessageProvider extends ContentProvider {
         MessageColumns.SUBJECT,
         MessageColumns.PREVIEW,
         MessageColumns.ACCOUNT,
-        MessageColumns.UNREAD,
         MessageColumns.URI,
         MessageColumns.DELETE_URI
     };
