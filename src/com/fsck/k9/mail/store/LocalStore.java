@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -366,7 +367,7 @@ public class LocalStore extends Store implements Serializable {
             Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
             boolean inTopGroup = false;
             boolean integrate = false;
-            if (K9.INBOX.equals(name)) {
+            if (mAccount.getInboxFolderName().equals(name)) {
                 displayClass = Folder.FolderClass.FIRST_CLASS;
                 syncClass =  Folder.FolderClass.FIRST_CLASS;
                 pushClass =  Folder.FolderClass.FIRST_CLASS;
@@ -484,9 +485,6 @@ public class LocalStore extends Store implements Serializable {
                     cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
                     return cursor.getInt(0);   // message count
-
-
-
                 } finally {
                     if (cursor != null) {
                         cursor.close();
@@ -496,8 +494,6 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-
-
     public void getMessageCounts(final AccountStats stats) throws MessagingException {
         final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
 
@@ -506,64 +502,60 @@ public class LocalStore extends Store implements Serializable {
             public Integer doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
                 try {
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) FROM folders WHERE ( name != ? AND name != ? AND name != ? AND name != ? AND name != ? ) ";
-                    if (displayMode == Account.FolderMode.NONE) {
-                        cursor = db.rawQuery(baseQuery + "AND (name = ? )", new String[] {
+                    // Always count messages in the INBOX but exclude special folders and possibly
+                    // more (depending on the folder display mode)
+                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) " +
+                                       "FROM folders " +
+                                       "WHERE (name = ?)" +  /* INBOX */
+                                       " OR (" +
+                                       "name NOT IN (?, ?, ?, ?, ?)" +  /* special folders */
+                                       "%s)";  /* placeholder for additional constraints */
 
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX
-                                             }
+                    List<String> queryParam = new ArrayList<String>();
+                    queryParam.add(mAccount.getInboxFolderName());
 
-                                            );
-                    } else if (displayMode == Account.FolderMode.FIRST_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ?)", new String[] {
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name()
-                                             });
+                    queryParam.add((mAccount.getTrashFolderName() != null) ?
+                                   mAccount.getTrashFolderName() : "");
+                    queryParam.add((mAccount.getDraftsFolderName() != null) ?
+                                   mAccount.getDraftsFolderName() : "");
+                    queryParam.add((mAccount.getSpamFolderName() != null) ?
+                                   mAccount.getSpamFolderName() : "");
+                    queryParam.add((mAccount.getOutboxFolderName() != null) ?
+                                   mAccount.getOutboxFolderName() : "");
+                    queryParam.add((mAccount.getSentFolderName() != null) ?
+                                   mAccount.getSentFolderName() : "");
 
-
-                    } else if (displayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class = ? OR display_class = ? )", new String[] {
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.FIRST_CLASS.name(), Folder.FolderClass.SECOND_CLASS.name()
-                                             });
-                    } else if (displayMode == Account.FolderMode.NOT_SECOND_CLASS) {
-                        cursor = db.rawQuery(baseQuery + " AND ( name = ? OR display_class != ?)", new String[] {
-
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                                 K9.INBOX, Folder.FolderClass.SECOND_CLASS.name()
-                                             });
-                    } else if (displayMode == Account.FolderMode.ALL) {
-                        cursor = db.rawQuery(baseQuery,  new String[] {
-
-                                                 mAccount.getTrashFolderName() != null ? mAccount.getTrashFolderName() : "" ,
-                                                 mAccount.getDraftsFolderName() != null ? mAccount.getDraftsFolderName() : "",
-                                                 mAccount.getSpamFolderName() != null ? mAccount.getSpamFolderName() : "",
-                                                 mAccount.getOutboxFolderName() != null ?  mAccount.getOutboxFolderName() : "",
-                                                 mAccount.getSentFolderName() != null ? mAccount.getSentFolderName() : "",
-                                             });
-                    } else {
+                    final String extraWhere;
+                    switch (displayMode) {
+                    case FIRST_CLASS:
+                        // Count messages in the INBOX and non-special first class folders
+                        extraWhere = " AND (display_class = ?)";
+                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                        break;
+                    case FIRST_AND_SECOND_CLASS:
+                        // Count messages in the INBOX and non-special first and second class folders
+                        extraWhere = " AND (display_class IN (?, ?))";
+                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
+                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                        break;
+                    case NOT_SECOND_CLASS:
+                        // Count messages in the INBOX and non-special non-second-class folders
+                        extraWhere = " AND (display_class != ?)";
+                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
+                        break;
+                    case ALL:
+                        // Count messages in the INBOX and non-special folders
+                        extraWhere = "";
+                        break;
+                    default:
                         Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
                         stats.unreadMessageCount = 0;
                         stats.flaggedMessageCount = 0;
                         return null;
                     }
+
+                    String query = String.format(Locale.US, baseQuery, extraWhere);
+                    cursor = db.rawQuery(query, queryParam.toArray(EMPTY_STRING_ARRAY));
 
                     cursor.moveToFirst();
                     stats.unreadMessageCount = cursor.getInt(0);
@@ -1047,14 +1039,14 @@ public class LocalStore extends Store implements Serializable {
                     if (mAccount.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(K9.INBOX)) {
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                             prefHolder.integrate = true;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(K9.INBOX) ||
+                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
                                 name.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
@@ -1104,7 +1096,8 @@ public class LocalStore extends Store implements Serializable {
             super(LocalStore.this.mAccount);
             this.mName = name;
 
-            if (K9.INBOX.equals(getName())) {
+            if (LocalStore.this.mAccount.getInboxFolderName().equals(getName())) {
+
                 mSyncClass =  FolderClass.FIRST_CLASS;
                 mPushClass =  FolderClass.FIRST_CLASS;
                 mInTopGroup = true;
@@ -1271,7 +1264,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
@@ -1484,19 +1477,19 @@ public class LocalStore extends Store implements Serializable {
             String id = getPrefId();
 
             // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-            if (mDisplayClass == FolderClass.NO_CLASS && !K9.INBOX.equals(getName())) {
+            if (mDisplayClass == FolderClass.NO_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".displayMode");
             } else {
                 editor.putString(id + ".displayMode", mDisplayClass.name());
             }
 
-            if (mSyncClass == FolderClass.INHERITED && !K9.INBOX.equals(getName())) {
+            if (mSyncClass == FolderClass.INHERITED && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".syncMode");
             } else {
                 editor.putString(id + ".syncMode", mSyncClass.name());
             }
 
-            if (mPushClass == FolderClass.SECOND_CLASS && !K9.INBOX.equals(getName())) {
+            if (mPushClass == FolderClass.SECOND_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
                 editor.remove(id + ".pushMode");
             } else {
                 editor.putString(id + ".pushMode", mPushClass.name());
@@ -1674,20 +1667,22 @@ public class LocalStore extends Store implements Serializable {
                                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
                                             }
 
-                                            String encoded_name = EncoderUtil.encodeIfNecessary(name,
-                                                    EncoderUtil.Usage.WORD_ENTITY, 7);
-
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                         String.format("%s;\n name=\"%s\"",
-                                                                       type,
-                                                                       encoded_name));
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                         String.format("%s;\n filename=\"%s\";\n size=%d",
-                                                                       contentDisposition,
-                                                                       encoded_name, // TODO: Should use encoded word defined in RFC 2231.
-                                                                       size));
+                                            if (name != null) {
+                                                String encoded_name = EncoderUtil.encodeIfNecessary(name,
+                                                                      EncoderUtil.Usage.WORD_ENTITY, 7);
+
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                                                             String.format("%s;\n name=\"%s\"",
+                                                                           type,
+                                                                           encoded_name));
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                                             String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                                           contentDisposition,
+                                                                           encoded_name, // TODO: Should use encoded word defined in RFC 2231.
+                                                                           size));
+                                            }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                                             /*
@@ -2076,6 +2071,15 @@ public class LocalStore extends Store implements Serializable {
                                 for (Part viewable : viewables) {
                                     try {
                                         String text = MimeUtility.getTextFromPart(viewable);
+
+                                        /*
+                                         * Small hack to make sure the string "null" doesn't end up
+                                         * in one of the StringBuffers.
+                                         */
+                                        if (text == null) {
+                                            text = "";
+                                        }
+
                                         /*
                                          * Anything with MIME type text/html will be stored as such. Anything
                                          * else will be stored as text/plain.
@@ -2181,6 +2185,15 @@ public class LocalStore extends Store implements Serializable {
                                 Part viewable = viewables.get(i);
                                 try {
                                     String text = MimeUtility.getTextFromPart(viewable);
+
+                                    /*
+                                     * Small hack to make sure the string "null" doesn't end up
+                                     * in one of the StringBuffers.
+                                     */
+                                    if (text == null) {
+                                        text = "";
+                                    }
+
                                     /*
                                      * Anything with MIME type text/html will be stored as such. Anything
                                      * else will be stored as text/plain.
@@ -2427,16 +2440,18 @@ public class LocalStore extends Store implements Serializable {
                                                          { Long.toString(messageId) }, null, null, null);
                                 try {
                                     if (cursor.moveToNext()) {
-                                        String new_html;
+                                        String htmlContent = cursor.getString(0);
 
-                                        new_html = cursor.getString(0);
-                                        new_html = new_html.replaceAll(Pattern.quote("cid:" + contentId),
-                                                                       contentUri.toString());
+                                        if (htmlContent != null) {
+                                            String newHtmlContent = htmlContent.replaceAll(
+                                                                        Pattern.quote("cid:" + contentId),
+                                                                        contentUri.toString());
 
-                                        ContentValues cv = new ContentValues();
-                                        cv.put("html_content", new_html);
-                                        db.update("messages", cv, "id = ?", new String[]
-                                                  { Long.toString(messageId) });
+                                            ContentValues cv = new ContentValues();
+                                            cv.put("html_content", newHtmlContent);
+                                            db.update("messages", cv, "id = ?", new String[]
+                                                      { Long.toString(messageId) });
+                                        }
                                     }
                                 } finally {
                                     if (cursor != null) {
@@ -2552,6 +2567,7 @@ public class LocalStore extends Store implements Serializable {
             setPushState(null);
             setLastPush(0);
             setLastChecked(0);
+            setVisibleLimit(mAccount.getDisplayCount());
         }
 
         private void resetUnreadAndFlaggedCounts() {
@@ -2707,19 +2723,26 @@ public class LocalStore extends Store implements Serializable {
                 text = text.substring(0, 8192);
             }
 
-
+            // try to remove lines of dashes in the preview
             text = text.replaceAll("(?m)^----.*?$", "");
+            // remove quoted text from the preview
             text = text.replaceAll("(?m)^[#>].*$", "");
+            // Remove a common quote header from the preview
             text = text.replaceAll("(?m)^On .*wrote.?$", "");
+            // Remove a more generic quote header from the preview
             text = text.replaceAll("(?m)^.*\\w+:$", "");
+
+            // URLs in the preview should just be shown as "..." - They're not
+            // clickable and they usually overwhelm the preview
             text = text.replaceAll("https?://\\S+", "...");
+            // Don't show newlines in the preview
             text = text.replaceAll("(\\r|\\n)+", " ");
+            // Collapse whitespace in the preview
             text = text.replaceAll("\\s+", " ");
             if (text.length() <= 512) {
                 return text;
             } else {
-                text = text.substring(0, 512);
-                return text;
+                return text.substring(0, 512);
             }
 
         }

@@ -487,6 +487,7 @@ public class FolderList extends K9ListActivity {
             }
         }
 
+        onRefresh(!REFRESH_REMOTE);
     }
 
 
@@ -641,10 +642,12 @@ public class FolderList extends K9ListActivity {
     private void markAllAsRead() {
         try {
             MessagingController.getInstance(getApplication())
-                .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
+            .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
             mSelectedContextFolder.unreadMessageCount = 0;
             mHandler.dataChanged();
-        } catch (Exception e) { /* Ignore */ }
+        } catch (Exception e) {
+            /* Ignore */
+        }
     }
 
     @Override
@@ -652,17 +655,17 @@ public class FolderList extends K9ListActivity {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return ConfirmationDialog.create(this, id,
-                    R.string.mark_all_as_read_dlg_title,
-                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                            mSelectedContextFolder.displayName),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            markAllAsRead();
-                        }
-                    });
+                                             R.string.mark_all_as_read_dlg_title,
+                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mSelectedContextFolder.displayName),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    markAllAsRead();
+                }
+            });
         }
 
         return super.onCreateDialog(id);

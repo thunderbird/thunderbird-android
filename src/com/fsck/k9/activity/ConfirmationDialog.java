@@ -20,27 +20,27 @@ public class ConfirmationDialog {
      * @return A confirmation dialog with the supplied arguments
      */
     public static Dialog create(final Activity activity, final int dialogId, final int title,
-            final String message, final int confirmButton, final int cancelButton,
-            final Runnable action) {
+                                final String message, final int confirmButton, final int cancelButton,
+                                final Runnable action) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(confirmButton,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    activity.dismissDialog(dialogId);
-                    action.run();
-                }
-            });
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activity.dismissDialog(dialogId);
+                action.run();
+            }
+        });
         builder.setNegativeButton(cancelButton,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    activity.dismissDialog(dialogId);
-                }
-            });
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activity.dismissDialog(dialogId);
+            }
+        });
         return builder.create();
     }
 
@@ -58,10 +58,10 @@ public class ConfirmationDialog {
      * @see #create(Activity,int,int,String,int,int,Runnable)
      */
     public static Dialog create(final Activity activity, final int dialogId, final int title,
-            final int message, final int confirmButton, final int cancelButton,
-            final Runnable action) {
+                                final int message, final int confirmButton, final int cancelButton,
+                                final Runnable action) {
 
         return create(activity, dialogId, title, activity.getString(message), confirmButton,
-                cancelButton, action);
+                      cancelButton, action);
     }
 }

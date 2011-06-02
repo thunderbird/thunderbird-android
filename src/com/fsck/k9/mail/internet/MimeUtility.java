@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 
 
 public class MimeUtility {
@@ -1212,13 +1213,13 @@ public class MimeUtility {
      * @see #MIME_TYPE_REPLACEMENT_MAP
      */
     public static String canonicalizeMimeType(String mimeType) {
-		for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
-			if (mimeTypeMapEntry[0].equals(mimeType)) {
-				return mimeTypeMapEntry[1];
-			}
-		}
-		return mimeType;
-	}
+        for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
+            if (mimeTypeMapEntry[0].equals(mimeType)) {
+                return mimeTypeMapEntry[1];
+            }
+        }
+        return mimeType;
+    }
 
     /**
      * When viewing the attachment we want the MIME type to be as sensible as
@@ -1381,13 +1382,19 @@ public class MimeUtility {
 
         /*
          * See if there is conversion from the MIME charset to the Java one.
+         * this function may also throw an exception if the charset name is not known
          */
-        if (!Charset.isSupported(charset)) {
+        boolean supported;
+        try {
+            supported = Charset.isSupported(charset);
+        } catch (IllegalCharsetNameException e) {
+            supported = false;
+        }
+        if (!supported) {
             Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
             ". Falling back to US-ASCII");
             charset = "US-ASCII";
         }
-
         /*
          * Convert and return as new String
          */

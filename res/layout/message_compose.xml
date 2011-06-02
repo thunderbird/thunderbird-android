@@ -152,7 +152,6 @@
 
                             <TextView
                                 android:id="@+id/userId"
-                                android:text=""
                                 android:ellipsize="end"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@android:color/primary_text_light"
@@ -161,7 +160,6 @@
 
                             <TextView
                                 android:id="@+id/userIdRest"
-                                android:text=""
                                 android:textSize="10sp"
                                 android:ellipsize="end"
                                 android:textColor="@android:color/primary_text_light"
@@ -238,6 +236,17 @@
                 android:capitalize="sentences"
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/quoted_text_show"
+                android:text="@string/message_compose_show_quoted_text_action"
+                android:textSize="16dip"
+                android:padding="0dip"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" />
 
             <!-- Quoted text bar -->
             <RelativeLayout

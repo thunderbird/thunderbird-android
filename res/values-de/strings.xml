@@ -56,7 +56,7 @@
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
-    <string name="archive_action">Sichern</string>
+    <string name="archive_action">Archivieren</string>
     <string name="spam_action">Spam</string>
     <string name="delete_all_action">Ordner leeren</string>
     <string name="forward_action">Weiterleiten</string>
@@ -341,7 +341,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_confirm_action_archive">Archivieren</string>
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">Alle als gelesen markieren</string>
     <string name="global_settings_confirm_action_send">Senden</string>
 
     <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>
@@ -688,7 +688,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_add_account_label">Eine weiteres Konto hinzufügen</string>
     <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Ihr Name</string>
-    <string name="notifications_title">Benachrichtigungseinstellungen</string>
+    <string name="notifications_title">Benachrichtigungen</string>
     <string name="account_settings_ring_summary">Klingeln bei neuer Nachricht</string>
     <string name="account_settings_vibrate_enable">Vibration</string>
     <string name="account_settings_vibrate_summary">Vibration bei neuer Nachricht</string>
@@ -869,16 +869,16 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="date_format_common">dd.MMM yyyy</string>
     <string name="date_format_iso8601">yyyy-MM-dd</string>
 
-    <string name="batch_ops">Mehrfachauswahl</string>
-    <string name="batch_delete_op">Ausgewählte löschen</string>
-    <string name="batch_mark_read_op">Ausgewählte als gelesen markieren</string>
-    <string name="batch_mark_unread_op">Ausgewählte als ungelesen markieren</string>
-    <string name="batch_flag_op">Ausgewählte als wichtig markieren</string>
-    <string name="batch_unflag_op">Markierung bei Ausgewählten entfernen</string>
-    <string name="batch_archive_op">Ausgewählte sichern</string>
-    <string name="batch_spam_op">Ausgewählte als Spam markieren</string>
-    <string name="batch_move_op">Ausgewählte verschieben</string>
-    <string name="batch_copy_op">Ausgewählte kopieren</string>
+    <string name="batch_ops">Gruppenoperationen</string>
+    <string name="batch_delete_op">Gewählte löschen</string>
+    <string name="batch_mark_read_op">Gewählte als gelesen markieren</string>
+    <string name="batch_mark_unread_op">Gewählte als ungelesen markieren</string>
+    <string name="batch_flag_op">Gewählte als wichtig markieren</string>
+    <string name="batch_unflag_op">Markierung bei Gewählten entfernen</string>
+    <string name="batch_archive_op">Gewählte sichern</string>
+    <string name="batch_spam_op">Gewählte als Spam markieren</string>
+    <string name="batch_move_op">Gewählte verschieben</string>
+    <string name="batch_copy_op">Gewählte kopieren</string>
     <string name="batch_flag_mode">Stern-Modus</string>
     <string name="batch_select_mode">Auswahl-Modus</string>
     <string name="batch_plain_mode">Normaler Modus</string>
@@ -1022,12 +1022,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="dialog_confirm_delete_confirm_button">Löschen</string>
     <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_title">Als Spam markieren</string>
+    <string name="dialog_confirm_spam_message">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</string>
+    <string name="dialog_confirm_spam_confirm_button">Ja</string>
+    <string name="dialog_confirm_spam_cancel_button">Nein</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">Anhang wird heruntergeladen</string>
 
     <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
 
@@ -1037,4 +1037,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ist nicht verfügbar; Bitte SD-Karte prüfen.</string>
 
+    <string name="settings_attachment_default_path">Anhang speichern unter...</string>
+    <string name="attachment_save_title">Anhang speichern</string>
+    <string name="attachment_save_desc">Es wurde kein Dateimanager gefunden. Wo soll der Anhang abgelegt werden?</string>
 </resources>

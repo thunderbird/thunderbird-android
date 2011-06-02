@@ -501,6 +501,7 @@
         <item>zh_CN</item>
         <item>fi</item>
         <item>sv</item>
+        <item>ko</item>
     </string-array>
 
     <string-array name="settings_theme_entries">

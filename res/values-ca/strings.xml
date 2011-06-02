@@ -344,7 +344,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="global_settings_confirm_action_archive">Arxiva</string>
     <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
     <string name="global_settings_confirm_action_spam">Brossa</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">Maca\'ls tots com a llegits</string>
     <string name="global_settings_confirm_action_send">Envia</string>
 
     <string name="global_settings_privacy_mode_title">Bloca notificacions</string>
@@ -1001,7 +1001,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <!-- APG related -->
     <string name="error_activity_not_found">No s’ha trobat cap aplicació idònia per a aquesta acció.</string>
-    <string name="error_apg_version_not_supported">Versió APG instal lada no suportada.</string>
+    <string name="error_apg_version_not_supported">Versió APG instal·lada no suportada.</string>
     <string name="btn_crypto_sign">Inicia</string>
     <string name="btn_encrypt">Encripta</string>
     <string name="btn_decrypt">Desencripta</string>
@@ -1025,10 +1025,10 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="dialog_confirm_delete_confirm_button">Esborra</string>
     <string name="dialog_confirm_delete_cancel_button">No esborris</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_title">Confirma moure\'l carpeta brossa</string>
+    <string name="dialog_confirm_spam_message">Realment vols moure aquest missatge a la carpeta brossa?</string>
+    <string name="dialog_confirm_spam_confirm_button">Sí</string>
+    <string name="dialog_confirm_spam_cancel_button">No</string>
 
     <string name="dialog_attachment_progress_title">S\'està descarregant adjunt</string>
 
@@ -1038,6 +1038,9 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">No es pot connectar.</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">Compte \"<xliff:g id="account">%s</xliff:g>\" no és disponible; comprova emmagatzematge</string>
 
+    <string name="settings_attachment_default_path">Desa adjunts a...</string>
+    <string name="attachment_save_title">Desa adjunt</string>
+    <string name="attachment_save_desc">No s\'ha trobat l\'arxiu al navegador. On vols desar l\'adjunt?</string>
 </resources>

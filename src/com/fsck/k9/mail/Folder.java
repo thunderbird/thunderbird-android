@@ -153,9 +153,13 @@ public abstract class Folder {
         return null;
     }
 
+    public boolean isFlagSupported(Flag flag) {
+        return true;
+    }
+
     public boolean supportsFetchingFlags() {
         return true;
-    }//isFlagSupported
+    }
 
     @Override
     public String toString() {

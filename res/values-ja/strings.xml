@@ -23,7 +23,7 @@
     <string name="accounts_title">アカウント一覧</string>
     <string name="advanced">拡張機能</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">K-9 Accounts</string>
+    <string name="shortcuts_title">K-9 アカウント</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -133,7 +133,7 @@
     <string name="status_loading_folder">(取込中 <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">メール取込中\u2026</string>
     <string name="status_network_error">接続エラー</string>
-    <string name="status_invalid_id_error">新着メールなし</string>
+    <string name="status_invalid_id_error">メッセージが見つかりません</string>
     <string name="status_error">エラー</string>
     <string name="status_sending">送信\u2026</string>
 
@@ -188,13 +188,13 @@
 
     <string name="send_failure_subject">メール送信に失敗しました</string>
     <string name="send_failure_body_abbrev"><xliff:g id="errorFolder">%s</xliff:g> フォルダ詳細を確認してください</string>
-    <string name="send_failure_body_fmt">K-9 はメール送信中にトラブルが発生しました．
-     メッセージが送信されたかどうかについては、トラブルに応じるため不明です．
-      送信宛先は、メールを既に受信している場合があります．
-    \u000a\u000a送信済みトレイにトラブルで発生したメールを格納します．
-    フラグ解除されたメールを再送信することができます．
-    送信済みトレイを長く押下することで「メール送信」メニューを表示させて送信することができます．\u000A\u000a
-    <xliff:g id="errorFolder">%s</xliff:g> フォルダには失敗したエラーメッセージが含まれています．</string>
+    <string name="send_failure_body_fmt">メール送信中に問題が発生しました。
+    問題の性質により、メッセージが送信されたかどうかがわかりません。
+    受信者は、そのメッセージを既に受信しているかもしれません。
+    \u000a\u000a問題が発生したメールには送信トレイにスターが付いています。
+    スターを取ることで、メールを再送することができます。
+    他のメッセージを送信するには、「メール送信」メニューを表示させるために送信トレイを長押ししてください。\u000A\u000a
+    <xliff:g id="errorFolder">%s</xliff:g> フォルダにはその問題に関するエラーメッセージが含まれています。</string>
 
     <string name="alert_header">K-9 警告</string>
     <string name="no_connection_alert">送信ネットワークのリソース不足のため同期処理中断</string>
@@ -231,7 +231,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="debug_enable_debug_logging_title">拡張デバッグログ</string>
     <string name="debug_enable_debug_logging_summary">追加診断情報ログ</string>
     <string name="debug_enable_sensitive_logging_title">詳細情報ログ</string>
-    <string name="debug_enable_sensitive_logging_summary">ログにパスワードが表示されるかもしれません</string>
+    <string name="debug_enable_sensitive_logging_summary">ログにパスワードが表示される</string>
 
     <string name="message_header_mua">K-9 for Android </string>
 
@@ -259,16 +259,16 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_content_hint">本文</string>
     <string name="message_compose_quote_header_separator">-------- 元メール --------</string>
     <string name="message_compose_quote_header_subject">件名:</string>
-    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <string name="message_compose_quote_header_send_date">送信日:</string>
     <string name="message_compose_quote_header_from">送信者:</string>
     <string name="message_compose_quote_header_to">宛先:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">テキスト引用</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
-    <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません．このメールが送信される前に自動的にダウンロードされます．</string>
-    <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません．</string>
+    <string name="error_contact_address_not_found">メールアドレスが登録されていません</string>
+    <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません。このメールが送信される前に自動的にダウンロードされます。</string>
+    <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
 
 
 
@@ -293,9 +293,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_view_download_remainder">すべてダウンロード</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません．ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「すべてのヘッダを端末に保存」をチェックしてください．</string>
-    <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした．</string>
-    <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした．</string>
+    <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません。ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「ヘッダのダウンロード」をチェックしてください。</string>
+    <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
+    <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
 
     <string name="mailbox_select_dlg_title">フォルダ</string>
     <string name="mailbox_select_dlg_new_mailbox_action">新しいフォルダ</string>
@@ -318,7 +318,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
 
     <string name="global_settings_flag_label">スターを表示</string>
-    <string name="global_settings_flag_summary">スターは印を付けたメッセージを示します</string>
+    <string name="global_settings_flag_summary">スターは印の付いたメッセージを示す</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_touchable_label">メッセージプレビュー</string>
@@ -333,7 +333,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_registered_name_color_changed">連絡先の名前の場合は色を付ける</string>
 
     <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
-    <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージを表示する際、固定幅フォントを利用します．</string>
+    <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
     <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧へ戻る</string>
     <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
 
@@ -342,7 +342,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_action_archive">アーカイブ</string>
     <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
 
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
@@ -350,7 +350,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
 
     <string name="quiet_time">夜間時間帯</string>
-    <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定します．</string>
+    <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定</string>
     <string name="quiet_time_starts">開始時刻</string>
     <string name="quiet_time_ends">終了時刻</string>
 
@@ -491,7 +491,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="push_poll_on_connect_label">プッシュ接続時の同期</string>
     <string name="account_setup_options_enable_push_label">このアカウントにプッシュメールを有効化</string>
-    <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます．当オプションはパフォーマンスが改善もしくは低下します．</string>
+    <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます。当オプションはパフォーマンスが改善もしくは低下します。</string>
     <string name="idle_refresh_period_label">IMAP IDLE（プッシュ）接続のリフレッシュ</string>
     <string name="idle_refresh_period_1min">１分毎</string>
     <string name="idle_refresh_period_2min">２分毎</string>
@@ -584,7 +584,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_crypto_app_none">なし</string>
     <string name="account_settings_crypto_app_not_available">利用不可</string>
     <string name="account_settings_crypto_auto_signature">自動署名</string>
-    <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する．</string>
+    <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する</string>
 
     <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
     <string name="account_settings_second_class_check_frequency_label">2nd クラス自動受信間隔</string>
@@ -600,7 +600,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
 
-    <string name="account_settings_autodownload_message_size_label">ダウンロードするメッセージの上限</string>
+    <string name="account_settings_autodownload_message_size_label">ダウンロードするメッセージサイズの上限</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
@@ -841,7 +841,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_messageview_mobile_layout_label">１列レイアウト</string>
     <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
     <string name="settings_messageview_zoom_controls_label">ズーム制御</string>
-    <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にします</string>
+    <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にする</string>
 
 
 
@@ -910,13 +910,13 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="start_integrated_inbox_summary">起動後に統合フォルダを表示する</string>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
-    <string name="measure_accounts_summary">表示を早くしたい場合はチェックをはずしてください</string>
+    <string name="measure_accounts_summary">表示を速くしたい場合はチェックしない</string>
 
     <string name="count_search_title">検索結果の件数表示</string>
-    <string name="count_search_summary">表示を早くしたい場合はチェックをはずしてください</string>
+    <string name="count_search_summary">表示を速くしたい場合はチェックしない</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">特殊なアカウントを隠す</string>
+    <string name="hide_special_accounts_summary">統合フォルダと全メッセージを隠す</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - スター</string>
@@ -1018,12 +1018,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_delete_confirm_button">削除する</string>
     <string name="dialog_confirm_delete_cancel_button">削除しない</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_title">迷惑メールフォルダへの移動の確認</string>
+    <string name="dialog_confirm_spam_message">本当にこのメッセージを迷惑メールフォルダに移動しますか？</string>
+    <string name="dialog_confirm_spam_confirm_button">はい</string>
+    <string name="dialog_confirm_spam_cancel_button">いいえ</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">添付ファイルをダウンロードしています</string>
 
     <string name="debug_logging_enabled">Android のログにデバッグ用のログを出力するように設定しました。</string>
 
@@ -1031,6 +1031,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="messagelist_sent_cc_me_sigil">\u203a</string>
     <string name="error_unable_to_connect">接続できません</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">アカウント \"<xliff:g id="account">%s</xliff:g>\" は利用できません。ストレージを確認してください。</string>
 
+    <string name="settings_attachment_default_path">添付ファイルの保存先</string>
+    <string name="attachment_save_title">添付ファイルの保存先</string>
+    <string name="attachment_save_desc">ファイルブラウザがインストールされていません。添付ファイルの保存場所を直接入力してください。</string>
 </resources>

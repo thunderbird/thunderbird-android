@@ -12,13 +12,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.TextAppearanceSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.animation.Animation;
@@ -491,7 +492,7 @@ public class MessageList
             if (mFolderName != null) {
                 displayName  = mFolderName;
 
-                if (K9.INBOX.equalsIgnoreCase(displayName)) {
+                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
                     displayName = getString(R.string.special_mailbox_name_inbox);
                 } else if (mAccount.getOutboxFolderName().equals(displayName)) {
                     displayName = getString(R.string.special_mailbox_name_outbox);
@@ -565,9 +566,10 @@ public class MessageList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Use mListView.getAdapter() to get the WrapperListAdapter that includes the footer view.
-        if (mCurrentFolder != null && ((position + 1) == mListView.getAdapter().getCount())) {
-            mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+        if (view == mFooterView) {
+            if (mCurrentFolder != null) {
+                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+            }
             return;
         }
 
@@ -726,6 +728,9 @@ public class MessageList
             }
 
         } else {
+            // reread the selected date format preference in case it has changed
+            mMessageHelper.refresh();
+
             new Thread() {
                 @Override
                 public void run() {
@@ -1139,7 +1144,7 @@ public class MessageList
         }
     }
 
-    private void moveToSpamFolder(MessageInfoHolder holder){
+    private void moveToSpamFolder(MessageInfoHolder holder) {
         if (!mController.isMoveCapable(holder.message)) {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1283,31 +1288,31 @@ public class MessageList
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return ConfirmationDialog.create(this, id,
-                    R.string.mark_all_as_read_dlg_title,
-                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                            mCurrentFolder.displayName),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            markAllAsRead();
-                        }
-                    });
+                                             R.string.mark_all_as_read_dlg_title,
+                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mCurrentFolder.displayName),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    markAllAsRead();
+                }
+            });
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
-                    R.string.dialog_confirm_spam_title,
-                    R.string.dialog_confirm_spam_message,
-                    R.string.dialog_confirm_spam_confirm_button,
-                    R.string.dialog_confirm_spam_cancel_button,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            moveToSpamFolder(mSelectedMessage);
-                            // No further need for this reference
-                            mSelectedMessage = null;
-                        }
-                    });
+                                             R.string.dialog_confirm_spam_title,
+                                             R.string.dialog_confirm_spam_message,
+                                             R.string.dialog_confirm_spam_confirm_button,
+                                             R.string.dialog_confirm_spam_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    moveToSpamFolder(mSelectedMessage);
+                    // No further need for this reference
+                    mSelectedMessage = null;
+                }
+            });
         }
 
         return super.onCreateDialog(id);
@@ -2156,13 +2161,14 @@ public class MessageList
                     holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable) holder.preview.getText();
 
-                    ColorStateList color = holder.subject.getTextColors();
-                    ColorStateList linkColor = holder.subject.getLinkTextColors();
-                    str.setSpan(new TextAppearanceSpan(null, Typeface.NORMAL, mFontSizes.getMessageListSender(), color, linkColor),
+                    str.setSpan(new StyleSpan(Typeface.NORMAL),
                                 0,
                                 noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                               );
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
+                                0,
+                                noSender.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     holder.from.setText(noSender);
                     holder.from.setTypeface(null, Typeface.NORMAL);
@@ -2244,13 +2250,20 @@ public class MessageList
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
-                ColorStateList color = holder.subject.getTextColors();
-                ColorStateList linkColor = holder.subject.getLinkTextColors();
-                str.setSpan(new TextAppearanceSpan(null, senderTypeface, mFontSizes.getMessageListSender(), color, linkColor),
+                str.setSpan(new StyleSpan(senderTypeface),
                             0,
                             message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                           );
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
+                            0,
+                            message.sender.length() + 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                // set span for preview message.
+                str.setSpan(new ForegroundColorSpan(Color.rgb(128, 128, 128)), // How do I can specify the android.R.attr.textColorTertiary
+                            message.sender.length() + 1,
+                            str.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
 

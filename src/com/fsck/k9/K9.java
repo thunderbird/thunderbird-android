@@ -2,6 +2,7 @@
 package com.fsck.k9;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 
 import com.fsck.k9.activity.MessageCompose;
@@ -65,6 +68,10 @@ public class K9 extends Application {
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
 
+    /**
+     * @see K9#createAbsoluteSizeSpan(int)
+     */
+    private static Constructor<AbsoluteSizeSpan> sAbsoluteSizeSpanConstructor;
 
     public enum BACKGROUND_OPS {
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -143,7 +150,6 @@ public class K9 extends Application {
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
-
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
@@ -177,7 +183,7 @@ public class K9 extends Application {
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
-
+    private static String mAttachmentDefaultPath = "";
 
 
     private static boolean useGalleryBugWorkaround = false;
@@ -209,17 +215,6 @@ public class K9 extends Application {
      */
     public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
     };
-
-    /**
-     * The special name "INBOX" is used throughout the application to mean "Whatever folder
-     * the server refers to as the user's Inbox. Placed here to ease use.
-     */
-    public static final String INBOX = "INBOX";
-
-    /**
-     * This local folder is used to store messages to be sent.
-     */
-    public static final String OUTBOX = "OUTBOX";
 
     /**
      * For use when displaying that no folder is selected
@@ -452,7 +447,7 @@ public class K9 extends Application {
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
         editor.putBoolean("compactLayouts", compactLayouts);
-
+        editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         fontSizes.save(editor);
     }
 
@@ -507,7 +502,7 @@ public class K9 extends Application {
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
-
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
 
         try {
@@ -942,11 +937,11 @@ public class K9 extends Application {
     }
 
     public static boolean confirmSpam() {
-    	return mConfirmSpam;
+        return mConfirmSpam;
     }
 
     public static void setConfirmSpam(final boolean confirm) {
-    	mConfirmSpam = confirm;
+        mConfirmSpam = confirm;
     }
 
     public static boolean confirmMarkAllAsRead() {
@@ -995,4 +990,55 @@ public class K9 extends Application {
         }
     }
 
+    public static String getAttachmentDefaultPath() {
+        return mAttachmentDefaultPath;
+    }
+
+    public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
+        K9.mAttachmentDefaultPath = attachmentDefaultPath;
+    }
+
+    /**
+     * Creates an {@link AbsoluteSizeSpan} object.
+     *
+     * <p>
+     * Android versions prior to 2.0 don't support the constructor with two parameters
+     * ({@link AbsoluteSizeSpan#AbsoluteSizeSpan(int, boolean)}). So we have to perform some
+     * reflection magic to dynamically load the new constructor on devices that support it.
+     * For devices with old Android versions we just use the size as pixels (instead of dip).
+     * </p>
+     *
+     * @param size This is used as the {@code size} parameter for the AbsoluteSizeSpan constructor.
+     * @return a AbsoluteSizeSpan object with the specified text size.
+     */
+    public static AbsoluteSizeSpan createAbsoluteSizeSpan(int size) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5) {
+            // For Android 1.5/1.6 simply use the constructor with only the size parameter.
+            // Yes, that will most likely look wrong!
+            return new AbsoluteSizeSpan(size);
+        }
+
+        if (sAbsoluteSizeSpanConstructor == null) {
+            try {
+                sAbsoluteSizeSpanConstructor = AbsoluteSizeSpan.class.getConstructor(int.class, boolean.class);
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Couldn't get the AbsoluteSizeSpan(int, boolean) constructor", e);
+
+                // Fallback
+                return new AbsoluteSizeSpan(size);
+            }
+        }
+
+        AbsoluteSizeSpan result;
+        try {
+            result = sAbsoluteSizeSpanConstructor.newInstance(size, true);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Couldn't call the AbsoluteSizeSpan(int, boolean) constructor", e);
+
+            // Fallback
+            result = new AbsoluteSizeSpan(size);
+        }
+
+        return result;
+    }
 }

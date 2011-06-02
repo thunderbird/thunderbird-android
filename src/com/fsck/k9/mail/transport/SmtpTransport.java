@@ -39,6 +39,14 @@ public class SmtpTransport extends Transport {
 
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    public static final String AUTH_PLAIN = "PLAIN";
+
+    public static final String AUTH_CRAM_MD5 = "CRAM_MD5";
+
+    public static final String AUTH_LOGIN = "LOGIN";
+
+    public static final String AUTH_AUTOMATIC = "AUTOMATIC";
+
     String mHost;
 
     int mPort;
@@ -163,7 +171,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(null);
 
             InetAddress localAddress = mSocket.getLocalAddress();
-            String localHost = localAddress.getHostName();
+            String localHost = localAddress.getCanonicalHostName();
             String ipAddr = localAddress.getHostAddress();
 
             if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
@@ -221,9 +229,13 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            /*
-             * result contains the results of the EHLO in concatenated form
-             */
+            boolean useAuthLogin = AUTH_LOGIN.equals(mAuthType);
+            boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
+            boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
+
+            // Automatically choose best authentication method if none was explicitly selected
+            boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
+
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
@@ -234,7 +246,7 @@ public class SmtpTransport extends Transport {
                 if (result.matches(".*AUTH.*PLAIN.*$")) {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5")) {
+                if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
                     authCramMD5Supported = true;
                 }
                 if (result.matches(".*SIZE \\d*$")) {
@@ -248,13 +260,40 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            if (mUsername != null && mUsername.length() > 0 && mPassword != null
-                    && mPassword.length() > 0) {
-                if (authCramMD5Supported) {
+            if (mUsername != null && mUsername.length() > 0 &&
+                    mPassword != null && mPassword.length() > 0) {
+                if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
+                    if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
+                              "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthCramMD5(mUsername, mPassword);
-                } else if (authPlainSupported) {
-                    saslAuthPlain(mUsername, mPassword);
-                } else if (authLoginSupported) {
+                } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
+                              "server didn't advertise support for it in EHLO response.");
+                    }
+                    try {
+                        saslAuthPlain(mUsername, mPassword);
+                    } catch (MessagingException ex) {
+                        // PLAIN is a special case.  Historically, PLAIN has represented both PLAIN and LOGIN; only the
+                        // protocol being advertised by the server would be used, with PLAIN taking precedence.  Instead
+                        // of using only the requested protocol, we'll try PLAIN and then try LOGIN.
+                        if (useAuthPlain && authLoginSupported) {
+                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                                Log.d(K9.LOG_TAG, "Using legacy PLAIN authentication behavior and trying LOGIN.");
+                            }
+                            saslAuthLogin(mUsername, mPassword);
+                        } else {
+                            // If it was auto detected and failed, continue throwing the exception back up.
+                            throw ex;
+                        }
+                    }
+                } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
+                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
+                              "server didn't advertise support for it in EHLO response.");
+                    }
                     saslAuthLogin(mUsername, mPassword);
                 } else {
                     throw new MessagingException("No valid authentication mechanism found.");
@@ -313,10 +352,19 @@ public class SmtpTransport extends Transport {
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
-            if (message.calculateSize() > mLargestAcceptableMessage) {
+            if (K9.DEBUG_PROTOCOL_SMTP) {
+                Log.d(K9.LOG_TAG, "calculating message size");
+            }
+            close(); // (prevent timeouts while calculating the size)
+            final long calculatedSize = message.calculateSize();
+            if (calculatedSize > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 me.setPermanentFailure(possibleSend);
                 throw me;
+            }
+            open(); // (prevent timeouts while calculating the size)
+            if (K9.DEBUG_PROTOCOL_SMTP) {
+                Log.d(K9.LOG_TAG, "calculating message size DONE size=" + calculatedSize + " max allowed=" + mLargestAcceptableMessage);
             }
         }
 
@@ -344,6 +392,14 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("\r\n.");
         } catch (Exception e) {
             MessagingException me = new MessagingException("Unable to send message", e);
+
+            // "5xx text" -responses are permanent failures
+            String msg = e.getMessage();
+            if (msg != null && msg.startsWith("5")) {
+                Log.w(K9.LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
+                possibleSend = false;
+            }
+
             me.setPermanentFailure(possibleSend);
             throw me;
         } finally {
@@ -520,9 +576,9 @@ public class SmtpTransport extends Transport {
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
 
-    	List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
+        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) {
-        	throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
+            throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
         }
 
         String b64Nonce = respList.get(0);

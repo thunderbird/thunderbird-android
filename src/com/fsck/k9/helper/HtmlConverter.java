@@ -124,6 +124,45 @@ public class HtmlConverter {
     private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
 
     /**
+     * Naively convert a text string into an HTML document.  This method avoids using regular expressions on the entire
+     * message body to save memory.
+     * @param text Plain text string.
+     * @return HTML string.
+     */
+    private static String simpleTextToHtml(String text) {
+        // Encode HTML entities to make sure we don't display something evil.
+        text = TextUtils.htmlEncode(text);
+
+        StringReader reader = new StringReader(text);
+        StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
+        buff.append("<html><head/><body>");
+
+        int c;
+        try {
+            while ((c = reader.read()) != -1) {
+                switch (c) {
+                case '\n':
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
+                    break;
+                case '\r':
+                    break;
+                default:
+                    buff.append((char)c);
+                }//switch
+            }
+        } catch (IOException e) {
+            //Should never happen
+            Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
+        }
+
+        buff.append("</body></html>");
+
+        return buff.toString();
+    }
+
+    /**
      * Convert a text string into an HTML document. Attempts to do smart replacement for large
      * documents to prevent OOM errors. This method adds headers and footers to create a proper HTML
      * document. To convert to a fragment, use {@link #textToHtmlFragment(String)}.
@@ -136,11 +175,7 @@ public class HtmlConverter {
         // if the message is big and plain text, just do
         // a trivial htmlification
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
-            return "<html><head/><body>" +
-                   htmlifyMessageHeader() +
-                   text +
-                   htmlifyMessageFooter() +
-                   "</body></html>";
+            return simpleTextToHtml(text);
         }
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
@@ -148,6 +183,11 @@ public class HtmlConverter {
         try {
             while ((c = reader.read()) != -1) {
                 switch (c) {
+                case '\n':
+                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+                    // doublespaced.
+                    buff.append("<br />");
+                    break;
                 case '&':
                     buff.append("&amp;");
                     break;
@@ -168,8 +208,14 @@ public class HtmlConverter {
             Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
         }
         text = buff.toString();
+
+        // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
+
+        // TODO: reverse engineer (or troll history) and document
         text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])", "$1 ");
+
+        // Compress four or more newlines down to two newlines
         text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\n\n");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);

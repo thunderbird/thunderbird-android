@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.activity;
 
 import android.test.ActivityInstrumentationTestCase2;
 import com.fsck.k9.activity.Accounts;

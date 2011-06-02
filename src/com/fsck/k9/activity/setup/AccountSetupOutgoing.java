@@ -16,6 +16,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.transport.SmtpTransport;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,10 +47,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
     */
-
     private static final String authTypes[] = {
-        "PLAIN", "CRAM_MD5"
+        SmtpTransport.AUTH_AUTOMATIC,
+        SmtpTransport.AUTH_LOGIN,
+        SmtpTransport.AUTH_PLAIN,
+        SmtpTransport.AUTH_CRAM_MD5,
     };
+
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
@@ -117,14 +122,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        // This needs to be kept in sync with the list at the top of the file.
-        // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, "PLAIN"),
-            new SpinnerOption(1, "CRAM_MD5")
-        };
-
-
+        SpinnerOption authTypeSpinnerOptions[] = new SpinnerOption[authTypes.length];
+        for (int i = 0; i < authTypes.length; i++) {
+            authTypeSpinnerOptions[i] = new SpinnerOption(i, authTypes[i]);
+        }
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);

@@ -33,6 +33,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
 public class Account implements BaseAccount {
+    /**
+     * Default value for the inbox folder (never changes for POP3 and IMAP)
+     */
+    public static final String INBOX = "INBOX";
+
+    /**
+     * This local folder is used to store messages to be sent.
+     */
+    public static final String OUTBOX = "OUTBOX";
+
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -50,6 +60,7 @@ public class Account implements BaseAccount {
     private static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
     private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
+    private static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     /**
@@ -80,6 +91,7 @@ public class Account implements BaseAccount {
     private long mLatestOldMessageSeenTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
+    private String mInboxFolderName;
     private String mDraftsFolderName;
     private String mSentFolderName;
     private String mTrashFolderName;
@@ -115,6 +127,7 @@ public class Account implements BaseAccount {
     private MessageFormat mMessageFormat;
     private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
+    private boolean mDefaultQuotedTextShown;
     private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
@@ -180,7 +193,8 @@ public class Account implements BaseAccount {
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
-        mAutoExpandFolderName = "INBOX";
+        mAutoExpandFolderName = INBOX;
+        mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         goToUnreadMessageSearch = false;
@@ -191,6 +205,7 @@ public class Account implements BaseAccount {
         mMessageFormat = DEFAULT_MESSAGE_FORMAT;
         mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
+        mDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
@@ -246,6 +261,7 @@ public class Account implements BaseAccount {
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
+        mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", INBOX);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
@@ -263,6 +279,7 @@ public class Account implements BaseAccount {
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
+        mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes) {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
@@ -270,8 +287,7 @@ public class Account implements BaseAccount {
             compressionMap.put(type, useCompression);
         }
 
-        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName",
-                                                "INBOX");
+        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName", INBOX);
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
@@ -485,6 +501,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
+        editor.putString(mUuid + ".inboxFolderName", mInboxFolderName);
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
         editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
@@ -514,6 +531,7 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
         editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
+        editor.putBoolean(mUuid + ".defaultQuotedTextShown", mDefaultQuotedTextShown);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
@@ -762,7 +780,7 @@ public class Account implements BaseAccount {
 
 
     public boolean isSpecialFolder(String folderName) {
-        if (folderName != null && (folderName.equalsIgnoreCase(K9.INBOX) ||
+        if (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
                                    folderName.equals(getTrashFolderName()) ||
                                    folderName.equals(getDraftsFolderName()) ||
                                    folderName.equals(getArchiveFolderName()) ||
@@ -824,7 +842,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getOutboxFolderName() {
-        return K9.OUTBOX;
+        return OUTBOX;
     }
 
     public synchronized String getAutoExpandFolderName() {
@@ -1270,6 +1288,14 @@ public class Account implements BaseAccount {
         mQuotePrefix = quotePrefix;
     }
 
+    public synchronized boolean isDefaultQuotedTextShown() {
+        return mDefaultQuotedTextShown;
+    }
+
+    public synchronized void setDefaultQuotedTextShown(boolean shown) {
+        mDefaultQuotedTextShown = shown;
+    }
+
     public synchronized boolean isReplyAfterQuote() {
         return mReplyAfterQuote;
     }
@@ -1303,6 +1329,15 @@ public class Account implements BaseAccount {
     public void setCryptoAutoSignature(boolean cryptoAutoSignature) {
         mCryptoAutoSignature = cryptoAutoSignature;
     }
+
+    public String getInboxFolderName() {
+        return mInboxFolderName;
+    }
+
+    public void setInboxFolderName(String mInboxFolderName) {
+        this.mInboxFolderName = mInboxFolderName;
+    }
+
     public synchronized boolean syncRemoteDeletions() {
         return mSyncRemoteDeletions;
     }

@@ -88,6 +88,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
+    private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
@@ -145,6 +146,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMessageFormat;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
@@ -225,6 +227,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mAccountDefaultQuotedTextShown = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN);
+        mAccountDefaultQuotedTextShown.setChecked(mAccount.isDefaultQuotedTextShown());
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
@@ -695,12 +700,19 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
+        mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+        // In webdav account we use the exact folder name also for inbox,
+        // since it varies because of internationalization
+        if (mAccount.getStoreUri().startsWith("webdav"))
+            mAccount.setAutoExpandFolderName(mAutoExpandFolder.getValue());
+        else
+            mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+
         mAccount.setArchiveFolderName(mArchiveFolder.getValue());
         mAccount.setDraftsFolderName(mDraftsFolder.getValue());
         mAccount.setSentFolderName(mSentFolder.getValue());
@@ -826,7 +838,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (K9.INBOX.equalsIgnoreCase(in)) {
+        if (mAccount.getInboxFolderName().equalsIgnoreCase(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
@@ -835,7 +847,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private String reverseTranslateFolder(String in) {
         if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return K9.INBOX;
+            return mAccount.getInboxFolderName();
         } else {
             return in;
         }
@@ -867,7 +879,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (mAccount.getOutboxFolderName().equalsIgnoreCase(folder.getName())) {
+                if (mAccount.getOutboxFolderName().equals(folder.getName())) {
                     iter.remove();
                 }
             }

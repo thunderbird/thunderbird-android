@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="13010"
-    android:versionName="3.709" package="com.fsck.k9"
+    android:versionCode="14001"
+    android:versionName="3.900" package="com.fsck.k9"
     >
     <uses-sdk
        android:minSdkVersion="3"
@@ -17,10 +17,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-
-    <!-- Needed to get the owner name which is used when the first mail account is created -->
-    <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <!-- Needed to mark a contact as contacted -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
@@ -319,7 +315,7 @@
               android:enabled="true"
               >
             <intent-filter>
-<!-- 
+<!--
 android.intent.action.MEDIA_MOUNTED
 
      * Broadcast Action:  External media is present and mounted at its mount point.
@@ -329,9 +325,9 @@ android.intent.action.MEDIA_MOUNTED
 
  -->
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-<!-- 
+<!--
 
-MEDIA_EJECT and MEDIA_UNMOUNTED are not defined here: they have to be dynamically registered 
+MEDIA_EJECT and MEDIA_UNMOUNTED are not defined here: they have to be dynamically registered
 otherwise it would make K-9 start at the wrong time
 
  -->
