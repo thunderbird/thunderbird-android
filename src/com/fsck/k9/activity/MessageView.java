@@ -994,7 +994,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
                                              R.string.dialog_confirm_spam_title,
-                                             R.string.dialog_confirm_spam_message,
+                                             getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1),
                                              R.string.dialog_confirm_spam_confirm_button,
                                              R.string.dialog_confirm_spam_cancel_button,
             new Runnable() {

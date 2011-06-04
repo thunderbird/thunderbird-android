@@ -1277,7 +1277,7 @@ public class MessageList
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
                                              R.string.dialog_confirm_spam_title,
-                                             R.string.dialog_confirm_spam_message,
+                                             "" /* text is refreshed by #onPrepareDialog(int, Dialog) below */,
                                              R.string.dialog_confirm_spam_confirm_button,
                                              R.string.dialog_confirm_spam_cancel_button,
             new Runnable() {
@@ -1294,13 +1294,20 @@ public class MessageList
     }
 
     @Override
-    public void onPrepareDialog(int id, Dialog dialog) {
+    public void onPrepareDialog(final int id, final Dialog dialog) {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ: {
             if (mCurrentFolder != null) {
                 ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
                                                  mCurrentFolder.displayName));
             }
+            break;
+        }
+        case R.id.dialog_confirm_spam: {
+            final int selectionSize = mActiveMessages.size();
+            final String message;
+            message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, selectionSize, Integer.valueOf(selectionSize));
+            ((AlertDialog) dialog).setMessage(message);
             break;
         }
         default: {
