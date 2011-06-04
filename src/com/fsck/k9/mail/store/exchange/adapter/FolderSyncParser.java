@@ -17,28 +17,20 @@
 
 package com.fsck.k9.mail.store.exchange.adapter;
 
-import com.android.email.provider.AttachmentProvider;
-import com.android.email.provider.EmailContent;
-import com.android.email.provider.EmailProvider;
-import com.android.email.provider.EmailContent.AccountColumns;
-import com.android.email.provider.EmailContent.Mailbox;
-import com.android.email.provider.EmailContent.MailboxColumns;
-import com.android.exchange.Eas;
-import com.android.exchange.MockParserStream;
-import com.android.exchange.SyncManager;
-
-import android.content.ContentProviderOperation;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.OperationApplicationException;
-import android.database.Cursor;
-import android.os.RemoteException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+
+import android.content.ContentProviderOperation;
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.store.EasStore;
+import com.fsck.k9.mail.store.exchange.Eas;
 
 /**
  * Parse the result of a FolderSync command
@@ -67,33 +59,34 @@ public class FolderSyncParser extends AbstractSyncParser {
     public static final List<Integer> mValidFolderTypes = Arrays.asList(INBOX_TYPE, DRAFTS_TYPE,
             DELETED_TYPE, SENT_TYPE, OUTBOX_TYPE, USER_MAILBOX_TYPE, CALENDAR_TYPE, CONTACTS_TYPE);
 
-    public static final String ALL_BUT_ACCOUNT_MAILBOX = MailboxColumns.ACCOUNT_KEY + "=? and " +
-        MailboxColumns.TYPE + "!=" + Mailbox.TYPE_EAS_ACCOUNT_MAILBOX;
-
-   private static final String WHERE_SERVER_ID_AND_ACCOUNT = MailboxColumns.SERVER_ID + "=? and " +
-        MailboxColumns.ACCOUNT_KEY + "=?";
-
-    private static final String WHERE_DISPLAY_NAME_AND_ACCOUNT = MailboxColumns.DISPLAY_NAME +
-        "=? and " + MailboxColumns.ACCOUNT_KEY + "=?";
-
-    private static final String WHERE_PARENT_SERVER_ID_AND_ACCOUNT =
-        MailboxColumns.PARENT_SERVER_ID +"=? and " + MailboxColumns.ACCOUNT_KEY + "=?";
-
-    private static final String[] MAILBOX_ID_COLUMNS_PROJECTION =
-        new String[] {MailboxColumns.ID, MailboxColumns.SERVER_ID};
+//    public static final String ALL_BUT_ACCOUNT_MAILBOX = MailboxColumns.ACCOUNT_KEY + "=? and " +
+//        MailboxColumns.TYPE + "!=" + Mailbox.TYPE_EAS_ACCOUNT_MAILBOX;
+//
+//   private static final String WHERE_SERVER_ID_AND_ACCOUNT = MailboxColumns.SERVER_ID + "=? and " +
+//        MailboxColumns.ACCOUNT_KEY + "=?";
+//
+//    private static final String WHERE_DISPLAY_NAME_AND_ACCOUNT = MailboxColumns.DISPLAY_NAME +
+//        "=? and " + MailboxColumns.ACCOUNT_KEY + "=?";
+//
+//    private static final String WHERE_PARENT_SERVER_ID_AND_ACCOUNT =
+//        MailboxColumns.PARENT_SERVER_ID +"=? and " + MailboxColumns.ACCOUNT_KEY + "=?";
+//
+//    private static final String[] MAILBOX_ID_COLUMNS_PROJECTION =
+//        new String[] {MailboxColumns.ID, MailboxColumns.SERVER_ID};
 
     private long mAccountId;
     private String mAccountIdAsString;
-    private MockParserStream mMock = null;
     private String[] mBindArguments = new String[2];
+	private List<Folder> folderList;
 
-    public FolderSyncParser(InputStream in, AbstractSyncAdapter adapter) throws IOException {
-        super(in, adapter);
+	private EasStore easStore;
+
+    public FolderSyncParser(InputStream in, AbstractSyncAdapter adapter, EasStore easStore, List<Folder> folderList) throws IOException {
+        super(in, adapter, adapter.mMailbox, adapter.mAccount);
+        this.easStore = easStore;
+        this.folderList = folderList;
         mAccountId = mAccount.mId;
         mAccountIdAsString = Long.toString(mAccountId);
-        if (in instanceof MockParserStream) {
-            mMock = (MockParserStream)in;
-        }
     }
 
     @Override
@@ -107,68 +100,69 @@ public class FolderSyncParser extends AbstractSyncParser {
             if (tag == Tags.FOLDER_STATUS) {
                 status = getValueInt();
                 if (status != Eas.FOLDER_STATUS_OK) {
-                    mService.errorLog("FolderSync failed: " + status);
+                    Log.e(K9.LOG_TAG, "FolderSync failed: " + status);
                     if (status == Eas.FOLDER_STATUS_INVALID_KEY) {
                         mAccount.mSyncKey = "0";
-                        mService.errorLog("Bad sync key; RESET and delete all folders");
-                        mContentResolver.delete(Mailbox.CONTENT_URI, ALL_BUT_ACCOUNT_MAILBOX,
-                                new String[] {Long.toString(mAccountId)});
-                        // Stop existing syncs and reconstruct _main
-                        SyncManager.stopNonAccountMailboxSyncsForAccount(mAccountId);
+                        Log.e(K9.LOG_TAG, "Bad sync key; RESET and delete all folders");
+//                        mContentResolver.delete(Mailbox.CONTENT_URI, ALL_BUT_ACCOUNT_MAILBOX,
+//                                new String[] {Long.toString(mAccountId)});
+//                        // Stop existing syncs and reconstruct _main
+//                        SyncManager.stopNonAccountMailboxSyncsForAccount(mAccountId);
                         res = true;
                         resetFolders = true;
                     } else {
                         // Other errors are at the server, so let's throw an error that will
                         // cause this sync to be retried at a later time
-                        mService.errorLog("Throwing IOException; will retry later");
+                    	Log.e(K9.LOG_TAG, "Throwing IOException; will retry later");
                         throw new EasParserException("Folder status error");
                     }
                 }
             } else if (tag == Tags.FOLDER_SYNC_KEY) {
-                mAccount.mSyncKey = getValue();
+            	getValue();
+//                mAccount.mSyncKey = getValue();
                 userLog("New Account SyncKey: ", mAccount.mSyncKey);
             } else if (tag == Tags.FOLDER_CHANGES) {
                 changesParser();
             } else
                 skipTag();
         }
-        synchronized (mService.getSynchronizer()) {
-            if (!mService.isStopped() || resetFolders) {
-                ContentValues cv = new ContentValues();
-                cv.put(AccountColumns.SYNC_KEY, mAccount.mSyncKey);
-                mAccount.update(mContext, cv);
-                userLog("Leaving FolderSyncParser with Account syncKey=", mAccount.mSyncKey);
-            }
-        }
+//        synchronized (mService.getSynchronizer()) {
+//            if (!mService.isStopped() || resetFolders) {
+//                ContentValues cv = new ContentValues();
+//                cv.put(AccountColumns.SYNC_KEY, mAccount.mSyncKey);
+//                mAccount.update(mContext, cv);
+//                userLog("Leaving FolderSyncParser with Account syncKey=", mAccount.mSyncKey);
+//            }
+//        }
         return res;
     }
 
-    private Cursor getServerIdCursor(String serverId) {
-        mBindArguments[0] = serverId;
-        mBindArguments[1] = mAccountIdAsString;
-        return mContentResolver.query(Mailbox.CONTENT_URI, EmailContent.ID_PROJECTION,
-                WHERE_SERVER_ID_AND_ACCOUNT, mBindArguments, null);
-    }
-
+//    private Cursor getServerIdCursor(String serverId) {
+//        mBindArguments[0] = serverId;
+//        mBindArguments[1] = mAccountIdAsString;
+//        return mContentResolver.query(Mailbox.CONTENT_URI, EmailContent.ID_PROJECTION,
+//                WHERE_SERVER_ID_AND_ACCOUNT, mBindArguments, null);
+//    }
+//
     public void deleteParser(ArrayList<ContentProviderOperation> ops) throws IOException {
         while (nextTag(Tags.FOLDER_DELETE) != END) {
             switch (tag) {
                 case Tags.FOLDER_SERVER_ID:
                     String serverId = getValue();
-                    // Find the mailbox in this account with the given serverId
-                    Cursor c = getServerIdCursor(serverId);
-                    try {
-                        if (c.moveToFirst()) {
-                            userLog("Deleting ", serverId);
-                            ops.add(ContentProviderOperation.newDelete(
-                                    ContentUris.withAppendedId(Mailbox.CONTENT_URI,
-                                            c.getLong(0))).build());
-                            AttachmentProvider.deleteAllMailboxAttachmentFiles(mContext,
-                                    mAccountId, mMailbox.mId);
-                        }
-                    } finally {
-                        c.close();
-                    }
+//                    // Find the mailbox in this account with the given serverId
+//                    Cursor c = getServerIdCursor(serverId);
+//                    try {
+//                        if (c.moveToFirst()) {
+//                            userLog("Deleting ", serverId);
+//                            ops.add(ContentProviderOperation.newDelete(
+//                                    ContentUris.withAppendedId(Mailbox.CONTENT_URI,
+//                                            c.getLong(0))).build());
+//                            AttachmentProvider.deleteAllMailboxAttachmentFiles(mContext,
+//                                    mAccountId, mMailbox.mId);
+//                        }
+//                    } finally {
+//                        c.close();
+//                    }
                     break;
                 default:
                     skipTag();
@@ -205,53 +199,55 @@ public class FolderSyncParser extends AbstractSyncParser {
             }
         }
         if (mValidFolderTypes.contains(type)) {
-            Mailbox m = new Mailbox();
-            m.mDisplayName = name;
-            m.mServerId = serverId;
-            m.mAccountKey = mAccountId;
-            m.mType = Mailbox.TYPE_MAIL;
-            // Note that all mailboxes default to checking "never" (i.e. manual sync only)
-            // We set specific intervals for inbox, contacts, and (eventually) calendar
-            m.mSyncInterval = Mailbox.CHECK_INTERVAL_NEVER;
-            switch (type) {
-                case INBOX_TYPE:
-                    m.mType = Mailbox.TYPE_INBOX;
-                    m.mSyncInterval = mAccount.mSyncInterval;
-                    break;
-                case CONTACTS_TYPE:
-                    m.mType = Mailbox.TYPE_CONTACTS;
-                    m.mSyncInterval = mAccount.mSyncInterval;
-                    break;
-                case OUTBOX_TYPE:
-                    // TYPE_OUTBOX mailboxes are known by SyncManager to sync whenever they aren't
-                    // empty.  The value of mSyncFrequency is ignored for this kind of mailbox.
-                    m.mType = Mailbox.TYPE_OUTBOX;
-                    break;
-                case SENT_TYPE:
-                    m.mType = Mailbox.TYPE_SENT;
-                    break;
-                case DRAFTS_TYPE:
-                    m.mType = Mailbox.TYPE_DRAFTS;
-                    break;
-                case DELETED_TYPE:
-                    m.mType = Mailbox.TYPE_TRASH;
-                    break;
-                case CALENDAR_TYPE:
-                    m.mType = Mailbox.TYPE_CALENDAR;
-                    m.mSyncInterval = mAccount.mSyncInterval;
-                    break;
-            }
-
-            // Make boxes like Contacts and Calendar invisible in the folder list
-            m.mFlagVisible = (m.mType < Mailbox.TYPE_NOT_EMAIL);
-
-            if (!parentId.equals("0")) {
-                m.mParentServerId = parentId;
-            }
-
-            userLog("Adding mailbox: ", m.mDisplayName);
-            ops.add(ContentProviderOperation
-                    .newInsert(Mailbox.CONTENT_URI).withValues(m.toContentValues()).build());
+        	Folder folder = easStore.createFolderInternal(name, serverId, type);
+        	folderList.add(folder);
+//            Mailbox m = new Mailbox();
+//            m.mDisplayName = name;
+//            m.mServerId = serverId;
+//            m.mAccountKey = mAccountId;
+//            m.mType = Mailbox.TYPE_MAIL;
+//            // Note that all mailboxes default to checking "never" (i.e. manual sync only)
+//            // We set specific intervals for inbox, contacts, and (eventually) calendar
+//            m.mSyncInterval = Mailbox.CHECK_INTERVAL_NEVER;
+//            switch (type) {
+//                case INBOX_TYPE:
+//                    m.mType = Mailbox.TYPE_INBOX;
+//                    m.mSyncInterval = mAccount.mSyncInterval;
+//                    break;
+//                case CONTACTS_TYPE:
+//                    m.mType = Mailbox.TYPE_CONTACTS;
+//                    m.mSyncInterval = mAccount.mSyncInterval;
+//                    break;
+//                case OUTBOX_TYPE:
+//                    // TYPE_OUTBOX mailboxes are known by SyncManager to sync whenever they aren't
+//                    // empty.  The value of mSyncFrequency is ignored for this kind of mailbox.
+//                    m.mType = Mailbox.TYPE_OUTBOX;
+//                    break;
+//                case SENT_TYPE:
+//                    m.mType = Mailbox.TYPE_SENT;
+//                    break;
+//                case DRAFTS_TYPE:
+//                    m.mType = Mailbox.TYPE_DRAFTS;
+//                    break;
+//                case DELETED_TYPE:
+//                    m.mType = Mailbox.TYPE_TRASH;
+//                    break;
+//                case CALENDAR_TYPE:
+//                    m.mType = Mailbox.TYPE_CALENDAR;
+//                    m.mSyncInterval = mAccount.mSyncInterval;
+//                    break;
+//            }
+//
+//            // Make boxes like Contacts and Calendar invisible in the folder list
+//            m.mFlagVisible = (m.mType < Mailbox.TYPE_NOT_EMAIL);
+//
+//            if (!parentId.equals("0")) {
+//                m.mParentServerId = parentId;
+//            }
+//
+//            userLog("Adding mailbox: ", m.mDisplayName);
+//            ops.add(ContentProviderOperation
+//                    .newInsert(Mailbox.CONTENT_URI).withValues(m.toContentValues()).build());
         }
 
         return;
@@ -280,25 +276,25 @@ public class FolderSyncParser extends AbstractSyncParser {
         // We'll make a change if one of parentId or displayName are specified
         // serverId is required, but let's be careful just the same
         if (serverId != null && (displayName != null || parentId != null)) {
-            Cursor c = getServerIdCursor(serverId);
-            try {
-                // If we find the mailbox (using serverId), make the change
-                if (c.moveToFirst()) {
-                    userLog("Updating ", serverId);
-                    ContentValues cv = new ContentValues();
-                    if (displayName != null) {
-                        cv.put(Mailbox.DISPLAY_NAME, displayName);
-                    }
-                    if (parentId != null) {
-                        cv.put(Mailbox.PARENT_SERVER_ID, parentId);
-                    }
-                    ops.add(ContentProviderOperation.newUpdate(
-                            ContentUris.withAppendedId(Mailbox.CONTENT_URI,
-                                    c.getLong(0))).withValues(cv).build());
-                }
-            } finally {
-                c.close();
-            }
+//            Cursor c = getServerIdCursor(serverId);
+//            try {
+//                // If we find the mailbox (using serverId), make the change
+//                if (c.moveToFirst()) {
+//                    userLog("Updating ", serverId);
+//                    ContentValues cv = new ContentValues();
+//                    if (displayName != null) {
+//                        cv.put(Mailbox.DISPLAY_NAME, displayName);
+//                    }
+//                    if (parentId != null) {
+//                        cv.put(Mailbox.PARENT_SERVER_ID, parentId);
+//                    }
+//                    ops.add(ContentProviderOperation.newUpdate(
+//                            ContentUris.withAppendedId(Mailbox.CONTENT_URI,
+//                                    c.getLong(0))).withValues(cv).build());
+//                }
+//            } finally {
+//                c.close();
+//            }
         }
     }
 
@@ -319,56 +315,56 @@ public class FolderSyncParser extends AbstractSyncParser {
                 skipTag();
         }
 
-        // The mock stream is used for junit tests, so that the parsing code can be tested
-        // separately from the provider code.
-        // TODO Change tests to not require this; remove references to the mock stream
-        if (mMock != null) {
-            mMock.setResult(null);
-            return;
-        }
+//        // The mock stream is used for junit tests, so that the parsing code can be tested
+//        // separately from the provider code.
+//        // TODO Change tests to not require this; remove references to the mock stream
+//        if (mMock != null) {
+//            mMock.setResult(null);
+//            return;
+//        }
 
         // Create the new mailboxes in a single batch operation
         // Don't save any data if the service has been stopped
-        synchronized (mService.getSynchronizer()) {
-            if (!ops.isEmpty() && !mService.isStopped()) {
+//        synchronized (mService.getSynchronizer()) {
+            if (!ops.isEmpty()/* && !mService.isStopped()*/) {
                 userLog("Applying ", ops.size(), " mailbox operations.");
 
                 // Execute the batch
-                try {
-                    mContentResolver.applyBatch(EmailProvider.EMAIL_AUTHORITY, ops);
+//                try {
+//                    mContentResolver.applyBatch(EmailProvider.EMAIL_AUTHORITY, ops);
                     userLog("New Account SyncKey: ", mAccount.mSyncKey);
-                } catch (RemoteException e) {
-                    // There is nothing to be done here; fail by returning null
-                } catch (OperationApplicationException e) {
-                    // There is nothing to be done here; fail by returning null
-                }
+//                } catch (RemoteException e) {
+//                    // There is nothing to be done here; fail by returning null
+//                } catch (OperationApplicationException e) {
+//                    // There is nothing to be done here; fail by returning null
+//                }
 
-                // Look for sync issues and its children and delete them
-                // I'm not aware of any other way to deal with this properly
-                mBindArguments[0] = "Sync Issues";
-                mBindArguments[1] = mAccountIdAsString;
-                Cursor c = mContentResolver.query(Mailbox.CONTENT_URI,
-                        MAILBOX_ID_COLUMNS_PROJECTION, WHERE_DISPLAY_NAME_AND_ACCOUNT,
-                        mBindArguments, null);
-                String parentServerId = null;
-                long id = 0;
-                try {
-                    if (c.moveToFirst()) {
-                        id = c.getLong(0);
-                        parentServerId = c.getString(1);
-                    }
-                } finally {
-                    c.close();
-                }
-                if (parentServerId != null) {
-                    mContentResolver.delete(ContentUris.withAppendedId(Mailbox.CONTENT_URI, id),
-                            null, null);
-                    mBindArguments[0] = parentServerId;
-                    mContentResolver.delete(Mailbox.CONTENT_URI, WHERE_PARENT_SERVER_ID_AND_ACCOUNT,
-                            mBindArguments);
-                }
+//                // Look for sync issues and its children and delete them
+//                // I'm not aware of any other way to deal with this properly
+//                mBindArguments[0] = "Sync Issues";
+//                mBindArguments[1] = mAccountIdAsString;
+//                Cursor c = mContentResolver.query(Mailbox.CONTENT_URI,
+//                        MAILBOX_ID_COLUMNS_PROJECTION, WHERE_DISPLAY_NAME_AND_ACCOUNT,
+//                        mBindArguments, null);
+//                String parentServerId = null;
+//                long id = 0;
+//                try {
+//                    if (c.moveToFirst()) {
+//                        id = c.getLong(0);
+//                        parentServerId = c.getString(1);
+//                    }
+//                } finally {
+//                    c.close();
+//                }
+//                if (parentServerId != null) {
+//                    mContentResolver.delete(ContentUris.withAppendedId(Mailbox.CONTENT_URI, id),
+//                            null, null);
+//                    mBindArguments[0] = parentServerId;
+//                    mContentResolver.delete(Mailbox.CONTENT_URI, WHERE_PARENT_SERVER_ID_AND_ACCOUNT,
+//                            mBindArguments);
+//                }
             }
-        }
+//        }
     }
 
     /**

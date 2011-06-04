@@ -17,18 +17,16 @@
 
 package com.fsck.k9.mail.store.exchange.adapter;
 
-import com.android.email.provider.EmailContent.Account;
-import com.android.email.provider.EmailContent.Mailbox;
-import com.android.email.provider.EmailContent.MailboxColumns;
-import com.android.exchange.EasSyncService;
-import com.android.exchange.SyncManager;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
-import java.io.IOException;
-import java.io.InputStream;
+import com.fsck.k9.K9;
 
 /**
  * Base class for the Email and PIM sync parsers
@@ -38,23 +36,18 @@ import java.io.InputStream;
  */
 public abstract class AbstractSyncParser extends Parser {
 
-    protected EasSyncService mService;
-    protected Mailbox mMailbox;
-    protected Account mAccount;
-    protected Context mContext;
+    protected MailboxAdapter mMailbox;
+    protected AccountAdapter mAccount;
     protected ContentResolver mContentResolver;
     protected AbstractSyncAdapter mAdapter;
 
     private boolean mLooping;
 
-    public AbstractSyncParser(InputStream in, AbstractSyncAdapter adapter) throws IOException {
+    public AbstractSyncParser(InputStream in, AbstractSyncAdapter adapter, MailboxAdapter mailbox, AccountAdapter account) throws IOException {
         super(in);
         mAdapter = adapter;
-        mService = adapter.mService;
-        mContext = mService.mContext;
-        mContentResolver = mContext.getContentResolver();
-        mMailbox = mService.mMailbox;
-        mAccount = mService.mAccount;
+        mMailbox = mailbox;
+        mAccount = account;
     }
 
     /**
@@ -112,22 +105,22 @@ public abstract class AbstractSyncParser extends Parser {
                 // Status = 1 is success; everything else is a failure
                 status = getValueInt();
                 if (status != 1) {
-                    mService.errorLog("Sync failed: " + status);
+                	Log.e(K9.LOG_TAG, "Sync failed: " + status);
                     // Status = 3 means invalid sync key
                     if (status == 3) {
                         // Must delete all of the data and start over with syncKey of "0"
                         mAdapter.setSyncKey("0", false);
                         // Make this a push box through the first sync
                         // TODO Make frequency conditional on user settings!
-                        mMailbox.mSyncInterval = Mailbox.CHECK_INTERVAL_PUSH;
-                        mService.errorLog("Bad sync key; RESET and delete data");
+                        mMailbox.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PUSH;
+                        Log.e(K9.LOG_TAG, "Bad sync key; RESET and delete data");
                         wipe();
                         // Indicate there's more so that we'll start syncing again
                         moreAvailable = true;
                     } else if (status == 8) {
                         // This is Bad; it means the server doesn't recognize the serverId it
                         // sent us.  What's needed is a refresh of the folder list.
-                        SyncManager.reloadFolderList(mContext, mAccount.mId, true);
+//                        SyncManager.reloadFolderList(mContext, mAccount.mId, true);
                     }
                     // TODO Look at other error codes and consider what's to be done
                 }
@@ -145,13 +138,13 @@ public abstract class AbstractSyncParser extends Parser {
                 userLog("Parsed key for ", mMailbox.mDisplayName, ": ", newKey);
                 if (!newKey.equals(mMailbox.mSyncKey)) {
                     mAdapter.setSyncKey(newKey, true);
-                    cv.put(MailboxColumns.SYNC_KEY, newKey);
+//                    cv.put(MailboxColumns.SYNC_KEY, newKey);
                     mailboxUpdated = true;
                     newSyncKey = true;
                 }
                 // If we were pushing (i.e. auto-start), now we'll become ping-triggered
-                if (mMailbox.mSyncInterval == Mailbox.CHECK_INTERVAL_PUSH) {
-                    mMailbox.mSyncInterval = Mailbox.CHECK_INTERVAL_PING;
+                if (mMailbox.mSyncInterval == MailboxAdapter.CHECK_INTERVAL_PUSH) {
+                    mMailbox.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PING;
                 }
            } else {
                 skipTag();
@@ -168,32 +161,32 @@ public abstract class AbstractSyncParser extends Parser {
 
         boolean abortSyncs = false;
 
-        // If the sync interval has changed, we need to save it
-        if (mMailbox.mSyncInterval != interval) {
-            cv.put(MailboxColumns.SYNC_INTERVAL, mMailbox.mSyncInterval);
-            mailboxUpdated = true;
-        // If there are changes, and we were bounced from push/ping, try again
-        } else if (mService.mChangeCount > 0 &&
-                mAccount.mSyncInterval == Account.CHECK_INTERVAL_PUSH &&
-                mMailbox.mSyncInterval > 0) {
-            userLog("Changes found to ping loop mailbox ", mMailbox.mDisplayName, ": will ping.");
-            cv.put(MailboxColumns.SYNC_INTERVAL, Mailbox.CHECK_INTERVAL_PING);
-            mailboxUpdated = true;
-            abortSyncs = true;
-        }
-
-        if (mailboxUpdated) {
-             synchronized (mService.getSynchronizer()) {
-                if (!mService.isStopped()) {
-                     mMailbox.update(mContext, cv);
-                }
-            }
-        }
-
-        if (abortSyncs) {
-            userLog("Aborting account syncs due to mailbox change to ping...");
-            SyncManager.stopAccountSyncs(mAccount.mId);
-        }
+//        // If the sync interval has changed, we need to save it
+//        if (mMailbox.mSyncInterval != interval) {
+//            cv.put(MailboxColumns.SYNC_INTERVAL, mMailbox.mSyncInterval);
+//            mailboxUpdated = true;
+//        // If there are changes, and we were bounced from push/ping, try again
+//        } else if (mService.mChangeCount > 0 &&
+//                mAccount.mSyncInterval == Account.CHECK_INTERVAL_PUSH &&
+//                mMailbox.mSyncInterval > 0) {
+//            userLog("Changes found to ping loop mailbox ", mMailbox.mDisplayName, ": will ping.");
+//            cv.put(MailboxColumns.SYNC_INTERVAL, Mailbox.CHECK_INTERVAL_PING);
+//            mailboxUpdated = true;
+//            abortSyncs = true;
+//        }
+//
+//        if (mailboxUpdated) {
+//             synchronized (mService.getSynchronizer()) {
+//                if (!mService.isStopped()) {
+//                     mMailbox.update(mContext, cv);
+//                }
+//            }
+//        }
+//
+//        if (abortSyncs) {
+//            userLog("Aborting account syncs due to mailbox change to ping...");
+//            SyncManager.stopAccountSyncs(mAccount.mId);
+//        }
 
         // Let the caller know that there's more to do
         userLog("Returning moreAvailable = " + moreAvailable);
@@ -201,10 +194,10 @@ public abstract class AbstractSyncParser extends Parser {
     }
 
     void userLog(String ...strings) {
-        mService.userLog(strings);
+    	Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
     void userLog(String string, int num, String string2) {
-        mService.userLog(string, num, string2);
+    	Log.i(K9.LOG_TAG, string + num + string2);
     }
 }

@@ -57,12 +57,12 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -78,6 +78,10 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.WebDavStore.WebDavHttpClient;
 import com.fsck.k9.mail.store.exchange.Eas;
+import com.fsck.k9.mail.store.exchange.adapter.AccountAdapter;
+import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
+import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
+import com.fsck.k9.mail.store.exchange.adapter.MailboxAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
 import com.fsck.k9.mail.store.exchange.adapter.Serializer;
 import com.fsck.k9.mail.store.exchange.adapter.Tags;
@@ -143,7 +147,7 @@ public class EasStore extends Store {
 
     // Reasonable default
     public String mProtocolVersion = Eas.DEFAULT_PROTOCOL_VERSION;
-    public Double mProtocolVersionDouble;
+    public Double mProtocolVersionDouble = Double.parseDouble(mProtocolVersion);
     protected String mDeviceId = null;
     protected String mDeviceType = "Android";
     private String mCmdString = null;
@@ -163,7 +167,7 @@ public class EasStore extends Store {
     private String mCachedLoginUrl;
 
     private Folder mSendFolder = null;
-    private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+    private HashMap<String, EasFolder> mFolderList = new HashMap<String, EasFolder>();
 
     /**
      * eas://user:password@server:port CONNECTION_SECURITY_NONE
@@ -478,6 +482,16 @@ public class EasStore extends Store {
         return (code == HttpStatus.SC_UNAUTHORIZED) || (code == HttpStatus.SC_FORBIDDEN);
     }
 
+    /**
+     * Determine whether an HTTP code represents a provisioning error
+     * @param code the HTTP code returned by the server
+     * @return whether or not the code represents an provisioning error
+     */
+    protected boolean isProvisionError(int code) {
+        return (code == HTTP_NEED_PROVISIONING) || (code == HttpStatus.SC_FORBIDDEN);
+    }
+
+
     
     private void setupProtocolVersion(EasStore service, Header versionHeader)
 		    throws MessagingException {
@@ -611,12 +625,12 @@ public class EasStore extends Store {
             // account), send "0".  The server will respond with code 449 if there are policies
             // to be enforced
             String key = "0";
-//            if (mAccount != null) {
-//                String accountKey = mSecuritySyncKey;
-//                if (!TextUtils.isEmpty(accountKey)) {
-//                    key = accountKey;
-//                }
-//            }
+            if (mAccount != null) {
+                String accountKey = AccountAdapter.mSecuritySyncKey;
+                if (!TextUtils.isEmpty(accountKey)) {
+                    key = accountKey;
+                }
+            }
             method.setHeader("X-MS-PolicyKey", key);
         }
     }
@@ -652,9 +666,74 @@ public class EasStore extends Store {
         mCmdString = "&User=" + safeUserName + "&DeviceId=" + mDeviceId +
             "&DeviceType=" + mDeviceType;
     }
-
+    
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+        LinkedList<Folder> folderList = new LinkedList<Folder>();
+        
+    	AccountAdapter mAccount = new AccountAdapter();
+    	MailboxAdapter mMailbox = new MailboxAdapter();
+    	
+    	try {
+	        Serializer s = new Serializer();
+	        s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY)
+	            .text(mAccount.mSyncKey).end().end().done();
+	        HttpResponse resp = sendHttpClientPost("FolderSync", s.toByteArray());
+	        int code = resp.getStatusLine().getStatusCode();
+	        if (code == HttpStatus.SC_OK) {
+	            HttpEntity entity = resp.getEntity();
+	            int len = (int)entity.getContentLength();
+	            if (len != 0) {
+	                InputStream is = entity.getContent();
+	                // Returns true if we need to sync again
+	                if (new FolderSyncParser(is, new AccountSyncAdapter(mMailbox, mAccount), this, folderList)
+	                        .parse()) {
+	                	throw new RuntimeException();
+	                }
+	            }
+	        } else if (isProvisionError(code)) {
+	            // If the sync error is a provisioning failure (perhaps the policies changed),
+	            // let's try the provisioning procedure
+	            // Provisioning must only be attempted for the account mailbox - trying to
+	            // provision any other mailbox may result in race conditions and the creation
+	            // of multiple policy keys.
+	            if (!tryProvision()) {
+	                // Set the appropriate failure status
+//	                mExitStatus = EXIT_SECURITY_FAILURE;
+	                throw new RuntimeException();
+	            } else {
+	                // If we succeeded, try again...
+	                return getPersonalNamespaces(forceListAll);
+	            }
+	        } else if (isAuthError(code)) {
+	            throw new RuntimeException();
+//	            return;
+	        } else {
+	            Log.w(K9.LOG_TAG, "FolderSync response error: " + code);
+	            throw new RuntimeException();
+	        }
+    	} catch (IOException e) {
+    		throw new MessagingException("io", e);
+    	}
+    	
+    	return folderList;
+
+    }
+
+    private boolean tryProvision() throws IOException, MessagingException {
+        // First, see if provisioning is even possible, i.e. do we support the policies required
+        // by the server
+        ProvisionParser pp = canProvision();
+        if (pp != null) {
+        	String policyKey = acknowledgeProvision(pp.getPolicyKey(), PROVISION_STATUS_OK);
+        	AccountAdapter.mSecuritySyncKey = policyKey;
+        	return true;
+        } else {
+        	return false;
+        }
+	}
+
+	public List <? extends Folder > getPersonalNamespaces2(boolean forceListAll) throws MessagingException {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
         /**
          * We have to check authentication here so we have the proper URL stored
@@ -712,7 +791,7 @@ public class EasStore extends Store {
 
         for (int i = 0; i < folderUrls.length; i++) {
             String tempUrl = folderUrls[i];
-            WebDavFolder folder = createFolder(tempUrl);
+            EasFolder folder = createFolder(tempUrl);
             if (folder != null)
                 folderList.add(folder);
         }
@@ -727,15 +806,15 @@ public class EasStore extends Store {
      * @param folderUrl
      * @return
      */
-    private WebDavFolder createFolder(String folderUrl) {
+    private EasFolder createFolder(String folderUrl) {
         if (folderUrl == null)
             return null;
 
-        WebDavFolder wdFolder = null;
+        EasFolder wdFolder = null;
         String folderName = getFolderName(folderUrl);
         if (folderName != null) {
             if (!this.mFolderList.containsKey(folderName)) {
-                wdFolder = new WebDavFolder(this, folderName);
+                wdFolder = new EasFolder(this, folderName);
                 wdFolder.setUrl(folderUrl);
                 mFolderList.put(folderName, wdFolder);
             }
@@ -1286,7 +1365,7 @@ public class EasStore extends Store {
 
     @Override
     public void sendMessages(Message[] messages) throws MessagingException {
-        WebDavFolder tmpFolder = (EasStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
+        EasFolder tmpFolder = (EasStore.EasFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(OpenMode.READ_WRITE);
             Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
@@ -1304,9 +1383,9 @@ public class EasStore extends Store {
      */
 
     /**
-     * A WebDav Folder
+     * A EAS Folder
      */
-    class WebDavFolder extends Folder {
+    class EasFolder extends Folder {
         private String mName;
         private String mFolderUrl;
         private boolean mIsOpen = false;
@@ -1318,7 +1397,7 @@ public class EasStore extends Store {
             return store;
         }
 
-        public WebDavFolder(EasStore nStore, String name) {
+        public EasFolder(EasStore nStore, String name) {
             super(nStore.getAccount());
             store = nStore;
             this.mName = name;
@@ -1391,14 +1470,14 @@ public class EasStore extends Store {
 
             for (int i = 0, count = uids.length; i < count; i++) {
                 urls[i] = uidToUrl.get(uids[i]);
-                if (urls[i] == null && messages[i] instanceof WebDavMessage) {
-                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                if (urls[i] == null && messages[i] instanceof EasMessage) {
+                    EasMessage wdMessage = (EasMessage) messages[i];
                     urls[i] = wdMessage.getUrl();
                 }
             }
 
             messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
-            WebDavFolder destFolder = (WebDavFolder) store.getFolder(folderName);
+            EasFolder destFolder = (EasFolder) store.getFolder(folderName);
             headers.put("Destination", destFolder.mFolderUrl);
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
@@ -1489,7 +1568,7 @@ public class EasStore extends Store {
 
         @Override
         public Message getMessage(String uid) throws MessagingException {
-            return new WebDavMessage(uid, this);
+            return new EasMessage(uid, this);
         }
 
         @Override
@@ -1531,7 +1610,7 @@ public class EasStore extends Store {
                 if (listener != null) {
                     listener.messageStarted(uids[i], i, uidsLength);
                 }
-                WebDavMessage message = new WebDavMessage(uids[i], this);
+                EasMessage message = new EasMessage(uids[i], this);
                 message.setUrl(uidToUrl.get(uids[i]));
                 messages.add(message);
 
@@ -1563,7 +1642,7 @@ public class EasStore extends Store {
                     listener.messageStarted(uids[i], i, count);
                 }
 
-                WebDavMessage message = new WebDavMessage(uids[i], this);
+                EasMessage message = new EasMessage(uids[i], this);
                 messageList.add(message);
 
                 if (listener != null) {
@@ -1632,14 +1711,14 @@ public class EasStore extends Store {
              * We can't hand off to processRequest() since we need the stream to parse.
              */
             for (int i = 0, count = messages.length; i < count; i++) {
-                WebDavMessage wdMessage;
+                EasMessage wdMessage;
                 int statusCode = 0;
 
-                if (!(messages[i] instanceof WebDavMessage)) {
+                if (!(messages[i] instanceof EasMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
 
-                wdMessage = (WebDavMessage) messages[i];
+                wdMessage = (EasMessage) messages[i];
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
@@ -1776,10 +1855,10 @@ public class EasStore extends Store {
             uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+                if (!(messages[i] instanceof EasMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                EasMessage wdMessage = (EasMessage) messages[i];
 
                 if (listener != null) {
                     listener.messageStarted(messages[i].getUid(), i, count);
@@ -1841,10 +1920,10 @@ public class EasStore extends Store {
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+                if (!(messages[i] instanceof EasMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                EasMessage wdMessage = (EasMessage) messages[i];
 
                 if (listener != null) {
                     listener.messageStarted(messages[i].getUid(), i, count);
@@ -1987,7 +2066,7 @@ public class EasStore extends Store {
                                               + " while sending/appending message.  Response = "
                                               + response.getStatusLine().toString() + " for message " + messageURL);
                     }
-                    WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
+                    EasMessage retMessage = new EasMessage(message.getUid(), this);
 
                     retMessage.setUrl(messageURL);
                     retMessages[ind++] = retMessage;
@@ -2025,12 +2104,12 @@ public class EasStore extends Store {
     }
 
     /**
-     * A WebDav Message
+     * A EAS Message
      */
-    class WebDavMessage extends MimeMessage {
+    class EasMessage extends MimeMessage {
         private String mUrl = "";
 
-        WebDavMessage(String uid, Folder folder) {
+        EasMessage(String uid, Folder folder) {
             this.mUid = uid;
             this.mFolder = folder;
         }
@@ -2117,7 +2196,7 @@ public class EasStore extends Store {
 
         @Override
         public void delete(String trashFolderName) throws MessagingException {
-            WebDavFolder wdFolder = (WebDavFolder) getFolder();
+            EasFolder wdFolder = (EasFolder) getFolder();
             Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
             wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
         }
@@ -2509,4 +2588,9 @@ public class EasStore extends Store {
         public String guessedAuthUrl;
         public String redirectUrl;
     }
+
+	public Folder createFolderInternal(String name, String serverId, int type) {
+		EasFolder folder = new EasFolder(this, name);
+		return folder;
+	}
 }

@@ -17,15 +17,14 @@
 
 package com.fsck.k9.mail.store.exchange.adapter;
 
-import com.android.email.Email;
-import com.android.email.provider.EmailContent.Account;
-import com.android.email.provider.EmailContent.Mailbox;
-import com.android.exchange.EasSyncService;
-
-import android.content.Context;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.fsck.k9.K9;
 
 /**
  * Parent class of all sync adapters (EasMailbox, EasCalendar, and EasContacts)
@@ -39,11 +38,9 @@ public abstract class AbstractSyncAdapter {
     public static final int DAYS = HOURS*24;
     public static final int WEEKS = DAYS*7;
 
-    public Mailbox mMailbox;
-    public EasSyncService mService;
+    public MailboxAdapter mMailbox;
     public Context mContext;
-    public Account mAccount;
-    public final android.accounts.Account mAccountManagerAccount;
+    public AccountAdapter mAccount;
 
     // Create the data for local changes that need to be sent up to the server
     public abstract boolean sendLocalChanges(Serializer s)
@@ -61,21 +58,17 @@ public abstract class AbstractSyncAdapter {
         return false;
     }
 
-    public AbstractSyncAdapter(Mailbox mailbox, EasSyncService service) {
+    public AbstractSyncAdapter(MailboxAdapter mailbox, AccountAdapter account) {
         mMailbox = mailbox;
-        mService = service;
-        mContext = service.mContext;
-        mAccount = service.mAccount;
-        mAccountManagerAccount = new android.accounts.Account(mAccount.mEmailAddress,
-                Email.EXCHANGE_ACCOUNT_MANAGER_TYPE);
+        mAccount = account;
     }
 
     public void userLog(String ...strings) {
-        mService.userLog(strings);
+        Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
     public void incrementChangeCount() {
-        mService.mChangeCount++;
+//        mService.mChangeCount++;
     }
 
     /**
