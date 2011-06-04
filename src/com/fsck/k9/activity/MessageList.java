@@ -345,6 +345,7 @@ public class MessageList
                 return;
             }
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     for (MessageInfoHolder message : messages) {
                         if (message != null) {
@@ -373,6 +374,7 @@ public class MessageList
             }
             final boolean wasEmpty = mAdapter.messages.isEmpty();
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     for (final MessageInfoHolder message : messages) {
                         if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
@@ -401,6 +403,7 @@ public class MessageList
 
         private void resetUnreadCount() {
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     resetUnreadCountOnThread();
                 }
@@ -424,6 +427,7 @@ public class MessageList
             final Comparator<MessageInfoHolder> chainComparator = getComparator();
 
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     synchronized (mAdapter.messages) {
                         Collections.sort(mAdapter.messages, chainComparator);
@@ -481,6 +485,7 @@ public class MessageList
 
         private void refreshTitle() {
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     refreshTitleOnThread();
                 }
@@ -534,6 +539,7 @@ public class MessageList
 
         public void progress(final boolean progress) {
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     showProgressIndicator(progress);
                 }
@@ -767,6 +773,7 @@ public class MessageList
 
                     mAdapter.pruneDirtyMessages();
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             mAdapter.notifyDataSetChanged();
                             restoreListState();
@@ -813,6 +820,7 @@ public class MessageList
         // Gesture detection
         gestureDetector = new GestureDetector(new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (gestureDetector.onTouchEvent(event)) {
                     return true;
@@ -1974,6 +1982,7 @@ public class MessageList
         }
 
         private final OnClickListener flagClickListener = new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 // Perform action on clicks
                 MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
@@ -2461,12 +2470,15 @@ public class MessageList
         mHandler.sortMessages();
     }
 
+    @Override
     public void onAnimationEnd(Animation animation) {
     }
 
+    @Override
     public void onAnimationRepeat(Animation animation) {
     }
 
+    @Override
     public void onAnimationStart(Animation animation) {
     }
 
