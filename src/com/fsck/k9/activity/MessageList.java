@@ -679,12 +679,12 @@ public class MessageList
         mListView.setAdapter(mAdapter);
     }
 
-    @SuppressWarnings("unchecked")
     private void restorePreviousData() {
-        final Object previousData = getLastNonConfigurationInstance();
+        final ActivityState previousData = getLastNonConfigurationInstance();
 
         if (previousData != null) {
-            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
+            mAdapter.messages.addAll(previousData.messages);
+            mActiveMessages = previousData.activeMessages;
         }
     }
 
@@ -832,9 +832,45 @@ public class MessageList
         mListView.setOnTouchListener(gestureListener);
     }
 
+    /**
+     * Container for values to be kept while the device configuration is
+     * modified at runtime (keyboard, orientation, etc.) and Android restarts
+     * this activity.
+     *
+     * @see MessageList#onRetainNonConfigurationInstance()
+     * @see MessageList#getLastNonConfigurationInstance()
+     */
+    static class ActivityState {
+        public List<MessageInfoHolder> messages;
+        public List<MessageInfoHolder> activeMessages;
+    }
+
+    /* (non-Javadoc)
+     * 
+     * Method overriden for proper typing within this class (the return type is
+     * more specific than the super implementation)
+     * 
+     * @see android.app.Activity#onRetainNonConfigurationInstance()
+     */
     @Override
-    public Object onRetainNonConfigurationInstance() {
-        return mAdapter.messages;
+    public ActivityState onRetainNonConfigurationInstance() {
+        final ActivityState state = new ActivityState();
+        state.messages = mAdapter.messages;
+        state.activeMessages = mActiveMessages;
+        return state;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * Method overriden for proper typing within this class (the return type is
+     * more specific than the super implementation)
+     * 
+     * @see android.app.Activity#getLastNonConfigurationInstance()
+     */
+    @Override
+    public ActivityState getLastNonConfigurationInstance() {
+        return (ActivityState) super.getLastNonConfigurationInstance();
     }
 
     @Override
