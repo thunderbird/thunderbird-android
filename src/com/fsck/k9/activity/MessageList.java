@@ -2630,9 +2630,8 @@ public class MessageList
      * 
      * @param holders
      *            Never <code>null</code>.
-     * @param move
-     *            <code>true</code> to check move availability,
-     *            <code>false</code> to check the copy availability
+     * @param operation
+     *            Never {@code null}.
      * 
      * @return <code>true</code> if operation is possible
      */
