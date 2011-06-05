@@ -1729,22 +1729,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mQuotedText.setVisibility(View.GONE);
             mQuotedHTML.setVisibility(View.GONE);
             mQuotedTextEdit.setVisibility(View.GONE);
-        }
-        else if (mQuotedTextMode == QuotedTextMode.SHOW) {
+        } else if (mQuotedTextMode == QuotedTextMode.SHOW) {
             mQuotedTextShow.setVisibility(View.GONE);
             mQuotedTextBar.setVisibility(View.VISIBLE);
-            if (mMessageFormat == MessageFormat.HTML){
+            if (mMessageFormat == MessageFormat.HTML) {
                 mQuotedText.setVisibility(View.GONE);
                 mQuotedHTML.setVisibility(View.VISIBLE);
                 mQuotedTextEdit.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 mQuotedText.setVisibility(View.VISIBLE);
                 mQuotedHTML.setVisibility(View.GONE);
                 mQuotedTextEdit.setVisibility(View.GONE);
             }
-        }
-        else if (mQuotedTextMode == QuotedTextMode.HIDE) {
+        } else if (mQuotedTextMode == QuotedTextMode.HIDE) {
             mQuotedTextShow.setVisibility(View.VISIBLE);
             mQuotedTextBar.setVisibility(View.GONE);
 
@@ -2116,10 +2113,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
 
                 int cursorPosition = 0;
-                if(k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
+                if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
                     try {
                         cursorPosition = Integer.valueOf(k9identity.get(IdentityField.CURSOR_POSITION)).intValue();
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
                     }
                 }
@@ -2154,7 +2151,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     showOrHideQuotedText(QuotedTextMode.valueOf(showQuotedTextMode));
                     return;
                 }
-                
+
                 mMessageFormat = MessageFormat.valueOf(messageFormat);
 
                 if (mMessageFormat == MessageFormat.HTML) {
@@ -2203,7 +2200,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // Set the cursor position if we have it.
                 try {
                     mMessageContentView.setSelection(cursorPosition);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
                 }
 
@@ -2215,8 +2212,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              * the source message. Log it as an error, though.
              */
             Log.e(K9.LOG_TAG, "Error while processing source message: ", me);
-        }
-        finally {
+        } finally {
             mSourceMessageProcessed = true;
             mDraftNeedsSaving = false;
         }
@@ -2246,8 +2242,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (shown) {
             showOrHideQuotedText(QuotedTextMode.SHOW);
-        }
-        else {
+        } else {
             showOrHideQuotedText(QuotedTextMode.HIDE);
         }
     }

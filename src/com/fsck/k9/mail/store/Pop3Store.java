@@ -681,11 +681,11 @@ public class Pop3Store extends Store {
                 try {
                     if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
                         Log.d(K9.LOG_TAG, "This server doesn't support the CAPA command. " +
-                                "Checking to see if the TOP command is supported nevertheless.");
+                              "Checking to see if the TOP command is supported nevertheless.");
                     }
 
                     response = executeSimpleCommand(String.format("TOP %d %d",
-                            mUidToMsgNumMap.get(message.getUid()), lines));
+                                                    mUidToMsgNumMap.get(message.getUid()), lines));
 
                     // TOP command is supported. Remember this for the next time.
                     mCapabilities.top = true;
@@ -696,7 +696,7 @@ public class Pop3Store extends Store {
                     } else {
                         if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
                             Log.d(K9.LOG_TAG, "The server really doesn't support the TOP " +
-                                    "command. Using RETR instead.");
+                                  "command. Using RETR instead.");
                         }
 
                         // Don't try to use the TOP command again.

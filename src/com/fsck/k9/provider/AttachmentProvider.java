@@ -74,12 +74,12 @@ public class AttachmentProvider extends ContentProvider {
          */
         final File cacheDir = getContext().getCacheDir();
         if (cacheDir == null) {
-        	return true;
+            return true;
         }
-		File[] files = cacheDir.listFiles();
-		if (files == null) {
-			return true;
-		}
+        File[] files = cacheDir.listFiles();
+        if (files == null) {
+            return true;
+        }
         for (File file : files) {
             if (file.getName().endsWith(".tmp")) {
                 file.delete();

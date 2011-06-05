@@ -3931,7 +3931,7 @@ public class MessagingController implements Runnable {
                 if (messageUid <= localFolder.getLastUid()) {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Message uid is " + messageUid + ", max message uid is " +
-                                localFolder.getLastUid() + ".  Skipping notification.");
+                              localFolder.getLastUid() + ".  Skipping notification.");
                     return false;
                 }
             } catch (NumberFormatException e) {
@@ -3954,7 +3954,7 @@ public class MessagingController implements Runnable {
      * Creates a notification of a newly received message.
      */
     private void notifyAccount(Context context, Account account, Message message,
-            int previousUnreadMessageCount, AtomicInteger newMessageCount) {
+                               int previousUnreadMessageCount, AtomicInteger newMessageCount) {
 
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuilder messageNotice = new StringBuilder();

@@ -19,11 +19,12 @@ public class FileBrowserHelper {
      * A string array that specifies the name of the intent to use, and the scheme to use with it
      * when setting the data for the intent.
      */
-    private static final String[][] PICK_DIRECTORY_INTENTS =
-        { { "org.openintents.action.PICK_DIRECTORY", "file://" },   // OI File Manager (maybe others)
-          { "com.estrongs.action.PICK_DIRECTORY", "file://" },      // ES File Explorer
-          { Intent.ACTION_PICK, "folder://" },                      // Blackmoon File Browser (maybe others)
-          { "com.androidworkz.action.PICK_DIRECTORY", "file://" }}; // SystemExplorer
+    private static final String[][] PICK_DIRECTORY_INTENTS = {
+        { "org.openintents.action.PICK_DIRECTORY", "file://" },   // OI File Manager (maybe others)
+        { "com.estrongs.action.PICK_DIRECTORY", "file://" },      // ES File Explorer
+        { Intent.ACTION_PICK, "folder://" },                      // Blackmoon File Browser (maybe others)
+        { "com.androidworkz.action.PICK_DIRECTORY", "file://" }
+    }; // SystemExplorer
 
     private static FileBrowserHelper sInstance;
 
@@ -82,15 +83,15 @@ public class FileBrowserHelper {
         do {
             String intentAction = PICK_DIRECTORY_INTENTS[listIndex][0];
             String uriPrefix = PICK_DIRECTORY_INTENTS[listIndex][1];
-        	Intent intent = new Intent(intentAction);
-        	intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
+            Intent intent = new Intent(intentAction);
+            intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
 
-        	try {
+            try {
                 c.startActivityForResult(intent, requestcode);
                 success = true;
             } catch (ActivityNotFoundException e) {
-            	// Try the next intent in the list
-            	listIndex++;
+                // Try the next intent in the list
+                listIndex++;
             };
         } while (!success && (listIndex < PICK_DIRECTORY_INTENTS.length));
 

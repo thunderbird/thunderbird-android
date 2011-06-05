@@ -71,6 +71,11 @@ public class MessageProvider extends ContentProvider {
          */
         String PREVIEW = "preview";
 
+        /**
+         * <P>Type: BOOLEAN</P>
+         */
+        String UNREAD = "unread";
+
         String ACCOUNT = "account";
         String URI = "uri";
         String DELETE_URI = "delUri";
@@ -181,6 +186,13 @@ public class MessageProvider extends ContentProvider {
         }
     }
 
+    public static class UnreadExtractor implements FieldExtractor<MessageInfoHolder, Boolean> {
+        @Override
+        public Boolean getField(final MessageInfoHolder source) {
+            return Boolean.valueOf(!source.read); // avoid autoboxing
+        }
+    }
+
     /**
      * @deprecated having an incremential value has no real interest,
      *             implemented for compatibility only
@@ -288,6 +300,8 @@ public class MessageProvider extends ContentProvider {
                     extractors.put(field, new DeleteUriExtractor());
                 } else if (MessageColumns.ACCOUNT.equals(field)) {
                     extractors.put(field, new AccountExtractor());
+                } else if (MessageColumns.UNREAD.equals(field)) {
+                    extractors.put(field, new UnreadExtractor());
                 } else if (MessageColumns.INCREMENT.equals(field)) {
                     extractors.put(field, new IncrementExtractor());
                 }
