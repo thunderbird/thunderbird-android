@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
@@ -82,6 +83,148 @@ public class WebDavStore extends Store {
     private static final String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
     private static final String DAV_MAIL_TMP_FOLDER = "drafts";
 
+
+    /**
+     * Decodes a WebDavStore URI.
+     *
+     * <p>Possible forms:</p>
+     * <pre>
+     * webdav://user:password@server:port CONNECTION_SECURITY_NONE
+     * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * webdav+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * webdav+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * webdav+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * </pre>
+     */
+    public static WebDavStoreSettings decodeUri(String uri) {
+        String host;
+        int port;
+        ConnectionSecurity connectionSecurity;
+        String username = null;
+        String password = null;
+        String alias = null;
+        String path = null;
+        String authPath = null;
+        String mailboxPath = null;
+
+
+        URI webDavUri;
+        try {
+            webDavUri = new URI(uri);
+        } catch (URISyntaxException use) {
+            throw new IllegalArgumentException("Invalid WebDavStore URI", use);
+        }
+
+        String scheme = webDavUri.getScheme();
+        if (scheme.equals("webdav")) {
+            connectionSecurity = ConnectionSecurity.NONE;
+        } else if (scheme.equals("webdav+ssl")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
+        } else if (scheme.equals("webdav+ssl+")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
+        } else if (scheme.equals("webdav+tls")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
+        } else if (scheme.equals("webdav+tls+")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
+        } else {
+            throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
+        }
+
+        host = webDavUri.getHost();
+        if (host.startsWith("http")) {
+            String[] hostParts = host.split("://", 2);
+            if (hostParts.length > 1) {
+                host = hostParts[1];
+            }
+        }
+
+        port = webDavUri.getPort();
+
+        String userInfo = webDavUri.getUserInfo();
+        if (userInfo != null) {
+            try {
+                String[] userInfoParts = userInfo.split(":");
+                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                String userParts[] = username.split("\\\\", 2);
+
+                if (userParts.length > 1) {
+                    alias = userParts[1];
+                } else {
+                    alias = username;
+                }
+                if (userInfoParts.length > 1) {
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+            } catch (UnsupportedEncodingException enc) {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            }
+        }
+
+        String[] pathParts = webDavUri.getPath().split("\\|");
+        for (int i = 0, count = pathParts.length; i < count; i++) {
+            if (i == 0) {
+                if (pathParts[0] != null &&
+                        pathParts[0].length() > 1) {
+                    path = pathParts[0];
+                }
+            } else if (i == 1) {
+                if (pathParts[1] != null &&
+                        pathParts[1].length() > 1) {
+                    authPath = pathParts[1];
+                }
+            } else if (i == 2) {
+                if (pathParts[2] != null &&
+                        pathParts[2].length() > 1) {
+                    mailboxPath = pathParts[2];
+                }
+            }
+        }
+
+        return new WebDavStoreSettings(host, port, connectionSecurity, null,
+                username, password, alias, path, authPath, mailboxPath, webDavUri);
+    }
+
+    /**
+     * This class is used to store the decoded contents of an WebDavStore URI.
+     *
+     * @see WebDavStore#decodeUri(String)
+     */
+    private static class WebDavStoreSettings extends StoreSettings {
+        private static final String ALIAS_KEY = "alias";
+        private static final String PATH_KEY = "path";
+        private static final String AUTH_PATH_KEY = "authPath";
+        private static final String MAILBOX_PATH_KEY = "mailboxPath";
+
+        public final String alias;
+        public final String path;
+        public final String authPath;
+        public final String mailboxPath;
+        public final URI uri;
+
+        protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
+                String authenticationType, String username, String password, String alias,
+                String path, String authPath, String mailboxPath, URI uri) {
+            super(host, port, connectionSecurity, authenticationType, username, password);
+            this.alias = alias;
+            this.path = path;
+            this.authPath = authPath;
+            this.mailboxPath = mailboxPath;
+            this.uri = uri;
+        }
+
+        @Override
+        public Map<String, String> getExtra() {
+            Map<String, String> extra = new HashMap<String, String>();
+            extra.put(ALIAS_KEY, alias);
+            extra.put(PATH_KEY, path);
+            extra.put(AUTH_PATH_KEY, authPath);
+            extra.put(MAILBOX_PATH_KEY, mailboxPath);
+            return extra;
+        }
+    }
+
+
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
     private String mAlias; /* Stores the alias for the user's mailbox */
@@ -103,85 +246,45 @@ public class WebDavStore extends Store {
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
-    /**
-     * webdav://user:password@server:port CONNECTION_SECURITY_NONE
-     * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * webdav+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * webdav+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * webdav+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     */
     public WebDavStore(Account account) throws MessagingException {
         super(account);
 
+        WebDavStoreSettings settings;
         try {
-            mUri = new URI(mAccount.getStoreUri());
-        } catch (URISyntaxException use) {
-            throw new MessagingException("Invalid WebDavStore URI", use);
+            settings = decodeUri(mAccount.getStoreUri());
+        } catch (IllegalArgumentException e) {
+            throw new MessagingException("Error while decoding store URI", e);
         }
 
-        String scheme = mUri.getScheme();
-        if (scheme.equals("webdav")) {
+        mHost = settings.host;
+        mUri = settings.uri;
+
+        switch (settings.connectionSecurity) {
+        case NONE:
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
-        } else if (scheme.equals("webdav+ssl")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-        } else if (scheme.equals("webdav+ssl+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-        } else if (scheme.equals("webdav+tls")) {
+            break;
+        case STARTTLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-        } else if (scheme.equals("webdav+tls+")) {
+            break;
+        case STARTTLS_REQUIRED:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-        } else {
-            throw new MessagingException("Unsupported protocol");
+            break;
+        case SSL_TLS_OPTIONAL:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
+            break;
+        case SSL_TLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
+            break;
         }
 
-        mHost = mUri.getHost();
-        if (mHost.startsWith("http")) {
-            String[] hostParts = mHost.split("://", 2);
-            if (hostParts.length > 1) {
-                mHost = hostParts[1];
-            }
-        }
+        mUsername = settings.username;
+        mPassword = settings.password;
+        mAlias = settings.alias;
 
-        if (mUri.getUserInfo() != null) {
-            try {
-                String[] userInfoParts = mUri.getUserInfo().split(":");
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                String userParts[] = mUsername.split("\\\\", 2);
+        mPath = settings.path;
+        mAuthPath = settings.authPath;
+        mMailboxPath = settings.mailboxPath;
 
-                if (userParts.length > 1) {
-                    mAlias = userParts[1];
-                } else {
-                    mAlias = mUsername;
-                }
-                if (userInfoParts.length > 1) {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
-            }
-        }
-
-        String[] pathParts = mUri.getPath().split("\\|");
-
-        for (int i = 0, count = pathParts.length; i < count; i++) {
-            if (i == 0) {
-                if (pathParts[0] != null &&
-                        pathParts[0].length() > 1) {
-                    mPath = pathParts[0];
-                }
-            } else if (i == 1) {
-                if (pathParts[1] != null &&
-                        pathParts[1].length() > 1) {
-                    mAuthPath = pathParts[1];
-                }
-            } else if (i == 2) {
-                if (pathParts[2] != null &&
-                        pathParts[2].length() > 1) {
-                    mMailboxPath = pathParts[2];
-                }
-            }
-        }
 
         if (mPath == null || mPath.equals("")) {
             mPath = "/Exchange";
