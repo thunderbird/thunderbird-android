@@ -1287,6 +1287,12 @@ public class MessageList
                     // No further need for this reference
                     mActiveMessages = null;
                 }
+            }, new Runnable() {
+                @Override
+                public void run() {
+                    // event for cancel, we don't need this reference any more
+                    mActiveMessages = null;
+                }
             });
         }
 
