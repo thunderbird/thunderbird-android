@@ -29,17 +29,13 @@ public abstract class Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static HashMap<String, Store> mStores = new HashMap<String, Store>();
+    private static HashMap<String, Store> sStores = new HashMap<String, Store>();
+
     /**
      * Local stores indexed by UUid because the Uri may change due to migration to/from SD-card.
      */
-    private static HashMap<String, Store> mLocalStores = new HashMap<String, Store>();
+    private static HashMap<String, Store> sLocalStores = new HashMap<String, Store>();
 
-    protected final Account mAccount;
-
-    protected Store(Account account) {
-        mAccount = account;
-    }
 
     /**
      * Get an instance of a remote mail store.
@@ -51,7 +47,7 @@ public abstract class Store {
             throw new RuntimeException("Asked to get non-local Store object but given LocalStore URI");
         }
 
-        Store store = mStores.get(uri);
+        Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
                 store = new ImapStore(account);
@@ -62,7 +58,7 @@ public abstract class Store {
             }
 
             if (store != null) {
-                mStores.put(uri, store);
+                sStores.put(uri, store);
             }
         }
 
@@ -78,13 +74,21 @@ public abstract class Store {
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException {
-        Store store = mLocalStores.get(account.getUuid());
+        Store store = sLocalStores.get(account.getUuid());
         if (store == null) {
             store = new LocalStore(account, application);
-            mLocalStores.put(account.getUuid(), store);
+            sLocalStores.put(account.getUuid(), store);
         }
 
         return (LocalStore) store;
+    }
+
+
+    protected final Account mAccount;
+
+
+    protected Store(Account account) {
+        mAccount = account;
     }
 
     public abstract Folder getFolder(String name);
@@ -96,19 +100,22 @@ public abstract class Store {
     public boolean isCopyCapable() {
         return false;
     }
+
     public boolean isMoveCapable() {
         return false;
     }
+
     public boolean isPushCapable() {
         return false;
     }
+
     public boolean isSendCapable() {
         return false;
     }
+
     public boolean isExpungeCapable() {
         return false;
     }
-
 
     public void sendMessages(Message[] messages) throws MessagingException {
     }
