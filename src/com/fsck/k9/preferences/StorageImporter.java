@@ -70,7 +70,7 @@ public class StorageImporter {
         }
     }
 
-    public static class AccountDescriptionPair {
+    private static class AccountDescriptionPair {
         public final AccountDescription original;
         public final AccountDescription imported;
 
@@ -275,25 +275,36 @@ public class StorageImporter {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
-        // Validate input and ignore malformed values when possible
-        Map<String, String> validatedSettings =
-            AccountSettings.validate(account.settings.settings, true);
-
-        //TODO: validate account name
-        //TODO: validate identity settings
-        //TODO: validate folder settings
-
-
         Preferences prefs = Preferences.getPreferences(context);
         Account[] accounts = prefs.getAccounts();
 
         String uuid = account.uuid;
         Account existingAccount = prefs.getAccount(uuid);
+        boolean mergeImportedAccount = (overwrite && existingAccount != null);
+
         if (!overwrite && existingAccount != null) {
             // An account with this UUID already exists, but we're not allowed to overwrite it.
             // So generate a new UUID.
             uuid = UUID.randomUUID().toString();
         }
+
+        Map<String, String> validatedSettings =
+            AccountSettings.validate(account.settings.settings, !mergeImportedAccount);
+
+        Map<String, String> writeSettings;
+        if (mergeImportedAccount) {
+            writeSettings = new HashMap<String, String>(
+                    AccountSettings.getAccountSettings(prefs.getPreferences(), uuid));
+            writeSettings.putAll(validatedSettings);
+        } else {
+            writeSettings = new HashMap<String, String>(validatedSettings);
+        }
+
+
+        //TODO: validate account name
+        //TODO: validate identity settings
+        //TODO: validate folder settings
+
 
         String accountName = account.name;
         if (isAccountNameUsed(accountName, accounts)) {
@@ -311,14 +322,14 @@ public class StorageImporter {
         editor.putString(accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
         // Write account settings
-        for (Map.Entry<String, String> setting : validatedSettings.entrySet()) {
+        for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
             String key = accountKeyPrefix + setting.getKey();
             String value = setting.getValue();
             editor.putString(key, value);
         }
 
         // If it's a new account generate and write a new "accountNumber"
-        if (existingAccount == null || !uuid.equals(account.uuid)) {
+        if (!mergeImportedAccount) {
             int newAccountNumber = Account.generateAccountNumber(prefs);
             editor.putString(accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
         }

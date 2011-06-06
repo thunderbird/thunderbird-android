@@ -1,7 +1,9 @@
 package com.fsck.k9.preferences;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import com.fsck.k9.Account;
@@ -162,6 +164,19 @@ public class AccountSettings {
             boolean useDefaultValues) {
         return Settings.validate(SETTINGS, importedSettings, useDefaultValues);
     }
+
+    public static Map<String, String> getAccountSettings(SharedPreferences storage, String uuid) {
+        Map<String, String> result = new HashMap<String, String>();
+        String prefix = uuid + ".";
+        for (String key : SETTINGS.keySet()) {
+            String value = storage.getString(prefix + key, null);
+            if (value != null) {
+                result.put(key, value);
+            }
+        }
+        return result;
+    }
+
 
     public static class StorageProviderDefaultValue implements IDefaultValue {
         @Override
