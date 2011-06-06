@@ -1293,6 +1293,14 @@ public class MessageList
         return super.onCreateDialog(id);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * Android happens to invoke this method even if the given dialog is not
+     * shown (eg. a dismissed dialog) as part of the automatic activity
+     * reloading following a configuration change (orientation, keyboard,
+     * locale, etc.).
+     */
     @Override
     public void onPrepareDialog(final int id, final Dialog dialog) {
         switch (id) {
@@ -1304,10 +1312,16 @@ public class MessageList
             break;
         }
         case R.id.dialog_confirm_spam: {
-            final int selectionSize = mActiveMessages.size();
-            final String message;
-            message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, selectionSize, Integer.valueOf(selectionSize));
-            ((AlertDialog) dialog).setMessage(message);
+            // mActiveMessages can be null if Android restarts the activity
+            // while this dialog is not actually shown (but was displayed at
+            // least once)
+            if (mActiveMessages != null) {
+                final int selectionSize = mActiveMessages.size();
+                final String message;
+                message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, selectionSize,
+                        Integer.valueOf(selectionSize));
+                ((AlertDialog) dialog).setMessage(message);
+            }
             break;
         }
         default: {
