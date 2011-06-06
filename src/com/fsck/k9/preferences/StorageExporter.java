@@ -32,6 +32,7 @@ public class StorageExporter {
 
     public static final String ROOT_ELEMENT = "k9settings";
     public static final String VERSION_ATTRIBUTE = "version";
+    public static final String FILE_FORMAT_ATTRIBUTE = "format";
     public static final String GLOBAL_ELEMENT = "global";
     public static final String SETTINGS_ELEMENT = "settings";
     public static final String ACCOUNTS_ELEMENT = "accounts";
@@ -109,7 +110,10 @@ public class StorageExporter {
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 
             serializer.startTag(null, ROOT_ELEMENT);
+            //TODO: write content version number here
             serializer.attribute(null, VERSION_ATTRIBUTE, "x");
+            //TODO: set file format version to "1" once the feature is stable and about to be merged into master
+            serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, "y");
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
