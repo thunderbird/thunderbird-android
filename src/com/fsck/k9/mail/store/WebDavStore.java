@@ -181,8 +181,8 @@ public class WebDavStore extends Store {
             }
         }
 
-        return new WebDavStoreSettings(host, port, connectionSecurity, null,
-                username, password, alias, path, authPath, mailboxPath, webDavUri);
+        return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
+                alias, path, authPath, mailboxPath);
     }
 
     /**
@@ -200,17 +200,15 @@ public class WebDavStore extends Store {
         public final String path;
         public final String authPath;
         public final String mailboxPath;
-        public final URI uri;
 
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 String authenticationType, String username, String password, String alias,
-                String path, String authPath, String mailboxPath, URI uri) {
+                String path, String authPath, String mailboxPath) {
             super(host, port, connectionSecurity, authenticationType, username, password);
             this.alias = alias;
             this.path = path;
             this.authPath = authPath;
             this.mailboxPath = mailboxPath;
-            this.uri = uri;
         }
 
         @Override
@@ -231,10 +229,10 @@ public class WebDavStore extends Store {
     private String mPassword; /* Stores the password for authentications */
     private String mUrl; /* Stores the base URL for the server */
     private String mHost; /* Stores the host name for the server */
+    private int mPort;
     private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
-    private URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
 
     private boolean mSecure;
     private WebDavHttpClient mHttpClient = null;
@@ -257,7 +255,7 @@ public class WebDavStore extends Store {
         }
 
         mHost = settings.host;
-        mUri = settings.uri;
+        mPort = settings.port;
 
         switch (settings.connectionSecurity) {
         case NONE:
@@ -322,7 +320,7 @@ public class WebDavStore extends Store {
         } else {
             root = "http";
         }
-        root += "://" + mHost + ":" + mUri.getPort();
+        root += "://" + mHost + ":" + mPort;
         return root;
     }
 
