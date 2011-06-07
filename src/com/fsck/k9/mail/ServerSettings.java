@@ -4,79 +4,82 @@ import java.util.Map;
 import com.fsck.k9.Account;
 
 /**
- * This is an abstraction to get rid of the store-specific URIs.
+ * This is an abstraction to get rid of the store- and transport-specific URIs.
  *
  * <p>
  * Right now it's only used for settings import/export. But the goal is to get rid of
- * store URIs altogether.
+ * store/transport URIs altogether.
  * </p>
  *
  * @see Account#getStoreUri()
+ * @see Account#getTransportUri()
  */
-public class StoreSettings {
+public class ServerSettings {
     /**
-     * Name of the store type (e.g. "IMAP").
+     * Name of the store or transport type (e.g. "IMAP").
      */
     public final String type;
 
     /**
-     * The host name of the incoming server.
+     * The host name of the server.
+     *
+     * {@code null} if not applicable for the store or transport.
      */
     public final String host;
 
     /**
-     * The port number of the incoming server.
+     * The port number of the server.
      */
     public final int port;
 
     /**
-     * The type of connection security to be used when connecting to the incoming server.
+     * The type of connection security to be used when connecting to the server.
      *
-     * {@link ConnectionSecurity#NONE} if not applicable for the store.
+     * {@link ConnectionSecurity#NONE} if not applicable for the store or transport.
      */
     public final ConnectionSecurity connectionSecurity;
 
     /**
-     * The authentication method to use when connecting to the incoming server.
+     * The authentication method to use when connecting to the server.
      *
-     * {@code null} if not applicable for the store.
+     * {@code null} if not applicable for the store or transport.
      */
     public final String authenticationType;
 
     /**
-     * The username part of the credentials needed to authenticate to the incoming server.
+     * The username part of the credentials needed to authenticate to the server.
      *
-     * {@code null} if unused or not applicable for the store.
+     * {@code null} if not applicable for the store or transport.
      */
     public final String username;
 
     /**
-     * The password part of the credentials needed to authenticate to the incoming server.
+     * The password part of the credentials needed to authenticate to the server.
      *
-     * {@code null} if unused or not applicable for the store.
+     * {@code null} if not applicable for the store or transport.
      */
     public final String password;
 
 
     /**
-     * Creates a new {@code StoreSettings} object.
+     * Creates a new {@code ServerSettings} object.
      *
      * @param type
-     *         see {@link StoreSettings#type}
+     *         see {@link ServerSettings#type}
      * @param host
-     *         see {@link StoreSettings#host}
+     *         see {@link ServerSettings#host}
      * @param port
-     *         see {@link StoreSettings#port}
+     *         see {@link ServerSettings#port}
      * @param connectionSecurity
-     *         see {@link StoreSettings#connectionSecurity}
+     *         see {@link ServerSettings#connectionSecurity}
      * @param authenticationType
-     *         see {@link StoreSettings#authenticationType}
+     *         see {@link ServerSettings#authenticationType}
      * @param username
-     *         see {@link StoreSettings#username}
+     *         see {@link ServerSettings#username}
      * @param password
-     *         see {@link StoreSettings#password}
+     *         see {@link ServerSettings#password}
      */
-    public StoreSettings(String type, String host, int port,
+    public ServerSettings(String type, String host, int port,
             ConnectionSecurity connectionSecurity, String authenticationType, String username,
             String password) {
         this.type = type;
@@ -89,7 +92,7 @@ public class StoreSettings {
     }
 
     /**
-     * Returns store-specific settings as key/value pair.
+     * Returns store- or transport-specific settings as key/value pair.
      *
      * <p>Classes that inherit from this one are expected to override this method.</p>
      */

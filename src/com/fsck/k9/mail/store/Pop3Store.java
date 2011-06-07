@@ -48,7 +48,7 @@ public class Pop3Store extends Store {
      * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
      * </pre>
      */
-    public static StoreSettings decodeUri(String uri) {
+    public static ServerSettings decodeUri(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
@@ -101,7 +101,7 @@ public class Pop3Store extends Store {
             }
         }
 
-        return new StoreSettings(STORE_TYPE, host, port, connectionSecurity, null, username,
+        return new ServerSettings(STORE_TYPE, host, port, connectionSecurity, null, username,
                 password);
     }
 
@@ -118,7 +118,7 @@ public class Pop3Store extends Store {
     public Pop3Store(Account account) throws MessagingException {
         super(account);
 
-        StoreSettings settings;
+        ServerSettings settings;
         try {
             settings = decodeUri(mAccount.getStoreUri());
         } catch (IllegalArgumentException e) {

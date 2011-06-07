@@ -190,7 +190,7 @@ public class WebDavStore extends Store {
      *
      * @see WebDavStore#decodeUri(String)
      */
-    private static class WebDavStoreSettings extends StoreSettings {
+    private static class WebDavStoreSettings extends ServerSettings {
         private static final String STORE_TYPE = "WebDAV";
         private static final String ALIAS_KEY = "alias";
         private static final String PATH_KEY = "path";

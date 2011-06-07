@@ -77,7 +77,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.StoreSettings;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
@@ -223,7 +223,7 @@ public class ImapStore extends Store {
      *
      * @see ImapStore#decodeUri(String)
      */
-    private static class ImapStoreSettings extends StoreSettings {
+    private static class ImapStoreSettings extends ServerSettings {
         private static final String STORE_TYPE = "IMAP";
         private static final String PATH_PREFIX_KEY = "pathPrefix";
 

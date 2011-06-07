@@ -26,7 +26,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.StoreSettings;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.LocalStore;
 
 
@@ -197,7 +197,7 @@ public class StorageExporter {
 
 
         // Write incoming server settings
-        StoreSettings incoming = Store.decodeStoreUri(account.getStoreUri());
+        ServerSettings incoming = Store.decodeStoreUri(account.getStoreUri());
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
 

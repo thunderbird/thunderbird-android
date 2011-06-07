@@ -84,19 +84,19 @@ public abstract class Store {
     }
 
     /**
-     * Decodes the contents of store-specific URIs and puts them into a {@link StoreSettings}
+     * Decodes the contents of store-specific URIs and puts them into a {@link ServerSettings}
      * object.
      *
      * @param uri
      *         the store-specific URI to decode
      *
-     * @return A {@link StoreSettings} object holding the settings contained in the URI.
+     * @return A {@link ServerSettings} object holding the settings contained in the URI.
      *
      * @see ImapStore#decodeUri(String)
      * @see Pop3Store#decodeUri(String)
      * @see WebDavStore#decodeUri(String)
      */
-    public static StoreSettings decodeStoreUri(String uri) {
+    public static ServerSettings decodeStoreUri(String uri) {
         if (uri.startsWith("imap")) {
             return ImapStore.decodeUri(uri);
         } else if (uri.startsWith("pop3")) {
