@@ -26,7 +26,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Store.StoreSettings;
+import com.fsck.k9.mail.StoreSettings;
 import com.fsck.k9.mail.store.LocalStore;
 
 
