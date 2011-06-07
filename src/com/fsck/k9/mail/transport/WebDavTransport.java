@@ -7,10 +7,26 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 
 public class WebDavTransport extends Transport {
+    private static final String TRANSPORT_TYPE = "WebDAV";
+
+    /**
+     * Decodes a WebDavTransport URI.
+     *
+     * <p>
+     * <b>Note:</b> Right now there is nothing to decode. Everything related to sending messages
+     * via WebDAV is handled by {@link WebDavStore}.
+     * </p>
+     */
+    public static ServerSettings decodeUri(String uri) {
+        return new ServerSettings(TRANSPORT_TYPE);
+    }
+
+
     private WebDavStore store;
 
     public WebDavTransport(Account account) throws MessagingException {

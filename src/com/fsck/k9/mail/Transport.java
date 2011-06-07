@@ -22,6 +22,29 @@ public abstract class Transport {
         }
     }
 
+    /**
+     * Decodes the contents of transport-specific URIs and puts them into a {@link ServerSettings}
+     * object.
+     *
+     * @param uri
+     *         the transport-specific URI to decode
+     *
+     * @return A {@link ServerSettings} object holding the settings contained in the URI.
+     *
+     * @see SmtpTransport#decodeUri(String)
+     * @see WebDavTransport#decodeUri(String)
+     */
+    public static ServerSettings decodeTransportUri(String uri) {
+        if (uri.startsWith("smtp")) {
+            return SmtpTransport.decodeUri(uri);
+        } else if (uri.startsWith("webdav")) {
+            return WebDavTransport.decodeUri(uri);
+        } else {
+            throw new IllegalArgumentException("Not a valid transport URI");
+        }
+    }
+
+
     public abstract void open() throws MessagingException;
 
     public abstract void sendMessage(Message message) throws MessagingException;

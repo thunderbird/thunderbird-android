@@ -29,6 +29,8 @@ public class ServerSettings {
 
     /**
      * The port number of the server.
+     *
+     * {@code -1} if not applicable for the store or transport.
      */
     public final int port;
 
@@ -89,6 +91,24 @@ public class ServerSettings {
         this.authenticationType = authenticationType;
         this.username = username;
         this.password = password;
+    }
+
+    /**
+     * Creates an "empty" {@code ServerSettings} object.
+     *
+     * Everything but {@link ServerSettings#type} is unused.
+     *
+     * @param type
+     *         see {@link ServerSettings#type}
+     */
+    public ServerSettings(String type) {
+        this.type = type;
+        host = null;
+        port = -1;
+        connectionSecurity = ConnectionSecurity.NONE;
+        authenticationType = null;
+        username = null;
+        password = null;
     }
 
     /**
