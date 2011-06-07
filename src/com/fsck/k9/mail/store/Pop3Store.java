@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Pop3Store extends Store {
+    private static final String STORE_TYPE = "POP3";
+
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
@@ -99,7 +101,8 @@ public class Pop3Store extends Store {
             }
         }
 
-        return new StoreSettings(host, port, connectionSecurity, null, username, password);
+        return new StoreSettings(STORE_TYPE, host, port, connectionSecurity, null, username,
+                password);
     }
 
 

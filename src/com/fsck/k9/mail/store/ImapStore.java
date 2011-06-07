@@ -223,20 +223,22 @@ public class ImapStore extends Store {
      * @see ImapStore#decodeUri(String)
      */
     private static class ImapStoreSettings extends StoreSettings {
-        private static final String PATH_PREFIX_KEY = "path_prefix";
+        private static final String STORE_TYPE = "IMAP";
+        private static final String PATH_PREFIX_KEY = "pathPrefix";
 
         public final String pathPrefix;
 
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 String authenticationType, String username, String password, String pathPrefix) {
-            super(host, port, connectionSecurity, authenticationType, username, password);
+            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+                    password);
             this.pathPrefix = pathPrefix;
         }
 
         @Override
         public Map<String, String> getExtra() {
             Map<String, String> extra = new HashMap<String, String>();
-            extra.put(PATH_PREFIX_KEY, pathPrefix);
+            putIfNotNull(extra, PATH_PREFIX_KEY, pathPrefix);
             return extra;
         }
     }

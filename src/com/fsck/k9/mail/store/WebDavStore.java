@@ -191,6 +191,7 @@ public class WebDavStore extends Store {
      * @see WebDavStore#decodeUri(String)
      */
     private static class WebDavStoreSettings extends StoreSettings {
+        private static final String STORE_TYPE = "WebDAV";
         private static final String ALIAS_KEY = "alias";
         private static final String PATH_KEY = "path";
         private static final String AUTH_PATH_KEY = "authPath";
@@ -204,7 +205,8 @@ public class WebDavStore extends Store {
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 String authenticationType, String username, String password, String alias,
                 String path, String authPath, String mailboxPath) {
-            super(host, port, connectionSecurity, authenticationType, username, password);
+            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+                    password);
             this.alias = alias;
             this.path = path;
             this.authPath = authPath;
@@ -214,10 +216,10 @@ public class WebDavStore extends Store {
         @Override
         public Map<String, String> getExtra() {
             Map<String, String> extra = new HashMap<String, String>();
-            extra.put(ALIAS_KEY, alias);
-            extra.put(PATH_KEY, path);
-            extra.put(AUTH_PATH_KEY, authPath);
-            extra.put(MAILBOX_PATH_KEY, mailboxPath);
+            putIfNotNull(extra, ALIAS_KEY, alias);
+            putIfNotNull(extra, PATH_KEY, path);
+            putIfNotNull(extra, AUTH_PATH_KEY, authPath);
+            putIfNotNull(extra, MAILBOX_PATH_KEY, mailboxPath);
             return extra;
         }
     }

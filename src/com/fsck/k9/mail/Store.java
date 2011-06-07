@@ -121,6 +121,11 @@ public abstract class Store {
      */
     public static class StoreSettings {
         /**
+         * Name of the store type (e.g. "IMAP").
+         */
+        public final String type;
+
+        /**
          * The host name of the incoming server.
          */
         public final String host;
@@ -162,6 +167,8 @@ public abstract class Store {
         /**
          * Creates a new {@code StoreSettings} object.
          *
+         * @param type
+         *         see {@link StoreSettings#type}
          * @param host
          *         see {@link StoreSettings#host}
          * @param port
@@ -175,8 +182,10 @@ public abstract class Store {
          * @param password
          *         see {@link StoreSettings#password}
          */
-        public StoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                String authenticationType, String username, String password) {
+        public StoreSettings(String type, String host, int port,
+                ConnectionSecurity connectionSecurity, String authenticationType, String username,
+                String password) {
+            this.type = type;
             this.host = host;
             this.port = port;
             this.connectionSecurity = connectionSecurity;
@@ -192,6 +201,12 @@ public abstract class Store {
          */
         public Map<String, String> getExtra() {
             return null;
+        }
+
+        protected void putIfNotNull(Map<String, String> map, String key, String value) {
+            if (value != null) {
+                map.put(key, value);
+            }
         }
     }
 
