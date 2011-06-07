@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 import javax.crypto.CipherOutputStream;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -24,6 +25,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Store.StoreSettings;
 import com.fsck.k9.mail.store.LocalStore;
 
 
@@ -38,6 +41,15 @@ public class StorageExporter {
     public static final String ACCOUNTS_ELEMENT = "accounts";
     public static final String ACCOUNT_ELEMENT = "account";
     public static final String UUID_ATTRIBUTE = "uuid";
+    public static final String INCOMING_SERVER_ELEMENT = "incoming-server";
+    public static final String TYPE_ATTRIBUTE = "type";
+    public static final String HOST_ELEMENT = "host";
+    public static final String PORT_ELEMENT = "port";
+    public static final String CONNECTION_SECURITY_ELEMENT = "connection-security";
+    public static final String AUTHENTICATION_TYPE_ELEMENT = "authentication-type";
+    public static final String USERNAME_ELEMENT = "username";
+    public static final String PASSWORD_ELEMENT = "password";
+    public static final String EXTRA_ELEMENT = "extra";
     public static final String IDENTITIES_ELEMENT = "identities";
     public static final String IDENTITY_ELEMENT = "identity";
     public static final String FOLDERS_ELEMENT = "folders";
@@ -74,7 +86,7 @@ public class StorageExporter {
             // If all went well, we return the name of the file just written.
             return fileName;
         } catch (Exception e) {
-            throw new StorageImportExportException();
+            throw new StorageImportExportException(e);
         } finally {
             if (os != null) {
                 try {
@@ -138,7 +150,8 @@ public class StorageExporter {
 
             serializer.startTag(null, ACCOUNTS_ELEMENT);
             for (String accountUuid : accountUuids) {
-                writeAccount(serializer, accountUuid, prefs);
+                Account account = preferences.getAccount(accountUuid);
+                writeAccount(serializer, account, prefs);
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT);
 
@@ -161,18 +174,16 @@ public class StorageExporter {
                 // Skip account entries
                 continue;
             }
-            serializer.startTag(null, VALUE_ELEMENT);
-            serializer.attribute(null, KEY_ATTRIBUTE, key);
-            serializer.text(value);
-            serializer.endTag(null, VALUE_ELEMENT);
+            writeKeyValue(serializer, key, value);
         }
     }
 
-    private static void writeAccount(XmlSerializer serializer, String accountUuid,
+    private static void writeAccount(XmlSerializer serializer, Account account,
             Map<String, Object> prefs) throws IOException {
 
         Set<Integer> identities = new HashSet<Integer>();
         Set<String> folders = new HashSet<String>();
+        String accountUuid = account.getUuid();
 
         serializer.startTag(null, ACCOUNT_ELEMENT);
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
@@ -184,6 +195,36 @@ public class StorageExporter {
             serializer.endTag(null, NAME_ELEMENT);
         }
 
+
+        // Write incoming server settings
+        StoreSettings incoming = Store.decodeStoreUri(account.getStoreUri());
+        serializer.startTag(null, INCOMING_SERVER_ELEMENT);
+        serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
+
+        writeElement(serializer, HOST_ELEMENT, incoming.host);
+        writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
+        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
+        writeElement(serializer, USERNAME_ELEMENT, incoming.username);
+        //TODO: make saving the password optional
+        writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
+
+        Map<String, String> extras = incoming.getExtra();
+        if (extras != null && extras.size() > 0) {
+            serializer.startTag(null, EXTRA_ELEMENT);
+            for (Entry<String, String> extra : extras.entrySet()) {
+                writeKeyValue(serializer, extra.getKey(), extra.getValue());
+            }
+            serializer.endTag(null, EXTRA_ELEMENT);
+        }
+
+        serializer.endTag(null, INCOMING_SERVER_ELEMENT);
+
+
+        //TODO: write outgoing server settings
+
+
+        // Write account settings
         serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
@@ -194,7 +235,8 @@ public class StorageExporter {
                 String secondPart = comps[1];
 
                 if (!keyUuid.equals(accountUuid)
-                        || Account.ACCOUNT_DESCRIPTION_KEY.equals(secondPart)) {
+                        || Account.ACCOUNT_DESCRIPTION_KEY.equals(secondPart)
+                        || "storeUri".equals(secondPart)) {
                     continue;
                 }
                 if (comps.length == 3) {
@@ -224,10 +266,7 @@ public class StorageExporter {
             // Strip account UUID from key
             String keyPart = key.substring(comps[0].length() + 1);
 
-            serializer.startTag(null, VALUE_ELEMENT);
-            serializer.attribute(null, KEY_ATTRIBUTE, keyPart);
-            serializer.text(value);
-            serializer.endTag(null, VALUE_ELEMENT);
+            writeKeyValue(serializer, keyPart, value);
         }
         serializer.endTag(null, SETTINGS_ELEMENT);
 
@@ -301,10 +340,7 @@ public class StorageExporter {
                 continue;
             }
 
-            serializer.startTag(null, VALUE_ELEMENT);
-            serializer.attribute(null, KEY_ATTRIBUTE, comps[1]);
-            serializer.text(value);
-            serializer.endTag(null, VALUE_ELEMENT);
+            writeKeyValue(serializer, comps[1], value);
         }
         serializer.endTag(null, SETTINGS_ELEMENT);
 
@@ -333,11 +369,27 @@ public class StorageExporter {
                 continue;
             }
 
-            serializer.startTag(null, VALUE_ELEMENT);
-            serializer.attribute(null, KEY_ATTRIBUTE, comps[2]);
-            serializer.text(value);
-            serializer.endTag(null, VALUE_ELEMENT);
+            writeKeyValue(serializer, comps[2], value);
         }
         serializer.endTag(null, FOLDER_ELEMENT);
+    }
+
+    private static void writeElement(XmlSerializer serializer, String elementName, String value)
+            throws IllegalArgumentException, IllegalStateException, IOException {
+        if (value != null) {
+            serializer.startTag(null, elementName);
+            serializer.text(value);
+            serializer.endTag(null, elementName);
+        }
+    }
+
+    private static void writeKeyValue(XmlSerializer serializer, String key, String value)
+            throws IllegalArgumentException, IllegalStateException, IOException {
+        serializer.startTag(null, VALUE_ELEMENT);
+        serializer.attribute(null, KEY_ATTRIBUTE, key);
+        if (value != null) {
+            serializer.text(value);
+        }
+        serializer.endTag(null, VALUE_ELEMENT);
     }
 }
