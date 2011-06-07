@@ -27,6 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.LocalStore;
 
 
@@ -42,6 +43,7 @@ public class StorageExporter {
     public static final String ACCOUNT_ELEMENT = "account";
     public static final String UUID_ATTRIBUTE = "uuid";
     public static final String INCOMING_SERVER_ELEMENT = "incoming-server";
+    public static final String OUTGOING_SERVER_ELEMENT = "outgoing-server";
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String HOST_ELEMENT = "host";
     public static final String PORT_ELEMENT = "port";
@@ -202,7 +204,9 @@ public class StorageExporter {
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
 
         writeElement(serializer, HOST_ELEMENT, incoming.host);
-        writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
+        if (incoming.port != -1) {
+            writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
+        }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
@@ -221,7 +225,31 @@ public class StorageExporter {
         serializer.endTag(null, INCOMING_SERVER_ELEMENT);
 
 
-        //TODO: write outgoing server settings
+        // Write outgoing server settings
+        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri());
+        serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
+        serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
+
+        writeElement(serializer, HOST_ELEMENT, outgoing.host);
+        if (outgoing.port != -1) {
+            writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
+        }
+        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
+        writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
+        //TODO: make saving the password optional
+        writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+
+        extras = outgoing.getExtra();
+        if (extras != null && extras.size() > 0) {
+            serializer.startTag(null, EXTRA_ELEMENT);
+            for (Entry<String, String> extra : extras.entrySet()) {
+                writeKeyValue(serializer, extra.getKey(), extra.getValue());
+            }
+            serializer.endTag(null, EXTRA_ELEMENT);
+        }
+
+        serializer.endTag(null, OUTGOING_SERVER_ELEMENT);
 
 
         // Write account settings
@@ -236,7 +264,8 @@ public class StorageExporter {
 
                 if (!keyUuid.equals(accountUuid)
                         || Account.ACCOUNT_DESCRIPTION_KEY.equals(secondPart)
-                        || "storeUri".equals(secondPart)) {
+                        || "storeUri".equals(secondPart)
+                        || "transportUri".equals(secondPart)) {
                     continue;
                 }
                 if (comps.length == 3) {
