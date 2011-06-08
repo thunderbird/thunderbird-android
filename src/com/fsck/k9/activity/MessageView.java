@@ -1,5 +1,7 @@
 package com.fsck.k9.activity;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -34,6 +36,7 @@ import java.util.*;
 public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
+    private static final String EXTRA_ORIGINATING_INTENT = "com.fsck.k9.MessageView_originatingIntent";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
@@ -61,6 +64,12 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
         HAS_SUPER_ON_BACK_METHOD = hasOnBackMethod;
     }
+
+    /**
+     * If user opt-in for the "Manage BACK button", we have to remember how to get back to the
+     * originating activity (just recreating a new Intent could lose the calling activity state)
+     */
+    private Intent mCreatorIntent;
 
     private SingleMessageView mMessageView;
 
@@ -267,7 +276,20 @@ public class MessageView extends K9Activity implements OnClickListener {
         // or later, or by the code above on earlier versions of the
         // platform.
         if (K9.manageBack()) {
-            MessageList.actionHandleFolder(this, mAccount, mMessageReference.folderName);
+            final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            // retrieve the current+previous tasks
+            final List<RunningTaskInfo> runningTasks = activityManager.getRunningTasks(2);
+            final RunningTaskInfo previousTask = runningTasks.get(1);
+            final String originatingActivity = mCreatorIntent.getComponent().getClassName();
+            if (originatingActivity.equals(previousTask.topActivity.getClassName())) {
+                // we can safely just finish ourself since the most recent task matches our creator
+                // this enable us not to worry about restoring the state of our creator
+            } else {
+                // the previous task top activity doesn't match our creator (previous task is from
+                // another app and user used long-pressed-HOME to display MessageView)
+                // launching our creator
+                startActivity(mCreatorIntent);
+            }
             finish();
         } else if (HAS_SUPER_ON_BACK_METHOD) {
             super.onBackPressed();
@@ -328,18 +350,33 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
 
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences) {
-        actionView(context, messRef, messReferences, null);
+    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, final Intent originatingIntent) {
+        actionView(context, messRef, messReferences, null, originatingIntent);
     }
 
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, Bundle extras) {
+    /**
+     * @param context
+     * @param messRef
+     * @param messReferences
+     * @param extras
+     * @param originatingIntent
+     *            The intent that allow us to get back to the calling screen, for when the 'Manage
+     *            BACK' option is enabled. Never {@code null}.
+     */
+    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, Bundle extras, final Intent originatingIntent) {
         Intent i = new Intent(context, MessageView.class);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
+        i.putExtra(EXTRA_ORIGINATING_INTENT, originatingIntent);
         if (extras != null) {
             i.putExtras(extras);
         }
         context.startActivity(i);
+    }
+
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        mCreatorIntent = intent.getParcelableExtra(EXTRA_ORIGINATING_INTENT);
     }
 
     @Override
@@ -381,7 +418,10 @@ public class MessageView extends K9Activity implements OnClickListener {
         mMessageView.initialize(this);
 
         setTitle("");
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
+
+        mCreatorIntent = getIntent().getParcelableExtra(EXTRA_ORIGINATING_INTENT);
+
         Uri uri = intent.getData();
         if (icicle != null) {
             mMessageReference = icicle.getParcelable(EXTRA_MESSAGE_REFERENCE);

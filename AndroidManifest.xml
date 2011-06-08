@@ -26,6 +26,10 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- In order to properly manage the BACK key, we do some check on the running tasks -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <uses-permission android:name="org.thialfihar.android.apg.permission.READ_KEY_DETAILS" />
 
     <permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"

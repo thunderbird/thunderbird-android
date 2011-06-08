@@ -1070,7 +1070,7 @@ public class MessageList
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
-            MessageView.actionView(this, ref, messageRefs);
+            MessageView.actionView(this, ref, messageRefs, getIntent());
         }
 
         /*
