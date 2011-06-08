@@ -193,7 +193,7 @@
         </activity>
         <activity
             android:name="com.fsck.k9.activity.MessageList"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:configChanges="locale"
             >
         </activity>
