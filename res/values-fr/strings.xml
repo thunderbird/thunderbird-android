@@ -29,9 +29,7 @@
   <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
   <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
   <!-- can license text be localized? app_copyright_fmt/app_license -->
-  <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
   <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
-  <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Tierces librairies utilisées\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Icônes Emoji\u00A0: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
