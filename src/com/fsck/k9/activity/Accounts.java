@@ -1297,13 +1297,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                             boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
                             List<String> accountUuids = new ArrayList<String>();
-                            for (int i = 1; i < count; i++) {
+                            int start = mImportContents.globalSettings ? 1 : 0;
+                            for (int i = start; i < count; i++) {
                                 if (pos.get(i)) {
-                                    accountUuids.add(mImportContents.accounts.get(i-1).uuid);
+                                    accountUuids.add(mImportContents.accounts.get(i-start).uuid);
                                 }
                             }
 
-                            boolean overwrite = false; //TODO: get value from dialog
+                            /*
+                             * TODO: Think some more about this. Overwriting could change the store
+                             * type. This requires some additional code in order to work smoothly
+                             * while the app is running.
+                             */
+                            boolean overwrite = false;
 
                             dialog.dismiss();
                             new ImportAsyncTask(includeGlobals, accountUuids, overwrite, mEncryptionKey, mInputStream).execute();
