@@ -27,6 +27,8 @@ import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener {
@@ -38,6 +40,27 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+
+    /**
+     * Whether parent class have the onBackPressed() method (with no argument)
+     */
+    private static final boolean HAS_SUPER_ON_BACK_METHOD;
+    static {
+        boolean hasOnBackMethod;
+        try {
+            final Class<? super MessageView> superClass = MessageView.class.getSuperclass();
+            final Method method = superClass.getMethod("onBackPressed", new Class[] {});
+            hasOnBackMethod = (method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC;
+        } catch (final SecurityException e) {
+            if (K9.DEBUG) {
+                Log.v(K9.LOG_TAG, "Security exception while checking for 'onBackPressed' method", e);
+            }
+            hasOnBackMethod = false;
+        } catch (final NoSuchMethodException e) {
+            hasOnBackMethod = false;
+        }
+        HAS_SUPER_ON_BACK_METHOD = hasOnBackMethod;
+    }
 
     private SingleMessageView mMessageView;
 
@@ -127,6 +150,15 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (
+        // XXX TODO - when we go to android 2.0, uncomment this
+        // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+        keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
         switch (keyCode) {
         case KeyEvent.KEYCODE_VOLUME_UP: {
             if (K9.useVolumeKeysForNavigationEnabled()) {
@@ -227,6 +259,21 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        if (K9.manageBack()) {
+            MessageList.actionHandleFolder(this, mAccount, mMessageReference.folderName);
+            finish();
+        } else if (HAS_SUPER_ON_BACK_METHOD) {
+            super.onBackPressed();
+        } else {
+            finish();
+        }
     }
 
     class MessageViewHandler extends Handler {
