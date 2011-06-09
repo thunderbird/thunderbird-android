@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,10 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
 
 public class StorageImporter {
 
@@ -204,6 +209,7 @@ public class StorageImporter {
                                     errorneousAccounts.add(importResult.original);
                                 }
                             } catch (Exception e) {
+                                Log.e(K9.LOG_TAG, "Exception while importing account", e); //XXX
                                 errorneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             }
                         } else {
@@ -302,6 +308,7 @@ public class StorageImporter {
 
 
         //TODO: validate account name
+        //TODO: validate server settings
         //TODO: validate identity settings
         //TODO: validate folder settings
 
@@ -320,6 +327,16 @@ public class StorageImporter {
 
         String accountKeyPrefix = uuid + ".";
         editor.putString(accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
+
+        // Write incoming server settings (storeUri)
+        ServerSettings incoming = new ImportedServerSettings(account.incoming);
+        String storeUri = Store.createStoreUri(incoming);
+        editor.putString(accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
+
+        // Write outgoing server settings (transportUri)
+        ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
+        String transportUri = Transport.createTransportUri(outgoing);
+        editor.putString(accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
 
         // Write account settings
         for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
@@ -639,6 +656,18 @@ public class StorageImporter {
                     String element = xpp.getName();
                     if (StorageExporter.NAME_ELEMENT.equals(element)) {
                         account.name = getText(xpp);
+                    } else if (StorageExporter.INCOMING_SERVER_ELEMENT.equals(element)) {
+                        if (overview) {
+                            skipToEndTag(xpp, StorageExporter.INCOMING_SERVER_ELEMENT);
+                        } else {
+                            account.incoming = parseServerSettings(xpp, StorageExporter.INCOMING_SERVER_ELEMENT);
+                        }
+                    } else if (StorageExporter.OUTGOING_SERVER_ELEMENT.equals(element)) {
+                        if (overview) {
+                            skipToEndTag(xpp, StorageExporter.OUTGOING_SERVER_ELEMENT);
+                        } else {
+                            account.outgoing = parseServerSettings(xpp, StorageExporter.OUTGOING_SERVER_ELEMENT);
+                        }
                     } else if (StorageExporter.SETTINGS_ELEMENT.equals(element)) {
                         if (overview) {
                             skipToEndTag(xpp, StorageExporter.SETTINGS_ELEMENT);
@@ -669,6 +698,40 @@ public class StorageImporter {
         }
 
         return account;
+    }
+
+    private static ImportedServer parseServerSettings(XmlPullParser xpp, String endTag)
+    throws XmlPullParserException, IOException {
+        ImportedServer server = new ImportedServer();
+
+        server.type = xpp.getAttributeValue(null, StorageExporter.TYPE_ATTRIBUTE);
+
+        int eventType = xpp.next();
+        while (!(eventType == XmlPullParser.END_TAG && endTag.equals(xpp.getName()))) {
+            if(eventType == XmlPullParser.START_TAG) {
+                String element = xpp.getName();
+                if (StorageExporter.HOST_ELEMENT.equals(element)) {
+                    server.host = getText(xpp);
+                } else if (StorageExporter.PORT_ELEMENT.equals(element)) {
+                    server.port = getText(xpp);
+                } else if (StorageExporter.CONNECTION_SECURITY_ELEMENT.equals(element)) {
+                    server.connectionSecurity = getText(xpp);
+                } else if (StorageExporter.AUTHENTICATION_TYPE_ELEMENT.equals(element)) {
+                    server.authenticationType = getText(xpp);
+                } else if (StorageExporter.USERNAME_ELEMENT.equals(element)) {
+                    server.username = getText(xpp);
+                } else if (StorageExporter.PASSWORD_ELEMENT.equals(element)) {
+                    server.password = getText(xpp);
+                } else if (StorageExporter.EXTRA_ELEMENT.equals(element)) {
+                    server.extras = parseSettings(xpp, StorageExporter.EXTRA_ELEMENT);
+                } else {
+                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                }
+            }
+            eventType = xpp.next();
+        }
+
+        return server;
     }
 
     private static List<ImportedIdentity> parseIdentities(XmlPullParser xpp)
@@ -765,6 +828,39 @@ public class StorageImporter {
         return folder;
     }
 
+    private static class ImportedServerSettings extends ServerSettings {
+        private final ImportedServer mImportedServer;
+
+        public ImportedServerSettings(ImportedServer server) {
+            super(server.type, server.host, convertPort(server.port),
+                    convertConnectionSecurity(server.connectionSecurity),
+                    server.authenticationType, server.username, server.password);
+            mImportedServer = server;
+        }
+
+        @Override
+        public Map<String, String> getExtra() {
+            return (mImportedServer.extras != null) ?
+                    Collections.unmodifiableMap(mImportedServer.extras.settings) : null;
+        }
+
+        private static int convertPort(String port) {
+            try {
+                return Integer.parseInt(port);
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+        }
+
+        private static ConnectionSecurity convertConnectionSecurity(String connectionSecurity) {
+            try {
+                return ConnectionSecurity.valueOf(connectionSecurity);
+            } catch (Exception e) {
+                return ConnectionSecurity.NONE;
+            }
+        }
+    }
+
     private static class Imported {
         public ImportedSettings globalSettings;
         public Map<String, ImportedAccount> accounts;
@@ -777,9 +873,22 @@ public class StorageImporter {
     private static class ImportedAccount {
         public String uuid;
         public String name;
+        public ImportedServer incoming;
+        public ImportedServer outgoing;
         public ImportedSettings settings;
         public List<ImportedIdentity> identities;
         public List<ImportedFolder> folders;
+    }
+
+    private static class ImportedServer {
+        public String type;
+        public String host;
+        public String port;
+        public String connectionSecurity;
+        public String authenticationType;
+        public String username;
+        public String password;
+        public ImportedSettings extras;
     }
 
     private static class ImportedIdentity {

@@ -62,6 +62,8 @@ import java.util.zip.GZIPInputStream;
  * </pre>
  */
 public class WebDavStore extends Store {
+    public static final String STORE_TYPE = "WebDAV";
+
     // Security options
     private static final short CONNECTION_SECURITY_NONE = 0;
     private static final short CONNECTION_SECURITY_TLS_OPTIONAL = 1;
@@ -186,12 +188,71 @@ public class WebDavStore extends Store {
     }
 
     /**
+     * Creates a WebDavStore URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A WebDavStore URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see WebDavStore#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "webdav+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "webdav+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "webdav+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "webdav+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "webdav";
+                break;
+        }
+
+        Map<String, String> extra = server.getExtra();
+        String userInfo = userEnc + ":" + passwordEnc;
+        String path = extra.get(WebDavStoreSettings.PATH_KEY);
+        path = (path != null) ? path : "";
+        String authPath = extra.get(WebDavStoreSettings.AUTH_PATH_KEY);
+        authPath = (authPath != null) ? authPath : "";
+        String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
+        mailboxPath = (mailboxPath != null) ? mailboxPath : "";
+        String uriPath = path + "|" + authPath + "|" + mailboxPath;
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, uriPath,
+                null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create WebDavStore URI", e);
+        }
+    }
+
+
+    /**
      * This class is used to store the decoded contents of an WebDavStore URI.
      *
      * @see WebDavStore#decodeUri(String)
      */
     private static class WebDavStoreSettings extends ServerSettings {
-        private static final String STORE_TYPE = "WebDAV";
         private static final String ALIAS_KEY = "alias";
         private static final String PATH_KEY = "path";
         private static final String AUTH_PATH_KEY = "authPath";

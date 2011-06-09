@@ -108,6 +108,31 @@ public abstract class Store {
         }
     }
 
+    /**
+     * Creates a store URI from the information supplied in the {@link ServerSettings} object.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A store URI that holds the same information as the {@code server} parameter.
+     *
+     * @see ImapStore#createUri(ServerSettings)
+     * @see Pop3Store#createUri(ServerSettings)
+     * @see WebDavStore#createUri(ServerSettings)
+     */
+    public static String createStoreUri(ServerSettings server) {
+        if (ImapStore.STORE_TYPE.equals(server.type)) {
+            return ImapStore.createUri(server);
+        } else if (Pop3Store.STORE_TYPE.equals(server.type)) {
+            return Pop3Store.createUri(server);
+        } else if (WebDavStore.STORE_TYPE.equals(server.type)) {
+            return WebDavStore.createUri(server);
+        } else {
+            throw new IllegalArgumentException("Not a valid store URI");
+        }
+    }
+
+
     protected final Account mAccount;
 
 

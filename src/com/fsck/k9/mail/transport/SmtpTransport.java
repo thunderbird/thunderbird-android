@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -31,7 +32,7 @@ import org.apache.commons.codec.binary.Hex;
 import java.util.*;
 
 public class SmtpTransport extends Transport {
-    private static final String TRANSPORT_TYPE = "SMTP";
+    public static final String TRANSPORT_TYPE = "SMTP";
 
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
@@ -111,6 +112,57 @@ public class SmtpTransport extends Transport {
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
                 authenticationType, username, password);
+    }
+
+    /**
+     * Creates a SmtpTransport URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A SmtpTransport URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getTransportUri()
+     * @see SmtpTransport#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "smtp+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "smtp+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "smtp+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "smtp+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "smtp";
+                break;
+        }
+
+        String userInfo = userEnc + ":" + passwordEnc + ":" + server.authenticationType;
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, null, null,
+                    null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create SmtpTransport URI", e);
+        }
     }
 
 

@@ -23,11 +23,13 @@ public class AccountSettings {
         SETTINGS = new LinkedHashMap<String, SettingsDescription>();
 
         // mandatory
+        /*
         SETTINGS.put("storeUri",
                 SD(SettingType.STRING, Settings.EXCEPTION_DEFAULT_VALUE, new StoreUriValidator()));
         SETTINGS.put("transportUri",
                 SD(SettingType.STRING, Settings.EXCEPTION_DEFAULT_VALUE,
                         new TransportUriValidator()));
+        */
 
         SETTINGS.put("archiveFolderName",
                 SD(SettingType.STRING, "Archive", null));

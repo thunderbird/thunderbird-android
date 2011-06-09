@@ -16,6 +16,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -102,6 +103,8 @@ import java.util.zip.InflaterInputStream;
  * </pre>
  */
 public class ImapStore extends Store {
+    public static final String STORE_TYPE = "IMAP";
+
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
@@ -219,12 +222,65 @@ public class ImapStore extends Store {
     }
 
     /**
+     * Creates an ImapStore URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return An ImapStore URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see ImapStore#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "imap+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "imap+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "imap+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "imap+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "imap";
+                break;
+        }
+
+        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
+        try {
+            Map<String, String> extra = server.getExtra();
+            String prefix = (extra != null) ? extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;
+            return new URI(scheme, userInfo, server.host, server.port,
+                prefix,
+                null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create ImapStore URI", e);
+        }
+    }
+
+    /**
      * This class is used to store the decoded contents of an ImapStore URI.
      *
      * @see ImapStore#decodeUri(String)
      */
     private static class ImapStoreSettings extends ServerSettings {
-        private static final String STORE_TYPE = "IMAP";
         private static final String PATH_PREFIX_KEY = "pathPrefix";
 
         public final String pathPrefix;

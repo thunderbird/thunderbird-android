@@ -56,6 +56,8 @@ public class Account implements BaseAccount {
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
+    public static final String STORE_URI_KEY = "storeUri";
+    public static final String TRANSPORT_URI_KEY = "transportUri";
 
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";

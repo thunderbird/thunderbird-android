@@ -44,6 +44,27 @@ public abstract class Transport {
         }
     }
 
+    /**
+     * Creates a transport URI from the information supplied in the {@link ServerSettings} object.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A transport URI that holds the same information as the {@code server} parameter.
+     *
+     * @see SmtpTransport#createUri(ServerSettings)
+     * @see WebDavTransport#createUri(ServerSettings)
+     */
+    public static String createTransportUri(ServerSettings server) {
+        if (SmtpTransport.TRANSPORT_TYPE.equals(server.type)) {
+            return SmtpTransport.createUri(server);
+        } else if (WebDavTransport.TRANSPORT_TYPE.equals(server.type)) {
+            return WebDavTransport.createUri(server);
+        } else {
+            throw new IllegalArgumentException("Not a valid transport URI");
+        }
+    }
+
 
     public abstract void open() throws MessagingException;
 

@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Pop3Store extends Store {
-    private static final String STORE_TYPE = "POP3";
+    public static final String STORE_TYPE = "POP3";
 
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
@@ -103,6 +103,57 @@ public class Pop3Store extends Store {
 
         return new ServerSettings(STORE_TYPE, host, port, connectionSecurity, null, username,
                 password);
+    }
+
+    /**
+     * Creates a Pop3Store URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A Pop3Store URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see Pop3Store#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "pop3+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "pop3+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "pop3+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "pop3+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "pop3";
+                break;
+        }
+
+        String userInfo = userEnc + ":" + passwordEnc;
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, null, null,
+                    null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create Pop3Store URI", e);
+        }
     }
 
 
