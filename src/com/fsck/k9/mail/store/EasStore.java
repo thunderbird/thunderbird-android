@@ -78,8 +78,10 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.WebDavStore.WebDavHttpClient;
 import com.fsck.k9.mail.store.exchange.Eas;
+import com.fsck.k9.mail.store.exchange.adapter.AbstractSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.AccountAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
+import com.fsck.k9.mail.store.exchange.adapter.EmailSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
 import com.fsck.k9.mail.store.exchange.adapter.MailboxAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
@@ -1574,49 +1576,94 @@ public class EasStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
-            ArrayList<Message> messages = new ArrayList<Message>();
-            String[] uids;
-            DataSet dataset = new DataSet();
-            HashMap<String, String> headers = new HashMap<String, String>();
-            int uidsLength = -1;
+            Serializer s = new Serializer();
+            
+            AbstractSyncAdapter target = new EmailSyncAdapter(new MailboxAdapter(), new AccountAdapter());
+            
+            String className = target.getCollectionName();
+            String syncKey = target.getSyncKey();
+//            userLog("sync, sending ", className, " syncKey: ", syncKey);
+            s.start(Tags.SYNC_SYNC)
+                .start(Tags.SYNC_COLLECTIONS)
+                .start(Tags.SYNC_COLLECTION)
+                .data(Tags.SYNC_CLASS, className)
+                .data(Tags.SYNC_SYNC_KEY, syncKey)
+                .data(Tags.SYNC_COLLECTION_ID, mailbox.mServerId);
 
-            String messageBody;
-            int prevStart = start;
-
-            /** Reverse the message range since 0 index is newest */
-            start = this.mMessageCount - end;
-            end = start + (end - prevStart);
-
-            if (start < 0 || end < 0 || end < start) {
-                throw new MessagingException(String.format("Invalid message set %d %d", start, end));
-            }
-
-            if (start == 0 && end < 10) {
-                end = 10;
-            }
-
-            /** Verify authentication */
-            messageBody = getMessagesXml();
-
-            headers.put("Brief", "t");
-            headers.put("Range", "rows=" + start + "-" + end);
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-
-            uids = dataset.getUids();
-            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
-            uidsLength = uids.length;
-
-            for (int i = 0; i < uidsLength; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids[i], i, uidsLength);
+            // Start with the default timeout
+            int timeout = COMMAND_TIMEOUT;
+            if (!syncKey.equals("0")) {
+                // EAS doesn't allow GetChanges in an initial sync; sending other options
+                // appears to cause the server to delay its response in some cases, and this delay
+                // can be long enough to result in an IOException and total failure to sync.
+                // Therefore, we don't send any options with the initial sync.
+                s.tag(Tags.SYNC_DELETES_AS_MOVES);
+                s.tag(Tags.SYNC_GET_CHANGES);
+                s.data(Tags.SYNC_WINDOW_SIZE,
+                        className.equals("Email") ? EMAIL_WINDOW_SIZE : PIM_WINDOW_SIZE);
+                // Handle options
+                s.start(Tags.SYNC_OPTIONS);
+                // Set the lookback appropriately (EAS calls this a "filter") for all but Contacts
+                if (className.equals("Email")) {
+                    s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
+                } else if (className.equals("Calendar")) {
+                    // TODO Force two weeks for calendar until we can set this!
+                    s.data(Tags.SYNC_FILTER_TYPE, Eas.FILTER_2_WEEKS);
                 }
-                EasMessage message = new EasMessage(uids[i], this);
-                message.setUrl(uidToUrl.get(uids[i]));
-                messages.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, uidsLength);
+                // Set the truncation amount for all classes
+                if (mProtocolVersionDouble >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
+                    s.start(Tags.BASE_BODY_PREFERENCE)
+                    // HTML for email; plain text for everything else
+                    .data(Tags.BASE_TYPE, (className.equals("Email") ? Eas.BODY_PREFERENCE_HTML
+                            : Eas.BODY_PREFERENCE_TEXT))
+                            .data(Tags.BASE_TRUNCATION_SIZE, Eas.EAS12_TRUNCATION_SIZE)
+                            .end();
+                } else {
+                    s.data(Tags.SYNC_TRUNCATION, Eas.EAS2_5_TRUNCATION_SIZE);
                 }
+                s.end();
+            } else {
+                // Use enormous timeout for initial sync, which empirically can take a while longer
+                timeout = 120*SECONDS;
+            }
+            // Send our changes up to the server
+            target.sendLocalChanges(s);
+
+            s.end().end().end().done();
+            HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()),
+                    timeout);
+            int code = resp.getStatusLine().getStatusCode();
+            if (code == HttpStatus.SC_OK) {
+                InputStream is = resp.getEntity().getContent();
+                if (is != null) {
+                    moreAvailable = target.parse(is);
+                    if (target.isLooping()) {
+                        loopingCount++;
+                        userLog("** Looping: " + loopingCount);
+                        // After the maximum number of loops, we'll set moreAvailable to false and
+                        // allow the sync loop to terminate
+                        if (moreAvailable && (loopingCount > MAX_LOOPING_COUNT)) {
+                            userLog("** Looping force stopped");
+                            moreAvailable = false;
+                        }
+                    } else {
+                        loopingCount = 0;
+                    }
+                    target.cleanup();
+                } else {
+                    userLog("Empty input stream in sync command response");
+                }
+            } else {
+//                userLog("Sync response error: ", code);
+//                if (isProvisionError(code)) {
+//                    mExitStatus = EXIT_SECURITY_FAILURE;
+//                } else if (isAuthError(code)) {
+//                    mExitStatus = EXIT_LOGIN_FAILURE;
+//                } else {
+//                    mExitStatus = EXIT_IO_ERROR;
+//                }
+//                return;
+            	
             }
 
             return messages.toArray(EMPTY_MESSAGE_ARRAY);

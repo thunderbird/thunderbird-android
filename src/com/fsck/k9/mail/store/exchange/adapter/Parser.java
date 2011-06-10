@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.util.Log;
 
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.exchange.Eas;
 import com.fsck.k9.mail.store.exchange.EasException;
 
@@ -125,7 +126,7 @@ public abstract class Parser {
         }
     }
 
-    public boolean parse() throws IOException, EasException {
+    public boolean parse() throws IOException, EasException, MessagingException {
         return false;
     }
 

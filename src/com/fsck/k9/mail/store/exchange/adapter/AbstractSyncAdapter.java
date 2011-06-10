@@ -25,6 +25,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * Parent class of all sync adapters (EasMailbox, EasCalendar, and EasContacts)
@@ -48,7 +49,7 @@ public abstract class AbstractSyncAdapter {
     // Parse incoming data from the EAS server, creating, modifying, and deleting objects as
     // required through the EmailProvider
     public abstract boolean parse(InputStream is)
-        throws IOException;
+        throws IOException, MessagingException;
     // The name used to specify the collection type of the target (Email, Calendar, or Contacts)
     public abstract String getCollectionName();
     public abstract void cleanup();

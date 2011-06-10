@@ -27,6 +27,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * Base class for the Email and PIM sync parsers
@@ -53,8 +54,9 @@ public abstract class AbstractSyncParser extends Parser {
     /**
      * Read, parse, and act on incoming commands from the Exchange server
      * @throws IOException if the connection is broken
+     * @throws MessagingException 
      */
-    public abstract void commandsParser() throws IOException;
+    public abstract void commandsParser() throws IOException, MessagingException;
 
     /**
      * Read, parse, and act on server responses
@@ -83,7 +85,7 @@ public abstract class AbstractSyncParser extends Parser {
      * is handled by abstract methods implemented for each data class (e.g. Email, Contacts, etc.)
      */
     @Override
-    public boolean parse() throws IOException {
+    public boolean parse() throws IOException, MessagingException {
         int status;
         boolean moreAvailable = false;
         boolean newSyncKey = false;
