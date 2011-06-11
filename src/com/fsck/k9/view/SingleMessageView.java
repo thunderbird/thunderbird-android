@@ -263,13 +263,13 @@ public class SingleMessageView extends LinearLayout {
             // Inline parts with a content-id are almost certainly components of an HTML message
             // not attachments. Don't show attachment download buttons for them.
             //
-            // Inline parts without a content id are likely not-yet-downloaded components of an HTML message not attachments
+            // Inline parts without a content id are likely not-yet-downloaded components of an HTML message not attachments, but we can't be sure. so show them
             if (contentDisposition != null
                     && MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
                     && (contentType != null && MimeUtility.getHeaderParameter(contentType, null).toLowerCase().startsWith("image/"))
 
                ) {
-                return;
+               // return;
             }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
