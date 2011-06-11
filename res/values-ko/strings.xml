@@ -1021,7 +1021,21 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
 
     <string name="dialog_confirm_spam_title">스팸폴더로 이동 확인</string>
-    <string name="dialog_confirm_spam_message">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
+        <item quantity="other">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">예</string>
     <string name="dialog_confirm_spam_cancel_button">아니오</string>
 

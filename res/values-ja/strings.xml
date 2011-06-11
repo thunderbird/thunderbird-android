@@ -1017,7 +1017,21 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_delete_cancel_button">削除しない</string>
 
     <string name="dialog_confirm_spam_title">迷惑メールフォルダへの移動の確認</string>
-    <string name="dialog_confirm_spam_message">本当にこのメッセージを迷惑メールフォルダに移動しますか？</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
+        <item quantity="other">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">はい</string>
     <string name="dialog_confirm_spam_cancel_button">いいえ</string>
 

@@ -45,6 +45,6 @@
     <string name="global_settings_show_correspondent_names_summary">Affiche le nom des correspondants plutôt que leurs adresses courriel</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à pourriels\u00A0?</item>
-        <item quantity="other">Voulez-vous déplacer %1$d messages vers le dossiers à pourriels\u00A0?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à pourriels\u00A0?</item>
     </plurals>
 </resources>

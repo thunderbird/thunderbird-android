@@ -1021,7 +1021,21 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
 
     <string name="dialog_confirm_spam_title">Als Spam markieren</string>
-    <string name="dialog_confirm_spam_message">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</item>
+        <item quantity="other">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nein</string>
 

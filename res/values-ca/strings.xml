@@ -1024,7 +1024,21 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="dialog_confirm_delete_cancel_button">No esborris</string>
 
     <string name="dialog_confirm_spam_title">Confirma moure\'l carpeta brossa</string>
-    <string name="dialog_confirm_spam_message">Realment vols moure aquest missatge a la carpeta brossa?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Realment vols moure aquest missatge a la carpeta brossa?</item>
+        <item quantity="other">Realment vols moure aquest missatge a la carpeta brossa?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sí</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
 

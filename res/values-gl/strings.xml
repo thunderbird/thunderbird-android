@@ -1021,7 +1021,21 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
 
     <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
-    <string name="dialog_confirm_spam_message">Queres mover esta mensaxe á carpeta spam?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Queres mover esta mensaxe á carpeta spam?</item>
+        <item quantity="other">Queres mover esta mensaxe á carpeta spam?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Si</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
 

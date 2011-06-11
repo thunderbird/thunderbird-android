@@ -1033,7 +1033,21 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
 
     <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
-    <string name="dialog_confirm_spam_message">Na pewno przenieśc do spamu?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Na pewno przenieśc do spamu?</item>
+        <item quantity="other">Na pewno przenieśc do spamu?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Tak</string>
     <string name="dialog_confirm_spam_cancel_button">Nie</string>
 

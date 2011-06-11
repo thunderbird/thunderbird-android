@@ -1021,7 +1021,21 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="dialog_confirm_delete_cancel_button">Niet verwijderen</string>
 
     <string name="dialog_confirm_spam_title">Bevestig verplaatsing naar spam map</string>
-    <string name="dialog_confirm_spam_message">Wil je dit bericht echt verplaatsen naar de spam map?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Wil je dit bericht echt verplaatsen naar de spam map?</item>
+        <item quantity="other">Wil je dit bericht echt verplaatsen naar de spam map?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nee</string>
 
