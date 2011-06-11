@@ -102,7 +102,7 @@
         <echo>Creating library ${rclib} for remote control
         applications</echo>
 
-	<jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
+    <jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
     </target>
 
     <target name="upload" depends="clean,get-version,release">
@@ -159,6 +159,7 @@
         <echo>   bump-version: ant -Dversion-name=3.123</echo>
         <echo>               Bumps the project version to 3.123,tags and commits it</echo>
         <echo>   astyle:     Make K-9's source look like it's supposed to</echo>
+        <echo>   eclipse:    Apply template Eclipse settings</echo>
     </target>
 
 
@@ -181,5 +182,11 @@
              - customize to your needs.
     -->
     <setup />
+
+    <target name="eclipse" description="Apply template Eclipse settings">
+        <copy todir=".settings">
+            <fileset dir="tools/eclipse-settings"/>
+        </copy>
+    </target>
 
 </project>

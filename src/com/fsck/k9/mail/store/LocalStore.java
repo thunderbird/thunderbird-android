@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
 import android.app.Application;
 import android.content.ContentValues;
@@ -1670,17 +1669,14 @@ public class LocalStore extends Store implements Serializable {
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
                                             if (name != null) {
-                                                String encoded_name = EncoderUtil.encodeIfNecessary(name,
-                                                                      EncoderUtil.Usage.WORD_ENTITY, 7);
-
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                                                              String.format("%s;\n name=\"%s\"",
                                                                            type,
-                                                                           encoded_name));
+                                                                           name));
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
                                                              String.format("%s;\n filename=\"%s\";\n size=%d",
                                                                            contentDisposition,
-                                                                           encoded_name, // TODO: Should use encoded word defined in RFC 2231.
+                                                                           name, // TODO: Should use encoded word defined in RFC 2231.
                                                                            size));
                                             }
 
@@ -2402,7 +2398,7 @@ public class LocalStore extends Store implements Serializable {
                                 Utility.combine(attachment.getHeader(
                                                     MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
 
-                            String name = MimeUtility.unfoldAndDecode(MimeUtility.getHeaderParameter(attachment.getContentType(), "name"));
+                            String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
                             String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
 
                             String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
@@ -2417,7 +2413,7 @@ public class LocalStore extends Store implements Serializable {
                             }
 
                             if (name == null && contentDisposition != null) {
-                                name = MimeUtility.unfoldAndDecode(MimeUtility.getHeaderParameter(contentDisposition, "filename"));
+                                name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
                             }
                             if (attachmentId == -1) {
                                 ContentValues cv = new ContentValues();
