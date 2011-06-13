@@ -23,7 +23,7 @@ public class ConfirmationDialog {
                                 final String message, final int confirmButton, final int cancelButton,
                                 final Runnable action) {
         return create(activity, dialogId, title, message, confirmButton, cancelButton,
-                action, null);
+                      action, null);
     }
 
     /**
