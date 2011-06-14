@@ -199,7 +199,7 @@
         </activity>
         <activity
             android:name=".activity.MessageList"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:configChanges="locale"
             >
         </activity>
