@@ -1700,20 +1700,14 @@ public class MessageList
      *            Never {@code null}.
      */
     private void onDelete(final List<MessageInfoHolder> holders) {
-        // FIXME: removeMessage does it own check on the 'selected' field, we're duplicating the logic here...
         final List<Message> messagesToRemove = new ArrayList<Message>();
         for (MessageInfoHolder holder : holders) {
-            if (holder.selected) {
-                messagesToRemove.add(holder.message);
-            }
             // only change the current message being viewed if the one deleted was the current one
             if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
                 showNextMessage();
             }
+            messagesToRemove.add(holder.message);
         }
-
-
-
 
         mHandler.removeMessages(holders);
         mController.deleteMessages(messagesToRemove.toArray(EMPTY_MESSAGE_ARRAY), null);
