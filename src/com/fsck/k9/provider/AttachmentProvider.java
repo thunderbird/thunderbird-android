@@ -235,7 +235,7 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
             attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Uname to retrieve attachment info from local store for ID: " + id, e);
+            Log.e(K9.LOG_TAG, "Unable to retrieve attachment info from local store for ID: " + id, e);
             return null;
         }
 
