@@ -6,7 +6,7 @@ public class MailboxAdapter {
 
 	static final int CHECK_INTERVAL_PING = 0;
 
-	String mSyncKey;
+	static String mSyncKey;
 	
 	int mSyncInterval;
 

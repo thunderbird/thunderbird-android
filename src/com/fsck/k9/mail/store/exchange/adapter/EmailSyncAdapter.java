@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.webkit.MimeTypeMap;
 
@@ -61,6 +62,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
 
     // Holds the parser's value for isLooping()
     boolean mIsLooping = false;
+	private List<Message> newEmails;
 
     public EmailSyncAdapter(MailboxAdapter mailbox, AccountAdapter account) {
         super(mailbox, account);
@@ -72,6 +74,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
         boolean res = p.parse();
         // Hold on to the parser's value for isLooping() to pass back to the service
         mIsLooping = p.isLooping();
+        newEmails = p.newEmails;
         return res;
     }
 
@@ -262,7 +265,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
                 switch (tag) {
                     case Tags.SYNC_SERVER_ID:
                     	String serverId = getValue();
-//                        msg.mServerId = serverId;
+                        msg.setUid(serverId);
                         break;
                     case Tags.SYNC_APPLICATION_DATA:
                         addData(msg);
@@ -838,4 +841,8 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
 //        }
         return false;
     }
+
+	public List<Message> getMessages() {
+		return newEmails;
+	}
 }

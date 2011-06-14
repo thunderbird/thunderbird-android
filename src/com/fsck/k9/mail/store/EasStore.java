@@ -73,18 +73,23 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.WebDavStore.WebDavHttpClient;
+import com.fsck.k9.mail.store.WebDavStore.WebDavMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
 import com.fsck.k9.mail.store.exchange.adapter.AbstractSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.AccountAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.EmailSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
+import com.fsck.k9.mail.store.exchange.adapter.GetItemEstimateParser;
 import com.fsck.k9.mail.store.exchange.adapter.MailboxAdapter;
+import com.fsck.k9.mail.store.exchange.adapter.Parser;
 import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
+import com.fsck.k9.mail.store.exchange.adapter.SearchParser;
 import com.fsck.k9.mail.store.exchange.adapter.Serializer;
 import com.fsck.k9.mail.store.exchange.adapter.Tags;
 import com.fsck.k9.mail.transport.TrustedSocketFactory;
@@ -275,6 +280,8 @@ public class EasStore extends Store {
 
         mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
         mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        
+        getInitialFolderList();
     }
 
     private String getRoot() {
@@ -671,6 +678,14 @@ public class EasStore extends Store {
     
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    	if (forceListAll) {
+    		return getInitialFolderList();
+    	} else {
+    		return new ArrayList<EasFolder>(mFolderList.values());
+    	}
+    }
+    
+    public List <? extends Folder > getInitialFolderList() throws MessagingException {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
         
     	AccountAdapter mAccount = new AccountAdapter();
@@ -705,7 +720,7 @@ public class EasStore extends Store {
 	                throw new RuntimeException();
 	            } else {
 	                // If we succeeded, try again...
-	                return getPersonalNamespaces(forceListAll);
+	                return getInitialFolderList();
 	            }
 	        } else if (isAuthError(code)) {
 	            throw new RuntimeException();
@@ -716,6 +731,12 @@ public class EasStore extends Store {
 	        }
     	} catch (IOException e) {
     		throw new MessagingException("io", e);
+    	}
+    	
+    	//this.mAccount.setAutoExpandFolderName("Inbox");
+    	//this.mAccount.setInboxFolderName("Inbox");
+    	for (Folder folder : folderList) {
+    		mFolderList.put(folder.getName(), (EasFolder) folder);
     	}
     	
     	return folderList;
@@ -735,141 +756,9 @@ public class EasStore extends Store {
         }
 	}
 
-	public List <? extends Folder > getPersonalNamespaces2(boolean forceListAll) throws MessagingException {
-        LinkedList<Folder> folderList = new LinkedList<Folder>();
-        /**
-         * We have to check authentication here so we have the proper URL stored
-         */
-        getHttpClient();
-
-        /**
-         *  Firstly we get the "special" folders list (inbox, outbox, etc)
-         *  and setup the account accordingly
-         */
-        HashMap<String, String> headers = new HashMap<String, String>();
-        DataSet dataset = new DataSet();
-        headers.put("Depth", "0");
-        headers.put("Brief", "t");
-        dataset = processRequest(this.mUrl, "PROPFIND", getSpecialFoldersList(), headers);
-
-        HashMap<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
-        String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
-        if (folderName != null) {
-            mAccount.setAutoExpandFolderName(folderName);
-            mAccount.setInboxFolderName(folderName);
-        }
-
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_DRAFTS_FOLDER));
-        if (folderName != null)
-            mAccount.setDraftsFolderName(folderName);
-
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_TRASH_FOLDER));
-        if (folderName != null)
-            mAccount.setTrashFolderName(folderName);
-
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SPAM_FOLDER));
-        if (folderName != null)
-            mAccount.setSpamFolderName(folderName);
-
-        // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
-        /*
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
-        if (folderName != null)
-            mAccount.setOutboxFolderName(folderName);
-        */
-
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
-        if (folderName != null)
-            mAccount.setSentFolderName(folderName);
-
-        /**
-         * Next we get all the folders (including "special" ones)
-         */
-        headers = new HashMap<String, String>();
-        dataset = new DataSet();
-        headers.put("Brief", "t");
-        dataset = processRequest(this.mUrl, "SEARCH", getFolderListXml(), headers);
-        String[] folderUrls = dataset.getHrefs();
-
-        for (int i = 0; i < folderUrls.length; i++) {
-            String tempUrl = folderUrls[i];
-            EasFolder folder = createFolder(tempUrl);
-            if (folder != null)
-                folderList.add(folder);
-        }
-
-        return folderList;
-    }
-
-    /**
-     * Creates a folder using the URL passed as parameter (only if it has not been
-     * already created) and adds this to our store folder map.
-     *
-     * @param folderUrl
-     * @return
-     */
-    private EasFolder createFolder(String folderUrl) {
-        if (folderUrl == null)
-            return null;
-
-        EasFolder wdFolder = null;
-        String folderName = getFolderName(folderUrl);
-        if (folderName != null) {
-            if (!this.mFolderList.containsKey(folderName)) {
-                wdFolder = new EasFolder(this, folderName);
-                wdFolder.setUrl(folderUrl);
-                mFolderList.put(folderName, wdFolder);
-            }
-        }
-        // else: Unknown URL format => NO Folder created
-
-        return wdFolder;
-    }
-
-    private String getFolderName(String folderUrl) {
-        if (folderUrl == null)
-            return null;
-
-        // Here we extract the folder name starting from the complete url.
-        // folderUrl is in the form http://mail.domain.com/exchange/username/foldername
-        // so we need "foldername" which is the string after the fifth slash
-        int folderSlash = -1;
-        for (int j = 0; j < 5; j++) {
-            folderSlash = folderUrl.indexOf('/', folderSlash + 1);
-            if (folderSlash < 0)
-                break;
-        }
-
-        if (folderSlash > 0) {
-            String folderName;
-            String fullPathName;
-
-            // Removes the final slash if present
-            if (folderUrl.charAt(folderUrl.length() - 1) == '/')
-                fullPathName = folderUrl.substring(folderSlash + 1, folderUrl.length() - 1);
-            else
-                fullPathName = folderUrl.substring(folderSlash + 1);
-
-            // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
-            try {
-                folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                /**
-                 * If we don't support UTF-8 there's a problem, don't decode
-                 * it then
-                 */
-                folderName = fullPathName;
-            }
-
-            return folderName;
-        }
-
-        return null;
-    }
-
     @Override
     public Folder getFolder(String name) {
-        return null;
+    	return mFolderList.get(name);
     }
 
     public Folder getSendSpoolFolder() throws MessagingException {
@@ -887,26 +776,6 @@ public class EasStore extends Store {
     @Override
     public boolean isCopyCapable() {
         return true;
-    }
-
-    private String getSpecialFoldersList() {
-        StringBuffer buffer = new StringBuffer(200);
-        buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
-        buffer.append("<propfind xmlns=\"DAV:\">");
-        buffer.append("<prop>");
-        buffer.append("<").append(DAV_MAIL_INBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        buffer.append("<").append(DAV_MAIL_DRAFTS_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        buffer.append("<").append(DAV_MAIL_OUTBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        buffer.append("<").append(DAV_MAIL_SENT_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        buffer.append("<").append(DAV_MAIL_TRASH_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        // This should always be ##DavMailSubmissionURI## for which we already have a constant
-        // buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
-
-        buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-
-        buffer.append("</prop>");
-        buffer.append("</propfind>");
-        return buffer.toString();
     }
 
     /***************************************************************
@@ -1370,9 +1239,9 @@ public class EasStore extends Store {
         EasFolder tmpFolder = (EasStore.EasFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(OpenMode.READ_WRITE);
-            Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
-
-            tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
+//            Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
+//
+//            tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
         } finally {
             if (tmpFolder != null) {
                 tmpFolder.close();
@@ -1389,51 +1258,20 @@ public class EasStore extends Store {
      */
     class EasFolder extends Folder {
         private String mName;
-        private String mFolderUrl;
+        private String mServerId;
         private boolean mIsOpen = false;
         private int mMessageCount = 0;
-        private int mUnreadMessageCount = 0;
         private EasStore store;
 
         protected EasStore getStore() {
             return store;
         }
 
-        public EasFolder(EasStore nStore, String name) {
+        public EasFolder(EasStore nStore, String name, String serverId) {
             super(nStore.getAccount());
             store = nStore;
             this.mName = name;
-
-            String encodedName = "";
-            try {
-                String[] urlParts = name.split("/");
-                String url = "";
-                for (int i = 0, count = urlParts.length; i < count; i++) {
-                    if (i != 0) {
-                        url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    } else {
-                        url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    }
-                }
-                encodedName = url;
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
-                encodedName = name;
-            }
-
-            encodedName = encodedName.replaceAll("\\+", "%20");
-
-            this.mFolderUrl = EasStore.this.mUrl;
-            if (!EasStore.this.mUrl.endsWith("/")) {
-                this.mFolderUrl += "/";
-            }
-            this.mFolderUrl += encodedName;
-        }
-
-        public void setUrl(String url) {
-            if (url != null) {
-                this.mFolderUrl = url;
-            }
+            this.mServerId = serverId;
         }
 
         @Override
@@ -1460,56 +1298,67 @@ public class EasStore extends Store {
 
         private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
         throws MessagingException {
-            String[] uids = new String[messages.length];
-
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
-            }
-            String messageBody = "";
-            HashMap<String, String> headers = new HashMap<String, String>();
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
-            String[] urls = new String[uids.length];
-
-            for (int i = 0, count = uids.length; i < count; i++) {
-                urls[i] = uidToUrl.get(uids[i]);
-                if (urls[i] == null && messages[i] instanceof EasMessage) {
-                    EasMessage wdMessage = (EasMessage) messages[i];
-                    urls[i] = wdMessage.getUrl();
-                }
-            }
-
-            messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
-            EasFolder destFolder = (EasFolder) store.getFolder(folderName);
-            headers.put("Destination", destFolder.mFolderUrl);
-            headers.put("Brief", "t");
-            headers.put("If-Match", "*");
-            String action = (isMove ? "BMOVE" : "BCOPY");
-            Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
-
-            processRequest(mFolderUrl, action, messageBody, headers, false);
+//            String[] uids = new String[messages.length];
+//
+//            for (int i = 0, count = messages.length; i < count; i++) {
+//                uids[i] = messages[i].getUid();
+//            }
+//            String messageBody = "";
+//            HashMap<String, String> headers = new HashMap<String, String>();
+//            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+//            String[] urls = new String[uids.length];
+//
+//            for (int i = 0, count = uids.length; i < count; i++) {
+//                urls[i] = uidToUrl.get(uids[i]);
+//                if (urls[i] == null && messages[i] instanceof EasMessage) {
+//                    EasMessage wdMessage = (EasMessage) messages[i];
+//                    urls[i] = wdMessage.getUrl();
+//                }
+//            }
+//
+//            messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
+//            EasFolder destFolder = (EasFolder) store.getFolder(folderName);
+//            headers.put("Destination", destFolder.mFolderUrl);
+//            headers.put("Brief", "t");
+//            headers.put("If-Match", "*");
+//            String action = (isMove ? "BMOVE" : "BCOPY");
+//            Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
+//
+//            processRequest(mFolderUrl, action, messageBody, headers, false);
         }
 
         private int getMessageCount(boolean read) throws MessagingException {
-            String isRead;
-            int messageCount = 0;
-            DataSet dataset = new DataSet();
-            HashMap<String, String> headers = new HashMap<String, String>();
-            String messageBody;
-
-            if (read) {
-                isRead = "True";
-            } else {
-                isRead = "False";
-            }
-
-            messageBody = getMessageCountXml(isRead);
-            headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            if (dataset != null) {
-                messageCount = dataset.getMessageCount();
-            }
-
-            return messageCount;
+			Serializer s = new Serializer();
+			try {
+				s
+					.start(Tags.GIE_GET_ITEM_ESTIMATE)
+						.start(Tags.GIE_COLLECTIONS)
+							.start(Tags.GIE_COLLECTION)
+								.data(Tags.SYNC_SYNC_KEY, "0")
+								.data(Tags.GIE_COLLECTION_ID, mServerId)
+							.end()
+						.end()
+					.end()
+				.done();
+				
+		        HttpResponse resp = sendHttpClientPost("GetItemEstimate", s.toByteArray());
+		        int code = resp.getStatusLine().getStatusCode();
+		        if (code == HttpStatus.SC_OK) {
+		        	HttpEntity entity = resp.getEntity();
+		            int len = (int)entity.getContentLength();
+		            if (len != 0) {
+		                InputStream is = entity.getContent();
+		                GetItemEstimateParser gieParser = new GetItemEstimateParser(is);
+		                if (gieParser.parse()) {
+		                	return gieParser.getEstimate();
+		                }
+		            }
+		        }
+		        // On failures
+		        throw new MessagingException("getItemEstimate call returned not OK status");
+			} catch (IOException e) {
+				throw new MessagingException("getItemEstimate call failed", e);
+			}
         }
 
         @Override
@@ -1521,9 +1370,7 @@ public class EasStore extends Store {
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            this.mUnreadMessageCount = getMessageCount(false);
-            return this.mUnreadMessageCount;
+            return -1;
         }
 
         @Override
@@ -1554,7 +1401,6 @@ public class EasStore extends Store {
         @Override
         public void close() {
             this.mMessageCount = 0;
-            this.mUnreadMessageCount = 0;
             this.mIsOpen = false;
         }
 
@@ -1576,97 +1422,198 @@ public class EasStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
-            Serializer s = new Serializer();
-            
-            AbstractSyncAdapter target = new EmailSyncAdapter(new MailboxAdapter(), new AccountAdapter());
-            
-            String className = target.getCollectionName();
-            String syncKey = target.getSyncKey();
-//            userLog("sync, sending ", className, " syncKey: ", syncKey);
-            s.start(Tags.SYNC_SYNC)
-                .start(Tags.SYNC_COLLECTIONS)
-                .start(Tags.SYNC_COLLECTION)
-                .data(Tags.SYNC_CLASS, className)
-                .data(Tags.SYNC_SYNC_KEY, syncKey)
-                .data(Tags.SYNC_COLLECTION_ID, mailbox.mServerId);
+        	Serializer s = new Serializer();
+        	
+        	
+//        	try {
+//				s
+//					.start(Tags.SEARCH_SEARCH)
+//						.start(Tags.SEARCH_STORE)
+//							.data(Tags.SEARCH_NAME, "Mailbox")
+//							.start(Tags.SEARCH_QUERY)
+////								.start(Tags.SEARCH_AND)
+////									.data(Tags.SYNC_COLLECTION_ID, mServerId);
+//									.data(Tags.SEARCH_FREE_TEXT, "gmail");
+//				
+//				if (earliestDate != null) {
+////					s
+////									.start(Tags.SEARCH_GREATER_THAN)
+////										.data(Tags.EMAIL_DATE_RECEIVED, "")
+////									.end();
+//				}
+//				
+//				s
+////								.end()
+//							.end()
+////							.start(Tags.SEARCH_OPTIONS)
+////								.tag(Tags.SEARCH_REBUILD_RESULTS)
+////								.data(Tags.SEARCH_RANGE, (start-1) + "-" + (end-1))
+////								.tag(Tags.SEARCH_DEEP_TRAVERSAL)
+////							.end()
+//						.end()
+//					.end()
+//				.done();
+//				
+//				s = new Serializer();
+//				
+//				s.start(Tags.SEARCH_SEARCH)
+//					.start(Tags.SEARCH_STORE)
+//						.data(Tags.SEARCH_NAME, "Mailbox")
+//						.start(Tags.SEARCH_QUERY)
+//							.start(Tags.SEARCH_AND)
+//								.data(Tags.SYNC_COLLECTION_ID, mServerId)
+//								.data(Tags.SEARCH_FREE_TEXT, "gmail")
+//							.end()
+//						.end()
+//					.end()
+//				.end()
+//				.done();
+//				
+//		        HttpResponse resp = sendHttpClientPost("Search", s.toByteArray());
+//		        int code = resp.getStatusLine().getStatusCode();
+//		        if (code == HttpStatus.SC_OK) {
+//		        	HttpEntity entity = resp.getEntity();
+//		            int len = (int)entity.getContentLength();
+//		            if (len != 0) {
+//		                InputStream is = entity.getContent();
+//		                SearchParser searchParser = new SearchParser(is);
+//		                if (searchParser.parse()) {
+//		                	return searchParser.getMessages();
+//		                }
+//		            }
+//		        }
+//		        // On failures
+//		        throw new MessagingException("getMessages call returned not OK status");
+//			} catch (IOException e) {
+//				throw new MessagingException("getMessages call failed", e);
+//			}
+        	
+        	
+        	
+            // Maximum number of times we'll allow a sync to "loop" with MoreAvailable true before
+            // forcing it to stop.  This number has been determined empirically.
+            final int MAX_LOOPING_COUNT = 100;
 
-            // Start with the default timeout
-            int timeout = COMMAND_TIMEOUT;
-            if (!syncKey.equals("0")) {
-                // EAS doesn't allow GetChanges in an initial sync; sending other options
-                // appears to cause the server to delay its response in some cases, and this delay
-                // can be long enough to result in an IOException and total failure to sync.
-                // Therefore, we don't send any options with the initial sync.
-                s.tag(Tags.SYNC_DELETES_AS_MOVES);
-                s.tag(Tags.SYNC_GET_CHANGES);
-                s.data(Tags.SYNC_WINDOW_SIZE,
-                        className.equals("Email") ? EMAIL_WINDOW_SIZE : PIM_WINDOW_SIZE);
-                // Handle options
-                s.start(Tags.SYNC_OPTIONS);
-                // Set the lookback appropriately (EAS calls this a "filter") for all but Contacts
-                if (className.equals("Email")) {
-                    s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
-                } else if (className.equals("Calendar")) {
-                    // TODO Force two weeks for calendar until we can set this!
-                    s.data(Tags.SYNC_FILTER_TYPE, Eas.FILTER_2_WEEKS);
-                }
-                // Set the truncation amount for all classes
-                if (mProtocolVersionDouble >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
-                    s.start(Tags.BASE_BODY_PREFERENCE)
-                    // HTML for email; plain text for everything else
-                    .data(Tags.BASE_TYPE, (className.equals("Email") ? Eas.BODY_PREFERENCE_HTML
-                            : Eas.BODY_PREFERENCE_TEXT))
-                            .data(Tags.BASE_TRUNCATION_SIZE, Eas.EAS12_TRUNCATION_SIZE)
-                            .end();
-                } else {
-                    s.data(Tags.SYNC_TRUNCATION, Eas.EAS2_5_TRUNCATION_SIZE);
-                }
-                s.end();
-            } else {
-                // Use enormous timeout for initial sync, which empirically can take a while longer
-                timeout = 120*SECONDS;
-            }
-            // Send our changes up to the server
-            target.sendLocalChanges(s);
+        	try {
+	        	EmailSyncAdapter target = new EmailSyncAdapter(new MailboxAdapter(), new AccountAdapter());
+	            
+	            String className = target.getCollectionName();
+	            String syncKey = target.getSyncKey();
+//            	userLog("sync, sending ", className, " syncKey: ", syncKey);
+	            s.start(Tags.SYNC_SYNC)
+	                .start(Tags.SYNC_COLLECTIONS)
+	                .start(Tags.SYNC_COLLECTION)
+	                .data(Tags.SYNC_CLASS, className)
+	                .data(Tags.SYNC_SYNC_KEY, syncKey)
+	                .data(Tags.SYNC_COLLECTION_ID, mServerId);
+	
+	            // Start with the default timeout
+	            int timeout = COMMAND_TIMEOUT;
+	            if (!syncKey.equals("0")) {
+	                // EAS doesn't allow GetChanges in an initial sync; sending other options
+	                // appears to cause the server to delay its response in some cases, and this delay
+	                // can be long enough to result in an IOException and total failure to sync.
+	                // Therefore, we don't send any options with the initial sync.
+	                s.tag(Tags.SYNC_DELETES_AS_MOVES);
+	                s.tag(Tags.SYNC_GET_CHANGES);
+	                s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
+	                // Handle options
+	                s.start(Tags.SYNC_OPTIONS);
+	                // Set the lookback appropriately (EAS calls this a "filter") for all but Contacts
+	                s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
+	                // Set the truncation amount for all classes
+	                if (mProtocolVersionDouble >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
+	                    s.start(Tags.BASE_BODY_PREFERENCE)
+	                    // HTML for email; plain text for everything else
+	                    .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_HTML)
+	                    .data(Tags.BASE_TRUNCATION_SIZE, Eas.EAS12_TRUNCATION_SIZE)
+	                    .end();
+	                } else {
+	                    s.data(Tags.SYNC_TRUNCATION, Eas.EAS2_5_TRUNCATION_SIZE);
+	                }
+	                s.end();
+	            } else {
+	                // Use enormous timeout for initial sync, which empirically can take a while longer
+	                timeout = 120 * 1000;
+	            }
+//	            // Send our changes up to the server
+//	            target.sendLocalChanges(s);
 
-            s.end().end().end().done();
-            HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()),
-                    timeout);
-            int code = resp.getStatusLine().getStatusCode();
-            if (code == HttpStatus.SC_OK) {
-                InputStream is = resp.getEntity().getContent();
-                if (is != null) {
-                    moreAvailable = target.parse(is);
-                    if (target.isLooping()) {
-                        loopingCount++;
-                        userLog("** Looping: " + loopingCount);
-                        // After the maximum number of loops, we'll set moreAvailable to false and
-                        // allow the sync loop to terminate
-                        if (moreAvailable && (loopingCount > MAX_LOOPING_COUNT)) {
-                            userLog("** Looping force stopped");
-                            moreAvailable = false;
-                        }
-                    } else {
-                        loopingCount = 0;
-                    }
-                    target.cleanup();
-                } else {
-                    userLog("Empty input stream in sync command response");
-                }
-            } else {
-//                userLog("Sync response error: ", code);
-//                if (isProvisionError(code)) {
-//                    mExitStatus = EXIT_SECURITY_FAILURE;
-//                } else if (isAuthError(code)) {
-//                    mExitStatus = EXIT_LOGIN_FAILURE;
-//                } else {
-//                    mExitStatus = EXIT_IO_ERROR;
-//                }
-//                return;
+	            s.end().end().end().done();
+	            HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()),
+	                    timeout);
+	            int code = resp.getStatusLine().getStatusCode();
+	            if (code == HttpStatus.SC_OK) {
+	                InputStream is = resp.getEntity().getContent();
+	                if (is != null) {
+	                    boolean moreAvailable = target.parse(is);
+	                    int loopingCount = 0;
+						if (target.isLooping()) {
+	                        loopingCount ++;
+	                        Log.d(K9.LOG_TAG, "** Looping: " + loopingCount);
+	                        // After the maximum number of loops, we'll set moreAvailable to false and
+	                        // allow the sync loop to terminate
+	                        if (moreAvailable && (loopingCount > MAX_LOOPING_COUNT)) {
+	                        	Log.d(K9.LOG_TAG, "** Looping force stopped");
+	                            moreAvailable = false;
+	                        }
+	                    } else {
+	                        loopingCount = 0;
+	                    }
+	                    target.cleanup();
+	                } else {
+	                	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
+	                }
+	            } else {
+//	                userLog("Sync response error: ", code);
+//	                if (isProvisionError(code)) {
+//	                    mExitStatus = EXIT_SECURITY_FAILURE;
+//	                } else if (isAuthError(code)) {
+//	                    mExitStatus = EXIT_LOGIN_FAILURE;
+//	                } else {
+//	                    mExitStatus = EXIT_IO_ERROR;
+//	                }
+//	                return;
+	            	
+	            }
+            
+            	List<Message> messages = target.getMessages();
             	
-            }
-
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            	return messages.toArray(EMPTY_MESSAGE_ARRAY);
+        	} catch (IOException e) {
+				throw new MessagingException("getMessages call failed", e);
+			}
+        }
+        
+        private String getEmailFilter() {
+            String filter = Eas.FILTER_1_WEEK;
+//            switch (mAccount.mSyncLookback) {
+//                case com.android.email.Account.SYNC_WINDOW_1_DAY: {
+//                    filter = Eas.FILTER_1_DAY;
+//                    break;
+//                }
+//                case com.android.email.Account.SYNC_WINDOW_3_DAYS: {
+//                    filter = Eas.FILTER_3_DAYS;
+//                    break;
+//                }
+//                case com.android.email.Account.SYNC_WINDOW_1_WEEK: {
+//                    filter = Eas.FILTER_1_WEEK;
+//                    break;
+//                }
+//                case com.android.email.Account.SYNC_WINDOW_2_WEEKS: {
+//                    filter = Eas.FILTER_2_WEEKS;
+//                    break;
+//                }
+//                case com.android.email.Account.SYNC_WINDOW_1_MONTH: {
+//                    filter = Eas.FILTER_1_MONTH;
+//                    break;
+//                }
+//                case com.android.email.Account.SYNC_WINDOW_ALL: {
+                    filter = Eas.FILTER_ALL;
+//                    break;
+//                }
+//            }
+            return filter;
         }
 
         @Override
@@ -1703,17 +1650,17 @@ public class EasStore extends Store {
 
         private HashMap<String, String> getMessageUrls(String[] uids) throws MessagingException {
             HashMap<String, String> uidToUrl = new HashMap<String, String>();
-            HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
-            String messageBody;
-
-            /** Retrieve and parse the XML entity for our messages */
-            messageBody = getMessageUrlsXml(uids);
-            headers.put("Brief", "t");
-
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            uidToUrl = dataset.getUidToUrl();
-
+//            HashMap<String, String> headers = new HashMap<String, String>();
+//            DataSet dataset = new DataSet();
+//            String messageBody;
+//
+//            /** Retrieve and parse the XML entity for our messages */
+//            messageBody = getMessageUrlsXml(uids);
+//            headers.put("Brief", "t");
+//
+//            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+//            uidToUrl = dataset.getUidToUrl();
+//
             return uidToUrl;
         }
 
@@ -1725,25 +1672,43 @@ public class EasStore extends Store {
                 return;
             }
 
-            /**
-             * Fetch message envelope information for the array
-             */
-            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
-                fetchEnvelope(messages, listener);
-            }
-            /**
-             * Fetch message flag info for the array
-             */
-            if (fp.contains(FetchProfile.Item.FLAGS)) {
-                fetchFlags(messages, listener);
+            for (int i = 0, count = messages.length; i < count; i++) {
+                Message easMessage;
+
+//                if (!(messages[i] instanceof EasMessage)) {
+//                    throw new MessagingException("EasStore fetch called with non-EasMessage");
+//                }
+
+                easMessage = (Message) messages[i];
+                
+	            if (listener != null) {
+	                listener.messageStarted(easMessage.getUid(), i, count);
+	            }
+	            
+	            if (listener != null) {
+	            	listener.messageFinished(easMessage, i, count);
+	            }
             }
 
-            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
-            }
-            if (fp.contains(FetchProfile.Item.BODY)) {
-                fetchMessages(messages, listener, -1);
-            }
+//            /**
+//             * Fetch message envelope information for the array
+//             */
+//            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+//                fetchEnvelope(messages, listener);
+//            }
+//            /**
+//             * Fetch message flag info for the array
+//             */
+//            if (fp.contains(FetchProfile.Item.FLAGS)) {
+//                fetchFlags(messages, listener);
+//            }
+//
+//            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
+//                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+//            }
+//            if (fp.contains(FetchProfile.Item.BODY)) {
+//                fetchMessages(messages, listener, -1);
+//            }
         }
 
         /**
@@ -1751,106 +1716,106 @@ public class EasStore extends Store {
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
         throws MessagingException {
-            HttpClient httpclient;
-            httpclient = getHttpClient();
-
-            /**
-             * We can't hand off to processRequest() since we need the stream to parse.
-             */
-            for (int i = 0, count = messages.length; i < count; i++) {
-                EasMessage wdMessage;
-                int statusCode = 0;
-
-                if (!(messages[i] instanceof EasMessage)) {
-                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
-                }
-
-                wdMessage = (EasMessage) messages[i];
-
-                if (listener != null) {
-                    listener.messageStarted(wdMessage.getUid(), i, count);
-                }
-
-                /**
-                 * If fetch is called outside of the initial list (ie, a locally stored message), it may not have a URL
-                 * associated. Verify and fix that
-                 */
-                if (wdMessage.getUrl().equals("")) {
-                    wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
-                    Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
-                          + wdMessage.getUrl() + "'");
-                    if (wdMessage.getUrl().equals("")) {
-                        throw new MessagingException("Unable to get URL for message");
-                    }
-                }
-
-                try {
-                    Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
-                          + wdMessage.getUrl() + "'");
-                    HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
-                    HttpResponse response;
-                    HttpEntity entity;
-
-                    httpget.setHeader("translate", "f");
-                    if (mAuthentication == AUTH_TYPE_BASIC) {
-                        httpget.setHeader("Authorization", mAuthString);
-                    }
-                    response = httpclient.execute(httpget, mContext);
-
-                    statusCode = response.getStatusLine().getStatusCode();
-
-                    entity = response.getEntity();
-
-                    if (statusCode < 200 ||
-                            statusCode > 300) {
-                        throw new IOException("Error during with code " + statusCode + " during fetch: "
-                                              + response.getStatusLine().toString());
-                    }
-
-                    if (entity != null) {
-                        InputStream istream = null;
-                        StringBuffer buffer = new StringBuffer();
-                        String tempText = "";
-                        String resultText = "";
-                        BufferedReader reader;
-                        int currentLines = 0;
-
-                        istream = WebDavHttpClient.getUngzippedContent(entity);
-
-                        if (lines != -1) {
-                            reader = new BufferedReader(new InputStreamReader(istream), 8192);
-
-                            while ((tempText = reader.readLine()) != null &&
-                                    (currentLines < lines)) {
-                                buffer.append(tempText).append("\r\n");
-                                currentLines++;
-                            }
-
-                            istream.close();
-                            resultText = buffer.toString();
-                            istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                        }
-
-                        wdMessage.parse(istream);
-                    }
-
-                } catch (IllegalArgumentException iae) {
-                    Log.e(K9.LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + processException(iae));
-                    throw new MessagingException("IllegalArgumentException caught", iae);
-                } catch (URISyntaxException use) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + processException(use));
-                    throw new MessagingException("URISyntaxException caught", use);
-                } catch (IOException ioe) {
-                    Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode
-                          + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
-                          + processException(ioe));
-                    throw new MessagingException("Failure code " + statusCode, ioe);
-                }
-
-                if (listener != null) {
-                    listener.messageFinished(wdMessage, i, count);
-                }
-            }
+//            HttpClient httpclient;
+//            httpclient = getHttpClient();
+//
+//            /**
+//             * We can't hand off to processRequest() since we need the stream to parse.
+//             */
+//            for (int i = 0, count = messages.length; i < count; i++) {
+//                EasMessage wdMessage;
+//                int statusCode = 0;
+//
+//                if (!(messages[i] instanceof EasMessage)) {
+//                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
+//                }
+//
+//                wdMessage = (EasMessage) messages[i];
+//
+//                if (listener != null) {
+//                    listener.messageStarted(wdMessage.getUid(), i, count);
+//                }
+//
+//                /**
+//                 * If fetch is called outside of the initial list (ie, a locally stored message), it may not have a URL
+//                 * associated. Verify and fix that
+//                 */
+//                if (wdMessage.getUrl().equals("")) {
+//                    wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
+//                    Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
+//                          + wdMessage.getUrl() + "'");
+//                    if (wdMessage.getUrl().equals("")) {
+//                        throw new MessagingException("Unable to get URL for message");
+//                    }
+//                }
+//
+//                try {
+//                    Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
+//                          + wdMessage.getUrl() + "'");
+//                    HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
+//                    HttpResponse response;
+//                    HttpEntity entity;
+//
+//                    httpget.setHeader("translate", "f");
+//                    if (mAuthentication == AUTH_TYPE_BASIC) {
+//                        httpget.setHeader("Authorization", mAuthString);
+//                    }
+//                    response = httpclient.execute(httpget, mContext);
+//
+//                    statusCode = response.getStatusLine().getStatusCode();
+//
+//                    entity = response.getEntity();
+//
+//                    if (statusCode < 200 ||
+//                            statusCode > 300) {
+//                        throw new IOException("Error during with code " + statusCode + " during fetch: "
+//                                              + response.getStatusLine().toString());
+//                    }
+//
+//                    if (entity != null) {
+//                        InputStream istream = null;
+//                        StringBuffer buffer = new StringBuffer();
+//                        String tempText = "";
+//                        String resultText = "";
+//                        BufferedReader reader;
+//                        int currentLines = 0;
+//
+//                        istream = WebDavHttpClient.getUngzippedContent(entity);
+//
+//                        if (lines != -1) {
+//                            reader = new BufferedReader(new InputStreamReader(istream), 8192);
+//
+//                            while ((tempText = reader.readLine()) != null &&
+//                                    (currentLines < lines)) {
+//                                buffer.append(tempText).append("\r\n");
+//                                currentLines++;
+//                            }
+//
+//                            istream.close();
+//                            resultText = buffer.toString();
+//                            istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
+//                        }
+//
+//                        wdMessage.parse(istream);
+//                    }
+//
+//                } catch (IllegalArgumentException iae) {
+//                    Log.e(K9.LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + processException(iae));
+//                    throw new MessagingException("IllegalArgumentException caught", iae);
+//                } catch (URISyntaxException use) {
+//                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + processException(use));
+//                    throw new MessagingException("URISyntaxException caught", use);
+//                } catch (IOException ioe) {
+//                    Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode
+//                          + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
+//                          + processException(ioe));
+//                    throw new MessagingException("Failure code " + statusCode, ioe);
+//                }
+//
+//                if (listener != null) {
+//                    listener.messageFinished(wdMessage, i, count);
+//                }
+//            }
         }
 
         /**
@@ -1893,7 +1858,7 @@ public class EasStore extends Store {
 
             messageBody = getMessageFlagsXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+//            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             if (dataset == null) {
                 throw new MessagingException("Data Set from request was null");
@@ -1961,14 +1926,14 @@ public class EasStore extends Store {
 
             messageBody = getMessageEnvelopeXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+//            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             envelopes = dataset.getMessageEnvelopes();
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
                 if (!(messages[i] instanceof EasMessage)) {
-                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
+                    throw new MessagingException("EasStore fetch called with non-EasMessage");
                 }
                 EasMessage wdMessage = (EasMessage) messages[i];
 
@@ -2022,7 +1987,7 @@ public class EasStore extends Store {
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
 
-            processRequest(this.mFolderUrl, "BPROPPATCH", messageBody, headers, false);
+//            processRequest(this.mFolderUrl, "BPROPPATCH", messageBody, headers, false);
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
@@ -2057,71 +2022,7 @@ public class EasStore extends Store {
 
         @Override
         public void appendMessages(Message[] messages) throws MessagingException {
-            appendWebDavMessages(messages);
-        }
-
-        public Message[] appendWebDavMessages(Message[] messages) throws MessagingException {
-            Message[] retMessages = new Message[messages.length];
-            int ind = 0;
-
-            HttpClient httpclient = getHttpClient();
-
-            for (Message message : messages) {
-                HttpGeneric httpmethod;
-                HttpResponse response;
-                StringEntity bodyEntity;
-                int statusCode;
-
-                try {
-                    ByteArrayOutputStream out;
-
-                    out = new ByteArrayOutputStream(message.getSize());
-
-                    open(OpenMode.READ_WRITE);
-                    EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                        new BufferedOutputStream(out, 1024));
-                    message.writeTo(msgOut);
-                    msgOut.flush();
-
-                    bodyEntity = new StringEntity(out.toString(), "UTF-8");
-                    bodyEntity.setContentType("message/rfc822");
-
-                    String messageURL = mFolderUrl;
-                    if (!messageURL.endsWith("/")) {
-                        messageURL += "/";
-                    }
-                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
-
-                    Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
-
-                    httpmethod = new HttpGeneric(messageURL);
-                    httpmethod.setMethod("PUT");
-                    httpmethod.setEntity(bodyEntity);
-
-                    String mAuthString = getAuthString();
-
-                    if (mAuthString != null) {
-                        httpmethod.setHeader("Authorization", mAuthString);
-                    }
-
-                    response = httpclient.execute(httpmethod, mContext);
-                    statusCode = response.getStatusLine().getStatusCode();
-
-                    if (statusCode < 200 ||
-                            statusCode > 300) {
-                        throw new IOException("Error with status code " + statusCode
-                                              + " while sending/appending message.  Response = "
-                                              + response.getStatusLine().toString() + " for message " + messageURL);
-                    }
-                    EasMessage retMessage = new EasMessage(message.getUid(), this);
-
-                    retMessage.setUrl(messageURL);
-                    retMessages[ind++] = retMessage;
-                } catch (Exception e) {
-                    throw new MessagingException("Unable to append", e);
-                }
-            }
-            return retMessages;
+//            appendWebDavMessages(messages);
         }
 
         @Override
@@ -2154,60 +2055,9 @@ public class EasStore extends Store {
      * A EAS Message
      */
     class EasMessage extends MimeMessage {
-        private String mUrl = "";
-
         EasMessage(String uid, Folder folder) {
             this.mUid = uid;
             this.mFolder = folder;
-        }
-
-        public void setUrl(String url) {
-            // TODO: This is a not as ugly hack (ie, it will actually work)
-            // XXX: prevent URLs from getting to us that are broken
-            if (!(url.toLowerCase().contains("http"))) {
-                if (!(url.startsWith("/"))) {
-                    url = "/" + url;
-                }
-                url = EasStore.this.mUrl + this.mFolder + url;
-            }
-
-            String[] urlParts = url.split("/");
-            int length = urlParts.length;
-            String end = urlParts[length - 1];
-
-            this.mUrl = "";
-            url = "";
-
-            /**
-             * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
-             */
-            try {
-                end = java.net.URLDecoder.decode(end, "UTF-8");
-                end = java.net.URLEncoder.encode(end, "UTF-8");
-                end = end.replaceAll("\\+", "%20");
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: "
-                      + processException(uee));
-            } catch (IllegalArgumentException iae) {
-                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
-                      + processException(iae));
-            }
-
-            for (int i = 0; i < length - 1; i++) {
-                if (i != 0) {
-                    url = url + "/" + urlParts[i];
-                } else {
-                    url = urlParts[i];
-                }
-            }
-
-            url = url + "/" + end;
-
-            this.mUrl = url;
-        }
-
-        public String getUrl() {
-            return this.mUrl;
         }
 
         public void setSize(int size) {
@@ -2224,34 +2074,34 @@ public class EasStore extends Store {
         }
 
         public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
-            String[] headers = envelope.getHeaderList();
-            HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
-
-            for (String header : headers) {
-                String headerValue = messageHeaders.get(header);
-                if (header.equals("Content-Length")) {
-                    int size = Integer.parseInt(messageHeaders.get(header));
-                    this.setSize(size);
-                }
-
-                if (headerValue != null &&
-                        !headerValue.equals("")) {
-                    this.addHeader(header, headerValue);
-                }
-            }
+//            String[] headers = envelope.getHeaderList();
+//            HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
+//
+//            for (String header : headers) {
+//                String headerValue = messageHeaders.get(header);
+//                if (header.equals("Content-Length")) {
+//                    int size = Integer.parseInt(messageHeaders.get(header));
+//                    this.setSize(size);
+//                }
+//
+//                if (headerValue != null &&
+//                        !headerValue.equals("")) {
+//                    this.addHeader(header, headerValue);
+//                }
+//            }
         }
 
         @Override
         public void delete(String trashFolderName) throws MessagingException {
-            EasFolder wdFolder = (EasFolder) getFolder();
-            Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
-            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
+//            EasFolder wdFolder = (EasFolder) getFolder();
+//            Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
+//            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
         }
 
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
-            super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+//            super.setFlag(flag, set);
+//            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
     }
 
@@ -2637,7 +2487,12 @@ public class EasStore extends Store {
     }
 
 	public Folder createFolderInternal(String name, String serverId, int type) {
-		EasFolder folder = new EasFolder(this, name);
+		EasFolder folder = new EasFolder(this, name, serverId);
 		return folder;
+	}
+
+	public Message createMessageInternal(String uid, Folder folder) {
+		EasMessage message = new EasMessage(uid, folder);
+		return message;
 	}
 }
