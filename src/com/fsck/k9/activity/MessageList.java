@@ -229,8 +229,6 @@ public class MessageList
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
-    private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 5;
 
 
@@ -1696,25 +1694,6 @@ public class MessageList
     }
 
     // TODO - refactor to use this
-    private void onRefile(MessageInfoHolder holder, String folder) {
-        if (!mController.isMoveCapable(holder.message)) {
-            showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
-            return;
-        }
-
-        if (folder == null || K9.FOLDER_NONE.equalsIgnoreCase(folder)) {
-            return;
-        }
-        mAdapter.removeMessages(Collections.singletonList(holder));
-        // TODO showNextMessageOrReturn();
-        mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folder, null);
-        if (    holder != null
-             && mCurrentMessageInfo  != null
-             && holder.uid == mCurrentMessageInfo.uid) {
-            showNextMessage();
-        }
-    }
-
 
     /**
      * @param holders
@@ -3364,33 +3343,7 @@ public class MessageList
      */
     private void onArchive(final List<MessageInfoHolder> holders) {
         final String folderName = holders.get(0).message.getFolder().getAccount().getArchiveFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
-        List<Message> messageList = new ArrayList<Message>();
-
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    Message message = holder.message;
-                    if (!mController.isMoveCapable(message)) {
-                        showToast(getString(R.string.move_copy_cannot_copy_unsynced_message), Toast.LENGTH_LONG);
-                        return;
-                    }
-                    messageList.add(holder.message);
-                    removeHolderList.add(holder);
-                }
-            }
-        }
-        mAdapter.removeMessages(removeHolderList);
-
-        mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
-        mSelectedCount = 0;
-        toggleBatchMode();
+        move(holders, folderName);
     }
 
     /**
@@ -3413,9 +3366,6 @@ public class MessageList
      */
     private void onSpamConfirmed(final List<MessageInfoHolder> holders) {
         final String folderName = holders.get(0).message.getFolder().getAccount().getSpamFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
-        }
         // TODO one should separate messages by account and call move afterwards
         // (because each account might have a specific Spam folder name)
         move(holders, folderName);
@@ -3526,6 +3476,7 @@ public class MessageList
             return;
         }
         boolean first = true;
+        boolean isCurrentMessageInSet = false;
         Account account = null;
         String folderName = null;
 
@@ -3556,18 +3507,29 @@ public class MessageList
                 // message isn't synchronized
                 return;
             }
+
             messages.add(message);
+
+            // only change the current message being viewed if the one deleted was the current one
+            if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
+                isCurrentMessageInSet=true;
+            }
+
+
         }
 
         if (operation == FolderOperation.MOVE) {
-            mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
-                    null);
+            mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination, null);
             mHandler.removeMessages(holders);
+            if ( isCurrentMessageInSet) {
+                showNextMessage();
+            }
         } else {
-            mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
-                    null);
+            mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination, null);
         }
+        toggleBatchMode();
     }
+
 
     protected void onAccountUnavailable() {
         finish();
