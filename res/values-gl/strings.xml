@@ -6,9 +6,7 @@
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcións Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licienciado baixo a Licencia Apache, Version 2.0.</string>
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Información da revisión: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Usamos as seguintes librerías de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Iconos Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -1023,7 +1021,21 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
 
     <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
-    <string name="dialog_confirm_spam_message">Queres mover esta mensaxe á carpeta spam?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Queres mover esta mensaxe á carpeta spam?</item>
+        <item quantity="other">Queres mover esta mensaxe á carpeta spam?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Si</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
 

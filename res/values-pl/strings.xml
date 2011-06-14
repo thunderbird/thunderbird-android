@@ -19,9 +19,7 @@
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
     <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
     <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
     <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
@@ -1035,7 +1033,21 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
 
     <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
-    <string name="dialog_confirm_spam_message">Na pewno przenieśc do spamu?</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Na pewno przenieśc do spamu?</item>
+        <item quantity="other">Na pewno przenieśc do spamu?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Tak</string>
     <string name="dialog_confirm_spam_cancel_button">Nie</string>
 

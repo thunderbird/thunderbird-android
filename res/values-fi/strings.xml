@@ -6,9 +6,7 @@
     <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
     <string name="app_license">Lisensoitu Apache-lisenssillä, versio 2.0.</string>
     <string name="app_authors_fmt">Tekijät: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Versiotiedot: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Me käytämme seuraavia kolmannen osapuolen kirjastoja: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji-kuvakkeet: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -1020,7 +1018,20 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="dialog_confirm_delete_cancel_button">Älä poista</string>
 
     <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    </plurals>-->
     <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
     <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
 

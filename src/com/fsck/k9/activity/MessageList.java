@@ -846,10 +846,10 @@ public class MessageList
     }
 
     /* (non-Javadoc)
-     * 
+     *
      * Method overriden for proper typing within this class (the return type is
      * more specific than the super implementation)
-     * 
+     *
      * @see android.app.Activity#onRetainNonConfigurationInstance()
      */
     @Override
@@ -862,10 +862,10 @@ public class MessageList
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * Method overriden for proper typing within this class (the return type is
      * more specific than the super implementation)
-     * 
+     *
      * @see android.app.Activity#getLastNonConfigurationInstance()
      */
     @Override
@@ -1070,7 +1070,7 @@ public class MessageList
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
-            MessageView.actionView(this, ref, messageRefs);
+            MessageView.actionView(this, ref, messageRefs, getIntent());
         }
 
         /*
@@ -1325,7 +1325,7 @@ public class MessageList
                 final int selectionSize = mActiveMessages.size();
                 final String message;
                 message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, selectionSize,
-                        Integer.valueOf(selectionSize));
+                          Integer.valueOf(selectionSize));
                 ((AlertDialog) dialog).setMessage(message);
             }
             break;
@@ -2600,7 +2600,7 @@ public class MessageList
 
     /**
      * Display the message move activity.
-     * 
+     *
      * @param holders
      *            Never {@code null}.
      */
@@ -2615,7 +2615,7 @@ public class MessageList
 
     /**
      * Display the message copy activity.
-     * 
+     *
      * @param holders
      *            Never {@code null}.
      */
@@ -2702,12 +2702,12 @@ public class MessageList
 
     /**
      * Display an Toast message if any message isn't synchronized
-     * 
+     *
      * @param holders
      *            Never <code>null</code>.
      * @param operation
      *            Never {@code null}.
-     * 
+     *
      * @return <code>true</code> if operation is possible
      */
     private boolean checkCopyOrMovePossible(final List<MessageInfoHolder> holders, final FolderOperation operation) {
@@ -2728,7 +2728,7 @@ public class MessageList
             // message check
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
                 final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
-                        Toast.LENGTH_LONG);
+                                                   Toast.LENGTH_LONG);
                 toast.show();
                 return false;
             }
@@ -2738,7 +2738,7 @@ public class MessageList
 
     /**
      * Helper method to get a List of message ready to be processed. This implementation will return a list containing the sole argument.
-     * 
+     *
      * @param holder Never {@code null}.
      * @return Never {@code null}.
      */
@@ -2749,7 +2749,7 @@ public class MessageList
 
     /**
      * Helper method to get a List of message ready to be processed. This implementation will iterate over messages and choose the checked ones.
-     * 
+     *
      * @return Never {@code null}.
      */
     private List<MessageInfoHolder> getSelectionFromCheckboxes() {
@@ -2788,7 +2788,7 @@ public class MessageList
      * The underlying implementation for {@link #copy(List, String)} and
      * {@link #move(List, String)}. This method was added mainly because those 2
      * methods share common behavior.
-     * 
+     *
      * @param holders
      *            Never {@code null}.
      * @param destination
@@ -2818,13 +2818,13 @@ public class MessageList
                     return;
                 }
             } else if (!account.equals(message.getFolder().getAccount())
-                    || !folderName.equals(message.getFolder().getName())) {
+                       || !folderName.equals(message.getFolder().getName())) {
                 // make sure all messages come from the same account/folder?
                 return;
             }
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
                 final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
-                        Toast.LENGTH_LONG);
+                                                   Toast.LENGTH_LONG);
                 toast.show();
 
                 // XXX return meaningful error value?
@@ -2837,11 +2837,11 @@ public class MessageList
 
         if (operation == FolderOperation.MOVE) {
             mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
-                    null);
+                                     null);
             mHandler.removeMessages(holders);
         } else {
             mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
-                    null);
+                                     null);
         }
     }
 

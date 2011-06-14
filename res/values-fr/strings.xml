@@ -29,9 +29,7 @@
   <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
   <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
   <!-- can license text be localized? app_copyright_fmt/app_license -->
-  <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
   <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
-  <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Tierces librairies utilisées\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Icônes Emoji\u00A0: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -304,10 +302,10 @@
   <string name="global_settings_touchable_summary">Fournit plus d\'espace dans les éléments des listes</string>
     <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
     <string name="global_settings_show_correspondent_names_label">Afficher le nom des correspondants</string>
-    <string name="global_settings_show_correspondent_names_summary">Affiche le nom des correspondants plutôt que leurs adresses e-mail</string>
+    <string name="global_settings_show_correspondent_names_summary">Afficher le nom des correspondants plutôt que leurs adresses e-mail</string>
 
-    <string name="global_settings_show_contact_name_label">Afficher les noms des contacts connus</string>
-    <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresses</string>
+    <string name="global_settings_show_contact_name_label">Utiliser les noms du carnet d\'adresses</string>
+    <string name="global_settings_show_contact_name_summary">Utiliser en priorité les noms du carnet d\'adresses</string>
     <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
     <string name="global_settings_registered_name_color_default">Ne pas mettre en évidence les contacts connus</string>
     <string name="global_settings_registered_name_color_changed">Mettre en évidence (couleur) les contacts connus</string>
@@ -315,7 +313,7 @@
   <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
   <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
-  <string name="global_settings_messageview_return_to_list_summary">Retourne à la liste de messages après la suppression d\'un message</string>
+  <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
 
     <string name="global_settings_confirm_actions_title">Confirmer les actions</string>
     <string name="global_settings_confirm_actions_summary">Demander une confirmation pour chacune des actions sélectionnées</string>
@@ -498,7 +496,7 @@
   <string name="account_settings_notification_opens_unread_label">Ouvrir message non lu via notification</string>
   <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus après un accès à partir des notifications</string>
     <string name="account_settings_notification_unread_count_label">Afficher le nombre de messages non lus</string>
-    <string name="account_settings_notification_unread_count_summary">Affiche le nombre de messages non lus dans la barre de notification</string>
+    <string name="account_settings_notification_unread_count_summary">Afficher le nombre de messages non lus dans la barre de notification</string>
 
   <string name="account_settings_hide_buttons_label">Défiler les boutons de navigation</string>
   <string name="account_settings_hide_buttons_never">Jamais</string>
@@ -517,10 +515,10 @@
   <string name="account_settings_composition">Composition de messages</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Citer le message original</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Le contenu du message d\'origine sera inclu dans votre réponse</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Inclure le message d\'origine dans la réponse</string>
 
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
-    <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
+    <string name="account_settings_reply_after_quote_summary">Faire précéder la réponse par le texte d\'origine</string>
 
     <string name="account_settings_message_format_label">Format du message</string>
     <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
@@ -816,7 +814,7 @@
   <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
 
     <string name="compact_layouts_title">Agencement compact</string>
-    <string name="compact_layouts_summary">Modifie l\'agencement pour afficher plus d\'éléments par page</string>
+    <string name="compact_layouts_summary">Modifier l\'agencement pour afficher plus d\'éléments par page</string>
 
     <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
     <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
@@ -833,7 +831,7 @@
   <string name="count_search_summary">Désactiver pour un affichage plus rapide</string>
 
     <string name="hide_special_accounts_title">Cacher les comptes spéciaux</string>
-    <string name="hide_special_accounts_summary">Cache «\u00A0Boîte de messagerie unifiée\u00A0» et «\u00A0Tous les messages\u00A0»</string>
+    <string name="hide_special_accounts_summary">Cacher «\u00A0Boîte de messagerie unifiée\u00A0» et «\u00A0Tous les messages\u00A0»</string>
 
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Avec étoile</string>
@@ -901,7 +899,7 @@
   <string name="btn_verify">Vérifier</string>
   <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
   <string name="key_id">id\u00A0: %s</string>
-  <string name="insufficient_apg_permissions">K-9 n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 pour corriger cela.</string>
+  <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 Mail pour corriger cela.</string>
   <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore supportés</string>
   <string name="attachment_encryption_unsupported">Attention\u00A0: La signature et le chiffrement des pièces jointes ne sont pas encore supportés.</string>
   <string name="send_aborted">Envoi annulé.</string>
@@ -920,7 +918,18 @@
     <string name="dialog_confirm_spam_title">Confirmer le déplacement</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
-        <item quantity="other">Voulez-vous déplacer %1$d messages vers le dossiers à spams\u00A0?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
