@@ -909,29 +909,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         String text = mMessageContentView.getText().toString();
 
-        boolean discardQuotedText = false;
-        if (!isDraft && !mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
-            discardQuotedText = true;
+        boolean saveQuotedText = false;
+        if (isDraft || mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
+            saveQuotedText = true;
         }
 
 
-        if (discardQuotedText) {
-            if (!isDraft) {
-                text = appendSignature(text);
-            }
-
-            text = HtmlConverter.textToHtmlFragment(text);
-            // Build the body.
-            TextBody body = new TextBody(text);
-            body.setComposedMessageLength(text.length());
-            body.setComposedMessageOffset(0);
-
-            return body;
-        }
         // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
-        else if (mMessageFormat == MessageFormat.HTML) {
+        if (mMessageFormat == MessageFormat.HTML) {
             // Add the signature.
             if (!isDraft) {
                 text = appendSignature(text);
@@ -940,7 +927,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Insert it into the existing content object.
             if (K9.DEBUG && mQuotedHtmlContent != null)
                 Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
-            if (mQuotedHtmlContent != null) {
+            if (mQuotedHtmlContent != null && saveQuotedText) {
 
                 // Set the insertion location based upon our reply after quote setting. Reply after
                 // quote makes no sense for HEADER style replies. In addition, add some extra
@@ -981,11 +968,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Integer composedMessageOffset = 0;
 
             // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
-            if (!replyAfterQuote && !isDraft && mAccount.isSignatureBeforeQuotedText()) {
-                text = appendSignature(text);
+            if (!isDraft) {
+                if (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText()) {
+                    text = appendSignature(text);
+                }
             }
 
-            if (mQuotedTextMode != QuotedTextMode.NONE) {
+            if (saveQuotedText) {
                 if (replyAfterQuote) {
                     composedMessageOffset = mQuotedText.getText().toString().length() + "\n".length();
                     text = mQuotedText.getText().toString() + "\n" + text;
@@ -996,10 +985,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             // Note: If user has selected reply after quote AND signature before quote, ignore the
             // latter setting and append the signature at the end.
-            if (!isDraft && (!mAccount.isSignatureBeforeQuotedText() || replyAfterQuote)) {
-                text = appendSignature(text);
+            if (!isDraft) {
+                if (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText()) {
+                    text = appendSignature(text);
+                }
             }
-
             // Build the body.
             TextBody body = new TextBody(text);
             body.setComposedMessageLength(composedMessageLength);
