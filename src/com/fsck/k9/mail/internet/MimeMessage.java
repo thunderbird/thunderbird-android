@@ -130,20 +130,11 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType == null) {
-            return "text/plain";
-        } else {
-            return contentType.toLowerCase();
-        }
+        return (contentType == null) ? "text/plain" : contentType.toLowerCase();
     }
 
     public String getDisposition() throws MessagingException {
-        String contentDisposition = getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        if (contentDisposition == null) {
-            return null;
-        } else {
-            return contentDisposition;
-        }
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
     public String getContentId() throws MessagingException {
         return null;
