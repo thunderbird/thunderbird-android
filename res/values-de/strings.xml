@@ -255,7 +255,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_content_hint">Nachrichtentext</string>
     <string name="message_compose_quote_header_separator">-------- Original-Nachricht --------</string>
     <string name="message_compose_quote_header_subject">Betreff:</string>
-    <string name="message_compose_quote_header_send_date">Versendet am:</string>
+    <string name="message_compose_quote_header_send_date">Gesendet:</string>
     <string name="message_compose_quote_header_from">Von:</string>
     <string name="message_compose_quote_header_to">An:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
