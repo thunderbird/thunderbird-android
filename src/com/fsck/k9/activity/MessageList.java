@@ -3185,10 +3185,14 @@ public class MessageList
 
         switch (v.getId()) {
         case R.id.delete:
-            onDelete(getSelectionFromMessage( mCurrentMessageInfo));
+            if (mCurrentMessageInfo != null) {
+                onDelete(getSelectionFromMessage( mCurrentMessageInfo));
+            }
             return;
         case R.id.move:
-            onMove(getSelectionFromMessage( mCurrentMessageInfo));
+            if (mCurrentMessageInfo != null) {
+                onMove(getSelectionFromMessage( mCurrentMessageInfo));
+            }
             return;
         case R.id.next:
             gotoNextItem();
