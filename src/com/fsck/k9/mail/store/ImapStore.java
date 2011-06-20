@@ -52,6 +52,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.PowerManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.beetstra.jutf7.CharsetProvider;
@@ -1617,6 +1618,31 @@ public class ImapStore extends Store {
                         while (response.more());
                     } while (response.mTag == null);
 
+                    /*
+                     * If the server supports UIDPLUS, then along with the APPEND response it will return an APPENDUID response code.
+                     * e.g. 11 OK [APPENDUID 2 238268] APPEND completed
+                     *
+                     * We can use the UID included in this response to update our records.
+                     *
+                     * Code imported from AOSP Email as of git rev a5c3744a247e432acf9f571a9dfb55321c4baa1a
+                     */
+                    Object responseList = response.get(1);
+
+                    if (responseList instanceof ImapList) {
+                        final ImapList appendList = (ImapList) responseList;
+                        if ((appendList.size() >= 3) && appendList.getString(0).equals("APPENDUID")) {
+                            String serverUid = appendList.getString(2);
+                            if (!TextUtils.isEmpty(serverUid)) {
+                                message.setUid(serverUid);
+                                continue;
+                            }
+                        }
+                    }
+
+
+                    /*
+                     * This part is executed in case the server does not support UIDPLUS or does not implement the APPENDUID response code.
+                     */
                     String newUid = getUidFromMessageId(message);
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
