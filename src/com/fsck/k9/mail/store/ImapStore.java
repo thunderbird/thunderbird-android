@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +40,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -813,8 +816,24 @@ public class ImapStore extends Store {
 
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
+
+            SortedSet<Message> messageSet = new TreeSet<Message>(new Comparator<Message>() {
+                public int compare(Message m1, Message m2) {
+                    int uid1 = Integer.parseInt(m1.getUid()), uid2 = Integer.parseInt(m2.getUid());
+                    if (uid1 < uid2) {
+                        return -1;
+                    } else if (uid1 == uid2) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
+                messageSet.add(messages[i]);
+
+                // Not bothering to sort the UIDs in ascending order while sending the command for convenience, and because it does not make a difference.
                 uids[i] = messages[i].getUid();
             }
             try {
@@ -829,18 +848,102 @@ public class ImapStore extends Store {
                     iFolder.create(FolderType.HOLDS_MESSAGES);
                 }
 
-                if (exists(remoteDestName)) {
-                    executeSimpleCommand(String.format("UID COPY %s %s",
-                                                       Utility.combine(uids, ','),
-                                                       remoteDestName));
-                } else {
-                    throw new MessagingException("IMAPMessage.copyMessages: remote destination folder " + folder.getName()
-                                                 + " does not exist and could not be created for " + getLogId()
-                                                 , true);
+                mConnection.sendCommand(String.format("UID COPY %s %s",
+                                                      Utility.combine(uids, ','),
+                                                      remoteDestName), false);
+                ImapResponse response;
+                do {
+                    response = mConnection.readResponse();
+                    handleUntaggedResponse(response);
+                    if (response.mCommandContinuationRequested) {
+                        EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.mOut);
+                        eolOut.write('\r');
+                        eolOut.write('\n');
+                        eolOut.flush();
+                    }
+                    while (response.more());
+                } while (response.mTag == null);
+
+                /*
+                 * If the server supports UIDPLUS, then along with the COPY response it will return an COPYUID response code.
+                 * e.g. 24 OK [COPYUID 38505 304,319:320 3956:3958] Success
+                 *
+                 * COPYUID is followed by UIDVALIDITY, set of UIDs of copied messages from the source folder and set of corresponding UIDs assigned to them in the destination folder.
+                 *
+                 * We can use the new UIDs included in this response to update our records.
+                 */
+
+                Object responseList = response.get(1);
+
+                if (responseList instanceof ImapList) {
+                    final ImapList copyList = (ImapList) responseList;
+                    if ((copyList.size() >= 4) && copyList.getString(0).equals("COPYUID")) {
+                        List<String> oldUids = parseSequenceSet(copyList.getString(2));
+                        List<String> newUids = parseSequenceSet(copyList.getString(3));
+                        if (oldUids.size() == newUids.size()) {
+                            Iterator<Message> messageIterator = messageSet.iterator();
+                            for (int i = 0; i < messages.length && messageIterator.hasNext(); i++) {
+                                Message nextMessage = messageIterator.next();
+                                if (oldUids.get(i).equals(nextMessage.getUid())) {
+                                    /*
+                                     * Here, we need to *create* new messages in the localstore, same as the older messages, the only changes are that old UIDs need to be swapped with new UIDs, 
+                                     * and old folder swapped with new folder.
+                                     */
+//                                    nextMessage.setUid(newUids.get(i));
+                                }
+                            }
+                        }
+                    }
                 }
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
+        }
+
+        private List<String> parseSequenceSet(String set) {
+            int index = 0;
+            List<String> sequenceList = new ArrayList<String>();
+            String element = "";
+
+            while (index < set.length()) {
+                if (set.charAt(index) == ':') {
+                    String upperBound = "";
+                    index++;
+                    while (index < set.length()) {
+                        if (!(set.charAt(index) == ',')) {
+                            upperBound += set.charAt(index);
+                            index++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    int lower = Integer.parseInt(element);
+                    int upper = Integer.parseInt(upperBound);
+
+                    if (lower < upper) {
+                        for (int i = lower; i <= upper; i++) {
+                            sequenceList.add(String.valueOf(i));
+                        }
+                    } else {
+                        for (int i = upper; i <= lower; i++) {
+                            sequenceList.add(String.valueOf(i));
+                        }
+                    }
+
+                    element = "";
+                } else if (set.charAt(index) == ',') {
+                    sequenceList.add(element);
+                    element = "";
+                } else {
+                    element += set.charAt(index);
+                }
+                index++;
+            }
+            if (!element.equals("")) {
+                sequenceList.add(element);
+            }
+            return sequenceList;
         }
 
         @Override
@@ -2289,6 +2392,17 @@ public class ImapStore extends Store {
             ImapException, MessagingException {
             return executeSimpleCommand(command, sensitive, null);
         }
+
+//        public void logResponse (ImapList response) {
+//            for(int i=0;i<response.size();i++) {
+//                Object o = response.get(i);
+//                if(o instanceof String){
+//                    Log.w(K9.LOG_TAG+" "+i, (String) o);
+//                } else if (o instanceof ImapList) {
+//                    logResponse((ImapList)o);
+//                }
+//            }
+//        }
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
