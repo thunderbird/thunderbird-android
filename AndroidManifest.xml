@@ -103,6 +103,12 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.setup.AccountSetupIndex"
+            android:label="@string/account_setup_basics_title"
+            android:configChanges="locale"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupAccountType"
             android:label="@string/account_setup_account_type_title"
             android:configChanges="locale"

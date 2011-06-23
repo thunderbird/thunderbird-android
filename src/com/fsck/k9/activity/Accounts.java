@@ -59,17 +59,11 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
-import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.SearchAccount;
-import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.*;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
+import com.fsck.k9.activity.setup.AccountSetupIndex;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
@@ -515,7 +509,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onAddNewAccount() {
-        AccountSetupBasics.actionNewAccount(this);
+        AccountSetupIndex.actionNewAccount(this);
     }
 
     private void onEditAccount(Account account) {

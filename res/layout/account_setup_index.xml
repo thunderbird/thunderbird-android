@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:padding="15dp">
+
+            <TextView android:id="@+id/help_text"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/accounts_setup_help"
+              android:layout_marginBottom="10dp"/>
+
+            <Button android:id="@+id/new_account"
+                android:text="@string/account_setup_basics_other_acount"
+                android:minWidth="@dimen/button_minWidth"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/help_text"
+                android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+    />
+</LinearLayout>
