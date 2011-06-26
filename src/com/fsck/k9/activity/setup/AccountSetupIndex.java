@@ -1,6 +1,7 @@
 package com.fsck.k9.activity.setup;
 
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,10 @@ import static com.fsck.k9.activity.setup.AccountSetupBasics.*;
 public class AccountSetupIndex extends K9ListActivity implements OnItemClickListener, OnClickListener {
 
     private static final String DEVICE_STRING = "Device";
+    private static final int DIALOG_NEW_ACCOUNT = 0;
+    private static final int DIALOG_DEVICE_ACCOUNT = 1;
+    private static final int DIALOG_BACKUP_ACCOUNT = 2;
+
     public enum SuggestionType { DEVICE, BACKUP, NEW }
 
     public static void actionNewAccount(Context context) {
@@ -74,6 +79,29 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
 
     protected void onNew() {
         AccountSetupBasics.actionNewAccount(this);
+    }
+
+    /*
+        Dialogues
+     */
+    protected Dialog onCreateDialog(int dialog_id){
+        Dialog dialog;
+
+        switch (dialog_id){
+            case DIALOG_NEW_ACCOUNT:
+                dialog = new Dialog(this);
+                break;
+            case DIALOG_DEVICE_ACCOUNT:
+                dialog = new Dialog(this);
+                break;
+            case DIALOG_BACKUP_ACCOUNT:
+                dialog = new Dialog(this);
+                break;
+            default:
+                dialog = null;
+        }
+
+        return dialog;
     }
 
     /*
