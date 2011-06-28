@@ -78,7 +78,7 @@ public class SectionListAdapter<T> extends BaseAdapter{
         }else{
             for(int i=0; i<headersPos.size(); ++i ){
                 if( i != numberOfSections()-1 && pos >= headersPos.get(i+1) ) continue;
-                return sections.get(headers.get(i));
+                return sections.get(headers.get(i)).getItem(pos - headersPos.get(i)-1);
             }
             return null; // should never happen, means pos > element count
         }
