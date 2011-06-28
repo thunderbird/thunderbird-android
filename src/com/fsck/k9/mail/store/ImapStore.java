@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,9 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -806,32 +803,19 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
             if (!(folder instanceof ImapFolder)) {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
             if (messages.length == 0)
-                return;
+                return null;
 
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
 
-            SortedSet<Message> messageSet = new TreeSet<Message>(new Comparator<Message>() {
-                public int compare(Message m1, Message m2) {
-                    int uid1 = Integer.parseInt(m1.getUid()), uid2 = Integer.parseInt(m2.getUid());
-                    if (uid1 < uid2) {
-                        return -1;
-                    } else if (uid1 == uid2) {
-                        return 0;
-                    } else {
-                        return 1;
-                    }
-                }
-            });
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
-                messageSet.add(messages[i]);
 
                 // Not bothering to sort the UIDs in ascending order while sending the command for convenience, and because it does not make a difference.
                 uids[i] = messages[i].getUid();
@@ -875,31 +859,36 @@ public class ImapStore extends Store {
 
                 Object responseList = response.get(1);
 
+                Map<String, String> uidMap = null;
+
                 if (responseList instanceof ImapList) {
                     final ImapList copyList = (ImapList) responseList;
                     if ((copyList.size() >= 4) && copyList.getString(0).equals("COPYUID")) {
-                        List<String> oldUids = parseSequenceSet(copyList.getString(2));
-                        List<String> newUids = parseSequenceSet(copyList.getString(3));
-                        if (oldUids.size() == newUids.size()) {
-                            Iterator<Message> messageIterator = messageSet.iterator();
-                            for (int i = 0; i < messages.length && messageIterator.hasNext(); i++) {
-                                Message nextMessage = messageIterator.next();
-                                if (oldUids.get(i).equals(nextMessage.getUid())) {
-                                    /*
-                                     * Here, we need to *create* new messages in the localstore, same as the older messages, the only changes are that old UIDs need to be swapped with new UIDs, 
-                                     * and old folder swapped with new folder.
-                                     */
-//                                    nextMessage.setUid(newUids.get(i));
-                                }
+                        List<String> srcUids = parseSequenceSet(copyList.getString(2));
+                        List<String> destUids = parseSequenceSet(copyList.getString(3));
+                        if (srcUids.size() == destUids.size()) {
+                            Iterator<String>  srcUidsIterator = srcUids.iterator();
+                            Iterator<String>  destUidsIterator = destUids.iterator();
+                            uidMap = new HashMap<String, String>();
+                            while (srcUidsIterator.hasNext() && destUidsIterator.hasNext()) {
+                                uidMap.put(srcUidsIterator.next(), destUidsIterator.next());
                             }
                         }
                     }
                 }
+                return uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
 
+        /**
+         * Can be used to parse sequence sets or UID sets appearing is responses such as COPYUID.
+         * e.g. [COPYUID 38505 304,319:320 3956:3958]
+         *
+         * @param set
+         * @return List<String> sequenceSet
+         */
         private List<String> parseSequenceSet(String set) {
             int index = 0;
             List<String> sequenceList = new ArrayList<String>();
@@ -947,11 +936,12 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
             if (messages.length == 0)
-                return;
-            copyMessages(messages, folder);
+                return null;
+            Map<String, String> uidMap = copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
+            return uidMap;
         }
 
         @Override
@@ -1698,9 +1688,10 @@ public class ImapStore extends Store {
          * new server UID.
          */
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
             checkOpen();
             try {
+                Map<String, String> uidMap = null;
                 for (Message message : messages) {
                     mConnection.sendCommand(
                         String.format("APPEND %s (%s) {%d}",
@@ -1734,9 +1725,18 @@ public class ImapStore extends Store {
                     if (responseList instanceof ImapList) {
                         final ImapList appendList = (ImapList) responseList;
                         if ((appendList.size() >= 3) && appendList.getString(0).equals("APPENDUID")) {
-                            String serverUid = appendList.getString(2);
-                            if (!TextUtils.isEmpty(serverUid)) {
-                                message.setUid(serverUid);
+                            String newUid = appendList.getString(2);
+
+                            /*
+                             * We need uidMap to be null initially to maintain consistency with the behavior of other similar methods (copyMessages, moveMessages) which
+                             * return null if new UIDs are not available. Therefore, we initialize uidMap over here.
+                             */
+                            if (uidMap == null) {
+                                uidMap = new HashMap<String, String>();
+                            }
+                            uidMap.put(message.getUid(), newUid);
+                            if (!TextUtils.isEmpty(newUid)) {
+                                message.setUid(newUid);
                                 continue;
                             }
                         }
@@ -1751,11 +1751,14 @@ public class ImapStore extends Store {
                         Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
 
                     if (newUid != null) {
+                        if (uidMap == null) {
+                            uidMap = new HashMap<String, String>();
+                        }
+                        uidMap.put(message.getUid(), newUid);
                         message.setUid(newUid);
                     }
-
-
                 }
+                return uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }

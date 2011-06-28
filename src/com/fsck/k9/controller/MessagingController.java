@@ -2088,8 +2088,31 @@ public class MessagingController implements Runnable {
         command.arguments[0] = srcFolder;
         command.arguments[1] = destFolder;
         command.arguments[2] = Boolean.toString(isCopy);
-        System.arraycopy(uids, 0, command.arguments, 3, uids.length);
+        command.arguments[3] = Boolean.toString(false);
+        System.arraycopy(uids, 0, command.arguments, 4, uids.length);
         queuePendingCommand(account, command);
+    }
+
+    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy, String uids[], Map<String, String> uidMap) {
+        if (uidMap == null || uidMap.isEmpty()) {
+            queueMoveOrCopy(account, srcFolder, destFolder, isCopy, uids);
+        } else {
+            if (account.getErrorFolderName().equals(srcFolder)) {
+                return;
+            }
+            PendingCommand command = new PendingCommand();
+            command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
+
+            int length = 4 + uidMap.keySet().size() + uidMap.values().size();
+            command.arguments = new String[length];
+            command.arguments[0] = srcFolder;
+            command.arguments[1] = destFolder;
+            command.arguments[2] = Boolean.toString(isCopy);
+            command.arguments[3] = Boolean.toString(true);
+            System.arraycopy(uidMap.keySet().toArray(), 0, command.arguments, 4, uidMap.keySet().size());
+            System.arraycopy(uidMap.values().toArray(), 0, command.arguments, 4 + uidMap.keySet().size(), uidMap.values().size());
+            queuePendingCommand(account, command);
+        }
     }
     /**
      * Process a pending trash message command.
@@ -2102,6 +2125,7 @@ public class MessagingController implements Runnable {
     throws MessagingException {
         Folder remoteSrcFolder = null;
         Folder remoteDestFolder = null;
+        Folder localDestFolder = null;
         try {
             String srcFolder = command.arguments[0];
             if (account.getErrorFolderName().equals(srcFolder)) {
@@ -2109,14 +2133,42 @@ public class MessagingController implements Runnable {
             }
             String destFolder = command.arguments[1];
             String isCopyS = command.arguments[2];
+            String hasNewUidsS = command.arguments[3];
+
+            boolean hasNewUids = false;
+            if (hasNewUidsS != null) {
+                hasNewUids = Boolean.parseBoolean(hasNewUidsS);
+            }
+
             Store remoteStore = account.getRemoteStore();
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
+            Store localStore = account.getLocalStore();
+            localDestFolder = localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<Message>();
-            for (int i = 3; i < command.arguments.length; i++) {
-                String uid = command.arguments[i];
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteSrcFolder.getMessage(uid));
+
+            /*
+             * We split up the localUidMap into two parts while sending the command, here we assemble it back.
+             */
+            Map<String, String> localUidMap = new HashMap<String, String>();
+            if (hasNewUids) {
+                int offset = (command.arguments.length - 4) / 2;
+
+                for (int i = 4; i < 4 + offset; i++) {
+                    localUidMap.put(command.arguments[i], command.arguments[i + offset]);
+
+                    String uid = command.arguments[i];
+                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                        messages.add(remoteSrcFolder.getMessage(uid));
+                    }
+                }
+
+            } else {
+                for (int i = 4; i < command.arguments.length; i++) {
+                    String uid = command.arguments[i];
+                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                        messages.add(remoteSrcFolder.getMessage(uid));
+                    }
                 }
             }
 
@@ -2137,6 +2189,8 @@ public class MessagingController implements Runnable {
                 Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
                       + ", " + messages.size() + " messages, destination folder = " + destFolder + ", isCopy = " + isCopy);
 
+            Map <String, String> remoteUidMap = new HashMap<String, String>();
+
             if (!isCopy && destFolder.equals(account.getTrashFolderName())) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
@@ -2150,9 +2204,9 @@ public class MessagingController implements Runnable {
                 remoteDestFolder = remoteStore.getFolder(destFolder);
 
                 if (isCopy) {
-                    remoteSrcFolder.copyMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
+                    remoteUidMap = remoteSrcFolder.copyMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 } else {
-                    remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
+                    remoteUidMap = remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 }
             }
             if (!isCopy && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
@@ -2161,12 +2215,27 @@ public class MessagingController implements Runnable {
 
                 remoteSrcFolder.expunge();
             }
+
+            /*
+             * This next part is used to bring the local UIDs of the local destination folder
+             * upto speed with the remote UIDs of remote destionation folder.
+             */
+            if (!localUidMap.isEmpty() && !remoteUidMap.isEmpty()) {
+                Set<String> remoteSrcUids = remoteUidMap.keySet();
+                Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
+
+                while (remoteSrcUidsIterator.hasNext()) {
+                    String remoteSrcUid = remoteSrcUidsIterator.next();
+                    String localDestUid = localUidMap.get(remoteSrcUid);
+
+                    Message localDestMessage = localDestFolder.getMessage(localDestUid);
+                    localDestMessage.setUid(remoteUidMap.get(remoteSrcUid));
+                }
+            }
         } finally {
             closeFolder(remoteSrcFolder);
             closeFolder(remoteDestFolder);
         }
-
-
     }
 
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids) {
@@ -3248,6 +3317,7 @@ public class MessagingController implements Runnable {
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
             final String destFolder, final boolean isCopy, MessagingListener listener) {
         try {
+            Map<String, String> uidMap = new HashMap<String, String>();
             Store localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
             if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
@@ -3285,9 +3355,9 @@ public class MessagingController implements Runnable {
                     fp.add(FetchProfile.Item.ENVELOPE);
                     fp.add(FetchProfile.Item.BODY);
                     localSrcFolder.fetch(messages, fp, null);
-                    localSrcFolder.copyMessages(messages, localDestFolder);
+                    uidMap = localSrcFolder.copyMessages(messages, localDestFolder);
                 } else {
-                    localSrcFolder.moveMessages(messages, localDestFolder);
+                    uidMap = localSrcFolder.moveMessages(messages, localDestFolder);
                     for (String origUid : origUidMap.keySet()) {
                         for (MessagingListener l : getListeners()) {
                             l.messageUidChanged(account, srcFolder, origUid, origUidMap.get(origUid).getUid());
@@ -3296,7 +3366,7 @@ public class MessagingController implements Runnable {
                     }
                 }
 
-                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
+                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(EMPTY_STRING_ARRAY), uidMap);
             }
 
             processPendingCommands(account);

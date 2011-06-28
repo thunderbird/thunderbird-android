@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
@@ -1161,13 +1162,15 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), false);
+            return null;
         }
 
         @Override
-        public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), true);
+            return null;
         }
 
         @Override
@@ -1728,8 +1731,9 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
             appendWebDavMessages(messages);
+            return null;
         }
 
         public Message[] appendWebDavMessages(Message[] messages) throws MessagingException {
