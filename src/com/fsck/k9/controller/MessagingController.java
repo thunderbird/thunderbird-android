@@ -2125,7 +2125,7 @@ public class MessagingController implements Runnable {
     throws MessagingException {
         Folder remoteSrcFolder = null;
         Folder remoteDestFolder = null;
-        Folder localDestFolder = null;
+        LocalFolder localDestFolder = null;
         try {
             String srcFolder = command.arguments[0];
             if (account.getErrorFolderName().equals(srcFolder)) {
@@ -2144,7 +2144,7 @@ public class MessagingController implements Runnable {
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
             Store localStore = account.getLocalStore();
-            localDestFolder = localStore.getFolder(destFolder);
+            localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<Message>();
 
             /*
@@ -2230,6 +2230,7 @@ public class MessagingController implements Runnable {
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     localDestMessage.setUid(remoteUidMap.get(remoteSrcUid));
+                    localDestFolder.changeUid((LocalMessage)localDestMessage);
                 }
             }
         } finally {
