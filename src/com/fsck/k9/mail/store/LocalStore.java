@@ -33,6 +33,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
@@ -101,7 +102,7 @@ public class LocalStore extends Store implements Serializable {
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
 
-    protected static final int DB_VERSION = 42;
+    protected static final int DB_VERSION = 43;
 
     protected String uUid = null;
 
@@ -327,6 +328,40 @@ public class LocalStore extends Store implements Serializable {
                             Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
                         } catch (Exception e) {
                             Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
+                        }
+                    }
+                    if (db.getVersion() < 43) {
+                        try {
+                            // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
+                            // "K9MAIL_INTERNAL_OUTBOX" (new)
+                            LocalFolder oldOutbox = new LocalFolder("OUTBOX");
+                            if (oldOutbox.exists()) {
+                                ContentValues cv = new ContentValues();
+                                cv.put("name", Account.OUTBOX);
+                                db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
+                                Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
+                            }
+
+                            // Check if old (pre v3.800) localized outbox folder exists
+                            String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
+                            LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
+                            if (obsoleteOutbox.exists()) {
+                                // Get all messages from the localized outbox ...
+                                Message[] messages = obsoleteOutbox.getMessages(null, false);
+
+                                if (messages.length > 0) {
+                                    // ... and move them to the drafts folder (we don't want to
+                                    // surprise the user by sending potentially very old messages)
+                                    LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
+                                    obsoleteOutbox.moveMessages(messages, drafts);
+                                }
+
+                                // Now get rid of the localized outbox
+                                obsoleteOutbox.delete();
+                                obsoleteOutbox.delete(true);
+                            }
+                        } catch (Exception e) {
+                            Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
                         }
                     }
                 }

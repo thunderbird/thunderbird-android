@@ -41,7 +41,7 @@ public class Account implements BaseAccount {
     /**
      * This local folder is used to store messages to be sent.
      */
-    public static final String OUTBOX = "OUTBOX";
+    public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
 
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";

@@ -1442,7 +1442,8 @@ public class MessagingController implements Runnable {
                         return;
                     }
 
-                    if (message.getSize() > account.getMaximumAutoDownloadMessageSize()) {
+                    if (account.getMaximumAutoDownloadMessageSize() > 0 &&
+                    message.getSize() > account.getMaximumAutoDownloadMessageSize()) {
                         largeMessages.add(message);
                     } else {
                         smallMessages.add(message);
@@ -1675,8 +1676,11 @@ public class MessagingController implements Runnable {
                      * the account's autodownload size limit, otherwise mark as only a partial
                      * download.  This will prevent the system from downloading the same message
                      * twice.
+                     *
+                     * If there is no limit on autodownload size, that's the same as the message
+                     * being smaller than the max size
                      */
-                    if (message.getSize() < account.getMaximumAutoDownloadMessageSize()) {
+                    if (account.getMaximumAutoDownloadMessageSize() == 0 || message.getSize() < account.getMaximumAutoDownloadMessageSize()) {
                         localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     } else {
                         // Set a flag indicating that the message has been partially downloaded and

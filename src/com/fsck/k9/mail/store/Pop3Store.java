@@ -582,8 +582,12 @@ public class Pop3Store extends Store {
                          * To convert the suggested download size we take the size
                          * divided by the maximum line size (76).
                          */
-                        fetchBody(pop3Message,
-                                  (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                        if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                            fetchBody(pop3Message,
+                                      (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                        } else {
+                            fetchBody(pop3Message, -1);
+                        }
                     } else if (fp.contains(FetchProfile.Item.STRUCTURE)) {
                         /*
                          * If the user is requesting STRUCTURE we are required to set the body

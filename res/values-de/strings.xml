@@ -255,14 +255,14 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_content_hint">Nachrichtentext</string>
     <string name="message_compose_quote_header_separator">-------- Original-Nachricht --------</string>
     <string name="message_compose_quote_header_subject">Betreff:</string>
-    <string name="message_compose_quote_header_send_date">Versendet am:</string>
+    <string name="message_compose_quote_header_send_date">Gesendet:</string>
     <string name="message_compose_quote_header_from">Von:</string>
     <string name="message_compose_quote_header_to">An:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
     <string name="message_compose_quoted_text_label">Zitierter Text</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
+    <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
     <string name="message_compose_downloading_attachments_toast">Einige Anhänge wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
 
@@ -1023,18 +1023,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="dialog_confirm_spam_title">Als Spam markieren</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</item>
-        <item quantity="other">Wollen Sie diese Nachricht in den Spam-Ordner verschieben?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
+        <item quantity="other">Wollen Sie diese Nachrichten in den Spam-Ordner verschieben?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nein</string>

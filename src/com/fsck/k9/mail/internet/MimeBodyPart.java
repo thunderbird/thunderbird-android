@@ -77,35 +77,25 @@ public class MimeBodyPart extends BodyPart {
 
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType == null) {
-            return "text/plain";
-        } else {
-            return contentType;
-        }
+        return (contentType == null) ? "text/plain" : contentType;
     }
 
     public String getDisposition() throws MessagingException {
-        String contentDisposition = getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        if (contentDisposition == null) {
-            return null;
-        } else {
-            return contentDisposition;
-        }
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 
     public String getContentId() throws MessagingException {
         String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
         if (contentId == null) {
             return null;
-        } else {
-            int first = contentId.indexOf('<');
-            int last = contentId.lastIndexOf('>');
-            if (first != -1 && last != -1) {
-                return contentId.substring(first + 1, last);
-            } else {
-                return contentId;
-            }
         }
+
+        int first = contentId.indexOf('<');
+        int last = contentId.lastIndexOf('>');
+
+        return (first != -1 && last != -1) ?
+               contentId.substring(first + 1, last) :
+               contentId;
     }
 
     public String getMimeType() throws MessagingException {

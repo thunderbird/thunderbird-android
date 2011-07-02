@@ -1411,7 +1411,11 @@ public class WebDavStore extends Store {
             }
 
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                } else {
+                    fetchMessages(messages, listener, -1);
+                }
             }
             if (fp.contains(FetchProfile.Item.BODY)) {
                 fetchMessages(messages, listener, -1);

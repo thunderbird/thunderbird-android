@@ -1110,7 +1110,12 @@ public class ImapStore extends Store {
                 fetchFields.add("BODYSTRUCTURE");
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
+                // If the user wants to download unlimited-size messages, don't go only for the truncated body
+                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
+                } else {
+                    fetchFields.add("BODY.PEEK[]");
+                }
             }
             if (fp.contains(FetchProfile.Item.BODY)) {
                 fetchFields.add("BODY.PEEK[]");
