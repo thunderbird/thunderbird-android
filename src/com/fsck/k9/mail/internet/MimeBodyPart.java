@@ -94,8 +94,8 @@ public class MimeBodyPart extends BodyPart {
         int last = contentId.lastIndexOf('>');
 
         return (first != -1 && last != -1) ?
-            contentId.substring(first + 1, last) :
-            contentId;
+               contentId.substring(first + 1, last) :
+               contentId;
     }
 
     public String getMimeType() throws MessagingException {

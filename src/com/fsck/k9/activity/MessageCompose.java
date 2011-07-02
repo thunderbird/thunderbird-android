@@ -913,7 +913,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (!isDraft && !mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
             discardQuotedText = true;
         }
-        
+
 
         if (discardQuotedText) {
             if (!isDraft) {
