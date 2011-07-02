@@ -1446,8 +1446,9 @@ public class MessageList
     }
 
     private void showNextMessageOrReturn() {
-        if (K9.messageViewReturnToList()) {
-            finish();
+        if (K9.messageViewReturnToList() &&
+            mSplitView.isSecondaryContentMaximized()) {
+            setInitialListViewSize();
         } else {
             showNextMessage();
         }
@@ -1704,7 +1705,7 @@ public class MessageList
         for (MessageInfoHolder holder : holders) {
             // only change the current message being viewed if the one deleted was the current one
             if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
-                showNextMessage();
+                showNextMessageOrReturn();
             }
             messagesToRemove.add(holder.message);
         }
@@ -3520,7 +3521,7 @@ public class MessageList
             mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination, null);
             mHandler.removeMessages(holders);
             if ( isCurrentMessageInSet) {
-                showNextMessage();
+                showNextMessageOrReturn();
             }
         } else {
             mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination, null);
