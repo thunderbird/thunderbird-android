@@ -183,7 +183,10 @@ public class SingleMessageView extends LinearLayout {
         removeAllAttachments();
 
         String type;
-        String text = pgpData.getDecryptedData();
+        String text = null;
+       if (pgpData != null) {
+            text = pgpData.getDecryptedData();
+       }
         if (text != null) {
             type = "text/plain";
         } else {
