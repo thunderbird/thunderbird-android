@@ -1441,7 +1441,7 @@ public class MessageList
             i = 0;
         if (i != 0)
             mNextMessage = mAdapter.messages.get(i - 1);
-        if (i != (mAdapter.messages.size() - 1))
+        if (i < (mAdapter.messages.size() - 1))
             mPreviousMessage = mAdapter.messages.get(i + 1);
     }
 
