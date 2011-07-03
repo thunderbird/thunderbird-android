@@ -65,7 +65,6 @@ import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSetupIndex;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -402,12 +401,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {
 
-        @Override
         public void onUnmount(String providerId) {
             refresh();
         }
 
-        @Override
         public void onMount(String providerId) {
             refresh();
         }
@@ -1751,7 +1748,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             account = nAccount;
             searchModifier = nSearchModifier;
         }
-        @Override
+
         public void onClick(View v) {
             String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
             if (account instanceof SearchAccount) {
@@ -1763,32 +1760,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                          combine(searchAccount.getForbiddenFlags(), searchModifier.forbiddenFlags));
             } else {
                 SearchSpecification searchSpec = new SearchSpecification() {
-                    @Override
                     public String[] getAccountUuids() {
                         return new String[] { account.getUuid() };
                     }
 
-                    @Override
                     public Flag[] getForbiddenFlags() {
                         return searchModifier.forbiddenFlags;
                     }
 
-                    @Override
                     public String getQuery() {
                         return "";
                     }
 
-                    @Override
                     public Flag[] getRequiredFlags() {
                         return searchModifier.requiredFlags;
                     }
 
-                    @Override
                     public boolean isIntegrate() {
                         return false;
                     }
 
-                    @Override
                     public String[] getFolderNames() {
                         return null;
                     }
