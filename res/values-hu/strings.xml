@@ -35,7 +35,6 @@
     <string name="status_processing_account" formatted="false">" (Feldolgozás %s:%s%s)"</string>
     <string name="folder_progress" formatted="false">" %s/%s"</string>
     <string name="status_next_poll">" (Frissítés @ %s)"</string>
-    <string name="status_polling_off">" (Nincs frissítve)"</string>
     <string name="next_action">Tovább</string>
     <string name="previous_action">Vissza</string>
     <string name="okay_action">OK</string>
@@ -842,7 +841,6 @@ S - Select/deselect"</string>
     <string name="dialog_confirm_delete_confirm_button">Törlés</string>
     <string name="dialog_confirm_delete_cancel_button">Nem törlöm</string>
     <string name="dialog_confirm_spam_title">Levélszemét mappa áthelyzésének jóváhagyása</string>
-    <string name="dialog_confirm_spam_message">Valóban át szeretné helyezni?</string>
     <string name="dialog_confirm_spam_confirm_button">Igen</string>
     <string name="dialog_confirm_spam_cancel_button">Nem</string>
     <string name="dialog_attachment_progress_title">Csatolmányok letöltése</string>
