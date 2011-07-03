@@ -16,7 +16,8 @@
         android:singleLine="true"
         android:inputType="textEmailAddress"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
+        android:layout_width="wrap_content"
+        android:hint="someone@example.com"/>
 
     <TextView android:id="@+id/form_label_password"
         android:layout_width="wrap_content"
@@ -34,16 +35,14 @@
 
     <CheckBox android:id="@+id/account_dialog_manual_box"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
+        android:lines="1"
         android:text="@string/account_setup_basics_manual_setup_action"/>
 
     <Button android:id="@+id/account_dialog_next"
         android:text="@string/next_action"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:drawableRight="@drawable/button_indicator_next" />
-       <!-- android:layout_marginBottom="-4dip"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="false"-->
+        android:drawableRight="@drawable/button_indicator_next"/>
 
 </LinearLayout>
