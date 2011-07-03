@@ -69,15 +69,6 @@
                 android:entries="@array/account_settings_show_pictures_entries"
                 android:entryValues="@array/account_settings_show_pictures_values"
                 android:dialogTitle="@string/account_settings_show_pictures_label" />
-
-            <ListPreference
-                android:persistent="false"
-                android:key="hide_buttons_enum"
-                android:title="@string/account_settings_hide_buttons_label"
-                android:entries="@array/account_settings_hide_buttons_entries"
-                android:entryValues="@array/account_settings_hide_buttons_values"
-                android:dialogTitle="@string/account_settings_hide_buttons_label" />
-
         </PreferenceCategory>
 
     </PreferenceScreen>

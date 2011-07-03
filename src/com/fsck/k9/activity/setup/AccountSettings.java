@@ -19,7 +19,6 @@ import java.util.List;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.Account.ScrollButtons;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -53,7 +52,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
-    private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
@@ -118,7 +116,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
-    private ListPreference mAccountScrollButtons;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -410,19 +407,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
-
-        mAccountScrollButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
-        mAccountScrollButtons.setValue("" + mAccount.getScrollMessageViewButtons());
-        mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntry());
-        mAccountScrollButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mAccountScrollButtons.findIndexOfValue(summary);
-                mAccountScrollButtons.setSummary(mAccountScrollButtons.getEntries()[index]);
-                mAccountScrollButtons.setValue(summary);
-                return false;
-            }
-        });
 
         mAccountShowPictures = (ListPreference) findPreference(PREFERENCE_SHOW_PICTURES);
         mAccountShowPictures.setValue("" + mAccount.getShowPictures());
@@ -726,7 +710,6 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         }
 
-        mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.save(Preferences.getPreferences(this));
 
