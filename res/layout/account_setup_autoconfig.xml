@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+        <!-- TODO: add a nice ?animated? image here, hourglass or something -->
+
+        <TextView android:id="@+id/status_message"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        android:paddingBottom="6dip"/>
+
+       <!-- TODO: add a cancel button -->
+</LinearLayout>
