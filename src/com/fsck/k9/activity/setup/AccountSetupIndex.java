@@ -6,10 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,13 +16,10 @@ import com.fsck.k9.activity.K9ListActivity;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.SectionListAdapter;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
-import static com.fsck.k9.activity.setup.AccountSetupBasics.*;
 
 /**
  * User: dzan
@@ -163,7 +156,8 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
             case DIALOG_DEVICE_ACCOUNT:
             case DIALOG_BACKUP_ACCOUNT:
                 ((TextView)dialog.findViewById(R.id.account_dialog_password_help)).setText
-                        ("Enter the password for the '" + args.get(BUNDLE_TYPE_SUGGESTION) + "' account: ");
+                        //("Enter the password for the '" + args.get(BUNDLE_TYPE_SUGGESTION) + "' account: ");
+                        ("Enter the password for the this account: ");
 
                 final EditText passwordField = ((EditText) dialog.findViewById(R.id.account_dialog_password_field));
                 final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);
@@ -220,7 +214,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     }
 
     private void startSettingsDetection(String email, String password) {
-
+        AccountSetupAutoConfiguration.actionAttemptConfiguration(this, email, password);
     }
 
     /*
