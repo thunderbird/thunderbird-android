@@ -119,9 +119,19 @@ public class AutoconfigInfo {
         public String url;
 
         // first one is the language, second the text
-		public ArrayList<Pair<String, String>> descriptions =
-                new ArrayList<Pair<String, String>>();
+		public ArrayList<MutablePair<String, String>> descriptions =
+                new ArrayList<MutablePair<String, String>>();
 	}
+
+    public static class MutablePair<K, V> extends Pair<K, V>{
+        private K first;
+        private V second;
+        public MutablePair(K first, V second) {
+            super(first, second);
+        }
+        public void setFirst(K val){ this.first = val; }
+        public void setSecond(V val){ this.second = val; }
+    }
 
 
     /*******************************************************************************
