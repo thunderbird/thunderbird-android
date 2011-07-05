@@ -157,6 +157,7 @@ public class AutoconfigInfo {
 	public List<InputField> inputFields;
 	public InformationBlock enable;
 	public InformationBlock instruction;
+    public InformationBlock documentation;
 
 
     /*
