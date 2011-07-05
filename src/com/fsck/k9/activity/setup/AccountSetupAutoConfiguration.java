@@ -8,28 +8,20 @@ import android.os.*;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.activity.setup.configxmlparser.XMLDescriptionHandler;
+import com.fsck.k9.activity.setup.configxmlparser.ConfigurationXMLHandler;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.net.ssl.TrustManager;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.*;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -206,7 +198,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private void parse(String data) {
         try{
             XMLReader xr = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-            xr.setContentHandler(new XMLDescriptionHandler());
+            xr.setContentHandler(new ConfigurationXMLHandler());
             //xr.parse(data);
 
         // TODO: take care of these
