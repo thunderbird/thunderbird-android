@@ -36,7 +36,8 @@ public class AutoconfigInfo {
     public static enum SocketType { plain, SSL, STARTTLS};
     public static enum RestrictionType { clientIPAddress };
 
-    public static enum ServerType{ IMAP(0), POP3(1), SMTP(2);
+    public static enum ServerType{ IMAP(0), POP3(1), SMTP(2), UNSET(3), NO_VALUE(4), WRONG_TAG(5);
+
         private int type;
         ServerType(int type){this.type = type;}
         public Server getServerObject(){
@@ -47,6 +48,16 @@ public class AutoconfigInfo {
                 default: return null;
             }
         }
+
+        public static ServerType toType(String str){
+            try{
+                return valueOf(str.toUpperCase());
+            }catch (IllegalArgumentException ex){
+                return WRONG_TAG;
+            }catch (NullPointerException ex){
+                return NO_VALUE;
+            }
+        }
     }
 
 
@@ -54,6 +65,7 @@ public class AutoconfigInfo {
         Server types hierarchy
     *******************************************************************************/
     public static abstract class Server{
+        public ServerType type = ServerType.UNSET;
 		public String hostname;
 		public int port;
 		public SocketType socketType;
@@ -127,8 +139,8 @@ public class AutoconfigInfo {
 	public String displayShortName;
 
     // Possible servers for this ISP
-	public List<IncomingServer> incomingServer;
-	public List<OutgoingServer> outgoingServer;
+	public List<Server> incomingServer;
+	public List<Server> outgoingServer;
 
     // Configuration help/information
 	public String identity;
@@ -142,8 +154,8 @@ public class AutoconfigInfo {
      */
     public AutoconfigInfo(){
         // initialise the fields
-        incomingServer = new ArrayList<IncomingServer>();
-        outgoingServer = new ArrayList<OutgoingServer>();
+        incomingServer = new ArrayList<Server>();
+        outgoingServer = new ArrayList<Server>();
         domains = new ArrayList<String>();
         inputFields = new ArrayList<InputField>();
     }
