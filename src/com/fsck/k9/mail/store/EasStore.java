@@ -1,5 +1,7 @@
 package com.fsck.k9.mail.store;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -29,6 +31,8 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
@@ -51,6 +55,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
 import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
@@ -87,6 +92,12 @@ public class EasStore extends Store {
     // IOException is thrown.  After a small added allowance, our watchdog alarm goes off (allowing
     // us to detect a silently dropped connection).  The allowance is defined below.
     static private final int COMMAND_TIMEOUT = 30*1000;
+
+    // This needs to be long enough to send the longest reasonable message, without being so long
+    // as to effectively "hang" sending of mail.  The standard 30 second timeout isn't long enough
+    // for pictures and the like.  For now, we'll use 15 minutes, in the knowledge that any socket
+    // failure would probably generate an Exception before timing out anyway
+    public static final int SEND_MAIL_TIMEOUT = 15*60*1000;
 
     // MSFT's custom HTTP result code indicating the need to provision
     static private final int HTTP_NEED_PROVISIONING = 449;
@@ -821,17 +832,43 @@ public class EasStore extends Store {
 
     @Override
     public void sendMessages(Message[] messages) throws MessagingException {
-        EasFolder tmpFolder = (EasStore.EasFolder) getFolder(mAccount.getDraftsFolderName());
-        try {
-            tmpFolder.open(OpenMode.READ_WRITE);
-//            Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
-//
-//            tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
-        } finally {
-            if (tmpFolder != null) {
-                tmpFolder.close();
-            }
-        }
+    	for (int i = 0; i < messages.length; i++) {
+    		Message message = messages[i];
+    		
+    		try {
+    			ByteArrayOutputStream out;
+
+                out = new ByteArrayOutputStream(message.getSize());
+
+                EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
+                    new BufferedOutputStream(out, 1024));
+                message.writeTo(msgOut);
+                msgOut.flush();
+
+                StringEntity bodyEntity = new StringEntity(out.toString(), "UTF-8");
+//                bodyEntity.setContentType("message/rfc822");
+
+
+                // Create the appropriate command and POST it to the server
+                String cmd = "SendMail&SaveInSent=T";
+//                if (smartSend) {
+//                    cmd = reply ? "SmartReply" : "SmartForward";
+//                    cmd += "&ItemId=" + itemId + "&CollectionId=" + collectionId + "&SaveInSent=T";
+//                }
+                Log.d(K9.LOG_TAG, "Send cmd: " + cmd);
+
+				HttpResponse resp = sendHttpClientPost(cmd, bodyEntity, SEND_MAIL_TIMEOUT);
+				
+	            int code = resp.getStatusLine().getStatusCode();
+	            if (code == HttpStatus.SC_OK) {
+	            	Log.d(K9.LOG_TAG, "Message sent successfully");
+	            } else {
+	            	Log.e(K9.LOG_TAG, "Message sending failed, code: " + code);
+	            }
+			} catch (IOException e) {
+	            Log.e(K9.LOG_TAG, "Send failed: " + message.getUid());
+			}
+    	}
     }
 
     /*************************************************************************
