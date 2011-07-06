@@ -17,6 +17,7 @@
 
 package com.fsck.k9.mail.store.exchange.adapter;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,12 +26,17 @@ import java.util.List;
 
 import android.webkit.MimeTypeMap;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.EasStore.EasFolder;
+import com.fsck.k9.mail.store.EasStore.EasMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
 
 /**
@@ -64,13 +70,13 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
     boolean mIsLooping = false;
 	private List<Message> newEmails;
 
-    public EmailSyncAdapter(MailboxAdapter mailbox, AccountAdapter account) {
-        super(mailbox, account);
+    public EmailSyncAdapter(EasFolder folder, Account account) {
+        super(folder, account);
     }
 
     @Override
     public boolean parse(InputStream is) throws IOException, MessagingException {
-        EasEmailSyncParser p = new EasEmailSyncParser(is, this, mMailbox, mAccount);
+        EasEmailSyncParser p = new EasEmailSyncParser(is, this, mFolder, mAccount);
         boolean res = p.parse();
         // Hold on to the parser's value for isLooping() to pass back to the service
         mIsLooping = p.isLooping();
@@ -102,8 +108,8 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
         ArrayList<Long> deletedEmails = new ArrayList<Long>();
         ArrayList<ServerChange> changedEmails = new ArrayList<ServerChange>();
 
-        public EasEmailSyncParser(InputStream in, EmailSyncAdapter adapter, MailboxAdapter mailbox, AccountAdapter account) throws IOException {
-            super(in, adapter, mailbox, account);
+        public EasEmailSyncParser(InputStream in, EmailSyncAdapter adapter, EasFolder folder, Account account) throws IOException {
+            super(in, adapter, folder, account);
 //            mMailboxIdAsString = Long.toString(mMailbox.mId);
         }
 
@@ -160,8 +166,14 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
                     	msg.setFlag(Flag.FLAGGED, flagParser());
                         break;
                     case Tags.EMAIL_BODY:
-                        String text = getValue();
-//                        msg.setBody(new Body) = text;
+                        String body = getValue();
+                        InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+
+            			try {
+            				msg.setBody(MimeUtility.decodeBody(bodyStream, null));
+            			} catch (MessagingException e) {
+            				throw new IOException(e);
+            			}
                         break;
                     case Tags.EMAIL_MESSAGE_CLASS:
                         String messageClass = getValue();
@@ -256,12 +268,34 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
         }
 
         private void addParser(ArrayList<Message> emails) throws IOException, MessagingException {
-            Message msg = new MimeMessage();
+            Message msg = new EasMessage(null, mFolder);
 //            msg.mAccountKey = mAccount.mId;
 //            msg.mMailboxKey = mMailbox.mId;
 //            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
 
             while (nextTag(Tags.SYNC_ADD) != END) {
+                switch (tag) {
+                    case Tags.SYNC_SERVER_ID:
+                    	String serverId = getValue();
+                        msg.setUid(serverId);
+                        break;
+                    case Tags.SYNC_APPLICATION_DATA:
+                        addData(msg);
+                        break;
+                    default:
+                        skipTag();
+                }
+            }
+            emails.add(msg);
+        }
+
+        private void fetchParser(ArrayList<Message> emails) throws IOException, MessagingException {
+        	Message msg = new EasMessage(null, mFolder);
+//            msg.mAccountKey = mAccount.mId;
+//            msg.mMailboxKey = mMailbox.mId;
+//            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
+
+            while (nextTag(Tags.SYNC_FETCH) != END) {
                 switch (tag) {
                     case Tags.SYNC_SERVER_ID:
                     	String serverId = getValue();
@@ -307,12 +341,23 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
                         skipTag();
                 }
             }
+            
             // We always ask for TEXT or HTML; there's no third option
             if (bodyType.equals(Eas.BODY_PREFERENCE_HTML)) {
 //                msg.mHtml = body;
             } else {
 //                msg.mText = body;
             }
+            InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+
+            String contentTransferEncoding;
+			try {
+				contentTransferEncoding = msg.getHeader(
+				                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+				msg.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+			} catch (MessagingException e) {
+				throw new IOException(e);
+			}
         }
 
         private void attachmentsParser(Message msg) throws IOException {
@@ -510,7 +555,20 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
         }
 
         @Override
-        public void responsesParser() {
+        public void responsesParser() throws IOException, MessagingException {
+            while (nextTag(Tags.SYNC_RESPONSES) != END) {
+                if (tag == Tags.SYNC_FETCH) {
+                    fetchParser(newEmails);
+                    incrementChangeCount();
+//                } else if (tag == Tags.SYNC_ADD) {
+//                    deleteParser(deletedEmails, tag);
+//                    incrementChangeCount();
+//                } else if (tag == Tags.SYNC_CHANGE) {
+//                    changeParser(changedEmails);
+//                    incrementChangeCount();
+                } else
+                    skipTag();
+            }
         }
 
         @Override

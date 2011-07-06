@@ -8,7 +8,7 @@ public class MailboxAdapter {
 
 	static String mSyncKey;
 	
-	int mSyncInterval;
+	static int mSyncInterval;
 
 	String mDisplayName;
 

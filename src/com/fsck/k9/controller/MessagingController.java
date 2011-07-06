@@ -1007,10 +1007,19 @@ public class MessagingController implements Runnable {
              */
             if (account.syncRemoteDeletions()) {
                 ArrayList<Message> destroyMessages = new ArrayList<Message>();
-                for (Message localMessage : localMessages) {
-                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        destroyMessages.add(localMessage);
-                    }
+                if (remoteFolder.isSyncMode()) {
+	                for (Message localMessage : localMessages) {
+	                    Message remoteMessage = remoteUidMap.get(localMessage.getUid());
+						if (remoteMessage != null && remoteMessage.isSet(Flag.DELETED)) {
+	                        destroyMessages.add(localMessage);
+	                    }
+	                }
+                } else {
+	                for (Message localMessage : localMessages) {
+	                    if (remoteUidMap.get(localMessage.getUid()) == null) {
+	                        destroyMessages.add(localMessage);
+	                    }
+	                }
                 }
 
 

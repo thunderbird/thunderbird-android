@@ -24,8 +24,10 @@ import java.util.Arrays;
 import android.content.Context;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.EasStore.EasFolder;
 
 /**
  * Parent class of all sync adapters (EasMailbox, EasCalendar, and EasContacts)
@@ -39,9 +41,9 @@ public abstract class AbstractSyncAdapter {
     public static final int DAYS = HOURS*24;
     public static final int WEEKS = DAYS*7;
 
-    public MailboxAdapter mMailbox;
+    public EasFolder mFolder;
     public Context mContext;
-    public AccountAdapter mAccount;
+    public Account mAccount;
 
     // Create the data for local changes that need to be sent up to the server
     public abstract boolean sendLocalChanges(Serializer s)
@@ -59,8 +61,8 @@ public abstract class AbstractSyncAdapter {
         return false;
     }
 
-    public AbstractSyncAdapter(MailboxAdapter mailbox, AccountAdapter account) {
-        mMailbox = mailbox;
+    public AbstractSyncAdapter(EasFolder folder, Account account) {
+    	mFolder = folder;
         mAccount = account;
     }
 
@@ -78,15 +80,15 @@ public abstract class AbstractSyncAdapter {
      * @throws IOException
      */
     public String getSyncKey() throws IOException {
-        if (mMailbox.mSyncKey == null) {
+        if (mFolder.getSyncKey() == null) {
             userLog("Reset SyncKey to 0");
-            mMailbox.mSyncKey = "0";
+            mFolder.setSyncKey("0");
         }
-        return mMailbox.mSyncKey;
+        return mFolder.getSyncKey();
     }
 
     public void setSyncKey(String syncKey, boolean inCommands) throws IOException {
-        mMailbox.mSyncKey = syncKey;
+    	mFolder.setSyncKey(syncKey);
     }
 }
 

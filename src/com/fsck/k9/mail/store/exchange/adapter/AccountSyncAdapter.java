@@ -3,12 +3,12 @@ package com.fsck.k9.mail.store.exchange.adapter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import android.content.Context;
+import com.fsck.k9.Account;
 
 public class AccountSyncAdapter extends AbstractSyncAdapter {
 
-    public AccountSyncAdapter(MailboxAdapter mailbox, AccountAdapter account) {
-        super(mailbox, account);
+    public AccountSyncAdapter(Account account) {
+        super(null, account);
      }
 
     @Override

@@ -74,19 +74,19 @@ public class FolderSyncParser extends AbstractSyncParser {
 //    private static final String[] MAILBOX_ID_COLUMNS_PROJECTION =
 //        new String[] {MailboxColumns.ID, MailboxColumns.SERVER_ID};
 
-    private long mAccountId;
-    private String mAccountIdAsString;
-    private String[] mBindArguments = new String[2];
+//    private long mAccountId;
+//    private String mAccountIdAsString;
+//    private String[] mBindArguments = new String[2];
 	private List<Folder> folderList;
 
 	private EasStore easStore;
 
     public FolderSyncParser(InputStream in, AbstractSyncAdapter adapter, EasStore easStore, List<Folder> folderList) throws IOException {
-        super(in, adapter, adapter.mMailbox, adapter.mAccount);
+        super(in, adapter, adapter.mFolder, adapter.mAccount);
         this.easStore = easStore;
         this.folderList = folderList;
-        mAccountId = mAccount.mId;
-        mAccountIdAsString = Long.toString(mAccountId);
+//        mAccountId = mAccount.mId;
+//        mAccountIdAsString = Long.toString(mAccountId);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class FolderSyncParser extends AbstractSyncParser {
                 if (status != Eas.FOLDER_STATUS_OK) {
                     Log.e(K9.LOG_TAG, "FolderSync failed: " + status);
                     if (status == Eas.FOLDER_STATUS_INVALID_KEY) {
-                        mAccount.mSyncKey = "0";
+                        easStore.setStoreSyncKey("0");
                         Log.e(K9.LOG_TAG, "Bad sync key; RESET and delete all folders");
 //                        mContentResolver.delete(Mailbox.CONTENT_URI, ALL_BUT_ACCOUNT_MAILBOX,
 //                                new String[] {Long.toString(mAccountId)});
@@ -120,7 +120,7 @@ public class FolderSyncParser extends AbstractSyncParser {
             } else if (tag == Tags.FOLDER_SYNC_KEY) {
             	getValue();
 //                mAccount.mSyncKey = getValue();
-                userLog("New Account SyncKey: ", mAccount.mSyncKey);
+                userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
             } else if (tag == Tags.FOLDER_CHANGES) {
                 changesParser();
             } else
@@ -199,7 +199,7 @@ public class FolderSyncParser extends AbstractSyncParser {
             }
         }
         if (mValidFolderTypes.contains(type)) {
-        	Folder folder = easStore.createFolderInternal(name, serverId, type);
+        	Folder folder = easStore.new EasFolder(name, serverId, type);
         	folderList.add(folder);
 //            Mailbox m = new Mailbox();
 //            m.mDisplayName = name;
@@ -332,7 +332,7 @@ public class FolderSyncParser extends AbstractSyncParser {
                 // Execute the batch
 //                try {
 //                    mContentResolver.applyBatch(EmailProvider.EMAIL_AUTHORITY, ops);
-                    userLog("New Account SyncKey: ", mAccount.mSyncKey);
+                    userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
 //                } catch (RemoteException e) {
 //                    // There is nothing to be done here; fail by returning null
 //                } catch (OperationApplicationException e) {

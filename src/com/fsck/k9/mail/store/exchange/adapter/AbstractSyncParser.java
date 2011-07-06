@@ -23,11 +23,12 @@ import java.util.Arrays;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.EasStore.EasFolder;
 
 /**
  * Base class for the Email and PIM sync parsers
@@ -37,17 +38,17 @@ import com.fsck.k9.mail.MessagingException;
  */
 public abstract class AbstractSyncParser extends Parser {
 
-    protected MailboxAdapter mMailbox;
-    protected AccountAdapter mAccount;
+    protected EasFolder mFolder;
+    protected Account mAccount;
     protected ContentResolver mContentResolver;
     protected AbstractSyncAdapter mAdapter;
 
     private boolean mLooping;
 
-    public AbstractSyncParser(InputStream in, AbstractSyncAdapter adapter, MailboxAdapter mailbox, AccountAdapter account) throws IOException {
+    public AbstractSyncParser(InputStream in, AbstractSyncAdapter adapter, EasFolder folder, Account account) throws IOException {
         super(in);
         mAdapter = adapter;
-        mMailbox = mailbox;
+        mFolder = folder;
         mAccount = account;
     }
 
@@ -62,7 +63,7 @@ public abstract class AbstractSyncParser extends Parser {
      * Read, parse, and act on server responses
      * @throws IOException
      */
-    public abstract void responsesParser() throws IOException;
+    public abstract void responsesParser() throws IOException, MessagingException;
 
     /**
      * Commit any changes found during parsing
@@ -89,7 +90,7 @@ public abstract class AbstractSyncParser extends Parser {
         int status;
         boolean moreAvailable = false;
         boolean newSyncKey = false;
-        int interval = mMailbox.mSyncInterval;
+        int interval = MailboxAdapter.mSyncInterval;
         mLooping = false;
         // If we're not at the top of the xml tree, throw an exception
         if (nextTag(START_DOCUMENT) != Tags.SYNC_SYNC) {
@@ -114,7 +115,7 @@ public abstract class AbstractSyncParser extends Parser {
                         mAdapter.setSyncKey("0", false);
                         // Make this a push box through the first sync
                         // TODO Make frequency conditional on user settings!
-                        mMailbox.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PUSH;
+                        MailboxAdapter.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PUSH;
                         Log.e(K9.LOG_TAG, "Bad sync key; RESET and delete data");
                         wipe();
                         // Indicate there's more so that we'll start syncing again
@@ -137,16 +138,16 @@ public abstract class AbstractSyncParser extends Parser {
                     moreAvailable = true;
                 }
                 String newKey = getValue();
-                userLog("Parsed key for ", mMailbox.mDisplayName, ": ", newKey);
-                if (!newKey.equals(mMailbox.mSyncKey)) {
+                userLog("Parsed key for ", mFolder.toString(), ": ", newKey);
+                if (!newKey.equals(mFolder.getSyncKey())) {
                     mAdapter.setSyncKey(newKey, true);
 //                    cv.put(MailboxColumns.SYNC_KEY, newKey);
                     mailboxUpdated = true;
                     newSyncKey = true;
                 }
                 // If we were pushing (i.e. auto-start), now we'll become ping-triggered
-                if (mMailbox.mSyncInterval == MailboxAdapter.CHECK_INTERVAL_PUSH) {
-                    mMailbox.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PING;
+                if (MailboxAdapter.mSyncInterval == MailboxAdapter.CHECK_INTERVAL_PUSH) {
+                	MailboxAdapter.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PING;
                 }
            } else {
                 skipTag();
