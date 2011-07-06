@@ -32,9 +32,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.EasStore.EasFolder;
 import com.fsck.k9.mail.store.EasStore.EasMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
@@ -343,18 +342,19 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
             }
             
             // We always ask for TEXT or HTML; there's no third option
-            if (bodyType.equals(Eas.BODY_PREFERENCE_HTML)) {
+//            if (bodyType.equals(Eas.BODY_PREFERENCE_HTML)) {
 //                msg.mHtml = body;
-            } else {
+//            } else {
 //                msg.mText = body;
-            }
-            InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+//            }
 
-            String contentTransferEncoding;
 			try {
-				contentTransferEncoding = msg.getHeader(
-				                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-				msg.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+				InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+				//String contentTransferEncoding;
+//				contentTransferEncoding = msg.getHeader(
+//				                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+//				msg.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+				((EasMessage) msg).parse(bodyStream);
 			} catch (MessagingException e) {
 				throw new IOException(e);
 			}

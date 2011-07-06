@@ -106,8 +106,8 @@ public class EasStore extends Store {
     private String mUrl; /* Stores the base URL for the server */
 
     // Reasonable default
-    public String mProtocolVersion = Eas.DEFAULT_PROTOCOL_VERSION;
-    public Double mProtocolVersionDouble = Double.parseDouble(mProtocolVersion);
+    public String mProtocolVersion;
+    public Double mProtocolVersionDouble;
     protected String mDeviceId = null;
     protected String mDeviceType = "Android";
     private String mCmdString = null;
@@ -647,13 +647,40 @@ public class EasStore extends Store {
     	}
     }
     
+    private void init() throws IOException, MessagingException {
+        // Determine our protocol version, if we haven't already and save it in the Account
+        // Also re-check protocol version at least once a day (in case of upgrade)
+    	boolean lastSyncTimeDayDue = false;
+    	//lastSyncTimeDayDue = ((System.currentTimeMillis() - mMailbox.mSyncTime) > DAYS);
+        if (mProtocolVersion == null || lastSyncTimeDayDue) {
+        	Log.d(K9.LOG_TAG, "Determine EAS protocol version");
+            HttpResponse resp = sendHttpClientOptions();
+            int code = resp.getStatusLine().getStatusCode();
+            Log.d(K9.LOG_TAG, "OPTIONS response: " + code);
+            if (code == HttpStatus.SC_OK) {
+                Header header = resp.getFirstHeader("MS-ASProtocolCommands");
+                Log.d(K9.LOG_TAG, header.getValue());
+                header = resp.getFirstHeader("ms-asprotocolversions");
+                try {
+                    setupProtocolVersion(this, header);
+                } catch (MessagingException e) {
+                    // Since we've already validated, this can't really happen
+                    // But if it does, we'll rethrow this...
+                    throw new IOException();
+                }
+             } else {
+                Log.e(K9.LOG_TAG, "OPTIONS command failed; throwing IOException");
+                throw new IOException();
+            }
+        }
+    }
+    
     public List <? extends Folder > getInitialFolderList() throws MessagingException {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
         
-    	//AccountAdapter mAccount = new AccountAdapter();
-    	//MailboxAdapter mMailbox = new MailboxAdapter();
-    	
     	try {
+    		init();
+    		
 	        Serializer s = new Serializer();
 	        s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY)
 	            .text(getStoreSyncKey()).end().end().done();
@@ -1045,25 +1072,31 @@ public class EasStore extends Store {
 			    	// Set the lookback appropriately (EAS calls this a "filter") for all but Contacts
 			    	s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
 			    }
+			    // Enable MimeSupport
+			    s.data(Tags.SYNC_MIME_SUPPORT, "2");
 			    // Set the truncation amount for all classes
 			    if (mProtocolVersionDouble >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
 			        s.start(Tags.BASE_BODY_PREFERENCE)
 			        // HTML for email; plain text for everything else
-			        .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_HTML);
+			        .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_MIME);
 			        
-			        if (!fetchBodySane && !fetchBody) {
-			        	s.data(Tags.BASE_TRUNCATION_SIZE, "0");
-			        } else if (fetchBodySane) {
-			        	s.data(Tags.BASE_TRUNCATION_SIZE, Eas.EAS12_TRUNCATION_SIZE);
+			        if (!fetchBody) {
+			        	String truncationSize = "0";
+			        	if (fetchBodySane) {
+			        		truncationSize = Eas.EAS12_TRUNCATION_SIZE;
+			        	}
+			        	s.data(Tags.BASE_TRUNCATION_SIZE, truncationSize);
 			        }
 			        
 			        s.end();
 			    } else {
-			        if (!fetchBodySane && !fetchBody) {
-				        s.data(Tags.SYNC_TRUNCATION, "0");
+			    	String syncTruncation = "0";
+			        if (fetchBody) {
+			        	syncTruncation = "8";
 			        } else if (fetchBodySane) {
-				        s.data(Tags.SYNC_TRUNCATION, "7");
+			        	syncTruncation = "7";
 			        }
+			        s.data(Tags.SYNC_MIME_TRUNCATION, syncTruncation);
 			    }
 			    s.end();
 			} else {

@@ -68,6 +68,8 @@ public class Eas {
     public static final String FILTER_6_MONTHS = "7";
     public static final String BODY_PREFERENCE_TEXT = "1";
     public static final String BODY_PREFERENCE_HTML = "2";
+    public static final String BODY_PREFERENCE_RTF = "3";
+    public static final String BODY_PREFERENCE_MIME = "4";
 
     // For EAS 12, we use HTML, so we want a larger size than in EAS 2.5
     public static final String EAS12_TRUNCATION_SIZE = "200000";
