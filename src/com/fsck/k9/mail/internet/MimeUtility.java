@@ -883,7 +883,8 @@ public class MimeUtility {
      * Table format: wrong type, correct type
      */
     private static final String[][] MIME_TYPE_REPLACEMENT_MAP = new String[][] {
-        {"image/jpg", "image/jpeg"}
+        {"image/jpg", "image/jpeg"},
+        {"image/pjpeg", "image/jpeg"}   // see issue 1712
     };
 
     public static String unfold(String s) {
