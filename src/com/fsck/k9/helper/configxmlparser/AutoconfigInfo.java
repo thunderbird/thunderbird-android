@@ -5,15 +5,11 @@
  * This class stores all the configuration data we received for a specific emailprovider.
  */
 
-package com.fsck.k9.activity.setup.configxmlparser;
+package com.fsck.k9.helper.configxmlparser;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import android.net.Uri;
 import android.util.Pair;
 
 /*

@@ -29,7 +29,7 @@
         since I have no clue what they are for and doubt they will be useful for k9.
      */
 
-package com.fsck.k9.activity.setup.configxmlparser;
+package com.fsck.k9.helper.configxmlparser;
 
 // Sax stuff
 import org.xml.sax.Attributes;
@@ -39,21 +39,20 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 // Types
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.AuthenticationType;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.SocketType;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.RestrictionType;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.ServerType;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.Server;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.IncomingServerPOP3;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.OutgoingServerSMTP;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.InputField;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.InformationBlock;
-import com.fsck.k9.activity.setup.configxmlparser.AutoconfigInfo.MutablePair;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.AuthenticationType;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.SocketType;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.RestrictionType;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.ServerType;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.Server;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.IncomingServerPOP3;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.OutgoingServerSMTP;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InputField;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.MutablePair;
 
 // Other
 import java.util.HashMap;
 import java.util.Map;
-import android.util.Pair;
 
 public class ConfigurationXMLHandler extends DefaultHandler {
 
