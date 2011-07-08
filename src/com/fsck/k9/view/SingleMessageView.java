@@ -184,9 +184,9 @@ public class SingleMessageView extends LinearLayout {
 
         String type;
         String text = null;
-       if (pgpData != null) {
+        if (pgpData != null) {
             text = pgpData.getDecryptedData();
-       }
+        }
         if (text != null) {
             type = "text/plain";
         } else {
@@ -281,7 +281,7 @@ public class SingleMessageView extends LinearLayout {
                     && (contentType != null && MimeUtility.getHeaderParameter(contentType, null).toLowerCase().startsWith("image/"))
 
                ) {
-               // return;
+                // return;
             }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);

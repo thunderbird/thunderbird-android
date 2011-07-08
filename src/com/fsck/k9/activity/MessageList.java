@@ -1141,7 +1141,7 @@ public class MessageList
                     attachmentTmpStore.writeFile(new File(path));
                 }
 
-                    // canceled, do nothing
+                // canceled, do nothing
                 @Override public void onCancel() { }
             };
         });
@@ -1447,7 +1447,7 @@ public class MessageList
 
     private void showNextMessageOrReturn() {
         if (K9.messageViewReturnToList() &&
-            mSplitView.isSecondaryContentMaximized()) {
+                mSplitView.isSecondaryContentMaximized()) {
             setInitialListViewSize();
         } else {
             showNextMessage();
@@ -3187,12 +3187,12 @@ public class MessageList
         switch (v.getId()) {
         case R.id.delete:
             if (mCurrentMessageInfo != null) {
-                onDelete(getSelectionFromMessage( mCurrentMessageInfo));
+                onDelete(getSelectionFromMessage(mCurrentMessageInfo));
             }
             return;
         case R.id.move:
             if (mCurrentMessageInfo != null) {
-                onMove(getSelectionFromMessage( mCurrentMessageInfo));
+                onMove(getSelectionFromMessage(mCurrentMessageInfo));
             }
             return;
         case R.id.next:
@@ -3511,7 +3511,7 @@ public class MessageList
 
             // only change the current message being viewed if the one deleted was the current one
             if (mCurrentMessageInfo != null && holder.uid == mCurrentMessageInfo.uid) {
-                isCurrentMessageInSet=true;
+                isCurrentMessageInSet = true;
             }
 
 
@@ -3521,7 +3521,7 @@ public class MessageList
             mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
                                      null);
             mHandler.removeMessages(holders);
-            if ( isCurrentMessageInSet) {
+            if (isCurrentMessageInSet) {
                 showNextMessageOrReturn();
             }
         } else {

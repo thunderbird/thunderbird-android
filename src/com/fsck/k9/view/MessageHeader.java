@@ -131,7 +131,7 @@ public class MessageHeader extends LinearLayout {
     }
 
     public void setOnFlagListener(OnClickListener listener) {
-        if (mFlagged == null) 
+        if (mFlagged == null)
             return;
         mFlagged.setOnClickListener(listener);
     }

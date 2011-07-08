@@ -184,13 +184,13 @@ public class K9Activity extends Activity {
             // motorola misreports its DPI to be 96 instead of 240. YAY!
             // http://comments.gmane.org/gmane.comp.handhelds.android.devel/110221
 
-            if(Build.DEVICE.equals("sholes") || Build.DEVICE.equals("umts_sholes")) {
+            if (Build.DEVICE.equals("sholes") || Build.DEVICE.equals("umts_sholes")) {
                 mScreenSize = 3.7;
             } else {
                 DisplayMetrics metrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(metrics);
                 mScreenSize = Math.sqrt(Math.pow((metrics.heightPixels / metrics.ydpi), 2) +
-                                    Math.pow((metrics.widthPixels / metrics.xdpi), 2));
+                                        Math.pow((metrics.widthPixels / metrics.xdpi), 2));
 
             }
 
