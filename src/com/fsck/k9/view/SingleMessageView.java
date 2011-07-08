@@ -191,7 +191,16 @@ public class SingleMessageView extends LinearLayout {
             type = "text/plain";
         } else {
             // getTextForDisplay() always returns HTML-ified content.
-            text = ((LocalStore.LocalMessage) message).getTextForDisplay();
+            if (K9.getK9Theme() == android.R.style.Theme)  {
+                // It's a little wrong to just throw in the <style> before the opening <html>
+                // but it's less wrong than trying to edit the html stream
+                text = "<style>* { background: black ! important; color: white !important }" +
+                       ":link, :link * { color: #CCFF33 !important }" +
+                       ":visited, :visited * { color: #551A8B !important }</style> "
+                       + ((LocalStore.LocalMessage) message).getTextForDisplay();
+            } else {
+                text = ((LocalStore.LocalMessage) message).getTextForDisplay();
+            }
             type = "text/html";
         }
         if (text != null) {
