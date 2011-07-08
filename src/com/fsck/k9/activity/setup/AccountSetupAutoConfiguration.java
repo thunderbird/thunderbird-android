@@ -153,11 +153,11 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                             // parse and finish
                             // remember if i >= UNSAFE_URL_START => POSSIBLE UNSAFE DATA, alert user!!!
                             parse(data);
-                            try {
-                                Thread.sleep(1750);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                            }
+
+                            // Give user some time to read output
+                            try { Thread.sleep(1750);
+                            } catch (InterruptedException e) { e.printStackTrace(); }
+
                             finish();
                             return;
                         }

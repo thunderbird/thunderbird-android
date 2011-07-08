@@ -79,7 +79,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
         POP3, LEAVEMESSAGESONSERVER, DOWNLOADONBIFF, DAYSTOLEAVEMESSAGESONSERVER, CHECKINTERVAL,
 
         // outgoing server settings
-        RESTRICTION, ADDTHISSERVER, USEGLOBALPREFFEREDSERVER,
+        RESTRICTION, ADDTHISSERVER, USEGLOBALPREFERREDSERVER,
 
         // meta
         NO_VALUE, WRONG_TAG;
@@ -325,7 +325,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
             // Outgoing extras
             case RESTRICTION:
             case ADDTHISSERVER:
-            case USEGLOBALPREFFEREDSERVER:
+            case USEGLOBALPREFERREDSERVER:
                 if( mServerInProgress == null || mServerInProgress.type != ServerType.SMTP )
                     throw new SAXParseException
                             ("Illegal outgoingServer extra-settings tag. " +
@@ -333,7 +333,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                 switch(TAG.toTag(localName)){
                     case RESTRICTION:               mIsRestriction = true; break;
                     case ADDTHISSERVER:             mIsAddThisServer = true; break;
-                    case USEGLOBALPREFFEREDSERVER:  mIsUseGlobalPreferredServer = true; break;
+                    case USEGLOBALPREFERREDSERVER:  mIsUseGlobalPreferredServer = true; break;
                 }
                 break;
 

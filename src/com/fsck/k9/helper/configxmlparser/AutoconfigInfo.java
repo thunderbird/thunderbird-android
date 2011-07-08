@@ -61,20 +61,24 @@ public class AutoconfigInfo {
         Server types hierarchy
     *******************************************************************************/
     public static abstract class Server{
-        public ServerType type = ServerType.UNSET;
+        public ServerType type;
 		public String hostname;
 		public int port;
 		public SocketType socketType;
 		public String username;
 		public AuthenticationType authentication;
+
+        public Server(ServerType type){ this.type = type; }
     }
 
 	public static abstract class IncomingServer extends Server{
-	}
+        public IncomingServer(ServerType type) {super(type);}
+    }
 
     public static abstract class OutgoingServer extends Server{
 		public RestrictionType restriction;
-	}
+        public OutgoingServer(ServerType type) {super(type);}
+    }
 
 	public static class IncomingServerPOP3 extends IncomingServer {
         // hardcode the type
@@ -85,10 +89,16 @@ public class AutoconfigInfo {
 		public boolean downloadOnBiff;
 		public int daysToLeaveMessagesOnServer;
 		public int checkInterval;
+
+        // constructor
+        public IncomingServerPOP3(){ super(ServerType.POP3); }
 	}
 
 	public static class IncomingServerIMAP extends IncomingServer {
         public ServerType type = ServerType.IMAP;
+
+        // constructor
+        public IncomingServerIMAP(){ super(ServerType.IMAP); }
 	}
 
 	public static class OutgoingServerSMTP extends OutgoingServer {
@@ -98,6 +108,9 @@ public class AutoconfigInfo {
         // SMTP options
 		public boolean addThisServer;
 		public boolean useGlobalPreferredServer;
+
+        // constructor
+        public OutgoingServerSMTP(){ super(ServerType.SMTP); }
 	}
 
 
