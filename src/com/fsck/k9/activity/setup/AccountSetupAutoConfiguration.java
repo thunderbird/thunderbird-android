@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.activity.setup.configxmlparser.ConfigurationXMLHandler;
+import com.fsck.k9.helper.configxmlparser.ConfigurationXMLHandler;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
