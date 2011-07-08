@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-
-        <!-- TODO: add a nice ?animated? image here, hourglass or something -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
         <TextView android:id="@+id/status_message"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:gravity="center_horizontal"
-        android:paddingBottom="6dip"/>
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="6dip"/>
 
-       <!-- TODO: add a cancel button -->
-</LinearLayout>
+        <ProgressBar android:id="@+id/autoconfig_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/status_message"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            style="@android:style/Widget.ProgressBar.Large" />
+
+       <!-- TODO: add a cancel button
+        <include layout="@layout/wizard_cancel"/> -->
+</RelativeLayout>

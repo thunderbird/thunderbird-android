@@ -8,6 +8,7 @@ import android.os.*;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -76,6 +77,8 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private boolean mDestroyed;
 
     private TextView mMessageView;
+    private ProgressBar mProgressCircle;
+
     private String mEmailAddress;
     private String mPassword;
     private String mLastMessage;
@@ -100,6 +103,9 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         // Setting up the view
         setContentView(R.layout.account_setup_autoconfig);
         mMessageView = (TextView)findViewById(R.id.status_message);
+        mProgressCircle = (ProgressBar)findViewById(R.id.autoconfig_progress);
+        mProgressCircle.setIndeterminate(true);
+        mProgressCircle.setVisibility(View.VISIBLE);
 //        ((Button)findViewById(R.id.cancel)).setOnClickListener(this);
 
         // Getting our data to work with
@@ -125,7 +131,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                 String domain = emailParts[1];
 
                 /*
-                    First part: check if serverside configuration data exists
+                    Check if configuration data exists and if it does read in
                  */
                 int i = 0;
                 while( i < urlTemplates.size() ){
@@ -147,6 +153,11 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                             // parse and finish
                             // remember if i >= UNSAFE_URL_START => POSSIBLE UNSAFE DATA, alert user!!!
                             parse(data);
+                            try {
+                                Thread.sleep(1750);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            }
                             finish();
                             return;
                         }
