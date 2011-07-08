@@ -114,7 +114,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
         switch(dialog_id){
             case DIALOG_NEW_ACCOUNT:
                 dialog.setContentView(R.layout.account_dialog_new);
-                dialog.setTitle("Setup a new account.");
+                dialog.setTitle(R.string.account_setup_dialog_new_title);
 
                 final EditText emailField = ((EditText)dialog.findViewById(R.id.account_dialog_address_field));
                 final EditText passwordField = ((EditText)dialog.findViewById(R.id.account_dialog_password_field));
@@ -155,9 +155,8 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
         switch(id){
             case DIALOG_DEVICE_ACCOUNT:
             case DIALOG_BACKUP_ACCOUNT:
-                ((TextView)dialog.findViewById(R.id.account_dialog_password_help)).setText
-                        //("Enter the password for the '" + args.get(BUNDLE_TYPE_SUGGESTION) + "' account: ");
-                        ("Enter the password for the this account: ");
+                ((TextView)dialog.findViewById(R.id.account_dialog_password_help))
+                        .setText(R.string.account_setup_dialog_enter_password);
 
                 final EditText passwordField = ((EditText) dialog.findViewById(R.id.account_dialog_password_field));
                 final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);

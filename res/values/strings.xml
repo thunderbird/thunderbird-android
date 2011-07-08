@@ -378,6 +378,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_other_acount">Other account</string>
+    <string name="account_setup_dialog_enter_password">Enter the password for the this account: </string>
+    <string name="account_setup_dialog_new_title">Setup a new account</string>
     <string name="accounts_setup_help">
         Select an account here to setup, press menu to load more backup files or create an new account.
     </string>
