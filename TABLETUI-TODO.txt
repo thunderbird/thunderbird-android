@@ -1,1 +1,24 @@
 Open issues / roadmap for experimental/tabletui 
+
+= Bugs =
+
+* editing a draft that had been saved has HTML leak into it
+* clicking the popup send menu doesn't dismiss the menu options
+* save fewer drafts
+* better "mail not sent" notifications.
+* Verify Yahoo IMAP IDLE
+
+= Features (In no particular order) =
+
+* HTML editing
+* HTML signatures
+* Undelete
+* Better bandwidth monitoring
+* Switch to MemorizingTrustManager
+* Bandwidth counters (with some level of explanation)
+* Move ongoing notifications into the platform notifications api
+
+
+= Architecture =
+
+* Switch to ActionBarSherlock (requires switching to fragments. See actionbarsherlock experimental branch)
