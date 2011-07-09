@@ -2166,7 +2166,12 @@ public class WebDavStore extends Store {
          * Returns the message count as it was retrieved
          */
         public int getMessageCount() {
-            int messageCount = -1;
+            // It appears that Exchange is returning responses
+            // without a visiblecount element for empty folders
+            // Which resulted in this code returning -1 (as that was
+            // the previous default.)
+            // -1 is an error condition. Now the default is empty
+            int messageCount = 0;
 
             for (String uid : mData.keySet()) {
                 HashMap<String, String> data = mData.get(uid);
