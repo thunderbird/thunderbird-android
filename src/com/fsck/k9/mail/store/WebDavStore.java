@@ -1587,13 +1587,13 @@ public class WebDavStore extends Store {
                 WebDavMessage wdMessage = (WebDavMessage) messages[i];
 
                 if (listener != null) {
-                    listener.messageStarted(messages[i].getUid(), i, count);
+                    listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
                 wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
 
                 if (listener != null) {
-                    listener.messageFinished(messages[i], i, count);
+                    listener.messageFinished(wdMessage, i, count);
                 }
             }
         }
