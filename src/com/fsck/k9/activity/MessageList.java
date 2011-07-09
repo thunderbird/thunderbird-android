@@ -1614,12 +1614,13 @@ public class MessageList
 
     public void  showComposeMenu(View view) {
 
-        QuickAction qa = new QuickAction(view);
+        final QuickAction qa = new QuickAction(view);
         ActionItem composeAction = new ActionItem();
         composeAction.setTitle(getString(R.string.compose_action));
         composeAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_compose));
         composeAction.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
+                qa.dismiss();
                 onCompose();
             }
         });
@@ -1635,6 +1636,7 @@ public class MessageList
                 editDraftAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
                 editDraftAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
+                        qa.dismiss();
                         MessageCompose.actionEditDraft(MessageList.this, mAccount, mCurrentMessageInfo.message);
                     }
                 });
@@ -1649,6 +1651,7 @@ public class MessageList
                 replyAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply));
                 replyAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
+                        qa.dismiss();
                         onReply(mCurrentMessageInfo);
                     }
                 });
@@ -1658,6 +1661,7 @@ public class MessageList
                 ReplyAllAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_reply_all));
                 ReplyAllAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
+                        qa.dismiss();
                         onReplyAll(mCurrentMessageInfo);
                     }
                 });
@@ -1667,6 +1671,7 @@ public class MessageList
                 forwardAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_forward_mail));
                 forwardAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
+                        qa.dismiss();
                         onForward(mCurrentMessageInfo);
                     }
                 });
@@ -1677,6 +1682,7 @@ public class MessageList
                 shareAction.setIcon(getResources().getDrawable(R.drawable.ic_menu_share));
                 shareAction.setOnClickListener(new OnClickListener() {
                     @Override public void onClick(View v) {
+                        qa.dismiss();
                         onSendAlternate(mAccount, mCurrentMessageInfo);
                     }
                 });
