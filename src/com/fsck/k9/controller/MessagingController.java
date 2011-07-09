@@ -2743,30 +2743,20 @@ public class MessagingController implements Runnable {
          */
 
         if (part.getBody() != null) {
-            for (MessagingListener l : getListeners()) {
+            for (MessagingListener l : getListeners(listener)) {
                 l.loadAttachmentStarted(account, message, part, tag, false);
             }
-            if (listener != null) {
-                listener.loadAttachmentStarted(account, message, part, tag, false);
-            }
 
-            for (MessagingListener l : getListeners()) {
+            for (MessagingListener l : getListeners(listener)) {
                 l.loadAttachmentFinished(account, message, part, tag);
-            }
-
-            if (listener != null) {
-                listener.loadAttachmentFinished(account, message, part, tag);
             }
             return;
         }
 
 
 
-        for (MessagingListener l : getListeners()) {
+        for (MessagingListener l : getListeners(listener)) {
             l.loadAttachmentStarted(account, message, part, tag, true);
-        }
-        if (listener != null) {
-            listener.loadAttachmentStarted(account, message, part, tag, false);
         }
 
         put("loadAttachment", listener, new Runnable() {
@@ -2794,21 +2784,15 @@ public class MessagingController implements Runnable {
                     remoteFolder.fetchPart(remoteMessage, part, null);
 
                     localFolder.updateMessage((LocalMessage)message);
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(listener)) {
                         l.loadAttachmentFinished(account, message, part, tag);
-                    }
-                    if (listener != null) {
-                        listener.loadAttachmentFinished(account, message, part, tag);
                     }
                 } catch (MessagingException me) {
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Exception loading attachment", me);
 
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(listener)) {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
-                    }
-                    if (listener != null) {
-                        listener.loadAttachmentFailed(account, message, part, tag, me.getMessage());
                     }
                     addErrorMessage(account, null, me);
 
@@ -3372,10 +3356,7 @@ public class MessagingController implements Runnable {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
             for (Message message : messages) {
-                if (listener != null) {
-                    listener.messageDeleted(account, folder, message);
-                }
-                for (MessagingListener l : getListeners()) {
+                for (MessagingListener l : getListeners(listener)) {
                     l.messageDeleted(account, folder, message);
                 }
             }
@@ -3814,10 +3795,7 @@ public class MessagingController implements Runnable {
                     long oldSize = localStore.getSize();
                     localStore.compact();
                     long newSize = localStore.getSize();
-                    if (ml != null) {
-                        ml.accountSizeChanged(account, oldSize, newSize);
-                    }
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                     }
                 } catch (UnavailableStorageException e) {
@@ -3844,11 +3822,7 @@ public class MessagingController implements Runnable {
                     stats.size = newSize;
                     stats.unreadMessageCount = 0;
                     stats.flaggedMessageCount = 0;
-                    if (ml != null) {
-                        ml.accountSizeChanged(account, oldSize, newSize);
-                        ml.accountStatusChanged(account, stats);
-                    }
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                         l.accountStatusChanged(account, stats);
                     }
@@ -3876,11 +3850,7 @@ public class MessagingController implements Runnable {
                     stats.size = newSize;
                     stats.unreadMessageCount = 0;
                     stats.flaggedMessageCount = 0;
-                    if (ml != null) {
-                        ml.accountSizeChanged(account, oldSize, newSize);
-                        ml.accountStatusChanged(account, stats);
-                    }
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                         l.accountStatusChanged(account, stats);
                     }

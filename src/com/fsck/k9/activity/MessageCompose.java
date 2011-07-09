@@ -824,8 +824,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             attachments.add(attachment.uri);
         }
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
-        outState.putBoolean(STATE_KEY_CC_SHOWN, mCcView.getVisibility() == View.VISIBLE);
-        outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccView.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_CC_SHOWN, mCcWrapper.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, mQuotedTextMode);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
@@ -2016,7 +2016,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             }
 
                         }
-                        mCcView.setVisibility(View.VISIBLE);
+                        mCcWrapper.setVisibility(View.VISIBLE);
                     }
                 }
             } else if (ACTION_FORWARD.equals(action)) {
@@ -2042,7 +2042,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 addAddresses(mToView, message.getRecipients(RecipientType.TO));
                 if (message.getRecipients(RecipientType.CC).length > 0) {
                     addAddresses(mCcView, message.getRecipients(RecipientType.CC));
-                    mCcView.setVisibility(View.VISIBLE);
+                    mCcWrapper.setVisibility(View.VISIBLE);
                 }
 
                 Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
@@ -2051,9 +2051,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     String bccAddress = mAccount.getAlwaysBcc();
                     if (bccRecipients.length == 1 && bccAddress != null && bccAddress.equals(bccRecipients[0].toString())) {
                         // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
-                        mBccView.setVisibility(View.GONE);
+                        mBccWrapper.setVisibility(View.GONE);
                     } else {
-                        mBccView.setVisibility(View.VISIBLE);
+                        mBccWrapper.setVisibility(View.VISIBLE);
                     }
                 }
 
