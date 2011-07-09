@@ -10,6 +10,7 @@ Open issues / roadmap for experimental/tabletui
 
 = Features (In no particular order) =
 
+* Settings Export/Import
 * HTML editing
 * HTML signatures
 * Undelete
