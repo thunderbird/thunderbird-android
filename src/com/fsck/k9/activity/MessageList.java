@@ -1626,7 +1626,7 @@ public class MessageList
         });
         qa.addActionItem(composeAction);
 
-        if (mCurrentMessageInfo != null) {
+        if (mCurrentMessageInfo != null && !mSplitView.isPrimaryContentMaximized()) {
 
             if (mCurrentMessageInfo.folder.name.equals(mCurrentMessageInfo.message.getFolder().getAccount().getDraftsFolderName())) {
 
