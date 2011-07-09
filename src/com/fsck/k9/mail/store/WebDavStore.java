@@ -1652,8 +1652,13 @@ public class WebDavStore extends Store {
                     listener.messageStarted(messages[i].getUid(), i, count);
                 }
 
-                wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
-                wdMessage.setFlagInternal(Flag.SEEN, envelopes.get(wdMessage.getUid()).getReadStatus());
+                ParsedMessageEnvelope envelope = envelopes.get(wdMessage.getUid());
+                if (envelope != null) {
+                    wdMessage.setNewHeaders(envelope);
+                    wdMessage.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
+                } else {
+                    Log.e(K9.LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
+                }
 
                 if (listener != null) {
                     listener.messageFinished(messages[i], i, count);
