@@ -1225,6 +1225,9 @@ public class WebDavStore extends Store {
             if (dataset != null) {
                 messageCount = dataset.getMessageCount();
             }
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
+                Log.v(K9.LOG_TAG, "Counted messages and webdav returned: "+messageCount);
+            }
 
             return messageCount;
         }
