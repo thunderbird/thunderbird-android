@@ -2124,10 +2124,14 @@ public class WebDavStore extends Store {
             for (String uid : mData.keySet()) {
                 HashMap<String, String> data = mData.get(uid);
                 String readStatus = data.get("read");
-                if (readStatus != null &&
-                        !readStatus.equals("")) {
+                if (readStatus != null && !readStatus.equals("")) {
                     Boolean value = !readStatus.equals("0");
                     uidToRead.put(uid, value);
+                } else {
+                    // We don't actually want to have null values in our hashmap,
+                    // as it causes the calling code to crash with an NPE as it
+                    // does a lookup in the maap.
+                    uidToRead.put(uid, false);
                 }
             }
 
