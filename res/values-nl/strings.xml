@@ -10,12 +10,12 @@
     <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
-    <string name="read_attachment_label">Lees Email bijlage</string>
-    <string name="read_attachment_desc">Sta deze applicatie toe de bijlage van emails te lezen.</string>
-    <string name="read_messages_label">Lees Emails</string>
-    <string name="read_messages_desc">Sta deze aplicatie toe je Emails te lezen.</string>
-    <string name="delete_messages_label">Verwijder Emails</string>
-    <string name="delete_messages_desc">Sta deze applicatie toe om je Emails te verwijderen.</string>
+    <string name="read_attachment_label">Lees bijlage</string>
+    <string name="read_attachment_desc">Sta deze applicatie toe om bijlagen van e-mails te lezen.</string>
+    <string name="read_messages_label">Lees e-mails</string>
+    <string name="read_messages_desc">Sta deze aplicatie toe om je e-mails te lezen.</string>
+    <string name="delete_messages_label">Verwijder e-mails</string>
+    <string name="delete_messages_desc">Sta deze applicatie toe om je e-mails te verwijderen.</string>
 
     <string name="about_title_fmt">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
@@ -27,7 +27,7 @@
 
     <string name="compose_title">Ontwerp</string>
     <string name="debug_title">Fout opsporen</string>
-    <string name="choose_folder_title">Kies map</string>
+    <string name="choose_folder_title">Kies een map</string>
     <string name="choose_color_title">Kies een kleur</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
@@ -46,7 +46,7 @@
     <string name="next_action">Volgende</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Vorige</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
-    <string name="cancel_action">Annuleer</string>
+    <string name="cancel_action">Annuleren</string>
     <string name="send_action">Verzenden</string>
     <string name="send_again_action">Opnieuw Verzenden</string>
     <string name="select_action">Selecteren</string>
@@ -68,13 +68,13 @@
     <string name="refresh_action">Vernieuwen</string>
     <string name="check_mail_action">Controleer mail</string>
     <string name="send_messages_action">Verstuur bericht</string>
-    <string name="list_folders_action">Mappen lijst</string>
+    <string name="list_folders_action">Mappenlijst</string>
     <string name="refresh_folders_action">Vernieuw mappen</string>
     <string name="mark_all_as_read_action">Markeer alle berichten als gelezen</string>
     <string name="add_account_action">Voeg account toe</string>
     <string name="compose_action">Nieuw bericht</string>
     <string name="search_action">Zoeken</string>
-    <string name="search_results">Zoek resultaten</string>
+    <string name="search_results">Zoekresultaten</string>
     <string name="preferences_action">Instellingen</string>
     <string name="open_action">Open</string>
     <string name="account_settings_action">Account instellingen</string>
@@ -94,7 +94,7 @@
     <string name="send_alternate_chooser_title">Kies afzender</string>
 
     <string name="mark_all_as_read_dlg_title">Markeer alle berichten als gelezen</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Markeer alle berichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelezen?  (inclusief berichten in de map welke niet zichtbaar zijn in K-9)</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Markeer alle berichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelezen?  (inclusief berichten in de map die niet zichtbaar zijn in K-9)</string>
 
     <string name="flag_action">Voeg ster toe</string>
     <string name="unflag_action">Verwijder ster</string>
@@ -129,16 +129,15 @@
     <string name="general_no_sender">Geen afzender</string>
     <string name="status_loading">Polling</string>
     <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_more">Laden berichten\u2026</string>
-    <string name="status_network_error">Verbindings fout</string>
+    <string name="status_loading_more">Berichten laden\u2026</string>
+    <string name="status_network_error">Netwerkfout</string>
     <string name="status_invalid_id_error">Bericht niet gevonden</string>
     <string name="status_error">Fout</string> <!-- Used in Outbox when a message has failed to send -->
     <string name="status_sending">Bezig met verzenden</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Opnieuw meer berichten laden</string>
 
-    <string name="load_more_messages_fmt">Meer
-    dan <xliff:g id="messages_to_load">%d</xliff:g> laden</string>
+    <string name="load_more_messages_fmt">Volgende <xliff:g id="messages_to_load">%d</xliff:g> berichten</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -152,9 +151,9 @@
     <xliff:g id="newSize">%s</xliff:g>
     </string>
 
-    <string name="compacting_account">Verdichten account \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="clearing_account">Wissen account \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Opnieuw instellen account \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="compacting_account">Account \"<xliff:g id="account">%s</xliff:g>\" comprimeren</string>
+    <string name="clearing_account">Account \"<xliff:g id="account">%s</xliff:g>\" wissen</string>
+    <string name="recreating_account">Account \"<xliff:g id="account">%s</xliff:g>\" opnieuw instellen</string>
 
     <string name="notification_new_title">Nieuwe mail</string>
     <string name="notification_new_scrolling">Nieuwe mail van <xliff:g id="sender">%s</xliff:g></string>
@@ -196,7 +195,7 @@
     De <xliff:g id="errorFolder">%s</xliff:g> map kan fout berichten bevatten over dit probleem.</string>
 
     <string name="alert_header">K-9 waarschuwing</string>
-    <string name="no_connection_alert">Synchroniseren en verzenden is opgeschort wegens gebrek aan netwerk.</string>
+    <string name="no_connection_alert">Synchroniseren en verzenden is gestopt omdat er geen verbinding is.</string>
 
     <string name="end_of_folder">Geen berichten meer</string>
 
@@ -207,7 +206,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
 \n * Push mail die IMAP IDLE gebruikt
 \n * Betere prestaties
 \n * Bericht heropenen
-\n * Email handtekeningen
+\n * E-mail handtekeningen
 \n * Bcc naar jezelf
 \n * Map abonnementen
 \n * Alle mappen synchronisatie
@@ -226,7 +225,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
 </string>
 
     <string name="debug_version_fmt">Versie: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Fout loggen toestaan</string>
+    <string name="debug_enable_debug_logging_title">Fouten loggen toestaan</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
     <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
     <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
@@ -256,17 +255,17 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="message_compose_subject_hint">Onderwerp</string>
     <string name="message_compose_content_hint">Bericht tekst</string>
     <string name="message_compose_quote_header_separator">-------- Origineel bericht --------</string>
-    <string name="message_compose_quote_header_subject">Subject:</string>
+    <string name="message_compose_quote_header_subject">Onderwerp:</string>
     <string name="message_compose_quote_header_send_date">Verzonden:</string>
-    <string name="message_compose_quote_header_from">From:</string>
-    <string name="message_compose_quote_header_to">To:</string>
+    <string name="message_compose_quote_header_from">Van:</string>
+    <string name="message_compose_quote_header_to">Aan:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schreef:\n\n</string>
     <string name="message_compose_quoted_text_label">Ge-quote tekst</string>
     <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>
-    <string name="error_contact_address_not_found">Geen email adres gevonden.</string>
-    <string name="message_compose_downloading_attachments_toast">Sommige bijlage zijn niet gedownload. Deze worden automatisch gedownload voor dat dit bericht is verzonden.</string>
-    <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd, omdat ze niet zijn gedownload.</string>
+    <string name="error_contact_address_not_found">Geen e-mailadres gevonden.</string>
+    <string name="message_compose_downloading_attachments_toast">Sommige bijlagen zijn niet gedownload. Deze worden automatisch gedownload voor dat dit bericht is verzonden.</string>
+    <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd omdat ze niet zijn gedownload.</string>
 
 
 
@@ -283,9 +282,9 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Bijlage opgeslagen op SD-kaart als <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Opslaan bijlage op SD-kaart mislukt.</string>
-    <string name="message_view_show_pictures_instructions">Selecteer \"Laat afbeeldingen zien\" om de omsloten afbeeldingen te laten zien.</string>
+    <string name="message_view_show_pictures_instructions">Selecteer \"Laat afbeeldingen zien\" om de afbeeldingen te laten zien.</string>
     <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
-    <string name="message_view_fetching_attachment_toast">ophalen bijlage.</string>
+    <string name="message_view_fetching_attachment_toast">bijlage ophalen.</string>
     <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
 
 
@@ -294,7 +293,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Niet alle headers zijn gedownload of opgeslagen. Selecteer \"Sla alle headers lokaal op\" in de account\'s inkomende server instellingen om dit in te schakelen voor de toekomst.</string>
     <string name="message_no_additional_headers_available">Alle headers zijn gedownload, maar er zijn geen extra headers aan te tonen.</string>
-    <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mail server is mislukt.</string>
+    <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mailserver is mislukt.</string>
 
     <string name="mailbox_select_dlg_title">Mappen</string>
     <string name="mailbox_select_dlg_new_mailbox_action">Nieuwe map</string>
@@ -324,7 +323,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="global_settings_touchable_summary">Ruimere lijst items met bericht voorbeelden</string>
     <string name="global_settings_preview_lines_label">Preview regels</string>
     <string name="global_settings_show_correspondent_names_label">Toon naam bij bericht</string>
-    <string name="global_settings_show_correspondent_names_summary">Geef bij voorkeur naam van afzender/geadresseerde weer i.p.v. email adres</string>
+    <string name="global_settings_show_correspondent_names_summary">Geef bij voorkeur naam van afzender/geadresseerde weer i.p.v. e-mailadres</string>
     <string name="global_settings_show_contact_name_label">Toon naam uit contactenlijst</string>
     <string name="global_settings_show_contact_name_summary">Geef de naam weer uit het adresboek</string>
     <string name="global_settings_registered_name_color_label">Kleuren contacten</string>
@@ -355,10 +354,10 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
 
 
     <string name="account_setup_basics_title">Een nieuwe account instellen</string>
-    <string name="account_setup_basics_instructions">Toets het email adres in van deze account:</string>
+    <string name="account_setup_basics_instructions">Toets het e-mailadres in van deze account:</string>
     <string name="account_setup_basics_instructions2_fmt">(Je mag meer <xliff:g id="number_accounts">%d</xliff:g> accounts toevoegen.)</string>
-    <string name="account_setup_basics_email_hint">Email adres</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> is geen geldig email adres.</string>
+    <string name="account_setup_basics_email_hint">E-mailadres</string>
+    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> is geen geldig e-mailadres.</string>
     <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> is al toegevoegd.</string>
     <string name="account_setup_basics_password_hint">Wachtwoord</string>
     <string name="account_setup_basics_default_label">Verzend mail standaard vanaf deze account</string>
@@ -412,7 +411,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Anders</string>
 
-    <string name="account_setup_incoming_save_all_headers_title">Downloaden van email headers</string>
+    <string name="account_setup_incoming_save_all_headers_title">Downloaden van e-mailheaders</string>
     <string name="account_setup_incoming_save_all_headers_label">Sla alle headers lokaal op</string>
 
     <string name="local_storage_provider_external_label">Externe opslag (SD kaart)</string>
@@ -534,7 +533,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="account_settings_default_summary">Standaard mail verzenden vanaf deze account</string>
     <string name="account_settings_notify_label">Nieuwe mail notificatie</string>
     <string name="account_settings_notify_sync_label">Sync notificatie</string>
-    <string name="account_settings_email_label">Jou email adres</string>
+    <string name="account_settings_email_label">Je e-mailadres</string>
     <string name="account_settings_notify_summary">Notificatie in statusbalk wanneer nieuwe mail binnenkomt</string>
     <string name="account_settings_notify_sync_summary">Notificatie in statusbalk wanneer wordt gecontroleerd op nieuwe mail</string>
     <string name="account_settings_show_combined_label">Laat gecombineerde Inbox zien</string>
@@ -584,7 +583,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="account_settings_crypto_app_none">Geen</string>
     <string name="account_settings_crypto_app_not_available">niet beschikbaar</string>
     <string name="account_settings_crypto_auto_signature">Auto-ondertekenen</string>
-    <string name="account_settings_crypto_auto_signature_summary">Gebruik het account email adres om de digitale sleutel te raden.</string>
+    <string name="account_settings_crypto_auto_signature_summary">Gebruik het e-mailadres van je account om de digitale sleutel te raden.</string>
 
     <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
     <string name="account_settings_second_class_check_frequency_label">2e klasse controleer frequentie</string>
@@ -734,7 +733,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="edit_identity_description_hint">(Optioneel)</string>
     <string name="edit_identity_name_label">Jou naam</string>
     <string name="edit_identity_name_hint">(Optioneel)</string>
-    <string name="edit_identity_email_label">Email adres</string>
+    <string name="edit_identity_email_label">E-mailadres</string>
     <string name="edit_identity_email_hint">(Vereist)</string>
     <string name="edit_identity_reply_to_label">Reply-naar adres</string>
     <string name="edit_identity_reply_to_hint">(Optioneel)</string>
@@ -755,7 +754,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
 
     <string name="no_identities">Ga naar Account Instellingen -&gt; Beheer identiteiten om identiteiten aan te maken</string>
     <string name="no_removable_identity">Je kan je eigen identiteit niet verwijderen</string>
-    <string name="identity_has_no_email">Je kan een identiteit niet gebruiken zonder email adres</string>
+    <string name="identity_has_no_email">Je kan een identiteit niet gebruiken zonder e-mailadres</string>
     <string name="identity_will_not_be_saved">Je identiteit en handtekening wijzigingen worden niet opgeslagen als concept</string>
 
     <string name="sort_earliest_first">Oudste berichten eerst</string>
