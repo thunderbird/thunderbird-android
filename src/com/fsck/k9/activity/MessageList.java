@@ -1327,12 +1327,11 @@ public class MessageList
         }
 
         boolean retval = true;
-        int position = mListView.getSelectedItemPosition();
         try {
-            if (position >= 0) {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+            if (mCurrentMessageInfo != null) {
+                MessageInfoHolder message = mCurrentMessageInfo;
 
-                final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
+                final List<MessageInfoHolder> selection = getSelectionFromMessage(mCurrentMessageInfo);
 
                 if (message != null) {
                     switch (keyCode) {
