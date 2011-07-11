@@ -822,7 +822,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
     Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM -
     Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
-    - Return to Folders\u000AS - Select/deselect\u000A/ - Search\u000A5 - Check mail</string>
+    - Return to Folders\u000AS - Select/deselect\u000AZ - Toggle read/unread\u000A/
+    - Search\u000A5 - Check mail</string>
 
     <string name="folder_list_help_key">
     1 - Display only 1st Class folders\u000A
