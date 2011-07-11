@@ -134,6 +134,15 @@
             <arg path="${out.debug.file}" />
         </exec>
     </target>
+    <!-- Re-Install the package on the default emulator -->
+    <target name="reinstall" depends="debug">
+        <echo>Reinstalling ${out.debug.file} onto default emulator...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg value="install" />
+            <arg value="-r" />
+            <arg path="${out.debug.file}" />
+        </exec>
+    </target>
     <target name="astyle">
     <exec executable="astyle" failonerror="true">
         <arg line="--style=java --indent=spaces=4 --brackets=attach --convert-tabs   --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java'"/>
