@@ -1320,6 +1320,14 @@ public class MessageList
             onToggleSortAscending();
             return true;
         }
+        case KeyEvent.KEYCODE_5: {
+            checkMail(mAccount, mFolderName);
+            return true;
+        }
+        case KeyEvent.KEYCODE_SLASH: {
+            onSearchRequested();
+            return true;
+        }
         case KeyEvent.KEYCODE_H: {
             showToast(getString(R.string.message_list_help_key), Toast.LENGTH_LONG);
             return true;
