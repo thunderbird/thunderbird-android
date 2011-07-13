@@ -1534,7 +1534,7 @@ public class MessagingController implements Runnable {
             return false;
 
         }
-        if (message.olderThan(earliestDate)) {
+        if (account.isSearchByDateCapable() && message.olderThan(earliestDate)) {
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
                       + earliestDate + ", hence not saving");

@@ -977,6 +977,18 @@ public class Account implements BaseAccount {
         return Store.getRemoteInstance(this);
     }
 
+    // It'd be great if this actually went into the store implementation
+    // to get this, but that's expensive and not easilly accessible
+    // during initialization
+    public boolean isSearchByDateCapable() {
+        if (getStoreUri().startsWith("imap")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     @Override
     public synchronized String toString() {
         return mDescription;

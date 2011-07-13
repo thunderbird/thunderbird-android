@@ -385,18 +385,26 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+    
+
         mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
-        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
-        mMessageAge.setSummary(mMessageAge.getEntry());
-        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mMessageAge.findIndexOfValue(summary);
-                mMessageAge.setSummary(mMessageAge.getEntries()[index]);
-                mMessageAge.setValue(summary);
-                return false;
-            }
-        });
+
+        if (!mAccount.isSearchByDateCapable()) {
+            mMessageAge.setEnabled(false);
+        } else {
+	        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
+	        mMessageAge.setSummary(mMessageAge.getEntry());
+	        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mMessageAge.findIndexOfValue(summary);
+	                mMessageAge.setSummary(mMessageAge.getEntries()[index]);
+	                mMessageAge.setValue(summary);
+	                return false;
+	            }
+	        });
+	
+        }
 
         mMessageSize = (ListPreference) findPreference(PREFERENCE_MESSAGE_SIZE);
         mMessageSize.setValue(String.valueOf(mAccount.getMaximumAutoDownloadMessageSize()));
@@ -683,8 +691,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
-        mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
+        if (mAccount.isSearchByDateCapable()) {
+            mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
+        }
         mAccount.getNotificationSetting().setVibrate(mAccountVibrate.isChecked());
         mAccount.getNotificationSetting().setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
