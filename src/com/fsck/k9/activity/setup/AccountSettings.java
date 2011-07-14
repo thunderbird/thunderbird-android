@@ -46,6 +46,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
 
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
+    private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
+    private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
@@ -299,19 +301,6 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
-        mPushMode.setEnabled(mIsPushCapable);
-        mPushMode.setValue(mAccount.getFolderPushMode().name());
-        mPushMode.setSummary(mPushMode.getEntry());
-        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mPushMode.findIndexOfValue(summary);
-                mPushMode.setSummary(mPushMode.getEntries()[index]);
-                mPushMode.setValue(summary);
-                return false;
-            }
-        });
 
         mTargetMode = (ListPreference) findPreference(PREFERENCE_TARGET_MODE);
         mTargetMode.setValue(mAccount.getFolderTargetMode().name());
@@ -339,19 +328,24 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
-        mExpungePolicy.setEnabled(mIsExpungeCapable);
-        mExpungePolicy.setValue(mAccount.getExpungePolicy());
-        mExpungePolicy.setSummary(mExpungePolicy.getEntry());
-        mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mExpungePolicy.findIndexOfValue(summary);
-                mExpungePolicy.setSummary(mExpungePolicy.getEntries()[index]);
-                mExpungePolicy.setValue(summary);
-                return false;
-            }
-        });
+        if (mIsExpungeCapable) {
+	        mExpungePolicy.setValue(mAccount.getExpungePolicy());
+	        mExpungePolicy.setSummary(mExpungePolicy.getEntry());
+	        mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mExpungePolicy.findIndexOfValue(summary);
+	                mExpungePolicy.setSummary(mExpungePolicy.getEntries()[index]);
+	                mExpungePolicy.setValue(summary);
+	                return false;
+	            }
+	        });
+        } else {
+            ((PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING)).removePreference(mExpungePolicy);
+        }
+
 
         mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
         mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
@@ -390,8 +384,8 @@ public class AccountSettings extends K9PreferenceActivity {
         mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
 
         if (!mAccount.isSearchByDateCapable()) {
-            mMessageAge.setEnabled(false);
-        } else {
+            ((PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING)).removePreference(mMessageAge);
+       } else {
 	        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
 	        mMessageAge.setSummary(mMessageAge.getEntry());
 	        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -523,10 +517,22 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
+	        mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
+	        mPushMode.setValue(mAccount.getFolderPushMode().name());
+	        mPushMode.setSummary(mPushMode.getEntry());
+	        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mPushMode.findIndexOfValue(summary);
+	                mPushMode.setSummary(mPushMode.getEntries()[index]);
+	                mPushMode.setValue(summary);
+	                return false;
+	            }
+	        });
         } else {
-            mPushPollOnConnect.setEnabled(false);
-            mMaxPushFolders.setEnabled(false);
-            mIdleRefreshPeriod.setEnabled(false);
+            PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
+            incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
+            incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -703,7 +709,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
-        mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        if (mIsExpungeCapable) {
+            mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        };
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
@@ -747,13 +755,7 @@ public class AccountSettings extends K9PreferenceActivity {
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
 
-        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
-
-        if (mAccount.getFolderPushMode() != FolderMode.NONE) {
-            needsPushRestart |= displayModeChanged;
-            needsPushRestart |= mIncomingChanged;
-        }
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
@@ -769,14 +771,22 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.save(Preferences.getPreferences(this));
-
-        if (needsRefresh && needsPushRestart) {
-            MailService.actionReset(this, null);
-        } else if (needsRefresh) {
-            MailService.actionReschedulePoll(this, null);
-        } else if (needsPushRestart) {
-            MailService.actionRestartPushers(this, null);
-        }
+       
+	    if (mIsPushCapable) {
+	        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+	        if (mAccount.getFolderPushMode() != FolderMode.NONE) {
+	            needsPushRestart |= displayModeChanged;
+	            needsPushRestart |= mIncomingChanged;
+	        }
+	
+	        if (needsRefresh && needsPushRestart) {
+	            MailService.actionReset(this, null);
+	        } else if (needsRefresh) {
+	            MailService.actionReschedulePoll(this, null);
+	        } else if (needsPushRestart) {
+	            MailService.actionRestartPushers(this, null);
+	        }
+	    }
         // TODO: refresh folder list here
     }
 
