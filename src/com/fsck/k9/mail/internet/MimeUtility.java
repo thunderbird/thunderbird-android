@@ -1076,7 +1076,7 @@ public class MimeUtility {
          */
         if (contentTransferEncoding != null) {
             contentTransferEncoding =
-            MimeUtility.getHeaderParameter(contentTransferEncoding, null);
+                MimeUtility.getHeaderParameter(contentTransferEncoding, null);
             if ("quoted-printable".equalsIgnoreCase(contentTransferEncoding)) {
                 in = new QuotedPrintableInputStream(in);
             } else if ("base64".equalsIgnoreCase(contentTransferEncoding)) {
@@ -1102,7 +1102,7 @@ public class MimeUtility {
      * @throws MessagingException
      */
     public static void collectParts(Part part, ArrayList<Part> viewables,
-    ArrayList<Part> attachments) throws MessagingException {
+                                    ArrayList<Part> attachments) throws MessagingException {
         /*
          * If the part is Multipart but not alternative it's either mixed or
          * something we don't know about, which means we treat it as mixed
@@ -1326,10 +1326,10 @@ public class MimeUtility {
 
     private static String getJisVariantFromAddress(String address) {
         if (isInDomain(address, "docomo.ne.jp") || isInDomain(address, "dwmail.jp") ||
-        isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com"))
+                isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com"))
             return "docomo";
         else if (isInDomain(address, "softbank.ne.jp") || isInDomain(address, "vodafone.ne.jp") ||
-        isInDomain(address, "disney.ne.jp") || isInDomain(address, "vertuclub.ne.jp"))
+                 isInDomain(address, "disney.ne.jp") || isInDomain(address, "vertuclub.ne.jp"))
             return "softbank";
         else if (isInDomain(address, "ezweb.ne.jp") || isInDomain(address, "ido.ne.jp"))
             return "kddi";
@@ -1364,14 +1364,14 @@ public class MimeUtility {
 
         // iso-2022-jp variants are supported by no versions as of Dec 2010.
         if (charset.length() > 19 && charset.startsWith("x-") &&
-        charset.endsWith("-iso-2022-jp-2007") && !Charset.isSupported(charset)) {
+                charset.endsWith("-iso-2022-jp-2007") && !Charset.isSupported(charset)) {
             in = new Iso2022JpToShiftJisInputStream(in);
             charset = "x-" + charset.substring(2, charset.length() - 17) + "-shift_jis-2007";
         }
 
         // shift_jis variants are supported by Eclair and later.
         if (charset.length() > 17 && charset.startsWith("x-") &&
-        charset.endsWith("-shift_jis-2007") && !Charset.isSupported(charset)) {
+                charset.endsWith("-shift_jis-2007") && !Charset.isSupported(charset)) {
             // If the JIS variant is iPhone, map the Unicode private use area in iPhone to the one in Android after
             // converting the character set from the standard Shift JIS to Unicode.
             if (charset.substring(2, charset.length() - 15).equals("iphone"))
@@ -1392,7 +1392,7 @@ public class MimeUtility {
         }
         if (!supported) {
             Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-            ". Falling back to US-ASCII");
+                  ". Falling back to US-ASCII");
             charset = "US-ASCII";
         }
         /*
@@ -2393,12 +2393,12 @@ public class MimeUtility {
 
     public static void setCharset(String charset, Part part) throws MessagingException {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-        part.getMimeType() + ";\n charset=" + getExternalCharset(charset));
+                       part.getMimeType() + ";\n charset=" + getExternalCharset(charset));
     }
 
     public static String getExternalCharset(String charset) {
         if (charset.length() > 17 && charset.startsWith("x-") &&
-        charset.endsWith("-shift_jis-2007"))
+                charset.endsWith("-shift_jis-2007"))
             return "shift_jis";
 
         return charset;

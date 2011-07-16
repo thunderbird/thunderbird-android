@@ -884,8 +884,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             }
 
-            allFolderValues = new String[folders.size()+1];
-            allFolderLabels = new String[folders.size()+1];
+            allFolderValues = new String[folders.size() + 1];
+            allFolderLabels = new String[folders.size() + 1];
 
             allFolderValues[0] = K9.FOLDER_NONE;
             allFolderLabels[0] = K9.FOLDER_NONE;
