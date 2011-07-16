@@ -488,6 +488,15 @@ public class ImapResponseParser {
         }
     }
 
+
+    public static boolean isStatusResponse(String symbol) {
+        return symbol.equalsIgnoreCase("OK") ||
+               symbol.equalsIgnoreCase("NO") ||
+               symbol.equalsIgnoreCase("BAD") ||
+               symbol.equalsIgnoreCase("PREAUTH") ||
+               symbol.equalsIgnoreCase("BYE");
+    }
+
     public static boolean equalsIgnoreCase(Object o1, Object o2) {
         if (o1 != null && o2 != null && o1 instanceof String && o2 instanceof String) {
             String s1 = (String)o1;
