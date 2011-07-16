@@ -252,6 +252,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
         Dealing with unpredictable input like this we better make sure we don't crash k-9.
      */
     private void validateServer(Server mServerInProgress) throws SAXException{
+        // TODO: check if basic information is provided
     }
 
     /*

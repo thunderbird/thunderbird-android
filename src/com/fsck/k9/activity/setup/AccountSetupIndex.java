@@ -180,35 +180,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     }
 
     private void onManualSetup(String email, String password) {
-        String[] emailParts = splitEmail(email);
-        String user = emailParts[0];
-        String domain = emailParts[1];
-
-        mAccount = Preferences.getPreferences(this).newAccount();
-        mAccount.setName(getOwnerName());
-        mAccount.setEmail(email);
-        try {
-            String userEnc = URLEncoder.encode(user, "UTF-8");
-            String passwordEnc = URLEncoder.encode(password, "UTF-8");
-
-            URI uri = new URI("placeholder", userEnc + ":" + passwordEnc, "mail." + domain, -1, null,
-                              null, null);
-            mAccount.setStoreUri(uri.toString());
-            mAccount.setTransportUri(uri.toString());
-        } catch (UnsupportedEncodingException enc) {
-            // This really shouldn't happen since the encoding is hardcoded to UTF-8
-            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        } catch (URISyntaxException use) {
-            /*
-             * If we can't set up the URL we just continue. It's only for
-             * convenience.
-             */
-        }
-        mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
-        mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
-        mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
-
-        AccountSetupAccountType.actionSelectAccountType(this, mAccount, bTmpDefaultAccount);
+        AccountSetupAccountType.actionStartManualConfiguration(this, email, password, bTmpDefaultAccount);
         finish();
     }
 
@@ -245,46 +217,6 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
            // add them to the list   ( with addBackupAccount )
            return true;
         }
-    }
-
-    /*
-        Some helpers copy pasted from previous setup. Need a review.
-     */
-    private String[] splitEmail(String email) {
-        String[] retParts = new String[2];
-        String[] emailParts = email.split("@");
-        retParts[0] = (emailParts.length > 0) ? emailParts[0] : "";
-        retParts[1] = (emailParts.length > 1) ? emailParts[1] : "";
-        return retParts;
-    }
-
-    private String getOwnerName() {
-        String name = null;
-        try {
-            name = Contacts.getInstance(this).getOwnerName();
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get owner name, using default account name", e);
-        }
-        if (name == null || name.length() == 0) {
-            try {
-                name = getDefaultAccountName();
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not get default account name", e);
-            }
-        }
-        if (name == null) {
-            name = "";
-        }
-        return name;
-    }
-
-    private String getDefaultAccountName() {
-        String name = null;
-        Account account = Preferences.getPreferences(this).getDefaultAccount();
-        if (account != null) {
-            name = account.getName();
-        }
-        return name;
     }
 
     /*
