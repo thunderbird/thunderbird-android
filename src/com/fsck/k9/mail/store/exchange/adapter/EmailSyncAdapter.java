@@ -33,7 +33,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.EasStore.EasFolder;
 import com.fsck.k9.mail.store.EasStore.EasMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
@@ -67,7 +66,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
 
     // Holds the parser's value for isLooping()
     boolean mIsLooping = false;
-	private List<Message> newEmails;
+	private List<EasMessage> newEmails;
 
     public EmailSyncAdapter(EasFolder folder, Account account) {
         super(folder, account);
@@ -103,7 +102,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
 
 //        private String mMailboxIdAsString;
 
-        ArrayList<Message> newEmails = new ArrayList<Message>();
+        ArrayList<EasMessage> newEmails = new ArrayList<EasMessage>();
         ArrayList<Long> deletedEmails = new ArrayList<Long>();
         ArrayList<ServerChange> changedEmails = new ArrayList<ServerChange>();
 
@@ -122,7 +121,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
 //                    Message.MAILBOX_KEY + "=" + mMailbox.mId, null);
         }
 
-        public void addData (Message msg) throws IOException, MessagingException {
+        public void addData (EasMessage msg) throws IOException, MessagingException {
 //            ArrayList<Attachment> atts = new ArrayList<Attachment>();
 
             while (nextTag(Tags.SYNC_APPLICATION_DATA) != END) {
@@ -156,13 +155,13 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
                         msg.setSubject(getValue());
                         break;
                     case Tags.EMAIL_READ:
-                    	msg.setFlag(Flag.SEEN, getValueInt() == 1);
+                    	msg.setFlagInternal(Flag.SEEN, getValueInt() == 1);
                         break;
                     case Tags.BASE_BODY:
                         bodyParser(msg);
                         break;
                     case Tags.EMAIL_FLAG:
-                    	msg.setFlag(Flag.FLAGGED, flagParser());
+                    	msg.setFlagInternal(Flag.FLAGGED, flagParser());
                         break;
                     case Tags.EMAIL_BODY:
                         String body = getValue();
@@ -266,8 +265,8 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
             }
         }
 
-        private void addParser(ArrayList<Message> emails) throws IOException, MessagingException {
-            Message msg = new EasMessage(null, mFolder);
+        private void addParser(ArrayList<EasMessage> emails) throws IOException, MessagingException {
+        	EasMessage msg = new EasMessage(null, mFolder);
 //            msg.mAccountKey = mAccount.mId;
 //            msg.mMailboxKey = mMailbox.mId;
 //            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
@@ -288,8 +287,8 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
             emails.add(msg);
         }
 
-        private void fetchParser(ArrayList<Message> emails) throws IOException, MessagingException {
-        	Message msg = new EasMessage(null, mFolder);
+        private void fetchParser(ArrayList<EasMessage> emails) throws IOException, MessagingException {
+        	EasMessage msg = new EasMessage(null, mFolder);
 //            msg.mAccountKey = mAccount.mId;
 //            msg.mMailboxKey = mMailbox.mId;
 //            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
@@ -900,7 +899,7 @@ public class EmailSyncAdapter extends AbstractSyncAdapter {
         return false;
     }
 
-	public List<Message> getMessages() {
+	public List<EasMessage> getMessages() {
 		return newEmails;
 	}
 }

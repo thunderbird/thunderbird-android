@@ -1061,7 +1061,7 @@ public class EasStore extends Store {
         	try {
 	        	EmailSyncAdapter target = getMessagesInternal(null, null, null, start, end);
             
-            	List<Message> messages = target.getMessages();
+            	List<EasMessage> messages = target.getMessages();
             	
             	return messages.toArray(EMPTY_MESSAGE_ARRAY);
         	} catch (IOException e) {
@@ -1280,7 +1280,7 @@ public class EasStore extends Store {
 			if (fetchBodySane || fetchBody) {
 	            try {
 					EmailSyncAdapter target = getMessagesInternal(messages, fp, listener, -1, -1);
-					messages = target.getMessages().toArray(new Message[0]);
+					messages = target.getMessages().toArray(EMPTY_MESSAGE_ARRAY);
 	            } catch (IOException e) {
 	            	throw new MessagingException("io exception while fetching messages", e);
 	            }
@@ -1323,20 +1323,50 @@ public class EasStore extends Store {
         }
 
         private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException {
-//            String messageBody = "";
-//            HashMap<String, String> headers = new HashMap<String, String>();
-//            HashMap<String, String> uidToUrl = getMessageUrls(uids);
-//            String[] urls = new String[uids.length];
-//
-//            for (int i = 0, count = uids.length; i < count; i++) {
-//                urls[i] = uidToUrl.get(uids[i]);
-//            }
-//
-////            messageBody = getMarkMessagesReadXml(urls, read);
-//            headers.put("Brief", "t");
-//            headers.put("If-Match", "*");
-//
-////            processRequest(this.mFolderUrl, "BPROPPATCH", messageBody, headers, false);
+        	Serializer s = new Serializer();
+			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
+			
+			try {
+				String className = target.getCollectionName();
+				String syncKey = target.getSyncKey();
+				s.start(Tags.SYNC_SYNC)
+				    .start(Tags.SYNC_COLLECTIONS)
+				    .start(Tags.SYNC_COLLECTION)
+				    .data(Tags.SYNC_CLASS, className)
+				    .data(Tags.SYNC_SYNC_KEY, syncKey)
+				    .data(Tags.SYNC_COLLECTION_ID, mServerId);
+	
+				// Start with the default timeout
+				int timeout = COMMAND_TIMEOUT;
+				
+		    	s.start(Tags.SYNC_COMMANDS);
+		    	for (String serverId : uids) {
+		    		s.start(Tags.SYNC_CHANGE)
+		    			.data(Tags.SYNC_SERVER_ID, serverId)
+		    			.start(Tags.SYNC_APPLICATION_DATA)
+		    				.data(Tags.EMAIL_READ, read ? "1" : "0")
+		    			.end()
+		    		.end();
+		    	}
+		    	s.end();
+	
+				s.end().end().end().done();
+				HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()),
+				        timeout);
+				int code = resp.getStatusLine().getStatusCode();
+				if (code == HttpStatus.SC_OK) {
+				    InputStream is = resp.getEntity().getContent();
+				    if (is != null) {
+				        target.cleanup();
+				    } else {
+				    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
+				    }
+				} else {
+					throw new MessagingException("not ok status");
+				}
+			} catch (IOException e) {
+				throw new MessagingException("could not set read flag", e);
+			}
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
@@ -1431,8 +1461,8 @@ public class EasStore extends Store {
 
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
-//            super.setFlag(flag, set);
-//            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            super.setFlag(flag, set);
+            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
     }
 
