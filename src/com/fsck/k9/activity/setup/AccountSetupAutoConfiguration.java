@@ -8,6 +8,7 @@ import android.os.*;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fsck.k9.K9;
@@ -15,6 +16,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.configxmlparser.ConfigurationXMLHandler;
 import com.fsck.k9.mail.store.TrustManagerFactory;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -27,6 +29,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeoutException;
 
 /**
  * User: dzan
@@ -35,14 +38,11 @@ import java.util.Arrays;
 
 public class AccountSetupAutoConfiguration extends K9Activity implements View.OnClickListener {
 
-    // constants for the intent/activity system
-    // TODO: read about intents and make this one result right
-    public static final int ACTIVITY_REQUEST_CODE = 1;
     private static final String EMAIL_ADDRESS = "account";
     private static final String PASSWORD = "password";
 
     // timeout for testing services availability ( in ms )
-    private static final int TIMEOUT = 20000;
+    private static final int TIMEOUT = 5000;
 
     // location of mozilla's ispdb
     private String databaseBaseUrl = "https://live.mozillamessaging.com/autoconfig/v1.1/";
@@ -78,10 +78,17 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
     private TextView mMessageView;
     private ProgressBar mProgressCircle;
+    private Button mCancelButton;
+    private Button mNextButton;
+    private TextView mWarningMsg;
 
     private String mEmailAddress;
     private String mPassword;
     private String mLastMessage;
+    private boolean bForceManual = false;
+    private boolean bDoneSearching = false;
+    private boolean bFound = false;
+    private boolean bParseFailed = false;
 
     /*
         Start the auto-configuration activity
@@ -90,7 +97,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         Intent i = new Intent(context, AccountSetupAutoConfiguration.class);
         i.putExtra(EMAIL_ADDRESS, email);
         i.putExtra(PASSWORD, password);
-        context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
+        context.startActivity(i);
     }
 
     /*
@@ -103,10 +110,17 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         // Setting up the view
         setContentView(R.layout.account_setup_autoconfig);
         mMessageView = (TextView)findViewById(R.id.status_message);
+        mWarningMsg = (TextView)findViewById(R.id.autoconfig_warning);
+        mWarningMsg.setVisibility(View.GONE);
         mProgressCircle = (ProgressBar)findViewById(R.id.autoconfig_progress);
         mProgressCircle.setIndeterminate(true);
         mProgressCircle.setVisibility(View.VISIBLE);
-//        ((Button)findViewById(R.id.cancel)).setOnClickListener(this);
+
+        mCancelButton = (Button)findViewById(R.id.autoconfig_button_cancel);
+        mCancelButton.setOnClickListener(this);
+        mNextButton = (Button)findViewById(R.id.autoconfig_button_next);
+        mNextButton.setOnClickListener(this);
+        mNextButton.setEnabled(false);
 
         // Getting our data to work with
         mEmailAddress = getIntent().getStringExtra(EMAIL_ADDRESS);
@@ -134,10 +148,15 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                     Check if configuration data exists and if it does read in
                  */
                 int i = 0;
-                while( i < urlTemplates.size() ){
+                while( i < urlTemplates.size() && !bFound ){
                     try{
                         // inform the user
                         setMessage(urlInfoStatements.get(i),true);
+
+                        // to make sure
+                        bParseFailed = false;
+                        bForceManual = false;
+                        bDoneSearching = false;
 
                         // preparing the urls
                         if( !domain.contains("%user%") ){ // else SHIT
@@ -147,23 +166,25 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
                         data = getXMLData(new URL(tmpURL));
 
+                        // might be the user cancelled by now or the app was destroyed
+                        if (mDestroyed) return;
+                        if (mCanceled) { finish(); return; }
+
                         if( !data.isEmpty() ){
                             setMessage(R.string.account_setup_autoconfig_found,false);
 
                             // parse and finish
-                            // remember if i >= UNSAFE_URL_START => POSSIBLE UNSAFE DATA, alert user!!!
+                            setMessage(R.string.account_setup_autoconfig_processing,true);
                             parse(data);
+                            setMessage(R.string.account_setup_autoconfig_succesful,false);
 
-                            // Give user some time to read output
-                            try { Thread.sleep(1750);
-                            } catch (InterruptedException e) { e.printStackTrace(); }
+                            // alert user these settings might be tampered with!!! ( no https )
+                            if( i >= UNSAFE_URL_START )
+                                mWarningMsg.setVisibility(View.VISIBLE);
 
-                            finish();
-                            return;
+                            bFound = true;
+                            continue;
                         }
-
-                        // end the output if needed
-                        closeUserInformationIfNeeded(i);
 
                     }catch (SocketTimeoutException ex){
                         Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
@@ -174,18 +195,21 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                     }catch (UnknownHostException ex){
                         Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
                                 tmpURL+"'", ex);
-                    }
-                    catch (SSLPeerUnverifiedException ex){
+                    }catch (SSLPeerUnverifiedException ex){
                         Log.e(K9.LOG_TAG, "Error while testing settings", ex);
-                        acceptKeyDialog(
-                            R.string.account_setup_failed_dlg_certificate_message_fmt,i,ex);
-                    }
-                    catch(IOException ex) {
-                        Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
-                                tmpURL+"'", ex);
-                    } catch (ErrorCodeException ex) {
+                        acceptKeyDialog(R.string.account_setup_failed_dlg_certificate_message_fmt,i,ex);
+                    }catch (SAXException e) {
+                        setMessage(R.string.account_setup_autoconfig_fail,false);
+                        bParseFailed = true;
+                    }catch (ParserConfigurationException e) {
+                        setMessage(R.string.account_setup_autoconfig_fail,false);
+                        bParseFailed = true;
+                    }catch (ErrorCodeException ex) {
                         Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '" +
                                 tmpURL + "' site didn't respond as expected. Got code: " + ex.getErrorCode(), ex);
+                    }catch(IOException ex) {
+                        Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
+                                tmpURL+"'", ex);
                     } finally {
                         // might be the user cancelled by now or the app was destroyed
                         if (mDestroyed) return;
@@ -193,37 +217,56 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
                         // check next url
                         ++i;
+
+                        // this was the last option..
+                        if(i == urlTemplates.size() ){
+                            bForceManual = true;
+                            setMessage(R.string.account_setup_autoconfig_forcemanual, true);
+                        }else{
+                            if( bParseFailed )
+                                setMessage(R.string.account_setup_autoconfig_trynext,true);
+                        }
                     }
 
                     // no server-side config was found
                     closeUserInformationIfNeeded(i-1);
                 }
+
+                bDoneSearching = true;
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        // TODO: set appropriate warning messages in here
+                        // 1. All good, continue
+                        // 2. Nothing came up, must manually config.. + help?
+                        // 3. Data did not came over HTTPS this could be UNSAFE !!!!!!
+                        mProgressCircle.setVisibility(View.INVISIBLE);
+                        mWarningMsg.setVisibility(View.VISIBLE);
+                        mNextButton.setEnabled(true);
+                        if( bForceManual )
+                            mNextButton.setText(getString(R.string.account_setup_basics_manual_setup_action));
+                        }
+                 });
+
             }
         }
         .start();
     }
 
+
     /*
         Start parsing the xml
      */
-    private void parse(String data) {
-        try{
-            XMLReader xr = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-            xr.setContentHandler(new ConfigurationXMLHandler());
-            //xr.parse(data);
-
-        // TODO: take care of these
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (SAXException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+    private void parse(String data) throws IOException, SAXException, ParserConfigurationException {
+        XMLReader xr = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+        xr.setContentHandler(new ConfigurationXMLHandler());
+        // TODO: see if this has performance consequences, otherwise change all so we pass around InputSource not string
+        xr.parse(new InputSource(new StringReader(data)));
     }
 
     /*
         Checks if an url is available / exists
      */
-    private String getXMLData(URL url) throws IOException, ErrorCodeException{
+    private String getXMLData(URL url) throws IOException, ErrorCodeException, SocketTimeoutException {
         // think we should assume no redirects
         // TODO: use k9's own TrustManager so the right exception gets throwed and the user can choose to accept the certificate
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -234,14 +277,23 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
         // get the data
         String tmp, line;
+        BufferedReader reader;
         tmp = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        while( (line = reader.readLine()) != null)
-            tmp += line;
 
-        if( conn.getResponseCode() != 200 )
-            throw new ErrorCodeException("Server did not return as expected.",conn.getResponseCode());
-        conn.disconnect();
+        try{
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            while( (line = reader.readLine()) != null)
+                tmp += line;
+
+            if( conn.getResponseCode() != 200 )
+                throw new ErrorCodeException("Server did not return as expected.",conn.getResponseCode());
+       }
+        catch (SocketTimeoutException ex)
+            { throw ex; }
+        finally
+            { conn.disconnect(); }
+
         return tmp;
     }
 
@@ -251,7 +303,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private void setMessage(int resId, final boolean newLine){
         setMessage(getString(resId), newLine);
     }
-    private void setMessage(final String msg, final boolean newline) {
+    private synchronized void setMessage(final String msg, final boolean newline) {
         mHandler.post(new Runnable() {
             public void run() {
                 // don't print if same as last message or when process should be destroyed
@@ -270,9 +322,10 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     }
 
     private void closeUserInformationIfNeeded(int urlNumb) {
-        int a = urlInfoStatements.get(urlNumb);
-        int b = urlInfoStatements.get(urlNumb+1);
-        if( urlNumb == urlInfoStatements.size() - 1 || a != b ){
+        if( bForceManual ) return;
+
+        if( urlNumb == urlInfoStatements.size() - 1
+                || (int)urlInfoStatements.get(urlNumb) != urlInfoStatements.get(urlNumb+1) ){
             mHandler.post(new Runnable() {
                 public void run() {
                     mMessageView.setText(mMessageView.getText().toString()+
@@ -295,6 +348,10 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         Alert user he canceled and stop the thread
      */
     private void onCancel() {
+        if( bDoneSearching ){
+            finish();
+            return;
+        }
         mCanceled = true;
         setMessage(R.string.account_setup_check_settings_canceling_msg, true);
     }
@@ -318,9 +375,19 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.cancel:
+        case R.id.autoconfig_button_cancel:
             onCancel();
             break;
+        case R.id.autoconfig_button_next:
+            // autoconfig failed, proceed by manual setup
+            if( bForceManual ){
+
+            // launch confirm activities
+            }else{
+
+            }
+            break;
+        default: return;
         }
     }
 
