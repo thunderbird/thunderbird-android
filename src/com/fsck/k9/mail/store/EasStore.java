@@ -58,6 +58,7 @@ import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
+import com.fsck.k9.mail.store.exchange.adapter.AbstractSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.EmailSyncAdapter;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
@@ -1322,81 +1323,43 @@ public class EasStore extends Store {
             }
         }
 
-        private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException {
-        	Serializer s = new Serializer();
+        private void markServerMessagesRead(final String[] uids, final boolean read) throws MessagingException {
 			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
 			
-			try {
-				String className = target.getCollectionName();
-				String syncKey = target.getSyncKey();
-				s.start(Tags.SYNC_SYNC)
-				    .start(Tags.SYNC_COLLECTIONS)
-				    .start(Tags.SYNC_COLLECTION)
-				    .data(Tags.SYNC_CLASS, className)
-				    .data(Tags.SYNC_SYNC_KEY, syncKey)
-				    .data(Tags.SYNC_COLLECTION_ID, mServerId);
-	
-				// Start with the default timeout
-				int timeout = COMMAND_TIMEOUT;
-				
-		    	s.start(Tags.SYNC_COMMANDS);
-		    	for (String serverId : uids) {
-		    		s.start(Tags.SYNC_CHANGE)
-		    			.data(Tags.SYNC_SERVER_ID, serverId)
-		    			.start(Tags.SYNC_APPLICATION_DATA)
-		    				.data(Tags.EMAIL_READ, read ? "1" : "0")
-		    			.end()
-		    		.end();
-		    	}
-		    	s.end();
-	
-				s.end().end().end().done();
-				HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()),
-				        timeout);
-				int code = resp.getStatusLine().getStatusCode();
-				if (code == HttpStatus.SC_OK) {
-				    InputStream is = resp.getEntity().getContent();
-				    if (is != null) {
-				        target.cleanup();
-				    } else {
-				    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
-				    }
-				} else {
-					throw new MessagingException("not ok status");
+			new SyncCommand() {
+				@Override
+				void prepareCommand(Serializer s) throws IOException {
+			    	s.start(Tags.SYNC_COMMANDS);
+			    	for (String serverId : uids) {
+			    		s.start(Tags.SYNC_CHANGE)
+			    			.data(Tags.SYNC_SERVER_ID, serverId)
+			    			.start(Tags.SYNC_APPLICATION_DATA)
+			    				.data(Tags.EMAIL_READ, read ? "1" : "0")
+			    			.end()
+			    		.end();
+			    	}
+			    	s.end();
 				}
-			} catch (IOException e) {
-				throw new MessagingException("could not set read flag", e);
-			}
+			}.send(target, mServerId);
         }
 
-        private void deleteServerMessages(String[] uids) throws MessagingException {
-//            HashMap<String, String> uidToUrl = getMessageUrls(uids);
-//
-//            for (String uid : uids) {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                String url = uidToUrl.get(uid);
-//                String destinationUrl = generateDeleteUrl(url);
-//
-//                /**
-//                 * If the destination is the same as the origin, assume delete forever
-//                 */
-//                if (destinationUrl.equals(url)) {
-//                    headers.put("Brief", "t");
-////                    processRequest(url, "DELETE", null, headers, false);
-//                } else {
-//                    headers.put("Destination", generateDeleteUrl(url));
-//                    headers.put("Brief", "t");
-////                    processRequest(url, "MOVE", null, headers, false);
-//                }
-//            }
-        }
-
-        private String generateDeleteUrl(String startUrl) {
-            String[] urlParts = startUrl.split("/");
-            String filename = urlParts[urlParts.length - 1];
-            String finalUrl = EasStore.this.mUrl + "Deleted%20Items/" + filename;
-
-            return finalUrl;
+        private void deleteServerMessages(final String[] uids) throws MessagingException {
+			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
+			
+			new SyncCommand() {
+				@Override
+				void prepareCommand(Serializer s) throws IOException {
+					s.tag(Tags.SYNC_DELETES_AS_MOVES);
+					
+			    	s.start(Tags.SYNC_COMMANDS);
+			    	for (String serverId : uids) {
+			    		s.start(Tags.SYNC_DELETE)
+			    			.data(Tags.SYNC_SERVER_ID, serverId)
+			    		.end();
+			    	}
+			    	s.end();
+				}
+			}.send(target, mServerId);
         }
 
         @Override
@@ -1454,9 +1417,10 @@ public class EasStore extends Store {
 
         @Override
         public void delete(String trashFolderName) throws MessagingException {
-//            EasFolder wdFolder = (EasFolder) getFolder();
 //            Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
-//            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
+//            mFolder.moveMessages(new Message[] { this }, mFolder.getStore().getFolder(trashFolderName));
+            Log.e(K9.LOG_TAG,
+            	"Unimplemented method delete(String trashFolderName) legacy api, should not be in use");
         }
 
         @Override
@@ -1464,6 +1428,55 @@ public class EasStore extends Store {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
+    }
+    
+    private abstract class SyncCommand {
+    	
+    	public void send(AbstractSyncAdapter target, String folderServerId) throws MessagingException {
+    		try {
+    			int timeout = COMMAND_TIMEOUT;
+    			
+				byte[] byteArr = prepare(target, folderServerId);
+				
+				HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(byteArr),
+				        timeout);
+				int code = resp.getStatusLine().getStatusCode();
+				if (code == HttpStatus.SC_OK) {
+				    InputStream is = resp.getEntity().getContent();
+				    if (is != null) {
+				        target.cleanup();
+				    } else {
+				    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
+				    }
+				} else {
+					throw new MessagingException("not ok status");
+				}
+			} catch (IOException e) {
+				throw new MessagingException("could not send command");
+			}
+    	}
+    	
+    	byte[] prepare(AbstractSyncAdapter target, String folderServerId) throws IOException {
+        	Serializer s = new Serializer();
+        	
+			String className = target.getCollectionName();
+			String syncKey = target.getSyncKey();
+			s.start(Tags.SYNC_SYNC)
+			    .start(Tags.SYNC_COLLECTIONS)
+			    .start(Tags.SYNC_COLLECTION)
+			    .data(Tags.SYNC_CLASS, className)
+			    .data(Tags.SYNC_SYNC_KEY, syncKey)
+			    .data(Tags.SYNC_COLLECTION_ID, folderServerId);
+
+			prepareCommand(s);
+
+			s.end().end().end().done();
+			
+			return s.toByteArray();
+    	}
+
+		abstract void prepareCommand(Serializer s) throws IOException;
+    	
     }
 
 }
