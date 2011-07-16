@@ -488,7 +488,6 @@ public class ImapResponseParser {
         }
     }
 
-
     public static boolean isStatusResponse(String symbol) {
         return symbol.equalsIgnoreCase("OK") ||
                symbol.equalsIgnoreCase("NO") ||
