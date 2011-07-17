@@ -32,6 +32,24 @@ public class Pop3Store extends Store {
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    private static final String STLS_COMMAND = "STLS";
+    private static final String USER_COMMAND = "USER";
+    private static final String PASS_COMMAND = "PASS";
+    private static final String CAPA_COMMAND = "PASS";
+    private static final String STAT_COMMAND = "STAT";
+    private static final String LIST_COMMAND = "LIST";
+    private static final String UIDL_COMMAND = "UIDL";
+    private static final String TOP_COMMAND = "TOP";
+    private static final String RETR_COMMAND = "RETR";
+    private static final String DELE_COMMAND = "DELE";
+    private static final String QUIT_COMMAND = "QUIT";
+
+    private static final String STLS_CAPABILITY = "STLS";
+    private static final String UIDL_CAPABILITY = "UIDL";
+    private static final String PIPELINING_CAPABILITY = "PIPELINING";
+    private static final String USER_CAPABILITY = "USER";
+    private static final String TOP_CAPABILITY = "TOP";
+
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED };
 
     private String mHost;
@@ -145,7 +163,7 @@ public class Pop3Store extends Store {
              * If the server doesn't support UIDL it will return a - response, which causes
              * executeSimpleCommand to throw a MessagingException, exiting this method.
              */
-            folder.executeSimpleCommand("UIDL");
+            folder.executeSimpleCommand(UIDL_COMMAND);
 
         }
         folder.close();
@@ -211,7 +229,7 @@ public class Pop3Store extends Store {
                     mCapabilities = getCapabilities();
 
                     if (mCapabilities.stls) {
-                        writeLine("STLS");
+                        writeLine(STLS_COMMAND);
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
@@ -243,8 +261,8 @@ public class Pop3Store extends Store {
                     }
                 } else {
                     try {
-                        executeSimpleCommand("USER " + mUsername);
-                        executeSimpleCommand("PASS " + mPassword, true);
+                        executeSimpleCommand(USER_COMMAND + " " + mUsername);
+                        executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
                     } catch (MessagingException me) {
                         throw new AuthenticationFailedException(null, me);
                     }
@@ -260,7 +278,7 @@ public class Pop3Store extends Store {
                 throw new MessagingException("Unable to open connection to POP server.", ioe);
             }
 
-            String response = executeSimpleCommand("STAT");
+            String response = executeSimpleCommand(STAT_COMMAND);
             String[] parts = response.split(" ");
             mMessageCount = Integer.parseInt(parts[1]);
 
@@ -284,7 +302,7 @@ public class Pop3Store extends Store {
         public void close() {
             try {
                 if (isOpen()) {
-                    executeSimpleCommand("QUIT");
+                    executeSimpleCommand(QUIT_COMMAND);
                 }
             } catch (Exception e) {
                 /*
@@ -425,7 +443,7 @@ public class Pop3Store extends Store {
                 for (int msgNum = start; msgNum <= end; msgNum++) {
                     Pop3Message message = mMsgNumToMsgMap.get(msgNum);
                     if (message == null) {
-                        String response = executeSimpleCommand("UIDL " + msgNum);
+                        String response = executeSimpleCommand(UIDL_COMMAND + " " + msgNum);
                         int uidIndex = response.lastIndexOf(' ');
                         String msgUid = response.substring(uidIndex + 1);
                         message = new Pop3Message(msgUid, this);
@@ -433,7 +451,7 @@ public class Pop3Store extends Store {
                     }
                 }
             } else {
-                String response = executeSimpleCommand("UIDL");
+                String response = executeSimpleCommand(UIDL_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -484,7 +502,7 @@ public class Pop3Store extends Store {
              * get them is to do a full UIDL list. A possible optimization
              * would be trying UIDL for the latest X messages and praying.
              */
-            String response = executeSimpleCommand("UIDL");
+            String response = executeSimpleCommand(UIDL_COMMAND);
             while ((response = readLine()) != null) {
                 if (response.equals(".")) {
                     break;
@@ -629,7 +647,7 @@ public class Pop3Store extends Store {
                     if (listener != null) {
                         listener.messageStarted(pop3Message.getUid(), i, count);
                     }
-                    String response = executeSimpleCommand(String.format("LIST %d",
+                    String response = executeSimpleCommand(String.format(LIST_COMMAND + " %d",
                                                            mUidToMsgNumMap.get(pop3Message.getUid())));
                     String[] listParts = response.split(" ");
                     //int msgNum = Integer.parseInt(listParts[1]);
@@ -645,7 +663,7 @@ public class Pop3Store extends Store {
                     msgUidIndex.add(message.getUid());
                 }
                 int i = 0, count = messages.length;
-                String response = executeSimpleCommand("LIST");
+                String response = executeSimpleCommand(LIST_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -688,7 +706,7 @@ public class Pop3Store extends Store {
                               "Checking to see if the TOP command is supported nevertheless.");
                     }
 
-                    response = executeSimpleCommand(String.format("TOP %d %d",
+                    response = executeSimpleCommand(String.format(TOP_COMMAND + " %d %d",
                                                     mUidToMsgNumMap.get(message.getUid()), lines));
 
                     // TOP command is supported. Remember this for the next time.
@@ -710,7 +728,7 @@ public class Pop3Store extends Store {
             }
 
             if (response == null) {
-                response = executeSimpleCommand(String.format("RETR %d",
+                response = executeSimpleCommand(String.format(RETR_COMMAND + " %d",
                                                 mUidToMsgNumMap.get(message.getUid())));
             }
 
@@ -790,7 +808,7 @@ public class Pop3Store extends Store {
                     me.setPermanentFailure(true);
                     throw me;
                 }
-                executeSimpleCommand(String.format("DELE %s", msgNum));
+                executeSimpleCommand(String.format(DELE_COMMAND + " %s", msgNum));
             }
         }
 
@@ -826,20 +844,20 @@ public class Pop3Store extends Store {
         private Pop3Capabilities getCapabilities() throws IOException {
             Pop3Capabilities capabilities = new Pop3Capabilities();
             try {
-                String response = executeSimpleCommand("CAPA");
+                String response = executeSimpleCommand(CAPA_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
                     }
-                    if (response.equalsIgnoreCase("STLS")) {
+                    if (response.equalsIgnoreCase(STLS_CAPABILITY)) {
                         capabilities.stls = true;
-                    } else if (response.equalsIgnoreCase("UIDL")) {
+                    } else if (response.equalsIgnoreCase(UIDL_CAPABILITY)) {
                         capabilities.uidl = true;
-                    } else if (response.equalsIgnoreCase("PIPELINING")) {
+                    } else if (response.equalsIgnoreCase(PIPELINING_CAPABILITY)) {
                         capabilities.pipelining = true;
-                    } else if (response.equalsIgnoreCase("USER")) {
+                    } else if (response.equalsIgnoreCase(USER_CAPABILITY)) {
                         capabilities.user = true;
-                    } else if (response.equalsIgnoreCase("TOP")) {
+                    } else if (response.equalsIgnoreCase(TOP_CAPABILITY)) {
                         capabilities.top = true;
                     }
                 }
