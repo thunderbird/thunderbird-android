@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -18,7 +19,11 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -112,6 +117,67 @@ public class Account implements BaseAccount {
     public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
 
+
+    /*
+        This method is used several times to initialise a blank account when only given the arguments as data.
+        This happens possibly in some of the account setup steps.
+        It could use a review, I pasted it together from previous code.
+     */
+    public static Account getBlankAccount(Context context, String email, String password){
+        String[] emailParts = email.split("@");
+        String user = (emailParts.length > 0) ? emailParts[0] : "";
+        String domain = (emailParts.length > 1) ? emailParts[1] : "";
+
+        Account mAccount = Preferences.getPreferences(context).newAccount();
+
+        // decide on owners name
+        String name = "";
+        try {
+            name = Contacts.getInstance(context).getOwnerName();
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Could not get owner name, using default account name", e);
+        }
+        if (name == null || name.length() == 0) {
+            try {
+                Account account = Preferences.getPreferences(context).getDefaultAccount();
+                if (account != null) {
+                    name = account.getName();
+                }
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Could not get default account name", e);
+            }
+        }
+        if (name == null) {
+            name = "";
+        }
+
+        // continue..
+        mAccount.setName(name);
+        mAccount.setEmail(email);
+        try {
+            String userEnc = URLEncoder.encode(user, "UTF-8");
+            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+
+            URI uri = new URI("placeholder", userEnc + ":" + passwordEnc, "mail." + domain, -1, null,
+                              null, null);
+            mAccount.setStoreUri(uri.toString());
+            mAccount.setTransportUri(uri.toString());
+        } catch (UnsupportedEncodingException enc) {
+            // This really shouldn't happen since the encoding is hardcoded to UTF-8
+            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
+        } catch (URISyntaxException use) {
+            /*
+             * If we can't set up the URL we just continue. It's only for
+             * convenience.
+             */
+        }
+
+        mAccount.setDraftsFolderName(context.getResources().getString(R.string.special_mailbox_name_drafts));
+        mAccount.setTrashFolderName(context.getResources().getString(R.string.special_mailbox_name_trash));
+        mAccount.setSentFolderName(context.getResources().getString(R.string.special_mailbox_name_sent));
+
+        return mAccount;
+    }
 
     /**
      * <pre>
