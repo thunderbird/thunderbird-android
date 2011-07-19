@@ -48,7 +48,6 @@ import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.IncomingServerPOP3;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.OutgoingServerSMTP;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InputField;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
-import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.MutablePair;
 
 // Other
 import java.util.HashMap;
@@ -197,7 +196,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
     private Server mServerInProgress;
     private InputField mInputFieldInProgress;
     private InformationBlock mInformationBlockInProgress;
-    private MutablePair<String, String> mInformationStringInProgress;
+    private AutoconfigInfo.ParcelableMutablePair<String, String> mInformationStringInProgress;
 
     // Other stuff
     private Locator mLocator;
@@ -281,7 +280,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                     throw new SAXParseException("Nested server-tags. This is not allowed!", mLocator);
                 String type = attributes.getValue(ATTRIBUTE.TYPE.getXMLStringVersion());
                 if( type != null ){
-                    mServerInProgress = ServerType.toType(type).getServerObject();
+                    mServerInProgress = ServerType.toType(type).getServerObject(null);
                     mAutoconfigInfo.incomingServer.add(mServerInProgress);
                 }else{ // this should never happen, this file is not formed correctly ( check the relaxng scheme )
                     throw new SAXParseException("Incoming|Outgoing-Server tag has no type attribute!", mLocator);
@@ -364,7 +363,7 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                 if( mIsEnable || TAG.toTag(localName) == TAG.DESCR ){    // nested version of instruction in enable tag
                     if( mInformationStringInProgress != null )
                         throw new SAXParseException("Illegal nesting of description or instruction-tags.", mLocator);
-                    mInformationStringInProgress = new MutablePair<String, String>
+                    mInformationStringInProgress = new AutoconfigInfo.ParcelableMutablePair<String, String>
                             (attributes.getValue(ATTRIBUTE.LANG.getXMLStringVersion()),"");
                     mInformationBlockInProgress.descriptions.add(mInformationStringInProgress);
                     mIsInInformationString = true;
