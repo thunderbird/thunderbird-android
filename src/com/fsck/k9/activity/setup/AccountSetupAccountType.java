@@ -64,7 +64,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         ((Button)findViewById(R.id.imap)).setOnClickListener(this);
         ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
 
-        if( getIntent().getStringExtra(EXTRA_IS_MANUAL) != null){
+        if( getIntent().getBooleanExtra(EXTRA_IS_MANUAL, false) ){
             mAccount = Account.getBlankAccount(this,
                     getIntent().getStringExtra(EXTRA_EMAIL),
                     getIntent().getStringExtra(EXTRA_PASSWORD));
