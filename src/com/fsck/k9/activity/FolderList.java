@@ -243,7 +243,7 @@ public class FolderList extends K9ListActivity {
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
-        mListView.setScrollingCacheEnabled(true);
+        mListView.setScrollingCacheEnabled(false);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);

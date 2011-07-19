@@ -262,6 +262,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             listView.setOnItemClickListener(this);
             listView.setItemsCanFocus(false);
             listView.setEmptyView(findViewById(R.id.empty));
+            listView.setScrollingCacheEnabled(false);
             findViewById(R.id.next).setOnClickListener(this);
             registerForContextMenu(listView);
 
