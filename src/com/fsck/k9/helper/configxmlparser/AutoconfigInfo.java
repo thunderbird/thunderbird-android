@@ -387,8 +387,66 @@ public class AutoconfigInfo implements Parcelable {
         Logic
      */
 
-    // will be added when called for
+    // returns a list of available incoming server types
+    public List<ServerType> getAvailableIncomingServerTypes(){
+        ArrayList<ServerType> types = new ArrayList<ServerType>();
+        // for now there is only support for imap & pop3 so this is a bit overkill
+        for( Server serv : incomingServer )
+            if( !types.contains(serv.type) ) types.add(serv.type);
+        return types;
+    }
 
+    // returns a list of available outgoing server types
+    public List<ServerType> getAvailableOutgoingServerTypes(){
+        ArrayList<ServerType> types = new ArrayList<ServerType>();
+        // THERE IS ONLY SMTP FOR NOW
+        /*for( Server serv : outgoingServer )
+            if( !types.contains(serv.type) ) types.add(serv.type);*/
+        if( outgoingServer.size() > 0 ) types.add(ServerType.SMTP);
+        return types;
+    }
+
+    // filters the list of servers according to the arguments ( list of allowed specifications )
+    private List<Server> getFilteredServerList
+            (List<Server> serverList, List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
+        ArrayList<Server> servers = new ArrayList<Server>();
+        ArrayList<Server> toBeRemoved = new ArrayList<Server>();
+
+        // filter for servertypes
+        if( serverTypes != null && !serverTypes.isEmpty() )
+            for( Server serv : serverList )
+                if( serverTypes.contains(serv.type))
+                    servers.add(serv);
+
+        // filter for autenticationtype
+        if( authenticationTypes != null & !authenticationTypes.isEmpty() ){
+            for( Server serv : servers )
+                if( !authenticationTypes.contains(serv.authentication) )
+                    toBeRemoved.add(serv);
+        }
+        servers.removeAll(toBeRemoved);
+        toBeRemoved.clear();
+
+        // filter for sockettype
+        if( socketTypes != null & !socketTypes.isEmpty() )
+            for( Server serv : servers )
+                if( !socketTypes.contains(serv.socketType) )
+                    toBeRemoved.add(serv);
+        servers.removeAll(toBeRemoved);
+
+        return servers;
+    }
+
+    // public wrappers for the filter method
+    public List<Server> getOutgoingServers
+            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
+        return getFilteredServerList(outgoingServer, serverTypes, authenticationTypes, socketTypes);
+    }
+
+    public List<Server> getIncomingServers
+            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
+        return getFilteredServerList(incomingServer, serverTypes, authenticationTypes, socketTypes);
+    }
 
     /*
         What's left of the parcelable interface
