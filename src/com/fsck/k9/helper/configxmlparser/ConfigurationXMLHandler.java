@@ -214,7 +214,14 @@ public class ConfigurationXMLHandler extends DefaultHandler {
 	public void startDocument() throws SAXException { mAutoconfigInfo = new AutoconfigInfo();}
 
 	@Override
-	public void endDocument() throws SAXException { }
+	public void endDocument() throws SAXException {
+        /*
+            Adding some checks here too to see if we have useable data
+            TODO: add more
+         */
+        if( !(mAutoconfigInfo.outgoingServer.size() > 0 || mAutoconfigInfo.incomingServer.size() > 0))
+            throw new SAXException("Unusable server data, not at least one incoming and outgoing server found.");
+    }
 
     @Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
