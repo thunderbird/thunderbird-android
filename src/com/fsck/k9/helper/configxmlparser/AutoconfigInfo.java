@@ -110,7 +110,7 @@ public class AutoconfigInfo implements Parcelable {
             authentication = AuthenticationType.valueOf(parcel.readString());
         }
 
-        public static final Parcelable.Creator<Server> CREATOR
+       /* public static final Parcelable.Creator<Server> CREATOR
             = new Parcelable.Creator<Server>() {
             @Override
             public Server createFromParcel(Parcel parcel) {
@@ -119,7 +119,7 @@ public class AutoconfigInfo implements Parcelable {
 
             @Override
             public Server[] newArray(int i) { return new Server[i]; }
-        };
+        };  */
 
         @Override
         public int describeContents() { return this.hashCode(); }
@@ -138,18 +138,29 @@ public class AutoconfigInfo implements Parcelable {
         }
     }
 
-	public static abstract class IncomingServer extends Server{
+	public static abstract class IncomingServer extends Server
+    {
         public IncomingServer(ServerType type) {super(type);}
         public IncomingServer(Parcel parcel, ServerType type) {super(parcel, type);}
     }
 
-    public static abstract class OutgoingServer extends Server{
+    public static abstract class OutgoingServer extends Server
+    {
 		public RestrictionType restriction;
         public OutgoingServer(ServerType type) {super(type);}
         public OutgoingServer(Parcel parcel, ServerType type) {super(parcel, type);}
     }
 
-	public static class IncomingServerPOP3 extends IncomingServer {
+	public static class IncomingServerPOP3 extends IncomingServer
+    {
+        public static final Parcelable.Creator<IncomingServerPOP3> CREATOR
+            = new Parcelable.Creator<IncomingServerPOP3>() {
+            @Override
+            public IncomingServerPOP3 createFromParcel(Parcel parcel) { return new IncomingServerPOP3(parcel); }
+            @Override
+            public IncomingServerPOP3[] newArray(int i) { return new IncomingServerPOP3[i]; }
+        };
+
         // hardcode the type
         public ServerType type = ServerType.POP3;
 
@@ -184,7 +195,16 @@ public class AutoconfigInfo implements Parcelable {
         }
     }
 
-	public static class IncomingServerIMAP extends IncomingServer {
+	public static class IncomingServerIMAP extends IncomingServer
+    {
+        public static final Parcelable.Creator<IncomingServerIMAP> CREATOR
+            = new Parcelable.Creator<IncomingServerIMAP>() {
+            @Override
+            public IncomingServerIMAP createFromParcel(Parcel parcel) { return new IncomingServerIMAP(parcel); }
+            @Override
+            public IncomingServerIMAP[] newArray(int i) { return new IncomingServerIMAP[i]; }
+        };
+
         public ServerType type = ServerType.IMAP;
 
         // constructor
@@ -194,7 +214,16 @@ public class AutoconfigInfo implements Parcelable {
         }
 	}
 
-	public static class OutgoingServerSMTP extends OutgoingServer {
+	public static class OutgoingServerSMTP extends OutgoingServer
+    {
+        public static final Parcelable.Creator<OutgoingServerSMTP> CREATOR
+            = new Parcelable.Creator<OutgoingServerSMTP>() {
+            @Override
+            public OutgoingServerSMTP createFromParcel(Parcel parcel) { return new OutgoingServerSMTP(parcel); }
+            @Override
+            public OutgoingServerSMTP[] newArray(int i) { return new OutgoingServerSMTP[i]; }
+        };
+
         // hardcode the type
         public ServerType type = ServerType.SMTP;
 
@@ -317,8 +346,14 @@ public class AutoconfigInfo implements Parcelable {
 
         public ParcelableMutablePair(Parcel parcel){
            super(null, null);
-           first = (K) parcel.readValue(first.getClass().getClassLoader());
-           second = (V) parcel.readValue(second.getClass().getClassLoader());
+           /*
+                NOTE : WARNING :
+                TODO: this is very very very very ugly! just need it to compile for now!
+                      the generic types won't always be strings! just can't figure out how to get
+                      the classloader of K & V
+            */
+           first = (K) parcel.readValue(String.class.getClassLoader());
+           second = (V) parcel.readValue(String.class.getClassLoader());
         }
 
         public void setFirst(K val){ this.first = val; }
