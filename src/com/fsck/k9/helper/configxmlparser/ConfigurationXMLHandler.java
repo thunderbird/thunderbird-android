@@ -48,6 +48,8 @@ import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.IncomingServerPOP3;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.OutgoingServerSMTP;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InputField;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.IncomingServer;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.OutgoingServer;
 
 // Other
 import java.util.HashMap;
@@ -288,7 +290,10 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                 String type = attributes.getValue(ATTRIBUTE.TYPE.getXMLStringVersion());
                 if( type != null ){
                     mServerInProgress = ServerType.toType(type).getServerObject(null);
-                    mAutoconfigInfo.incomingServer.add(mServerInProgress);
+                    if( TAG.toTag(localName) == TAG.INCOMINGSERVER )
+                        mAutoconfigInfo.incomingServer.add((IncomingServer)mServerInProgress);
+                    else if( TAG.toTag(localName) == TAG.OUTGOINGSERVER )
+                        mAutoconfigInfo.outgoingServer.add((OutgoingServer)mServerInProgress);
                 }else{ // this should never happen, this file is not formed correctly ( check the relaxng scheme )
                     throw new SAXParseException("Incoming|Outgoing-Server tag has no type attribute!", mLocator);
                 }break;
