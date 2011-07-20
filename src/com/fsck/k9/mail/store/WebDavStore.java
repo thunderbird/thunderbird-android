@@ -1590,7 +1590,11 @@ public class WebDavStore extends Store {
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
-                wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                try { 
+                    wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                } catch (NullPointerException e) {
+                    Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                }
 
                 if (listener != null) {
                     listener.messageFinished(wdMessage, i, count);
