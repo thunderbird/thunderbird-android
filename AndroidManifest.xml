@@ -102,6 +102,18 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.setup.AccountSetupConfirmIncoming"
+            android:label="@string/account_setup_autoconfig_title"
+            android:configChanges="keyboardHidden|orientation|locale"
+            >
+        </activity>
+        <activity
+            android:name="com.fsck.k9.activity.setup.AccountSetupConfirmOutgoing"
+            android:label="@string/account_setup_autoconfig_title"
+            android:configChanges="keyboardHidden|orientation|locale"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupAccountType"
             android:label="@string/account_setup_account_type_title"
             android:configChanges="locale"
