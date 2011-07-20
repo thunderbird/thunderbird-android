@@ -13,6 +13,8 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Pair;
+import com.fsck.k9.K9;
+import org.w3c.dom.Text;
 
 /*
     NOTE: We assume here there is one emailprovider in a file with the data version information in a one-on-one relation
@@ -349,8 +351,8 @@ public class AutoconfigInfo implements Parcelable {
 	public String displayShortName;
 
     // Possible servers for this ISP
-	public List<Server> incomingServer;
-	public List<Server> outgoingServer;
+	public List<IncomingServer> incomingServer;
+	public List<OutgoingServer> outgoingServer;
 
     // Configuration help/information
 	public String identity;
@@ -365,8 +367,8 @@ public class AutoconfigInfo implements Parcelable {
      */
     public AutoconfigInfo(){
         // initialise the fields
-        incomingServer = new ArrayList<Server>();
-        outgoingServer = new ArrayList<Server>();
+        incomingServer = new ArrayList<IncomingServer>();
+        outgoingServer = new ArrayList<OutgoingServer>();
         domains = new ArrayList<String>();
         inputFields = new ArrayList<InputField>();
     }
@@ -380,6 +382,14 @@ public class AutoconfigInfo implements Parcelable {
         displayName = parcel.readString();
         displayShortName = parcel.readString();
 
+        incomingServer = parcel.readArrayList(IncomingServer.class.getClassLoader());
+        outgoingServer = parcel.readArrayList(OutgoingServer.class.getClassLoader());
+
+        identity = parcel.readString();
+        inputFields = parcel.readArrayList(InputField.class.getClassLoader());
+        enable = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
+        instruction = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
+        documentation = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
 
     }
 
@@ -407,20 +417,21 @@ public class AutoconfigInfo implements Parcelable {
     }
 
     // filters the list of servers according to the arguments ( list of allowed specifications )
-    private List<Server> getFilteredServerList
-            (List<Server> serverList, List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
-        ArrayList<Server> servers = new ArrayList<Server>();
-        ArrayList<Server> toBeRemoved = new ArrayList<Server>();
+    private <T extends Server> List<T> getFilteredServerList
+            (List<T> serverList, List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes)
+    {
+        ArrayList<T> servers = new ArrayList<T>();
+        ArrayList<T> toBeRemoved = new ArrayList<T>();
 
         // filter for servertypes
         if( serverTypes != null && !serverTypes.isEmpty() )
-            for( Server serv : serverList )
+            for( T serv : serverList )
                 if( serverTypes.contains(serv.type))
                     servers.add(serv);
 
         // filter for autenticationtype
         if( authenticationTypes != null & !authenticationTypes.isEmpty() ){
-            for( Server serv : servers )
+            for( T serv : servers )
                 if( !authenticationTypes.contains(serv.authentication) )
                     toBeRemoved.add(serv);
         }
@@ -429,7 +440,7 @@ public class AutoconfigInfo implements Parcelable {
 
         // filter for sockettype
         if( socketTypes != null & !socketTypes.isEmpty() )
-            for( Server serv : servers )
+            for( T serv : servers )
                 if( !socketTypes.contains(serv.socketType) )
                     toBeRemoved.add(serv);
         servers.removeAll(toBeRemoved);
@@ -438,12 +449,12 @@ public class AutoconfigInfo implements Parcelable {
     }
 
     // public wrappers for the filter method
-    public List<Server> getOutgoingServers
+    public List<OutgoingServer> getOutgoingServers
             (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
         return getFilteredServerList(outgoingServer, serverTypes, authenticationTypes, socketTypes);
     }
 
-    public List<Server> getIncomingServers
+    public List<IncomingServer> getIncomingServers
             (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
         return getFilteredServerList(incomingServer, serverTypes, authenticationTypes, socketTypes);
     }
