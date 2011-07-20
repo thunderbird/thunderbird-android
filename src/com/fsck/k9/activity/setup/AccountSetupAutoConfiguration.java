@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo;
 import com.fsck.k9.helper.configxmlparser.ConfigurationXMLHandler;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import org.xml.sax.InputSource;
+import org.xml.sax.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -85,6 +87,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private String mEmailAddress;
     private String mPassword;
     private String mLastMessage;
+    private AutoconfigInfo mAutoConfigInfo;
     private boolean bForceManual = false;
     private boolean bDoneSearching = false;
     private boolean bFound = false;
@@ -257,10 +260,12 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         Start parsing the xml
      */
     private void parse(String data) throws IOException, SAXException, ParserConfigurationException {
+        ConfigurationXMLHandler parser = new ConfigurationXMLHandler();
         XMLReader xr = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-        xr.setContentHandler(new ConfigurationXMLHandler());
+        xr.setContentHandler(parser);
         // TODO: see if this has performance consequences, otherwise change all so we pass around InputSource not string
         xr.parse(new InputSource(new StringReader(data)));
+        mAutoConfigInfo = parser.getAutoconfigInfo();
     }
 
     /*
@@ -367,12 +372,6 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         return retParts;
     }
 
-    @Override
-    public void onActivityResult(int reqCode, int resCode, Intent data) {
-        setResult(resCode);
-        finish();
-    }
-
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.autoconfig_button_cancel:
@@ -384,7 +383,9 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
             // launch confirm activities
             }else{
-
+                AccountSetupConfirmIncoming.actionConfirmIncoming
+                        (this, mEmailAddress, mPassword, mAutoConfigInfo);
+                finish();
             }
             break;
         default: return;
@@ -394,6 +395,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     /*
         Ask the user to accept ssl certificates if they are not trusted already.
         TODO: Rework this so it changes the url counter, not restart intent
+        NOTE: It's called but doesn't work right now because for the connection the default sslfactory is yet used
      */
     private void acceptKeyDialog(final int msgResId, final int urlNumber, final Object... args) {
         mHandler.post(new Runnable() {
