@@ -219,7 +219,7 @@ public class K9 extends Application {
     /**
      * For use when displaying that no folder is selected
      */
-    public static final String FOLDER_NONE = "-NONE-";
+    public static String FOLDER_NONE = "-NONE-";
 
     public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
 
@@ -456,7 +456,7 @@ public class K9 extends Application {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
-
+				FOLDER_NONE = getApplicationContext().getResources().getString(R.string.folder_none);
 
         galleryBuggy = checkForBuggyGallery();
 

@@ -220,7 +220,7 @@
     <string name="debug_enable_sensitive_logging_title">Запись конфиденциальной информации</string>
     <string name="debug_enable_sensitive_logging_summary">Разрешает запись паролей в журнал</string>
 
-    <string name="message_header_mua">K-9 Mail для Android</string>
+    <string name="message_header_mua">K-9 Mail for Android</string>
 
     <string name="combined_inbox_title">Вся почта</string>
     <string name="combined_inbox_label">Последние сообщения из всех почтовых ящиков</string>
@@ -318,7 +318,7 @@
     <string name="global_settings_registered_name_color_default">Не раскрашивать имена в списке контактов</string>
     <string name="global_settings_registered_name_color_changed">Раскрасить имена в списке контактов</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Шрифты м ы иксированноц шириной</string>
+    <string name="global_settings_messageview_fixedwidth_label">Шрифт фиксированной ширины</string>
     <string name="global_settings_messageview_fixedwidth_summary">Использовать шрифт фиксированной ширины при показе плоского текста</string>
     <string name="global_settings_messageview_return_to_list_label">Вернуться к списку после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Вернуться к списку сообщений после удаления сообщения</string>
@@ -732,7 +732,7 @@
     <string name="account_settings_signature_label">Подпись</string>
     <string name="account_settings_signature_summary">Добавить подпись к каждому отправляемому сообщению</string>
 
-    <string name="default_signature">-- \nОтправлено через К-9 Mail. Извините за краткость, пожалуйста.</string>
+    <string name="default_signature">-- \nОтправлено через K-9 Mail.</string>
     <string name="default_identity_description">Первоначальная личность</string>
     <string name="choose_identity">Выбрать личность</string>
     <string name="choose_identity_title">Выбрать личность</string>
@@ -952,7 +952,7 @@
 	<string name="font_size_message_list_preview">Предпросмотр</string>
 
 	<string name="font_size_message_view">Сообщения</string>
-	<string name="font_size_message_view_sender">отправитель</string>
+	<string name="font_size_message_view_sender">Отправитель</string>
 	<string name="font_size_message_view_to">Кому</string>
 	<string name="font_size_message_view_cc">Скрытая копия</string>
 	<string name="font_size_message_view_additional_headers">дополнительные заголовки</string>
@@ -961,15 +961,15 @@
 	<string name="font_size_message_view_date">Дата</string>
 	<string name="font_size_message_view_content">Тело сообщения</string>
 
-	<string name="font_size_tiniest">самый крочшечный</string>
-	<string name="font_size_tiny">Крошечный</string>
-	<string name="font_size_smaller">Еще меньше</string>
+	<string name="font_size_tiniest">Наименьший</string>
+	<string name="font_size_tiny">Еще меньше</string>
+	<string name="font_size_smaller">Меньше</string>
 	<string name="font_size_small">Маленький</string>
-	<string name="font_size_medium">средний</string>
+	<string name="font_size_medium">Средний</string>
 	<string name="font_size_large">Большой</string>
 	<string name="font_size_larger">Наибольший</string>
 
-	<string name="font_size_webview_smaller">Крошечный</string>
+	<string name="font_size_webview_smaller">Наименьший</string>
 	<string name="font_size_webview_small">Маленький</string>
 	<string name="font_size_webview_normal">Нормальный</string>
 	<string name="font_size_webview_large">Большой</string>
@@ -987,7 +987,7 @@
 		 <!-- APG related -->
 		 <string name="error_activity_not_found">Нет подходящего приложения для действия.</string>
 		 <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается.</string>
-		 <string name="btn_crypto_sign">подписать</string>
+		 <string name="btn_crypto_sign">Подписать</string>
 		 <string name="btn_encrypt">Зашифровать</string>
 		 <string name="btn_decrypt">Расшифровать</string>
 		 <string name="btn_verify">проверить</string>
@@ -1041,4 +1041,5 @@
 		 <string name="settings_attachment_default_path">Сохранять вложения в...</string>
 		 <string name="attachment_save_title">Сохранить вложение</string>
 		 <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
+	<string name="folder_none">Нет</string>
 </resources>
