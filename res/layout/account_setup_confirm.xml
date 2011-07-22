@@ -5,7 +5,7 @@
               android:layout_height="fill_parent">
 
     <Spinner
-        android:id="@+id/spinner_hostname"
+        android:id="@+id/spinner_protocol"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawSelectorOnTop="true"
@@ -13,12 +13,12 @@
     />
 
     <Spinner
-        android:id="@+id/spinner_protocol"
+        android:id="@+id/spinner_sockettype"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawSelectorOnTop="true"
         android:prompt="@string/account_setup_basics_email_hint"
-        android:layout_below="@id/spinner_hostname"
+        android:layout_below="@id/spinner_protocol"
     />
 
 </RelativeLayout>
