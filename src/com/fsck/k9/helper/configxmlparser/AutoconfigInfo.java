@@ -8,6 +8,7 @@
 package com.fsck.k9.helper.configxmlparser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.os.Parcel;
@@ -432,67 +433,79 @@ public class AutoconfigInfo implements Parcelable {
         Logic
      */
 
-    // returns a list of available incoming server types
-    public List<ServerType> getAvailableIncomingServerTypes(){
+    // returns a list of server types available in the provided list of servers
+    // ( could use a set to implement the methods beneath but I don't think it would have extra benefits )
+    public List<ServerType> getAvailableServerTypes(List<? extends Server> servers){
         ArrayList<ServerType> types = new ArrayList<ServerType>();
         // for now there is only support for imap & pop3 so this is a bit overkill
-        for( Server serv : incomingServer )
+        for( Server serv : servers )
             if( !types.contains(serv.type) ) types.add(serv.type);
         return types;
     }
 
-    // returns a list of available outgoing server types
+    public List<ServerType> getAvailableIncomingServerTypes(){
+        return getAvailableServerTypes(incomingServer);
+    }
+
     public List<ServerType> getAvailableOutgoingServerTypes(){
-        ArrayList<ServerType> types = new ArrayList<ServerType>();
-        // THERE IS ONLY SMTP FOR NOW
-        /*for( Server serv : outgoingServer )
-            if( !types.contains(serv.type) ) types.add(serv.type);*/
-        if( outgoingServer.size() > 0 ) types.add(ServerType.SMTP);
+        return getAvailableServerTypes(outgoingServer);
+    }
+
+    // returns a list of sockettypes available in the provided serverlist
+    public List<SocketType> getAvailableSocketTypes(List<? extends Server> servers){
+        ArrayList<SocketType> types = new ArrayList<SocketType>();
+        SocketType tmp;
+
+        for( int i=0; i<servers.size(); ++i){
+            tmp = servers.get(i).socketType;
+            if( !types.contains(tmp) )
+                types.add(tmp);
+        }
+
         return types;
     }
 
     // filters the list of servers according to the arguments ( list of allowed specifications )
     private <T extends Server> List<T> getFilteredServerList
-            (List<T> serverList, List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes)
+            (List<T> serverList, ServerType serverType, AuthenticationType authenticationType, SocketType socketType)
     {
         ArrayList<T> servers = new ArrayList<T>();
         ArrayList<T> toBeRemoved = new ArrayList<T>();
 
         // filter for servertypes
-        if( serverTypes != null && !serverTypes.isEmpty() )
+        if( serverType != null )
             for( T serv : serverList )
-                if( serverTypes.contains(serv.type))
+                if( serv.type == serverType)
                     servers.add(serv);
 
         // filter for autenticationtype
-        if( authenticationTypes != null & !authenticationTypes.isEmpty() ){
+        if( authenticationType != null ){
             for( T serv : servers )
-                if( !authenticationTypes.contains(serv.authentication) )
+                if( serv.authentication != authenticationType )
                     toBeRemoved.add(serv);
         }
         servers.removeAll(toBeRemoved);
         toBeRemoved.clear();
 
         // filter for sockettype
-        if( socketTypes != null & !socketTypes.isEmpty() )
+        if( socketType != null )
             for( T serv : servers )
-                if( !socketTypes.contains(serv.socketType) )
+                if( serv.socketType != socketType )
                     toBeRemoved.add(serv);
         servers.removeAll(toBeRemoved);
 
         return servers;
     }
 
-    // public wrappers for the filter method
+    public List<IncomingServer> getIncomingServers
+            (ServerType serverType, AuthenticationType authenticationType, SocketType socketType){
+        return getFilteredServerList(incomingServer, serverType, authenticationType, socketType);
+    }
     public List<OutgoingServer> getOutgoingServers
-            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
-        return getFilteredServerList(outgoingServer, serverTypes, authenticationTypes, socketTypes);
+            (ServerType serverType, AuthenticationType authenticationType, SocketType socketType){
+        return getFilteredServerList(outgoingServer, serverType, authenticationType, socketType);
     }
 
-    public List<IncomingServer> getIncomingServers
-            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
-        return getFilteredServerList(incomingServer, serverTypes, authenticationTypes, socketTypes);
-    }
 
     /*
         What's left of the parcelable interface
@@ -520,4 +533,48 @@ public class AutoconfigInfo implements Parcelable {
         parcel.writeValue(documentation);
     }
 }
+
+
+/*  I wrote these first, but for now they are never used
+
+    private <T extends Server> List<T> getFilteredServerList
+            (List<T> serverList, List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes)
+    {
+        ArrayList<T> servers = new ArrayList<T>();
+        ArrayList<T> toBeRemoved = new ArrayList<T>();
+
+        // filter for servertypes
+        if( serverTypes != null && !serverTypes.isEmpty() )
+            for( T serv : serverList )
+                if( serverTypes.contains(serv.type))
+                    servers.add(serv);
+
+        // filter for autenticationtype
+        if( authenticationTypes != null && !authenticationTypes.isEmpty() ){
+            for( T serv : servers )
+                if( !authenticationTypes.contains(serv.authentication) )
+                    toBeRemoved.add(serv);
+        }
+        servers.removeAll(toBeRemoved);
+        toBeRemoved.clear();
+
+        // filter for sockettype
+        if( socketTypes != null && !socketTypes.isEmpty() )
+            for( T serv : servers )
+                if( !socketTypes.contains(serv.socketType) )
+                    toBeRemoved.add(serv);
+        servers.removeAll(toBeRemoved);
+
+        return servers;
+    }
+
+    public List<OutgoingServer> getOutgoingServers
+            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
+        return getFilteredServerList(outgoingServer, serverTypes, authenticationTypes, socketTypes);
+    }
+    public List<IncomingServer> getIncomingServers
+            (List<ServerType> serverTypes, List<AuthenticationType> authenticationTypes, List<SocketType> socketTypes){
+        return getFilteredServerList(incomingServer, serverTypes, authenticationTypes, socketTypes);
+    }
+*/
 
