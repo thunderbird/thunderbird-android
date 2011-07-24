@@ -4,21 +4,43 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <Spinner
-        android:id="@+id/spinner_protocol"
+    <LinearLayout android:id="@+id/confirm_first_option"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/account_setup_basics_email_hint"
-    />
+        android:orientation="horizontal">
+        <TextView android:id="@+id/confirm_type_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type" />
 
-    <Spinner
-        android:id="@+id/spinner_sockettype"
+        <Spinner android:id="@+id/spinner_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:layout_toRightOf="@id/confirm_type_label"
+            android:prompt="@string/account_setup_basics_email_hint" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/confirm_second_option"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/account_setup_basics_email_hint"
-        android:layout_below="@id/spinner_protocol"
-    />
+        android:orientation="horizontal"
+        android:layout_below="@id/confirm_first_option">
+        <TextView android:id="@+id/confirm_security_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Security" />
 
+        <Spinner android:id="@+id/spinner_sockettype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:prompt="@string/account_setup_basics_email_hint"
+            android:layout_toRightOf="@id/confirm_security_label" />
+    </LinearLayout>
+
+    <TextView android:id="@+id/server_information"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/confirm_second_option"/>
 </RelativeLayout>
