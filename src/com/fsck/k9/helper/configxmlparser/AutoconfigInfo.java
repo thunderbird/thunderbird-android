@@ -466,7 +466,7 @@ public class AutoconfigInfo implements Parcelable {
     }
 
     // filters the list of servers according to the arguments ( list of allowed specifications )
-    private <T extends Server> List<T> getFilteredServerList
+    public <T extends Server> List<T> getFilteredServerList
             (List<T> serverList, ServerType serverType, AuthenticationType authenticationType, SocketType socketType)
     {
         ArrayList<T> servers = new ArrayList<T>();
