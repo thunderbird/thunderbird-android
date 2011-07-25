@@ -10,11 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -61,6 +58,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     Spinner mProtocolSpinner;
     Spinner mSocketTypeSpinner;
     TextView mServerInfoText;
+    Button mOkButton;
 
     // difference between incomming & outgoing
     protected abstract List<? extends Server> getServers();
@@ -76,6 +74,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         mSocketTypeSpinner = (Spinner) findViewById(R.id.spinner_sockettype);
         mProtocolSpinner = (Spinner) findViewById(R.id.spinner_protocol);
         mServerInfoText = (TextView) findViewById(R.id.server_information);
+        mOkButton = (Button) findViewById(R.id.confirm_ok_button);
 
         // get the data out of our intent
         // if no blank account passed make one
@@ -101,11 +100,14 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         // attach the listeners
         mProtocolSpinner.setOnItemSelectedListener(this);
         mSocketTypeSpinner.setOnItemSelectedListener(this);
+        mOkButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if( view.getId() == R.id.confirm_ok_button ){
+            Toast.makeText(this,"go go go", 400).show();
+        }
     }
 
     @Override
