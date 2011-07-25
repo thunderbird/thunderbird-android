@@ -41,13 +41,11 @@ public abstract class AbstractSyncParser extends Parser {
     protected EasFolder mFolder;
     protected Account mAccount;
     protected ContentResolver mContentResolver;
-    protected AbstractSyncAdapter mAdapter;
 
     private boolean mLooping;
 
-    public AbstractSyncParser(InputStream in, AbstractSyncAdapter adapter, EasFolder folder, Account account) throws IOException {
+    public AbstractSyncParser(InputStream in, EasFolder folder, Account account) throws IOException {
         super(in);
-        mAdapter = adapter;
         mFolder = folder;
         mAccount = account;
     }
@@ -112,7 +110,7 @@ public abstract class AbstractSyncParser extends Parser {
                     // Status = 3 means invalid sync key
                     if (status == 3) {
                         // Must delete all of the data and start over with syncKey of "0"
-                        mAdapter.setSyncKey("0", false);
+                        mFolder.setSyncKey("0");
                         // Make this a push box through the first sync
                         // TODO Make frequency conditional on user settings!
                         MailboxAdapter.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PUSH;
@@ -134,14 +132,13 @@ public abstract class AbstractSyncParser extends Parser {
             } else if (tag == Tags.SYNC_MORE_AVAILABLE) {
                 moreAvailable = true;
             } else if (tag == Tags.SYNC_SYNC_KEY) {
-                if (mAdapter.getSyncKey().equals("0")) {
+                if (mFolder.getSyncKey().equals("0")) {
                     moreAvailable = true;
                 }
                 String newKey = getValue();
                 userLog("Parsed key for ", mFolder.toString(), ": ", newKey);
                 if (!newKey.equals(mFolder.getSyncKey())) {
-                    mAdapter.setSyncKey(newKey, true);
-//                    cv.put(MailboxColumns.SYNC_KEY, newKey);
+                    mFolder.setSyncKey(newKey);
                     mailboxUpdated = true;
                     newSyncKey = true;
                 }
@@ -203,4 +200,5 @@ public abstract class AbstractSyncParser extends Parser {
     void userLog(String string, int num, String string2) {
     	Log.i(K9.LOG_TAG, string + num + string2);
     }
+    
 }

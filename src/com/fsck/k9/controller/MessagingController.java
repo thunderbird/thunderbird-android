@@ -940,6 +940,8 @@ public class MessagingController implements Runnable {
              * Get the remote message count.
              */
             int remoteMessageCount = remoteFolder.getMessageCount();
+            
+            boolean syncMode = remoteFolder.isSyncMode();
 
             int visibleLimit = localFolder.getVisibleLimit();
 
@@ -956,7 +958,7 @@ public class MessagingController implements Runnable {
             final Date earliestDate = account.getEarliestPollDate();
 
 
-            if (remoteMessageCount > 0) {
+            if (remoteMessageCount > 0 || syncMode) {
                 /* Message numbers start at 1.  */
                 int remoteStart;
                 if (visibleLimit > 0) {

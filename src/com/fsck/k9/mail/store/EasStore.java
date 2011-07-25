@@ -22,21 +22,17 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -54,15 +50,11 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
-import com.fsck.k9.mail.store.exchange.adapter.AbstractSyncAdapter;
-import com.fsck.k9.mail.store.exchange.adapter.AccountSyncAdapter;
-import com.fsck.k9.mail.store.exchange.adapter.EmailSyncAdapter;
+import com.fsck.k9.mail.store.exchange.adapter.EasEmailSyncParser;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
-import com.fsck.k9.mail.store.exchange.adapter.GetItemEstimateParser;
 import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
 import com.fsck.k9.mail.store.exchange.adapter.Serializer;
 import com.fsck.k9.mail.store.exchange.adapter.Tags;
@@ -93,6 +85,8 @@ public class EasStore extends Store {
     // IOException is thrown.  After a small added allowance, our watchdog alarm goes off (allowing
     // us to detect a silently dropped connection).  The allowance is defined below.
     static private final int COMMAND_TIMEOUT = 30*1000;
+    // Connection timeout is the time given to connect to the server before reporting an IOException
+    static private final int CONNECTION_TIMEOUT = 20*1000;
 
     // This needs to be long enough to send the longest reasonable message, without being so long
     // as to effectively "hang" sending of mail.  The standard 30 second timeout isn't long enough
@@ -132,9 +126,7 @@ public class EasStore extends Store {
 
     private boolean mSecure;
     private HttpClient mHttpClient = null;
-    private HttpContext mContext = null;
     private String mAuthString;
-    private CookieStore mAuthCookies = null;
 
     private Folder mSendFolder = null;
     private HashMap<String, EasFolder> mFolderList = new HashMap<String, EasFolder>();
@@ -297,7 +289,6 @@ public class EasStore extends Store {
 //            account.setName("%TestAccount%");
 //            account.setStoreUri(mUri.toString());
 			EasStore svc = new EasStore(mAccount);
-            svc.mContext = mContext;
             svc.mHost = hostAddress;
             svc.mUsername = userName;
             svc.mPassword = password;
@@ -531,6 +522,7 @@ public class EasStore extends Store {
      */
     protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout,
             boolean isPingCommand) throws IOException {
+        HttpConnectionParams.setSoTimeout(method.getParams(), timeout);
 //        synchronized(getSynchronizer()) {
 //            mPendingPost = method;
 //            long alarmTime = timeout + WATCHDOG_TIMEOUT_ALLOWANCE;
@@ -590,10 +582,13 @@ public class EasStore extends Store {
         String us = makeUriString("OPTIONS", null);
         HttpOptions method = new HttpOptions(URI.create(us));
         setHeaders(method, false);
+        
+        HttpConnectionParams.setSoTimeout(method.getParams(), COMMAND_TIMEOUT);
+        
         return client.execute(method);
     }
     
-    /**
+	/**
      * Set standard HTTP headers, using a policy key if required
      * @param method the method we are going to send
      * @param usePolicyKey whether or not a policy key should be sent in the headers
@@ -704,7 +699,7 @@ public class EasStore extends Store {
 	            if (len != 0) {
 	                InputStream is = entity.getContent();
 	                // Returns true if we need to sync again
-	                if (new FolderSyncParser(is, new AccountSyncAdapter(mAccount), this, folderList)
+	                if (new FolderSyncParser(is, this, folderList)
 	                        .parse()) {
 	                	throw new RuntimeException();
 	                }
@@ -784,10 +779,6 @@ public class EasStore extends Store {
      * Authentication related methods
      */
 
-    public CookieStore getAuthCookies() {
-        return mAuthCookies;
-    }
-
     public String getAlias() {
         return mAlias;
     }
@@ -799,13 +790,14 @@ public class EasStore extends Store {
     public HttpClient getHttpClient() throws MessagingException {
         if (mHttpClient == null) {
             mHttpClient = new DefaultHttpClient();
+            
+            HttpParams params = mHttpClient.getParams();
+            
             // Disable automatDic redirects on the http client.
-            mHttpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
+			params.setBooleanParameter("http.protocol.handle-redirects", false);
 
-            // Setup a cookie store for forms-based authentication.
-            mContext = new BasicHttpContext();
-            mAuthCookies = new BasicCookieStore();
-            mContext.setAttribute(ClientContext.COOKIE_STORE, mAuthCookies);
+            HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSocketBufferSize(params, 8192);
 
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             try {
@@ -898,8 +890,16 @@ public class EasStore extends Store {
             this.mType = type;
         }
         
-		public String getSyncKey() {
+		public String getSyncKeyUnmodified() {
 			return mSyncKey;
+		}
+		
+		public String getSyncKey() {
+	        if (mSyncKey == null) {
+	            Log.d(K9.LOG_TAG, "Reset SyncKey to 0");
+	            mSyncKey = "0";
+	        }
+	        return mSyncKey;
 		}
 
 		public void setSyncKey(String mSyncKey) {
@@ -964,45 +964,12 @@ public class EasStore extends Store {
 //            processRequest(mFolderUrl, action, messageBody, headers, false);
         }
 
-        private int getMessageCount(boolean read) throws MessagingException {
-			Serializer s = new Serializer();
-			try {
-				s
-					.start(Tags.GIE_GET_ITEM_ESTIMATE)
-						.start(Tags.GIE_COLLECTIONS)
-							.start(Tags.GIE_COLLECTION)
-								.data(Tags.SYNC_SYNC_KEY, "0")
-								.data(Tags.GIE_COLLECTION_ID, mServerId)
-							.end()
-						.end()
-					.end()
-				.done();
-				
-		        HttpResponse resp = sendHttpClientPost("GetItemEstimate", s.toByteArray());
-		        int code = resp.getStatusLine().getStatusCode();
-		        if (code == HttpStatus.SC_OK) {
-		        	HttpEntity entity = resp.getEntity();
-		            int len = (int)entity.getContentLength();
-		            if (len != 0) {
-		                InputStream is = entity.getContent();
-		                GetItemEstimateParser gieParser = new GetItemEstimateParser(is);
-		                if (gieParser.parse()) {
-		                	return gieParser.getEstimate();
-		                }
-		            }
-		        }
-		        // On failures
-		        throw new MessagingException("getItemEstimate call returned not OK status");
-			} catch (IOException e) {
-				throw new MessagingException("getItemEstimate call failed", e);
-			}
-        }
-
         @Override
         public int getMessageCount() throws MessagingException {
             open(OpenMode.READ_WRITE);
-            this.mMessageCount = getMessageCount(true);
-            return this.mMessageCount;
+            return -1;
+//            this.mMessageCount = getMessageCount(true);
+//            return this.mMessageCount;
         }
 
         @Override
@@ -1060,9 +1027,9 @@ public class EasStore extends Store {
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
         	try {
-	        	EmailSyncAdapter target = getMessagesInternal(null, null, null, start, end);
+        		EasEmailSyncParser syncParser = getMessagesInternal(null, null, null, start, end);
             
-            	List<EasMessage> messages = target.getMessages();
+            	List<EasMessage> messages = syncParser.getMessages();
             	
             	return messages.toArray(EMPTY_MESSAGE_ARRAY);
         	} catch (IOException e) {
@@ -1070,15 +1037,16 @@ public class EasStore extends Store {
 			}
         }
 
-		private EmailSyncAdapter getMessagesInternal(Message[] messages, FetchProfile fp, MessageRetrievalListener listener,
+		private EasEmailSyncParser getMessagesInternal(Message[] messages, FetchProfile fp, MessageRetrievalListener listener,
 				int start, int end) throws IOException,
 				MessagingException {
 
         	Serializer s = new Serializer();
-			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
+        	EasEmailSyncParser syncParser = null;
+//			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
 			
-			String className = target.getCollectionName();
-			String syncKey = target.getSyncKey();
+			String className = "Email";
+			String syncKey = getSyncKey();
 //            	userLog("sync, sending ", className, " syncKey: ", syncKey);
 			s.start(Tags.SYNC_SYNC)
 			    .start(Tags.SYNC_COLLECTIONS)
@@ -1102,7 +1070,7 @@ public class EasStore extends Store {
 			    
 			    if (messages == null) {
 			    	s.tag(Tags.SYNC_GET_CHANGES);
-			    	s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
+//			    	s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
 			    }
 			    // Handle options
 			    s.start(Tags.SYNC_OPTIONS);
@@ -1162,22 +1130,10 @@ public class EasStore extends Store {
 			if (code == HttpStatus.SC_OK) {
 			    InputStream is = resp.getEntity().getContent();
 			    if (is != null) {
-			        boolean moreAvailable = target.parse(is);
-//			        int loopingCount = 0;
-//					if (target.isLooping()) {
-//			            loopingCount ++;
-//			            Log.d(K9.LOG_TAG, "** Looping: " + loopingCount);
-//			            // After the maximum number of loops, we'll set moreAvailable to false and
-//			            // allow the sync loop to terminate
-//			            if (moreAvailable && (loopingCount > MAX_LOOPING_COUNT)) {
-//			            	Log.d(K9.LOG_TAG, "** Looping force stopped");
-//			                moreAvailable = false;
-//			            }
-//			        } else {
-//			            loopingCount = 0;
-//			        }
-			        target.cleanup();
+		        	syncParser = new EasEmailSyncParser(is, this, mAccount);
 			        
+		        	boolean moreAvailable = syncParser.parse();
+		        	
 			        if (moreAvailable && syncKey.equals("0")) {
 			        	return getMessagesInternal(messages, fp, listener, start, end);
 			        }
@@ -1196,7 +1152,7 @@ public class EasStore extends Store {
 //	                return;
 				throw new MessagingException("not ok status");
 			}
-			return target;
+			return syncParser;
 		}
         
         private String getEmailFilter() {
@@ -1280,8 +1236,8 @@ public class EasStore extends Store {
             boolean fetchBody = fp.contains(FetchProfile.Item.BODY);
 			if (fetchBodySane || fetchBody) {
 	            try {
-					EmailSyncAdapter target = getMessagesInternal(messages, fp, listener, -1, -1);
-					messages = target.getMessages().toArray(EMPTY_MESSAGE_ARRAY);
+	            	EasEmailSyncParser syncParser = getMessagesInternal(messages, fp, listener, -1, -1);
+					messages = syncParser.getMessages().toArray(EMPTY_MESSAGE_ARRAY);
 	            } catch (IOException e) {
 	            	throw new MessagingException("io exception while fetching messages", e);
 	            }
@@ -1324,8 +1280,6 @@ public class EasStore extends Store {
         }
 
         private void markServerMessagesRead(final String[] uids, final boolean read) throws MessagingException {
-			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
-			
 			new SyncCommand() {
 				@Override
 				void prepareCommand(Serializer s) throws IOException {
@@ -1340,12 +1294,10 @@ public class EasStore extends Store {
 			    	}
 			    	s.end();
 				}
-			}.send(target, mServerId);
+			}.send(this);
         }
 
         private void deleteServerMessages(final String[] uids) throws MessagingException {
-			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
-			
 			new SyncCommand() {
 				@Override
 				void prepareCommand(Serializer s) throws IOException {
@@ -1359,7 +1311,7 @@ public class EasStore extends Store {
 			    	}
 			    	s.end();
 				}
-			}.send(target, mServerId);
+			}.send(this);
         }
 
         @Override
@@ -1432,11 +1384,11 @@ public class EasStore extends Store {
     
     private abstract class SyncCommand {
     	
-    	public void send(AbstractSyncAdapter target, String folderServerId) throws MessagingException {
+    	public void send(EasFolder folder) throws MessagingException {
     		try {
     			int timeout = COMMAND_TIMEOUT;
     			
-				byte[] byteArr = prepare(target, folderServerId);
+				byte[] byteArr = prepare(folder);
 				
 				HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(byteArr),
 				        timeout);
@@ -1444,7 +1396,8 @@ public class EasStore extends Store {
 				if (code == HttpStatus.SC_OK) {
 				    InputStream is = resp.getEntity().getContent();
 				    if (is != null) {
-				        target.cleanup();
+						EasEmailSyncParser syncParser = new EasEmailSyncParser(is, folder, folder.getAccount());
+				    	parseResponse(syncParser, is);
 				    } else {
 				    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
 				    }
@@ -1456,17 +1409,18 @@ public class EasStore extends Store {
 			}
     	}
     	
-    	byte[] prepare(AbstractSyncAdapter target, String folderServerId) throws IOException {
+		byte[] prepare(EasFolder folder) throws IOException {
         	Serializer s = new Serializer();
         	
-			String className = target.getCollectionName();
-			String syncKey = target.getSyncKey();
+			String className = "Email";
+			String syncKey = folder.getSyncKey();
+			String folderServerId = folder.mServerId;
 			s.start(Tags.SYNC_SYNC)
 			    .start(Tags.SYNC_COLLECTIONS)
 			    .start(Tags.SYNC_COLLECTION)
 			    .data(Tags.SYNC_CLASS, className)
 			    .data(Tags.SYNC_SYNC_KEY, syncKey)
-			    .data(Tags.SYNC_COLLECTION_ID, folderServerId);
+			    .data(Tags.SYNC_COLLECTION_ID, folderServerId );
 
 			prepareCommand(s);
 
@@ -1477,6 +1431,10 @@ public class EasStore extends Store {
 
 		abstract void prepareCommand(Serializer s) throws IOException;
     	
+    	void parseResponse(EasEmailSyncParser syncParser, InputStream is) throws IOException, MessagingException {
+    		syncParser.parse();
+    	}
+
     }
 
 }

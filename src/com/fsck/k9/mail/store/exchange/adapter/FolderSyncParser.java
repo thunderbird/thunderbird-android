@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.content.ContentProviderOperation;
@@ -38,7 +37,7 @@ import com.fsck.k9.mail.store.exchange.Eas;
  * Handles the addition, deletion, and changes to folders in the user's Exchange account.
  **/
 
-public class FolderSyncParser extends AbstractSyncParser {
+public class FolderSyncParser extends Parser {
 
     public static final String TAG = "FolderSyncParser";
 
@@ -57,7 +56,7 @@ public class FolderSyncParser extends AbstractSyncParser {
     public static final int USER_MAILBOX_TYPE = 12;
 
     public static final List<Integer> mValidFolderTypes = Arrays.asList(INBOX_TYPE, DRAFTS_TYPE,
-            DELETED_TYPE, SENT_TYPE, OUTBOX_TYPE, USER_MAILBOX_TYPE, CALENDAR_TYPE, CONTACTS_TYPE);
+            DELETED_TYPE, SENT_TYPE, OUTBOX_TYPE, USER_MAILBOX_TYPE);//, CALENDAR_TYPE, CONTACTS_TYPE);
 
 //    public static final String ALL_BUT_ACCOUNT_MAILBOX = MailboxColumns.ACCOUNT_KEY + "=? and " +
 //        MailboxColumns.TYPE + "!=" + Mailbox.TYPE_EAS_ACCOUNT_MAILBOX;
@@ -81,8 +80,9 @@ public class FolderSyncParser extends AbstractSyncParser {
 
 	private EasStore easStore;
 
-    public FolderSyncParser(InputStream in, AbstractSyncAdapter adapter, EasStore easStore, List<Folder> folderList) throws IOException {
-        super(in, adapter, adapter.mFolder, adapter.mAccount);
+    public FolderSyncParser(InputStream in, EasStore easStore, List<Folder> folderList) throws IOException {
+    	super(in);
+    	
         this.easStore = easStore;
         this.folderList = folderList;
 //        mAccountId = mAccount.mId;
@@ -118,8 +118,7 @@ public class FolderSyncParser extends AbstractSyncParser {
                     }
                 }
             } else if (tag == Tags.FOLDER_SYNC_KEY) {
-            	getValue();
-//                mAccount.mSyncKey = getValue();
+            	easStore.setStoreSyncKey(getValue());
                 userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
             } else if (tag == Tags.FOLDER_CHANGES) {
                 changesParser();
@@ -367,27 +366,12 @@ public class FolderSyncParser extends AbstractSyncParser {
 //        }
     }
 
-    /**
-     * Not needed for FolderSync parsing; everything is done within changesParser
-     */
-    @Override
-    public void commandsParser() throws IOException {
+    void userLog(String ...strings) {
+    	Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
-    /**
-     * We don't need to implement commit() because all operations take place atomically within
-     * changesParser
-     */
-    @Override
-    public void commit() throws IOException {
+    void userLog(String string, int num, String string2) {
+    	Log.i(K9.LOG_TAG, string + num + string2);
     }
-
-    @Override
-    public void wipe() {
-    }
-
-    @Override
-    public void responsesParser() throws IOException {
-    }
-
+    
 }
