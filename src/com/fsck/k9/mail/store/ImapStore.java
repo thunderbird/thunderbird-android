@@ -866,15 +866,26 @@ public class ImapStore extends Store {
                     if ((copyList.size() >= 4) && copyList.getString(0).equals("COPYUID")) {
                         List<String> srcUids = parseSequenceSet(copyList.getString(2));
                         List<String> destUids = parseSequenceSet(copyList.getString(3));
-                        if (srcUids.size() == destUids.size()) {
-                            Iterator<String>  srcUidsIterator = srcUids.iterator();
-                            Iterator<String>  destUidsIterator = destUids.iterator();
-                            uidMap = new HashMap<String, String>();
-                            while (srcUidsIterator.hasNext() && destUidsIterator.hasNext()) {
-                                uidMap.put(srcUidsIterator.next(), destUidsIterator.next());
+                        if (srcUids != null && destUids != null) {
+                            if (srcUids.size() == destUids.size()) {
+                                Iterator<String>  srcUidsIterator = srcUids.iterator();
+                                Iterator<String>  destUidsIterator = destUids.iterator();
+                                uidMap = new HashMap<String, String>();
+                                while (srcUidsIterator.hasNext() && destUidsIterator.hasNext()) {
+                                    uidMap.put(srcUidsIterator.next(), destUidsIterator.next());
+                                }
+                            } else {
+                                if(K9.DEBUG) 
+                                    Log.v(K9.LOG_TAG, "Parse error: size of source UIDs list is not the same as size of destination UIDs list.");
                             }
+                        } else {
+                            if(K9.DEBUG) 
+                                Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
                         }
                     }
+                } else {
+                    if(K9.DEBUG) 
+                        Log.v(K9.LOG_TAG, "Expected COPYUID response was not found.");
                 }
                 return uidMap;
             } catch (IOException ioe) {
@@ -890,6 +901,9 @@ public class ImapStore extends Store {
          * @return List<String> sequenceSet
          */
         private List<String> parseSequenceSet(String set) {
+            if (set == null) {
+                return null;
+            }
             int index = 0;
             List<String> sequenceList = new ArrayList<String>();
             String element = "";

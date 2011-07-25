@@ -2049,11 +2049,11 @@ public class LocalStore extends Store implements Serializable {
                                     uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                                     message.setUid(uid);
                                 } else if (copy) {
-                                    String temp = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                                    String randomLocalUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                                     if (uid != null) {
-                                        uidMap.put(uid, temp);
+                                        uidMap.put(uid, randomLocalUid);
                                     }
-                                    uid = temp;
+                                    uid = randomLocalUid;
                                 } else {
                                     Message oldMessage = getMessage(uid);
                                     if (oldMessage != null && !oldMessage.isSet(Flag.SEEN)) {
