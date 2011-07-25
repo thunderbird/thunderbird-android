@@ -875,16 +875,16 @@ public class ImapStore extends Store {
                                     uidMap.put(srcUidsIterator.next(), destUidsIterator.next());
                                 }
                             } else {
-                                if(K9.DEBUG) 
+                                if(K9.DEBUG)
                                     Log.v(K9.LOG_TAG, "Parse error: size of source UIDs list is not the same as size of destination UIDs list.");
                             }
                         } else {
-                            if(K9.DEBUG) 
+                            if(K9.DEBUG)
                                 Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
                         }
                     }
                 } else {
-                    if(K9.DEBUG) 
+                    if(K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Expected COPYUID response was not found.");
                 }
                 return uidMap;
