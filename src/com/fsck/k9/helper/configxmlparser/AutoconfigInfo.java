@@ -55,6 +55,7 @@ public class AutoconfigInfo implements Parcelable {
     public static enum AuthenticationType { plain, secure, NTLM, GSSAPI, clientIPaddress, TLSclientcert, none, UNSET };
     public static enum SocketType { plain, SSL, STARTTLS, UNSET};
     public static enum RestrictionType { clientIPAddress };
+    public static enum InformationType { ENABLE, INSTRUCTION, DOCUMENTATION }
 
     public static enum ServerType{ IMAP(0), POP3(1), SMTP(2), UNSET(3), NO_VALUE(4), WRONG_TAG(5);
 
@@ -303,12 +304,15 @@ public class AutoconfigInfo implements Parcelable {
 
         // fields
         public String url;
+        public InformationType type;
+
         // first one is the language, second the text
 		public ArrayList<ParcelableMutablePair<String, String>> descriptions = new ArrayList<ParcelableMutablePair<String, String>>();
 
         public InformationBlock(Parcel parcel){
             url = parcel.readString();
             descriptions = parcel.readArrayList(ParcelableMutablePair.class.getClassLoader());
+            type = InformationType.valueOf(parcel.readString());
         }
 
         // keep the default constructor too
@@ -321,6 +325,13 @@ public class AutoconfigInfo implements Parcelable {
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(url);
             parcel.writeList(descriptions);
+            parcel.writeString(type.name());
+        }
+
+        public boolean isEmpty(){
+            if( !!url.isEmpty() || descriptions.size() > 0 )
+                return true;
+            else return false;
         }
     }
 
@@ -359,6 +370,8 @@ public class AutoconfigInfo implements Parcelable {
 
         public void setFirst(K val){ this.first = val; }
         public void setSecond(V val){ this.second = val; }
+        public K getFirst(){ return first; }
+        public V getSecond(){ return second; }
 
         @Override
         public int describeContents() {return hashCode();}
@@ -393,9 +406,7 @@ public class AutoconfigInfo implements Parcelable {
     // Configuration help/information
 	public String identity;
 	public List<InputField> inputFields;
-	public InformationBlock enable;
-	public InformationBlock instruction;
-    public InformationBlock documentation;
+	public List<InformationBlock> documentation;
 
 
     /*
@@ -406,6 +417,7 @@ public class AutoconfigInfo implements Parcelable {
         incomingServer = new ArrayList<IncomingServer>();
         outgoingServer = new ArrayList<OutgoingServer>();
         domains = new ArrayList<String>();
+        documentation = new ArrayList<InformationBlock>();
         inputFields = new ArrayList<InputField>();
     }
 
@@ -423,9 +435,7 @@ public class AutoconfigInfo implements Parcelable {
 
         identity = parcel.readString();
         inputFields = parcel.readArrayList(InputField.class.getClassLoader());
-        enable = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
-        instruction = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
-        documentation = (InformationBlock) parcel.readValue(InformationBlock.class.getClassLoader());
+        documentation = parcel.readArrayList(InformationBlock.class.getClassLoader());
 
     }
 
@@ -507,6 +517,10 @@ public class AutoconfigInfo implements Parcelable {
     }
 
 
+    public boolean hasExtraInfo() {
+        return(  documentation.size() > 0 );
+    }
+
     /*
         What's left of the parcelable interface
      */
@@ -528,9 +542,7 @@ public class AutoconfigInfo implements Parcelable {
 
         parcel.writeString(identity);
         parcel.writeList(inputFields);
-        parcel.writeValue(enable);
-        parcel.writeValue(instruction);
-        parcel.writeValue(documentation);
+        parcel.writeList(documentation);
     }
 }
 
