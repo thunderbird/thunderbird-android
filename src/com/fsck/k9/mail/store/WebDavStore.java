@@ -2060,12 +2060,12 @@ public class WebDavStore extends Store {
     public class DataSet {
         private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
         // private HashMap<String, String> mLostData = new HashMap<String, String>();
-        private String mUid = "";
+        private StringBuilder mUid = new StringBuilder();
         private HashMap<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName) {
             if (tagName.equals("uid")) {
-                mUid = value;
+                mUid.append(value);
             }
 
             if (mTempData.containsKey(tagName)) {
@@ -2076,9 +2076,10 @@ public class WebDavStore extends Store {
         }
 
         public void finish() {
-            if (mUid != null &&
+            String uid = mUid.toString();
+            if (!uid.equals("") &&
                     mTempData != null) {
-                mData.put(mUid, mTempData);
+                mData.put(uid, mTempData);
             } else if (mTempData != null) {
                 /*
                  * Lost Data are for requests that don't include a message UID. These requests should only have a depth
@@ -2086,7 +2087,7 @@ public class WebDavStore extends Store {
                  */
             }
 
-            mUid = "";
+            mUid = new StringBuilder();
             mTempData = new HashMap<String, String>();
         }
 
