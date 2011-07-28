@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical">
@@ -64,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"/>
         <TextView android:id="@+id/server_count_label"
-                  android:text="( 1 / 1 )"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_alignParentRight="true"/>
@@ -79,18 +78,54 @@
     <!-- ONLY SHOW WHEN USER HAS TO ENTER A USERNAME HIMSELF -->
     <!-- TODO -->
 
-    <!-- SHOULD ONLY BE MADE VISIBLE WHEN THERE ARE MULTIPLE MATCHING SERVERS -->
-    <!-- TODO -->
+    <!-- SHOULD ONLY BE MADE VISIBLE WHEN THERE ARE MULTIPLE MATCHING SERVERS
+         NOTE: see note at beginning of AbstractSetupConfirmActivity class -->
+    <RelativeLayout android:id="@+id/confirm_serverbrowse_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/server_information">
+        <Button android:id="@+id/confirm_prev_server_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Previous" />
+        <Button android:id="@+id/confirm_next_server_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/confirm_prev_server_button"
+                android:text="Next" />
+    </RelativeLayout>
 
     <!-- SHOULD ONLY BE MADE VISIBLE WHEN THE XML PROVIDES EXTRA INFORMATION LINKS -->
-    <!-- TODO -->
-
-    <Button android:id="@+id/confirm_ok_button"
-            android:layout_width="wrap_content"
+    <RelativeLayout android:id="@+id/confirm_documentation_part"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:text="Ok go"/>
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/confirm_serverbrowse_buttons">
+        <TextView android:id="@+id/server_documentation_header"
+                android:text="Server documentation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="9dp"
+                android:textSize="14sp"
+                android:background="#AAA"
+                android:layout_alignParentLeft="true"/>
+        <TextView android:id="@+id/server_documentation_content"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/server_documentation_header"
+                  android:padding="8dp" />
+    </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <Button android:id="@+id/confirm_ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:text="Ok go"/>
+     </RelativeLayout>
+</LinearLayout>
