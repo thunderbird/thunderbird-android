@@ -50,6 +50,7 @@ import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InputField;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.IncomingServer;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.OutgoingServer;
+import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationType;
 
 // Other
 import java.util.HashMap;
@@ -367,7 +368,8 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                 mIsEnable = true;
                 mInformationBlockInProgress = new InformationBlock();
                 mInformationBlockInProgress.url = attributes.getValue(ATTRIBUTE.VISITURL.getXMLStringVersion());
-                mAutoconfigInfo.enable = mInformationBlockInProgress;
+                mInformationBlockInProgress.type = InformationType.ENABLE;
+                mAutoconfigInfo.documentation.add(mInformationBlockInProgress);
                 break;
             case INSTRUCTION:       // Documentation and stand-alone instruction are exactly the same
             case DOCUMENTATION:     // Nested instruction and description are exactly the same
@@ -386,11 +388,12 @@ public class ConfigurationXMLHandler extends DefaultHandler {
                     mInformationBlockInProgress = new InformationBlock();
                     mInformationBlockInProgress.url = attributes.getValue(ATTRIBUTE.URL.getXMLStringVersion());
                     if( TAG.toTag(localName) == TAG.INSTRUCTION )
-                        mAutoconfigInfo.instruction = mInformationBlockInProgress;
+                        mInformationBlockInProgress.type = InformationType.INSTRUCTION;
                     else if ( TAG.toTag(localName) == TAG.DOCUMENTATION )
-                        mAutoconfigInfo.documentation = mInformationBlockInProgress;
+                        mInformationBlockInProgress.type = InformationType.DOCUMENTATION;
                     else // this should never happen!
                         throw new SAXParseException("Unknown tag passed through in parser.", mLocator);
+                    mAutoconfigInfo.documentation.add(mInformationBlockInProgress);
                 }
                 break;
 
