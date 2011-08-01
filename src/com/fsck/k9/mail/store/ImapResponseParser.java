@@ -1,5 +1,9 @@
 package com.fsck.k9.mail.store;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -68,9 +72,21 @@ public class ImapResponseParser {
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
         Object token;
-        while ((token = readToken(response)) != null) {
-            if (!(token instanceof ImapList)) {
-                response.add(token);
+        String firstString = parseAtom();
+
+        response.add(firstString);
+
+        if (mIn.peek() == ' ') {
+            mIn.read(); //Skip space if parseAtom() didn't do it.
+        }
+
+        if (isStatusResponse(firstString)) {
+            parseStatusResponse(response);
+        } else {
+            while ((token = readToken(response)) != null) {
+                if (!(token instanceof ImapList)) {
+                    response.add(token);
+                }
             }
 
             /*
@@ -83,6 +99,26 @@ public class ImapResponseParser {
              */
         }
         response.mCompleted = true;
+    }
+
+    void parseStatusResponse(ImapResponse parent) throws IOException {
+
+        int next = mIn.peek();
+        if (next == '[') {
+            parseSequence(parent);
+            if (mIn.peek() == ' ') { // Skip following space
+                mIn.read();
+            }
+        }
+
+        String rest = readStringUntil('\r');
+        expect('\n');
+
+        if (!TextUtils.isEmpty(rest)) {
+            // The rest is free-form text.
+            parent.add(rest);
+        }
+
     }
 
     /**
@@ -488,7 +524,7 @@ public class ImapResponseParser {
         }
     }
 
-    public static boolean isStatusResponse(String symbol) {
+    public boolean isStatusResponse(String symbol) {
         return symbol.equalsIgnoreCase("OK") ||
                symbol.equalsIgnoreCase("NO") ||
                symbol.equalsIgnoreCase("BAD") ||
