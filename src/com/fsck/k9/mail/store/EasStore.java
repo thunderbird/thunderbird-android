@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -35,6 +36,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.content.Context;
+import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -43,18 +45,23 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.store.exchange.Eas;
 import com.fsck.k9.mail.store.exchange.adapter.EasEmailSyncParser;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
+import com.fsck.k9.mail.store.exchange.adapter.PingParser;
 import com.fsck.k9.mail.store.exchange.adapter.ProvisionParser;
 import com.fsck.k9.mail.store.exchange.adapter.Serializer;
 import com.fsck.k9.mail.store.exchange.adapter.Tags;
@@ -1380,6 +1387,164 @@ public class EasStore extends Store {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
+    }
+    
+    @Override
+    public boolean isPushCapable() {
+    	return true;
+    }
+    
+    @Override
+    public Pusher getPusher(PushReceiver receiver) {
+    	return new EasPusher(this, receiver);
+    }
+    
+    public class EasPusher implements Pusher {
+    	
+    	private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
+    	
+        final EasStore mStore;
+        final PushReceiver receiver;
+        private long lastRefresh = -1;
+
+        Thread listeningThread = null;
+        final AtomicBoolean stop = new AtomicBoolean(false);
+        TracingWakeLock wakeLock = null;
+
+        public EasPusher(EasStore store, PushReceiver receiver) {
+            mStore = store;
+            this.receiver = receiver;
+            
+            TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EasPusher " + store.getAccount().getDescription());
+            wakeLock.setReferenceCounted(false);
+        }
+        
+        private String getLogId() {
+            String id = getAccount().getDescription() + "/" + Thread.currentThread().getName();
+            return id;
+        }
+
+        public void start(final List<String> folderNames) {
+            stop();
+            
+            Runnable runner = new Runnable() {
+                public void run() {
+                    wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Pusher starting for " + getLogId());
+
+                    while (!stop.get()) {
+                        try {
+                        	Serializer s = new Serializer();
+                        	
+                        	int responseTimeout = getAccount().getIdleRefreshMinutes() * 60;
+							s.start(Tags.PING_PING)
+                        		.data(Tags.PING_HEARTBEAT_INTERVAL, String.valueOf(responseTimeout))
+                        		.start(Tags.PING_FOLDERS);
+							
+							for (String folderName : folderNames) {
+									s.start(Tags.PING_FOLDER)
+										.data(Tags.PING_ID, mFolderList.get(folderName).mServerId)
+										.data(Tags.PING_CLASS, "Email")
+									.end();
+							}
+							
+								s.end()
+							.end()
+							.done();
+                        	
+                        	int timeout = responseTimeout * 1000 + IDLE_READ_TIMEOUT_INCREMENT;
+							HttpResponse resp = sendHttpClientPost(PING_COMMAND, new ByteArrayEntity(s.toByteArray()),
+                			        timeout);
+							int code = resp.getStatusLine().getStatusCode();
+							if (code == HttpStatus.SC_OK) {
+							    InputStream is = resp.getEntity().getContent();
+							    if (is != null) {
+									PingParser pingParser = new PingParser(is);
+							    	if (!pingParser.parse()) {
+								    	for (String folderServerId : pingParser.getFolderList()) {
+								    		for (EasFolder folder : mFolderList.values()) {
+								    			if (folderServerId.equals(folder.mServerId)) {
+								    				receiver.syncFolder(folder);
+								    				break;
+								    			}
+								    		}
+								    	}
+							    	} else {
+							    		throw new MessagingException("Parsing of Ping response failed");
+							    	}
+							    } else {
+							    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
+							    }
+							} else {
+								throw new MessagingException("not ok status");
+							}
+
+                        } catch (Exception e) {
+                            wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+//                            receiver.setPushActive(getName(), false);
+
+                            if (stop.get()) {
+                                Log.i(K9.LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
+                            } else {
+                                receiver.pushError("Push error for " + getLogId(), e);
+                                Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
+//                                int delayTimeInt = delayTime.get();
+//                                receiver.sleep(wakeLock, delayTimeInt);
+//                                delayTimeInt *= 2;
+//                                if (delayTimeInt > MAX_DELAY_TIME) {
+//                                    delayTimeInt = MAX_DELAY_TIME;
+//                                }
+//                                delayTime.set(delayTimeInt);
+//                                if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT) {
+//                                    Log.e(K9.LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
+//                                    receiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount.get() + " consecutive errors", e);
+//                                    stop.set(true);
+//                                }
+
+                            }
+                        }
+                    }
+                    
+                    for (String folderName : folderNames) {
+                    	receiver.setPushActive(folderName, false);
+                    }
+                    
+                    try {
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Pusher for " + getLogId() + " is exiting");
+                    } catch (Exception me) {
+                        Log.e(K9.LOG_TAG, "Got exception while closing for " + getLogId(), me);
+                    } finally {
+                        wakeLock.release();
+                    }
+                }
+            };
+            listeningThread = new Thread(runner);
+            listeningThread.start();
+        }
+
+        public void refresh() {
+        }
+
+        public void stop() {
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Requested stop of EAS pusher");
+        }
+
+        public int getRefreshInterval() {
+            return (getAccount().getIdleRefreshMinutes() * 60 * 1000);
+        }
+
+        public long getLastRefresh() {
+            return lastRefresh;
+        }
+
+        public void setLastRefresh(long lastRefresh) {
+            this.lastRefresh = lastRefresh;
+        }
+
     }
     
     private abstract class SyncCommand {
