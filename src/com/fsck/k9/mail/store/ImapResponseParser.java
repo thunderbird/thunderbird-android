@@ -72,31 +72,23 @@ public class ImapResponseParser {
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
         Object token;
-        String firstString = parseAtom();
+        String firstToken = (String) readToken(response);
 
-        response.add(firstString);
+        response.add(firstToken);
 
-        if (mIn.peek() == ' ') {
-            mIn.read(); //Skip space if parseAtom() didn't do it.
-        }
+        skipIfSpace();
 
-        if (isStatusResponse(firstString)) {
+        if (isStatusResponse(firstToken)) {
             parseStatusResponse(response);
         } else {
             while ((token = readToken(response)) != null) {
                 if (!(token instanceof ImapList)) {
                     response.add(token);
+                    if (isSizeOrExpungeResponse((String) token)) {
+                        break;
+                    }
                 }
             }
-
-            /*
-             * TODO: Check for responses ("OK", "PREAUTH", "BYE", "NO", "BAD")
-             * that can contain resp-text tokens. If found, hand over to a special
-             * method that parses a resp-text token. There's no need to use
-             * readToken()/parseToken() on that data.
-             *
-             * See RFC 3501, Section 9 Formal Syntax (resp-text)
-             */
         }
         response.mCompleted = true;
     }
@@ -106,9 +98,7 @@ public class ImapResponseParser {
         int next = mIn.peek();
         if (next == '[') {
             parseSequence(parent);
-            if (mIn.peek() == ' ') { // Skip following space
-                mIn.read();
-            }
+            skipIfSpace();
         }
 
         String rest = readStringUntil('\r');
@@ -119,6 +109,12 @@ public class ImapResponseParser {
             parent.add(rest);
         }
 
+    }
+
+    void skipIfSpace() throws IOException {
+        if (mIn.peek() == ' ') {
+            expect(' ');
+        }
     }
 
     /**
@@ -530,6 +526,12 @@ public class ImapResponseParser {
                symbol.equalsIgnoreCase("BAD") ||
                symbol.equalsIgnoreCase("PREAUTH") ||
                symbol.equalsIgnoreCase("BYE");
+    }
+
+    public boolean isSizeOrExpungeResponse(String symbol) {
+        return symbol.equalsIgnoreCase("EXISTS") ||
+               symbol.equalsIgnoreCase("RECENT") ||
+               symbol.equalsIgnoreCase("EXPUNGE");
     }
 
     public static boolean equalsIgnoreCase(Object o1, Object o2) {
