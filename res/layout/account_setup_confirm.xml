@@ -70,13 +70,29 @@
     </RelativeLayout>
 
     <TextView android:id="@+id/server_information"
-        android:padding="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
         android:layout_below="@id/server_information_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <!-- ONLY SHOW WHEN USER HAS TO ENTER A USERNAME HIMSELF -->
-    <!-- TODO -->
+    <LinearLayout android:id="@+id/account_custom_username"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="8dp">
+        <TextView android:id="@+id/account_username_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please enter your username: "/>
+        <EditText android:id="@+id/account_username_field"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Username......         " />
+    </LinearLayout>
 
     <!-- SHOULD ONLY BE MADE VISIBLE WHEN THERE ARE MULTIPLE MATCHING SERVERS
          NOTE: see note at beginning of AbstractSetupConfirmActivity class -->

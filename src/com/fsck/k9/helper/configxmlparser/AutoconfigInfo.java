@@ -53,14 +53,28 @@ public class AutoconfigInfo implements Parcelable {
         Define types for some of the data
      *******************************************************************************/
     public static enum AuthenticationType { plain, secure, NTLM, GSSAPI, clientIPaddress, TLSclientcert, none, UNSET };
-    public static enum SocketType { plain, SSL, STARTTLS, UNSET};
+    public static enum SocketType { plain(""), SSL("ssl"), STARTTLS("tls"), UNSET("");
+        private String schemeName;
+
+        SocketType(String schemeName){ this.schemeName = schemeName; }
+        public String getSchemeName() {
+            return schemeName;
+        }
+    };
+
     public static enum RestrictionType { clientIPAddress };
     public static enum InformationType { ENABLE, INSTRUCTION, DOCUMENTATION }
 
-    public static enum ServerType{ IMAP(0), POP3(1), SMTP(2), UNSET(3), NO_VALUE(4), WRONG_TAG(5);
+    public static enum ServerType{ IMAP(0,"imap"), POP3(1,"pop3"), SMTP(2,"smtp"), UNSET(3,""), NO_VALUE(4,""), WRONG_TAG(5,"");
 
         private int type;
-        ServerType(int type){this.type = type;}
+        private String schemeName;
+
+        ServerType(int type, String schemeName){
+            this.type = type;
+            this.schemeName = schemeName;
+        }
+
         public Server getServerObject(Parcel parcel){
             // ugly here but cleanest solution to mix the parcelable and inheritance in the server classes ( user of super() )
             switch(type){
@@ -82,6 +96,10 @@ public class AutoconfigInfo implements Parcelable {
             }catch (NullPointerException ex){
                 return NO_VALUE;
             }
+        }
+
+        public String getSchemeName() {
+            return schemeName;
         }
     }
 
