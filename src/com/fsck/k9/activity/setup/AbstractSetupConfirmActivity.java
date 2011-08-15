@@ -15,7 +15,9 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.view.View;
@@ -30,6 +32,8 @@ import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.ServerType;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.SocketType;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.Server;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public abstract class AbstractSetupConfirmActivity extends K9Activity implements View.OnClickListener, OnItemSelectedListener {
@@ -38,6 +42,9 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     private static final String EXTRA_CONFIG_INFO = "configInfo";
     private static final String EXTRA_EMAIL = "email";
     private static final String EXTRA_PASSWORD = "password";
+
+    private final String LOCALPART_EMAIL = "%EMAILLOCALPART%";
+    private final String WHOLE_EMAIL = "%EMAILADDRESS%";
 
     public static void actionConfirmIncoming(Context context, Account account, AutoconfigInfo info) {
         Intent i = new Intent(context, AccountSetupConfirmIncoming.class);
@@ -57,9 +64,13 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     // data
     protected Account mAccount;
     protected AutoconfigInfo mConfigInfo;
+    protected String mEmail;
+    protected String mUsername;
+    private boolean mCustomUsername = false;
+    protected String mPassword;
 
     // references to current selections ( easier to code with )
-    private Server mCurrentServer;
+    protected Server mCurrentServer;
     private ServerType mCurrentType;
     private SocketType mCurrentSocket;
     private List<? extends Server> mCurrentServerList;
@@ -72,6 +83,8 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     private TextView mServerCountLabel;
     private RelativeLayout mServerBrowseButtons;
     private RelativeLayout mServerDocumentation;
+    private LinearLayout mUsernameView;
+    private EditText mUsernameField;
     private TextView mDocumentationLinks;
 
     // difference between incomming & outgoing
@@ -91,30 +104,36 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         mOkButton = (Button) findViewById(R.id.confirm_ok_button);
         mServerCountLabel = (TextView) findViewById(R.id.server_count_label);
         mDocumentationLinks = (TextView) findViewById(R.id.server_documentation_content);
+        mUsernameField = (EditText) findViewById(R.id.account_username_field);
 
+        mUsernameView = (LinearLayout) findViewById(R.id.account_custom_username);
         mServerBrowseButtons = (RelativeLayout) findViewById(R.id.confirm_serverbrowse_buttons);
         mServerDocumentation = (RelativeLayout) findViewById(R.id.confirm_documentation_part);
 
         // get the data out of our intent
         // if no blank account passed make one
+        mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+        mPassword = getIntent().getStringExtra(EXTRA_PASSWORD);
+
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         if(accountUuid != null)
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        else mAccount = Account.getBlankAccount(this,
-                    getIntent().getStringExtra(EXTRA_EMAIL),
-                    getIntent().getStringExtra(EXTRA_PASSWORD));
+        else mAccount = Account.getBlankAccount(this, mEmail, mPassword);
+
         mConfigInfo = getIntent().getParcelableExtra(EXTRA_CONFIG_INFO);
 
         // attach data to gui elements
         ArrayAdapter<ServerType> protocolAdapter = new ArrayAdapter<ServerType>(this,
-                R.layout.account_setup_confirm_spinners_item, getAvailableServerTypes());
+                android.R.layout.simple_spinner_item, getAvailableServerTypes());
         mProtocolSpinner.setAdapter(protocolAdapter);
+        protocolAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         List<SocketType> matchingSocketTypeList = mConfigInfo.getAvailableSocketTypes(
                 mConfigInfo.getFilteredServerList(getServers(),protocolAdapter.getItem(0), null, null));
         ArrayAdapter<SocketType> socketTypeAdapter = new ArrayAdapter<SocketType>(this,
-                R.layout.account_setup_confirm_spinners_item, matchingSocketTypeList);
+                android.R.layout.simple_spinner_item, matchingSocketTypeList);
         mSocketTypeSpinner.setAdapter(socketTypeAdapter);
+        socketTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // if there is extra information, display it
         if( mConfigInfo.hasExtraInfo() ){
@@ -126,6 +145,18 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         mProtocolSpinner.setOnItemSelectedListener(this);
         mSocketTypeSpinner.setOnItemSelectedListener(this);
         mOkButton.setOnClickListener(this);
+        mUsernameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if( mCustomUsername )
+                    if( ! mUsernameField.getText().toString().isEmpty() ) mOkButton.setEnabled(true);
+                    else mOkButton.setEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
     }
 
     @Override
@@ -152,7 +183,9 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
                 // now we have to reset the options in sockettype spinner
                 List<SocketType> newTypes = mConfigInfo.getAvailableSocketTypes(
                     mConfigInfo.getFilteredServerList(getServers(),(ServerType) mProtocolSpinner.getAdapter().getItem(pos), null, null));
-                mSocketTypeSpinner.setAdapter(new ArrayAdapter(this, R.layout.account_setup_confirm_spinners_item, newTypes));
+                ArrayAdapter<SocketType> tmpAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, newTypes);
+                tmpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSocketTypeSpinner.setAdapter(tmpAdapter);
                 mSocketTypeSpinner.invalidate();
                 break;
             case R.id.spinner_sockettype:
@@ -192,11 +225,39 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
 
 
     private void setServerInfo(Server mCurrentServer) {
-        // TODO: string resources
+        // TODO: use string resources
         mServerInfoText.setText("Host: "+mCurrentServer.hostname+"\n"+
                                 "Port: "+mCurrentServer.port+"\n"+
                                 "Authentication: "+mCurrentServer.authentication);
+
+        // see if we need a custom username
+        if( mCurrentServer.username != null ){
+            mServerInfoText.setText(mServerInfoText.getText().toString()+"\n"+
+                "Username: "+determineUsername(mCurrentServer));
+            mOkButton.setEnabled(true);
+            mCustomUsername = false;
+            mUsernameView.setVisibility(View.GONE);
+        }else{
+            mOkButton.setEnabled(false);
+            mCustomUsername = true;
+            mUsernameView.setVisibility(View.VISIBLE);
+        }
     }
+
+
+
+    private String determineUsername(Server mCurrentServer) {
+        mCustomUsername = false;
+        if( mCurrentServer.username.equals(LOCALPART_EMAIL)){
+            mUsername = mEmail.split("@")[0];
+        }else if( mCurrentServer.username.equals(WHOLE_EMAIL)){
+            mUsername = mEmail;
+        }else{
+            mUsername = mCurrentServer.username;
+        }
+        return mUsername;
+    }
+
 
     private void setServerCount(int count){
         mServerCountLabel.setText("( "+count+" / "+mCurrentServerList.size()+" )");
@@ -204,4 +265,15 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {}
+
+    /*
+        Assuming the first one is set correctly, no checks are build in
+     */
+    protected String getScheme(){
+        String scheme = "";
+        scheme = mCurrentType.getSchemeName();
+        if( mCurrentSocket != SocketType.plain && mCurrentSocket != SocketType.UNSET )
+            scheme += "+"+mCurrentSocket.getSchemeName();
+        return scheme;
+    }
 }
