@@ -7,6 +7,9 @@
 
 package com.fsck.k9.helper.configxmlparser;
 
+import java.io.UnsupportedEncodingException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,7 +55,24 @@ public class AutoconfigInfo implements Parcelable {
     /*******************************************************************************
         Define types for some of the data
      *******************************************************************************/
-    public static enum AuthenticationType { plain, secure, NTLM, GSSAPI, clientIPaddress, TLSclientcert, none, UNSET };
+    public static enum AuthenticationType {
+        plain(1), secure(2), NTLM(-1), GSSAPI(-1), clientIPaddress(0), TLSclientcert(-1), none(0), UNSET(-1);
+        /*
+            K-9 only supports plain or CRAM-MD5 so we'll toss an error for all the rest and just check this manually
+         */
+        private int type;
+        AuthenticationType(int type){ this.type = type; }
+
+        public String getAuthString() throws UnsupportedEncodingException {
+            switch( type ){
+                case 0: return "";
+                case 1: return "PLAIN";
+                case 2: return "CRAM_MD5";
+                default: throw new UnsupportedEncodingException();
+            }
+        }
+    };
+
     public static enum SocketType { plain(""), SSL("ssl"), STARTTLS("tls"), UNSET("");
         private String schemeName;
 

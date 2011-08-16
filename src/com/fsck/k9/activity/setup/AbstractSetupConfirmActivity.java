@@ -12,14 +12,12 @@ package com.fsck.k9.activity.setup;
         'browse' through the available hosts. This consists of 2 auto hidden/unhidden buttons and the necessary callbacks.
         The need for this is questionable, if the devs/community decide for, I'll finish the code, if not it will be removed.
  */
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -38,28 +36,13 @@ import java.util.List;
 
 public abstract class AbstractSetupConfirmActivity extends K9Activity implements View.OnClickListener, OnItemSelectedListener {
 
-    private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_CONFIG_INFO = "configInfo";
-    private static final String EXTRA_EMAIL = "email";
-    private static final String EXTRA_PASSWORD = "password";
+    protected static final String EXTRA_ACCOUNT = "account";
+    protected static final String EXTRA_CONFIG_INFO = "configInfo";
+    protected static final String EXTRA_EMAIL = "email";
+    protected static final String EXTRA_PASSWORD = "password";
 
     private final String LOCALPART_EMAIL = "%EMAILLOCALPART%";
     private final String WHOLE_EMAIL = "%EMAILADDRESS%";
-
-    public static void actionConfirmIncoming(Context context, Account account, AutoconfigInfo info) {
-        Intent i = new Intent(context, AccountSetupConfirmIncoming.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_CONFIG_INFO, info);
-        context.startActivity(i);
-    }
-
-    public static void actionConfirmIncoming(Context context, String email, String password, AutoconfigInfo info){
-        Intent i = new Intent(context, AccountSetupConfirmIncoming.class);
-        i.putExtra(EXTRA_EMAIL, email);
-        i.putExtra(EXTRA_PASSWORD, password);
-        i.putExtra(EXTRA_CONFIG_INFO, info);
-        context.startActivity(i);
-    }
 
     // data
     protected Account mAccount;
@@ -116,7 +99,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         mPassword = getIntent().getStringExtra(EXTRA_PASSWORD);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        if(accountUuid != null)
+        if(accountUuid != null && !accountUuid.isEmpty())
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         else mAccount = Account.getBlankAccount(this, mEmail, mPassword);
 
@@ -164,7 +147,6 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         switch( view.getId() ){
             case R.id.confirm_ok_button:
                 finishAction();
-                finish();
                 break;
             case R.id.confirm_next_server_button:
                 // TODO: write this,... it will probably never be used since no isp has 2 host for exact the same thing
