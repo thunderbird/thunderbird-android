@@ -384,7 +384,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
             // launch confirm activities
             }else{
                 AccountSetupConfirmIncoming.actionConfirmIncoming
-                        (this, mEmailAddress, mPassword, mAutoConfigInfo);
+                        (this, null, mEmailAddress, mPassword, mAutoConfigInfo);
                 finish();
             }
             break;

@@ -186,6 +186,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
 
     private void startSettingsDetection(String email, String password) {
         AccountSetupAutoConfiguration.actionAttemptConfiguration(this, email, password);
+        finish();
     }
 
     /*

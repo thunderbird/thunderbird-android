@@ -6,7 +6,10 @@ package com.fsck.k9.activity.setup;
     the final settings.
  */
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.ServerType;
@@ -19,6 +22,19 @@ import java.net.URLEncoder;
 import java.util.List;
 
 public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
+
+    // account is allowed to be null
+    public static void actionConfirmIncoming(Context context, Account account, String email, String password, AutoconfigInfo info) {
+        Intent i = new Intent(context, AccountSetupConfirmIncoming.class);
+        if( account != null )
+            i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        else i.putExtra(EXTRA_ACCOUNT, "");
+        i.putExtra(EXTRA_EMAIL, email);
+        i.putExtra(EXTRA_PASSWORD, password);
+        i.putExtra(EXTRA_CONFIG_INFO, info);
+        context.startActivity(i);
+    }
+
     @Override
     protected List<? extends AutoconfigInfo.Server> getServers() {
         return mConfigInfo.incomingServer;
@@ -42,7 +58,9 @@ public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
                     mCurrentServer.hostname,
                     mCurrentServer.port,
                     null,null,null);
-            mAccount.setTransportUri(uri.toString());
+            mAccount.setStoreUri(uri.toString());
+
+            AccountSetupConfirmOutgoing.actionConfirmOutgoing(this, mAccount, mEmail, mPassword, mConfigInfo);
         }
         catch (UnsupportedEncodingException enc) {}
         catch (URISyntaxException use) {
@@ -51,5 +69,6 @@ public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
             * convenience.
             */
         }
+        finish();
     }
 }
