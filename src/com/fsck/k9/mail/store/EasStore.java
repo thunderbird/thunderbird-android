@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -111,6 +112,11 @@ public class EasStore extends Store {
 
     static public final String EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML";
     static public final String EAS_2_POLICY_TYPE = "MS-WAP-Provisioning-XML";
+    
+    private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
+    private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
+    private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
+    private static int NORMAL_DELAY_TIME = 5000;
 
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
@@ -937,7 +943,13 @@ public class EasStore extends Store {
 
         @Override
         public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
-            moveOrCopyMessages(msgs, trashFolderName, true);
+        	String[] uids = new String[msgs.length];
+
+            for (int i = 0, count = msgs.length; i < count; i++) {
+                uids[i] = msgs[i].getUid();
+            }
+            
+            deleteServerMessages(uids);
         }
 
         private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
@@ -1409,6 +1421,8 @@ public class EasStore extends Store {
 
         Thread listeningThread = null;
         final AtomicBoolean stop = new AtomicBoolean(false);
+        final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
+        final AtomicInteger idleFailureCount = new AtomicInteger(0);
         TracingWakeLock wakeLock = null;
 
         public EasPusher(EasStore store, PushReceiver receiver) {
@@ -1438,7 +1452,7 @@ public class EasStore extends Store {
                         try {
                         	Serializer s = new Serializer();
                         	
-                        	int responseTimeout = getAccount().getIdleRefreshMinutes() * 60;
+                        	int responseTimeout = getAccount().getIdleRefreshMinutes() * 60 + (IDLE_READ_TIMEOUT_INCREMENT / 1000);
 							s.start(Tags.PING_PING)
                         		.data(Tags.PING_HEARTBEAT_INTERVAL, String.valueOf(responseTimeout))
                         		.start(Tags.PING_FOLDERS);
@@ -1490,18 +1504,18 @@ public class EasStore extends Store {
                             } else {
                                 receiver.pushError("Push error for " + getLogId(), e);
                                 Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
-//                                int delayTimeInt = delayTime.get();
-//                                receiver.sleep(wakeLock, delayTimeInt);
-//                                delayTimeInt *= 2;
-//                                if (delayTimeInt > MAX_DELAY_TIME) {
-//                                    delayTimeInt = MAX_DELAY_TIME;
-//                                }
-//                                delayTime.set(delayTimeInt);
-//                                if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT) {
-//                                    Log.e(K9.LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
-//                                    receiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount.get() + " consecutive errors", e);
-//                                    stop.set(true);
-//                                }
+                                int delayTimeInt = delayTime.get();
+                                receiver.sleep(wakeLock, delayTimeInt);
+                                delayTimeInt *= 2;
+                                if (delayTimeInt > MAX_DELAY_TIME) {
+                                    delayTimeInt = MAX_DELAY_TIME;
+                                }
+                                delayTime.set(delayTimeInt);
+                                if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT) {
+                                    Log.e(K9.LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
+                                    receiver.pushError("Push disabled for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors", e);
+                                    stop.set(true);
+                                }
 
                             }
                         }
