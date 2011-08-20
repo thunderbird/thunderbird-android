@@ -92,6 +92,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private boolean bDoneSearching = false;
     private boolean bFound = false;
     private boolean bParseFailed = false;
+    private boolean bUnsafe = false;
 
     /*
         Start the auto-configuration activity
@@ -114,7 +115,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         setContentView(R.layout.account_setup_autoconfig);
         mMessageView = (TextView)findViewById(R.id.status_message);
         mWarningMsg = (TextView)findViewById(R.id.autoconfig_warning);
-        mWarningMsg.setVisibility(View.GONE);
+        mWarningMsg.setVisibility(View.INVISIBLE);
         mProgressCircle = (ProgressBar)findViewById(R.id.autoconfig_progress);
         mProgressCircle.setIndeterminate(true);
         mProgressCircle.setVisibility(View.VISIBLE);
@@ -182,8 +183,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                             setMessage(R.string.account_setup_autoconfig_succesful,false);
 
                             // alert user these settings might be tampered with!!! ( no https )
-                            if( i >= UNSAFE_URL_START )
-                                mWarningMsg.setVisibility(View.VISIBLE);
+                            if( i >= UNSAFE_URL_START ) bUnsafe = true;
 
                             bFound = true;
                             continue;
@@ -243,7 +243,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                         // 2. Nothing came up, must manually config.. + help?
                         // 3. Data did not came over HTTPS this could be UNSAFE !!!!!!
                         mProgressCircle.setVisibility(View.INVISIBLE);
-                        mWarningMsg.setVisibility(View.VISIBLE);
+                        if( bUnsafe /*&& !bForceManual*/ ) mWarningMsg.setVisibility(View.VISIBLE);
                         mNextButton.setEnabled(true);
                         if( bForceManual )
                             mNextButton.setText(getString(R.string.account_setup_basics_manual_setup_action));

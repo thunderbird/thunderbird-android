@@ -386,6 +386,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_confirm_incoming_title">Confirm incoming server settings</string>
     <string name="account_setup_confirm_outgoing_title">Confirm outgoing server settings</string>
     <string name="account_setup_autoconfig_info">Attempting to configure your account...</string>
+    <string name="account_setup_autoconfig_unsafe_connection">Warning! This information was acquired over an unencrypted connection, be sure to verify the specifics following next!</string>
     <string name="account_setup_autoconfig_test_safe_serverside">Looking for safe server-side configuration files...</string>
     <string name="account_setup_autoconfig_test_unsafe_serverside">Looking for UNSAFE server-side configuration files...</string>
     <string name="account_setup_autoconfig_test_ispdb">Querying ISP database for configuration settings...</string>
@@ -395,7 +396,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_autoconfig_missing">not found!</string>
     <string name="account_setup_autoconfig_succesful">successful!</string>
     <string name="account_setup_autoconfig_fail">failed!</string>
-    <string name="account_setup_autoconfig_forcemanual">No settings found, use manual configuration.</string>
+    <string name="account_setup_autoconfig_forcemanual">No were settings found, use manual configuration to continue.</string>
     <string name="account_setup_autoconfig_trynext">Searching other places for configuration settings...</string>
 
     <string name="account_setup_names_title">Almost done!</string>
@@ -1057,5 +1058,5 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="error_unable_to_connect">Unable to connect.</string>
 
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
-    
+
 </resources>

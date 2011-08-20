@@ -13,39 +13,53 @@
             android:paddingBottom="6dip"/>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_below="@id/status_message"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
             android:layout_centerHorizontal="true">
 
             <TextView android:id="@+id/autoconfig_warning"
+                android:gravity="center"
+                android:textColor="#C44141"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Warning blaat blaat" />
+                android:text="@string/account_setup_autoconfig_unsafe_connection" />
 
-            <ProgressBar android:id="@+id/autoconfig_progress"
+            <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true">
+
+                <!-- kind of a hack.... need to have a look at whis this is behind the buttons -->
+               <ProgressBar android:id="@+id/autoconfig_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/status_message"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="60dp"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="50dp"
                 style="@android:style/Widget.ProgressBar.Large" />
 
-           <Button android:id="@+id/autoconfig_button_cancel"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@id/autoconfig_progress"
-                   android:text="@string/cancel_action"/>
+                <LinearLayout
+                        android:layout_below="@id/autoconfig_progress"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                   <Button android:id="@+id/autoconfig_button_cancel"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="@string/cancel_action"/>
 
-           <Button android:id="@+id/autoconfig_button_next"
-                   android:drawableRight="@drawable/button_indicator_next"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@id/autoconfig_progress"
-                   android:layout_toRightOf="@id/autoconfig_button_cancel"
-                   android:text="@string/next_action"/>
+                   <Button android:id="@+id/autoconfig_button_next"
+                           android:drawableRight="@drawable/button_indicator_next"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="@string/next_action"/>
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
 </RelativeLayout>
