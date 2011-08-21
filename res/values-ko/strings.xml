@@ -91,8 +91,8 @@
     <string name="mark_all_as_read_dlg_title">모든 편지를 읽음으로 표시</string>
     <string name="mark_all_as_read_dlg_instructions_fmt">\'<xliff:g id="folder">%s</xliff:g>\' 폴더의 모든 메시지를 읽음으로 표시하시겠습니까?  (K-9에서 보여지지 않은 폴더의 메시지포함)</string>
 
-    <string name="flag_action">별표 붙이기</string>
-    <string name="unflag_action">별표 삭제</string>
+    <string name="flag_action">즐겨찾기 등록</string>
+    <string name="unflag_action">즐겨찾기 해제</string>
     <string name="copy_action">복사</string>
     <string name="show_full_header_action">헤더 보기</string>
     <string name="hide_full_header_action">헤더 숨기기</string>
@@ -184,8 +184,8 @@
     <string name="send_failure_body_fmt">K-9에서 메시지를 보내는데 문제가 발생하였습니다.
     하지만 문제의 특성상 K-9은 메시지가 확실히 보내졌는지 여부를 확인할 수 없습니다. 
 	수신자는 이미 메시지를 받았을 수도 있습니다.
-    \u000a\u000a발생된 문제 유형의 메시지는 보낸편지함에 별표(started) 표시되었습니다.
-    이 별표를 없애면 K-9은 메시지를 재전송을 시도할것입니다.
+    \u000a\u000a발생된 문제 유형의 메시지는 보낸편지함에 즐겨찾기(stared) 표시가 되어있습니다.
+    이 즐겨찾기(stared)를 없애면 K-9은 메시지를 재전송을 시도할것입니다.
 	다른 발신 작업을 하기위해서는 보낸편지함을 길게 눌러 메시지 보내기를 찾으십시오.\u000A\u000a
 	<xliff:g id="errorFolder">%s</xliff:g> 폴더에 실패에 대한 에러메시지가 있습니다.</string>
 
@@ -241,8 +241,8 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="message_list_delete_action">지우기</string>
     <string name="message_list_mark_read_action">읽음으로 표시</string>
     <string name="message_list_mark_unread_action">읽지 않음으료 표시</string>
-    <string name="message_list_flag_action">별표 더하기</string>
-    <string name="message_list_unflag_action">별표 지우기</string>
+    <string name="message_list_flag_action">즐겨찾기 등록</string>
+    <string name="message_list_unflag_action">즐겨찾기 해제</string>
 
     <string name="message_compose_to_hint">받는 사람</string>
     <string name="message_compose_cc_hint">참조</string>
@@ -310,8 +310,8 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="about_version">버전: <xliff:g id="version">%s</xliff:g></string>
 
 
-    <string name="global_settings_flag_label">별표 보기</string>
-    <string name="global_settings_flag_summary">체크된 메시지 별표하기</string>
+    <string name="global_settings_flag_label">즐겨찾기 보기</string>
+    <string name="global_settings_flag_summary">체크된 메시지 즐겨찾기등록</string>
     <string name="global_settings_checkbox_label">체크박스 여러게 선택하기</string>
     <string name="global_settings_checkbox_summary">여러게 선택하기를 항상보여줍니다.</string>
     <string name="global_settings_touchable_label">메시지 미리보기</string>
@@ -758,8 +758,8 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="sort_sender_re_alpha">알파벳 순서의 역순</string>
     <string name="sort_subject_alpha">제목의 알파벳 순서</string>
     <string name="sort_subject_re_alpha">제목의 알파벳 순서의 역순</string>
-    <string name="sort_flagged_first">별표(stared) 메시지를 첫번째로</string>
-    <string name="sort_flagged_last">별표아닌(unstarted) 메시지를 첫번째로</string>
+    <string name="sort_flagged_first">즐겨찾기(stared) 메시지를 첫번째로</string>
+    <string name="sort_flagged_last">즐겨찾기아닌(unstarted) 메시지를 첫번째로</string>
     <string name="sort_unread_first">읽지않은 메시지를 첫번째로</string>
     <string name="sort_unread_last">읽은 메시지를 첫번째로</string>
     <string name="sort_attach_first">첨부파일이 있는 메시지를 첫번째로</string>
@@ -871,13 +871,13 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="batch_delete_op">삭제</string>
     <string name="batch_mark_read_op">읽음으로 표시</string>
     <string name="batch_mark_unread_op">읽지 않음으로 표시</string>
-    <string name="batch_flag_op">별표 추기</string>
-    <string name="batch_unflag_op">별표 없애기</string>
+    <string name="batch_flag_op">즐겨찾기 추기</string>
+    <string name="batch_unflag_op">즐겨찾기 해제</string>
     <string name="batch_archive_op">보관(Archive)으로 이동</string>
     <string name="batch_spam_op">스팸으로 이동</string>
     <string name="batch_move_op">이동(Move)</string>
     <string name="batch_copy_op">복사</string>
-    <string name="batch_flag_mode">별표(Star) 모드</string>
+    <string name="batch_flag_mode">즐겨찾기(Star) 모드</string>
     <string name="batch_select_mode">선택(Select) 모드</string>
     <string name="batch_plain_mode">일반(Plain)모드</string>
     <string name="batch_select_all">모두 선택</string>
@@ -921,7 +921,7 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="hide_special_accounts_summary">통합 이메일함과 모든 편지함 숨기기</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - 별표 메일수</string>
+    <string name="flagged_modifier"> - 즐겨찾기 메일수</string>
     <string name="unread_modifier"> - 읽지않은 메일수</string>
 
     <string name="search_all_messages_title">모든 편지</string>
