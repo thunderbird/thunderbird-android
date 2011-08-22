@@ -141,7 +141,6 @@ public class EasStore extends Store {
     private HttpClient mHttpClient = null;
     private String mAuthString;
 
-    private Folder mSendFolder = null;
     private HashMap<String, EasFolder> mFolderList = new HashMap<String, EasFolder>();
     
     private String mStoreSyncKey = "0";
@@ -749,10 +748,25 @@ public class EasStore extends Store {
     	}
     	
     	for (Folder folder : folderList) {
-    		if (((EasFolder) folder).mType == FolderSyncParser.INBOX_TYPE) {
-    			String inboxFolderName = folder.getName();
-    	    	this.mAccount.setAutoExpandFolderName(inboxFolderName);
-    	    	this.mAccount.setInboxFolderName(inboxFolderName);
+    		int type = ((EasFolder) folder).mType;
+    		switch (type) {
+    			case FolderSyncParser.INBOX_TYPE:
+        			String inboxFolderName = folder.getName();
+        	    	this.mAccount.setAutoExpandFolderName(inboxFolderName);
+        	    	this.mAccount.setInboxFolderName(inboxFolderName);
+    				break;
+    			case FolderSyncParser.DRAFTS_TYPE:
+        	    	this.mAccount.setDraftsFolderName(folder.getName());
+    				break;
+    			case FolderSyncParser.DELETED_TYPE:
+        	    	this.mAccount.setTrashFolderName(folder.getName());
+    				break;
+    			case FolderSyncParser.SENT_TYPE:
+        	    	this.mAccount.setSentFolderName(folder.getName());
+    				break;
+    			case FolderSyncParser.OUTBOX_TYPE:
+    				// outbox folder is not synced
+    				break;
     		}
     	}
     	
@@ -985,10 +999,7 @@ public class EasStore extends Store {
 
         @Override
         public int getMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
             return -1;
-//            this.mMessageCount = getMessageCount(true);
-//            return this.mMessageCount;
         }
 
         @Override
@@ -1412,8 +1423,6 @@ public class EasStore extends Store {
     }
     
     public class EasPusher implements Pusher {
-    	
-    	private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     	
         final EasStore mStore;
         final PushReceiver receiver;
