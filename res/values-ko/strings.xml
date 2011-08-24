@@ -3,7 +3,7 @@
     <string name="app_name">K-9 메일</string>
     <string name="beta_app_name">K-9 메일 베타</string>
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">수정 정보: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision_fmt">릴리즈 정보: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">K-9 메일은 아래의 서드파티 라이브러리를 이용합니다 : <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji 아이콘: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
     
@@ -14,7 +14,7 @@
     <string name="delete_messages_label">이메일 삭제</string>
     <string name="delete_messages_desc">K-9이 이메일을 삭제하도록 합니다</string>
     
-     <string name="about_title_fmt">정보 <xliff:g id="app_name">%s</xliff:g></string>
+     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">계정</string>
     <string name="advanced">고급</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
@@ -22,7 +22,7 @@
     
       <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">쓰기</string>
+    <string name="compose_title">작성</string>
     <string name="debug_title">디버그</string>
     <string name="choose_folder_title">폴더 선택</string>
     <string name="choose_color_title">색 선택</string>
@@ -37,7 +37,7 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020(다음 수신 @ <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_syncing_off">\u0020(동기화 불가능)</string>
+    <string name="status_syncing_off">\u0020(동기화 실패)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">다음</string> <!-- Used as part of a multi-step process -->
@@ -78,7 +78,7 @@
     <string name="folder_settings_action">폴더 설정</string>
     <string name="global_settings_action">환경 설정</string>
     <string name="remove_account_action">계정 삭제</string>
-    <string name="clear_pending_action">예정된 작업 없애기(위험!)</string>
+    <string name="clear_pending_action">예정된 작업 삭제(위험!)</string>
     
     <string name="accounts_action">계정</string>
     <string name="back_to_accounts_action">◀</string>
@@ -124,15 +124,15 @@
     <string name="general_no_sender">보낸이 없음</string>
     <string name="status_loading">수신중</string>
     <string name="status_loading_folder">(수신 <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_more">로딩중..\u2026</string>
+    <string name="status_loading_more">이메일을 가져오는 중..\u2026</string>
     <string name="status_network_error">연결 오류</string>
     <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
     <string name="status_error">오류</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">보내는 중</string> <!-- Used in Outbox when a message is currently sending -->
+    <string name="status_sending">전송중</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">메시지 로딩 실패</string>
 
-    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g>개 더 읽기</string>
+    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g>개 이메일 더 불러오기</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -152,7 +152,7 @@
 
     <string name="notification_new_title">새 이메일</string>
     <string name="notification_new_scrolling">새 이메일 <xliff:g id="sender">%s</xliff:g></string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 개 읽지 않음 (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> 개 새 이메일 (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
     <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> accounts</string>
     <string name="notification_unsent_title">메시지가 전송되지 않았습니다</string>
@@ -195,9 +195,9 @@
     <string name="end_of_folder">더 이상 없음</string>
 
     <string name="accounts_welcome">
-K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 메일 클라이언트로 표준 안드로이드 메일 클라이언트를 기반으로 하였습니다.
+K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클라이언트를 기반으로 한 안드로이드용 오픈소스 메일 클라이언트 입니다.
 \n
-\n\nK-9\'s 향상된 기능:
+\n\nK-9의 향상된 기능:
 \n * IMAP IDLE를 이용한 메일 푸시(PUSH)기능
 \n * 더 나은 성능
 \n * 메시지 재정리
@@ -207,7 +207,7 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
 \n * 모든 폴더 동기화
 \n * 회신주소 수정
 \n * 키보드 단축
-\n * 더 나은 IMAP 지원
+\n * 향상된 IMAP 지원
 \n * SD 카드에 첨부파일 저장
 \n * 휴지통 비우기
 \n * 메시지 정렬
@@ -302,7 +302,7 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="message_copied_toast">복사됨</string>
     <string name="message_moved_toast">이동됨</string>
     <string name="message_deleted_toast">삭제됨</string>
-    <string name="message_discarded_toast">버려짐</string>
+    <string name="message_discarded_toast">삭제됨</string>
     <string name="message_saved_toast">임시보관함에 저장되었습니다</string>
     <string name="message_delete_failed">삭제 실패</string>
 
@@ -360,14 +360,14 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">받기 서버 설정 확인중\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">보내기 서버 설정 확인중\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">수신 서버 설정 확인중\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인중\u2026</string>
     <string name="account_setup_check_settings_authenticate">인증중\u2026</string>
     <string name="account_setup_check_settings_fetch">계정설정 가져오기\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">완료중\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">취소중\u2026</string>
 
-    <string name="account_setup_names_title">거의 완료되었습니다!</string>
+    <string name="account_setup_names_title">설정이 거의 완료되었습니다!</string>
     <string name="account_setup_names_instructions">계정이 설정되었습니다. 순조롭게 진행중입니다!</string>
     <string name="account_setup_names_account_name_label">이 계정의 이름을 입력 (옵션):</string>
     <string name="account_setup_names_user_name_label">이름 입력 (보내는 메시지에 표시 될 이름):</string>
@@ -826,8 +826,8 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
     <string name="account_settings_signature__location_after_quoted_text">본문 뒤에</string>
-    <string name="setting_theme_dark">어두운 테마</string>
-    <string name="setting_theme_light">밝은 테마</string>
+    <string name="setting_theme_dark">어두운</string>
+    <string name="setting_theme_light">밝은</string>
     <string name="display_preferences">화면</string>
     <string name="global_preferences">Global</string>
     <string name="debug_preferences">디버깅</string>
@@ -850,12 +850,12 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="setting_language_system">시스템 기본값</string>
 
     <string name="background_ops_label">벡그라운드 동기화</string>
-    <string name="background_ops_never">절대 하지않음</string>
+    <string name="background_ops_never">하지않음</string>
     <string name="background_ops_always">항상</string>
     <string name="background_ops_enabled">\'백그라운드 데이타\'가 선택된 경우</string>
     <string name="background_ops_auto_sync">\'백그라운드 데이타\'와 \'Auto-sync\'가 선택된 경우</string>
 
-    <string name="no_message_seletected_toast">아무 메시지도 선택되지않음</string>
+    <string name="no_message_seletected_toast">선택된 메시지가 없습니다.</string>
 
     <string name="date_format_label">날짜 형식</string>
     <!--
@@ -943,14 +943,14 @@ K-9 메일 설치를 환영합니다.  K-9은 안드로이드용 오픈소스 �
     <string name="remote_control_label">K-9 메일 리모콘</string>
     <string name="remote_control_desc">이 어플리케이션이 K-9 메일을 제어하고 설정하도록 함.</string>
 
-    <string name="font_size_settings_title">글씨 크기</string>
-    <string name="font_size_settings_description">글씨 크기 수정</string>
+    <string name="font_size_settings_title">글꼴 크기</string>
+    <string name="font_size_settings_description">글꼴 크기 수정</string>
 
-    <string name="font_size_account_list">계정 리스트</string>
+    <string name="font_size_account_list">계정 목록</string>
     <string name="font_size_account_name">계정 이름</string>
     <string name="font_size_account_description">계정 정보</string>
 
-    <string name="font_size_folder_list">폴더 리스트</string>
+    <string name="font_size_folder_list">폴더 목록</string>
     <string name="font_size_folder_name">폴더 이름</string>
     <string name="font_size_folder_status">폴더 순위(status)</string>
 
