@@ -110,9 +110,9 @@
     <string name="view_hide_details_action">View/hide details</string>
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="edit_subject_action">Edit subject</string>
-    <string name="read_receipt">Read Receipt</string>
-    <string name="read_receipt_enabled">Read receipt enabled</string>
-    <string name="read_receipt_disabled">Read receipt disabled</string>
+    <string name="read_receipt">Read receipt</string>
+    <string name="read_receipt_enabled">Read receipt will be requested</string>
+    <string name="read_receipt_disabled">Read receipt will not be requested</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
