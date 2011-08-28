@@ -110,6 +110,9 @@
     <string name="view_hide_details_action">View/hide details</string>
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="edit_subject_action">Edit subject</string>
+    <string name="read_receipt">Read Receipt</string>
+    <string name="read_receipt_enabled">Read receipt enabled</string>
+    <string name="read_receipt_disabled">Read receipt disabled</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
@@ -571,6 +574,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_message_format_label">Message Format</string>
     <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>
     <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>
+
+    <string name="account_settings_message_read_receipt_label">Read receipt</string>
+    <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
 
     <string name="account_settings_quote_style_label">Reply quoting style</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>

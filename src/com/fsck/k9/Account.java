@@ -58,6 +58,7 @@ public class Account implements BaseAccount {
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     private static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    private static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
     private static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     private static final String DEFAULT_QUOTE_PREFIX = ">";
     private static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
@@ -125,6 +126,7 @@ public class Account implements BaseAccount {
     // current set of fetched messages
     private boolean mRingNotified;
     private MessageFormat mMessageFormat;
+    private boolean mMessageReadReceipt;
     private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mDefaultQuotedTextShown;
@@ -203,6 +205,7 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
         mMessageFormat = DEFAULT_MESSAGE_FORMAT;
+        mMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT;
         mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN;
@@ -277,6 +280,7 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
+        mMessageReadReceipt = prefs.getBoolean(mUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
@@ -529,6 +533,7 @@ public class Account implements BaseAccount {
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+        editor.putBoolean(mUuid + ".messageReadReceipt", mMessageReadReceipt);
         editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".defaultQuotedTextShown", mDefaultQuotedTextShown);
@@ -1282,6 +1287,14 @@ public class Account implements BaseAccount {
 
     public void setMessageFormat(MessageFormat messageFormat) {
         this.mMessageFormat = messageFormat;
+    }
+
+    public synchronized boolean isMessageReadReceiptAlways() {
+        return mMessageReadReceipt;
+    }
+
+    public synchronized void setMessageReadReceipt(boolean messageReadReceipt) {
+        mMessageReadReceipt = messageReadReceipt;
     }
 
     public QuoteStyle getQuoteStyle() {

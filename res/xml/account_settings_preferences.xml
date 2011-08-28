@@ -232,6 +232,12 @@
             android:entries="@array/account_settings_message_format_entries"
             android:entryValues="@array/account_settings_message_format_values" />
 
+        <CheckBoxPreference
+	    android:persistent="false"
+	    android:key="message_read_receipt"
+	    android:title="@string/account_settings_message_read_receipt_label"
+	    android:summary="@string/account_settings_message_read_receipt_summary" />
+
         <ListPreference
             android:persistent="false"
             android:key="quote_style"

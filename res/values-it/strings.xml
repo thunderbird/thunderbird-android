@@ -110,6 +110,9 @@
     <string name="view_hide_details_action">Mostra/nascondi dettagli</string>
     <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
     <string name="edit_subject_action">Modifica oggetto</string>
+    <string name="read_receipt">Notifica di lettura</string>
+    <string name="read_receipt_enabled">Notifica di lettura attiva</string>
+    <string name="read_receipt_disabled">Notifica di lettura disattiva</string>
     <string name="add_attachment_action">Aggiungi allegato</string>
     <string name="add_attachment_action_image">Aggiungi allegato (Immagine)</string>
     <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
@@ -568,6 +571,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_message_format_label">Formato messaggio</string>
     <string name="account_settings_message_format_text">Plain Text (verranno rimosse immagini e formattazione)</string>
     <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
+
+    <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
+    <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
 
     <string name="account_settings_quote_style_label">Aspetto testo quotato nelle risposte</string>
     <string name="account_settings_quote_style_prefix">Prefisso (come Gmail, Pine)</string>

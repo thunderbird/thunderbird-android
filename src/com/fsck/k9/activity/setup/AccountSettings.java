@@ -88,6 +88,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
+    private static final String PREFERENCE_MESSAGE_READ_RECEIPT = "message_read_receipt";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
@@ -146,6 +147,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mNotificationOpensUnread;
     private CheckBoxPreference mNotificationUnreadCount;
     private ListPreference mMessageFormat;
+    private CheckBoxPreference mMessageReadReceipt;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mAccountDefaultQuotedTextShown;
@@ -216,6 +218,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
+        mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
 
         mAccountQuotePrefix = (EditTextPreference) findPreference(PREFERENCE_QUOTE_PREFIX);
         mAccountQuotePrefix.setSummary(mAccount.getQuotePrefix());
@@ -716,6 +721,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());

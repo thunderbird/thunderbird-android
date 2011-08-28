@@ -105,6 +105,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_MESSAGE_FORMAT = "com.fsck.k9.activity.MessageCompose.messageFormat";
+    private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -167,6 +168,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         SHOW,
         HIDE
     };
+
+    private boolean mReadReceipt = false;
 
     private QuotedTextMode mQuotedTextMode = QuotedTextMode.NONE;
 
@@ -530,6 +533,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mMessageFormat = mAccount.getMessageFormat();
+        mReadReceipt = mAccount.isMessageReadReceiptAlways();
 
         if (!mSourceMessageProcessed) {
             updateFrom();
@@ -820,6 +824,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_REFERENCES, mReferences);
         outState.putSerializable(STATE_KEY_HTML_QUOTE, mQuotedHtmlContent);
         outState.putSerializable(STATE_KEY_MESSAGE_FORMAT, mMessageFormat);
+        outState.putBoolean(STATE_KEY_READ_RECEIPT, mReadReceipt);
     }
 
     @Override
@@ -834,6 +839,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         mMessageFormat = (MessageFormat) savedInstanceState
                          .getSerializable(STATE_KEY_MESSAGE_FORMAT);
+        mReadReceipt = savedInstanceState
+                         .getBoolean(STATE_KEY_READ_RECEIPT);
         mCcWrapper.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ? View.VISIBLE
                                  : View.GONE);
         mBccWrapper.setVisibility(savedInstanceState
@@ -1019,6 +1026,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         message.setRecipients(RecipientType.CC, getAddresses(mCcView));
         message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
         message.setSubject(mSubjectView.getText().toString());
+        if (mReadReceipt == true) {
+            message.setHeader("Disposition-Notification-To", from.toEncodedString());
+        }
         message.setHeader("User-Agent", getString(R.string.message_header_mua));
 
         final String replyTo = mIdentity.getReplyTo();
@@ -1143,6 +1153,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         LENGTH("l"),
         OFFSET("o"),
         MESSAGE_FORMAT("f"),
+        MESSAGE_READ_RECEIPT("r"),
         SIGNATURE("s"),
         NAME("n"),
         EMAIL("e"),
@@ -1423,6 +1434,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccWrapper.setVisibility(View.VISIBLE);
     }
 
+    private void onReadReceipt() {
+        CharSequence txt;
+        if (mReadReceipt == false) {
+            txt=getString(R.string.read_receipt_enabled);
+            mReadReceipt = true;
+        } else {
+            txt=getString(R.string.read_receipt_disabled);
+            mReadReceipt = false;
+        }
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
+        toast.show();
+    }
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
@@ -1753,6 +1777,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case R.id.choose_identity:
             onChooseIdentity();
             break;
+        case R.id.read_receipt:
+            onReadReceipt();
         default:
             return super.onOptionsItemSelected(item);
         }
