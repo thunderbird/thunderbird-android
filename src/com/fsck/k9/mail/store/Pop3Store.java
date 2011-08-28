@@ -35,7 +35,7 @@ public class Pop3Store extends Store {
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
-    private static final String CAPA_COMMAND = "PASS";
+    private static final String CAPA_COMMAND = "CAPA";
     private static final String STAT_COMMAND = "STAT";
     private static final String LIST_COMMAND = "LIST";
     private static final String UIDL_COMMAND = "UIDL";
