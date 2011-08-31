@@ -349,29 +349,20 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     }
 
-
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, final Intent originatingIntent) {
-        actionView(context, messRef, messReferences, null, originatingIntent);
-    }
-
     /**
      * @param context
      * @param messRef
      * @param messReferences
-     * @param extras
      * @param originatingIntent
      *            The intent that allow us to get back to the calling screen, for when the 'Manage
      *            BACK' option is enabled. Never {@code null}.
      */
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, Bundle extras, final Intent originatingIntent) {
+    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, final Intent originatingIntent) {
         Intent i = new Intent(context, MessageView.class);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
         i.putExtra(EXTRA_ORIGINATING_INTENT, originatingIntent);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK );
-        if (extras != null) {
-            i.putExtras(extras);
-        }
         context.startActivity(i);
     }
 
