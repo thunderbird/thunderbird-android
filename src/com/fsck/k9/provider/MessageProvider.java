@@ -60,6 +60,11 @@ public class MessageProvider extends ContentProvider {
          * <P>Type: TEXT</P>
          */
         String SENDER = "sender";
+        
+        /**
+         * <P>Type: TEXT</P>
+         */
+        String SENDER_ADDRESS = "senderAddress";
 
         /**
          * <P>Type: TEXT</P>
@@ -179,6 +184,12 @@ public class MessageProvider extends ContentProvider {
             return source.sender;
         }
     }
+    public static class SenderAddressExtractor implements FieldExtractor<MessageInfoHolder, String> {
+        @Override
+        public String getField(final MessageInfoHolder source) {
+            return source.senderAddress;
+        }
+    }
     public static class AccountExtractor implements FieldExtractor<MessageInfoHolder, String> {
         @Override
         public String getField(final MessageInfoHolder source) {
@@ -290,6 +301,8 @@ public class MessageProvider extends ContentProvider {
                     extractors.put(field, new SubjectExtractor());
                 } else if (MessageColumns.SENDER.equals(field)) {
                     extractors.put(field, new SenderExtractor());
+                } else if (MessageColumns.SENDER_ADDRESS.equals(field)) {
+                    extractors.put(field, new SenderAddressExtractor());
                 } else if (MessageColumns.SEND_DATE.equals(field)) {
                     extractors.put(field, new SendDateExtractor());
                 } else if (MessageColumns.PREVIEW.equals(field)) {
@@ -814,6 +827,7 @@ public class MessageProvider extends ContentProvider {
         MessageColumns._ID,
         MessageColumns.SEND_DATE,
         MessageColumns.SENDER,
+        MessageColumns.SENDER_ADDRESS,
         MessageColumns.SUBJECT,
         MessageColumns.PREVIEW,
         MessageColumns.ACCOUNT,
