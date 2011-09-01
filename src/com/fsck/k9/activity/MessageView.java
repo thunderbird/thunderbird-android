@@ -124,7 +124,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         @Override
-        public void onMount(String providerId) {} // no-op
+        public void onMount(String providerId) { /* no-op */ }
     }
 
 
@@ -349,28 +349,21 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     }
 
-
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, final Intent originatingIntent) {
-        actionView(context, messRef, messReferences, null, originatingIntent);
-    }
-
     /**
      * @param context
      * @param messRef
      * @param messReferences
-     * @param extras
      * @param originatingIntent
-     *            The intent that allow us to get back to the calling screen, for when the 'Manage
-     *            BACK' option is enabled. Never {@code null}.
+     *         The intent that allow us to get back to the calling screen, for when the 'Manage
+     *         "Back" button' option is enabled. Never {@code null}.
      */
-    public static void actionView(Context context, MessageReference messRef, ArrayList<MessageReference> messReferences, Bundle extras, final Intent originatingIntent) {
+    public static void actionView(Context context, MessageReference messRef,
+            ArrayList<MessageReference> messReferences, final Intent originatingIntent) {
         Intent i = new Intent(context, MessageView.class);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
         i.putExtra(EXTRA_ORIGINATING_INTENT, originatingIntent);
-        if (extras != null) {
-            i.putExtras(extras);
-        }
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
 
@@ -434,7 +427,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             } else {
                 List<String> segmentList = uri.getPathSegments();
                 if (segmentList.size() != 3) {
-                    //TODO: Use ressource to externalize message
+                    //TODO: Use resource to externalize message
                     Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -450,7 +443,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                 }
                 if (!found) {
-                    //TODO: Use ressource to externalize message
+                    //TODO: Use resource to externalize message
                     Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
                     return;
                 }
