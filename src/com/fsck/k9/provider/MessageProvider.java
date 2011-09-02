@@ -827,12 +827,12 @@ public class MessageProvider extends ContentProvider {
         MessageColumns._ID,
         MessageColumns.SEND_DATE,
         MessageColumns.SENDER,
-        MessageColumns.SENDER_ADDRESS,
         MessageColumns.SUBJECT,
         MessageColumns.PREVIEW,
         MessageColumns.ACCOUNT,
         MessageColumns.URI,
-        MessageColumns.DELETE_URI
+        MessageColumns.DELETE_URI,
+        MessageColumns.SENDER_ADDRESS
     };
 
     /**
