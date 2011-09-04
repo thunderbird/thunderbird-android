@@ -21,12 +21,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.AutoSyncHelper;
 import com.fsck.k9.mail.Pusher;
 
-/**
- * Bug-fix 2777:
- *   MailService was not properly shutting down when not needed anymore.
- *   Flawed shutdown logic has been removed and consolidated into CoreService
- *   as the auto-shutdown feature.
- */
 public class MailService extends CoreService {
     private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
     private static final String ACTION_RESET = "com.fsck.k9.intent.action.MAIL_SERVICE_RESET";
@@ -144,7 +138,7 @@ public class MailService extends CoreService {
                 if (hasConnectivity && doBackground) {
                     PollService.startService(this);
                 }
-                reschedulePoll(hasConnectivity, doBackground, startId, false); // CK:BF:2777
+                reschedulePoll(hasConnectivity, doBackground, startId, false);
             } else if (ACTION_CANCEL.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
@@ -152,22 +146,22 @@ public class MailService extends CoreService {
             } else if (ACTION_RESET.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
-                rescheduleAll(hasConnectivity, doBackground, startId);  // CK:BF:2777
+                rescheduleAll(hasConnectivity, doBackground, startId); 
             } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
-                reschedulePushers(hasConnectivity, doBackground, startId); // CK:BF:2777
+                reschedulePushers(hasConnectivity, doBackground, startId);
             } else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
-                reschedulePoll(hasConnectivity, doBackground, startId, true); // CK:BF:2777
+                reschedulePoll(hasConnectivity, doBackground, startId, true);
             } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
                 if (hasConnectivity && doBackground) {
                     refreshPushers(null);
-                    schedulePushers(startId); // CK:BF:2777
+                    schedulePushers(startId);
                 }
             } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
-                rescheduleAll(hasConnectivity, doBackground, startId); // CK:BF:2777
+                rescheduleAll(hasConnectivity, doBackground, startId);
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
             } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
@@ -184,7 +178,7 @@ public class MailService extends CoreService {
 
     private void rescheduleAll(final boolean hasConnectivity, final boolean doBackground, final Integer startId) {
         reschedulePoll(hasConnectivity, doBackground, null, true);
-        reschedulePushers(hasConnectivity, doBackground, startId); // CK:BF:2777
+        reschedulePushers(hasConnectivity, doBackground, startId);
     }
 
 

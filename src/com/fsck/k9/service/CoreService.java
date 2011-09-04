@@ -65,14 +65,12 @@ public abstract class CoreService extends Service {
     private volatile boolean mShutdown = false; // CK:A:Seems to be used only when the service is "officially" shutdown to make sure that an exception raise because of the shutdown gets ignored.
 
     /**
-     * CK:BF:2777
      * Controls the auto-shutdown mechanism of the service. The default service life-cycle model is that the service should run
      * only as long as a task is running. If a service should behave differently, disable auto-shutdown.
      */
     private boolean mAutoShutdown = true;
     
     /**
-     * CK:BF:2777
      * This variable is part of the auto-shutdown feature and determines whether the service has to be shutdown at the
      * end of the onStart() method or not.
      */
@@ -88,7 +86,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:DocAdded,Refactored without change of logic
      * Adds an existing WakeLock identified by it's WakeLock-ID to the specified Intent.
      * @param i
      * @param wakeLockId
@@ -103,7 +100,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:DocAdded
      * Adds a new WakeLock to the intent.
      * This will add the WakeLock to the central WakeLock registry managed by this class.
      * @param context Required to be able to create a new wake-lock.
@@ -116,7 +112,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:Added as result of refactoring; logic is unchanged
      * Register WakeLock and returns its registry-entry-ID
      * @param wakeLock
      * @return
@@ -129,7 +124,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:Added as result of refactoring; logic is unchanged
      * Acquires a WakeLock in a K9 standard way
      * @param context
      * @return
@@ -145,7 +139,7 @@ public abstract class CoreService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        // CK:DocAdded:deprecated method but still used for backwards compatibility with Android version <2.0
+        // deprecated method but still used for backwards compatibility with Android version <2.0
       
         // CK:DocAdded: Manage wake-locks, especially, release any wake-locks held so far and define a new "local" wake lock.
         //           Also, because we create a new wakelock, we re-initialize the wakelock timeout and give
@@ -171,7 +165,7 @@ public abstract class CoreService extends Service {
             }
         }
 
-        // CK:DocAdded: Run the actual start-code of the service
+        // Run the actual start-code of the service
         mImmediateShutdown = true;
         try {
             super.onStart(intent, startId);
@@ -188,11 +182,11 @@ public abstract class CoreService extends Service {
      * @param runner
      * @param wakeLockTime
      * @param startId
-     * @return CK:BF:2777: returns whether service-shutdown will actually happen after the task has been executed (or has already been done).
+     * @return returns whether service-shutdown will actually happen after the task has been executed (or has already been done).
      */
     public boolean execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId) {
 
-        boolean serviceShutdownScheduled = false; // CK:BF:2777
+        boolean serviceShutdownScheduled = false;
         final TracingWakeLock wakeLock = acquireWakeLock(context,"CoreService execute",wakeLockTime);
         final boolean autoShutdown = mAutoShutdown;
 
@@ -207,13 +201,13 @@ public abstract class CoreService extends Service {
                         MessagingController.getInstance(getApplication()).systemStatusChanged();
                     }
                 } finally {
-                    try { // CK:BF:2777:Making absolutely sure the service stopping command will be executed
+                    try { // Making absolutely sure the service stopping command will be executed
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "CoreService (" + className + ") completed Runnable " + runner.hashCode() + " with startId " + startId);
                         wakeLock.release();
                     } finally {
                         if (autoShutdown && startId != null) {
-                            stopSelf(startId); // CK:BF:2777<-- this is what is meant with "serviceShutdownScheduled"; execution of this line assures proper shutdown of the service once finished
+                            stopSelf(startId); // <-- this is what is meant with "serviceShutdownScheduled"; execution of this line assures proper shutdown of the service once finished
                         }
                     }
                 }
@@ -224,14 +218,14 @@ public abstract class CoreService extends Service {
             Log.e(K9.LOG_TAG, "CoreService.execute (" + className + ") called with no threadPool available; running Runnable " + runner.hashCode() + " in calling thread", new Throwable());
             synchronized (this) {
                 myRunner.run();
-                serviceShutdownScheduled = startId != null; // CK:BF:2777; In this case it's not actually scheduled, it's already done, but that should never happen anyway
+                serviceShutdownScheduled = startId != null; // In this case it's not actually scheduled, it's already done, but that should never happen anyway
             }
         } else {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "CoreService (" + className + ") queueing Runnable " + runner.hashCode() + " with startId " + startId);
             try {
                 threadPool.execute(myRunner);
-                serviceShutdownScheduled = startId != null; // CK:BF:2777
+                serviceShutdownScheduled = startId != null;
             } catch (RejectedExecutionException e) {
                 if (!mShutdown) {
                     throw e;
@@ -239,8 +233,8 @@ public abstract class CoreService extends Service {
                 Log.i(K9.LOG_TAG, "CoreService: " + className + " is shutting down, ignoring rejected execution exception: " + e.getMessage());
             }
         }
-        mImmediateShutdown = !serviceShutdownScheduled;  // CK:BF:2777
-        return serviceShutdownScheduled; // CK:BF:2777
+        mImmediateShutdown = !serviceShutdownScheduled; 
+        return serviceShutdownScheduled;
     }
 
     /**
@@ -276,7 +270,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:BF:2777
      * @return True if auto-shutdown is enabled
      */
     protected boolean isAutoShutdown() {
@@ -284,7 +277,6 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * CK:BF:2777
      * Enable of disable auto-shutdown (enabled by default).
      * See {@#mAutoShutdown} for more information.
      * @param autoShutdown
