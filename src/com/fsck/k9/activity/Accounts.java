@@ -584,6 +584,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case R.id.recreate:
             onRecreate(realAccount);
             break;
+        case R.id.move_up:
+            onMove(realAccount, true);
+            break;
+        case R.id.move_down:
+            onMove(realAccount, false);
+            break;
         }
         return true;
     }
@@ -602,7 +608,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onRecreate(Account account) {
         showDialog(DIALOG_RECREATE_ACCOUNT);
     }
-
+    private void onMove(final Account account, final boolean up) {
+        AsyncUIProcessor.getInstance(getApplication()).execute(
+                new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        account.move(Preferences.getPreferences(Accounts.this), up);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refresh();
+                            }
+                        });
+                    }
+                });
+    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
