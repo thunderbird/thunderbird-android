@@ -221,6 +221,13 @@ public class MailService extends CoreService {
                     SharedPreferences sPrefs = prefs.getPreferences();
                     int previousInterval = sPrefs.getInt(PREVIOUS_INTERVAL, -1);
                     long lastCheckEnd = sPrefs.getLong(LAST_CHECK_END, -1);
+
+                    if (lastCheckEnd > System.currentTimeMillis()) {
+                        Log.i(K9.LOG_TAG, "The database claims that the last time mail was checked was in the future. ("+lastCheckEnd+"). To try to get things back to normal, the last check time has been reset to "+System.currentTimeMillis());
+                        lastCheckEnd = System.currentTimeMillis();
+                    }
+
+
                     for (Account account : prefs.getAccounts()) {
                         if (account.getAutomaticCheckIntervalMinutes() != -1
                                 && account.getFolderSyncMode() != FolderMode.NONE
