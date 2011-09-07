@@ -109,6 +109,9 @@
     <string name="view_hide_details_action">詳細の表示/非表示</string>
     <string name="add_cc_bcc_action">Cc/Bcc追加</string>
     <string name="edit_subject_action">件名編集</string>
+    <string name="read_receipt">開封確認</string>
+    <string name="read_receipt_enabled">開封確認を要求します</string>
+    <string name="read_receipt_disabled">開封確認を要求しません</string>
     <string name="add_attachment_action">添付追加</string>
     <string name="add_attachment_action_image">添付ファイル追加 (画像)</string>
     <string name="add_attachment_action_video">添付ファイル追加 (動画)</string>
@@ -267,6 +270,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="error_contact_address_not_found">メールアドレスが登録されていません</string>
     <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません。このメールが送信される前に自動的にダウンロードされます。</string>
     <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
+    <string name="message_compose_show_quoted_text_action">元のメッセージを引用する</string>
 
 
 
@@ -559,12 +563,18 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_composition">メール送信</string>
 
+    <string name="account_settings_default_quoted_text_shown_label">返信時に元のメッセージを引用する</string>
+    <string name="account_settings_default_quoted_text_shown_summary">返信するとき、元のメッセージをメールに挿入する</string>
+
     <string name="account_settings_reply_after_quote_label">引用テキストの後に返信を書く</string>
     <string name="account_settings_reply_after_quote_summary">返信するときに元のメッセージを返信の上に表示</string>
 
     <string name="account_settings_message_format_label">メッセージの形式</string>
     <string name="account_settings_message_format_text">テキスト(画像や書式は取り除く)</string>
     <string name="account_settings_message_format_html">HTML (画像や書式を保持)</string>
+
+    <string name="account_settings_message_read_receipt_label">開封確認</string>
+    <string name="account_settings_message_read_receipt_summary">常に開封確認を要求する</string>
 
     <string name="account_settings_quote_style_label">返信の引用スタイル</string>
     <string name="account_settings_quote_style_prefix">引用記号 (Gmail, Pine形式)</string>
@@ -611,6 +621,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">上限なし</string>
 
     <string name="account_settings_message_age_label">いつから同期するか</string>
@@ -1019,13 +1031,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_spam_title">迷惑メールフォルダへの移動の確認</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
-        <item quantity="other">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
+        <item quantity="other">本当にこれら<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを迷惑メールフォルダに移動しますか？</item>
 <!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
   Possible values for 'quantity': zero, one, two, few, many, other
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals

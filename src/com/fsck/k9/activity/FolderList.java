@@ -889,6 +889,8 @@ public class FolderList extends K9ListActivity {
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
                         FolderInfoHolder folderHolder = getFolder(folderName);
                         if (folderHolder != null) {
+                            int oldUnreadMessageCount = folderHolder.unreadMessageCount;
+                            mUnreadMessageCount += unreadMessageCount - oldUnreadMessageCount;
                             folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
                             mHandler.dataChanged();
                         }
@@ -959,6 +961,7 @@ public class FolderList extends K9ListActivity {
             public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
                 if (account.equals(mAccount)) {
                     refreshFolder(account, folderName);
+                    informUserOfStatus();
                 }
             }
 

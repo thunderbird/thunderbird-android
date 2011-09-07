@@ -1,6 +1,15 @@
 
 package com.fsck.k9.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,26 +21,44 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import com.fsck.k9.*;
-import com.fsck.k9.helper.SizeFormatter;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.SearchAccount;
+import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
 
@@ -323,9 +350,29 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
 
     }
-
+    
+    private BaseAccount[] accounts = new BaseAccount[0];
+    private enum ACCOUNT_LOCATION {
+        TOP, MIDDLE, BOTTOM;
+    }
+    private EnumSet<ACCOUNT_LOCATION> accountLocation(BaseAccount account) {
+        EnumSet<ACCOUNT_LOCATION> accountLocation = EnumSet.of(ACCOUNT_LOCATION.MIDDLE);
+        if (accounts.length > 0) {
+            if (accounts[0].equals(account)) {
+                accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
+                accountLocation.add(ACCOUNT_LOCATION.TOP);
+            }
+            if (accounts[accounts.length - 1].equals(account)) {
+                accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
+                accountLocation.add(ACCOUNT_LOCATION.BOTTOM);
+            }  
+        }
+        return accountLocation;
+    }
+    
+    
     private void refresh() {
-        BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
+        accounts = Preferences.getPreferences(this).getAccounts();
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts()
@@ -584,6 +631,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case R.id.recreate:
             onRecreate(realAccount);
             break;
+        case R.id.move_up:
+            onMove(realAccount, true);
+            break;
+        case R.id.move_down:
+            onMove(realAccount, false);
+            break;
         }
         return true;
     }
@@ -602,7 +655,24 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onRecreate(Account account) {
         showDialog(DIALOG_RECREATE_ACCOUNT);
     }
-
+    private void onMove(final Account account, final boolean up) {
+        mHandler.progress(true);
+        AsyncUIProcessor.getInstance(getApplication()).execute(
+                new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        account.move(Preferences.getPreferences(Accounts.this), up);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refresh();
+                                mHandler.progress(false);
+                            }
+                        });
+                    }
+                });
+    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
@@ -740,6 +810,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 if (item.getItemId() != R.id.open) {
                     item.setVisible(false);
                 }
+            }
+        }
+        else {
+            EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(account);
+            if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
+                menu.findItem(R.id.move_up).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_up).setEnabled(true);
+            }
+            if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
+                menu.findItem(R.id.move_down).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_down).setEnabled(true);
             }
         }
     }
