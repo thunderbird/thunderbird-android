@@ -91,12 +91,14 @@ public class MailService extends CoreService {
             ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
             boolean doBackground = true;
             boolean hasConnectivity = false;
+            boolean isWifi = false;
 
             if (connectivityManager != null) {
                 NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
                 if (netInfo != null) {
                     State state = netInfo.getState();
                     hasConnectivity = state == State.CONNECTED;
+                    isWifi = netInfo.getType() == ConnectivityManager.TYPE_WIFI;
                 }
                 boolean backgroundData = connectivityManager.getBackgroundDataSetting();
                 boolean autoSync = true;
@@ -108,6 +110,7 @@ public class MailService extends CoreService {
 
                 K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
 
+                //dhgonsalves: this is where I'd need to make my change
                 switch (bOps) {
                 case NEVER:
                     doBackground = false;
@@ -120,6 +123,9 @@ public class MailService extends CoreService {
                     break;
                 case WHEN_CHECKED_AUTO_SYNC:
                     doBackground = backgroundData & autoSync;
+                    break;
+                case ALWAYS_WIFI_ONLY:
+                    doBackground = isWifi;
                     break;
                 }
 
