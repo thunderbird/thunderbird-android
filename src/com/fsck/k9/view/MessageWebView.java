@@ -95,7 +95,7 @@ public class MessageWebView extends WebView {
 
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
-        // Disable network images by default.  This is overriden by preferences.
+        // Disable network images by default.  This is overridden by preferences.
         blockNetworkData(true);
     }
 

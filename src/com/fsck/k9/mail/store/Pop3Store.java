@@ -981,7 +981,7 @@ public class Pop3Store extends Store {
             //   }
 //         catch (MessagingException me)
 //         {
-//          Log.w(K9.LOG_TAG, "Could not delete non-existant message", me);
+//          Log.w(K9.LOG_TAG, "Could not delete non-existent message", me);
 //         }
         }
     }

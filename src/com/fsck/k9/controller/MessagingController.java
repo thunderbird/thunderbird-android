@@ -1741,7 +1741,7 @@ public class MessagingController implements Runnable {
                 notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
             }
 
-        }//for large messsages
+        }//for large messages
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
 

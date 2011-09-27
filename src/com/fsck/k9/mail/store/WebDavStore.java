@@ -2135,7 +2135,7 @@ public class WebDavStore extends Store {
                 } else {
                     // We don't actually want to have null values in our hashmap,
                     // as it causes the calling code to crash with an NPE as it
-                    // does a lookup in the maap.
+                    // does a lookup in the map.
                     uidToRead.put(uid, false);
                 }
             }
