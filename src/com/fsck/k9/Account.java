@@ -21,7 +21,9 @@ import com.fsck.k9.view.ColorChip;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -376,20 +378,30 @@ public class Account implements BaseAccount {
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
-
-
-    protected synchronized void delete(Preferences preferences) {
-        String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
+    
+    private String combineUuids(String[] uuids) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0, length = uuids.length; i < length; i++) {
-            if (!uuids[i].equals(mUuid)) {
-                if (sb.length() > 0) {
-                    sb.append(',');
-                }
-                sb.append(uuids[i]);
+            if (sb.length() > 0) {
+                sb.append(',');
             }
+            sb.append(uuids[i]);
         }
         String accountUuids = sb.toString();
+        return accountUuids;
+    }
+    
+    protected synchronized void delete(Preferences preferences) {
+        String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
+        String[] newUuids = new String[uuids.length - 1];
+        int i = 0;
+        for (String uuid : uuids) {
+            if (uuid.equals(mUuid) == false) {
+                newUuids[i++] = uuid;
+            }
+        }
+        
+        String accountUuids = combineUuids(newUuids);
         SharedPreferences.Editor editor = preferences.getPreferences().edit();
         editor.putString("accountUuids", accountUuids);
 
@@ -455,6 +467,64 @@ public class Account implements BaseAccount {
         editor.commit();
     }
 
+    public static int findNewAccountNumber(List<Integer> accountNumbers) {
+        int newAccountNumber = -1;
+        Collections.sort(accountNumbers);
+        for (int accountNumber : accountNumbers) {
+            if (accountNumber > newAccountNumber + 1) {
+                break;
+            }
+            newAccountNumber = accountNumber;
+        }
+        newAccountNumber++;
+        return newAccountNumber;
+    }
+
+    public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
+        Account[] accounts = preferences.getAccounts();
+        List<Integer> accountNumbers = new LinkedList<Integer>();
+        for (int i = 0; i < accounts.length; i++) {
+            accountNumbers.add(accounts[i].getAccountNumber());
+        }
+        return accountNumbers;
+    }
+    public static int generateAccountNumber(Preferences preferences) {
+        List<Integer> accountNumbers = getExistingAccountNumbers(preferences);
+        return findNewAccountNumber(accountNumbers);
+    }
+    
+    public void move(Preferences preferences, boolean moveUp) {
+        String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
+        SharedPreferences.Editor editor = preferences.getPreferences().edit();
+        String[] newUuids = new String[uuids.length];
+        if (moveUp) {
+            for (int i = 0; i < uuids.length; i++) {
+                if (i > 0 && uuids[i].equals(mUuid)) {
+                    newUuids[i] = newUuids[i-1];
+                    newUuids[i-1] = mUuid;   
+                }
+                else {
+                    newUuids[i] = uuids[i];
+                }
+            }
+        }
+        else {
+            for (int i = uuids.length - 1; i >= 0; i--) {
+                if (i < uuids.length - 1 && uuids[i].equals(mUuid)) {
+                    newUuids[i] = newUuids[i+1];
+                    newUuids[i+1] = mUuid;   
+                }
+                else {
+                    newUuids[i] = uuids[i];
+                }
+            }
+        }
+        String accountUuids = combineUuids(newUuids);
+        editor.putString("accountUuids", accountUuids);
+        editor.commit();
+        preferences.refreshAccounts();
+    }
+    
     public synchronized void save(Preferences preferences) {
         SharedPreferences.Editor editor = preferences.getPreferences().edit();
 

@@ -459,9 +459,7 @@ public class Pop3Store extends Store {
 
                     /*
                      * Yet another work-around for buggy server software:
-                     * Replace every occurence of multiple spaces with exactly one space. This way
-                     * the String.split() call below will have the desired effect, i.e. split the
-                     * response into message number and unique identifier.
+                     * split the response into message number and unique identifier, no matter how many spaces it has
                      *
                      * Example for a malformed response:
                      * 1   2011071307115510400ae3e9e00bmu9
@@ -469,9 +467,8 @@ public class Pop3Store extends Store {
                      * Note the three spaces between message number and unique identifier.
                      * See issue 3546
                      */
-                    String cleanedResponse = response.replaceAll("  +", " ");
 
-                    String[] uidParts = cleanedResponse.split(" ");
+                    String[] uidParts = response.split(" +");
                     if ((uidParts.length >= 3) && "+OK".equals(uidParts[0])) {
                         /*
                          * At least one server software places a "+OK" in
