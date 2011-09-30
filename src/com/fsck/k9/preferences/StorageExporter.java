@@ -134,12 +134,15 @@ public class StorageExporter {
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
 
+            Set<String> exportAccounts;
             if (accountUuids == null) {
                 Account[] accounts = preferences.getAccounts();
-                accountUuids = new HashSet<String>();
+                exportAccounts = new HashSet<String>();
                 for (Account account : accounts) {
-                    accountUuids.add(account.getUuid());
+                    exportAccounts.add(account.getUuid());
                 }
+            } else {
+                exportAccounts = accountUuids;
             }
 
             Map<String, Object> prefs = new TreeMap<String, Object>(storage.getAll());
@@ -151,7 +154,7 @@ public class StorageExporter {
             }
 
             serializer.startTag(null, ACCOUNTS_ELEMENT);
-            for (String accountUuid : accountUuids) {
+            for (String accountUuid : exportAccounts) {
                 Account account = preferences.getAccount(accountUuid);
                 writeAccount(serializer, account, prefs);
             }
