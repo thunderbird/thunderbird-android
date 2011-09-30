@@ -63,6 +63,23 @@ public class StorageExporter {
     public static final String EMAIL_ELEMENT = "email";
     public static final String DESCRIPTION_ELEMENT = "description";
 
+    /**
+     * List of keys of global settings that don't need to or shouldn't be exported.
+     */
+    private static final Set<String> SKIP_GLOBAL_SETTINGS;
+
+    static {
+        Set<String> skip = new HashSet<String>();
+
+        // No need to export the "accountUuids" field. It will be (re)created by the import code.
+        skip.add("accountUuids");
+
+        // "defaultAccountUuid" is also handled by the import code.
+        skip.add("defaultAccountUuid");
+
+        SKIP_GLOBAL_SETTINGS = skip;
+    }
+
 
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids, String encryptionKey)
@@ -175,8 +192,8 @@ public class StorageExporter {
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue().toString();
-            if (key.indexOf('.') != -1) {
-                // Skip account entries
+            if (key.indexOf('.') != -1 || SKIP_GLOBAL_SETTINGS.contains(key)) {
+                // Skip account entries and keys we don't want/need to export
                 continue;
             }
             writeKeyValue(serializer, key, value);
