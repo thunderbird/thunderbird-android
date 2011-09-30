@@ -243,7 +243,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 }
 
                 mProgressBar.setIndeterminate(false);
-                StringBuffer chainInfo = new StringBuffer(100);
+                StringBuilder chainInfo = new StringBuilder(100);
                 MessageDigest sha1 = null;
                 try {
                     sha1 = MessageDigest.getInstance("SHA-1");
@@ -265,7 +265,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         if (subjectAlternativeNames != null) {
                             // The list of SubjectAltNames may be very long
                             //TODO: localize this string
-                            StringBuffer altNamesText = new StringBuffer("Subject has " + subjectAlternativeNames.size() + " alternative names\n");
+                            StringBuilder altNamesText = new StringBuilder("Subject has " + subjectAlternativeNames.size() + " alternative names\n");
 
                             // we need these for matching
                             String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();

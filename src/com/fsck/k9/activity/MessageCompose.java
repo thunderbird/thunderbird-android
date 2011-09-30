@@ -727,7 +727,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private boolean setRecipients(TextView view, List<String> recipients) {
         boolean recipientAdded = false;
         if (recipients != null) {
-            StringBuffer addressList = new StringBuffer();
+            StringBuilder addressList = new StringBuilder();
             for (String recipient : recipients) {
                 addressList.append(recipient);
                 addressList.append(", ");
@@ -1964,7 +1964,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mInReplyTo = message.getMessageId();
 
                     if (message.getReferences() != null && message.getReferences().length > 0) {
-                        StringBuffer buffy = new StringBuffer();
+                        StringBuilder buffy = new StringBuilder();
                         for (int i = 0; i < message.getReferences().length; i++)
                             buffy.append(message.getReferences()[i]);
 

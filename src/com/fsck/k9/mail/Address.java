@@ -179,7 +179,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addresses.length; i++) {
             sb.append(addresses[i].toString());
             if (i < addresses.length - 1) {
@@ -201,7 +201,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addresses.length; i++) {
             sb.append(addresses[i].toEncodedString());
             if (i < addresses.length - 1) {

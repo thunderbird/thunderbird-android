@@ -37,7 +37,7 @@ public class MimeMultipart extends Multipart {
     }
 
     public String generateBoundary() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("----");
         for (int i = 0; i < 30; i++) {
             sb.append(Integer.toString((int)(Math.random() * 35), 36));

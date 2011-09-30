@@ -530,7 +530,7 @@ public class MimeMessage extends Message {
 
         public void epilogue(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
@@ -540,7 +540,7 @@ public class MimeMessage extends Message {
 
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);

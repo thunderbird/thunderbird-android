@@ -58,7 +58,7 @@ public class DecoderUtil {
         /*
          * Replace _ with =20
          */
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < encodedWord.length(); i++) {
             char c = encodedWord.charAt(i);
             if (c == '_') {
