@@ -191,6 +191,13 @@ public class GlobalSettings {
         @Override
         public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
             try {
+                // The placeholders "SHORT" and "MEDIUM" are fine.
+                if (DateFormatter.SHORT_FORMAT.equals(value) ||
+                        DateFormatter.MEDIUM_FORMAT.equals(value)) {
+                    return true;
+                }
+
+                // If the SimpleDateFormat constructor doesn't throw an exception, we're good.
                 new SimpleDateFormat(value);
                 return true;
             } catch (Exception e) {
