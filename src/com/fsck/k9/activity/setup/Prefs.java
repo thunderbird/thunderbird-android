@@ -1,9 +1,10 @@
 package com.fsck.k9.activity.setup;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Vector;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -134,8 +135,8 @@ public class Prefs extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.global_preferences);
 
         mLanguage = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
-        Vector<CharSequence> entryVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntries()));
-        Vector<CharSequence> entryValueVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
+        List<CharSequence> entryVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntries()));
+        List<CharSequence> entryValueVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
         String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
         HashSet<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
         for (int i = entryVector.size() - 1; i > -1; --i) {

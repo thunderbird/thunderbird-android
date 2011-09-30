@@ -1,6 +1,7 @@
 package com.fsck.k9.crypto;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,7 +150,7 @@ public class Apg extends CryptoProvider {
         intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         long[] initialKeyIds = null;
         if (!pgpData.hasEncryptionKeys()) {
-            Vector<Long> keyIds = new Vector<Long>();
+            List<Long> keyIds = new ArrayList<Long>();
             if (pgpData.hasSignatureKey()) {
                 keyIds.add(pgpData.getSignatureKeyId());
             }
