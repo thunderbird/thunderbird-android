@@ -2402,7 +2402,9 @@ public class LocalStore extends Store implements Serializable {
                                 if (disposition != null) {
                                     String s = MimeUtility.getHeaderParameter(disposition, "size");
                                     if (s != null) {
-                                        size = Integer.parseInt(s);
+                                        try {
+                                            size = Integer.parseInt(s);
+                                        } catch (NumberFormatException e) { /* Ignore */ }
                                     }
                                 }
                             }
