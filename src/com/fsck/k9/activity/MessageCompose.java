@@ -1803,7 +1803,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 return;
             }
             if (contact.getEmailAddresses().size() > 1) {
-                Intent i = new Intent(this, ArrayItemList.class);
+                Intent i = new Intent(this, EmailAddressList.class);
                 i.putExtra("contact", contact);
 
                 if (requestCode == CONTACT_PICKER_TO) {

@@ -281,7 +281,7 @@
             android:name="com.fsck.k9.activity.AccessibleEmailContentActivity"
             >
         </activity>
-        <activity android:name="com.fsck.k9.activity.ArrayItemList"
+        <activity android:name="com.fsck.k9.activity.EmailAddressList"
             android:configChanges="locale"
             >
         </activity>
