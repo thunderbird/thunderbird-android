@@ -74,7 +74,7 @@ public class K9 extends Application {
     private static Constructor<AbsoluteSizeSpan> sAbsoluteSizeSpanConstructor;
 
     public enum BACKGROUND_OPS {
-        WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
+        WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC, ALWAYS_WIFI_ONLY
     }
     
     public enum BACKGROUND_OPS_WIFI {

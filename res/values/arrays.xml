@@ -526,6 +526,7 @@
         <item>@string/background_ops_auto_sync</item>
         <item>@string/background_ops_always</item>
         <item>@string/background_ops_never</item>
+        <item>@string/background_ops_always_wifi</item>
     </string-array>
 
     <string-array name="background_ops_values">
@@ -533,6 +534,7 @@
         <item>WHEN_CHECKED_AUTO_SYNC</item>
         <item>ALWAYS</item>
         <item>NEVER</item>
+        <item>ALWAYS_WIFI_ONLY</item>
     </string-array>
     
     <string-array name="background_ops_wifi_entries">

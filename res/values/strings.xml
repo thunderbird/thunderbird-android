@@ -874,11 +874,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="background_ops_always">Always</string>
     <string name="background_ops_enabled">When \'Background data\' is checked</string>
     <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
+<<<<<<< HEAD
 	
 	<string name="background_ops_wifi_label">Use WIFI</string>
 	<string name="background_ops_wifi_roaming">When roaming</string>
 	<string name="background_ops_wifi_always">Always</string>
 	<string name="background_ops_wifi_never">Never</string>
+=======
+	<string name="background_ops_always_wifi">Always using wifi only</string>
+>>>>>>> 7d2cf149a7fba83ed5e40b38b6e8347e067efe5a
 
     <string name="no_message_seletected_toast">No message selected</string>
 
