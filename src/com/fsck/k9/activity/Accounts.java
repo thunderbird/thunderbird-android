@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,7 +21,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -58,6 +58,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchAccount;
 import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
@@ -103,6 +104,30 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount unreadAccount = null;
     private SearchAccount integratedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
+
+    /**
+     * Contains a reference to a {@link ExtendedAsyncTask} while it is running.
+     */
+    private ExtendedAsyncTask<Void, Void, Boolean> mAsyncTask;
+
+    /**
+     * Contains information about the currently displayed dialog (if available).
+     *
+     * <p>
+     * This object is returned from {@link #onRetainNonConfigurationInstance()} if a dialog is
+     * being displayed while the activity is being restarted. It is then used by the new activity
+     * instance to re-create that dialog.
+     * </p>
+     */
+    private DialogInfo mDialogInfo;
+
+    /**
+     * Reference to the dialog currently being displayed (if available).
+     *
+     * @see #showDialog(int, String)
+     */
+    private AlertDialog mDialog;
+
 
     private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
 
@@ -310,34 +335,48 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Intent intent = getIntent();
         boolean startup = intent.getData() == null && intent.getBooleanExtra(EXTRA_STARTUP, true);
         onNewIntent(intent);
+
         if (startup && K9.startIntegratedInbox()) {
             onOpenAccount(integratedInboxAccount);
             finish();
+            return;
         } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
-            // fall through to "else" if !onOpenAccount()
             finish();
-        } else {
-            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-            requestWindowFeature(Window.FEATURE_PROGRESS);
-
-            setContentView(R.layout.accounts);
-            ListView listView = getListView();
-            listView.setOnItemClickListener(this);
-            listView.setItemsCanFocus(false);
-            listView.setEmptyView(findViewById(R.id.empty));
-            findViewById(R.id.next).setOnClickListener(this);
-            registerForContextMenu(listView);
-
-            if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
-                String accountUuid = icicle.getString("selectedContextAccount");
-                mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-            }
-
-            restoreAccountStats(icicle);
+            return;
         }
 
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
 
+        setContentView(R.layout.accounts);
+        ListView listView = getListView();
+        listView.setOnItemClickListener(this);
+        listView.setItemsCanFocus(false);
+        listView.setEmptyView(findViewById(R.id.empty));
+        findViewById(R.id.next).setOnClickListener(this);
+        registerForContextMenu(listView);
 
+        if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
+            String accountUuid = icicle.getString("selectedContextAccount");
+            mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        }
+
+        restoreAccountStats(icicle);
+
+        // Handle activity restarts because of a configuration change (e.g. rotating the screen)
+        Object retained = getLastNonConfigurationInstance();
+        if (retained != null) {
+            // If we displayed a dialog before the configuration change, re-create it here
+            if (retained instanceof DialogInfo) {
+                DialogInfo dialogInfo = (DialogInfo) retained;
+                showDialog(dialogInfo.headerRes, dialogInfo.message);
+            }
+            // If there's an ExtendedAsyncTask running, update it with the new Activity
+            else if (retained instanceof ExtendedAsyncTask) {
+                mAsyncTask = (ExtendedAsyncTask) retained;
+                mAsyncTask.attach(this);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -387,6 +426,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
 
+    }
+
+    /**
+     * Save the reference to a currently displayed dialog or a running AsyncTask (if available).
+     */
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        Object retain = null;
+        if (mDialogInfo != null) {
+            retain = mDialogInfo;
+            dismissDialog();
+        } else if (mAsyncTask != null) {
+            retain = mAsyncTask;
+            mAsyncTask.detach();
+        }
+        return retain;
     }
 
     private void refresh() {
@@ -868,26 +923,71 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.toString());
 
-        new ListImportContentsAsyncTask(uri, null).execute();
+        mAsyncTask = new ListImportContentsAsyncTask(this, uri, null);
+        mAsyncTask.execute();
     }
 
-    private void showDialog(final Context context, final int headerRes, final String message) {
-        this.runOnUiThread(new Runnable() {
+    private void asyncTaskFinished() {
+        mAsyncTask = null;
+    }
+
+    /**
+     * Stores information about a dialog.
+     *
+     * @see Accounts#showDialog(int, String)
+     * @see Accounts#onCreate(Bundle)
+     */
+    private static class DialogInfo {
+        public final int headerRes;
+
+        //TODO: "message" is already localized. This is a problem if the activity is restarted when
+        // the system language was changed. We have to recreate the message string in that case.
+        public final String message;
+
+        DialogInfo(int headerRes, String message) {
+            this.headerRes = headerRes;
+            this.message = message;
+        }
+    }
+
+    /**
+     * Show a dialog.
+     *
+     * @param headerRes
+     *         The resource ID of the string that is used as title for the dialog box.
+     * @param message
+     *         The message to display.
+     */
+    private void showDialog(final int headerRes, final String message) {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                // Store information about the dialog so it can be re-created when the activity is
+                // restarted due to a configuration change.
+                mDialogInfo = new DialogInfo(headerRes, message);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Accounts.this);
                 builder.setTitle(headerRes);
                 builder.setMessage(message);
                 builder.setPositiveButton(R.string.okay_action,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        dismissDialog();
                     }
                 });
-                builder.show();
+                mDialog = builder.show();
             }
         });
+    }
+
+    /**
+     * Dismiss the dialog that was created using {@link #showDialog(int, String)}.
+     */
+    private void dismissDialog() {
+        mDialog.dismiss();
+        mDialogInfo = null;
+        mDialog = null;
     }
 
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
@@ -1112,34 +1212,39 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 })
         .show();
         */
-        new ExportAsyncTask(includeGlobals, accountUuids, null).execute();
+        mAsyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, null);
+        mAsyncTask.execute();
     }
 
-    private class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    /**
+     * Handles exporting of global settings and/or accounts in a background thread.
+     */
+    private static class ExportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
         private String mEncryptionKey;
         private String mFileName;
 
-        private ExportAsyncTask(boolean includeGlobals, Set<String> accountUuids,
-                String encryptionKey) {
+
+        private ExportAsyncTask(Accounts activity, boolean includeGlobals,
+                Set<String> accountUuids, String encryptionKey) {
+            super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
             mEncryptionKey = encryptionKey;
         }
 
         @Override
-        protected void onPreExecute() {
-            //TODO: show progress bar instead of displaying toast
-            String toastText = Accounts.this.getString(R.string.settings_exporting);
-            Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
-            toast.show();
+        protected void showProgressDialog() {
+            String title = mContext.getString(R.string.settings_export_dialog_title);
+            String message = mContext.getString(R.string.settings_exporting);
+            mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mFileName = StorageExporter.exportToFile(Accounts.this, mIncludeGlobals,
+                mFileName = StorageExporter.exportToFile(mContext, mIncludeGlobals,
                         mAccountUuids, mEncryptionKey);
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
@@ -1150,18 +1255,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         protected void onPostExecute(Boolean success) {
+            Accounts activity = (Accounts) mActivity;
+
+            // Let the activity know that the background task is complete
+            activity.asyncTaskFinished();
+
+            removeProgressDialog();
+
             if (success) {
-                showDialog(Accounts.this, R.string.settings_export_success_header,
-                        Accounts.this.getString(R.string.settings_export_success, mFileName));
+                activity.showDialog(R.string.settings_export_success_header,
+                        mContext.getString(R.string.settings_export_success, mFileName));
             } else {
                 //TODO: make the exporter return an error code; translate that error code to a localized string here
-                showDialog(Accounts.this, R.string.settings_export_failed_header,
-                        Accounts.this.getString(R.string.settings_export_failure, "Something went wrong"));
+                activity.showDialog(R.string.settings_export_failed_header,
+                        mContext.getString(R.string.settings_export_failure, "Something went wrong"));
             }
         }
     }
 
-    private class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    /**
+     * Handles importing of global settings and/or accounts in a background thread.
+     */
+    private static class ImportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
         private List<String> mAccountUuids;
         private boolean mOverwrite;
@@ -1169,8 +1284,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private InputStream mInputStream;
         private ImportResults mImportResults;
 
-        private ImportAsyncTask(boolean includeGlobals, List<String> accountUuids,
-                boolean overwrite, String encryptionKey, InputStream is) {
+        private ImportAsyncTask(Accounts activity, boolean includeGlobals,
+                List<String> accountUuids, boolean overwrite, String encryptionKey,
+                InputStream is) {
+            super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
             mOverwrite = overwrite;
@@ -1179,17 +1296,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
 
         @Override
-        protected void onPreExecute() {
-            //TODO: show progress bar instead of displaying toast
-            String toastText = Accounts.this.getString(R.string.settings_importing);
-            Toast toast = Toast.makeText(Accounts.this, toastText, Toast.LENGTH_SHORT);
-            toast.show();
+        protected void showProgressDialog() {
+            String title = mContext.getString(R.string.settings_import_dialog_title);
+            String message = mContext.getString(R.string.settings_importing);
+            mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mImportResults = StorageImporter.importSettings(Accounts.this, mInputStream,
+                mImportResults = StorageImporter.importSettings(mContext, mInputStream,
                         mEncryptionKey, mIncludeGlobals, mAccountUuids, mOverwrite);
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
@@ -1200,49 +1316,60 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         protected void onPostExecute(Boolean success) {
+            Accounts activity = (Accounts) mActivity;
+
+            // Let the activity know that the background task is complete
+            activity.asyncTaskFinished();
+
+            removeProgressDialog();
+
             if (success) {
                 int imported = mImportResults.importedAccounts.size();
 
                 //TODO: display names of imported accounts (name from file *and* possibly new name)
 
-                showDialog(Accounts.this, R.string.settings_import_success_header,
+                activity.showDialog(R.string.settings_import_success_header,
                         //FIXME: use correct file name
-                        Accounts.this.getString(R.string.settings_import_success, imported, "filename"));
-                refresh();
+                        mContext.getString(R.string.settings_import_success, imported, "filename"));
+                activity.refresh();
             } else {
                 //TODO: make the importer return an error code; translate that error code to a localized string here
-                showDialog(Accounts.this, R.string.settings_import_failed_header,
-                        Accounts.this.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
+                activity.showDialog(R.string.settings_import_failed_header,
+                        mContext.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
             }
         }
     }
 
-    ImportContents mImportContents;
-    private class ListImportContentsAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    private static class ListImportContentsAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private Uri mUri;
         private String mEncryptionKey;
         private InputStream mInputStream;
+        private ImportContents mImportContents;
 
-        private ListImportContentsAsyncTask(Uri uri, String encryptionKey) {
+        private ListImportContentsAsyncTask(Accounts activity, Uri uri, String encryptionKey) {
+            super(activity);
+
             mUri = uri;
             mEncryptionKey = encryptionKey;
         }
 
         @Override
-        protected void onPreExecute() {
-            //TODO: show progress bar
+        protected void showProgressDialog() {
+            String title = mContext.getString(R.string.settings_import_dialog_title);
+            String message = mContext.getString(R.string.settings_import_scanning_file);
+            mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-
-                InputStream is = getContentResolver().openInputStream(mUri);
-                mImportContents = StorageImporter.getImportStreamContents(
-                        Accounts.this, is, mEncryptionKey);
+                ContentResolver resolver = mContext.getContentResolver();
+                InputStream is = resolver.openInputStream(mUri);
+                mImportContents = StorageImporter.getImportStreamContents(mContext, is,
+                        mEncryptionKey);
 
                 // Open another InputStream in the background. This is used later by ImportAsyncTask
-                mInputStream = getContentResolver().openInputStream(mUri);
+                mInputStream = resolver.openInputStream(mUri);
 
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
@@ -1257,80 +1384,96 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         protected void onPostExecute(Boolean success) {
+            Accounts activity = (Accounts) mActivity;
+
+            // Let the activity know that the background task is complete
+            activity.asyncTaskFinished();
+
+            removeProgressDialog();
+
             if (success) {
-                final ListView importSelectionView = new ListView(Accounts.this);
-                List<String> contents = new ArrayList<String>();
-                if (mImportContents.globalSettings) {
-                    contents.add("Global settings");
+                showImportSelectionDialog();
+            } else {
+                //TODO: make the importer return an error code; translate that error code to a localized string here
+                activity.showDialog(R.string.settings_import_failed_header,
+                        mContext.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
+            }
+        }
+
+        //TODO: we need to be able to re-create this dialog after a configuration change
+        private void showImportSelectionDialog() {
+            final ListView importSelectionView = new ListView(mActivity);
+            List<String> contents = new ArrayList<String>();
+            if (mImportContents.globalSettings) {
+                contents.add("Global settings");
+            }
+            for (AccountDescription account : mImportContents.accounts) {
+                contents.add(account.name);
+            }
+            importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            importSelectionView.setAdapter(new ArrayAdapter<String>(mActivity, android.R.layout.simple_list_item_checked, contents));
+            importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                    CheckedTextView ctv = (CheckedTextView)view;
+                    ctv.setChecked(!ctv.isChecked());
                 }
-                for (AccountDescription account : mImportContents.accounts) {
-                    contents.add(account.name);
-                }
-                importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                importSelectionView.setAdapter(new ArrayAdapter<String>(Accounts.this, android.R.layout.simple_list_item_checked, contents));
-                importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) { /* Do nothing */ }
+            });
+
+            //TODO: listview header: "Please select the settings you wish to import"
+            //TODO: listview footer: "Select all" / "Select none" buttons?
+            //TODO: listview footer: "Overwrite existing accounts?" checkbox
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+            builder.setTitle("Import selection");
+            builder.setView(importSelectionView);
+            builder.setInverseBackgroundForced(true);
+            builder.setPositiveButton(R.string.okay_action,
+                new DialogInterface.OnClickListener() {
+
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                        CheckedTextView ctv = (CheckedTextView)view;
-                        ctv.setChecked(!ctv.isChecked());
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListAdapter adapter = importSelectionView.getAdapter();
+                        int count = adapter.getCount();
+                        SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
+
+                        boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                        List<String> accountUuids = new ArrayList<String>();
+                        int start = mImportContents.globalSettings ? 1 : 0;
+                        for (int i = start; i < count; i++) {
+                            if (pos.get(i)) {
+                                accountUuids.add(mImportContents.accounts.get(i-start).uuid);
+                            }
+                        }
+
+                        /*
+                         * TODO: Think some more about this. Overwriting could change the store
+                         * type. This requires some additional code in order to work smoothly
+                         * while the app is running.
+                         */
+                        boolean overwrite = false;
+
+                        dialog.dismiss();
+                        Accounts activity = (Accounts) mActivity;
+                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity, includeGlobals, accountUuids, overwrite, mEncryptionKey, mInputStream);
+                        activity.mAsyncTask = importAsyncTask;
+                        importAsyncTask.execute();
                     }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) {}
                 });
-
-                //TODO: listview header: "Please select the settings you wish to import"
-                //TODO: listview footer: "Select all" / "Select none" buttons?
-                //TODO: listview footer: "Overwrite existing accounts?" checkbox
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(Accounts.this);
-                builder.setTitle("Import selection");
-                builder.setView(importSelectionView);
-                builder.setInverseBackgroundForced(true);
-                builder.setPositiveButton(R.string.okay_action,
+            builder.setNegativeButton(R.string.cancel_action,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ListAdapter adapter = importSelectionView.getAdapter();
-                            int count = adapter.getCount();
-                            SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
-
-                            boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
-                            List<String> accountUuids = new ArrayList<String>();
-                            int start = mImportContents.globalSettings ? 1 : 0;
-                            for (int i = start; i < count; i++) {
-                                if (pos.get(i)) {
-                                    accountUuids.add(mImportContents.accounts.get(i-start).uuid);
-                                }
-                            }
-
-                            /*
-                             * TODO: Think some more about this. Overwriting could change the store
-                             * type. This requires some additional code in order to work smoothly
-                             * while the app is running.
-                             */
-                            boolean overwrite = false;
-
                             dialog.dismiss();
-                            new ImportAsyncTask(includeGlobals, accountUuids, overwrite, mEncryptionKey, mInputStream).execute();
+                            try {
+                                mInputStream.close();
+                            } catch (Exception e) { /* Ignore */ }
                         }
                     });
-                builder.setNegativeButton(R.string.cancel_action,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                try {
-                                    mInputStream.close();
-                                } catch (Exception e) { /* Ignore */ }
-                            }
-                        });
-                builder.show();
-            } else {
-                //TODO: make the importer return an error code; translate that error code to a localized string here
-                showDialog(Accounts.this, R.string.settings_import_failed_header,
-                        Accounts.this.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
-            }
+            builder.show();
         }
     }
 }
