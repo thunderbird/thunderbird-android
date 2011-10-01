@@ -7,6 +7,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9.BACKGROUND_OPS;
+import com.fsck.k9.K9.BACKGROUND_OPS_WIFI;
 
 import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
@@ -120,7 +121,19 @@ public class RemoteControlService extends CoreService {
                             needsPushRestart |= needsReset;
                             needsReschedule |= needsReset;
                         }
-
+                        
+                        //check if a valid background operations WIFI setting was passed
+                        String backgroundOpsWifi = intent.getStringExtra(K9_BACKGROUND_OPERATIONS_WIFI);
+                        if (K9RemoteControl.K9_BACKGROUND_OPERATIONS_WIFI_ALWAYS.equals(backgroundOpsWifi)
+                                || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WIFI_NEVER.equals(backgroundOpsWifi)
+                                || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WIFI_ROAMING.equals(backgroundOpsWifi)) {
+                            BACKGROUND_OPS_WIFI newBackgroundOpsWifi = BACKGROUND_OPS_WIFI.valueOf(backgroundOpsWifi);
+                            //if the settings were changed then reset the push and notify the boot reciever
+                            boolean needsReset = K9.setBackgroundOpsWifi(newBackgroundOpsWifi);
+                            needsPushRestart |= needsReset;
+                            needsReschedule |= needsReset;
+                        }
+                        
                         String theme = intent.getStringExtra(K9_THEME);
                         if (theme != null) {
                             K9.setK9Theme(K9RemoteControl.K9_THEME_DARK.equals(theme) ? android.R.style.Theme : android.R.style.Theme_Light);

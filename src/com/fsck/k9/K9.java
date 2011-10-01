@@ -76,6 +76,10 @@ public class K9 extends Application {
     public enum BACKGROUND_OPS {
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
+    
+    public enum BACKGROUND_OPS_WIFI {
+        WHEN_ROAMING, ALWAYS, NEVER
+    }
 
     private static String language = "";
     private static int theme = android.R.style.Theme_Light;
@@ -83,6 +87,7 @@ public class K9 extends Application {
     private static final FontSizes fontSizes = new FontSizes();
 
     private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
+    private static BACKGROUND_OPS_WIFI backgroundOpsWifi = BACKGROUND_OPS_WIFI.WHEN_ROAMING;
     /**
      * Some log messages can be sent to a file, so that the logs
      * can be read using unprivileged access (eg. Terminal Emulator)
@@ -660,6 +665,20 @@ public class K9 extends Application {
 
     public static boolean setBackgroundOps(String nbackgroundOps) {
         return setBackgroundOps(BACKGROUND_OPS.valueOf(nbackgroundOps));
+    }
+    
+    public static BACKGROUND_OPS_WIFI getBackgroundOpsWifi() {
+        return backgroundOpsWifi;
+    }
+
+    public static boolean setBackgroundOpsWifi(BACKGROUND_OPS_WIFI backgroundOpsWifi) {
+        BACKGROUND_OPS_WIFI oldBackgroundOpsWifi = K9.backgroundOpsWifi;
+        K9.backgroundOpsWifi = backgroundOpsWifi;
+        return backgroundOpsWifi != oldBackgroundOpsWifi;
+    }
+
+    public static boolean setBackgroundOpsWifi(String nbackgroundOpsWifi) {
+        return setBackgroundOpsWifi(BACKGROUND_OPS_WIFI.valueOf(nbackgroundOpsWifi));
     }
 
     public static boolean gesturesEnabled() {

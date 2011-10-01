@@ -109,6 +109,16 @@ public class K9RemoteControl {
     public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC = "WHEN_CHECKED_AUTO_SYNC";
 
     /**
+     * Key for the {@link Intent} Extra to set for controlling K-9's global "Use Wifi" setting.
+     * Acceptable values are K9_BACKGROUND_OPERATIONS_WIFI_ALWAYS, K9_BACKGROUND_OPERATIONS_WIFI_NEVER
+     * K9_BACKGROUND_OPERATIONS_WIFI_ROAMING
+     */
+    public final static String K9_BACKGROUND_OPERATIONS_WIFI = "com.fsck.k9.K9RemoteControl.backgroundOperationsWifi";
+    public final static String K9_BACKGROUND_OPERATIONS_WIFI_ROAMING = "ROAMING";
+    public final static String K9_BACKGROUND_OPERATIONS_WIFI_ALWAYS = "ALWAYS";
+    public final static String K9_BACKGROUND_OPERATIONS_WIFI_NEVER = "NEVER";
+    
+    /**
      * Key for the {@link Intent} Extra to set for controlling which display theme K-9 will use.  Acceptable values are
      * K9_THEME_LIGHT, K9_THEME_DARK
      */
