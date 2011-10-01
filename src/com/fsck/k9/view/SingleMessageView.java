@@ -197,9 +197,12 @@ public class SingleMessageView extends LinearLayout {
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
             if (Utility.hasExternalImages(text) && !showPictures()) {
+                Address[] from = message.getFrom();
                 if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                         ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
-                         mContacts.isInContacts(message.getFrom()[0].getAddress()))) {
+                         // Make sure we have at least one from address
+                         (from != null && from.length > 0) &&
+                         mContacts.isInContacts(from[0].getAddress()))) {
                     setLoadPictures(true);
                 } else {
                     showShowPicturesSection(true);
