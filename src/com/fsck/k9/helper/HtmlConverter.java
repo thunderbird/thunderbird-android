@@ -52,14 +52,17 @@ public class HtmlConverter {
      */
     private static class HtmlToTextTagHandler implements Html.TagHandler {
         // List of tags whose content should be ignored.
-        private static final Set<String> TAGS_WITH_IGNORED_CONTENT = Collections.unmodifiableSet(new HashSet<String>() {
-            {
-                add("style");
-                add("script");
-                add("title");
-                add("!");   // comments
-            }
-        });
+        private static final Set<String> TAGS_WITH_IGNORED_CONTENT;
+        static {
+            int capacity = 4;
+            Set<String> set = new HashSet<String>(capacity);
+            set.add("style");
+            set.add("script");
+            set.add("title");
+            set.add("!");   // comments
+            assert set.size() == capacity;
+            TAGS_WITH_IGNORED_CONTENT = Collections.unmodifiableSet(set);
+        }
 
         @Override
         public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
