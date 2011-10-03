@@ -20,6 +20,19 @@ import com.fsck.k9.K9;
  */
 
 public class Settings {
+    /**
+     * Version number of global and account settings.
+     *
+     * <p>
+     * This value is used as "version" attribute in the export file. It needs to be incremented
+     * when a global or account setting is added or removed, or when the format of a setting
+     * is changed (e.g. add a value to an enum).
+     * </p>
+     *
+     * @see StorageExporter
+     */
+    public static final int VERSION = 1;
+
     public static final IDefaultValue EXCEPTION_DEFAULT_VALUE = new ExceptionDefaultValue();
 
     public static final ISettingValidator BOOLEAN_VALIDATOR = new BooleanValidator();

@@ -34,6 +34,17 @@ import com.fsck.k9.mail.store.LocalStore;
 public class StorageExporter {
     private static final String EXPORT_FILENAME = "settings.k9s";
 
+    /**
+     * File format version number.
+     *
+     * <p>
+     * Increment this if you need to change the structure of the settings file. When you do this
+     * remember that we also have to be able to handle old file formats. So have fun adding support
+     * for that to {@link StorageImporter} :)
+     * </p>
+     */
+    public static final int FILE_FORMAT_VERSION = 1;
+
     public static final String ROOT_ELEMENT = "k9settings";
     public static final String VERSION_ATTRIBUTE = "version";
     public static final String FILE_FORMAT_ATTRIBUTE = "format";
@@ -160,10 +171,9 @@ public class StorageExporter {
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 
             serializer.startTag(null, ROOT_ELEMENT);
-            //TODO: write content version number here
-            serializer.attribute(null, VERSION_ATTRIBUTE, "x");
-            //TODO: set file format version to "1" once the feature is stable and about to be merged into master
-            serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, "y");
+            serializer.attribute(null, VERSION_ATTRIBUTE, Integer.toString(Settings.VERSION));
+            serializer.attribute(null, FILE_FORMAT_ATTRIBUTE,
+                    Integer.toString(FILE_FORMAT_VERSION));
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
