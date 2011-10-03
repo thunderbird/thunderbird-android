@@ -68,16 +68,35 @@ public class StorageExporter {
      */
     private static final Set<String> SKIP_GLOBAL_SETTINGS;
 
+    /**
+     * List of keys of account settings that don't need to or shouldn't be exported.
+     */
+    private static final Set<String> SKIP_ACCOUNT_SETTINGS;
+
     static {
-        Set<String> skip = new HashSet<String>();
+        Set<String> skipGlobal = new HashSet<String>();
 
         // No need to export the "accountUuids" field. It will be (re)created by the import code.
-        skip.add("accountUuids");
+        skipGlobal.add("accountUuids");
 
         // "defaultAccountUuid" is also handled by the import code.
-        skip.add("defaultAccountUuid");
+        skipGlobal.add("defaultAccountUuid");
 
-        SKIP_GLOBAL_SETTINGS = skip;
+        SKIP_GLOBAL_SETTINGS = skipGlobal;
+
+
+        Set<String> skipAccount = new HashSet<String>();
+
+        // No need to export the "accountNumber" field. It will be (re)created by the import code.
+        skipAccount.add("accountNumber");
+
+        // The values for the following keys get their own XML element in the export file and
+        // therefore don't need to be stored with the other account settings.
+        skipAccount.add(Account.ACCOUNT_DESCRIPTION_KEY);
+        skipAccount.add(Account.STORE_URI_KEY);
+        skipAccount.add(Account.TRANSPORT_URI_KEY);
+
+        SKIP_ACCOUNT_SETTINGS = skipAccount;
     }
 
 
@@ -282,10 +301,7 @@ public class StorageExporter {
                 String keyUuid = comps[0];
                 String secondPart = comps[1];
 
-                if (!keyUuid.equals(accountUuid)
-                        || Account.ACCOUNT_DESCRIPTION_KEY.equals(secondPart)
-                        || "storeUri".equals(secondPart)
-                        || "transportUri".equals(secondPart)) {
+                if (!keyUuid.equals(accountUuid) || SKIP_ACCOUNT_SETTINGS.contains(secondPart)) {
                     continue;
                 }
                 if (comps.length == 3) {
