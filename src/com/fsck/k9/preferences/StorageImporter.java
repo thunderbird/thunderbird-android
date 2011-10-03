@@ -497,10 +497,6 @@ public class StorageImporter {
             return imported;
         } catch (Exception e) {
             throw new StorageImportExportException(e);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (Exception e) { /* Ignore */ }
         }
     }
 

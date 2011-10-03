@@ -2,6 +2,7 @@
 package com.fsck.k9.activity;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1281,18 +1282,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private List<String> mAccountUuids;
         private boolean mOverwrite;
         private String mEncryptionKey;
-        private InputStream mInputStream;
+        private Uri mUri;
         private ImportResults mImportResults;
 
         private ImportAsyncTask(Accounts activity, boolean includeGlobals,
                 List<String> accountUuids, boolean overwrite, String encryptionKey,
-                InputStream is) {
+                Uri uri) {
             super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
             mOverwrite = overwrite;
             mEncryptionKey = encryptionKey;
-            mInputStream = is;
+            mUri = uri;
         }
 
         @Override
@@ -1305,10 +1306,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mImportResults = StorageImporter.importSettings(mContext, mInputStream,
-                        mEncryptionKey, mIncludeGlobals, mAccountUuids, mOverwrite);
+                InputStream is = mContext.getContentResolver().openInputStream(mUri);
+                try {
+                    mImportResults = StorageImporter.importSettings(mContext, is,
+                            mEncryptionKey, mIncludeGlobals, mAccountUuids, mOverwrite);
+                } finally {
+                    try {
+                        is.close();
+                    } catch (IOException e) { /* Ignore */ }
+                }
             } catch (StorageImportExportException e) {
-                Log.w(K9.LOG_TAG, "Exception during export", e);
+                Log.w(K9.LOG_TAG, "Exception during import", e);
+                return false;
+            } catch (FileNotFoundException e) {
+                Log.w(K9.LOG_TAG, "Couldn't open import file", e);
                 return false;
             }
             return true;
@@ -1343,7 +1354,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static class ListImportContentsAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private Uri mUri;
         private String mEncryptionKey;
-        private InputStream mInputStream;
         private ImportContents mImportContents;
 
         private ListImportContentsAsyncTask(Accounts activity, Uri uri, String encryptionKey) {
@@ -1365,12 +1375,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try {
                 ContentResolver resolver = mContext.getContentResolver();
                 InputStream is = resolver.openInputStream(mUri);
-                mImportContents = StorageImporter.getImportStreamContents(mContext, is,
-                        mEncryptionKey);
-
-                // Open another InputStream in the background. This is used later by ImportAsyncTask
-                mInputStream = resolver.openInputStream(mUri);
-
+                try {
+                    mImportContents = StorageImporter.getImportStreamContents(mContext, is,
+                            mEncryptionKey);
+                } finally {
+                    try {
+                        is.close();
+                    } catch (IOException e) { /* Ignore */ }
+                }
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
@@ -1458,7 +1470,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                         dialog.dismiss();
                         Accounts activity = (Accounts) mActivity;
-                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity, includeGlobals, accountUuids, overwrite, mEncryptionKey, mInputStream);
+                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
+                                includeGlobals, accountUuids, overwrite, mEncryptionKey, mUri);
                         activity.mAsyncTask = importAsyncTask;
                         importAsyncTask.execute();
                     }
@@ -1468,9 +1481,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            try {
-                                mInputStream.close();
-                            } catch (Exception e) { /* Ignore */ }
                         }
                     });
             builder.show();
