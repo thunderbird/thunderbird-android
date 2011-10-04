@@ -74,42 +74,6 @@ public class StorageExporter {
     public static final String EMAIL_ELEMENT = "email";
     public static final String DESCRIPTION_ELEMENT = "description";
 
-    /**
-     * List of keys of global settings that don't need to or shouldn't be exported.
-     */
-    private static final Set<String> SKIP_GLOBAL_SETTINGS;
-
-    /**
-     * List of keys of account settings that don't need to or shouldn't be exported.
-     */
-    private static final Set<String> SKIP_ACCOUNT_SETTINGS;
-
-    static {
-        Set<String> skipGlobal = new HashSet<String>();
-
-        // No need to export the "accountUuids" field. It will be (re)created by the import code.
-        skipGlobal.add("accountUuids");
-
-        // "defaultAccountUuid" is also handled by the import code.
-        skipGlobal.add("defaultAccountUuid");
-
-        SKIP_GLOBAL_SETTINGS = skipGlobal;
-
-
-        Set<String> skipAccount = new HashSet<String>();
-
-        // No need to export the "accountNumber" field. It will be (re)created by the import code.
-        skipAccount.add("accountNumber");
-
-        // The values for the following keys get their own XML element in the export file and
-        // therefore don't need to be stored with the other account settings.
-        skipAccount.add(Account.ACCOUNT_DESCRIPTION_KEY);
-        skipAccount.add(Account.STORE_URI_KEY);
-        skipAccount.add(Account.TRANSPORT_URI_KEY);
-
-        SKIP_ACCOUNT_SETTINGS = skipAccount;
-    }
-
 
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids, String encryptionKey)
@@ -218,14 +182,13 @@ public class StorageExporter {
     private static void writeSettings(XmlSerializer serializer,
             Map<String, Object> prefs) throws IOException {
 
-        for (Map.Entry<String, Object> entry : prefs.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue().toString();
-            if (key.indexOf('.') != -1 || SKIP_GLOBAL_SETTINGS.contains(key)) {
-                // Skip account entries and keys we don't want/need to export
-                continue;
+        for (String key : GlobalSettings.SETTINGS.keySet()) {
+            Object value = prefs.get(key);
+
+            if (value != null) {
+                String outputValue = value.toString();
+                writeKeyValue(serializer, key, outputValue);
             }
-            writeKeyValue(serializer, key, value);
         }
     }
 
@@ -307,41 +270,50 @@ public class StorageExporter {
             String key = entry.getKey();
             String value = entry.getValue().toString();
             String[] comps = key.split("\\.");
-            if (comps.length >= 2) {
-                String keyUuid = comps[0];
-                String secondPart = comps[1];
 
-                if (!keyUuid.equals(accountUuid) || SKIP_ACCOUNT_SETTINGS.contains(secondPart)) {
-                    continue;
-                }
-                if (comps.length == 3) {
-                    String thirdPart = comps[2];
-
-                    if (Account.IDENTITY_KEYS.contains(secondPart)) {
-                        // This is an identity key. Save identity index for later...
-                        try {
-                            identities.add(Integer.parseInt(thirdPart));
-                        } catch (NumberFormatException e) { /* ignore */ }
-                        // ... but don't write it now.
-                        continue;
-                    }
-
-                    if (LocalStore.FOLDER_SETTINGS_KEYS.contains(thirdPart)) {
-                        // This is a folder key. Save folder name for later...
-                        folders.add(secondPart);
-                        // ... but don't write it now.
-                        continue;
-                    }
-                }
-            } else {
-                // Skip global config entries and identity entries
+            if (comps.length < 2) {
+                // Skip global settings
                 continue;
             }
 
-            // Strip account UUID from key
-            String keyPart = key.substring(comps[0].length() + 1);
+            String keyUuid = comps[0];
+            String secondPart = comps[1];
 
-            writeKeyValue(serializer, keyPart, value);
+            if (!keyUuid.equals(accountUuid)) {
+                // Setting doesn't belong to the account we're currently writing.
+                continue;
+            }
+
+            String keyPart;
+            if (comps.length >= 3) {
+                String thirdPart = comps[2];
+
+                if (Account.IDENTITY_KEYS.contains(secondPart)) {
+                    // This is an identity key. Save identity index for later...
+                    try {
+                        identities.add(Integer.parseInt(thirdPart));
+                    } catch (NumberFormatException e) { /* ignore */ }
+                    // ... but don't write it now.
+                    continue;
+                }
+
+                if (LocalStore.FOLDER_SETTINGS_KEYS.contains(thirdPart)) {
+                    // This is a folder key. Save folder name for later...
+                    folders.add(secondPart);
+                    // ... but don't write it now.
+                    continue;
+                }
+
+                // Strip account UUID from key
+                keyPart = key.substring(comps[0].length() + 1);
+            } else {
+                keyPart = secondPart;
+            }
+
+            if (AccountSettings.SETTINGS.containsKey(keyPart)) {
+                // Only export account settings that can be found in AccountSettings.SETTINGS
+                writeKeyValue(serializer, keyPart, value);
+            }
         }
         serializer.endTag(null, SETTINGS_ELEMENT);
 
