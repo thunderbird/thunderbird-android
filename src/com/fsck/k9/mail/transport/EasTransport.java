@@ -28,8 +28,6 @@ public class EasTransport extends Transport {
     public void open() throws MessagingException {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, ">>> open called on EasTransport ");
-
-        store.getHttpClient();
     }
 
     @Override

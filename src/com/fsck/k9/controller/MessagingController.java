@@ -454,7 +454,7 @@ public class MessagingController implements Runnable {
                 try {
                     Store store = account.getRemoteStore();
 
-                    List <? extends Folder > remoteFolders = store.getPersonalNamespaces(false);
+                    List <? extends Folder > remoteFolders = store.getPersonalNamespaces(true);
 
                     LocalStore localStore = account.getLocalStore();
                     HashSet<String> remoteFolderNames = new HashSet<String>();
@@ -897,11 +897,14 @@ public class MessagingController implements Runnable {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
                 remoteFolder = remoteStore.getFolder(folder);
+                
+                if (remoteFolder == null) {
+                    throw new Exception("Store returned null remote folder for " + folder);
+                }
 
                 if (! verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener)) {
                     return;
                 }
-
 
                 /*
                  * Synchronization process:
@@ -2221,7 +2224,7 @@ public class MessagingController implements Runnable {
 
         Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
+        if (remoteFolder == null || !remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
             return;
         }
 

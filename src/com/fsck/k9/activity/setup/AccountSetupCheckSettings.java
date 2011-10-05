@@ -18,12 +18,14 @@ import android.widget.TextView;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.EasStore;
 import com.fsck.k9.mail.filter.Hex;
 
 import java.security.cert.CertificateException;
@@ -108,18 +110,27 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (mCheckIncoming) {
                         store = mAccount.getRemoteStore();
 
-                        if (store instanceof WebDavStore) {
+                        if (store instanceof WebDavStore || store instanceof EasStore) {
                             setMessage(R.string.account_setup_check_settings_authenticate);
                         } else {
                             setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                         }
+                        
                         store.checkSettings();
 
-                        if (store instanceof WebDavStore) {
+                        if (store instanceof WebDavStore || store instanceof EasStore) {
                             setMessage(R.string.account_setup_check_settings_fetch);
                         }
-                        MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
+                        
+                        // We need to wait for the remote store to finish refreshing the folder list before we
+                        // can call synchronizeMailbox, so that we can give it the proper Inbox folder name.
+                        MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, new MessagingListener() {
+                            @Override
+                            public void controllerCommandCompleted(boolean moreCommandsToRun) {
+                                MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, 
+                                        mAccount.getInboxFolderName(), null, null);
+                            }
+                        });
                     }
                     if (mDestroyed) {
                         return;
@@ -129,9 +140,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         return;
                     }
                     if (mCheckOutgoing) {
-                        if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
-                            setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
-                        }
+                        setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         Transport transport = Transport.getInstance(mAccount);
                         transport.close();
                         transport.open();
@@ -161,10 +170,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     showErrorDialog(
                         R.string.account_setup_failed_dlg_server_message_fmt,
                         (t.getMessage() == null ? "" : t.getMessage()));
-
                 }
             }
-
         }
         .start();
     }
