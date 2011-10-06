@@ -892,7 +892,7 @@ public class LocalStore extends Store implements Serializable {
 
             whereClause.append(" )");
         }
-        if (folders != null && folders.size() > 0) {
+        if (folders != null && !folders.isEmpty()) {
             whereClause.append(" AND folder_id in (");
             boolean anyAdded = false;
             for (LocalFolder folder : folders) {
@@ -1786,7 +1786,7 @@ public class LocalStore extends Store implements Serializable {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     Cursor cursor = null;
-                    if (messages.size() == 0) {
+                    if (messages.isEmpty()) {
                         return null;
                     }
                     try {

@@ -506,7 +506,7 @@ public class Pop3Store extends Store {
                     unindexedUids.add(uid);
                 }
             }
-            if (unindexedUids.size() == 0) {
+            if (unindexedUids.isEmpty()) {
                 return;
             }
             /*

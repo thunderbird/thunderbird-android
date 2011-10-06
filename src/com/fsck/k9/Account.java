@@ -1135,7 +1135,7 @@ public class Account implements BaseAccount {
             ident++;
         } while (gotOne);
 
-        if (newIdentities.size() == 0) {
+        if (newIdentities.isEmpty()) {
             String name = prefs.getString(mUuid + ".name", null);
             String email = prefs.getString(mUuid + ".email", null);
             boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse", true);

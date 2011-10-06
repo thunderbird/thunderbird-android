@@ -73,7 +73,7 @@ public class MimeMultipart extends Multipart {
             writer.write(mPreamble + "\r\n");
         }
 
-        if (mParts.size() == 0) {
+        if (mParts.isEmpty()) {
             writer.write("--" + mBoundary + "\r\n");
         }
 

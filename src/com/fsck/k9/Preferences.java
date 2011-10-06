@@ -154,7 +154,7 @@ public class Preferences {
 
         if (defaultAccount == null) {
             Collection<Account> accounts = getAvailableAccounts();
-            if (accounts.size() > 0) {
+            if (!accounts.isEmpty()) {
                 defaultAccount = accounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }
