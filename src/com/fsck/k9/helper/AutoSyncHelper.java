@@ -12,7 +12,7 @@ public class AutoSyncHelper {
      * False, if we never tried to load the class for this SDK version.
      * True, otherwise.
      *
-     * Note: if sAutoSync is null and sChecked is true, then an error occured
+     * Note: if sAutoSync is null and sChecked is true, then an error occurred
      * while loading the class for the SDK version we're running on.
      */
     private static boolean sChecked = false;
