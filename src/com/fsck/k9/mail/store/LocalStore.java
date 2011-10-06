@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,18 +79,23 @@ public class LocalStore extends Store implements Serializable {
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
-    private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
+    private static final Set<String> HEADERS_TO_SAVE;
     static {
-        HEADERS_TO_SAVE.add(K9.IDENTITY_HEADER);
-        HEADERS_TO_SAVE.add("To");
-        HEADERS_TO_SAVE.add("Cc");
-        HEADERS_TO_SAVE.add("From");
-        HEADERS_TO_SAVE.add("In-Reply-To");
-        HEADERS_TO_SAVE.add("References");
-        HEADERS_TO_SAVE.add("Content-ID");
-        HEADERS_TO_SAVE.add("Content-Disposition");
-        HEADERS_TO_SAVE.add("User-Agent");
+        int capacity = 9;
+        Set<String> set = new HashSet(capacity);
+        set.add(K9.IDENTITY_HEADER);
+        set.add("To");
+        set.add("Cc");
+        set.add("From");
+        set.add("In-Reply-To");
+        set.add("References");
+        set.add("Content-ID");
+        set.add("Content-Disposition");
+        set.add("User-Agent");
+        assert set.size() == capacity;
+        HEADERS_TO_SAVE = Collections.unmodifiableSet(set);
     }
+
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
