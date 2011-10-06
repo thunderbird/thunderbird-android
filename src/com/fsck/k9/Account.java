@@ -380,7 +380,7 @@ public class Account implements BaseAccount {
     }
     
     private String combineUuids(String[] uuids) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0, length = uuids.length; i < length; i++) {
             if (sb.length() > 0) {
                 sb.append(',');

@@ -1417,7 +1417,7 @@ public class ImapStore extends Store {
 //                            String key = (String)keyObj;
 //                            if ("ALERT".equalsIgnoreCase(key))
 //                            {
-//                                StringBuffer sb = new StringBuffer();
+//                                StringBuilder sb = new StringBuilder();
 //                                for (int i = 2, count = response.size(); i < count; i++) {
 //                                    sb.append(response.get(i).toString());
 //                                    sb.append(' ');

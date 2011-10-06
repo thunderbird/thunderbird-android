@@ -398,7 +398,7 @@ public class WebDavStore extends Store {
     }
 
     private String getSpecialFoldersList() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
         buffer.append("<propfind xmlns=\"DAV:\">");
         buffer.append("<prop>");
@@ -421,7 +421,7 @@ public class WebDavStore extends Store {
      * WebDAV XML Request body retrieval functions
      */
     private String getFolderListXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
@@ -432,7 +432,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageCountXml(String messageState) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
@@ -445,7 +445,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageEnvelopeXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:getcontentlength\",");
@@ -475,7 +475,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessagesXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\"\r\n");
@@ -486,7 +486,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageUrlsXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -510,7 +510,7 @@ public class WebDavStore extends Store {
             throw new MessagingException("Attempt to get flags on 0 length array for uids");
         }
 
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -529,7 +529,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMarkMessagesReadXml(String[] urls, boolean read) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -553,7 +553,7 @@ public class WebDavStore extends Store {
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove) {
 
         String action = (isMove ? "move" : "copy");
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:").append(action).append(" xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -1488,7 +1488,7 @@ public class WebDavStore extends Store {
 
                     if (entity != null) {
                         InputStream istream = null;
-                        StringBuffer buffer = new StringBuffer();
+                        StringBuilder buffer = new StringBuilder();
                         String tempText = "";
                         String resultText = "";
                         BufferedReader reader;
