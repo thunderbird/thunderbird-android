@@ -38,7 +38,7 @@ public class Utility {
 
     public static String readInputStream(InputStream in, String encoding) throws IOException {
         InputStreamReader reader = new InputStreamReader(in, encoding);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int count;
         char[] buf = new char[512];
         while ((count = reader.read(buf)) != -1) {

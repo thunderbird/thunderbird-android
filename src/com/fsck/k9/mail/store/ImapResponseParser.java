@@ -281,7 +281,7 @@ public class ImapResponseParser {
     private String parseQuoted() throws IOException {
         expect('"');
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         boolean escape = false;
         while ((ch = mIn.read()) != -1) {
@@ -299,7 +299,7 @@ public class ImapResponseParser {
     }
 
     private String readStringUntil(char end) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         while ((ch = mIn.read()) != -1) {
             if (ch == end) {
@@ -471,7 +471,7 @@ public class ImapResponseParser {
 
         public String getAlertText() {
             if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1))) {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 2, count = size(); i < count; i++) {
                     sb.append(get(i).toString());
                     sb.append(' ');

@@ -429,7 +429,7 @@ public class SmtpTransport extends Transport {
     }
 
     private String readLine() throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int d;
         while ((d = mIn.read()) != -1) {
             if (((char)d) == '\r') {

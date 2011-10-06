@@ -844,7 +844,7 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(command);
             sb.append(": ");
             for (String argument : arguments) {
@@ -1788,7 +1788,7 @@ public class LocalStore extends Store implements Serializable {
                     try {
                         Map<Long, LocalMessage> popMessages = new HashMap<Long, LocalMessage>();
                         List<String> ids = new ArrayList<String>();
-                        StringBuffer questions = new StringBuffer();
+                        StringBuilder questions = new StringBuilder();
 
                         for (int i = 0; i < messages.size(); i++) {
                             if (i != 0) {
@@ -2097,15 +2097,15 @@ public class LocalStore extends Store implements Serializable {
                                 ArrayList<Part> attachments = new ArrayList<Part>();
                                 MimeUtility.collectParts(message, viewables, attachments);
 
-                                StringBuffer sbHtml = new StringBuffer();
-                                StringBuffer sbText = new StringBuffer();
+                                StringBuilder sbHtml = new StringBuilder();
+                                StringBuilder sbText = new StringBuilder();
                                 for (Part viewable : viewables) {
                                     try {
                                         String text = MimeUtility.getTextFromPart(viewable);
 
                                         /*
                                          * Small hack to make sure the string "null" doesn't end up
-                                         * in one of the StringBuffers.
+                                         * in one of the StringBuilders.
                                          */
                                         if (text == null) {
                                             text = "";
@@ -2210,8 +2210,8 @@ public class LocalStore extends Store implements Serializable {
 
                             MimeUtility.collectParts(message, viewables, attachments);
 
-                            StringBuffer sbHtml = new StringBuffer();
-                            StringBuffer sbText = new StringBuffer();
+                            StringBuilder sbHtml = new StringBuilder();
+                            StringBuilder sbText = new StringBuilder();
                             for (int i = 0, count = viewables.size(); i < count; i++) {
                                 Part viewable = viewables.get(i);
                                 try {
@@ -2219,7 +2219,7 @@ public class LocalStore extends Store implements Serializable {
 
                                     /*
                                      * Small hack to make sure the string "null" doesn't end up
-                                     * in one of the StringBuffers.
+                                     * in one of the StringBuilders.
                                      */
                                     if (text == null) {
                                         text = "";

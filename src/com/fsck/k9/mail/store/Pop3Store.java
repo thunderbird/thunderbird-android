@@ -825,7 +825,7 @@ public class Pop3Store extends Store {
         }
 
         private String readLine() throws IOException {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int d = mIn.read();
             if (d == -1) {
                 throw new IOException("End of stream reached while trying to read line.");
