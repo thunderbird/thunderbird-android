@@ -324,7 +324,7 @@ public class ImapResponseParser {
      * Represents an IMAP list response and is also the base class for the
      * ImapResponse.
      */
-    public class ImapList extends ArrayList<Object> {
+    public static class ImapList extends ArrayList<Object> {
         private static final long serialVersionUID = -4067248341419617583L;
 
         public ImapList getList(int index) {
