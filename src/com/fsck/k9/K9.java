@@ -414,6 +414,7 @@ public class K9 extends Application {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
+        editor.putString("backgroundOperationsWifi", K9.backgroundOpsWifi.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
@@ -516,6 +517,12 @@ public class K9 extends Application {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
 
+        try {
+            setBackgroundOpsWifi(BACKGROUND_OPS_WIFI.valueOf(sprefs.getString("backgroundOperationsWifi", "WHEN_ROAMING")));
+        } catch (Exception e) {
+            setBackgroundOpsWifi(BACKGROUND_OPS_WIFI.WHEN_ROAMING);
+        }
+        
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
 
