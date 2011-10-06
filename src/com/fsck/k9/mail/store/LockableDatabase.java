@@ -399,7 +399,7 @@ public class LockableDatabase {
         databaseFile = storageManager.getDatabase(uUid, providerId);
         databaseParentDir = databaseFile.getParentFile();
         if (databaseParentDir.isFile()) {
-            // should be safe to inconditionally delete clashing file: user is not supposed to mess with our directory
+            // should be safe to unconditionally delete clashing file: user is not supposed to mess with our directory
             databaseParentDir.delete();
         }
         if (!databaseParentDir.exists()) {

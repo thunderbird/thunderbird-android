@@ -893,7 +893,7 @@ public class MessageProvider extends ContentProvider {
             Log.v(K9.LOG_TAG, "MessageProvider/delete: " + uri);
         }
 
-        // Nota : can only delete a message
+        // Note: can only delete a message
 
         List<String> segments = null;
         int accountId = -1;

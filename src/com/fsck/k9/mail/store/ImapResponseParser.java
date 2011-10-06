@@ -205,7 +205,7 @@ public class ImapResponseParser {
                        ch == '[' || ch == ']' ||
                        // docs claim that flags are \ atom but atom isn't supposed to
                        // contain
-                       // * and some falgs contain *
+                       // * and some flags contain *
                        // ch == '%' || ch == '*' ||
 //                    ch == '%' ||
                        // TODO probably should not allow \ and should recognize

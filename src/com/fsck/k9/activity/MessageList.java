@@ -847,7 +847,7 @@ public class MessageList
 
     /* (non-Javadoc)
      *
-     * Method overriden for proper typing within this class (the return type is
+     * Method overridden for proper typing within this class (the return type is
      * more specific than the super implementation)
      *
      * @see android.app.Activity#onRetainNonConfigurationInstance()
@@ -863,7 +863,7 @@ public class MessageList
     /*
      * (non-Javadoc)
      *
-     * Method overriden for proper typing within this class (the return type is
+     * Method overridden for proper typing within this class (the return type is
      * more specific than the super implementation)
      *
      * @see android.app.Activity#getLastNonConfigurationInstance()

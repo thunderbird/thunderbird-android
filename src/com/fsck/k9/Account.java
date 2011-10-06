@@ -1053,7 +1053,7 @@ public class Account implements BaseAccount {
     }
 
     // It'd be great if this actually went into the store implementation
-    // to get this, but that's expensive and not easilly accessible
+    // to get this, but that's expensive and not easily accessible
     // during initialization
     public boolean isSearchByDateCapable() {
         if (getStoreUri().startsWith("imap")) {
