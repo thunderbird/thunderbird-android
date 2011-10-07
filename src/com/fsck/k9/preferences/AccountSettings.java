@@ -1,18 +1,16 @@
 package com.fsck.k9.preferences;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.ScrollButtons;
 import com.fsck.k9.crypto.Apg;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
 
@@ -22,144 +20,73 @@ public class AccountSettings {
     static {
         SETTINGS = new LinkedHashMap<String, SettingsDescription>();
 
-        // mandatory
-        /*
-        SETTINGS.put("storeUri",
-                SD(SettingType.STRING, Settings.EXCEPTION_DEFAULT_VALUE, new StoreUriValidator()));
-        SETTINGS.put("transportUri",
-                SD(SettingType.STRING, Settings.EXCEPTION_DEFAULT_VALUE,
-                        new TransportUriValidator()));
-        */
-
-        SETTINGS.put("archiveFolderName",
-                SD(SettingType.STRING, "Archive", null));
-        SETTINGS.put("autoExpandFolderName",
-                SD(SettingType.STRING, "INBOX", null));
+        SETTINGS.put("archiveFolderName", new StringSetting("Archive"));
+        SETTINGS.put("autoExpandFolderName", new StringSetting("INBOX"));
         SETTINGS.put("automaticCheckIntervalMinutes",
-                SD(SettingType.INTEGER, -1, new ResourceArrayValidator(
-                        R.array.account_settings_check_frequency_values)));
-        SETTINGS.put("chipColor",
-                SD(SettingType.INTEGER, 0xff0000ff, Settings.SOLID_COLOR_VALIDATOR));
-        SETTINGS.put("cryptoApp",
-                SD(SettingType.STRING, Apg.NAME, null));
-        SETTINGS.put("cryptoAutoSignature",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("deletePolicy",
-                SD(SettingType.STRING, 0, new ResourceArrayValidator(
-                        R.array.account_setup_delete_policy_values)));
-        SETTINGS.put("displayCount",
-                SD(SettingType.STRING, K9.DEFAULT_VISIBLE_LIMIT, new ResourceArrayValidator(
-                        R.array.account_settings_display_count_values)));
-        SETTINGS.put("draftsFolderName",
-                SD(SettingType.STRING, "Drafts", null));
-        SETTINGS.put("enableMoveButtons",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("expungePolicy",
-                SD(SettingType.STRING, Account.EXPUNGE_IMMEDIATELY, new ResourceArrayValidator(
-                        R.array.account_setup_expunge_policy_values)));
+                new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values));
+        SETTINGS.put("chipColor", new ColorSetting(0xFF0000FF));
+        SETTINGS.put("cryptoApp", new StringSetting(Apg.NAME));
+        SETTINGS.put("cryptoAutoSignature", new BooleanSetting(false));
+        SETTINGS.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
+        SETTINGS.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
+                R.array.account_settings_display_count_values));
+        SETTINGS.put("draftsFolderName", new StringSetting("Drafts"));
+        SETTINGS.put("enableMoveButtons", new BooleanSetting(false));
+        SETTINGS.put("expungePolicy", new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
+                R.array.account_setup_expunge_policy_values));
         SETTINGS.put("folderDisplayMode",
-                SD(SettingType.ENUM, FolderMode.NOT_SECOND_CLASS, new ResourceArrayValidator(
-                        R.array.account_settings_folder_display_mode_values)));
-        SETTINGS.put("folderPushMode",
-                SD(SettingType.ENUM, FolderMode.FIRST_CLASS, new ResourceArrayValidator(
-                        R.array.account_settings_folder_push_mode_values)));
-        SETTINGS.put("folderSyncMode",
-                SD(SettingType.ENUM, FolderMode.FIRST_CLASS, new ResourceArrayValidator(
-                        R.array.folder_settings_folder_sync_mode_values)));
+                new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
+        SETTINGS.put("folderPushMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
+        SETTINGS.put("folderSyncMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
         SETTINGS.put("folderTargetMode",
-                SD(SettingType.ENUM, FolderMode.NOT_SECOND_CLASS, new ResourceArrayValidator(
-                        R.array.account_settings_folder_target_mode_values)));
-        SETTINGS.put("goToUnreadMessageSearch",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("hideButtonsEnum",
-                SD(SettingType.ENUM, ScrollButtons.NEVER, new ResourceArrayValidator(
-                        R.array.account_settings_hide_buttons_values)));
+                new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
+        SETTINGS.put("goToUnreadMessageSearch", new BooleanSetting(false));
+        SETTINGS.put("hideButtonsEnum", new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
         SETTINGS.put("hideMoveButtonsEnum",
-                SD(SettingType.ENUM, ScrollButtons.NEVER, new ResourceArrayValidator(
-                        R.array.account_settings_hide_move_buttons_values)));
-        SETTINGS.put("idleRefreshMinutes",
-                SD(SettingType.INTEGER, 24, new ResourceArrayValidator(
-                        R.array.idle_refresh_period_values)));
-        SETTINGS.put("led",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("ledColor",
-                SD(SettingType.INTEGER, 0xff0000ff, Settings.SOLID_COLOR_VALIDATOR));
-        SETTINGS.put("localStorageProvider",
-                SD(SettingType.STRING, new StorageProviderDefaultValue(),
-                        new StorageProviderValidator()));
-        SETTINGS.put("maxPushFolders",
-                SD(SettingType.INTEGER, 10, Settings.POSITIVE_INTEGER_VALIDATOR));
-        SETTINGS.put("maximumAutoDownloadMessageSize",
-                SD(SettingType.ENUM, 32768, new ResourceArrayValidator(
-                        R.array.account_settings_autodownload_message_size_values)));
-        SETTINGS.put("maximumPolledMessageAge",
-                SD(SettingType.ENUM, -1, new ResourceArrayValidator(
-                        R.array.account_settings_message_age_values)));
+                new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
+        SETTINGS.put("idleRefreshMinutes", new IntegerResourceSetting(24,
+                R.array.idle_refresh_period_values));
+        SETTINGS.put("led", new BooleanSetting(true));
+        SETTINGS.put("ledColor", new ColorSetting(0xFF0000FF));
+        SETTINGS.put("localStorageProvider", new StorageProviderSetting());
+        SETTINGS.put("maxPushFolders", new IntegerRangeSetting(0, 100, 10));
+        SETTINGS.put("maximumAutoDownloadMessageSize", new IntegerResourceSetting(32768,
+                R.array.account_settings_autodownload_message_size_values));
+        SETTINGS.put("maximumPolledMessageAge", new IntegerResourceSetting(-1,
+                R.array.account_settings_message_age_values));
         SETTINGS.put("messageFormat",
-                SD(SettingType.ENUM, Account.DEFAULT_MESSAGE_FORMAT, new ResourceArrayValidator(
-                        R.array.account_settings_message_format_values)));
-        SETTINGS.put("notificationUnreadCount",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("notifyMailCheck",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("notifyNewMail",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("notifySelfNewMail",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("pushPollOnConnect",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("quotePrefix",
-                SD(SettingType.STRING, Account.DEFAULT_QUOTE_PREFIX, null));
+                new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
+        SETTINGS.put("notificationUnreadCount", new BooleanSetting(true));
+        SETTINGS.put("notifyMailCheck", new BooleanSetting(false));
+        SETTINGS.put("notifyNewMail", new BooleanSetting(false));
+        SETTINGS.put("notifySelfNewMail", new BooleanSetting(true));
+        SETTINGS.put("pushPollOnConnect", new BooleanSetting(true));
+        SETTINGS.put("quotePrefix", new StringSetting(Account.DEFAULT_QUOTE_PREFIX));
         SETTINGS.put("quoteStyle",
-                SD(SettingType.ENUM, Account.DEFAULT_QUOTE_STYLE, new ResourceArrayValidator(
-                        R.array.account_settings_quote_style_values)));
-        SETTINGS.put("replyAfterQuote",
-                SD(SettingType.BOOLEAN, Account.DEFAULT_REPLY_AFTER_QUOTE, null));
-        SETTINGS.put("ring",
-                SD(SettingType.BOOLEAN, true, null));
+                new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
+        SETTINGS.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
+        SETTINGS.put("ring", new BooleanSetting(true));
         SETTINGS.put("ringtone",
-                SD(SettingType.STRING, "content://settings/system/notification_sound",
-                        new RingtoneValidator()));
-        SETTINGS.put("saveAllHeaders",
-                SD(SettingType.BOOLEAN, true, null));
+                new RingtoneSetting("content://settings/system/notification_sound"));
+        SETTINGS.put("saveAllHeaders", new BooleanSetting(true));
         SETTINGS.put("searchableFolders",
-                SD(SettingType.ENUM, Account.Searchable.ALL, new ResourceArrayValidator(
-                        R.array.account_settings_searchable_values)));
-        SETTINGS.put("sentFolderName",
-                SD(SettingType.STRING, "Sent", null));
+                new EnumSetting(Account.Searchable.class, Account.Searchable.ALL));
+        SETTINGS.put("sentFolderName", new StringSetting("Sent"));
         SETTINGS.put("showPicturesEnum",
-                SD(SettingType.ENUM, Account.ShowPictures.NEVER, new ResourceArrayValidator(
-                        R.array.account_settings_show_pictures_values)));
-        SETTINGS.put("signatureBeforeQuotedText",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("spamFolderName",
-                SD(SettingType.STRING, "Spam", null));
-        SETTINGS.put("subscribedFoldersOnly",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("syncRemoteDeletions",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("trashFolderName",
-                SD(SettingType.STRING, "Trash", null));
-        SETTINGS.put("useCompression.MOBILE",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("useCompression.OTHER",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("useCompression.WIFI",
-                SD(SettingType.BOOLEAN, true, null));
-        SETTINGS.put("vibrate",
-                SD(SettingType.BOOLEAN, false, null));
-        SETTINGS.put("vibratePattern",
-                SD(SettingType.INTEGER, 0, new ResourceArrayValidator(
-                        R.array.account_settings_vibrate_pattern_values)));
-        SETTINGS.put("vibrateTimes",
-                SD(SettingType.INTEGER, 5, new ResourceArrayValidator(
-                        R.array.account_settings_vibrate_times_label)));
-    }
-
-    // Just to have shorter lines in SETTINGS initialization
-    private static SettingsDescription SD(SettingType type,
-            Object defaultValue, ISettingValidator validator) {
-        return new SettingsDescription(type, defaultValue, validator);
+                new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER));
+        SETTINGS.put("signatureBeforeQuotedText", new BooleanSetting(false));
+        SETTINGS.put("spamFolderName", new StringSetting("Spam"));
+        SETTINGS.put("subscribedFoldersOnly", new BooleanSetting(false));
+        SETTINGS.put("syncRemoteDeletions", new BooleanSetting(true));
+        SETTINGS.put("trashFolderName", new StringSetting("Trash"));
+        SETTINGS.put("useCompression.MOBILE", new BooleanSetting(true));
+        SETTINGS.put("useCompression.OTHER", new BooleanSetting(true));
+        SETTINGS.put("useCompression.WIFI", new BooleanSetting(true));
+        SETTINGS.put("vibrate", new BooleanSetting(false));
+        SETTINGS.put("vibratePattern", new IntegerResourceSetting(0,
+                R.array.account_settings_vibrate_pattern_values));
+        SETTINGS.put("vibrateTimes", new IntegerResourceSetting(5,
+                R.array.account_settings_vibrate_times_label));
     }
 
     public static Map<String, String> validate(Map<String, String> importedSettings,
@@ -179,98 +106,148 @@ public class AccountSettings {
         return result;
     }
 
+    /**
+     * An integer resource setting.
+     *
+     * <p>
+     * Basically a {@link PseudoEnumSetting} that is initialized from a resource array containing
+     * integer strings.
+     * </p>
+     */
+    public static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
+        private final Map<Integer, String> mMapping;
 
-    public static class StorageProviderDefaultValue implements IDefaultValue {
+        public IntegerResourceSetting(int defaultValue, int resId) {
+            super(defaultValue);
+
+            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            String[] values = K9.app.getResources().getStringArray(resId);
+            for (String value : values) {
+                int intValue = Integer.parseInt(value);
+                mapping.put(intValue, value);
+            }
+            mMapping = Collections.unmodifiableMap(mapping);
+        }
+
         @Override
-        public Object computeDefaultValue(String key, Map<String, String> validatedSettings) {
+        protected Map<Integer, String> getMapping() {
+            return mMapping;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+    }
+
+    /**
+     * A string resource setting.
+     *
+     * <p>
+     * Basically a {@link PseudoEnumSetting} that is initialized from a resource array.
+     * </p>
+     */
+    public static class StringResourceSetting extends PseudoEnumSetting<String> {
+        private final Map<String, String> mMapping;
+
+        public StringResourceSetting(String defaultValue, int resId) {
+            super(defaultValue);
+
+            Map<String, String> mapping = new HashMap<String, String>();
+            String[] values = K9.app.getResources().getStringArray(resId);
+            for (String value : values) {
+                mapping.put(value, value);
+            }
+            mMapping = Collections.unmodifiableMap(mapping);
+        }
+
+        @Override
+        protected Map<String, String> getMapping() {
+            return mMapping;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            if (!mMapping.containsKey(value)) {
+                throw new InvalidSettingValueException();
+            }
+            return value;
+        }
+    }
+
+    /**
+     * The notification ringtone setting.
+     */
+    public static class RingtoneSetting extends SettingsDescription {
+        public RingtoneSetting(String defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public Object fromString(String value) {
+            //TODO: add validation
+            return value;
+        }
+    }
+
+    /**
+     * The storage provider setting.
+     */
+    public static class StorageProviderSetting extends SettingsDescription {
+        public StorageProviderSetting() {
+            super(null);
+        }
+
+        @Override
+        public Object getDefaultValue() {
             return StorageManager.getInstance(K9.app).getDefaultProviderId();
         }
 
-    }
-
-    public static class StorageProviderValidator implements ISettingValidator {
         @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            Map<String, String> providers = StorageManager.getInstance(K9.app).getAvailableProviders();
-            for (String storageProvider : providers.keySet()) {
-                if (storageProvider.equals(value)) {
-                    return true;
-                }
+        public Object fromString(String value) {
+            StorageManager storageManager = StorageManager.getInstance(K9.app);
+            Map<String, String> providers = storageManager.getAvailableProviders();
+            if (providers.containsKey(value)) {
+                return value;
             }
-            return false;
+            throw new RuntimeException("Validation failed");
         }
     }
 
-    public static class RingtoneValidator implements ISettingValidator {
-        @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            // TODO implement
-            return true;
-        }
-    }
+    /**
+     * The delete policy setting.
+     */
+    public static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
+        private Map<Integer, String> mMapping;
 
-    public static class StoreUriValidator implements ISettingValidator {
+        public DeletePolicySetting(int defaultValue) {
+            super(defaultValue);
+            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            mapping.put(Account.DELETE_POLICY_NEVER, "NEVER");
+            mapping.put(Account.DELETE_POLICY_ON_DELETE, "DELETE");
+            mapping.put(Account.DELETE_POLICY_MARK_AS_READ, "MARK_AS_READ");
+            mMapping = Collections.unmodifiableMap(mapping);
+        }
+
         @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
+        protected Map<Integer, String> getMapping() {
+            return mMapping;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
             try {
-                String uriString = Utility.base64Decode(value);
-                if (!uriString.startsWith("imap") && !uriString.startsWith("pop3") &&
-                        !uriString.startsWith("webdav")) {
-                    return false;
+                Integer deletePolicy = Integer.parseInt(value);
+                if (mMapping.containsKey(deletePolicy)) {
+                    return deletePolicy;
                 }
+            } catch (NumberFormatException e) { /* do nothing */ }
 
-                //TODO: check complete scheme (imap+ssl etc.)
-
-                Uri uri = Uri.parse(uriString);
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length < 2) {
-                    return false;
-                }
-                //TODO: check if username and password are urlencoded
-
-                String host = uri.getHost();
-                if (host == null || host.length() == 0) {
-                    return false;
-                }
-
-                //TODO: check store specifics
-
-                return true;
-            } catch (Exception e) { Log.e(K9.LOG_TAG, "oops", e); /* Ignore */ }
-
-            return false;
-        }
-    }
-
-    public static class TransportUriValidator implements ISettingValidator {
-        @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            try {
-                String uriString = Utility.base64Decode(value);
-                if (!uriString.startsWith("smtp") && !uriString.startsWith("webdav")) {
-                    return false;
-                }
-
-                //TODO: check complete scheme (smtp+ssl etc.)
-
-                Uri uri = Uri.parse(uriString);
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length < 2) {
-                    return false;
-                }
-                //TODO: check if username and password are urlencoded
-
-                String host = uri.getHost();
-                if (host == null || host.length() == 0) {
-                    return false;
-                }
-
-                //TODO: check store specifics
-
-                return true;
-            } catch (Exception e) { Log.e(K9.LOG_TAG, "oops", e); /* Ignore */ }
-
-            return false;
+            throw new InvalidSettingValueException();
         }
     }
 }

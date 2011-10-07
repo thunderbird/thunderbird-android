@@ -1,8 +1,13 @@
 package com.fsck.k9.preferences;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import android.util.Log;
+
+import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 
 /*
@@ -10,10 +15,6 @@ import com.fsck.k9.K9;
  * - add support for different settings versions (validate old version and upgrade to new format)
  * - use the default values defined in GlobalSettings and AccountSettings when creating new
  *   accounts
- * - use the settings description to decide which keys to export
- * - convert internal representation to a "pretty" format when exporting (e.g. we want to export
- *   the value "light" rather than the integer constant for android.R.style.Theme_Light); revert
- *   that conversion when importing
  * - think of a better way to validate enums than to use the resource arrays (i.e. get rid of
  *   ResourceArrayValidator); maybe even use the settings description for the settings UI
  * - add unit test that validates the default values are actually valid according to the validator
@@ -33,13 +34,6 @@ public class Settings {
      */
     public static final int VERSION = 1;
 
-    public static final IDefaultValue EXCEPTION_DEFAULT_VALUE = new ExceptionDefaultValue();
-
-    public static final ISettingValidator BOOLEAN_VALIDATOR = new BooleanValidator();
-    public static final ISettingValidator INTEGER_VALIDATOR = new IntegerValidator();
-    public static final ISettingValidator POSITIVE_INTEGER_VALIDATOR = new PositiveIntegerValidator();
-    public static final ISettingValidator SOLID_COLOR_VALIDATOR = new SolidColorValidator();
-
     public static Map<String, String> validate(Map<String, SettingsDescription> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
@@ -54,12 +48,14 @@ public class Settings {
                         ((useDefaultValues) ? " Using default value." : ""));
                 useDefaultValue = useDefaultValues;
             } else {
-                String importedValue = importedSettings.get(key);
-                if (Settings.isValid(desc, key, importedValue, validatedSettings)) {
+                String prettyValue = importedSettings.get(key);
+                try {
+                    Object internalValue = desc.fromPrettyString(prettyValue);
+                    String importedValue = desc.toString(internalValue);
                     validatedSettings.put(key, importedValue);
                     useDefaultValue = false;
-                } else {
-                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + importedValue +
+                } catch (InvalidSettingValueException e) {
+                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
                             "\" in imported file. " +
                             ((useDefaultValues) ? "Using default value." : "Skipping."));
                     useDefaultValue = useDefaultValues;
@@ -67,142 +63,346 @@ public class Settings {
             }
 
             if (useDefaultValue) {
-                Object defaultValue;
-                if (desc.defaultValue instanceof IDefaultValue) {
-                    defaultValue = ((IDefaultValue)desc.defaultValue).computeDefaultValue(key, validatedSettings);
-                } else {
-                    defaultValue = desc.defaultValue;
-                }
-
-                validatedSettings.put(key, defaultValue.toString());
+                Object defaultValue = desc.getDefaultValue();
+                validatedSettings.put(key, desc.toString(defaultValue));
             }
         }
 
         return validatedSettings;
     }
 
-    public static boolean isValid(SettingsDescription desc, String key, String value,
-            Map<String, String> validatedSettings) {
-        try {
-            switch (desc.type) {
-                case BOOLEAN:
-                    if (!Settings.BOOLEAN_VALIDATOR.isValid(key, value, validatedSettings)) {
-                        return false;
-                    }
-                    break;
-                case INTEGER:
-                    if (!Settings.INTEGER_VALIDATOR.isValid(key, value, validatedSettings)) {
-                        return false;
-                    }
-                    break;
-                default:
-                    break;
-            }
 
-            if (desc.validator != null) {
-                return desc.validator.isValid(key, value, validatedSettings);
-            }
+    /**
+     * Indicates an invalid setting value.
+     *
+     * @see SettingsDescription#fromString(String)
+     * @see SettingsDescription#fromPrettyString(String)
+     */
+    public static class InvalidSettingValueException extends Exception {
+        private static final long serialVersionUID = 1L;
+    }
 
-            return true;
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Exception while running validator for value \"" + value + "\"", e);
-            return false;
+    /**
+     * Describes a setting.
+     *
+     * <p>
+     * Instances of this class are used to convert the string representations of setting values to
+     * an internal representation (e.g. an integer) and back.
+     * </p><p>
+     * Currently we use two different string representations:
+     * </p>
+     * <ol>
+     *   <li>
+     *   The one that is used by the internal preference {@link Storage}. It is usually obtained by
+     *   calling {@code toString()} on the internal representation of the setting value (see e.g.
+     *   {@link K9#save(android.content.SharedPreferences.Editor)}).
+     *   </li>
+     *   <li>
+     *   The "pretty" version that is used by the import/export settings file (e.g. colors are
+     *   exported in #rrggbb format instead of a integer string like "-8734021").
+     *   </li>
+     * </ol>
+     * <p>
+     * <strong>Note:</strong>
+     * For the future we should aim to get rid of the "internal" string representation. The
+     * "pretty" version makes reading a database dump easier and the performance impact should be
+     * negligible.
+     * </p>
+     */
+    public static abstract class SettingsDescription {
+        /**
+         * The setting's default value (internal representation).
+         */
+        protected Object mDefaultValue;
+
+        public SettingsDescription(Object defaultValue) {
+            mDefaultValue = defaultValue;
+        }
+
+        /**
+         * Get the default value.
+         *
+         * @return The internal representation of the default value.
+         */
+        public Object getDefaultValue() {
+            return mDefaultValue;
+        }
+
+        /**
+         * Convert a setting's value to the string representation.
+         *
+         * @param value
+         *         The internal representation of a setting's value.
+         *
+         * @return The string representation of {@code value}.
+         */
+        public String toString(Object value) {
+            return value.toString();
+        }
+
+        /**
+         * Parse the string representation of a setting's value .
+         *
+         * @param value
+         *         The string representation of a setting's value.
+         *
+         * @return The internal representation of the setting's value.
+         *
+         * @throws InvalidSettingValueException
+         *         If {@code value} contains an invalid value.
+         */
+        public abstract Object fromString(String value) throws InvalidSettingValueException;
+
+        /**
+         * Convert a setting value to the "pretty" string representation.
+         *
+         * @param value
+         *         The setting's value.
+         *
+         * @return A pretty-printed version of the setting's value.
+         */
+        public String toPrettyString(Object value) {
+            return toString(value);
+        }
+
+        /**
+         * Convert the pretty-printed version of a setting's value to the internal representation.
+         *
+         * @param value
+         *         The pretty-printed version of the setting's value. See
+         *         {@link #toPrettyString(Object)}.
+         *
+         * @return The internal representation of the setting's value.
+         *
+         * @throws InvalidSettingValueException
+         *         If {@code value} contains an invalid value.
+         */
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            return fromString(value);
         }
     }
 
-    public enum SettingType {
-        BOOLEAN,
-        INTEGER,
-        STRING,
-        ENUM
-    }
-
-    public static class SettingsDescription {
-        public final SettingType type;
-        public final Object defaultValue;
-        public final ISettingValidator validator;
-
-        protected SettingsDescription(SettingType type,
-                Object defaultValue, ISettingValidator validator) {
-            this.type = type;
-            this.defaultValue = defaultValue;
-            this.validator = validator;
+    /**
+     * A string setting.
+     */
+    public static class StringSetting extends SettingsDescription {
+        public StringSetting(String defaultValue) {
+            super(defaultValue);
         }
-    }
 
-    public interface IDefaultValue {
-        Object computeDefaultValue(String key, Map<String, String> validatedSettings);
-    }
-
-    public static class ExceptionDefaultValue implements IDefaultValue {
         @Override
-        public Object computeDefaultValue(String key, Map<String, String> validatedSettings) {
-            throw new RuntimeException("There is no default value for key \"" + key + "\".");
-        }
-
-    }
-
-    public interface ISettingValidator {
-        boolean isValid(String key, String value, Map<String, String> validatedSettings);
-    }
-
-    public static class BooleanValidator implements ISettingValidator {
-        @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            return Boolean.TRUE.toString().equals(value) || Boolean.FALSE.toString().equals(value);
+        public Object fromString(String value) {
+            return value;
         }
     }
 
-    public static class IntegerValidator implements ISettingValidator {
+    /**
+     * A boolean setting.
+     */
+    public static class BooleanSetting extends SettingsDescription {
+        public BooleanSetting(boolean defaultValue) {
+            super(defaultValue);
+        }
+
         @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            try {
-                Integer.parseInt(value);
+        public Object fromString(String value) throws InvalidSettingValueException {
+            if (Boolean.TRUE.toString().equals(value)) {
                 return true;
-            } catch (NumberFormatException e) {
+            } else if (Boolean.FALSE.toString().equals(value)) {
                 return false;
             }
+            throw new InvalidSettingValueException();
         }
     }
 
-    public static class PositiveIntegerValidator implements ISettingValidator {
-        @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            return (Integer.parseInt(value) >= 0);
-        }
-    }
-
-    public static class ResourceArrayValidator implements ISettingValidator {
-        private final int mResource;
-
-        public ResourceArrayValidator(int res) {
-            mResource = res;
+    /**
+     * A color setting.
+     */
+    public static class ColorSetting extends SettingsDescription {
+        public ColorSetting(int defaultValue) {
+            super(defaultValue);
         }
 
         @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
+        public Object fromString(String value) throws InvalidSettingValueException {
             try {
-                String[] values = K9.app.getResources().getStringArray(mResource);
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
 
-                for (String validValue : values) {
-                    if (validValue.equals(value)) {
-                        return true;
-                    }
+        @Override
+        public String toPrettyString(Object value) {
+            int color = ((Integer) value) & 0x00FFFFFF;
+            return String.format("#%06x", color);
+        }
+
+        @Override
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            try {
+                if (value.length() == 7) {
+                    return Integer.parseInt(value.substring(1), 16) | 0xFF000000;
                 }
+            } catch (NumberFormatException e) { /* do nothing */ }
+
+            throw new InvalidSettingValueException();
+        }
+    }
+
+    /**
+     * An {@code Enum} setting.
+     *
+     * <p>
+     * {@link Enum#toString()} is used to obtain the "pretty" string representation.
+     * </p>
+     */
+    public static class EnumSetting extends SettingsDescription {
+        private Class<? extends Enum<?>> mEnumClass;
+
+        public EnumSetting(Class<? extends Enum<?>> enumClass, Object defaultValue) {
+            super(defaultValue);
+            mEnumClass = enumClass;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                return Enum.valueOf((Class<? extends Enum>)mEnumClass, value);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Something went wrong during validation of key " + key, e);
+                throw new InvalidSettingValueException();
+            }
+        }
+    }
+
+    /**
+     * A setting that has multiple valid values but doesn't use an {@link Enum} internally.
+     *
+     * @param <A>
+     *         The type of the internal representation (e.g. {@code Integer}).
+     */
+    public abstract static class PseudoEnumSetting<A> extends SettingsDescription {
+        public PseudoEnumSetting(Object defaultValue) {
+            super(defaultValue);
+        }
+
+        protected abstract Map<A, String> getMapping();
+
+        @Override
+        public String toPrettyString(Object value) {
+            return getMapping().get(value);
+        }
+
+        @Override
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            for (Entry<A, String> entry : getMapping().entrySet()) {
+                if (entry.getValue().equals(value)) {
+                    return entry.getKey();
+                }
             }
 
-            return false;
+            throw new InvalidSettingValueException();
         }
     }
 
-    public static class SolidColorValidator implements ISettingValidator {
-        @Override
-        public boolean isValid(String key, String value, Map<String, String> validatedSettings) {
-            int color = Integer.parseInt(value);
-            return ((color & 0xFF000000) == 0xFF000000);
+    /**
+     * A font size setting.
+     */
+    public static class FontSizeSetting extends PseudoEnumSetting<Integer> {
+        private final Map<Integer, String> mMapping;
+
+        public FontSizeSetting(int defaultValue) {
+            super(defaultValue);
+
+            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            mapping.put(FontSizes.FONT_10DIP, "tiniest");
+            mapping.put(FontSizes.FONT_12DIP, "tiny");
+            mapping.put(FontSizes.SMALL, "smaller");
+            mapping.put(FontSizes.FONT_16DIP, "small");
+            mapping.put(FontSizes.MEDIUM, "medium");
+            mapping.put(FontSizes.FONT_20DIP, "large");
+            mapping.put(FontSizes.LARGE, "larger");
+            mMapping = Collections.unmodifiableMap(mapping);
         }
 
+        @Override
+        protected Map<Integer, String> getMapping() {
+            return mMapping;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                Integer fontSize = Integer.parseInt(value);
+                if (mMapping.containsKey(fontSize)) {
+                    return fontSize;
+                }
+            } catch (NumberFormatException e) { /* do nothing */ }
+
+            throw new InvalidSettingValueException();
+        }
+    }
+
+    /**
+     * A {@link android.webkit.WebView} font size setting.
+     */
+    public static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
+        private final Map<Integer, String> mMapping;
+
+        public WebFontSizeSetting(int defaultValue) {
+            super(defaultValue);
+
+            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            mapping.put(1, "smallest");
+            mapping.put(2, "smaller");
+            mapping.put(3, "normal");
+            mapping.put(4, "larger");
+            mapping.put(5, "largest");
+            mMapping = Collections.unmodifiableMap(mapping);
+        }
+
+        @Override
+        protected Map<Integer, String> getMapping() {
+            return mMapping;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                Integer fontSize = Integer.parseInt(value);
+                if (mMapping.containsKey(fontSize)) {
+                    return fontSize;
+                }
+            } catch (NumberFormatException e) { /* do nothing */ }
+
+            throw new InvalidSettingValueException();
+        }
+    }
+
+    /**
+     * An integer settings whose values a limited to a certain range.
+     */
+    public static class IntegerRangeSetting extends SettingsDescription {
+        private int mStart;
+        private int mEnd;
+
+        public IntegerRangeSetting(int start, int end, int defaultValue) {
+            super(defaultValue);
+            mStart = start;
+            mEnd = end;
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                int intValue = Integer.parseInt(value);
+                if (mStart <= intValue && intValue <= mEnd) {
+                    return intValue;
+                }
+            } catch (NumberFormatException e) { /* do nothing */ }
+
+            throw new InvalidSettingValueException();
+        }
     }
 }

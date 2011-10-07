@@ -29,6 +29,8 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+import com.fsck.k9.preferences.Settings.SettingsDescription;
 
 
 public class StorageExporter {
@@ -183,11 +185,16 @@ public class StorageExporter {
             Map<String, Object> prefs) throws IOException {
 
         for (String key : GlobalSettings.SETTINGS.keySet()) {
-            Object value = prefs.get(key);
+            String valueString = prefs.get(key).toString();
 
-            if (value != null) {
-                String outputValue = value.toString();
+            try {
+                SettingsDescription setting = GlobalSettings.SETTINGS.get(key);
+                Object value = setting.fromString(valueString);
+                String outputValue = setting.toPrettyString(value);
                 writeKeyValue(serializer, key, outputValue);
+            } catch (InvalidSettingValueException e) {
+                Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
+                        valueString + "\" in preference storage. This shouldn't happen!");
             }
         }
     }
@@ -268,7 +275,7 @@ public class StorageExporter {
         serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue().toString();
+            String valueString = entry.getValue().toString();
             String[] comps = key.split("\\.");
 
             if (comps.length < 2) {
@@ -310,9 +317,18 @@ public class StorageExporter {
                 keyPart = secondPart;
             }
 
-            if (AccountSettings.SETTINGS.containsKey(keyPart)) {
+            SettingsDescription setting = AccountSettings.SETTINGS.get(keyPart);
+            if (setting != null) {
                 // Only export account settings that can be found in AccountSettings.SETTINGS
-                writeKeyValue(serializer, keyPart, value);
+                try {
+                    Object value = setting.fromString(valueString);
+                    String pretty = setting.toPrettyString(value);
+                    writeKeyValue(serializer, keyPart, pretty);
+                } catch (InvalidSettingValueException e) {
+                    Log.w(K9.LOG_TAG, "Account setting \"" + keyPart  + "\" (" +
+                            account.getDescription() + ") has invalid value \"" + valueString +
+                            "\" in preference storage. This shouldn't happen!");
+                }
             }
         }
         serializer.endTag(null, SETTINGS_ELEMENT);
