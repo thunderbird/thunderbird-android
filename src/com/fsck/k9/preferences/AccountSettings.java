@@ -18,75 +18,73 @@ public class AccountSettings {
     public static final Map<String, SettingsDescription> SETTINGS;
 
     static {
-        SETTINGS = new LinkedHashMap<String, SettingsDescription>();
+        Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
 
-        SETTINGS.put("archiveFolderName", new StringSetting("Archive"));
-        SETTINGS.put("autoExpandFolderName", new StringSetting("INBOX"));
-        SETTINGS.put("automaticCheckIntervalMinutes",
+        s.put("archiveFolderName", new StringSetting("Archive"));
+        s.put("autoExpandFolderName", new StringSetting("INBOX"));
+        s.put("automaticCheckIntervalMinutes",
                 new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values));
-        SETTINGS.put("chipColor", new ColorSetting(0xFF0000FF));
-        SETTINGS.put("cryptoApp", new StringSetting(Apg.NAME));
-        SETTINGS.put("cryptoAutoSignature", new BooleanSetting(false));
-        SETTINGS.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
-        SETTINGS.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
+        s.put("chipColor", new ColorSetting(0xFF0000FF));
+        s.put("cryptoApp", new StringSetting(Apg.NAME));
+        s.put("cryptoAutoSignature", new BooleanSetting(false));
+        s.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
+        s.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                 R.array.account_settings_display_count_values));
-        SETTINGS.put("draftsFolderName", new StringSetting("Drafts"));
-        SETTINGS.put("enableMoveButtons", new BooleanSetting(false));
-        SETTINGS.put("expungePolicy", new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
+        s.put("draftsFolderName", new StringSetting("Drafts"));
+        s.put("enableMoveButtons", new BooleanSetting(false));
+        s.put("expungePolicy", new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
                 R.array.account_setup_expunge_policy_values));
-        SETTINGS.put("folderDisplayMode",
-                new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
-        SETTINGS.put("folderPushMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
-        SETTINGS.put("folderSyncMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
-        SETTINGS.put("folderTargetMode",
-                new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
-        SETTINGS.put("goToUnreadMessageSearch", new BooleanSetting(false));
-        SETTINGS.put("hideButtonsEnum", new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
-        SETTINGS.put("hideMoveButtonsEnum",
-                new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
-        SETTINGS.put("idleRefreshMinutes", new IntegerResourceSetting(24,
+        s.put("folderDisplayMode", new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
+        s.put("folderPushMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
+        s.put("folderSyncMode", new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS));
+        s.put("folderTargetMode", new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS));
+        s.put("goToUnreadMessageSearch", new BooleanSetting(false));
+        s.put("hideButtonsEnum", new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
+        s.put("hideMoveButtonsEnum", new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
+        s.put("idleRefreshMinutes", new IntegerResourceSetting(24,
                 R.array.idle_refresh_period_values));
-        SETTINGS.put("led", new BooleanSetting(true));
-        SETTINGS.put("ledColor", new ColorSetting(0xFF0000FF));
-        SETTINGS.put("localStorageProvider", new StorageProviderSetting());
-        SETTINGS.put("maxPushFolders", new IntegerRangeSetting(0, 100, 10));
-        SETTINGS.put("maximumAutoDownloadMessageSize", new IntegerResourceSetting(32768,
+        s.put("led", new BooleanSetting(true));
+        s.put("ledColor", new ColorSetting(0xFF0000FF));
+        s.put("localStorageProvider", new StorageProviderSetting());
+        s.put("maxPushFolders", new IntegerRangeSetting(0, 100, 10));
+        s.put("maximumAutoDownloadMessageSize", new IntegerResourceSetting(32768,
                 R.array.account_settings_autodownload_message_size_values));
-        SETTINGS.put("maximumPolledMessageAge", new IntegerResourceSetting(-1,
+        s.put("maximumPolledMessageAge", new IntegerResourceSetting(-1,
                 R.array.account_settings_message_age_values));
-        SETTINGS.put("messageFormat",
+        s.put("messageFormat",
                 new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
-        SETTINGS.put("notificationUnreadCount", new BooleanSetting(true));
-        SETTINGS.put("notifyMailCheck", new BooleanSetting(false));
-        SETTINGS.put("notifyNewMail", new BooleanSetting(false));
-        SETTINGS.put("notifySelfNewMail", new BooleanSetting(true));
-        SETTINGS.put("pushPollOnConnect", new BooleanSetting(true));
-        SETTINGS.put("quotePrefix", new StringSetting(Account.DEFAULT_QUOTE_PREFIX));
-        SETTINGS.put("quoteStyle",
+        s.put("notificationUnreadCount", new BooleanSetting(true));
+        s.put("notifyMailCheck", new BooleanSetting(false));
+        s.put("notifyNewMail", new BooleanSetting(false));
+        s.put("notifySelfNewMail", new BooleanSetting(true));
+        s.put("pushPollOnConnect", new BooleanSetting(true));
+        s.put("quotePrefix", new StringSetting(Account.DEFAULT_QUOTE_PREFIX));
+        s.put("quoteStyle",
                 new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
-        SETTINGS.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
-        SETTINGS.put("ring", new BooleanSetting(true));
-        SETTINGS.put("ringtone",
-                new RingtoneSetting("content://settings/system/notification_sound"));
-        SETTINGS.put("saveAllHeaders", new BooleanSetting(true));
-        SETTINGS.put("searchableFolders",
+        s.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
+        s.put("ring", new BooleanSetting(true));
+        s.put("ringtone", new RingtoneSetting("content://settings/system/notification_sound"));
+        s.put("saveAllHeaders", new BooleanSetting(true));
+        s.put("searchableFolders",
                 new EnumSetting(Account.Searchable.class, Account.Searchable.ALL));
-        SETTINGS.put("sentFolderName", new StringSetting("Sent"));
-        SETTINGS.put("showPicturesEnum",
+        s.put("sentFolderName", new StringSetting("Sent"));
+        s.put("showPicturesEnum",
                 new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER));
-        SETTINGS.put("signatureBeforeQuotedText", new BooleanSetting(false));
-        SETTINGS.put("spamFolderName", new StringSetting("Spam"));
-        SETTINGS.put("subscribedFoldersOnly", new BooleanSetting(false));
-        SETTINGS.put("syncRemoteDeletions", new BooleanSetting(true));
-        SETTINGS.put("trashFolderName", new StringSetting("Trash"));
-        SETTINGS.put("useCompression.MOBILE", new BooleanSetting(true));
-        SETTINGS.put("useCompression.OTHER", new BooleanSetting(true));
-        SETTINGS.put("useCompression.WIFI", new BooleanSetting(true));
-        SETTINGS.put("vibrate", new BooleanSetting(false));
-        SETTINGS.put("vibratePattern", new IntegerResourceSetting(0,
+        s.put("signatureBeforeQuotedText", new BooleanSetting(false));
+        s.put("spamFolderName", new StringSetting("Spam"));
+        s.put("subscribedFoldersOnly", new BooleanSetting(false));
+        s.put("syncRemoteDeletions", new BooleanSetting(true));
+        s.put("trashFolderName", new StringSetting("Trash"));
+        s.put("useCompression.MOBILE", new BooleanSetting(true));
+        s.put("useCompression.OTHER", new BooleanSetting(true));
+        s.put("useCompression.WIFI", new BooleanSetting(true));
+        s.put("vibrate", new BooleanSetting(false));
+        s.put("vibratePattern", new IntegerResourceSetting(0,
                 R.array.account_settings_vibrate_pattern_values));
-        SETTINGS.put("vibrateTimes", new IntegerResourceSetting(5,
+        s.put("vibrateTimes", new IntegerResourceSetting(5,
                 R.array.account_settings_vibrate_times_label));
+
+        SETTINGS = Collections.unmodifiableMap(s);
     }
 
     public static Map<String, String> validate(Map<String, String> importedSettings,

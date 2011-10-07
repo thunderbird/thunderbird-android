@@ -16,60 +16,61 @@ public class GlobalSettings {
     public static final Map<String, SettingsDescription> SETTINGS;
 
     static {
-        SETTINGS = new LinkedHashMap<String, SettingsDescription>();
+        Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
 
-        SETTINGS.put("animations", new BooleanSetting(false));
-        SETTINGS.put("backgroundOperations",
+        s.put("animations", new BooleanSetting(false));
+        s.put("backgroundOperations",
                 new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED));
-        SETTINGS.put("changeRegisteredNameColor", new BooleanSetting(false));
-        SETTINGS.put("compactLayouts", new BooleanSetting(false));
-        SETTINGS.put("confirmDelete", new BooleanSetting(false));
-        SETTINGS.put("countSearchMessages", new BooleanSetting(false));
-        SETTINGS.put("dateFormat", new DateFormatSetting(DateFormatter.DEFAULT_FORMAT));
-        SETTINGS.put("enableDebugLogging", new BooleanSetting(false));
-        SETTINGS.put("enableSensitiveLogging", new BooleanSetting(false));
-        SETTINGS.put("fontSizeAccountDescription", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeAccountName", new FontSizeSetting(FontSizes.MEDIUM));
-        SETTINGS.put("fontSizeFolderName", new FontSizeSetting(FontSizes.LARGE));
-        SETTINGS.put("fontSizeFolderStatus", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeMessageListDate", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeMessageListPreview", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeMessageListSender", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeMessageListSubject", new FontSizeSetting(FontSizes.FONT_16DIP));
-        SETTINGS.put("fontSizeMessageViewAdditionalHeaders",
-                new FontSizeSetting(FontSizes.FONT_12DIP));
-        SETTINGS.put("fontSizeMessageViewCC", new FontSizeSetting(FontSizes.FONT_12DIP));
-        SETTINGS.put("fontSizeMessageViewContent", new WebFontSizeSetting(3));
-        SETTINGS.put("fontSizeMessageViewDate", new FontSizeSetting(FontSizes.FONT_10DIP));
-        SETTINGS.put("fontSizeMessageViewSender", new FontSizeSetting(FontSizes.SMALL));
-        SETTINGS.put("fontSizeMessageViewSubject", new FontSizeSetting(FontSizes.FONT_12DIP));
-        SETTINGS.put("fontSizeMessageViewTime", new FontSizeSetting(FontSizes.FONT_10DIP));
-        SETTINGS.put("fontSizeMessageViewTo", new FontSizeSetting(FontSizes.FONT_12DIP));
-        SETTINGS.put("gesturesEnabled", new BooleanSetting(true));
-        SETTINGS.put("hideSpecialAccounts", new BooleanSetting(false));
-        SETTINGS.put("keyguardPrivacy", new BooleanSetting(false));
-        SETTINGS.put("language", new LanguageSetting());
-        SETTINGS.put("manageBack", new BooleanSetting(false));
-        SETTINGS.put("measureAccounts", new BooleanSetting(true));
-        SETTINGS.put("messageListCheckboxes", new BooleanSetting(false));
-        SETTINGS.put("messageListPreviewLines", new IntegerRangeSetting(1, 100, 2));
-        SETTINGS.put("messageListStars", new BooleanSetting(true));
-        SETTINGS.put("messageListTouchable", new BooleanSetting(false));
-        SETTINGS.put("messageViewFixedWidthFont", new BooleanSetting(false));
-        SETTINGS.put("messageViewReturnToList", new BooleanSetting(false));
-        SETTINGS.put("mobileOptimizedLayout", new BooleanSetting(false));
-        SETTINGS.put("quietTimeEnabled", new BooleanSetting(false));
-        SETTINGS.put("quietTimeEnds", new TimeSetting("7:00"));
-        SETTINGS.put("quietTimeStarts", new TimeSetting("21:00"));
-        SETTINGS.put("registeredNameColor", new ColorSetting(0xFF00008F));
-        SETTINGS.put("showContactName", new BooleanSetting(false));
-        SETTINGS.put("showCorrespondentNames", new BooleanSetting(true));
-        SETTINGS.put("startIntegratedInbox", new BooleanSetting(false));
-        SETTINGS.put("theme", new ThemeSetting(android.R.style.Theme_Light));
-        SETTINGS.put("useGalleryBugWorkaround", new GalleryBugWorkaroundSetting());
-        SETTINGS.put("useVolumeKeysForListNavigation", new BooleanSetting(false));
-        SETTINGS.put("useVolumeKeysForNavigation", new BooleanSetting(false));
-        SETTINGS.put("zoomControlsEnabled", new BooleanSetting(false));
+        s.put("changeRegisteredNameColor", new BooleanSetting(false));
+        s.put("compactLayouts", new BooleanSetting(false));
+        s.put("confirmDelete", new BooleanSetting(false));
+        s.put("countSearchMessages", new BooleanSetting(false));
+        s.put("dateFormat", new DateFormatSetting(DateFormatter.DEFAULT_FORMAT));
+        s.put("enableDebugLogging", new BooleanSetting(false));
+        s.put("enableSensitiveLogging", new BooleanSetting(false));
+        s.put("fontSizeAccountDescription", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeAccountName", new FontSizeSetting(FontSizes.MEDIUM));
+        s.put("fontSizeFolderName", new FontSizeSetting(FontSizes.LARGE));
+        s.put("fontSizeFolderStatus", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeMessageListDate", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeMessageListPreview", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeMessageListSender", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeMessageListSubject", new FontSizeSetting(FontSizes.FONT_16DIP));
+        s.put("fontSizeMessageViewAdditionalHeaders", new FontSizeSetting(FontSizes.FONT_12DIP));
+        s.put("fontSizeMessageViewCC", new FontSizeSetting(FontSizes.FONT_12DIP));
+        s.put("fontSizeMessageViewContent", new WebFontSizeSetting(3));
+        s.put("fontSizeMessageViewDate", new FontSizeSetting(FontSizes.FONT_10DIP));
+        s.put("fontSizeMessageViewSender", new FontSizeSetting(FontSizes.SMALL));
+        s.put("fontSizeMessageViewSubject", new FontSizeSetting(FontSizes.FONT_12DIP));
+        s.put("fontSizeMessageViewTime", new FontSizeSetting(FontSizes.FONT_10DIP));
+        s.put("fontSizeMessageViewTo", new FontSizeSetting(FontSizes.FONT_12DIP));
+        s.put("gesturesEnabled", new BooleanSetting(true));
+        s.put("hideSpecialAccounts", new BooleanSetting(false));
+        s.put("keyguardPrivacy", new BooleanSetting(false));
+        s.put("language", new LanguageSetting());
+        s.put("manageBack", new BooleanSetting(false));
+        s.put("measureAccounts", new BooleanSetting(true));
+        s.put("messageListCheckboxes", new BooleanSetting(false));
+        s.put("messageListPreviewLines", new IntegerRangeSetting(1, 100, 2));
+        s.put("messageListStars", new BooleanSetting(true));
+        s.put("messageListTouchable", new BooleanSetting(false));
+        s.put("messageViewFixedWidthFont", new BooleanSetting(false));
+        s.put("messageViewReturnToList", new BooleanSetting(false));
+        s.put("mobileOptimizedLayout", new BooleanSetting(false));
+        s.put("quietTimeEnabled", new BooleanSetting(false));
+        s.put("quietTimeEnds", new TimeSetting("7:00"));
+        s.put("quietTimeStarts", new TimeSetting("21:00"));
+        s.put("registeredNameColor", new ColorSetting(0xFF00008F));
+        s.put("showContactName", new BooleanSetting(false));
+        s.put("showCorrespondentNames", new BooleanSetting(true));
+        s.put("startIntegratedInbox", new BooleanSetting(false));
+        s.put("theme", new ThemeSetting(android.R.style.Theme_Light));
+        s.put("useGalleryBugWorkaround", new GalleryBugWorkaroundSetting());
+        s.put("useVolumeKeysForListNavigation", new BooleanSetting(false));
+        s.put("useVolumeKeysForNavigation", new BooleanSetting(false));
+        s.put("zoomControlsEnabled", new BooleanSetting(false));
+
+        SETTINGS = Collections.unmodifiableMap(s);
     }
 
     public static Map<String, String> validate(Map<String, String> importedSettings) {
