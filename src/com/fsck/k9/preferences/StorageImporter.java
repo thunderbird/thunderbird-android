@@ -311,8 +311,6 @@ public class StorageImporter {
 
         //TODO: validate account name
         //TODO: validate server settings
-        //TODO: validate identity settings
-        //TODO: validate folder settings
 
 
         String accountName = account.name;
@@ -360,12 +358,7 @@ public class StorageImporter {
         // Write folder settings
         if (account.folders != null) {
             for (ImportedFolder folder : account.folders) {
-                String folderKeyPrefix = uuid + "." + folder.name + ".";
-                for (Map.Entry<String, String> setting : folder.settings.settings.entrySet()) {
-                    String key = folderKeyPrefix + setting.getKey();
-                    String value = setting.getValue();
-                    editor.putString(key, value);
-                }
+                importFolder(editor, uuid, folder, mergeImportedAccount, prefs);
             }
         }
 
@@ -373,6 +366,33 @@ public class StorageImporter {
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
         return new AccountDescriptionPair(original, imported);
+    }
+
+    private static void importFolder(SharedPreferences.Editor editor, String uuid,
+            ImportedFolder folder, boolean overwrite, Preferences prefs) {
+
+        // Validate folder settings
+        Map<String, String> validatedFolderSettings =
+            FolderSettings.validate(folder.settings.settings, !overwrite);
+
+        // Merge folder settings if necessary
+        Map<String, String> writeFolderSettings;
+        if (overwrite) {
+            writeFolderSettings = FolderSettings.getFolderSettings(prefs.getPreferences(),
+                    uuid, folder.name);
+            writeFolderSettings.putAll(validatedFolderSettings);
+        } else {
+            writeFolderSettings = new HashMap<String, String>(validatedFolderSettings);
+        }
+
+        // Write folder settings
+        String folderKeyPrefix = uuid + "." + folder.name + ".";
+        for (Map.Entry<String, String> setting : writeFolderSettings.entrySet()) {
+            String key = folderKeyPrefix + setting.getKey();
+            String value = setting.getValue();
+            Log.v(K9.LOG_TAG, "Writing " + key + "=" + value);
+            editor.putString(key, value);
+        }
     }
 
     private static void importIdentities(SharedPreferences.Editor editor, String uuid,
@@ -440,25 +460,27 @@ public class StorageImporter {
             editor.putString(accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
                     identityDescription);
 
-            // Validate identity settings
-            Map<String, String> validatedSettings = IdentitySettings.validate(
-                    identity.settings.settings, !mergeSettings);
+            if (identity.settings != null) {
+                // Validate identity settings
+                Map<String, String> validatedSettings = IdentitySettings.validate(
+                        identity.settings.settings, !mergeSettings);
 
-            // Merge identity settings if necessary
-            Map<String, String> writeSettings;
-            if (mergeSettings) {
-                writeSettings = new HashMap<String, String>(IdentitySettings.getIdentitySettings(
-                        prefs.getPreferences(), uuid, writeIdentityIndex));
-                writeSettings.putAll(validatedSettings);
-            } else {
-                writeSettings = new HashMap<String, String>(validatedSettings);
-            }
+                // Merge identity settings if necessary
+                Map<String, String> writeSettings;
+                if (mergeSettings) {
+                    writeSettings = new HashMap<String, String>(IdentitySettings.getIdentitySettings(
+                            prefs.getPreferences(), uuid, writeIdentityIndex));
+                    writeSettings.putAll(validatedSettings);
+                } else {
+                    writeSettings = new HashMap<String, String>(validatedSettings);
+                }
 
-            // Write identity settings
-            for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
-                String key = accountKeyPrefix + setting.getKey() + identitySuffix;
-                String value = setting.getValue();
-                editor.putString(key, value);
+                // Write identity settings
+                for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
+                    String key = accountKeyPrefix + setting.getKey() + identitySuffix;
+                    String value = setting.getValue();
+                    editor.putString(key, value);
+                }
             }
         }
     }

@@ -88,15 +88,6 @@ public class LocalStore extends Store implements Serializable {
         HEADERS_TO_SAVE.add("User-Agent");
     }
 
-    public static final Set<String> FOLDER_SETTINGS_KEYS = new HashSet<String>();
-    static {
-        FOLDER_SETTINGS_KEYS.add("displayMode");
-        FOLDER_SETTINGS_KEYS.add("syncMode");
-        FOLDER_SETTINGS_KEYS.add("pushMode");
-        FOLDER_SETTINGS_KEYS.add("inTopGroup");
-        FOLDER_SETTINGS_KEYS.add("integrate");
-    }
-
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
