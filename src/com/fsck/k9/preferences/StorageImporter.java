@@ -181,7 +181,16 @@ public class StorageImporter {
                         Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
                     }
                     if (editor.commit()) {
+                        if (K9.DEBUG) {
+                            Log.v(K9.LOG_TAG, "Committed global settings to the preference " +
+                                    "storage.");
+                        }
                         globalSettingsImported = true;
+                    } else {
+                        if (K9.DEBUG) {
+                            Log.v(K9.LOG_TAG, "Failed to commit global settings to the " +
+                                    "preference storage");
+                        }
                     }
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Exception while importing global settings", e);
@@ -205,12 +214,29 @@ public class StorageImporter {
                                     newUuids.add(newUuid);
                                 }
                                 if (editor.commit()) {
+                                    if (K9.DEBUG) {
+                                        Log.v(K9.LOG_TAG, "Committed settings for account \"" +
+                                                importResult.imported.name +
+                                                "\" to the settings database.");
+                                    }
                                     importedAccounts.add(importResult);
                                 } else {
+                                    if (K9.DEBUG) {
+                                        Log.w(K9.LOG_TAG, "Error while committing settings for " +
+                                                "account \"" + importResult.original.name +
+                                                "\" to the settings database.");
+                                    }
                                     errorneousAccounts.add(importResult.original);
                                 }
+                            } catch (InvalidSettingValueException e) {
+                                if (K9.DEBUG) {
+                                    Log.e(K9.LOG_TAG, "Encountered invalid setting while " +
+                                            "importing account \"" + account.name + "\"", e);
+                                }
+                                errorneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Exception while importing account", e); //XXX
+                                Log.e(K9.LOG_TAG, "Exception while importing account \"" +
+                                        account.name + "\"", e);
                                 errorneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             }
                         } else {
@@ -228,12 +254,12 @@ public class StorageImporter {
                         if (oldAccountUuids.length() > 0) {
                             prefix = oldAccountUuids + ",";
                         }
-                        editor.putString("accountUuids", prefix + appendUuids);
+                        putString(editor, "accountUuids", prefix + appendUuids);
                     }
 
                     String defaultAccountUuid = storage.getString("defaultAccountUuid", null);
                     if (defaultAccountUuid == null) {
-                        editor.putString("defaultAccountUuid", accountUuids.get(0));
+                        putString(editor, "defaultAccountUuid", accountUuids.get(0));
                     }
 
                     if (!editor.commit()) {
@@ -272,8 +298,7 @@ public class StorageImporter {
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
             String key = setting.getKey();
             String value = setting.getValue();
-            Log.v(K9.LOG_TAG, "Write " + key + "=" + value);
-            editor.putString(key, value);
+            putString(editor, key, value);
         }
     }
 
@@ -326,29 +351,29 @@ public class StorageImporter {
         }
 
         String accountKeyPrefix = uuid + ".";
-        editor.putString(accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
+        putString(editor, accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
         // Write incoming server settings (storeUri)
         ServerSettings incoming = new ImportedServerSettings(account.incoming);
         String storeUri = Store.createStoreUri(incoming);
-        editor.putString(accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
+        putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
 
         // Write outgoing server settings (transportUri)
         ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
         String transportUri = Transport.createTransportUri(outgoing);
-        editor.putString(accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
+        putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
 
         // Write account settings
         for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
             String key = accountKeyPrefix + setting.getKey();
             String value = setting.getValue();
-            editor.putString(key, value);
+            putString(editor, key, value);
         }
 
         // If it's a new account generate and write a new "accountNumber"
         if (!mergeImportedAccount) {
             int newAccountNumber = Account.generateAccountNumber(prefs);
-            editor.putString(accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
+            putString(editor, accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
         }
 
         if (account.identities != null) {
@@ -390,8 +415,7 @@ public class StorageImporter {
         for (Map.Entry<String, String> setting : writeFolderSettings.entrySet()) {
             String key = folderKeyPrefix + setting.getKey();
             String value = setting.getValue();
-            Log.v(K9.LOG_TAG, "Writing " + key + "=" + value);
-            editor.putString(key, value);
+            putString(editor, key, value);
         }
     }
 
@@ -444,7 +468,7 @@ public class StorageImporter {
 
             // Write name used in identity
             String identityName = (identity.name == null) ? "" : identity.name;
-            editor.putString(accountKeyPrefix + Account.IDENTITY_NAME_KEY + identitySuffix,
+            putString(editor, accountKeyPrefix + Account.IDENTITY_NAME_KEY + identitySuffix,
                     identityName);
 
             // Validate email address
@@ -453,11 +477,11 @@ public class StorageImporter {
             }
 
             // Write email address
-            editor.putString(accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + identitySuffix,
+            putString(editor, accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + identitySuffix,
                     identity.email);
 
             // Write identity description
-            editor.putString(accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
+            putString(editor, accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
                     identityDescription);
 
             if (identity.settings != null) {
@@ -479,7 +503,7 @@ public class StorageImporter {
                 for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
                     String key = accountKeyPrefix + setting.getKey() + identitySuffix;
                     String value = setting.getValue();
-                    editor.putString(key, value);
+                    putString(editor, key, value);
                 }
             }
         }
@@ -513,6 +537,29 @@ public class StorageImporter {
             }
         }
         return -1;
+    }
+
+    /**
+     * Write to an {@link SharedPreferences.Editor} while logging what is written if debug logging
+     * is enabled.
+     *
+     * @param editor
+     *         The {@code Editor} to write to.
+     * @param key
+     *         The name of the preference to modify.
+     * @param value
+     *         The new value for the preference.
+     */
+    private static void putString(SharedPreferences.Editor editor, String key, String value) {
+        if (K9.DEBUG) {
+            String outputValue = value;
+            if (!K9.DEBUG_SENSITIVE &&
+                    (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
+                outputValue = "*sensitive*";
+            }
+            Log.v(K9.LOG_TAG, "Setting " + key + "=" + outputValue);
+        }
+        editor.putString(key, value);
     }
 
     private static Imported parseSettings(InputStream inputStream, boolean globalSettings,
