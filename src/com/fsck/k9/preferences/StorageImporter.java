@@ -378,6 +378,9 @@ public class StorageImporter {
         // Write identities
         if (account.identities != null) {
             importIdentities(editor, uuid, account, overwrite, existingAccount, prefs);
+        } else if (!mergeImportedAccount) {
+            // Require accounts to at least have one identity
+            throw new InvalidSettingValueException();
         }
 
         // Write folder settings
