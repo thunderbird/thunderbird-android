@@ -321,24 +321,8 @@ public class StorageImporter {
             uuid = UUID.randomUUID().toString();
         }
 
-        Map<String, String> validatedSettings =
-            AccountSettings.validate(account.settings.settings, !mergeImportedAccount);
-
-        Map<String, String> writeSettings;
-        if (mergeImportedAccount) {
-            writeSettings = new HashMap<String, String>(
-                    AccountSettings.getAccountSettings(prefs.getPreferences(), uuid));
-            writeSettings.putAll(validatedSettings);
-        } else {
-            writeSettings = new HashMap<String, String>(validatedSettings);
-        }
-
-
-        //TODO: validate account name
-        //TODO: validate server settings
-
-
-        String accountName = account.name;
+        // Make sure the account name is unique
+        String accountName = (account.name != null) ? account.name : "Imported";
         if (isAccountNameUsed(accountName, accounts)) {
             // Account name is already in use. So generate a new one by appending " (x)", where x
             // is the first number >= 1 that results in an unused account name.
@@ -350,6 +334,7 @@ public class StorageImporter {
             }
         }
 
+        // Write account name
         String accountKeyPrefix = uuid + ".";
         putString(editor, accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
@@ -362,6 +347,20 @@ public class StorageImporter {
         ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
         String transportUri = Transport.createTransportUri(outgoing);
         putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
+
+        // Validate account settings
+        Map<String, String> validatedSettings =
+            AccountSettings.validate(account.settings.settings, !mergeImportedAccount);
+
+        // Merge account settings if necessary
+        Map<String, String> writeSettings;
+        if (mergeImportedAccount) {
+            writeSettings = new HashMap<String, String>(
+                    AccountSettings.getAccountSettings(prefs.getPreferences(), uuid));
+            writeSettings.putAll(validatedSettings);
+        } else {
+            writeSettings = validatedSettings;
+        }
 
         // Write account settings
         for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
@@ -376,6 +375,7 @@ public class StorageImporter {
             putString(editor, accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
         }
 
+        // Write identities
         if (account.identities != null) {
             importIdentities(editor, uuid, account, overwrite, existingAccount, prefs);
         }
@@ -397,23 +397,23 @@ public class StorageImporter {
             ImportedFolder folder, boolean overwrite, Preferences prefs) {
 
         // Validate folder settings
-        Map<String, String> validatedFolderSettings =
+        Map<String, String> validatedSettings =
             FolderSettings.validate(folder.settings.settings, !overwrite);
 
         // Merge folder settings if necessary
-        Map<String, String> writeFolderSettings;
+        Map<String, String> writeSettings;
         if (overwrite) {
-            writeFolderSettings = FolderSettings.getFolderSettings(prefs.getPreferences(),
+            writeSettings = FolderSettings.getFolderSettings(prefs.getPreferences(),
                     uuid, folder.name);
-            writeFolderSettings.putAll(validatedFolderSettings);
+            writeSettings.putAll(validatedSettings);
         } else {
-            writeFolderSettings = new HashMap<String, String>(validatedFolderSettings);
+            writeSettings = validatedSettings;
         }
 
         // Write folder settings
-        String folderKeyPrefix = uuid + "." + folder.name + ".";
-        for (Map.Entry<String, String> setting : writeFolderSettings.entrySet()) {
-            String key = folderKeyPrefix + setting.getKey();
+        String prefix = uuid + "." + folder.name + ".";
+        for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
+            String key = prefix + setting.getKey();
             String value = setting.getValue();
             putString(editor, key, value);
         }
@@ -496,7 +496,7 @@ public class StorageImporter {
                             prefs.getPreferences(), uuid, writeIdentityIndex));
                     writeSettings.putAll(validatedSettings);
                 } else {
-                    writeSettings = new HashMap<String, String>(validatedSettings);
+                    writeSettings = validatedSettings;
                 }
 
                 // Write identity settings
