@@ -81,14 +81,15 @@ public class StorageExporter {
             throws StorageImportExportException {
 
         OutputStream os = null;
+        String filename = null;
         try
         {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator
                                 + context.getPackageName());
             dir.mkdirs();
             File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
-            String fileName = file.getAbsolutePath();
-            os = new FileOutputStream(fileName);
+            filename = file.getAbsolutePath();
+            os = new FileOutputStream(filename);
 
             if (encryptionKey == null) {
                 exportPreferences(context, os, includeGlobals, accountUuids);
@@ -98,14 +99,16 @@ public class StorageExporter {
             }
 
             // If all went well, we return the name of the file just written.
-            return fileName;
+            return filename;
         } catch (Exception e) {
             throw new StorageImportExportException(e);
         } finally {
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException ioe) {}
+                } catch (IOException ioe) {
+                    Log.w(K9.LOG_TAG, "Couldn't close exported settings file: " + filename);
+                }
             }
         }
     }
