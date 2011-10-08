@@ -295,7 +295,7 @@ public class StorageExporter {
             if (comps.length >= 3) {
                 String thirdPart = comps[2];
 
-                if (Account.IDENTITY_KEYS.contains(secondPart)) {
+                if (Account.IDENTITY_DESCRIPTION_KEY.equals(secondPart)) {
                     // This is an identity key. Save identity index for later...
                     try {
                         identities.add(Integer.parseInt(thirdPart));
@@ -362,48 +362,62 @@ public class StorageExporter {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
 
-        String name = (String) prefs.get(accountUuid + "." + Account.IDENTITY_NAME_KEY +
-                "." + identity);
+        String prefix = accountUuid + ".";
+        String suffix = "." + identity;
+
+        // Write name belonging to the identity
+        String name = (String) prefs.get(prefix + Account.IDENTITY_NAME_KEY + suffix);
         serializer.startTag(null, NAME_ELEMENT);
         serializer.text(name);
         serializer.endTag(null, NAME_ELEMENT);
 
-        String email = (String) prefs.get(accountUuid + "." + Account.IDENTITY_EMAIL_KEY +
-                "." + identity);
+        // Write email address belonging to the identity
+        String email = (String) prefs.get(prefix + Account.IDENTITY_EMAIL_KEY + suffix);
         serializer.startTag(null, EMAIL_ELEMENT);
         serializer.text(email);
         serializer.endTag(null, EMAIL_ELEMENT);
 
-        String description = (String) prefs.get(accountUuid + "." +
-                Account.IDENTITY_DESCRIPTION_KEY + "." + identity);
+        // Write identity description
+        String description = (String) prefs.get(prefix + Account.IDENTITY_DESCRIPTION_KEY + suffix);
         if (description != null) {
             serializer.startTag(null, DESCRIPTION_ELEMENT);
             serializer.text(description);
             serializer.endTag(null, DESCRIPTION_ELEMENT);
         }
 
+        // Write identity settings
         serializer.startTag(null, SETTINGS_ELEMENT);
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue().toString();
+            String valueString = entry.getValue().toString();
             String[] comps = key.split("\\.");
-            if (comps.length >= 3) {
-                String keyUuid = comps[0];
-                String identityKey = comps[1];
-                String identityIndex = comps[2];
-                if (!keyUuid.equals(accountUuid) || !identityIndex.equals(identity)
-                        || !Account.IDENTITY_KEYS.contains(identityKey)
-                        || Account.IDENTITY_NAME_KEY.equals(identityKey)
-                        || Account.IDENTITY_EMAIL_KEY.equals(identityKey)
-                        || Account.IDENTITY_DESCRIPTION_KEY.equals(identityKey)) {
-                    continue;
-                }
-            } else {
+
+            if (comps.length < 3) {
                 // Skip non-identity config entries
                 continue;
             }
 
-            writeKeyValue(serializer, comps[1], value);
+            String keyUuid = comps[0];
+            String identityKey = comps[1];
+            String identityIndex = comps[2];
+            if (!keyUuid.equals(accountUuid) || !identityIndex.equals(identity)) {
+                // Skip entries that belong to another identity
+                continue;
+            }
+
+            SettingsDescription setting = IdentitySettings.SETTINGS.get(identityKey);
+            if (setting != null) {
+                // Only write settings that have an entry in IdentitySettings.SETTINGS
+                try {
+                    Object value = setting.fromString(valueString);
+                    String outputValue = setting.toPrettyString(value);
+                    writeKeyValue(serializer, identityKey, outputValue);
+                } catch (InvalidSettingValueException e) {
+                    Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
+                            "\" has invalid value \"" + valueString +
+                            "\" in preference storage. This shouldn't happen!");
+                }
+            }
         }
         serializer.endTag(null, SETTINGS_ELEMENT);
 

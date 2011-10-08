@@ -28,6 +28,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 
 public class StorageImporter {
 
@@ -277,7 +278,8 @@ public class StorageImporter {
     }
 
     private static AccountDescriptionPair importAccount(Context context,
-            SharedPreferences.Editor editor, ImportedAccount account, boolean overwrite) {
+            SharedPreferences.Editor editor, ImportedAccount account, boolean overwrite)
+            throws InvalidSettingValueException {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
@@ -352,7 +354,7 @@ public class StorageImporter {
         }
 
         if (account.identities != null) {
-            importIdentities(editor, uuid, account, overwrite, existingAccount);
+            importIdentities(editor, uuid, account, overwrite, existingAccount, prefs);
         }
 
         // Write folder settings
@@ -374,7 +376,8 @@ public class StorageImporter {
     }
 
     private static void importIdentities(SharedPreferences.Editor editor, String uuid,
-            ImportedAccount account, boolean overwrite, Account existingAccount) {
+            ImportedAccount account, boolean overwrite, Account existingAccount,
+            Preferences prefs) throws InvalidSettingValueException {
 
         String accountKeyPrefix = uuid + ".";
 
@@ -391,17 +394,20 @@ public class StorageImporter {
         // Write identities
         for (ImportedIdentity identity : account.identities) {
             int writeIdentityIndex = nextIdentityIndex;
-            if (existingIdentities.size() > 0) {
+            boolean mergeSettings = false;
+            if (overwrite && existingIdentities.size() > 0) {
                 int identityIndex = findIdentity(identity, existingIdentities);
-                if (overwrite && identityIndex != -1) {
+                if (identityIndex != -1) {
                     writeIdentityIndex = identityIndex;
+                    mergeSettings = true;
                 }
             }
-            if (writeIdentityIndex == nextIdentityIndex) {
+            if (!mergeSettings) {
                 nextIdentityIndex++;
             }
 
-            String identityDescription = identity.description;
+            String identityDescription = (identity.description == null) ?
+                    "Imported" : identity.description;
             if (isIdentityDescriptionUsed(identityDescription, existingIdentities)) {
                 // Identity description is already in use. So generate a new one by appending
                 // " (x)", where x is the first number >= 1 that results in an unused identity
@@ -414,18 +420,45 @@ public class StorageImporter {
                 }
             }
 
-            editor.putString(accountKeyPrefix + Account.IDENTITY_NAME_KEY + "." +
-                    writeIdentityIndex, identity.name);
-            editor.putString(accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + "." +
-                    writeIdentityIndex, identity.email);
-            editor.putString(accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + "." +
-                    writeIdentityIndex, identityDescription);
+            String identitySuffix = "." + writeIdentityIndex;
+
+            // Write name used in identity
+            String identityName = (identity.name == null) ? "" : identity.name;
+            editor.putString(accountKeyPrefix + Account.IDENTITY_NAME_KEY + identitySuffix,
+                    identityName);
+
+            // Validate email address
+            if (!IdentitySettings.isEmailAddressValid(identity.email)) {
+                throw new InvalidSettingValueException();
+            }
+
+            // Write email address
+            editor.putString(accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + identitySuffix,
+                    identity.email);
+
+            // Write identity description
+            editor.putString(accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
+                    identityDescription);
+
+            // Validate identity settings
+            Map<String, String> validatedSettings = IdentitySettings.validate(
+                    identity.settings.settings, !mergeSettings);
+
+            // Merge identity settings if necessary
+            Map<String, String> writeSettings;
+            if (mergeSettings) {
+                writeSettings = new HashMap<String, String>(IdentitySettings.getIdentitySettings(
+                        prefs.getPreferences(), uuid, writeIdentityIndex));
+                writeSettings.putAll(validatedSettings);
+            } else {
+                writeSettings = new HashMap<String, String>(validatedSettings);
+            }
 
             // Write identity settings
-            for (Map.Entry<String, String> setting : identity.settings.settings.entrySet()) {
-                String key = setting.getKey();
+            for (Map.Entry<String, String> setting : writeSettings.entrySet()) {
+                String key = accountKeyPrefix + setting.getKey() + identitySuffix;
                 String value = setting.getValue();
-                editor.putString(accountKeyPrefix + key + "." + writeIdentityIndex, value);
+                editor.putString(key, value);
             }
         }
     }

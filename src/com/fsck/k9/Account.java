@@ -22,12 +22,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -63,15 +61,6 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
-    public static final Set<String> IDENTITY_KEYS = new HashSet<String>();
-    static {
-        IDENTITY_KEYS.add(IDENTITY_NAME_KEY);
-        IDENTITY_KEYS.add(IDENTITY_EMAIL_KEY);
-        IDENTITY_KEYS.add(IDENTITY_DESCRIPTION_KEY);
-        IDENTITY_KEYS.add("signatureUse");
-        IDENTITY_KEYS.add("signature");
-        IDENTITY_KEYS.add("replyTo");
-    }
 
     /**
      * <pre>

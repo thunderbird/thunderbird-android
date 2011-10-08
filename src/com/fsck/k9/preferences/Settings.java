@@ -64,7 +64,8 @@ public class Settings {
 
             if (useDefaultValue) {
                 Object defaultValue = desc.getDefaultValue();
-                validatedSettings.put(key, desc.toString(defaultValue));
+                String value = (defaultValue != null) ? desc.toString(defaultValue) : null;
+                validatedSettings.put(key, value);
             }
         }
 
