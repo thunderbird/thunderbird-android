@@ -89,7 +89,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private Message mMessage;
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
-    private int mLastDirection = PREVIOUS;
+    private int mLastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
     private MessagingController mController = MessagingController.getInstance(getApplication());
     private MessageReference mNextMessage = null;
     private MessageReference mPreviousMessage = null;
