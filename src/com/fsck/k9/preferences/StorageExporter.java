@@ -231,8 +231,8 @@ public class StorageExporter {
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
-        //TODO: make saving the password optional
-        writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
+        // XXX For now we don't export the password
+        //writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
 
         Map<String, String> extras = incoming.getExtra();
         if (extras != null && extras.size() > 0) {
@@ -258,8 +258,8 @@ public class StorageExporter {
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
-        //TODO: make saving the password optional
-        writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+        // XXX For now we don't export the password
+        //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
 
         extras = outgoing.getExtra();
         if (extras != null && extras.size() > 0) {
