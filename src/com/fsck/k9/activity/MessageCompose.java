@@ -2238,13 +2238,39 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         String content = mSourceMessageBody != null
                          ? mSourceMessageBody
                          : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
+
         if (mMessageFormat == MessageFormat.HTML) {
+            // Strip signature.
+            Matcher sigdash = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE).matcher(content);
+            Matcher bqStart = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE).matcher(content);
+            Matcher bqEnd   = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE).matcher(content);
+            if (!bqStart.find() && sigdash.find())
+                content = content.substring(0, sigdash.start());
+            else if (sigdash.find()) {
+                sigdash.region(0, bqStart.start());
+                if (sigdash.find())
+                    content = content.substring(0, sigdash.start());
+                else {
+                    while (bqEnd.find()) {
+                        if (!bqStart.find())
+                            sigdash.region(bqEnd.start(), content.length() - 1);
+                        else
+                            sigdash.region(bqEnd.start(), bqStart.start());
+                        if (sigdash.find()) {
+                            content = content.substring(0, sigdash.start());
+                            break;
+                        }
+                    }
+                }
+            }
             // Add the HTML reply header to the top of the content.
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mAccount.getQuoteStyle());
             // Load the message with the reply header.
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
+            // Plain text is so much simpler!
+            content = content.replaceFirst("(?s)\r\n-- \r\n.*", "\r\n");
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
         }
 
