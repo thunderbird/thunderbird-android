@@ -168,6 +168,7 @@ public class K9 extends Application {
     private static int mContactNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
+    private static boolean mMessageViewShowNext = false;
 
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
@@ -435,6 +436,7 @@ public class K9 extends Application {
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
+        editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
 
         editor.putString("language", language);
         editor.putInt("theme", theme);
@@ -491,6 +493,7 @@ public class K9 extends Application {
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
@@ -873,6 +876,14 @@ public class K9 extends Application {
 
     public static void setMessageViewReturnToList(boolean messageViewReturnToList) {
         mMessageViewReturnToList = messageViewReturnToList;
+    }
+
+    public static boolean messageViewShowNext() {
+        return mMessageViewShowNext;
+    }
+
+    public static void setMessageViewShowNext(boolean messageViewShowNext) {
+        mMessageViewShowNext = messageViewShowNext;
     }
 
     public static Method getMethod(Class<?> classObject, String methodName) {
