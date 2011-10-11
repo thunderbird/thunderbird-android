@@ -2226,6 +2226,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    // Regexes to check for signature.
+    private static final Pattern sigdash = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
+    private static final Pattern bqStart = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
+    private static final Pattern bqEnd = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
+    private static final Pattern sigdashPlain = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
+
     /**
      * Build and populate the UI with the quoted message.
      * @throws MessagingException
@@ -2239,12 +2245,43 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                          ? mSourceMessageBody
                          : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
         if (mMessageFormat == MessageFormat.HTML) {
+            // Strip signature.
+            // intent.getAction() if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
+            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) || 
+                                                ACTION_REPLY.equals(getIntent().getAction()))) {
+                Matcher sigdashM = sigdash.matcher(content);
+                Matcher bqStartM = bqStart.matcher(content);
+                Matcher bqEndM   = bqEnd.matcher(content);
+                if (!bqStartM.find() && sigdashM.find())
+                    content = content.substring(0, sigdashM.start());
+                else if (sigdashM.find()) {
+                    sigdashM.region(0, bqStartM.start());
+                    if (sigdashM.find())
+                        content = content.substring(0, sigdashM.start());
+                        else {
+                        while (bqEndM.find()) {
+                            if (!bqStartM.find())
+                                sigdashM.region(bqEndM.start(), content.length() - 1);
+                            else
+                                sigdashM.region(bqEndM.start(), bqStartM.start());
+                            if (sigdashM.find()) {
+                                content = content.substring(0, sigdashM.start());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             // Add the HTML reply header to the top of the content.
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mAccount.getQuoteStyle());
             // Load the message with the reply header.
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
+            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) || 
+                                                ACTION_REPLY.equals(getIntent().getAction())))
+                if (sigdashPlain.matcher(content).find())
+                    content = sigdashPlain.matcher(content).replaceFirst("\r\n");
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
         }
 
