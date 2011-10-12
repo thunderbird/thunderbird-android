@@ -253,8 +253,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 for (int i = 0; i < chain.length; i++) {
                     // display certificate chain information
                     //TODO: localize this strings
-                    chainInfo.append("Certificate chain[" + i + "]:\n");
-                    chainInfo.append("Subject: " + chain[i].getSubjectDN().toString() + "\n");
+                    chainInfo.append("Certificate chain[").append(i).append("]:\n");
+                    chainInfo.append("Subject: ").append(chain[i].getSubjectDN().toString()).append("\n");
 
                     // display SubjectAltNames too
                     // (the user may be mislead into mistrusting a certificate
@@ -265,7 +265,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         if (subjectAlternativeNames != null) {
                             // The list of SubjectAltNames may be very long
                             //TODO: localize this string
-                            StringBuilder altNamesText = new StringBuilder("Subject has " + subjectAlternativeNames.size() + " alternative names\n");
+                            StringBuilder altNamesText = new StringBuilder();
+                            altNamesText.append("Subject has ").append(subjectAlternativeNames.size()).append(" alternative names\n");
 
                             // we need these for matching
                             String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();
@@ -309,11 +310,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 // display them
                                 if (name.equalsIgnoreCase(storeURIHost) || name.equalsIgnoreCase(transportURIHost)) {
                                     //TODO: localize this string
-                                    altNamesText.append("Subject(alt): " + name + ",...\n");
+                                    altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 } else if (name.startsWith("*.")) {
                                     if (storeURIHost.endsWith(name.substring(2)) || transportURIHost.endsWith(name.substring(2))) {
                                         //TODO: localize this string
-                                        altNamesText.append("Subject(alt): " + name + ",...\n");
+                                        altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                     }
                                 }
                             }
@@ -324,12 +325,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         Log.w(K9.LOG_TAG, "cannot display SubjectAltNames in dialog", e1);
                     }
 
-                    chainInfo.append("Issuer: " + chain[i].getIssuerDN().toString() + "\n");
+                    chainInfo.append("Issuer: ").append(chain[i].getIssuerDN().toString()).append("\n");
                     if (sha1 != null) {
                         sha1.reset();
                         try {
                             char[] sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
-                            chainInfo.append("Fingerprint (SHA-1): " + new String(sha1sum) + "\n");
+                            chainInfo.append("Fingerprint (SHA-1): ").append(new String(sha1sum)).append("\n");
                         } catch (CertificateEncodingException e) {
                             Log.e(K9.LOG_TAG, "Error while encoding certificate", e);
                         }
