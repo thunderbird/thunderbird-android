@@ -840,7 +840,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mMessageFormat = (MessageFormat) savedInstanceState
                          .getSerializable(STATE_KEY_MESSAGE_FORMAT);
         mReadReceipt = savedInstanceState
-                         .getBoolean(STATE_KEY_READ_RECEIPT);
+                       .getBoolean(STATE_KEY_READ_RECEIPT);
         mCcWrapper.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ? View.VISIBLE
                                  : View.GONE);
         mBccWrapper.setVisibility(savedInstanceState
@@ -1439,10 +1439,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onReadReceipt() {
         CharSequence txt;
         if (mReadReceipt == false) {
-            txt=getString(R.string.read_receipt_enabled);
+            txt = getString(R.string.read_receipt_enabled);
             mReadReceipt = true;
         } else {
-            txt=getString(R.string.read_receipt_disabled);
+            txt = getString(R.string.read_receipt_disabled);
             mReadReceipt = false;
         }
         Context context = getApplicationContext();
@@ -2227,10 +2227,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     // Regexes to check for signature.
-    private static final Pattern sigdash = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern bqStart = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
-    private static final Pattern bqEnd = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern sigdashPlain = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
+    private static final Pattern DASH_SIGNATURE_HTML = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
+    private static final Pattern BLOCKQUOTE_START = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
+    private static final Pattern BLOCKQUOTE_END = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
 
     /**
      * Build and populate the UI with the quoted message.
@@ -2246,26 +2246,28 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                          : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
         if (mMessageFormat == MessageFormat.HTML) {
             // Strip signature.
-            // intent.getAction() if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
-            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) || 
+            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) ||
                                                 ACTION_REPLY.equals(getIntent().getAction()))) {
-                Matcher sigdashM = sigdash.matcher(content);
-                Matcher bqStartM = bqStart.matcher(content);
-                Matcher bqEndM   = bqEnd.matcher(content);
-                if (!bqStartM.find() && sigdashM.find())
-                    content = content.substring(0, sigdashM.start());
-                else if (sigdashM.find()) {
-                    sigdashM.region(0, bqStartM.start());
-                    if (sigdashM.find())
-                        content = content.substring(0, sigdashM.start());
-                        else {
-                        while (bqEndM.find()) {
-                            if (!bqStartM.find())
-                                sigdashM.region(bqEndM.start(), content.length() - 1);
-                            else
-                                sigdashM.region(bqEndM.start(), bqStartM.start());
-                            if (sigdashM.find()) {
-                                content = content.substring(0, sigdashM.start());
+                Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
+                Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
+                Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
+                if (!blockquoteStart.find() && dashSignatureHtml.find()) {
+                    content = content.substring(0, dashSignatureHtml.start());
+                } else if (dashSignatureHtml.find()) {
+                    // <blockquote></blockquote> is the html equivalent of plain quote prefixes (i.e. "> ").
+                    // We want to strip the first line of "-- " that is not in a blockquote.
+                    dashSignatureHtml.region(0, blockquoteStart.start());
+                    if (dashSignatureHtml.find()) {
+                        content = content.substring(0, dashSignatureHtml.start());
+                    } else {
+                        while (blockquoteEnd.find()) {
+                            if (!blockquoteStart.find()) {
+                                dashSignatureHtml.region(blockquoteEnd.start(), content.length() - 1);
+                            } else {
+                                dashSignatureHtml.region(blockquoteEnd.start(), blockquoteStart.start());
+                            }
+                            if (dashSignatureHtml.find()) {
+                                content = content.substring(0, dashSignatureHtml.start());
                                 break;
                             }
                         }
@@ -2278,10 +2280,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
-            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) || 
-                                                ACTION_REPLY.equals(getIntent().getAction())))
-                if (sigdashPlain.matcher(content).find())
-                    content = sigdashPlain.matcher(content).replaceFirst("\r\n");
+            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) ||
+                                                ACTION_REPLY.equals(getIntent().getAction()))) {
+                if (DASH_SIGNATURE_PLAIN.matcher(content).find()) {
+                    content = DASH_SIGNATURE_PLAIN.matcher(content).replaceFirst("\r\n");
+                }
+            }
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
         }
 
