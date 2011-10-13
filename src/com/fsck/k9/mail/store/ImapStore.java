@@ -237,7 +237,8 @@ public class ImapStore extends Store {
         String passwordEnc;
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -263,7 +264,15 @@ public class ImapStore extends Store {
                 break;
         }
 
-        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
+        AuthType authType;
+        try {
+            authType = AuthType.valueOf(server.authenticationType);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid authentication type: " +
+                    server.authenticationType);
+        }
+
+        String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
         try {
             Map<String, String> extra = server.getExtra();
             String prefix = (extra != null) ? extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;

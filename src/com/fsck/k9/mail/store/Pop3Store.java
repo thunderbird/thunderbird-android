@@ -121,7 +121,8 @@ public class Pop3Store extends Store {
         String passwordEnc;
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);

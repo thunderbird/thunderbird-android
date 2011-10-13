@@ -129,8 +129,10 @@ public class SmtpTransport extends Transport {
         String userEnc;
         String passwordEnc;
         try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+            userEnc = (server.username != null) ?
+                    URLEncoder.encode(server.username, "UTF-8") : "";
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -156,7 +158,12 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String userInfo = userEnc + ":" + passwordEnc + ":" + server.authenticationType;
+        String authType = server.authenticationType;
+        if (!"CRAM_MD5".equals(authType) && !"PLAIN".equals(authType)) {
+            throw new IllegalArgumentException("Invalid authentication type: " + authType);
+        }
+
+        String userInfo = userEnc + ":" + passwordEnc + ":" + authType;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();

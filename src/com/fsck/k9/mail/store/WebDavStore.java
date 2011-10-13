@@ -203,7 +203,8 @@ public class WebDavStore extends Store {
         String passwordEnc;
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = URLEncoder.encode(server.password, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -229,15 +230,22 @@ public class WebDavStore extends Store {
                 break;
         }
 
-        Map<String, String> extra = server.getExtra();
         String userInfo = userEnc + ":" + passwordEnc;
-        String path = extra.get(WebDavStoreSettings.PATH_KEY);
-        path = (path != null) ? path : "";
-        String authPath = extra.get(WebDavStoreSettings.AUTH_PATH_KEY);
-        authPath = (authPath != null) ? authPath : "";
-        String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
-        mailboxPath = (mailboxPath != null) ? mailboxPath : "";
-        String uriPath = path + "|" + authPath + "|" + mailboxPath;
+
+        String uriPath;
+        Map<String, String> extra = server.getExtra();
+        if (extra != null) {
+            String path = extra.get(WebDavStoreSettings.PATH_KEY);
+            path = (path != null) ? path : "";
+            String authPath = extra.get(WebDavStoreSettings.AUTH_PATH_KEY);
+            authPath = (authPath != null) ? authPath : "";
+            String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
+            mailboxPath = (mailboxPath != null) ? mailboxPath : "";
+            uriPath = path + "|" + authPath + "|" + mailboxPath;
+        } else {
+            uriPath = "||";
+        }
+
         try {
             return new URI(scheme, userInfo, server.host, server.port, uriPath,
                 null, null).toString();
