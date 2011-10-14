@@ -65,10 +65,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
-    private CheckBox compressionMobile;
-    private CheckBox compressionWifi;
-    private CheckBox compressionOther;
-    private CheckBox subscribedFoldersOnly;
+    private CheckBox mCompressionMobile;
+    private CheckBox mCompressionWifi;
+    private CheckBox mCompressionOther;
+    private CheckBox mSubscribedFoldersOnly;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -101,10 +101,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
         mNextButton = (Button)findViewById(R.id.next);
-        compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
-        compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
-        compressionOther = (CheckBox)findViewById(R.id.compression_other);
-        subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
+        mCompressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
+        mCompressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
+        mCompressionOther = (CheckBox)findViewById(R.id.compression_other);
+        mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
 
         mNextButton.setOnClickListener(this);
 
@@ -234,10 +234,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
+                mSubscribedFoldersOnly.setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
@@ -268,7 +267,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
-                subscribedFoldersOnly.setVisibility(View.GONE);
+                mSubscribedFoldersOnly.setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
                     String[] pathParts = uri.getPath().split("\\|");
 
@@ -301,9 +300,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
-            compressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
-            compressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
-            compressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
+            mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
+            mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
+            mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
 
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
@@ -315,7 +314,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 updatePortFromSecurityType();
             }
 
-            subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
+            mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
 
             validateFields();
         } catch (Exception e) {
@@ -409,7 +408,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
                 userInfo = authType + ":" + userEnc + ":" + passwordEnc;
             } else {
-                userInfo = userEnc + ":" + passwordEnc;
+                String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+                if (!authType.equalsIgnoreCase("plain")) {
+                    userInfo = authType + ":" + userEnc + ":" + passwordEnc;
+                } else {
+                    userInfo = userEnc + ":" + passwordEnc;
+                }
             }
             URI uri = new URI(
                 mAccountSchemes[securityType],
@@ -422,10 +426,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setStoreUri(uri.toString());
 
 
-            mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
-            mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
-            mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
-            mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
+            mAccount.setCompression(Account.TYPE_MOBILE, mCompressionMobile.isChecked());
+            mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());
+            mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
+            mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
         } catch (Exception e) {

@@ -97,7 +97,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
         this.status = truncateStatus(folder.getStatus());
 
-        if (this.name.equalsIgnoreCase(K9.INBOX)) {
+        if (this.name.equalsIgnoreCase(account.getInboxFolderName())) {
             this.displayName = context.getString(R.string.special_mailbox_name_inbox);
         } else {
             this.displayName = folder.getName();

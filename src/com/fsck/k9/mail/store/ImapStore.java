@@ -19,10 +19,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.text.SimpleDateFormat;
@@ -48,9 +49,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -65,6 +63,7 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -79,7 +78,6 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -524,16 +522,31 @@ public class ImapStore extends Store {
         for (ImapResponse response : responses) {
             if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
                 boolean includeFolder = true;
-                String folder = decodeFolderName(response.getString(3));
+
+                String decodedFolderName;
+                try {
+                    decodedFolderName = decodeFolderName(response.getString(3));
+                } catch (CharacterCodingException e) {
+                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                          "as defined by RFC 3501: " + response.getString(3), e);
+
+                    //TODO: Use the raw name returned by the server for all commands that require
+                    //      a folder name. Use the decoded name only for showing it to the user.
+
+                    // We currently just skip folders with malformed names.
+                    continue;
+                }
+
+                String folder = decodedFolderName;
 
                 if (mPathDelimeter == null) {
                     mPathDelimeter = response.getString(2);
                     mCombinedPrefix = null;
                 }
 
-                if (folder.equalsIgnoreCase(K9.INBOX)) {
+                if (folder.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                     continue;
-                } else if (folder.equalsIgnoreCase(K9.OUTBOX)) {
+                } else if (folder.equals(mAccount.getOutboxFolderName())) {
                     /*
                      * There is a folder on the server with the same name as our local
                      * outbox. Until we have a good plan to deal with this situation
@@ -541,12 +554,13 @@ public class ImapStore extends Store {
                      */
                     continue;
                 } else {
-
-                    if (getCombinedPrefix().length() > 0) {
-                        if (folder.length() >= getCombinedPrefix().length()) {
-                            folder = folder.substring(getCombinedPrefix().length());
+                    int prefixLength = getCombinedPrefix().length();
+                    if (prefixLength > 0) {
+                        // Strip prefix from the folder name
+                        if (folder.length() >= prefixLength) {
+                            folder = folder.substring(prefixLength);
                         }
-                        if (!decodeFolderName(response.getString(3)).equalsIgnoreCase(getCombinedPrefix() + folder)) {
+                        if (!decodedFolderName.equalsIgnoreCase(getCombinedPrefix() + folder)) {
                             includeFolder = false;
                         }
                     }
@@ -564,7 +578,7 @@ public class ImapStore extends Store {
                 }
             }
         }
-        folders.add(getFolder("INBOX"));
+        folders.add(getFolder(mAccount.getInboxFolderName()));
         return folders;
 
     }
@@ -643,14 +657,15 @@ public class ImapStore extends Store {
         }
     }
 
-    private String decodeFolderName(String name) {
+    private String decodeFolderName(String name) throws CharacterCodingException {
         /*
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
         try {
-            byte[] encoded = name.getBytes("US-ASCII");
-            CharBuffer cb = mModifiedUtf7Charset.decode(ByteBuffer.wrap(encoded));
+            // Make sure the decoder throws an exception if it encounters an invalid encoding.
+            CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+            CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
             return cb.toString();
         } catch (UnsupportedEncodingException uee) {
             /*
@@ -699,7 +714,7 @@ public class ImapStore extends Store {
 
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
-            if (!K9.INBOX.equalsIgnoreCase(mName)) {
+            if (!mAccount.getInboxFolderName().equalsIgnoreCase(mName)) {
                 ImapConnection connection = null;
                 synchronized (this) {
                     if (mConnection == null) {
@@ -1054,7 +1069,7 @@ public class ImapStore extends Store {
             try {
                 ImapSearcher searcher = new ImapSearcher() {
                     public List<ImapResponse> search() throws IOException, MessagingException {
-                        return executeSimpleCommand(String.format("UID SEARCH *:* "));
+                        return executeSimpleCommand("UID SEARCH *:*");
                     }
                 };
                 Message[] messages = search(searcher, null);
@@ -1241,7 +1256,12 @@ public class ImapStore extends Store {
                 fetchFields.add("BODYSTRUCTURE");
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
+                // If the user wants to download unlimited-size messages, don't go only for the truncated body
+                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
+                } else {
+                    fetchFields.add("BODY.PEEK[]");
+                }
             }
             if (fp.contains(FetchProfile.Item.BODY)) {
                 fetchFields.add("BODY.PEEK[]");
@@ -1543,7 +1563,7 @@ public class ImapStore extends Store {
 //                            String key = (String)keyObj;
 //                            if ("ALERT".equalsIgnoreCase(key))
 //                            {
-//                                StringBuffer sb = new StringBuffer();
+//                                StringBuilder sb = new StringBuilder();
 //                                for (int i = 2, count = response.size(); i < count; i++) {
 //                                    sb.append(response.get(i).toString());
 //                                    sb.append(' ');
@@ -1599,15 +1619,20 @@ public class ImapStore extends Store {
                  */
 
                 /*
-                 body type
-                 body subtype
-                 body parameter parenthesized list
-                 body id
-                 body description
-                 body encoding
-                 body size
+                 *  0| 0  body type
+                 *  1| 1  body subtype
+                 *  2| 2  body parameter parenthesized list
+                 *  3| 3  body id (unused)
+                 *  4| 4  body description (unused)
+                 *  5| 5  body encoding
+                 *  6| 6  body size
+                 *  -| 7  text lines (only for type TEXT, unused)
+                 * Extensions (optional):
+                 *  7| 8  body MD5 (unused)
+                 *  8| 9  body disposition
+                 *  9|10  body language (unused)
+                 * 10|11  body location (unused)
                  */
-
 
                 String type = bs.getString(0);
                 String subType = bs.getString(1);
@@ -1654,11 +1679,11 @@ public class ImapStore extends Store {
                 // Extension items
                 ImapList bodyDisposition = null;
                 if (("text".equalsIgnoreCase(type))
-                        && (bs.size() > 8)
+                        && (bs.size() > 9)
                         && (bs.get(9) instanceof ImapList)) {
                     bodyDisposition = bs.getList(9);
                 } else if (!("text".equalsIgnoreCase(type))
-                           && (bs.size() > 7)
+                           && (bs.size() > 8)
                            && (bs.get(8) instanceof ImapList)) {
                     bodyDisposition = bs.getList(8);
                 }
@@ -1724,22 +1749,17 @@ public class ImapStore extends Store {
             checkOpen();
             try {
                 for (Message message : messages) {
-                    CountingOutputStream out = new CountingOutputStream();
-                    EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
-                    message.writeTo(eolOut);
-                    eolOut.flush();
-
                     mConnection.sendCommand(
                         String.format("APPEND %s (%s) {%d}",
                                       encodeString(encodeFolderName(getPrefixedName())),
                                       combineFlags(message.getFlags()),
-                                      out.getCount()), false);
+                                      message.calculateSize()), false);
                     ImapResponse response;
                     do {
                         response = mConnection.readResponse();
                         handleUntaggedResponse(response);
                         if (response.mCommandContinuationRequested) {
-                            eolOut = new EOLConvertingOutputStream(mConnection.mOut);
+                            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.mOut);
                             message.writeTo(eolOut);
                             eolOut.write('\r');
                             eolOut.write('\n');
@@ -2233,10 +2253,10 @@ public class ImapStore extends Store {
         protected void authCramMD5() throws AuthenticationFailedException, MessagingException {
             try {
                 String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
-                byte[] buf = new byte[ 1024 ];
+                byte[] buf = new byte[1024];
                 int b64NonceLen = 0;
                 for (int i = 0; i < buf.length; i++) {
-                    buf[ i ] = (byte)mIn.read();
+                    buf[i] = (byte)mIn.read();
                     if (buf[i] == 0x0a) {
                         b64NonceLen = i;
                         break;
@@ -2245,57 +2265,32 @@ public class ImapStore extends Store {
                 if (b64NonceLen == 0) {
                     throw new AuthenticationFailedException("Error negotiating CRAM-MD5: nonce too long.");
                 }
-                byte[] b64NonceTrim = new byte[ b64NonceLen - 2 ];
+                byte[] b64NonceTrim = new byte[b64NonceLen - 2];
                 System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
-                byte[] nonce = Base64.decodeBase64(b64NonceTrim);
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Got nonce: " + new String(b64NonceTrim, "US-ASCII"));
-                    Log.d(K9.LOG_TAG, "Plaintext nonce: " + new String(nonce, "US-ASCII"));
-                }
 
-                byte[] ipad = new byte[64];
-                byte[] opad = new byte[64];
-                byte[] secretBytes = mSettings.getPassword().getBytes("US-ASCII");
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                if (secretBytes.length > 64) {
-                    secretBytes = md.digest(secretBytes);
-                }
-                System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
-                System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
-                for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
-                for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
-                md.update(ipad);
-                byte[] firstPass = md.digest(nonce);
-                md.update(opad);
-                byte[] result = md.digest(firstPass);
-                String plainCRAM = mSettings.getUsername() + " " + new String(Hex.encodeHex(result));
-                byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Username == " + mSettings.getUsername());
-                    Log.d(K9.LOG_TAG, "plainCRAM: " + plainCRAM);
-                    Log.d(K9.LOG_TAG, "b64CRAM: " + new String(b64CRAM, "US-ASCII"));
-                }
+                byte[] b64CRAM = Authentication.computeCramMd5Bytes(mSettings.getUsername(),
+                                 mSettings.getPassword(), b64NonceTrim);
 
                 mOut.write(b64CRAM);
                 mOut.write(new byte[] { 0x0d, 0x0a });
                 mOut.flush();
+
                 int respLen = 0;
                 for (int i = 0; i < buf.length; i++) {
-                    buf[ i ] = (byte)mIn.read();
+                    buf[i] = (byte)mIn.read();
                     if (buf[i] == 0x0a) {
                         respLen = i;
                         break;
                     }
                 }
+
                 String toMatch = tag + " OK";
                 String respStr = new String(buf, 0, respLen);
                 if (!respStr.startsWith(toMatch)) {
                     throw new AuthenticationFailedException("CRAM-MD5 error: " + respStr);
                 }
             } catch (IOException ioe) {
-                throw new AuthenticationFailedException("CRAM-MD5 Auth Failed.");
-            } catch (NoSuchAlgorithmException nsae) {
-                throw new AuthenticationFailedException("MD5 Not Available.");
+                throw new AuthenticationFailedException("CRAM-MD5 Auth Failed.", ioe);
             }
         }
 

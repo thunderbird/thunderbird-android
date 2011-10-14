@@ -6,9 +6,7 @@
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Rilasciato sotto Licenza Apache, Versione 2.0.</string>
     <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Informazioni: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Ci avvaliamo delle seguenti librerie di terze parti: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Icone emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -112,6 +110,9 @@
     <string name="view_hide_details_action">Mostra/nascondi dettagli</string>
     <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
     <string name="edit_subject_action">Modifica oggetto</string>
+    <string name="read_receipt">Notifica di lettura</string>
+    <string name="read_receipt_enabled">Notifica di lettura attiva</string>
+    <string name="read_receipt_disabled">Notifica di lettura disattiva</string>
     <string name="add_attachment_action">Aggiungi allegato</string>
     <string name="add_attachment_action_image">Aggiungi allegato (Immagine)</string>
     <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
@@ -267,6 +268,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
     <string name="message_compose_quoted_text_label">Testo quotato</string>
     <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima che questo messaggio venga inviato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
 
@@ -343,6 +345,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_confirm_action_archive">Archivia</string>
     <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Invia</string>
 
     <string name="global_settings_privacy_mode_title">Notifiche con blocco dello schermo</string>
@@ -568,6 +571,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_message_format_label">Formato messaggio</string>
     <string name="account_settings_message_format_text">Plain Text (verranno rimosse immagini e formattazione)</string>
     <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
+
+    <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
+    <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
 
     <string name="account_settings_quote_style_label">Aspetto testo quotato nelle risposte</string>
     <string name="account_settings_quote_style_prefix">Prefisso (come Gmail, Pine)</string>
@@ -921,6 +927,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="count_search_title">Conta i risultati della ricerca</string>
     <string name="count_search_summary">Disattiva per una visualizzazione più veloce</string>
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Con stella</string>
     <string name="unread_modifier"> - Non letto</string>
@@ -1021,6 +1030,24 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="dialog_confirm_delete_confirm_button">Elimina</string>
     <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    </plurals>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Registrazione dei log per il debug di Android abilitata</string>
@@ -1028,4 +1055,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Impossibile connettersi.</string>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
 </resources>

@@ -11,9 +11,7 @@
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
     <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
     <string name="app_authors_fmt">Autoři: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Informace o revizi: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
     <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
@@ -133,6 +131,7 @@
     <string name="folder_context_menu_title">Možnosti složky</string>
 
     <string name="general_no_subject">(Bez předmětu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- NEW: <string name="general_no_date">No date</string>-->
     <string name="general_no_sender">Bez odesílatele</string>
     <string name="status_loading">Dotazování</string>
     <string name="status_loading_folder">(Dotazování <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -272,6 +271,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napsal(a):\n\n</string>
     <string name="message_compose_quoted_text_label">Citovaný text</string>
     <string name="message_compose_error_no_recipients">Musíte přidat alespoň jednoho příjemce.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Některé přílohy nebyly staženy. Budou staženy automaticky, než bude tato zpráva odeslána.</string>
     <string name="message_compose_attachments_skipped_toast">Některé přílohy nelze přeposlat, protože ještě nebyly staženy.</string>
 
@@ -348,6 +348,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="global_settings_confirm_action_archive">Archivace</string>
     <string name="global_settings_confirm_action_delete">Mazání (jen v zobrazení zpráv)</string>
     <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Odesílání</string>
 
     <string name="global_settings_privacy_mode_title">Oznámení při zamčené obrazovce</string>
@@ -926,6 +927,9 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="count_search_title">Počet výsledků hledání</string>
     <string name="count_search_summary">Vypněte pro rychlejší zobrazování</string>
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - S \u2605</string>
     <string name="unread_modifier"> - Nepřečtené</string>
@@ -1026,6 +1030,24 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    </plurals>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">Ladící záznam do záznamového systému Androidu je povolen</string>
@@ -1033,4 +1055,10 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Nelze se připojit.</string>
+
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
 </resources>

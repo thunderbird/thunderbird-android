@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
@@ -52,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
@@ -82,8 +82,15 @@ public class WebDavStore extends Store {
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
+    // These are the ids used from Exchange server to identify the special folders
+    // http://social.technet.microsoft.com/Forums/en/exchangesvrdevelopment/thread/1cd2e98c-8a12-44bd-a3e3-9c5ee9e4e14d
+    private static final String DAV_MAIL_INBOX_FOLDER = "inbox";
+    private static final String DAV_MAIL_DRAFTS_FOLDER = "drafts";
+    private static final String DAV_MAIL_SPAM_FOLDER = "junkemail";
     private static final String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
-    private static final String DAV_MAIL_TMP_FOLDER = "drafts";
+    private static final String DAV_MAIL_TRASH_FOLDER = "deleteditems";
+    private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
+    private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
 
 
     /**
@@ -304,6 +311,7 @@ public class WebDavStore extends Store {
     private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
+    private URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
 
     private boolean mSecure;
     private WebDavHttpClient mHttpClient = null;
@@ -313,7 +321,9 @@ public class WebDavStore extends Store {
     private short mAuthentication = AUTH_TYPE_NONE;
     private String mCachedLoginUrl;
 
+    private Folder mSendFolder = null;
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+
 
     public WebDavStore(Account account) throws MessagingException {
         super(account);
@@ -403,61 +413,134 @@ public class WebDavStore extends Store {
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
-        HashMap<String, String> headers = new HashMap<String, String>();
-        DataSet dataset = new DataSet();
-        String messageBody;
-        String[] folderUrls;
-        int urlLength;
-
-        String translatedInbox = K9.app.getString(R.string.special_mailbox_name_inbox);
-
         /**
          * We have to check authentication here so we have the proper URL stored
          */
         getHttpClient();
-        messageBody = getFolderListXml();
+
+        /**
+         *  Firstly we get the "special" folders list (inbox, outbox, etc)
+         *  and setup the account accordingly
+         */
+        HashMap<String, String> headers = new HashMap<String, String>();
+        DataSet dataset = new DataSet();
+        headers.put("Depth", "0");
         headers.put("Brief", "t");
-        dataset = processRequest(this.mUrl, "SEARCH", messageBody, headers);
+        dataset = processRequest(this.mUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
-        folderUrls = dataset.getHrefs();
-        urlLength = folderUrls.length;
+        HashMap<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
+        String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
+        if (folderName != null) {
+            mAccount.setAutoExpandFolderName(folderName);
+            mAccount.setInboxFolderName(folderName);
+        }
 
-        for (int i = 0; i < urlLength; i++) {
-            String[] urlParts = folderUrls[i].split("/");
-            String folderName = urlParts[urlParts.length - 1];
-            String fullPathName = "";
-            WebDavFolder wdFolder;
+        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_DRAFTS_FOLDER));
+        if (folderName != null)
+            mAccount.setDraftsFolderName(folderName);
 
-            // Check each Exchange folder name to see if it is the user's inbox.
-            // We will check for the default English inbox ("Inbox"), and the user's
-            // translation for "Inbox", in case the user is using a non-English
-            // version of Exchange.
-            if (folderName.equalsIgnoreCase("Inbox") ||
-                    folderName.equalsIgnoreCase(translatedInbox)) {
-                folderName = K9.INBOX;
-            } else {
-                for (int j = 5, count = urlParts.length; j < count; j++) {
-                    if (j != 5) {
-                        fullPathName = fullPathName + "/" + urlParts[j];
-                    } else {
-                        fullPathName = urlParts[j];
-                    }
-                }
-                try {
-                    folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-                } catch (UnsupportedEncodingException uee) {
-                    /** If we don't support UTF-8 there's a problem, don't decode it then */
-                    folderName = fullPathName;
-                }
-            }
+        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_TRASH_FOLDER));
+        if (folderName != null)
+            mAccount.setTrashFolderName(folderName);
 
-            wdFolder = new WebDavFolder(this, folderName);
-            wdFolder.setUrl(folderUrls[i]);
-            folderList.add(wdFolder);
-            this.mFolderList.put(folderName, wdFolder);
+        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SPAM_FOLDER));
+        if (folderName != null)
+            mAccount.setSpamFolderName(folderName);
+
+        // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
+        /*
+        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
+        if (folderName != null)
+            mAccount.setOutboxFolderName(folderName);
+        */
+
+        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
+        if (folderName != null)
+            mAccount.setSentFolderName(folderName);
+
+        /**
+         * Next we get all the folders (including "special" ones)
+         */
+        headers = new HashMap<String, String>();
+        dataset = new DataSet();
+        headers.put("Brief", "t");
+        dataset = processRequest(this.mUrl, "SEARCH", getFolderListXml(), headers);
+        String[] folderUrls = dataset.getHrefs();
+
+        for (int i = 0; i < folderUrls.length; i++) {
+            String tempUrl = folderUrls[i];
+            WebDavFolder folder = createFolder(tempUrl);
+            if (folder != null)
+                folderList.add(folder);
         }
 
         return folderList;
+    }
+
+    /**
+     * Creates a folder using the URL passed as parameter (only if it has not been
+     * already created) and adds this to our store folder map.
+     *
+     * @param folderUrl
+     * @return
+     */
+    private WebDavFolder createFolder(String folderUrl) {
+        if (folderUrl == null)
+            return null;
+
+        WebDavFolder wdFolder = null;
+        String folderName = getFolderName(folderUrl);
+        if (folderName != null) {
+            if (!this.mFolderList.containsKey(folderName)) {
+                wdFolder = new WebDavFolder(this, folderName);
+                wdFolder.setUrl(folderUrl);
+                mFolderList.put(folderName, wdFolder);
+            }
+        }
+        // else: Unknown URL format => NO Folder created
+
+        return wdFolder;
+    }
+
+    private String getFolderName(String folderUrl) {
+        if (folderUrl == null)
+            return null;
+
+        // Here we extract the folder name starting from the complete url.
+        // folderUrl is in the form http://mail.domain.com/exchange/username/foldername
+        // so we need "foldername" which is the string after the fifth slash
+        int folderSlash = -1;
+        for (int j = 0; j < 5; j++) {
+            folderSlash = folderUrl.indexOf('/', folderSlash + 1);
+            if (folderSlash < 0)
+                break;
+        }
+
+        if (folderSlash > 0) {
+            String folderName;
+            String fullPathName;
+
+            // Removes the final slash if present
+            if (folderUrl.charAt(folderUrl.length() - 1) == '/')
+                fullPathName = folderUrl.substring(folderSlash + 1, folderUrl.length() - 1);
+            else
+                fullPathName = folderUrl.substring(folderSlash + 1);
+
+            // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
+            try {
+                folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
+            } catch (UnsupportedEncodingException uee) {
+                /**
+                 * If we don't support UTF-8 there's a problem, don't decode
+                 * it then
+                 */
+                folderName = fullPathName;
+            }
+
+            return folderName;
+        }
+
+        return null;
     }
 
     @Override
@@ -472,7 +555,10 @@ public class WebDavStore extends Store {
     }
 
     public Folder getSendSpoolFolder() throws MessagingException {
-        return getFolder(DAV_MAIL_SEND_FOLDER);
+        if (mSendFolder == null)
+            mSendFolder = getFolder(DAV_MAIL_SEND_FOLDER);
+
+        return mSendFolder;
     }
 
     @Override
@@ -485,11 +571,31 @@ public class WebDavStore extends Store {
         return true;
     }
 
+    private String getSpecialFoldersList() {
+        StringBuilder buffer = new StringBuilder(200);
+        buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
+        buffer.append("<propfind xmlns=\"DAV:\">");
+        buffer.append("<prop>");
+        buffer.append("<").append(DAV_MAIL_INBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_DRAFTS_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_OUTBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_SENT_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        buffer.append("<").append(DAV_MAIL_TRASH_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+        // This should always be ##DavMailSubmissionURI## for which we already have a constant
+        // buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
+
+        buffer.append("<").append(DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
+
+        buffer.append("</prop>");
+        buffer.append("</propfind>");
+        return buffer.toString();
+    }
+
     /***************************************************************
      * WebDAV XML Request body retrieval functions
      */
     private String getFolderListXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
@@ -500,7 +606,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageCountXml(String messageState) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
@@ -513,7 +619,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageEnvelopeXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:getcontentlength\",");
@@ -543,7 +649,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessagesXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\"\r\n");
@@ -554,7 +660,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageUrlsXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -578,7 +684,7 @@ public class WebDavStore extends Store {
             throw new MessagingException("Attempt to get flags on 0 length array for uids");
         }
 
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -597,7 +703,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMarkMessagesReadXml(String[] urls, boolean read) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -621,7 +727,7 @@ public class WebDavStore extends Store {
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove) {
 
         String action = (isMove ? "move" : "copy");
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:").append(action).append(" xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -1152,7 +1258,7 @@ public class WebDavStore extends Store {
 
     @Override
     public void sendMessages(Message[] messages) throws MessagingException {
-        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(DAV_MAIL_TMP_FOLDER);
+        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(OpenMode.READ_WRITE);
             Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
@@ -1189,37 +1295,30 @@ public class WebDavStore extends Store {
             store = nStore;
             this.mName = name;
 
-            if (DAV_MAIL_SEND_FOLDER.equals(name)) {
-                this.mFolderUrl = getUrl() + "/" + name + "/";
-            } else {
-                String encodedName = "";
-                try {
-                    String[] urlParts = name.split("/");
-                    String url = "";
-                    for (int i = 0, count = urlParts.length; i < count; i++) {
-                        if (i != 0) {
-                            url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                        } else {
-                            url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                        }
+            String encodedName = "";
+            try {
+                String[] urlParts = name.split("/");
+                String url = "";
+                for (int i = 0, count = urlParts.length; i < count; i++) {
+                    if (i != 0) {
+                        url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
+                    } else {
+                        url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
                     }
-                    encodedName = url;
-                } catch (UnsupportedEncodingException uee) {
-                    Log.e(K9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
-                    encodedName = name;
                 }
-
-                encodedName = encodedName.replaceAll("\\+", "%20");
-
-                if (encodedName.equals(K9.INBOX)) {
-                    encodedName = "Inbox";
-                }
-                this.mFolderUrl = WebDavStore.this.mUrl;
-                if (!WebDavStore.this.mUrl.endsWith("/")) {
-                    this.mFolderUrl += "/";
-                }
-                this.mFolderUrl += encodedName;
+                encodedName = url;
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(K9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
+                encodedName = name;
             }
+
+            encodedName = encodedName.replaceAll("\\+", "%20");
+
+            this.mFolderUrl = WebDavStore.this.mUrl;
+            if (!WebDavStore.this.mUrl.endsWith("/")) {
+                this.mFolderUrl += "/";
+            }
+            this.mFolderUrl += encodedName;
         }
 
         public void setUrl(String url) {
@@ -1299,6 +1398,9 @@ public class WebDavStore extends Store {
             dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
             if (dataset != null) {
                 messageCount = dataset.getMessageCount();
+            }
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
+                Log.v(K9.LOG_TAG, "Counted messages and webdav returned: "+messageCount);
             }
 
             return messageCount;
@@ -1486,7 +1588,11 @@ public class WebDavStore extends Store {
             }
 
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                } else {
+                    fetchMessages(messages, listener, -1);
+                }
             }
             if (fp.contains(FetchProfile.Item.BODY)) {
                 fetchMessages(messages, listener, -1);
@@ -1556,7 +1662,7 @@ public class WebDavStore extends Store {
 
                     if (entity != null) {
                         InputStream istream = null;
-                        StringBuffer buffer = new StringBuffer();
+                        StringBuilder buffer = new StringBuilder();
                         String tempText = "";
                         String resultText = "";
                         BufferedReader reader;
@@ -1655,13 +1761,17 @@ public class WebDavStore extends Store {
                 WebDavMessage wdMessage = (WebDavMessage) messages[i];
 
                 if (listener != null) {
-                    listener.messageStarted(messages[i].getUid(), i, count);
+                    listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
-                wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                try {
+                    wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                } catch (NullPointerException e) {
+                    Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                }
 
                 if (listener != null) {
-                    listener.messageFinished(messages[i], i, count);
+                    listener.messageFinished(wdMessage, i, count);
                 }
             }
         }
@@ -1723,8 +1833,13 @@ public class WebDavStore extends Store {
                     listener.messageStarted(messages[i].getUid(), i, count);
                 }
 
-                wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
-                wdMessage.setFlagInternal(Flag.SEEN, envelopes.get(wdMessage.getUid()).getReadStatus());
+                ParsedMessageEnvelope envelope = envelopes.get(wdMessage.getUid());
+                if (envelope != null) {
+                    wdMessage.setNewHeaders(envelope);
+                    wdMessage.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
+                } else {
+                    Log.e(K9.LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
+                }
 
                 if (listener != null) {
                     listener.messageFinished(messages[i], i, count);
@@ -2119,12 +2234,12 @@ public class WebDavStore extends Store {
     public class DataSet {
         private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
         // private HashMap<String, String> mLostData = new HashMap<String, String>();
-        private String mUid = "";
+        private StringBuilder mUid = new StringBuilder();
         private HashMap<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName) {
             if (tagName.equals("uid")) {
-                mUid = value;
+                mUid.append(value);
             }
 
             if (mTempData.containsKey(tagName)) {
@@ -2135,9 +2250,10 @@ public class WebDavStore extends Store {
         }
 
         public void finish() {
-            if (mUid != null &&
+            String uid = mUid.toString();
+            if (!uid.equals("") &&
                     mTempData != null) {
-                mData.put(mUid, mTempData);
+                mData.put(uid, mTempData);
             } else if (mTempData != null) {
                 /*
                  * Lost Data are for requests that don't include a message UID. These requests should only have a depth
@@ -2145,8 +2261,19 @@ public class WebDavStore extends Store {
                  */
             }
 
-            mUid = "";
+            mUid = new StringBuilder();
             mTempData = new HashMap<String, String>();
+        }
+
+        /**
+         * Returns a hashmap of special folder name => special folder url
+         */
+        public HashMap<String, String> getSpecialFolderToUrl() {
+            // We return the first (and only) map
+            for (HashMap<String, String> folderMap : mData.values()) {
+                return folderMap;
+            }
+            return new HashMap<String, String>();
         }
 
         /**
@@ -2176,10 +2303,14 @@ public class WebDavStore extends Store {
             for (String uid : mData.keySet()) {
                 HashMap<String, String> data = mData.get(uid);
                 String readStatus = data.get("read");
-                if (readStatus != null &&
-                        !readStatus.equals("")) {
+                if (readStatus != null && !readStatus.equals("")) {
                     Boolean value = !readStatus.equals("0");
                     uidToRead.put(uid, value);
+                } else {
+                    // We don't actually want to have null values in our hashmap,
+                    // as it causes the calling code to crash with an NPE as it
+                    // does a lookup in the map.
+                    uidToRead.put(uid, false);
                 }
             }
 
@@ -2218,7 +2349,12 @@ public class WebDavStore extends Store {
          * Returns the message count as it was retrieved
          */
         public int getMessageCount() {
-            int messageCount = -1;
+            // It appears that Exchange is returning responses
+            // without a visiblecount element for empty folders
+            // Which resulted in this code returning -1 (as that was
+            // the previous default.)
+            // -1 is an error condition. Now the default is empty
+            int messageCount = 0;
 
             for (String uid : mData.keySet()) {
                 HashMap<String, String> data = mData.get(uid);
@@ -2260,8 +2396,8 @@ public class WebDavStore extends Store {
                             String date = data.get(header);
                             date = date.substring(0, date.length() - 1);
 
-                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z");
+                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
                             String tempDate = "";
 
                             try {

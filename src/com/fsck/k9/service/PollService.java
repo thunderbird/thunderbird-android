@@ -36,6 +36,12 @@ public class PollService extends CoreService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        setAutoShutdown(false);
+    }
+
+    @Override
     public void startService(Intent intent, int startId) {
         if (START_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)

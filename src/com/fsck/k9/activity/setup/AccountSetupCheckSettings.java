@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -23,9 +24,15 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.filter.Hex;
 
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.security.NoSuchAlgorithmException;
+import java.security.MessageDigest;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Checks the given settings to make sure that they can be used to send and
@@ -112,7 +119,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             setMessage(R.string.account_setup_check_settings_fetch);
                         }
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, K9.INBOX , null, null);
+                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
                     }
                     if (mDestroyed) {
                         return;
@@ -236,12 +243,98 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 }
 
                 mProgressBar.setIndeterminate(false);
-                StringBuffer chainInfo = new StringBuffer(100);
+                StringBuilder chainInfo = new StringBuilder(100);
+                MessageDigest sha1 = null;
+                try {
+                    sha1 = MessageDigest.getInstance("SHA-1");
+                } catch (NoSuchAlgorithmException e) {
+                    Log.e(K9.LOG_TAG, "Error while initializing MessageDigest", e);
+                }
                 for (int i = 0; i < chain.length; i++) {
                     // display certificate chain information
-                    chainInfo.append("Certificate chain[" + i + "]:\n");
-                    chainInfo.append("Subject: " + chain[i].getSubjectDN().toString() + "\n");
-                    chainInfo.append("Issuer: " + chain[i].getIssuerDN().toString() + "\n");
+                    //TODO: localize this strings
+                    chainInfo.append("Certificate chain[").append(i).append("]:\n");
+                    chainInfo.append("Subject: ").append(chain[i].getSubjectDN().toString()).append("\n");
+
+                    // display SubjectAltNames too
+                    // (the user may be mislead into mistrusting a certificate
+                    //  by a subjectDN not matching the server even though a
+                    //  SubjectAltName matches)
+                    try {
+                        final Collection < List<? >> subjectAlternativeNames = chain[i].getSubjectAlternativeNames();
+                        if (subjectAlternativeNames != null) {
+                            // The list of SubjectAltNames may be very long
+                            //TODO: localize this string
+                            StringBuilder altNamesText = new StringBuilder();
+                            altNamesText.append("Subject has ").append(subjectAlternativeNames.size()).append(" alternative names\n");
+
+                            // we need these for matching
+                            String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();
+                            String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
+
+                            for (List<?> subjectAlternativeName : subjectAlternativeNames) {
+                                Integer type = (Integer)subjectAlternativeName.get(0);
+                                Object value = subjectAlternativeName.get(1);
+                                String name = "";
+                                switch (type.intValue()) {
+                                case 0:
+                                    Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
+                                    continue;
+                                case 1: // RFC822Name
+                                    name = (String)value;
+                                    break;
+                                case 2:  // DNSName
+                                    name = (String)value;
+                                    break;
+                                case 3:
+                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type x400Address");
+                                    continue;
+                                case 4:
+                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type directoryName");
+                                    continue;
+                                case 5:
+                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type ediPartyName");
+                                    continue;
+                                case 6:  // Uri
+                                    name = (String)value;
+                                    break;
+                                case 7: // ip-address
+                                    name = (String)value;
+                                    break;
+                                default:
+                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of unknown type");
+                                    continue;
+                                }
+
+                                // if some of the SubjectAltNames match the store or transport -host,
+                                // display them
+                                if (name.equalsIgnoreCase(storeURIHost) || name.equalsIgnoreCase(transportURIHost)) {
+                                    //TODO: localize this string
+                                    altNamesText.append("Subject(alt): ").append(name).append(",...\n");
+                                } else if (name.startsWith("*.")) {
+                                    if (storeURIHost.endsWith(name.substring(2)) || transportURIHost.endsWith(name.substring(2))) {
+                                        //TODO: localize this string
+                                        altNamesText.append("Subject(alt): ").append(name).append(",...\n");
+                                    }
+                                }
+                            }
+                            chainInfo.append(altNamesText);
+                        }
+                    } catch (Exception e1) {
+                        // don't fail just because of subjectAltNames
+                        Log.w(K9.LOG_TAG, "cannot display SubjectAltNames in dialog", e1);
+                    }
+
+                    chainInfo.append("Issuer: ").append(chain[i].getIssuerDN().toString()).append("\n");
+                    if (sha1 != null) {
+                        sha1.reset();
+                        try {
+                            char[] sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
+                            chainInfo.append("Fingerprint (SHA-1): ").append(new String(sha1sum)).append("\n");
+                        } catch (CertificateEncodingException e) {
+                            Log.e(K9.LOG_TAG, "Error while encoding certificate", e);
+                        }
+                    }
                 }
 
                 new AlertDialog.Builder(AccountSetupCheckSettings.this)

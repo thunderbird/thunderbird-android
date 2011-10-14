@@ -77,6 +77,7 @@ public class MimeMessage extends Message {
         parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
         parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
         // REALLY long References: headers
+        parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
         parser.setContentHandler(new MimeMessageBuilder());
         try {
@@ -130,20 +131,11 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType == null) {
-            return "text/plain";
-        } else {
-            return contentType.toLowerCase();
-        }
+        return (contentType == null) ? "text/plain" : contentType.toLowerCase();
     }
 
     public String getDisposition() throws MessagingException {
-        String contentDisposition = getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        if (contentDisposition == null) {
-            return null;
-        } else {
-            return contentDisposition;
-        }
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
     public String getContentId() throws MessagingException {
         return null;
@@ -538,7 +530,7 @@ public class MimeMessage extends Message {
 
         public void epilogue(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
@@ -548,7 +540,7 @@ public class MimeMessage extends Message {
 
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);

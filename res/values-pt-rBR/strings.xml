@@ -6,9 +6,7 @@
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
     <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Revisões e informações: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
     <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
@@ -140,7 +138,7 @@
 
     <string name="status_loading_more_failed">Repetindo carregamento de mensagens</string>
 
-    <string name="load_more_messages_fmt">Toque para ver mais<xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
+    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -200,10 +198,10 @@
     <string name="end_of_folder">Sem mais mensagens</string>
 
     <string name="accounts_welcome">
-Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalemente baseado no cliente de e-mail padrão do Android.
+Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
 \n
 \n\nK-9\'s recursor aprimorados incluídos:
-\n * Puchar e-mail usando IMAP IDLE
+\n * Puxar e-mail usando IMAP IDLE
 \n * Melhor performance
 \n * Reclassificação de mensagens
 \n * E-mails com assinaturas
@@ -263,6 +261,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n\n</string>
     <string name="message_compose_quoted_text_label">Texto citado</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alguns anexos não foram incluídos. Eles poderão ser incluídos automaticamente antes desta mensagem ser enviada.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
 
@@ -339,6 +338,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_confirm_action_archive">Arquivo</string>
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Enviar</string>
 
     <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>
@@ -661,7 +661,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="folder_settings_in_top_group_label">Mostrar no top group</string>
     <string name="folder_settings_in_top_group_summary">Mostrar perto do topo da lista de pastas</string>
 
-    <string name="folder_settings_folder_display_mode_label">Calsse de exibição para pasta</string>
+    <string name="folder_settings_folder_display_mode_label">Classe de exibição para pasta</string>
     <string name="folder_settings_folder_display_mode_normal">Nenhuma</string>
     <string name="folder_settings_folder_display_mode_first_class">Primeira Classe</string>
     <string name="folder_settings_folder_display_mode_second_class">Segunda Classe</string>
@@ -702,7 +702,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_led_summary">Piscar LED quando chegar e-mail</string>
 
 
-    <string name="account_settings_servers">Configução de servidor</string>
+    <string name="account_settings_servers">Configuração de servidor</string>
 
     <string name="account_settings_composition_title">Opções para composição de uma mensagem</string>
     <string name="account_settings_composition_label">Composição padrão</string>
@@ -786,10 +786,10 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_clear_dlg_title">Limpar conta</string>
     <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
 
-    <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP
-        permitindo este programa se conecte. Se não estiver conseguinto logar nela com seu
+    <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP,
+        permitindo que este programa se conecte. Se não estiver conseguindo logar nela com seu
         endereço de e-mail e senha corretos, talvez você não tenha uma conta \"Plus\" paga.
-		Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
+        Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
 
     <string name="provider_note_yahoojp">Se desejar utilizar POP3 para este provedor, você deverá permitir o uso deste na página de configurações de se e-mail Yahoo.</string>
 
@@ -822,7 +822,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
 
 
-    <string name="account_settings_signature__location_label">Loca da Assinatura</string>
+    <string name="account_settings_signature__location_label">Local da Assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes de escrever o texto</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois do texto escrito</string>
     <string name="setting_theme_dark">Escuro</string>
@@ -868,7 +868,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="batch_delete_op">Excluir selecionados</string>
     <string name="batch_mark_read_op">Marcar selecionados como lidos</string>
     <string name="batch_mark_unread_op">Marcar selecionados como não lidos</string>
-    <string name="batch_flag_op">Incuir estrela para selecionados</string>
+    <string name="batch_flag_op">Incluir estrela para selecionados</string>
     <string name="batch_unflag_op">Remover estrela dos selecionados</string>
     <string name="batch_archive_op">Mover selecionados para arquivo</string>
     <string name="batch_spam_op">Mover selecionados para Spam</string>
@@ -914,8 +914,11 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="count_search_title">Contador para resultados de pesquisa</string>
     <string name="count_search_summary">Desligar visualização rápida</string>
 
+    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
+    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Favoritado</string>
+    <string name="flagged_modifier"> - Favorito</string>
     <string name="unread_modifier"> - Não lido</string>
 
     <string name="search_all_messages_title">Todas as mensagens</string>
@@ -937,7 +940,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
 
-    <string name="font_size_settings_title">Tamanho da fornte</string>
+    <string name="font_size_settings_title">Tamanho da fonte</string>
     <string name="font_size_settings_description">Configurar tamanho da fonte</string>
 
     <string name="font_size_account_list">Lista de contas</string>
@@ -1014,6 +1017,24 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="dialog_confirm_delete_confirm_button">Excluir</string>
     <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
 
+    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    </plurals>-->
+    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
+    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+
     <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
 
     <string name="debug_logging_enabled">O log de depuração para o sistema Android foi habilitado</string>
@@ -1021,5 +1042,10 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
     <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
     <string name="error_unable_to_connect">Não é possível conectar.</string>
-</resources>
 
+    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+
+    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
+    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
+    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+</resources>

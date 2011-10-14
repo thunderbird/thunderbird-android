@@ -44,7 +44,7 @@ public class SingleMessageView extends LinearLayout {
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
-
+    private AttachmentView.AttachmentFileDownloadCallback attachmentCallback;
 
     public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -197,9 +197,12 @@ public class SingleMessageView extends LinearLayout {
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
             if (Utility.hasExternalImages(text) && !showPictures()) {
+                Address[] from = message.getFrom();
                 if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                         ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
-                         mContacts.isInContacts(message.getFrom()[0].getAddress()))) {
+                         // Make sure we have at least one from address
+                         (from != null && from.length > 0) &&
+                         mContacts.isInContacts(from[0].getAddress()))) {
                     setLoadPictures(true);
                 } else {
                     showShowPicturesSection(true);
@@ -265,6 +268,7 @@ public class SingleMessageView extends LinearLayout {
                 return;
             }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
+            view.setCallback(attachmentCallback);
             if (view.populateFromPart(part, message, account, controller, listener)) {
                 addAttachment(view);
             }
@@ -299,4 +303,14 @@ public class SingleMessageView extends LinearLayout {
         mMessageContentView.clearView();
         mAttachments.removeAllViews();
     }
+
+    public AttachmentView.AttachmentFileDownloadCallback getAttachmentCallback() {
+        return attachmentCallback;
+    }
+
+    public void setAttachmentCallback(
+        AttachmentView.AttachmentFileDownloadCallback attachmentCallback) {
+        this.attachmentCallback = attachmentCallback;
+    }
+
 }

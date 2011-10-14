@@ -26,7 +26,7 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
         }
 
         int in1 = mIn.read();
-        if (in1 == 0x1b) {
+        while (in1 == 0x1b) {
             in1 = mIn.read();
             if (in1 == '(') {
                 in1 = mIn.read();

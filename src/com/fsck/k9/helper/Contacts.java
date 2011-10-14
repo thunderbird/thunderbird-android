@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.content.Intent;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
@@ -84,6 +85,7 @@ public abstract class Contacts {
 
     protected Context mContext;
     protected ContentResolver mContentResolver;
+    protected Boolean mHasContactPicker;
 
     /**
      * Constructor
@@ -94,13 +96,6 @@ public abstract class Contacts {
         mContext = context;
         mContentResolver = context.getContentResolver();
     }
-
-    /**
-     * Get the name of the device's owner.
-     *
-     * @return The name of the owner if available. <tt>null</tt>, otherwise.
-     */
-    public abstract String getOwnerName();
 
     /**
      * Start the activity to add information to an existing contact or add a
@@ -166,4 +161,35 @@ public abstract class Contacts {
      *        contacts to be marked as contacted.
      */
     public abstract void markAsContacted(final Address[] addresses);
+
+    /**
+     * Creates the intent necessary to open a contact picker.
+     *
+     * @return The intent necessary to open a contact picker.
+     */
+    public abstract Intent contactPickerIntent();
+
+    /**
+     * Given a contact picker intent, returns the primary email address of that
+     * contact.
+     *
+     * @param intent The {@link Intent} returned by this contact picker.
+     * @return The primary email address of the picked contact.
+     */
+    public abstract String getEmailFromContactPicker(final Intent intent);
+
+    /**
+     * Does the device actually have a Contacts application suitable for
+     * picking a contact. As hard as it is to believe, some vendors ship
+     * without it.
+     *
+     * @return True, if the device supports picking contacts. False, otherwise.
+     */
+    public boolean hasContactPicker() {
+        if (mHasContactPicker == null) {
+            mHasContactPicker = (mContext.getPackageManager().
+                                 queryIntentActivities(contactPickerIntent(), 0).size() > 0);
+        }
+        return mHasContactPicker;
+    }
 }

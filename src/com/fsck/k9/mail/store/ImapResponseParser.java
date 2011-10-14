@@ -15,6 +15,7 @@ public class ImapResponseParser {
     private static final SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
+    private static final SimpleDateFormat badDateTimeFormat3 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 
     private PeekableInputStream mIn;
     private ImapResponse mResponse;
@@ -194,7 +195,7 @@ public class ImapResponseParser {
     }
 
     private String parseAtom() throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         while (true) {
             ch = mIn.peek();
@@ -204,7 +205,7 @@ public class ImapResponseParser {
                        ch == '[' || ch == ']' ||
                        // docs claim that flags are \ atom but atom isn't supposed to
                        // contain
-                       // * and some falgs contain *
+                       // * and some flags contain *
                        // ch == '%' || ch == '*' ||
 //                    ch == '%' ||
                        // TODO probably should not allow \ and should recognize
@@ -280,7 +281,7 @@ public class ImapResponseParser {
     private String parseQuoted() throws IOException {
         expect('"');
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         boolean escape = false;
         while ((ch = mIn.read()) != -1) {
@@ -298,7 +299,7 @@ public class ImapResponseParser {
     }
 
     private String readStringUntil(char end) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int ch;
         while ((ch = mIn.read()) != -1) {
             if (ch == end) {
@@ -323,7 +324,7 @@ public class ImapResponseParser {
      * Represents an IMAP list response and is also the base class for the
      * ImapResponse.
      */
-    public class ImapList extends ArrayList<Object> {
+    public static class ImapList extends ArrayList<Object> {
         private static final long serialVersionUID = -4067248341419617583L;
 
         public ImapList getList(int index) {
@@ -347,12 +348,24 @@ public class ImapResponseParser {
         }
 
         public Date getDate(int index) throws MessagingException {
+            return getDate(getString(index));
+        }
+
+        public Date getKeyedDate(Object key) throws MessagingException {
+            return getDate(getKeyedString(key));
+        }
+
+        private Date getDate(String value) throws MessagingException {
             try {
-                return parseDate(getString(index));
+                if (value == null) {
+                    return null;
+                }
+                return parseDate(value);
             } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime", pe);
+                throw new MessagingException("Unable to parse IMAP datetime '" + value + "' ", pe);
             }
         }
+
 
         public Object getKeyedValue(Object key) {
             for (int i = 0, count = size(); i < count; i++) {
@@ -377,18 +390,6 @@ public class ImapResponseParser {
 
         public int getKeyedNumber(Object key) {
             return Integer.parseInt(getKeyedString(key));
-        }
-
-        public Date getKeyedDate(Object key) throws MessagingException {
-            try {
-                String value = getKeyedString(key);
-                if (value == null) {
-                    return null;
-                }
-                return parseDate(value);
-            } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime", pe);
-            }
         }
 
         public boolean containsKey(Object key) {
@@ -426,8 +427,14 @@ public class ImapResponseParser {
                         return badDateTimeFormat.parse(value);
                     }
                 } catch (Exception e2) {
-                    synchronized (badDateTimeFormat2) {
-                        return badDateTimeFormat2.parse(value);
+                    try {
+                        synchronized (badDateTimeFormat2) {
+                            return badDateTimeFormat2.parse(value);
+                        }
+                    } catch (Exception e3) {
+                        synchronized (badDateTimeFormat3) {
+                            return badDateTimeFormat3.parse(value);
+                        }
                     }
                 }
             }
@@ -464,7 +471,7 @@ public class ImapResponseParser {
 
         public String getAlertText() {
             if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1))) {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 2, count = size(); i < count; i++) {
                     sb.append(get(i).toString());
                     sb.append(' ');

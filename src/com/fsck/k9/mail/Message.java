@@ -4,8 +4,17 @@ package com.fsck.k9.mail;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.io.IOException;
+
+import android.util.Log;
+
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.mail.filter.CountingOutputStream;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.K9;
+
 
 public abstract class Message implements Part, Body {
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
@@ -197,6 +206,22 @@ public abstract class Message implements Part, Body {
     public boolean equalsReference(MessageReference ref) {
         MessageReference tmpReference = makeMessageReference();
         return tmpReference.equals(ref);
+    }
+
+    public long calculateSize() {
+        try {
+
+            CountingOutputStream out = new CountingOutputStream();
+            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
+            writeTo(eolOut);
+            eolOut.flush();
+            return out.getCount();
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "Failed to calculate a message size: " + e);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Failed to calculate a message size: " + e);
+        }
+        return 0;
     }
 
 }

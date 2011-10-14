@@ -28,9 +28,10 @@
   <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
   <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
+  <!-- can license text be localized? app_copyright_fmt/app_license -->
   <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
-  <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+    <string name="app_libraries">Tierces librairies utilisées\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Icônes Emoji\u00A0: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
   <string name="read_attachment_label">lire les pièces jointes</string>
   <string name="read_attachment_desc">Permet à cette application de lire vos pièces jointes.</string>
@@ -56,7 +57,10 @@
   <string name="status_sending_account">\u0020(Envoi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="status_processing_account">\u0020(Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+
   <string name="status_next_poll">\u0020(Prochaine récupération à <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_syncing_off">\u0020(synchronisation désactivée)</string>
+
   <string name="next_action">Suivant</string>
   <string name="okay_action">OK</string>
   <string name="cancel_action">Annuler</string>
@@ -130,6 +134,7 @@
   <string name="accounts_context_menu_title">Options du compte</string>
   <string name="folder_context_menu_title">Options du dossier</string>
   <string name="general_no_subject">(Aucun objet)</string>
+    <string name="general_no_date">Pas de date</string>
   <string name="general_no_sender">Aucun expéditeur</string>
   <string name="status_loading">Récupération\u2026</string>
   <string name="status_loading_folder">(Récupération <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
@@ -247,9 +252,10 @@
   <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
   <string name="message_compose_quoted_text_label">Texte cité</string>
   <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
+    <string name="error_contact_address_not_found">Aucune adresse e-mail trouvée</string>
   <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>
   <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
-
+    <string name="message_compose_show_quoted_text_action">Citer le message</string>
 
 
   <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -295,9 +301,11 @@
   <string name="global_settings_touchable_label">Interface conviviale au toucher</string>
   <string name="global_settings_touchable_summary">Fournit plus d\'espace dans les éléments des listes</string>
     <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
+    <string name="global_settings_show_correspondent_names_label">Afficher le nom des correspondants</string>
+    <string name="global_settings_show_correspondent_names_summary">Afficher le nom des correspondants plutôt que leurs adresses e-mail</string>
 
-    <string name="global_settings_show_contact_name_label">Afficher les noms des contacts connus</string>
-    <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresses</string>
+    <string name="global_settings_show_contact_name_label">Utiliser les noms du carnet d\'adresses</string>
+    <string name="global_settings_show_contact_name_summary">Utiliser en priorité les noms du carnet d\'adresses</string>
     <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
     <string name="global_settings_registered_name_color_default">Ne pas mettre en évidence les contacts connus</string>
     <string name="global_settings_registered_name_color_changed">Mettre en évidence (couleur) les contacts connus</string>
@@ -305,13 +313,14 @@
   <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
   <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
-  <string name="global_settings_messageview_return_to_list_summary">Retourne à la liste de messages après la suppression d\'un message</string>
+  <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
 
     <string name="global_settings_confirm_actions_title">Confirmer les actions</string>
     <string name="global_settings_confirm_actions_summary">Demander une confirmation pour chacune des actions sélectionnées</string>
     <string name="global_settings_confirm_action_archive">Archiver</string>
     <string name="global_settings_confirm_action_delete">Supprimer (mode lecture)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Marquer tout comme lu</string>
     <string name="global_settings_confirm_action_send">Envoyer</string>
 
     <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
@@ -395,11 +404,11 @@
   <string name="spam_folder_label">Nom du dossier des spams</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
   <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">Chemin WebDAV (Exchange)</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">Chemin OWA</string>
   <string name="account_setup_incoming_webdav_path_prefix_hint">Optionnel</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Chemin d\'authentification</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">Optionnel</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Chemin de la boîte de réception</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias du compte</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Optionnel</string>
   <string name="account_setup_outgoing_title">Paramètres du serveur sortant</string>
   <string name="account_setup_outgoing_smtp_server_label">Serveur SMTP</string>
@@ -486,6 +495,9 @@
   <string name="account_settings_notify_self_summary">Afficher une notification dans la barre d\'état même lors d\'un envoi à partir d\'une identité reliée à un compte</string>
   <string name="account_settings_notification_opens_unread_label">Ouvrir message non lu via notification</string>
   <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus après un accès à partir des notifications</string>
+    <string name="account_settings_notification_unread_count_label">Afficher le nombre de messages non lus</string>
+    <string name="account_settings_notification_unread_count_summary">Afficher le nombre de messages non lus dans la barre de notification</string>
+
   <string name="account_settings_hide_buttons_label">Défiler les boutons de navigation</string>
   <string name="account_settings_hide_buttons_never">Jamais</string>
   <string name="account_settings_hide_buttons_keyboard_avail">Lorsque le clavier est disponible</string>
@@ -502,8 +514,19 @@
 
   <string name="account_settings_composition">Composition de messages</string>
 
+    <string name="account_settings_default_quoted_text_shown_label">Citer le message original</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Inclure le message d\'origine dans la réponse</string>
+
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
-    <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
+    <string name="account_settings_reply_after_quote_summary">Faire précéder la réponse par le texte d\'origine</string>
+
+    <string name="account_settings_message_format_label">Format du message</string>
+    <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
+    <string name="account_settings_message_format_text">Text brut (formattage et images omis)</string>
+
+    <string name="account_settings_quote_style_label">Style de citation</string>
+    <string name="account_settings_quote_style_prefix">Préfixe (Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">En-tête (Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Paramètres généraux</string>
     <string name="account_settings_display_prefs_title">Affichage</string>
@@ -688,14 +711,23 @@
   <string name="account_delete_dlg_title">Supprimer</string>
   <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
   <string name="account_recreate_dlg_title">Recréer compte</string>
-  <string name="account_recreate_dlg_instructions_fmt">Toutes les données de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Toutes les données du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres seront conservés.</string>
   <string name="account_clear_dlg_title">Vider le compte</string>
-  <string name="account_clear_dlg_instructions_fmt">Tous les messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramàtres du compte seront sauvegardés</string>
+  <string name="account_clear_dlg_instructions_fmt">Tous les messages du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramètres seront conservés.</string>
+
   <string name="provider_note_live">Seuls certains comptes «\u00A0Plus\u00A0» autorisent l\'accès POP
         permettant à ce programme de se connecter. Si vous ne pouvez pas
         vous connecter avec votre adresse électronique et votre mot de passe,
         il est possible que vous n\'ayez pas payé un compte «\u00A0Plus\u00A0». Veuillez
         lancer le navigateur Web pour accéder à ces comptes de messagerie.</string>
+
+    <string name="provider_note_yahoojp">Pour utiliser POP3 avec ce fournisseur, vous devez activer POP3 dans les paramètres Yahoo Mail.</string>
+<!-- not sure it's really useful to translate those provider specific strings for a French speaker... -->
+    <string name="provider_note_naver">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Naver Mail.</string>
+    <string name="provider_note_hanmail">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Hanmail(Daum) mail.</string>
+    <string name="provider_note_paran">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Paran mail.</string>
+    <string name="provider_note_nate">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Nate mail.</string>
+
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter le certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejetter le certificat</string>
@@ -781,6 +813,9 @@
   <string name="gestures_title">Interface gestuelle</string>
   <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
 
+    <string name="compact_layouts_title">Agencement compact</string>
+    <string name="compact_layouts_summary">Modifier l\'agencement pour afficher plus d\'éléments par page</string>
+
     <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
     <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
     <string name="volume_navigation_message">Visualisation d\'un message</string>
@@ -794,6 +829,10 @@
   <string name="measure_accounts_summary">Désactiver pour un affichage plus rapide</string>
   <string name="count_search_title">Compter les résultats de recherche</string>
   <string name="count_search_summary">Désactiver pour un affichage plus rapide</string>
+
+    <string name="hide_special_accounts_title">Cacher les comptes spéciaux</string>
+    <string name="hide_special_accounts_summary">Cacher «\u00A0Boîte de messagerie unifiée\u00A0» et «\u00A0Tous les messages\u00A0»</string>
+
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Avec étoile</string>
   <string name="unread_modifier"> - Non lu</string>
@@ -822,6 +861,8 @@
   <string name="font_size_message_list_subject">Sujet du message</string>
   <string name="font_size_message_list_sender">Expéditeur du message</string>
   <string name="font_size_message_list_date">Date du message</string>
+    <string name="font_size_message_list_preview">Aperçu</string>
+
   <string name="font_size_message_view">Vue du message</string>
   <string name="font_size_message_view_sender">Expéditeur du message</string>
   <string name="font_size_message_view_to">Destinataire du message (Pour)</string>
@@ -858,7 +899,7 @@
   <string name="btn_verify">Vérifier</string>
   <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
   <string name="key_id">id\u00A0: %s</string>
-  <string name="insufficient_apg_permissions">K-9 n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 pour corriger cela.</string>
+  <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 Mail pour corriger cela.</string>
   <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore supportés</string>
   <string name="attachment_encryption_unsupported">Attention\u00A0: La signature et le chiffrement des pièces jointes ne sont pas encore supportés.</string>
   <string name="send_aborted">Envoi annulé.</string>
@@ -874,6 +915,35 @@
     <string name="dialog_confirm_delete_confirm_button">Supprimer</string>
     <string name="dialog_confirm_delete_cancel_button">Ne pas supprimer</string>
 
+    <string name="dialog_confirm_spam_title">Confirmer le déplacement</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
+    <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
+
+    <string name="dialog_attachment_progress_title">Téléchargement de la pièce jointe</string>
+
     <string name="debug_logging_enabled">Sortie de deboguage «\u00A0logcat\u00A0» activée</string>
+
+    <string name="error_unable_to_connect">Connexion impossible</string>
+
+    <string name="account_unavailable">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» n\'est pas disponible\u00A0; veuillez vérifier le stockage</string>
+
+    <string name="settings_attachment_default_path">Enregistrer les pièces jointes dans…</string>
+    <string name="attachment_save_title">Enregistrer les pièces jointes</string>
+    <string name="attachment_save_desc">Aucun gestionnaire de fichiers trouvé. Où souhaitez-vous enregistrer cette pièce jointe\u00A0?</string>
 
 </resources>

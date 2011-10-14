@@ -30,6 +30,7 @@ public class AttachmentProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
 
     private static final String FORMAT_RAW = "RAW";
+    private static final String FORMAT_VIEW = "VIEW";
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";
 
     public static class AttachmentProviderColumns {
@@ -40,7 +41,11 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     public static Uri getAttachmentUri(Account account, long id) {
-        return getAttachmentUri(account.getUuid(), id);
+        return getAttachmentUri(account.getUuid(), id, true);
+    }
+
+    public static Uri getAttachmentUriForViewing(Account account, long id) {
+        return getAttachmentUri(account.getUuid(), id, false);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height) {
@@ -53,11 +58,11 @@ public class AttachmentProvider extends ContentProvider {
                .build();
     }
 
-    private static Uri getAttachmentUri(String db, long id) {
+    private static Uri getAttachmentUri(String db, long id, boolean raw) {
         return CONTENT_URI.buildUpon()
                .appendPath(db)
                .appendPath(Long.toString(id))
-               .appendPath(FORMAT_RAW)
+               .appendPath(raw ? FORMAT_RAW : FORMAT_VIEW)
                .build();
     }
 
@@ -67,7 +72,14 @@ public class AttachmentProvider extends ContentProvider {
          * We use the cache dir as a temporary directory (since Android doesn't give us one) so
          * on startup we'll clean up any .tmp files from the last run.
          */
-        File[] files = getContext().getCacheDir().listFiles();
+        final File cacheDir = getContext().getCacheDir();
+        if (cacheDir == null) {
+            return true;
+        }
+        File[] files = cacheDir.listFiles();
+        if (files == null) {
+            return true;
+        }
         for (File file : files) {
             if (file.getName().endsWith(".tmp")) {
                 file.delete();
@@ -98,6 +110,11 @@ public class AttachmentProvider extends ContentProvider {
         String dbName = segments.get(0);
         String id = segments.get(1);
         String format = segments.get(2);
+
+        return getType(dbName, id, format);
+    }
+
+    private String getType(String dbName, String id, String format) {
         if (FORMAT_THUMBNAIL.equals(format)) {
             return "image/png";
         } else {
@@ -105,7 +122,14 @@ public class AttachmentProvider extends ContentProvider {
 
             try {
                 final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
-                return localStore.getAttachmentType(id);
+
+                AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
+                if (FORMAT_VIEW.equals(format)) {
+                    return MimeUtility.getMimeTypeForViewing(attachmentInfo.type, attachmentInfo.name);
+                } else {
+                    // When accessing the "raw" message we deliver the original MIME type.
+                    return attachmentInfo.type;
+                }
             } catch (MessagingException e) {
                 Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
                 return null;
@@ -148,8 +172,7 @@ public class AttachmentProvider extends ContentProvider {
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
             if (!file.exists()) {
-                Uri attachmentUri = getAttachmentUri(dbName, Long.parseLong(id));
-                String type = getType(attachmentUri);
+                String type = getType(dbName, id, FORMAT_VIEW);
                 try {
                     FileInputStream in = new FileInputStream(getFile(dbName, id));
                     try {
@@ -212,7 +235,7 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
             attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Uname to retrieve attachment info from local store for ID: " + id, e);
+            Log.e(K9.LOG_TAG, "Unable to retrieve attachment info from local store for ID: " + id, e);
             return null;
         }
 

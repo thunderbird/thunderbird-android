@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import android.provider.Contacts;
+import android.provider.Contacts.ContactMethods;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.K9;
+
 
 /**
  * Access the contacts on the device using the old API (introduced in SDK 1).
@@ -79,27 +83,6 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
         }
 
         mContext.startActivity(contactIntent);
-    }
-
-    @Override
-    public String getOwnerName() {
-        String name = null;
-        final Cursor c = mContentResolver.query(
-                             Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
-                             new String[] {Contacts.ContactMethods.DISPLAY_NAME},
-                             null,
-                             null,
-                             null);
-
-        if (c != null) {
-            if (c.getCount() > 0) {
-                c.moveToFirst();
-                name = c.getString(0);  // owner's display name
-            }
-            c.close();
-        }
-
-        return name;
     }
 
     @Override
@@ -216,6 +199,47 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
                 c.close();
             }
         }
+    }
+
+    @Override
+    public Intent contactPickerIntent() {
+        return new Intent(Intent.ACTION_PICK, Contacts.People.CONTENT_URI);
+    }
+
+    @Override
+    public String getEmailFromContactPicker(final Intent data) {
+        Cursor cursor = null;
+        Cursor cursor2 = null;
+        String email = "";
+
+        try {
+            Uri result = data.getData();
+            cursor = mContentResolver.query(result, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                String emailId = cursor.getString(cursor.getColumnIndex(Contacts.People.PRIMARY_EMAIL_ID));
+                cursor2 = mContext.getContentResolver().query(
+                              ContactMethods.CONTENT_EMAIL_URI,
+                              new String[] { ContactMethods.DATA },
+                              "contact_methods._id=?",
+                              new String[] { emailId },
+                              null);
+
+                if (cursor2.moveToFirst()) {
+                    email = cursor2.getString(0);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to get email data", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (cursor2 != null) {
+                cursor2.close();
+            }
+        }
+
+        return email;
     }
 
     /**

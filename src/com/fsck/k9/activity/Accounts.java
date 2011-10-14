@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -310,20 +311,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        unreadAccount = new SearchAccount(this, false, null, null);
-        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+        if (!K9.isHideSpecialAccounts()) {
+            unreadAccount = new SearchAccount(this, false, null, null);
+            unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+            unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
 
-        integratedInboxAccount = new SearchAccount(this, true, null,  null);
-        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+            integratedInboxAccount = new SearchAccount(this, true, null,  null);
+            integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+            integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+        }
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
-        boolean startup = intent.getData() == null && intent.getBooleanExtra(EXTRA_STARTUP, true);
-        onNewIntent(intent);
+        //onNewIntent(intent);
 
-        if (startup && K9.startIntegratedInbox()) {
+        boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
+        if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(integratedInboxAccount);
             finish();
             return;
@@ -340,6 +343,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         listView.setOnItemClickListener(this);
         listView.setItemsCanFocus(false);
         listView.setEmptyView(findViewById(R.id.empty));
+        listView.setScrollingCacheEnabled(false);
         findViewById(R.id.next).setOnClickListener(this);
         registerForContextMenu(listView);
 
@@ -403,7 +407,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
-
     }
 
     /**
@@ -418,13 +421,37 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         return retain;
     }
 
-    private void refresh() {
-        BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
-
-        List<BaseAccount> newAccounts = new ArrayList<BaseAccount>(accounts.length + 4);
+    private BaseAccount[] accounts = new BaseAccount[0];
+    private enum ACCOUNT_LOCATION {
+        TOP, MIDDLE, BOTTOM;
+    }
+    private EnumSet<ACCOUNT_LOCATION> accountLocation(BaseAccount account) {
+        EnumSet<ACCOUNT_LOCATION> accountLocation = EnumSet.of(ACCOUNT_LOCATION.MIDDLE);
         if (accounts.length > 0) {
+            if (accounts[0].equals(account)) {
+                accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
+                accountLocation.add(ACCOUNT_LOCATION.TOP);
+            }
+            if (accounts[accounts.length - 1].equals(account)) {
+                accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
+                accountLocation.add(ACCOUNT_LOCATION.BOTTOM);
+            }
+        }
+        return accountLocation;
+    }
+
+
+    private void refresh() {
+        accounts = Preferences.getPreferences(this).getAccounts();
+
+        List<BaseAccount> newAccounts;
+        if (!K9.isHideSpecialAccounts()
+                && accounts.length > 0) {
+            newAccounts = new ArrayList<BaseAccount>(accounts.length + 2);
             newAccounts.add(integratedInboxAccount);
             newAccounts.add(unreadAccount);
+        } else {
+            newAccounts = new ArrayList<BaseAccount>(accounts.length);
         }
 
         newAccounts.addAll(Arrays.asList(accounts));
@@ -547,11 +574,67 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_REMOVE_ACCOUNT:
-            return createRemoveAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_delete_dlg_title,
+                                             getString(R.string.account_delete_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        try {
+                            realAccount.getLocalStore().delete();
+                        } catch (Exception e) {
+                            // Ignore, this may lead to localStores on sd-cards that are
+                            // currently not inserted to be left
+                        }
+                        MessagingController.getInstance(getApplication())
+                        .notifyAccountCancel(Accounts.this, realAccount);
+                        Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
+                        K9.setServicesEnabled(Accounts.this);
+                        refresh();
+                    }
+                }
+            });
+
         case DIALOG_CLEAR_ACCOUNT:
-            return createClearAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_clear_dlg_title,
+                                             getString(R.string.account_clear_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.clearing_account);
+                        MessagingController.getInstance(getApplication()).clear(realAccount, null);
+                    }
+                }
+            });
+
         case DIALOG_RECREATE_ACCOUNT:
-            return createRecreateAccountDialog();
+            return ConfirmationDialog.create(this, id,
+                                             R.string.account_recreate_dlg_title,
+                                             getString(R.string.account_recreate_dlg_instructions_fmt,
+                                                     mSelectedContextAccount.getDescription()),
+                                             R.string.okay_action,
+                                             R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (mSelectedContextAccount instanceof Account) {
+                        Account realAccount = (Account)mSelectedContextAccount;
+                        mHandler.workingAccount(realAccount, R.string.recreating_account);
+                        MessagingController.getInstance(getApplication()).recreate(realAccount, null);
+                    }
+                }
+            });
         }
         return super.onCreateDialog(id);
     }
@@ -576,89 +659,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
 
         super.onPrepareDialog(id, d);
-    }
-
-
-    private Dialog createRemoveAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_delete_dlg_title)
-               .setMessage(getString(R.string.account_delete_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_REMOVE_ACCOUNT);
-                removeDialog(DIALOG_REMOVE_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    try {
-                        realAccount.getLocalStore().delete();
-                    } catch (Exception e) {
-                        // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
-                    }
-                    MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, realAccount);
-                    Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
-                    K9.setServicesEnabled(Accounts.this);
-                    refresh();
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_REMOVE_ACCOUNT);
-                removeDialog(DIALOG_REMOVE_ACCOUNT);
-            }
-        })
-               .create();
-    }
-
-    private Dialog createClearAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_clear_dlg_title)
-               .setMessage(getString(R.string.account_clear_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_CLEAR_ACCOUNT);
-                removeDialog(DIALOG_CLEAR_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    mHandler.workingAccount(realAccount, R.string.clearing_account);
-                    MessagingController.getInstance(getApplication()).clear(realAccount, null);
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_CLEAR_ACCOUNT);
-                removeDialog(DIALOG_CLEAR_ACCOUNT);
-            }
-        })
-               .create();
-    }
-
-    private Dialog createRecreateAccountDialog() {
-        return new AlertDialog.Builder(this)
-               .setTitle(R.string.account_recreate_dlg_title)
-               .setMessage(getString(R.string.account_recreate_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_RECREATE_ACCOUNT);
-                removeDialog(DIALOG_RECREATE_ACCOUNT);
-
-                if (mSelectedContextAccount instanceof Account) {
-                    Account realAccount = (Account)mSelectedContextAccount;
-                    mHandler.workingAccount(realAccount, R.string.recreating_account);
-                    MessagingController.getInstance(getApplication()).recreate(realAccount, null);
-                }
-            }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dismissDialog(DIALOG_RECREATE_ACCOUNT);
-                removeDialog(DIALOG_RECREATE_ACCOUNT);
-            }
-        })
-               .create();
     }
 
     @Override
@@ -704,6 +704,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case R.id.export:
             onExport(false, realAccount);
             break;
+        case R.id.move_up:
+            onMove(realAccount, true);
+            break;
+        case R.id.move_down:
+            onMove(realAccount, false);
+            break;
         }
         return true;
     }
@@ -722,7 +728,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onRecreate(Account account) {
         showDialog(DIALOG_RECREATE_ACCOUNT);
     }
-
+    private void onMove(final Account account, final boolean up) {
+        MoveAccountAsyncTask asyncTask = new MoveAccountAsyncTask(this, account, up);
+        setNonConfigurationInstance(asyncTask);
+        asyncTask.execute();
+    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
@@ -801,7 +811,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         StringBuilder libs = new StringBuilder().append("<ul>");
         for (String[] library : USED_LIBRARIES) {
-            libs.append("<li><a href=\"" + library[1] + "\">" + library[0] + "</a></li>");
+            libs.append("<li><a href=\"").append(library[1]).append("\">").append(library[0]).append("</a></li>");
         }
         libs.append("</ul>");
 
@@ -866,6 +876,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 if (item.getItemId() != R.id.open) {
                     item.setVisible(false);
                 }
+            }
+        }
+        else {
+            EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(account);
+            if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
+                menu.findItem(R.id.move_up).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_up).setEnabled(true);
+            }
+            if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
+                menu.findItem(R.id.move_down).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_down).setEnabled(true);
             }
         }
     }
@@ -1492,6 +1517,42 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
                         R.string.settings_import_failure, filename);
             }
+        }
+    }
+
+    private static class MoveAccountAsyncTask extends ExtendedAsyncTask<Void, Void, Void> {
+        private Account mAccount;
+        private boolean mUp;
+
+        protected MoveAccountAsyncTask(Activity activity, Account account, boolean up) {
+            super(activity);
+            mAccount = account;
+            mUp = up;
+        }
+
+        @Override
+        protected void showProgressDialog() {
+            //FIXME
+            String title = "";
+            String message = "";
+            mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... args) {
+            mAccount.move(Preferences.getPreferences(mContext), mUp);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void arg) {
+            Accounts activity = (Accounts) mActivity;
+
+            // Let the activity know that the background task is complete
+            activity.setNonConfigurationInstance(null);
+
+            activity.refresh();
+            removeProgressDialog();
         }
     }
 }

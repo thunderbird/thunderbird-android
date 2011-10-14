@@ -15,7 +15,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
-
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
 
@@ -162,5 +161,4 @@ public class K9Activity extends Activity {
             return false;
         }
     }
-
 }

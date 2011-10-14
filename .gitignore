@@ -1,0 +1,5 @@
+local.properties
+bin
+gen
+.settings
+*~

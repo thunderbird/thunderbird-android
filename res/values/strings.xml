@@ -6,9 +6,7 @@
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -112,6 +110,9 @@
     <string name="view_hide_details_action">View/hide details</string>
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="edit_subject_action">Edit subject</string>
+    <string name="read_receipt">Read receipt</string>
+    <string name="read_receipt_enabled">Read receipt will be requested</string>
+    <string name="read_receipt_disabled">Read receipt will not be requested</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
@@ -267,9 +268,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">Quoted text</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
+    <string name="error_contact_address_not_found">No email address could be found.</string>
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
-
+    <string name="message_compose_show_quoted_text_action">Quote message</string>
 
 
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -337,12 +339,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
     <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
+    <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
+    <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_archive">Archive</string>
     <string name="global_settings_confirm_action_delete">Delete (message view only)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
     <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>
@@ -562,12 +567,18 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_composition">Sending mail</string>
 
+    <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>
+    <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>
+
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
     <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will appear above your reply.</string>
 
     <string name="account_settings_message_format_label">Message Format</string>
     <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>
     <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>
+
+    <string name="account_settings_message_read_receipt_label">Read receipt</string>
+    <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
 
     <string name="account_settings_quote_style_label">Reply quoting style</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>
@@ -614,6 +625,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">any size (no limit)</string>
 
     <string name="account_settings_message_age_label">Sync messages from</string>
@@ -798,6 +811,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>
 
+    <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>
+    <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>
+    <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>
+    <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>
+    
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
@@ -921,6 +939,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="count_search_title">Count search results</string>
     <string name="count_search_summary">Turn off for faster display</string>
 
+    <string name="hide_special_accounts_title">Hide special accounts</string>
+    <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>
+
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Starred</string>
     <string name="unread_modifier"> - Unread</string>
@@ -1021,6 +1042,25 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="dialog_confirm_delete_confirm_button">Delete</string>
     <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
 
+    <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Yes</string>
+    <string name="dialog_confirm_spam_cancel_button">No</string>
+
     <string name="dialog_attachment_progress_title">Downloading attachment</string>
 
     <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
@@ -1058,4 +1098,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
+    <string name="settings_attachment_default_path">Save attachments to...</string>
+    <string name="attachment_save_title">Save attachment</string>
+    <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>
+
+    <string name="manage_accounts_move_up_action">Move up</string>
+    <string name="manage_accounts_move_down_action">Move down</string>
+    
 </resources>

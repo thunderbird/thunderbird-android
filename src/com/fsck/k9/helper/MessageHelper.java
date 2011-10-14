@@ -99,4 +99,9 @@ public class MessageHelper {
             return mDateFormat.format(date);
         }
     }
+
+    public void refresh() {
+        mDateFormat = DateFormatter.getDateFormat(mContext);
+        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+    }
 }

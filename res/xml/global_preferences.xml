@@ -92,6 +92,13 @@
                 android:title="@string/count_search_title"
                 android:summary="@string/count_search_summary" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="hide_special_accounts"
+                android:title="@string/hide_special_accounts_title"
+                android:summary="@string/hide_special_accounts_summary"
+                android:disableDependentsState="true" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -180,7 +187,8 @@
             android:persistent="false"
             android:key="start_integrated_inbox"
             android:title="@string/start_integrated_inbox_title"
-            android:summary="@string/start_integrated_inbox_summary" />
+            android:summary="@string/start_integrated_inbox_summary"
+            android:dependency="hide_special_accounts" />
 
         <CheckBoxPreference
             android:persistent="false"
@@ -211,6 +219,12 @@
 
         <CheckBoxPreference
             android:persistent="false"
+            android:key="messageview_show_next"
+            android:title="@string/global_settings_messageview_show_next_label"
+            android:summary="@string/global_settings_messageview_show_next_summary" />
+
+        <CheckBoxPreference
+            android:persistent="false"
             android:key="messageview_zoom_controls"
             android:title="@string/settings_messageview_zoom_controls_label"
             android:summary="@string/settings_messageview_zoom_controls_summary" />
@@ -223,7 +237,6 @@
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
-
     </PreferenceScreen>
 
     <PreferenceScreen 
@@ -276,6 +289,11 @@
             android:title="@string/misc_preferences_attachment_title"
             android:summary="@string/misc_preferences_attachment_description" />
 
+		<Preference
+			android:persistent="false"
+			android:title="@string/settings_attachment_default_path"
+			android:key="attachment_default_path"
+			android:summary="- PATH - set by activty -"/>
     </PreferenceScreen>
 
     <PreferenceScreen

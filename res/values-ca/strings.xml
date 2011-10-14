@@ -3,14 +3,12 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d\'Android.</string>
     <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
     <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Informació de la revisió: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <string name="app_emoji_icons">Icones Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">Llegeix adjunts del correu</string>
     <string name="read_attachment_desc">Permet a aquesta aplicació que llegeixi els adjunts del correu.</string>
@@ -72,7 +70,7 @@
     <string name="send_messages_action">Envia missatges</string>
     <string name="list_folders_action">Llista de carpetes</string>
     <string name="refresh_folders_action">Refresca carpetes</string>
-    <string name="mark_all_as_read_action">Marca missatges llegits</string>
+    <string name="mark_all_as_read_action">Marca missatges com a llegits</string>
     <string name="add_account_action">Afegeix un compte nou</string>
     <string name="compose_action">Redacta</string>
     <string name="search_action">Cerca</string>
@@ -267,6 +265,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha escrit:\n\n</string>
     <string name="message_compose_quoted_text_label">Text citat</string>
     <string name="message_compose_error_no_recipients">Has d’afegir-hi, com a mínim, un destinatari.</string>
+    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alguns adjunts no s’han carregat. Es carregaran automàticament abans no s’enviï aquest missatge.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s’han carregat.</string>
 
@@ -343,6 +342,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="global_settings_confirm_action_archive">Arxiva</string>
     <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
     <string name="global_settings_confirm_action_spam">Brossa</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Maca\'ls tots com a llegits</string>
     <string name="global_settings_confirm_action_send">Envia</string>
 
     <string name="global_settings_privacy_mode_title">Bloca notificacions</string>
@@ -872,7 +872,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="batch_ops">Operacions en lot</string>
     <string name="batch_delete_op">Esborra les seleccions</string>
-    <string name="batch_mark_read_op">Marca coma ha llegit les seleccion</string>
+    <string name="batch_mark_read_op">Marca com a ha llegit les seleccion</string>
     <string name="batch_mark_unread_op">Marca com a no llegit les seleccions</string>
     <string name="batch_flag_op">Afegeix un estel a les seleccions</string>
     <string name="batch_unflag_op">Treu l’estel del que s’ha seleccionat</string>
@@ -919,6 +919,9 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <string name="count_search_title">Compta resultats cerca</string>
     <string name="count_search_summary">Apaga-ho perquè es mostri més ràpid</string>
+
+    <string name="hide_special_accounts_title">Amaga comptes especials</string>
+    <string name="hide_special_accounts_summary">Amaga la bústia d\'entrada unificada i tots els missatges dels comptes</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier">- Senyalat</string>
@@ -996,7 +999,7 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
 
     <!-- APG related -->
     <string name="error_activity_not_found">No s’ha trobat cap aplicació idònia per a aquesta acció.</string>
-    <string name="error_apg_version_not_supported">Versió APG instal lada no suportada.</string>
+    <string name="error_apg_version_not_supported">Versió APG instal·lada no suportada.</string>
     <string name="btn_crypto_sign">Inicia</string>
     <string name="btn_encrypt">Encripta</string>
     <string name="btn_decrypt">Desencripta</string>
@@ -1020,11 +1023,36 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="dialog_confirm_delete_confirm_button">Esborra</string>
     <string name="dialog_confirm_delete_cancel_button">No esborris</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_confirm_spam_title">Confirma moure\'l carpeta brossa</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Realment vols moure aquest missatge a la carpeta brossa?</item>
+        <item quantity="other">Realment vols moure aquest missatge a la carpeta brossa?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Sí</string>
+    <string name="dialog_confirm_spam_cancel_button">No</string>
+
+    <string name="dialog_attachment_progress_title">S\'està descarregant adjunt</string>
 
     <string name="debug_logging_enabled">Activada la depuració del registre al sistema de registre d’Android</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">No es pot connectar.</string>
+
+    <string name="account_unavailable">Compte \"<xliff:g id="account">%s</xliff:g>\" no és disponible; comprova emmagatzematge</string>
+
+    <string name="settings_attachment_default_path">Desa adjunts a...</string>
+    <string name="attachment_save_title">Desa adjunt</string>
+    <string name="attachment_save_desc">No s\'ha trobat l\'arxiu al navegador. On vols desar l\'adjunt?</string>
 </resources>
