@@ -77,7 +77,7 @@ public class SettingsExporter {
 
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids)
-            throws StorageImportExportException {
+            throws SettingsImportExportException {
 
         OutputStream os = null;
         String filename = null;
@@ -95,7 +95,7 @@ public class SettingsExporter {
             // If all went well, we return the name of the file just written.
             return filename;
         } catch (Exception e) {
-            throw new StorageImportExportException(e);
+            throw new SettingsImportExportException(e);
         } finally {
             if (os != null) {
                 try {
@@ -108,7 +108,7 @@ public class SettingsExporter {
     }
 
     public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids) throws StorageImportExportException  {
+            Set<String> accountUuids) throws SettingsImportExportException  {
 
         try {
             XmlSerializer serializer = Xml.newSerializer();
@@ -160,7 +160,7 @@ public class SettingsExporter {
             serializer.flush();
 
         } catch (Exception e) {
-            throw new StorageImportExportException(e.getLocalizedMessage(), e);
+            throw new SettingsImportExportException(e.getLocalizedMessage(), e);
         }
     }
 

@@ -73,7 +73,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
-import com.fsck.k9.preferences.StorageImportExportException;
+import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
 import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
@@ -1322,7 +1322,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try {
                 mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                         mAccountUuids);
-            } catch (StorageImportExportException e) {
+            } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
             }
@@ -1387,7 +1387,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         is.close();
                     } catch (IOException e) { /* Ignore */ }
                 }
-            } catch (StorageImportExportException e) {
+            } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during import", e);
                 return false;
             } catch (FileNotFoundException e) {
@@ -1455,7 +1455,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         is.close();
                     } catch (IOException e) { /* Ignore */ }
                 }
-            } catch (StorageImportExportException e) {
+            } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
             }

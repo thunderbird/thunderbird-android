@@ -111,11 +111,11 @@ public class SettingsImporter {
      * @return An {@link ImportContents} instance containing information about the contents of the
      *         settings file.
      *
-     * @throws StorageImportExportException
+     * @throws SettingsImportExportException
      *          In case of an error.
      */
     public static ImportContents getImportStreamContents(InputStream inputStream)
-            throws StorageImportExportException {
+            throws SettingsImportExportException {
 
         try {
             // Parse the import stream but don't save individual settings (overview=true)
@@ -137,10 +137,10 @@ public class SettingsImporter {
 
             return new ImportContents(globalSettings, accounts);
 
-        } catch (StorageImportExportException e) {
+        } catch (SettingsImportExportException e) {
             throw e;
         } catch (Exception e) {
-            throw new StorageImportExportException(e);
+            throw new SettingsImportExportException(e);
         }
     }
 
@@ -165,12 +165,12 @@ public class SettingsImporter {
      * @return An {@link ImportResults} instance containing information about errors and
      *         successfully imported accounts.
      *
-     * @throws StorageImportExportException
+     * @throws SettingsImportExportException
      *          In case of an error.
      */
     public static ImportResults importSettings(Context context, InputStream inputStream,
             boolean globalSettings, List<String> accountUuids, boolean overwrite)
-    throws StorageImportExportException {
+    throws SettingsImportExportException {
 
         try
         {
@@ -274,7 +274,7 @@ public class SettingsImporter {
                     }
 
                     if (!editor.commit()) {
-                        throw new StorageImportExportException("Failed to set default account");
+                        throw new SettingsImportExportException("Failed to set default account");
                     }
                 } else {
                     Log.w(K9.LOG_TAG, "Was asked to import at least one account but none found.");
@@ -288,10 +288,10 @@ public class SettingsImporter {
 
             return new ImportResults(globalSettingsImported, importedAccounts, errorneousAccounts);
 
-        } catch (StorageImportExportException e) {
+        } catch (SettingsImportExportException e) {
             throw e;
         } catch (Exception e) {
-            throw new StorageImportExportException(e);
+            throw new SettingsImportExportException(e);
         }
     }
 
@@ -578,7 +578,7 @@ public class SettingsImporter {
 
     private static Imported parseSettings(InputStream inputStream, boolean globalSettings,
             List<String> accountUuids, boolean overview)
-    throws StorageImportExportException {
+    throws SettingsImportExportException {
 
         if (!overview && accountUuids == null) {
             throw new IllegalArgumentException("Argument 'accountUuids' must not be null.");
@@ -607,12 +607,12 @@ public class SettingsImporter {
 
             if (imported == null || (overview && imported.globalSettings == null &&
                     imported.accounts == null)) {
-                throw new StorageImportExportException("Invalid import data");
+                throw new SettingsImportExportException("Invalid import data");
             }
 
             return imported;
         } catch (Exception e) {
-            throw new StorageImportExportException(e);
+            throw new SettingsImportExportException(e);
         }
     }
 
