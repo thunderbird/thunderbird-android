@@ -1037,6 +1037,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="settings_import_dialog_title">Import</string>
     <string name="settings_export_dialog_title">Export</string>
     <string name="settings_import">Import settings</string>
+    <string name="settings_import_selection">Import selection</string>
+    <string name="settings_import_global_settings">Global settings</string>
     <string name="settings_exporting">Exporting settings...</string>
     <string name="settings_importing">Importing settings...</string>
     <string name="settings_import_scanning_file">Scanning file...</string>
@@ -1046,8 +1048,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
-    <string name="settings_export_failure">Failed to export settings: <xliff:g id="reason">%s</xliff:g></string>
-    <string name="settings_import_failure">Failed to import settings from <xliff:g id="filename">%s</xliff:g>: <xliff:g id="reason">%s</xliff:g></string>
+    <string name="settings_export_failure">Failed to export settings</string>
+    <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_header">Export succeeded</string>
     <string name="settings_export_failed_header">Export failed</string>
     <string name="settings_import_success_header">Import succeeded</string>

@@ -1010,8 +1010,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             List<String> contents = new ArrayList<String>();
 
             if (mImportContents.globalSettings) {
-                //TODO: read from resources
-                contents.add("Global settings");
+                contents.add(activity.getString(R.string.settings_import_global_settings));
             }
 
             for (AccountDescription account : mImportContents.accounts) {
@@ -1043,8 +1042,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             //TODO: listview footer: "Overwrite existing accounts?" checkbox
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            //TODO: read from resources
-            builder.setTitle("Import selection");
+            builder.setTitle(activity.getString(R.string.settings_import_selection));
             builder.setView(importSelectionView);
             builder.setInverseBackgroundForced(true);
             builder.setPositiveButton(R.string.okay_action,
@@ -1383,9 +1381,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 activity.showSimpleDialog(R.string.settings_export_success_header,
                         R.string.settings_export_success, mFileName);
             } else {
-                //TODO: make the exporter return an error code; translate that error code to a localized string here
+                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,
-                        R.string.settings_export_failure, "Something went wrong");
+                        R.string.settings_export_failure);
             }
         }
     }
@@ -1450,19 +1448,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             removeProgressDialog();
 
+            String filename = mUri.getLastPathSegment();
             if (success) {
                 int imported = mImportResults.importedAccounts.size();
 
                 //TODO: display names of imported accounts (name from file *and* possibly new name)
 
                 activity.showSimpleDialog(R.string.settings_import_success_header,
-                        //FIXME: use correct file name
-                        R.string.settings_import_success, imported, "filename");
+                        R.string.settings_import_success, imported, filename);
                 activity.refresh();
             } else {
-                //TODO: make the importer return an error code; translate that error code to a localized string here
+                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                        R.string.settings_import_failure, "unknown", "Something went wrong");
+                        R.string.settings_import_failure, filename);
             }
         }
     }
@@ -1522,9 +1520,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (success) {
                 activity.showImportSelectionDialog(mImportContents, mUri, mEncryptionKey);
             } else {
-                //TODO: make the importer return an error code; translate that error code to a localized string here
+                String filename = mUri.getLastPathSegment();
+                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                        R.string.settings_import_failure, "unknown", "Something went wrong");
+                        R.string.settings_import_failure, filename);
             }
         }
     }
