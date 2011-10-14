@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -60,6 +61,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.SearchAccount;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
+import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
@@ -107,27 +109,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private FontSizes mFontSizes = K9.getFontSizes();
 
     /**
-     * Contains a reference to a {@link ExtendedAsyncTask} while it is running.
-     */
-    private ExtendedAsyncTask<Void, Void, Boolean> mAsyncTask;
-
-    /**
-     * Contains information about the currently displayed dialog (if available).
+     * Contains information about objects that need to be retained on configuration changes.
      *
-     * <p>
-     * This object is returned from {@link #onRetainNonConfigurationInstance()} if a dialog is
-     * being displayed while the activity is being restarted. It is then used by the new activity
-     * instance to re-create that dialog.
-     * </p>
+     * @see #onRetainNonConfigurationInstance()
      */
-    private DialogInfo mDialogInfo;
-
-    /**
-     * Reference to the dialog currently being displayed (if available).
-     *
-     * @see #showDialog(int, String)
-     */
-    private AlertDialog mDialog;
+    private NonConfigurationInstance mNonConfigurationInstance;
 
 
     private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
@@ -365,18 +351,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         restoreAccountStats(icicle);
 
         // Handle activity restarts because of a configuration change (e.g. rotating the screen)
-        Object retained = getLastNonConfigurationInstance();
-        if (retained != null) {
-            // If we displayed a dialog before the configuration change, re-create it here
-            if (retained instanceof DialogInfo) {
-                DialogInfo dialogInfo = (DialogInfo) retained;
-                showDialog(dialogInfo.headerRes, dialogInfo.message);
-            }
-            // If there's an ExtendedAsyncTask running, update it with the new Activity
-            else if (retained instanceof ExtendedAsyncTask) {
-                mAsyncTask = (ExtendedAsyncTask) retained;
-                mAsyncTask.attach(this);
-            }
+        mNonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
+        if (mNonConfigurationInstance != null) {
+            mNonConfigurationInstance.restore(this);
         }
     }
 
@@ -435,12 +412,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public Object onRetainNonConfigurationInstance() {
         Object retain = null;
-        if (mDialogInfo != null) {
-            retain = mDialogInfo;
-            dismissDialog();
-        } else if (mAsyncTask != null) {
-            retain = mAsyncTask;
-            mAsyncTask.detach();
+        if (mNonConfigurationInstance != null && mNonConfigurationInstance.retain()) {
+            retain = mNonConfigurationInstance;
         }
         return retain;
     }
@@ -924,71 +897,213 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.toString());
 
-        mAsyncTask = new ListImportContentsAsyncTask(this, uri, null);
-        mAsyncTask.execute();
+        ListImportContentsAsyncTask asyncTask = new ListImportContentsAsyncTask(this, uri, null);
+        setNonConfigurationInstance(asyncTask);
+        asyncTask.execute();
     }
 
-    private void asyncTaskFinished() {
-        mAsyncTask = null;
+
+    private void showSimpleDialog(int headerRes, int messageRes, Object... args) {
+        SimpleDialog dialog = new SimpleDialog(headerRes, messageRes, args);
+        dialog.show(this);
+        setNonConfigurationInstance(dialog);
     }
 
-    /**
-     * Stores information about a dialog.
-     *
-     * @see Accounts#showDialog(int, String)
-     * @see Accounts#onCreate(Bundle)
-     */
-    private static class DialogInfo {
-        public final int headerRes;
+    private static class SimpleDialog implements NonConfigurationInstance {
+        private final int mHeaderRes;
+        private final int mMessageRes;
+        private Object[] mArguments;
+        private Dialog mDialog;
 
-        //TODO: "message" is already localized. This is a problem if the activity is restarted when
-        // the system language was changed. We have to recreate the message string in that case.
-        public final String message;
+        SimpleDialog(int headerRes, int messageRes, Object... args) {
+            this.mHeaderRes = headerRes;
+            this.mMessageRes = messageRes;
+            this.mArguments = args;
+        }
 
-        DialogInfo(int headerRes, String message) {
-            this.headerRes = headerRes;
-            this.message = message;
+        @Override
+        public void restore(Activity activity) {
+            show(activity);
+        }
+
+        @Override
+        public boolean retain() {
+            if (mDialog != null) {
+                mDialog.dismiss();
+                mDialog = null;
+                return true;
+            }
+            return false;
+        }
+
+        public void show(final Activity activity) {
+            final String message = activity.getString(mMessageRes, mArguments);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(mHeaderRes);
+            builder.setMessage(message);
+            builder.setPositiveButton(R.string.okay_action,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    destroy();
+                }
+            });
+            mDialog = builder.show();
+        }
+
+        private void destroy() {
+            mDialog = null;
+            mArguments = null;
         }
     }
 
-    /**
-     * Show a dialog.
-     *
-     * @param headerRes
-     *         The resource ID of the string that is used as title for the dialog box.
-     * @param message
-     *         The message to display.
-     */
-    private void showDialog(final int headerRes, final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // Store information about the dialog so it can be re-created when the activity is
-                // restarted due to a configuration change.
-                mDialogInfo = new DialogInfo(headerRes, message);
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(Accounts.this);
-                builder.setTitle(headerRes);
-                builder.setMessage(message);
-                builder.setPositiveButton(R.string.okay_action,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dismissDialog();
-                    }
-                });
-                mDialog = builder.show();
-            }
-        });
+    private void showImportSelectionDialog(ImportContents importContents, Uri uri,
+            String encryptionKey) {
+        ImportSelectionDialog dialog = new ImportSelectionDialog(importContents, uri, encryptionKey);
+        dialog.show(this);
+        setNonConfigurationInstance(dialog);
     }
 
-    /**
-     * Dismiss the dialog that was created using {@link #showDialog(int, String)}.
-     */
-    private void dismissDialog() {
-        mDialog.dismiss();
-        mDialogInfo = null;
-        mDialog = null;
+    private static class ImportSelectionDialog implements NonConfigurationInstance {
+        private ImportContents mImportContents;
+        private Uri mUri;
+        private String mEncryptionKey;
+        private Dialog mDialog;
+        private ListView mImportSelectionView;
+        private SparseBooleanArray mSelection;
+
+
+        ImportSelectionDialog(ImportContents importContents, Uri uri, String encryptionKey) {
+            mImportContents = importContents;
+            mUri = uri;
+            mEncryptionKey = encryptionKey;
+        }
+
+        @Override
+        public void restore(Activity activity) {
+            show((Accounts) activity, mSelection);
+        }
+
+        @Override
+        public boolean retain() {
+            if (mDialog != null) {
+                // Save the selection state of each list item
+                mSelection = mImportSelectionView.getCheckedItemPositions();
+                mImportSelectionView = null;
+
+                mDialog.dismiss();
+                mDialog = null;
+                return true;
+            }
+            return false;
+        }
+
+        public void show(Accounts activity) {
+            show(activity, null);
+        }
+
+        public void show(final Accounts activity, SparseBooleanArray selection) {
+            final ListView importSelectionView = new ListView(activity);
+            mImportSelectionView = importSelectionView;
+            List<String> contents = new ArrayList<String>();
+
+            if (mImportContents.globalSettings) {
+                //TODO: read from resources
+                contents.add("Global settings");
+            }
+
+            for (AccountDescription account : mImportContents.accounts) {
+                contents.add(account.name);
+            }
+
+            importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            importSelectionView.setAdapter(new ArrayAdapter<String>(activity,
+                    android.R.layout.simple_list_item_checked, contents));
+            importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                    CheckedTextView ctv = (CheckedTextView)view;
+                    ctv.setChecked(!ctv.isChecked());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) { /* Do nothing */ }
+            });
+
+            if (selection != null) {
+                for (int i = 0, end = contents.size(); i < end; i++) {
+                    importSelectionView.setItemChecked(i, selection.get(i));
+                }
+            }
+
+            //TODO: listview header: "Please select the settings you wish to import"
+            //TODO: listview footer: "Select all" / "Select none" buttons?
+            //TODO: listview footer: "Overwrite existing accounts?" checkbox
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            //TODO: read from resources
+            builder.setTitle("Import selection");
+            builder.setView(importSelectionView);
+            builder.setInverseBackgroundForced(true);
+            builder.setPositiveButton(R.string.okay_action,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListAdapter adapter = importSelectionView.getAdapter();
+                        int count = adapter.getCount();
+                        SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
+
+                        boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                        List<String> accountUuids = new ArrayList<String>();
+                        int start = mImportContents.globalSettings ? 1 : 0;
+                        for (int i = start; i < count; i++) {
+                            if (pos.get(i)) {
+                                accountUuids.add(mImportContents.accounts.get(i-start).uuid);
+                            }
+                        }
+
+                        /*
+                         * TODO: Think some more about this. Overwriting could change the store
+                         * type. This requires some additional code in order to work smoothly
+                         * while the app is running.
+                         */
+                        boolean overwrite = false;
+
+                        dialog.dismiss();
+                        destroy();
+
+                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
+                                includeGlobals, accountUuids, overwrite, mEncryptionKey, mUri);
+                        activity.setNonConfigurationInstance(importAsyncTask);
+                        importAsyncTask.execute();
+                    }
+                });
+            builder.setNegativeButton(R.string.cancel_action,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            destroy();
+                        }
+                    });
+            mDialog = builder.show();
+        }
+
+        private void destroy() {
+            mDialog = null;
+            mImportContents = null;
+            mUri = null;
+            mEncryptionKey = null;
+            mSelection = null;
+            mImportSelectionView = null;
+        }
+    }
+
+    private void setNonConfigurationInstance(NonConfigurationInstance inst) {
+        mNonConfigurationInstance = inst;
     }
 
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
@@ -1213,8 +1328,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 })
         .show();
         */
-        mAsyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, null);
-        mAsyncTask.execute();
+        ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, null);
+        setNonConfigurationInstance(asyncTask);
+        asyncTask.execute();
     }
 
     /**
@@ -1259,17 +1375,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Accounts activity = (Accounts) mActivity;
 
             // Let the activity know that the background task is complete
-            activity.asyncTaskFinished();
+            activity.setNonConfigurationInstance(null);
 
             removeProgressDialog();
 
             if (success) {
-                activity.showDialog(R.string.settings_export_success_header,
-                        mContext.getString(R.string.settings_export_success, mFileName));
+                activity.showSimpleDialog(R.string.settings_export_success_header,
+                        R.string.settings_export_success, mFileName);
             } else {
                 //TODO: make the exporter return an error code; translate that error code to a localized string here
-                activity.showDialog(R.string.settings_export_failed_header,
-                        mContext.getString(R.string.settings_export_failure, "Something went wrong"));
+                activity.showSimpleDialog(R.string.settings_export_failed_header,
+                        R.string.settings_export_failure, "Something went wrong");
             }
         }
     }
@@ -1330,7 +1446,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Accounts activity = (Accounts) mActivity;
 
             // Let the activity know that the background task is complete
-            activity.asyncTaskFinished();
+            activity.setNonConfigurationInstance(null);
 
             removeProgressDialog();
 
@@ -1339,14 +1455,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 //TODO: display names of imported accounts (name from file *and* possibly new name)
 
-                activity.showDialog(R.string.settings_import_success_header,
+                activity.showSimpleDialog(R.string.settings_import_success_header,
                         //FIXME: use correct file name
-                        mContext.getString(R.string.settings_import_success, imported, "filename"));
+                        R.string.settings_import_success, imported, "filename");
                 activity.refresh();
             } else {
                 //TODO: make the importer return an error code; translate that error code to a localized string here
-                activity.showDialog(R.string.settings_import_failed_header,
-                        mContext.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
+                activity.showSimpleDialog(R.string.settings_import_failed_header,
+                        R.string.settings_import_failure, "unknown", "Something went wrong");
             }
         }
     }
@@ -1399,91 +1515,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Accounts activity = (Accounts) mActivity;
 
             // Let the activity know that the background task is complete
-            activity.asyncTaskFinished();
+            activity.setNonConfigurationInstance(null);
 
             removeProgressDialog();
 
             if (success) {
-                showImportSelectionDialog();
+                activity.showImportSelectionDialog(mImportContents, mUri, mEncryptionKey);
             } else {
                 //TODO: make the importer return an error code; translate that error code to a localized string here
-                activity.showDialog(R.string.settings_import_failed_header,
-                        mContext.getString(R.string.settings_import_failure, "unknown", "Something went wrong"));
+                activity.showSimpleDialog(R.string.settings_import_failed_header,
+                        R.string.settings_import_failure, "unknown", "Something went wrong");
             }
-        }
-
-        //TODO: we need to be able to re-create this dialog after a configuration change
-        private void showImportSelectionDialog() {
-            final ListView importSelectionView = new ListView(mActivity);
-            List<String> contents = new ArrayList<String>();
-            if (mImportContents.globalSettings) {
-                contents.add("Global settings");
-            }
-            for (AccountDescription account : mImportContents.accounts) {
-                contents.add(account.name);
-            }
-            importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            importSelectionView.setAdapter(new ArrayAdapter<String>(mActivity, android.R.layout.simple_list_item_checked, contents));
-            importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    CheckedTextView ctv = (CheckedTextView)view;
-                    ctv.setChecked(!ctv.isChecked());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) { /* Do nothing */ }
-            });
-
-            //TODO: listview header: "Please select the settings you wish to import"
-            //TODO: listview footer: "Select all" / "Select none" buttons?
-            //TODO: listview footer: "Overwrite existing accounts?" checkbox
-
-            final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            builder.setTitle("Import selection");
-            builder.setView(importSelectionView);
-            builder.setInverseBackgroundForced(true);
-            builder.setPositiveButton(R.string.okay_action,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListAdapter adapter = importSelectionView.getAdapter();
-                        int count = adapter.getCount();
-                        SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
-
-                        boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
-                        List<String> accountUuids = new ArrayList<String>();
-                        int start = mImportContents.globalSettings ? 1 : 0;
-                        for (int i = start; i < count; i++) {
-                            if (pos.get(i)) {
-                                accountUuids.add(mImportContents.accounts.get(i-start).uuid);
-                            }
-                        }
-
-                        /*
-                         * TODO: Think some more about this. Overwriting could change the store
-                         * type. This requires some additional code in order to work smoothly
-                         * while the app is running.
-                         */
-                        boolean overwrite = false;
-
-                        dialog.dismiss();
-                        Accounts activity = (Accounts) mActivity;
-                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
-                                includeGlobals, accountUuids, overwrite, mEncryptionKey, mUri);
-                        activity.mAsyncTask = importAsyncTask;
-                        importAsyncTask.execute();
-                    }
-                });
-            builder.setNegativeButton(R.string.cancel_action,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            builder.show();
         }
     }
 }

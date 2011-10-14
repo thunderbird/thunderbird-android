@@ -24,11 +24,11 @@ import android.os.AsyncTask;
  * @param <Result>
  *         see {@link AsyncTask}
  *
- * @see #attach(Activity)
- * @see #detach()
+ * @see #restore(Activity)
+ * @see #retain()
  */
 public abstract class ExtendedAsyncTask<Params, Progress, Result>
-        extends AsyncTask<Params, Progress, Result> {
+        extends AsyncTask<Params, Progress, Result> implements NonConfigurationInstance {
     protected Activity mActivity;
     protected Context mContext;
     protected ProgressDialog mProgressDialog;
@@ -49,7 +49,8 @@ public abstract class ExtendedAsyncTask<Params, Progress, Result>
      * @param activity
      *         The new {@code Activity} instance. Never {@code null}.
      */
-    public void attach(Activity activity) {
+    @Override
+    public void restore(Activity activity) {
         mActivity = activity;
         showProgressDialog();
     }
@@ -64,11 +65,20 @@ public abstract class ExtendedAsyncTask<Params, Progress, Result>
      * being destroyed.
      * </p>
      *
+     * @return {@code true} if this instance should be retained; {@code false} otherwise.
+     *
      * @see Activity#onRetainNonConfigurationInstance()
      */
-    public void detach() {
-        removeProgressDialog();
+    @Override
+    public boolean retain() {
+        boolean retain = false;
+        if (mProgressDialog != null) {
+            removeProgressDialog();
+            retain = true;
+        }
         mActivity = null;
+
+        return retain;
     }
 
     /**
