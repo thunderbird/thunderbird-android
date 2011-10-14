@@ -31,7 +31,7 @@ import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 
 
-public class StorageExporter {
+public class SettingsExporter {
     private static final String EXPORT_FILENAME = "settings.k9s";
 
     /**

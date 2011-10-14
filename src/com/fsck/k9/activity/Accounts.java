@@ -72,7 +72,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
-import com.fsck.k9.preferences.StorageExporter;
+import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.StorageImportExportException;
 import com.fsck.k9.preferences.StorageImporter;
 import com.fsck.k9.preferences.StorageImporter.AccountDescription;
@@ -1320,7 +1320,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mFileName = StorageExporter.exportToFile(mContext, mIncludeGlobals,
+                mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                         mAccountUuids);
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
@@ -1449,7 +1449,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 ContentResolver resolver = mContext.getContentResolver();
                 InputStream is = resolver.openInputStream(mUri);
                 try {
-                    mImportContents = StorageImporter.getImportStreamContents(mContext, is);
+                    mImportContents = StorageImporter.getImportStreamContents(is);
                 } finally {
                     try {
                         is.close();

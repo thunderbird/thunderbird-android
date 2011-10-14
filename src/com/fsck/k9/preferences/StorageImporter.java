@@ -596,7 +596,7 @@ public class StorageImporter {
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if(eventType == XmlPullParser.START_TAG) {
-                    if (StorageExporter.ROOT_ELEMENT.equals(xpp.getName())) {
+                    if (SettingsExporter.ROOT_ELEMENT.equals(xpp.getName())) {
                         imported = parseRoot(xpp, globalSettings, accountUuids, overview);
                     } else {
                         Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
@@ -645,28 +645,28 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
-                 StorageExporter.ROOT_ELEMENT.equals(xpp.getName()))) {
+                 SettingsExporter.ROOT_ELEMENT.equals(xpp.getName()))) {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.GLOBAL_ELEMENT.equals(element)) {
+                if (SettingsExporter.GLOBAL_ELEMENT.equals(element)) {
                     if (overview || globalSettings) {
                         if (result.globalSettings == null) {
                             if (overview) {
                                 result.globalSettings = new ImportedSettings();
-                                skipToEndTag(xpp, StorageExporter.GLOBAL_ELEMENT);
+                                skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
                             } else {
-                                result.globalSettings = parseSettings(xpp, StorageExporter.GLOBAL_ELEMENT);
+                                result.globalSettings = parseSettings(xpp, SettingsExporter.GLOBAL_ELEMENT);
                             }
                         } else {
-                            skipToEndTag(xpp, StorageExporter.GLOBAL_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
                             Log.w(K9.LOG_TAG, "More than one global settings element. Only using the first one!");
                         }
                     } else {
-                        skipToEndTag(xpp, StorageExporter.GLOBAL_ELEMENT);
+                        skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
                         Log.i(K9.LOG_TAG, "Skipping global settings");
                     }
-                } else if (StorageExporter.ACCOUNTS_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.ACCOUNTS_ELEMENT.equals(element)) {
                     if (result.accounts == null) {
                         result.accounts = parseAccounts(xpp, accountUuids, overview);
                     } else {
@@ -692,8 +692,8 @@ public class StorageImporter {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.VALUE_ELEMENT.equals(element)) {
-                    String key = xpp.getAttributeValue(null, StorageExporter.KEY_ATTRIBUTE);
+                if (SettingsExporter.VALUE_ELEMENT.equals(element)) {
+                    String key = xpp.getAttributeValue(null, SettingsExporter.KEY_ATTRIBUTE);
                     String value = getText(xpp);
 
                     if (result == null) {
@@ -723,11 +723,11 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
-                 StorageExporter.ACCOUNTS_ELEMENT.equals(xpp.getName()))) {
+                 SettingsExporter.ACCOUNTS_ELEMENT.equals(xpp.getName()))) {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.ACCOUNT_ELEMENT.equals(element)) {
+                if (SettingsExporter.ACCOUNT_ELEMENT.equals(element)) {
                     if (accounts == null) {
                         accounts = new HashMap<String, ImportedAccount>();
                     }
@@ -756,45 +756,45 @@ public class StorageImporter {
 
         ImportedAccount account = new ImportedAccount();
 
-        String uuid = xpp.getAttributeValue(null, StorageExporter.UUID_ATTRIBUTE);
+        String uuid = xpp.getAttributeValue(null, SettingsExporter.UUID_ATTRIBUTE);
         account.uuid = uuid;
 
         if (overview || accountUuids.contains(uuid)) {
             int eventType = xpp.next();
             while (!(eventType == XmlPullParser.END_TAG &&
-                     StorageExporter.ACCOUNT_ELEMENT.equals(xpp.getName()))) {
+                     SettingsExporter.ACCOUNT_ELEMENT.equals(xpp.getName()))) {
 
                 if(eventType == XmlPullParser.START_TAG) {
                     String element = xpp.getName();
-                    if (StorageExporter.NAME_ELEMENT.equals(element)) {
+                    if (SettingsExporter.NAME_ELEMENT.equals(element)) {
                         account.name = getText(xpp);
-                    } else if (StorageExporter.INCOMING_SERVER_ELEMENT.equals(element)) {
+                    } else if (SettingsExporter.INCOMING_SERVER_ELEMENT.equals(element)) {
                         if (overview) {
-                            skipToEndTag(xpp, StorageExporter.INCOMING_SERVER_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
                         } else {
-                            account.incoming = parseServerSettings(xpp, StorageExporter.INCOMING_SERVER_ELEMENT);
+                            account.incoming = parseServerSettings(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
                         }
-                    } else if (StorageExporter.OUTGOING_SERVER_ELEMENT.equals(element)) {
+                    } else if (SettingsExporter.OUTGOING_SERVER_ELEMENT.equals(element)) {
                         if (overview) {
-                            skipToEndTag(xpp, StorageExporter.OUTGOING_SERVER_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
                         } else {
-                            account.outgoing = parseServerSettings(xpp, StorageExporter.OUTGOING_SERVER_ELEMENT);
+                            account.outgoing = parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
                         }
-                    } else if (StorageExporter.SETTINGS_ELEMENT.equals(element)) {
+                    } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
                         if (overview) {
-                            skipToEndTag(xpp, StorageExporter.SETTINGS_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.SETTINGS_ELEMENT);
                         } else {
-                            account.settings = parseSettings(xpp, StorageExporter.SETTINGS_ELEMENT);
+                            account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
                         }
-                    } else if (StorageExporter.IDENTITIES_ELEMENT.equals(element)) {
+                    } else if (SettingsExporter.IDENTITIES_ELEMENT.equals(element)) {
                         if (overview) {
-                            skipToEndTag(xpp, StorageExporter.IDENTITIES_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.IDENTITIES_ELEMENT);
                         } else {
                             account.identities = parseIdentities(xpp);
                         }
-                    } else if (StorageExporter.FOLDERS_ELEMENT.equals(element)) {
+                    } else if (SettingsExporter.FOLDERS_ELEMENT.equals(element)) {
                         if (overview) {
-                            skipToEndTag(xpp, StorageExporter.FOLDERS_ELEMENT);
+                            skipToEndTag(xpp, SettingsExporter.FOLDERS_ELEMENT);
                         } else {
                             account.folders = parseFolders(xpp);
                         }
@@ -805,7 +805,7 @@ public class StorageImporter {
                 eventType = xpp.next();
             }
         } else {
-            skipToEndTag(xpp, StorageExporter.ACCOUNT_ELEMENT);
+            skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT);
             Log.i(K9.LOG_TAG, "Skipping account with UUID " + uuid);
         }
 
@@ -816,26 +816,26 @@ public class StorageImporter {
     throws XmlPullParserException, IOException {
         ImportedServer server = new ImportedServer();
 
-        server.type = xpp.getAttributeValue(null, StorageExporter.TYPE_ATTRIBUTE);
+        server.type = xpp.getAttributeValue(null, SettingsExporter.TYPE_ATTRIBUTE);
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG && endTag.equals(xpp.getName()))) {
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.HOST_ELEMENT.equals(element)) {
+                if (SettingsExporter.HOST_ELEMENT.equals(element)) {
                     server.host = getText(xpp);
-                } else if (StorageExporter.PORT_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.PORT_ELEMENT.equals(element)) {
                     server.port = getText(xpp);
-                } else if (StorageExporter.CONNECTION_SECURITY_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.CONNECTION_SECURITY_ELEMENT.equals(element)) {
                     server.connectionSecurity = getText(xpp);
-                } else if (StorageExporter.AUTHENTICATION_TYPE_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.AUTHENTICATION_TYPE_ELEMENT.equals(element)) {
                     server.authenticationType = getText(xpp);
-                } else if (StorageExporter.USERNAME_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.USERNAME_ELEMENT.equals(element)) {
                     server.username = getText(xpp);
-                } else if (StorageExporter.PASSWORD_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.PASSWORD_ELEMENT.equals(element)) {
                     server.password = getText(xpp);
-                } else if (StorageExporter.EXTRA_ELEMENT.equals(element)) {
-                    server.extras = parseSettings(xpp, StorageExporter.EXTRA_ELEMENT);
+                } else if (SettingsExporter.EXTRA_ELEMENT.equals(element)) {
+                    server.extras = parseSettings(xpp, SettingsExporter.EXTRA_ELEMENT);
                 } else {
                     Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
                 }
@@ -852,11 +852,11 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
-                 StorageExporter.IDENTITIES_ELEMENT.equals(xpp.getName()))) {
+                 SettingsExporter.IDENTITIES_ELEMENT.equals(xpp.getName()))) {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.IDENTITY_ELEMENT.equals(element)) {
+                if (SettingsExporter.IDENTITY_ELEMENT.equals(element)) {
                     if (identities == null) {
                         identities = new ArrayList<ImportedIdentity>();
                     }
@@ -879,18 +879,18 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
-                 StorageExporter.IDENTITY_ELEMENT.equals(xpp.getName()))) {
+                 SettingsExporter.IDENTITY_ELEMENT.equals(xpp.getName()))) {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.NAME_ELEMENT.equals(element)) {
+                if (SettingsExporter.NAME_ELEMENT.equals(element)) {
                     identity.name = getText(xpp);
-                } else if (StorageExporter.EMAIL_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.EMAIL_ELEMENT.equals(element)) {
                     identity.email = getText(xpp);
-                } else if (StorageExporter.DESCRIPTION_ELEMENT.equals(element)) {
+                } else if (SettingsExporter.DESCRIPTION_ELEMENT.equals(element)) {
                     identity.description = getText(xpp);
-                } else if (StorageExporter.SETTINGS_ELEMENT.equals(element)) {
-                    identity.settings = parseSettings(xpp, StorageExporter.SETTINGS_ELEMENT);
+                } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
+                    identity.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
                 } else {
                     Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
                 }
@@ -907,11 +907,11 @@ public class StorageImporter {
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
-                 StorageExporter.FOLDERS_ELEMENT.equals(xpp.getName()))) {
+                 SettingsExporter.FOLDERS_ELEMENT.equals(xpp.getName()))) {
 
             if(eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (StorageExporter.FOLDER_ELEMENT.equals(element)) {
+                if (SettingsExporter.FOLDER_ELEMENT.equals(element)) {
                     if (folders == null) {
                         folders = new ArrayList<ImportedFolder>();
                     }
@@ -932,10 +932,10 @@ public class StorageImporter {
     throws XmlPullParserException, IOException {
         ImportedFolder folder = new ImportedFolder();
 
-        String name = xpp.getAttributeValue(null, StorageExporter.NAME_ATTRIBUTE);
+        String name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE);
         folder.name = name;
 
-        folder.settings = parseSettings(xpp, StorageExporter.FOLDER_ELEMENT);
+        folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT);
 
         return folder;
     }

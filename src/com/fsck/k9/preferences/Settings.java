@@ -30,7 +30,7 @@ public class Settings {
      * is changed (e.g. add a value to an enum).
      * </p>
      *
-     * @see StorageExporter
+     * @see SettingsExporter
      */
     public static final int VERSION = 1;
 
