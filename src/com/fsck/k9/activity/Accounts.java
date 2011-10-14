@@ -1410,13 +1410,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             removeProgressDialog();
 
             String filename = mUri.getLastPathSegment();
-            if (success) {
-                int imported = mImportResults.importedAccounts.size();
+            boolean globalSettings = mImportResults.globalSettings;
+            int imported = mImportResults.importedAccounts.size();
+            if (success && (globalSettings || imported > 0)) {
 
                 //TODO: display names of imported accounts (name from file *and* possibly new name)
 
-                activity.showSimpleDialog(R.string.settings_import_success_header,
-                        R.string.settings_import_success, imported, filename);
+                if (imported == 0) {
+                    activity.showSimpleDialog(R.string.settings_import_success_header,
+                            R.string.settings_import_global_settings_success, filename);
+                } else {
+                    String importedAccounts = activity.getResources().getQuantityString(
+                            R.plurals.settings_import_success, imported);
+                    activity.showSimpleDialog(R.string.settings_import_success_header,
+                            R.string.settings_import_success, importedAccounts, filename);
+                }
+
                 activity.refresh();
             } else {
                 //TODO: better error messages
