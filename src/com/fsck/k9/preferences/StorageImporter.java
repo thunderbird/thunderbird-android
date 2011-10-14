@@ -35,7 +35,7 @@ public class StorageImporter {
     /**
      * Class to list the contents of an import file/stream.
      *
-     * @see StorageImporter#getImportStreamContents(Context,InputStream)
+     * @see StorageImporter#getImportStreamContents(InputStream)
      */
     public static class ImportContents {
         /**
@@ -105,17 +105,21 @@ public class StorageImporter {
      * settings and/or account settings. For all account configurations found, the name of the
      * account along with the account UUID is returned.
      *
-     * @param context
      * @param inputStream
-     * @return
+     *         An {@code InputStream} to read the settings from.
+     *
+     * @return An {@link ImportContents} instance containing information about the contents of the
+     *         settings file.
+     *
      * @throws StorageImportExportException
+     *          In case of an error.
      */
-    public static ImportContents getImportStreamContents(Context context, InputStream inputStream)
+    public static ImportContents getImportStreamContents(InputStream inputStream)
             throws StorageImportExportException {
 
         try {
             // Parse the import stream but don't save individual settings (overview=true)
-            Imported imported = parseSettings(inputStream, false, null, false, true);
+            Imported imported = parseSettings(inputStream, false, null, true);
 
             // If the stream contains global settings the "globalSettings" member will not be null
             boolean globalSettings = (imported.globalSettings != null);
@@ -145,11 +149,24 @@ public class StorageImporter {
      * configurations specified by the arguments.
      *
      * @param context
+     *         A {@link Context} instance.
      * @param inputStream
+     *         The {@code InputStream} to read the settings from.
      * @param globalSettings
+     *         {@code true} if global settings should be imported from the file.
      * @param accountUuids
+     *         A list of UUIDs of the accounts that should be imported.
      * @param overwrite
+     *         {@code true} if existing accounts should be overwritten when an account with the
+     *         same UUID is found in the settings file.<br>
+     *         <strong>Note:</strong> This can have side-effects we currently don't handle, e.g.
+     *         changing the account type from IMAP to POP3. So don't use this for now!
+     *
+     * @return An {@link ImportResults} instance containing information about errors and
+     *         successfully imported accounts.
+     *
      * @throws StorageImportExportException
+     *          In case of an error.
      */
     public static ImportResults importSettings(Context context, InputStream inputStream,
             boolean globalSettings, List<String> accountUuids, boolean overwrite)
@@ -161,7 +178,7 @@ public class StorageImporter {
             List<AccountDescriptionPair> importedAccounts = new ArrayList<AccountDescriptionPair>();
             List<AccountDescription> errorneousAccounts = new ArrayList<AccountDescription>();
 
-            Imported imported = parseSettings(inputStream, globalSettings, accountUuids, overwrite, false);
+            Imported imported = parseSettings(inputStream, globalSettings, accountUuids, false);
 
             Preferences preferences = Preferences.getPreferences(context);
             SharedPreferences storage = preferences.getPreferences();
@@ -560,7 +577,7 @@ public class StorageImporter {
     }
 
     private static Imported parseSettings(InputStream inputStream, boolean globalSettings,
-            List<String> accountUuids, boolean overwrite, boolean overview)
+            List<String> accountUuids, boolean overview)
     throws StorageImportExportException {
 
         if (!overview && accountUuids == null) {
