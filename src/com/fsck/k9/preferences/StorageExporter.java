@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-import javax.crypto.CipherOutputStream;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
@@ -77,7 +76,7 @@ public class StorageExporter {
 
 
     public static String exportToFile(Context context, boolean includeGlobals,
-            Set<String> accountUuids, String encryptionKey)
+            Set<String> accountUuids)
             throws StorageImportExportException {
 
         OutputStream os = null;
@@ -91,12 +90,7 @@ public class StorageExporter {
             filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 
-            if (encryptionKey == null) {
-                exportPreferences(context, os, includeGlobals, accountUuids);
-            } else {
-                exportPreferencesEncrypted(context, os, includeGlobals, accountUuids,
-                        encryptionKey);
-            }
+            exportPreferences(context, os, includeGlobals, accountUuids);
 
             // If all went well, we return the name of the file just written.
             return filename;
@@ -110,19 +104,6 @@ public class StorageExporter {
                     Log.w(K9.LOG_TAG, "Couldn't close exported settings file: " + filename);
                 }
             }
-        }
-    }
-
-    public static void exportPreferencesEncrypted(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids, String encryptionKey) throws StorageImportExportException  {
-
-        try {
-            K9Krypto k = new K9Krypto(encryptionKey, K9Krypto.MODE.ENCRYPT);
-            CipherOutputStream cos = new CipherOutputStream(os, k.mCipher);
-
-            exportPreferences(context, cos, includeGlobals, accountUuids);
-        } catch (Exception e) {
-            throw new StorageImportExportException();
         }
     }
 

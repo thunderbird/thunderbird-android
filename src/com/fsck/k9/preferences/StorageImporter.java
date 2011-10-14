@@ -35,7 +35,7 @@ public class StorageImporter {
     /**
      * Class to list the contents of an import file/stream.
      *
-     * @see StorageImporter#getImportStreamContents(Context,InputStream,String)
+     * @see StorageImporter#getImportStreamContents(Context,InputStream)
      */
     public static class ImportContents {
         /**
@@ -100,10 +100,6 @@ public class StorageImporter {
         }
     }
 
-    public static boolean isImportStreamEncrypted(Context context, InputStream inputStream) {
-        return false;
-    }
-
     /**
      * Parses an import {@link InputStream} and returns information on whether it contains global
      * settings and/or account settings. For all account configurations found, the name of the
@@ -111,12 +107,11 @@ public class StorageImporter {
      *
      * @param context
      * @param inputStream
-     * @param encryptionKey
      * @return
      * @throws StorageImportExportException
      */
-    public static ImportContents getImportStreamContents(Context context, InputStream inputStream,
-            String encryptionKey) throws StorageImportExportException {
+    public static ImportContents getImportStreamContents(Context context, InputStream inputStream)
+            throws StorageImportExportException {
 
         try {
             // Parse the import stream but don't save individual settings (overview=true)
@@ -151,13 +146,12 @@ public class StorageImporter {
      *
      * @param context
      * @param inputStream
-     * @param encryptionKey
      * @param globalSettings
      * @param accountUuids
      * @param overwrite
      * @throws StorageImportExportException
      */
-    public static ImportResults importSettings(Context context, InputStream inputStream, String encryptionKey,
+    public static ImportResults importSettings(Context context, InputStream inputStream,
             boolean globalSettings, List<String> accountUuids, boolean overwrite)
     throws StorageImportExportException {
 

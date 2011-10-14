@@ -893,11 +893,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onImport(Uri uri) {
-        //Toast.makeText(this, "Import is disabled for now", Toast.LENGTH_SHORT).show();
-
-        Log.i(K9.LOG_TAG, "onImport importing from URI " + uri.toString());
-
-        ListImportContentsAsyncTask asyncTask = new ListImportContentsAsyncTask(this, uri, null);
+        ListImportContentsAsyncTask asyncTask = new ListImportContentsAsyncTask(this, uri);
         setNonConfigurationInstance(asyncTask);
         asyncTask.execute();
     }
@@ -954,9 +950,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void showImportSelectionDialog(ImportContents importContents, Uri uri,
-            String encryptionKey) {
-        ImportSelectionDialog dialog = new ImportSelectionDialog(importContents, uri, encryptionKey);
+    private void showImportSelectionDialog(ImportContents importContents, Uri uri) {
+        ImportSelectionDialog dialog = new ImportSelectionDialog(importContents, uri);
         dialog.show(this);
         setNonConfigurationInstance(dialog);
     }
@@ -964,16 +959,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static class ImportSelectionDialog implements NonConfigurationInstance {
         private ImportContents mImportContents;
         private Uri mUri;
-        private String mEncryptionKey;
         private Dialog mDialog;
         private ListView mImportSelectionView;
         private SparseBooleanArray mSelection;
 
 
-        ImportSelectionDialog(ImportContents importContents, Uri uri, String encryptionKey) {
+        ImportSelectionDialog(ImportContents importContents, Uri uri) {
             mImportContents = importContents;
             mUri = uri;
-            mEncryptionKey = encryptionKey;
         }
 
         @Override
@@ -1069,7 +1062,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         activity.setNonConfigurationInstance(null);
 
                         ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
-                                includeGlobals, accountUuids, overwrite, mEncryptionKey, mUri);
+                                includeGlobals, accountUuids, overwrite, mUri);
                         activity.setNonConfigurationInstance(importAsyncTask);
                         importAsyncTask.execute();
                     }
@@ -1296,23 +1289,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             accountUuids.add(account.getUuid());
         }
 
-        /* Disabled for now
-        // Prompt the user for a password
-        new PasswordEntryDialog(this,
-                getString(R.string.settings_export_encryption_password_prompt),
-                new PasswordEntryDialog.PasswordEntryListener() {
-                    public void passwordChosen(final String chosenPassword) {
-                        // Got the password. Now run export task in the background.
-                        new ExportAsyncTask(includeGlobals, accountUuids, chosenPassword).execute();
-                    }
-
-                    public void cancel() {
-                        // User cancelled the export. Nothing more to do.
-                    }
-                })
-        .show();
-        */
-        ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, null);
+        ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids);
         setNonConfigurationInstance(asyncTask);
         asyncTask.execute();
     }
@@ -1323,16 +1300,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static class ExportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
-        private String mEncryptionKey;
         private String mFileName;
 
 
         private ExportAsyncTask(Accounts activity, boolean includeGlobals,
-                Set<String> accountUuids, String encryptionKey) {
+                Set<String> accountUuids) {
             super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
-            mEncryptionKey = encryptionKey;
         }
 
         @Override
@@ -1346,7 +1321,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         protected Boolean doInBackground(Void... params) {
             try {
                 mFileName = StorageExporter.exportToFile(mContext, mIncludeGlobals,
-                        mAccountUuids, mEncryptionKey);
+                        mAccountUuids);
             } catch (StorageImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
@@ -1381,18 +1356,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private boolean mIncludeGlobals;
         private List<String> mAccountUuids;
         private boolean mOverwrite;
-        private String mEncryptionKey;
         private Uri mUri;
         private ImportResults mImportResults;
 
         private ImportAsyncTask(Accounts activity, boolean includeGlobals,
-                List<String> accountUuids, boolean overwrite, String encryptionKey,
-                Uri uri) {
+                List<String> accountUuids, boolean overwrite, Uri uri) {
             super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
             mOverwrite = overwrite;
-            mEncryptionKey = encryptionKey;
             mUri = uri;
         }
 
@@ -1409,7 +1381,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 InputStream is = mContext.getContentResolver().openInputStream(mUri);
                 try {
                     mImportResults = StorageImporter.importSettings(mContext, is,
-                            mEncryptionKey, mIncludeGlobals, mAccountUuids, mOverwrite);
+                            mIncludeGlobals, mAccountUuids, mOverwrite);
                 } finally {
                     try {
                         is.close();
@@ -1456,14 +1428,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private static class ListImportContentsAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private Uri mUri;
-        private String mEncryptionKey;
         private ImportContents mImportContents;
 
-        private ListImportContentsAsyncTask(Accounts activity, Uri uri, String encryptionKey) {
+        private ListImportContentsAsyncTask(Accounts activity, Uri uri) {
             super(activity);
 
             mUri = uri;
-            mEncryptionKey = encryptionKey;
         }
 
         @Override
@@ -1479,8 +1449,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 ContentResolver resolver = mContext.getContentResolver();
                 InputStream is = resolver.openInputStream(mUri);
                 try {
-                    mImportContents = StorageImporter.getImportStreamContents(mContext, is,
-                            mEncryptionKey);
+                    mImportContents = StorageImporter.getImportStreamContents(mContext, is);
                 } finally {
                     try {
                         is.close();
@@ -1507,7 +1476,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             removeProgressDialog();
 
             if (success) {
-                activity.showImportSelectionDialog(mImportContents, mUri, mEncryptionKey);
+                activity.showImportSelectionDialog(mImportContents, mUri);
             } else {
                 String filename = mUri.getLastPathSegment();
                 //TODO: better error messages
