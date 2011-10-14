@@ -40,7 +40,7 @@ public class SettingsExporter {
      * <p>
      * Increment this if you need to change the structure of the settings file. When you do this
      * remember that we also have to be able to handle old file formats. So have fun adding support
-     * for that to {@link StorageImporter} :)
+     * for that to {@link SettingsImporter} :)
      * </p>
      */
     public static final int FILE_FORMAT_VERSION = 1;

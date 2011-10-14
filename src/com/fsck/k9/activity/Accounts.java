@@ -74,10 +74,10 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.StorageImportExportException;
-import com.fsck.k9.preferences.StorageImporter;
-import com.fsck.k9.preferences.StorageImporter.AccountDescription;
-import com.fsck.k9.preferences.StorageImporter.ImportContents;
-import com.fsck.k9.preferences.StorageImporter.ImportResults;
+import com.fsck.k9.preferences.SettingsImporter;
+import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
+import com.fsck.k9.preferences.SettingsImporter.ImportContents;
+import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
@@ -1380,7 +1380,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try {
                 InputStream is = mContext.getContentResolver().openInputStream(mUri);
                 try {
-                    mImportResults = StorageImporter.importSettings(mContext, is,
+                    mImportResults = SettingsImporter.importSettings(mContext, is,
                             mIncludeGlobals, mAccountUuids, mOverwrite);
                 } finally {
                     try {
@@ -1449,7 +1449,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 ContentResolver resolver = mContext.getContentResolver();
                 InputStream is = resolver.openInputStream(mUri);
                 try {
-                    mImportContents = StorageImporter.getImportStreamContents(is);
+                    mImportContents = SettingsImporter.getImportStreamContents(is);
                 } finally {
                     try {
                         is.close();

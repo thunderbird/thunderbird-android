@@ -30,12 +30,12 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 
-public class StorageImporter {
+public class SettingsImporter {
 
     /**
      * Class to list the contents of an import file/stream.
      *
-     * @see StorageImporter#getImportStreamContents(InputStream)
+     * @see SettingsImporter#getImportStreamContents(InputStream)
      */
     public static class ImportContents {
         /**
