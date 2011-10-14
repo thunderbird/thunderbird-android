@@ -923,7 +923,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         public void restore(Activity activity) {
-            show(activity);
+            show((Accounts) activity);
         }
 
         @Override
@@ -936,7 +936,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             return false;
         }
 
-        public void show(final Activity activity) {
+        public void show(final Accounts activity) {
             final String message = activity.getString(mMessageRes, mArguments);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -947,15 +947,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    destroy();
+                    activity.setNonConfigurationInstance(null);
                 }
             });
             mDialog = builder.show();
-        }
-
-        private void destroy() {
-            mDialog = null;
-            mArguments = null;
         }
     }
 
@@ -1071,7 +1066,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         boolean overwrite = false;
 
                         dialog.dismiss();
-                        destroy();
+                        activity.setNonConfigurationInstance(null);
 
                         ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
                                 includeGlobals, accountUuids, overwrite, mEncryptionKey, mUri);
@@ -1084,19 +1079,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            destroy();
+                            activity.setNonConfigurationInstance(null);
                         }
                     });
             mDialog = builder.show();
-        }
-
-        private void destroy() {
-            mDialog = null;
-            mImportContents = null;
-            mUri = null;
-            mEncryptionKey = null;
-            mSelection = null;
-            mImportSelectionView = null;
         }
     }
 
@@ -1434,6 +1420,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 return false;
             } catch (FileNotFoundException e) {
                 Log.w(K9.LOG_TAG, "Couldn't open import file", e);
+                return false;
+            } catch (Exception e) {
+                Log.w(K9.LOG_TAG, "Unknown error", e);
                 return false;
             }
             return true;
