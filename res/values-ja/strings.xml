@@ -336,8 +336,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
     <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
-    <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧へ戻る</string>
+    <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧に戻る</string>
     <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
+    <string name="global_settings_messageview_show_next_label">削除後次のメッセージを表示</string>
+    <string name="global_settings_messageview_show_next_summary">メッセージの削除後、次のメッセージを表示する</string>
 
     <string name="global_settings_confirm_actions_title">確認</string>
     <string name="global_settings_confirm_actions_summary">選択した動作を実行するときに常にダイアログを表示する</string>
@@ -1055,4 +1057,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_attachment_default_path">添付ファイルの保存先</string>
     <string name="attachment_save_title">添付ファイルの保存先</string>
     <string name="attachment_save_desc">ファイルブラウザがインストールされていません。添付ファイルの保存場所を直接入力してください。</string>
+
+    <string name="manage_accounts_move_up_action">上に移動</string>
+    <string name="manage_accounts_move_down_action">下に移動</string>
+
 </resources>
