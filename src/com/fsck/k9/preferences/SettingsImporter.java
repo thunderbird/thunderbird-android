@@ -28,6 +28,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 
 public class SettingsImporter {
@@ -349,15 +350,41 @@ public class SettingsImporter {
         String accountKeyPrefix = uuid + ".";
         putString(editor, accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
+        if (account.incoming == null) {
+            // We don't import accounts without incoming server settings
+            throw new InvalidSettingValueException();
+        }
+
         // Write incoming server settings (storeUri)
         ServerSettings incoming = new ImportedServerSettings(account.incoming);
         String storeUri = Store.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
 
-        // Write outgoing server settings (transportUri)
-        ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
-        String transportUri = Transport.createTransportUri(outgoing);
-        putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
+        // Mark account as disabled if the settings file didn't contain a password
+        boolean createAccountDisabled = (incoming.password == null ||
+                incoming.password.length() == 0);
+
+        if (account.outgoing == null && !WebDavStore.STORE_TYPE.equals(account.incoming.type)) {
+            // All account types except WebDAV need to provide outgoing server settings
+            throw new InvalidSettingValueException();
+        }
+
+        if (account.outgoing != null) {
+            // Write outgoing server settings (transportUri)
+            ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
+            String transportUri = Transport.createTransportUri(outgoing);
+            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
+
+            // Mark account as disabled if the settings file didn't contain a password
+            if (outgoing.password == null || outgoing.password.length() == 0) {
+                createAccountDisabled = true;
+            }
+        }
+
+        // Write key to mark account as disabled if necessary
+        if (createAccountDisabled) {
+            editor.putBoolean(accountKeyPrefix + "enabled", false);
+        }
 
         // Validate account settings
         Map<String, String> validatedSettings =
