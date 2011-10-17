@@ -761,7 +761,9 @@ public class SettingsImporter {
 
                     ImportedAccount account = parseAccount(xpp, accountUuids, overview);
 
-                    if (!accounts.containsKey(account.uuid)) {
+                    if (account == null) {
+                        // Do nothing - parseAccount() already logged a message
+                    } else if (!accounts.containsKey(account.uuid)) {
                         accounts.put(account.uuid, account);
                     } else {
                         Log.w(K9.LOG_TAG, "Duplicate account entries with UUID " + account.uuid +
@@ -781,9 +783,17 @@ public class SettingsImporter {
             boolean overview)
     throws XmlPullParserException, IOException {
 
-        ImportedAccount account = new ImportedAccount();
-
         String uuid = xpp.getAttributeValue(null, SettingsExporter.UUID_ATTRIBUTE);
+
+        try {
+            UUID.fromString(uuid);
+        } catch (Exception e) {
+            skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT);
+            Log.w(K9.LOG_TAG, "Skipping account with invalid UUID " + uuid);
+            return null;
+        }
+
+        ImportedAccount account = new ImportedAccount();
         account.uuid = uuid;
 
         if (overview || accountUuids.contains(uuid)) {
