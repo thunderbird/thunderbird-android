@@ -165,7 +165,10 @@ public class SmtpTransport extends Transport {
         }
 
         String authType = server.authenticationType;
-        if (!"CRAM_MD5".equals(authType) && !"PLAIN".equals(authType)) {
+        if (!(AUTH_AUTOMATIC.equals(authType) ||
+                AUTH_LOGIN.equals(authType) ||
+                AUTH_PLAIN.equals(authType) ||
+                AUTH_CRAM_MD5.equals(authType))) {
             throw new IllegalArgumentException("Invalid authentication type: " + authType);
         }
 
