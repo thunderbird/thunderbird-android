@@ -27,6 +27,7 @@ public class AccountSettings {
         s.put("chipColor", new ColorSetting(0xFF0000FF));
         s.put("cryptoApp", new StringSetting(Apg.NAME));
         s.put("cryptoAutoSignature", new BooleanSetting(false));
+        s.put("defaultQuotedTextShown", new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN));
         s.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
         s.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                 R.array.account_settings_display_count_values));
@@ -43,6 +44,7 @@ public class AccountSettings {
         s.put("hideMoveButtonsEnum", new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER));
         s.put("idleRefreshMinutes", new IntegerResourceSetting(24,
                 R.array.idle_refresh_period_values));
+        s.put("inboxFolderName", new StringSetting("INBOX"));
         s.put("led", new BooleanSetting(true));
         s.put("ledColor", new ColorSetting(0xFF0000FF));
         s.put("localStorageProvider", new StorageProviderSetting());
@@ -53,6 +55,7 @@ public class AccountSettings {
                 R.array.account_settings_message_age_values));
         s.put("messageFormat",
                 new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
+        s.put("messageReadReceipt", new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT));
         s.put("notificationUnreadCount", new BooleanSetting(true));
         s.put("notifyMailCheck", new BooleanSetting(false));
         s.put("notifyNewMail", new BooleanSetting(false));
