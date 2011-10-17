@@ -77,7 +77,7 @@ public class SettingsImporter {
         }
     }
 
-    private static class AccountDescriptionPair {
+    public static class AccountDescriptionPair {
         public final AccountDescription original;
         public final AccountDescription imported;
 

@@ -305,6 +305,12 @@ public class ImapStore extends Store {
             putIfNotNull(extra, PATH_PREFIX_KEY, pathPrefix);
             return extra;
         }
+
+        @Override
+        public ServerSettings newPassword(String newPassword) {
+            return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,
+                    username, newPassword, pathPrefix);
+        }
     }
 
 

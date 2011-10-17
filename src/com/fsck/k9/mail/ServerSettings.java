@@ -125,4 +125,9 @@ public class ServerSettings {
             map.put(key, value);
         }
     }
+
+    public ServerSettings newPassword(String newPassword) {
+        return new ServerSettings(type, host, port, connectionSecurity, authenticationType,
+                username, newPassword);
+    }
 }

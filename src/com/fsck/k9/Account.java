@@ -149,6 +149,16 @@ public class Account implements BaseAccount {
     private CryptoProvider mCryptoProvider = null;
 
     /**
+     * Indicates whether this account is enabled, i.e. ready for use, or not.
+     *
+     * <p>
+     * Right now newly imported accounts are disabled if the settings file didn't contain a
+     * password for the incoming and/or outgoing server.
+     * </p>
+     */
+    private boolean mEnabled;
+
+    /**
      * Name of the folder that was last selected for a copy or move operation.
      *
      * Note: For now this value isn't persisted. So it will be reset when
@@ -224,6 +234,7 @@ public class Account implements BaseAccount {
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
+        mEnabled = true;
 
         searchableFolders = Searchable.ALL;
 
@@ -386,6 +397,7 @@ public class Account implements BaseAccount {
 
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
+        mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
     }
 
     private String combineUuids(String[] uuids) {
@@ -467,6 +479,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".replyAfterQuote");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
+        editor.remove(mUuid + ".enabled");
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         for (String type : networkTypes) {
@@ -619,6 +632,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
+        editor.putBoolean(mUuid + ".enabled", mEnabled);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -1480,4 +1494,11 @@ public class Account implements BaseAccount {
         return StorageManager.getInstance(K9.app).isReady(localStorageProviderId);
     }
 
+    public synchronized boolean isEnabled() {
+        return mEnabled;
+    }
+
+    public synchronized void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
 }

@@ -298,6 +298,12 @@ public class WebDavStore extends Store {
             putIfNotNull(extra, MAILBOX_PATH_KEY, mailboxPath);
             return extra;
         }
+
+        @Override
+        public ServerSettings newPassword(String newPassword) {
+            return new WebDavStoreSettings(host, port, connectionSecurity, authenticationType,
+                    username, newPassword, alias, path, authPath, mailboxPath);
+        }
     }
 
 

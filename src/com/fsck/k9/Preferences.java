@@ -98,6 +98,23 @@ public class Preferences {
         return retval;
     }
 
+    /**
+     * Returns all enabled accounts.
+     *
+     * @return All accounts with {@link Account#isEnabled()}
+     */
+    public List<Account> getEnabledAccounts() {
+        Account[] allAccounts = getAccounts();
+        List<Account> enabledAccounts = new ArrayList<Account>();
+        for (Account account : allAccounts) {
+            if (account.isEnabled()) {
+                enabledAccounts.add(account);
+            }
+        }
+
+        return enabledAccounts;
+    }
+
     public synchronized Account getAccount(String uuid) {
         if (accounts == null) {
             loadAccounts();
@@ -116,12 +133,12 @@ public class Preferences {
     }
 
     public synchronized void deleteAccount(Account account) {
-    	if (accounts != null) {
-    		accounts.remove(account.getUuid());
-    	}
-    	if (accountsInOrder != null) {
-    		accountsInOrder.remove(account);	
-    	}
+        if (accounts != null) {
+            accounts.remove(account.getUuid());
+        }
+        if (accountsInOrder != null) {
+            accountsInOrder.remove(account);
+        }
 
         account.delete(this);
 
