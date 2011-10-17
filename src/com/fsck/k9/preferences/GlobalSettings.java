@@ -1,11 +1,14 @@
 package com.fsck.k9.preferences;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import android.content.SharedPreferences;
+import android.os.Environment;
+
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -19,11 +22,15 @@ public class GlobalSettings {
         Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
 
         s.put("animations", new BooleanSetting(false));
+        s.put("attachmentdefaultpath",
+                new DirectorySetting(Environment.getExternalStorageDirectory().toString()));
         s.put("backgroundOperations",
                 new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED));
         s.put("changeRegisteredNameColor", new BooleanSetting(false));
         s.put("compactLayouts", new BooleanSetting(false));
         s.put("confirmDelete", new BooleanSetting(false));
+        s.put("confirmMarkAllAsRead", new BooleanSetting(false));
+        s.put("confirmSpam", new BooleanSetting(false));
         s.put("countSearchMessages", new BooleanSetting(false));
         s.put("dateFormat", new DateFormatSetting(DateFormatter.DEFAULT_FORMAT));
         s.put("enableDebugLogging", new BooleanSetting(false));
@@ -56,6 +63,7 @@ public class GlobalSettings {
         s.put("messageListTouchable", new BooleanSetting(false));
         s.put("messageViewFixedWidthFont", new BooleanSetting(false));
         s.put("messageViewReturnToList", new BooleanSetting(false));
+        s.put("messageViewShowNext", new BooleanSetting(false));
         s.put("mobileOptimizedLayout", new BooleanSetting(false));
         s.put("quietTimeEnabled", new BooleanSetting(false));
         s.put("quietTimeEnds", new TimeSetting("7:00"));
@@ -223,6 +231,26 @@ public class GlobalSettings {
                 throw new InvalidSettingValueException();
             }
             return value;
+        }
+    }
+
+    /**
+     * A directory on the file system.
+     */
+    public static class DirectorySetting extends SettingsDescription {
+        public DirectorySetting(String defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                if (new File(value).isDirectory()) {
+                    return value;
+                }
+            } catch (Exception e) { /* do nothing */ }
+
+            throw new InvalidSettingValueException();
         }
     }
 }
