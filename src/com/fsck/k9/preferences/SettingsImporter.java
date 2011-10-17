@@ -664,11 +664,17 @@ public class SettingsImporter {
 
     private static Imported parseRoot(XmlPullParser xpp, boolean globalSettings,
             List<String> accountUuids, boolean overview)
-    throws XmlPullParserException, IOException {
+    throws XmlPullParserException, IOException, SettingsImportExportException {
 
         Imported result = new Imported();
 
-        //TODO: check version attribute
+        String fileFormatVersionString = xpp.getAttributeValue(null,
+                SettingsExporter.FILE_FORMAT_ATTRIBUTE);
+        validateFileFormatVersion(fileFormatVersionString);
+
+        String contentVersionString = xpp.getAttributeValue(null,
+                SettingsExporter.VERSION_ATTRIBUTE);
+        validateContentVersion(contentVersionString);
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
@@ -707,6 +713,52 @@ public class SettingsImporter {
         }
 
         return result;
+    }
+
+    private static int validateFileFormatVersion(String versionString)
+            throws SettingsImportExportException {
+
+        if (versionString == null) {
+            throw new SettingsImportExportException("Missing file format version");
+        }
+
+        int version;
+        try {
+            version = Integer.parseInt(versionString);
+        } catch (NumberFormatException e) {
+            throw new SettingsImportExportException("Invalid file format version: " +
+                    versionString);
+        }
+
+        if (version != SettingsExporter.FILE_FORMAT_VERSION) {
+            throw new SettingsImportExportException("Unsupported file format version: " +
+                    versionString);
+        }
+
+        return version;
+    }
+
+    private static int validateContentVersion(String versionString)
+            throws SettingsImportExportException {
+
+        if (versionString == null) {
+            throw new SettingsImportExportException("Missing content version");
+        }
+
+        int version;
+        try {
+            version = Integer.parseInt(versionString);
+        } catch (NumberFormatException e) {
+            throw new SettingsImportExportException("Invalid content version: " +
+                    versionString);
+        }
+
+        if (version != Settings.VERSION) {
+            throw new SettingsImportExportException("Unsupported content version: " +
+                    versionString);
+        }
+
+        return version;
     }
 
     private static ImportedSettings parseSettings(XmlPullParser xpp, String endTag)
