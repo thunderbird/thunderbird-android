@@ -34,6 +34,11 @@ public class Pop3Store extends Store {
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    private enum AuthType {
+        PLAIN,
+        CRAM_MD5
+    }
+
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
@@ -106,7 +111,7 @@ public class Pop3Store extends Store {
             port = pop3Uri.getPort();
         }
 
-        String authType = "";
+        String authType = AuthType.PLAIN.name();
         if (pop3Uri.getUserInfo() != null) {
             try {
                 int userIndex = 0, passwordIndex = 1;
@@ -173,7 +178,14 @@ public class Pop3Store extends Store {
                 break;
         }
 
-        String userInfo = userEnc + ":" + passwordEnc;
+        try {
+            AuthType.valueOf(server.authenticationType);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid authentication type (" +
+                    server.authenticationType + ")");
+        }
+
+        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();
@@ -187,7 +199,7 @@ public class Pop3Store extends Store {
     private int mPort;
     private String mUsername;
     private String mPassword;
-    private boolean useCramMd5;
+    private AuthType mAuthType;
     private int mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
@@ -233,6 +245,7 @@ public class Pop3Store extends Store {
 
         mUsername = settings.username;
         mPassword = settings.password;
+        mAuthType = AuthType.valueOf(settings.authenticationType);
     }
 
     @Override
@@ -352,7 +365,7 @@ public class Pop3Store extends Store {
                     }
                 }
 
-                if (useCramMd5) {
+                if (mAuthType == AuthType.CRAM_MD5) {
                     try {
                         String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 
