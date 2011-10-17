@@ -1953,10 +1953,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         @Override
         protected void showProgressDialog() {
-            //FIXME
-            String title = "";
-            String message = "";
-            mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
+            String message = mActivity.getString(R.string.manage_accounts_moving_message);
+            mProgressDialog = ProgressDialog.show(mActivity, null, message, true);
         }
 
         @Override
