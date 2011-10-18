@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -813,6 +814,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private String mIncomingPassword;
         private String mOutgoingPassword;
         private List<Account> mRemainingAccounts;
+        private Application mApplication;
 
         protected SetPasswordsAsyncTask(Activity activity, Account account,
                 String incomingPassword, String outgoingPassword,
@@ -822,6 +824,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             mIncomingPassword = incomingPassword;
             mOutgoingPassword = outgoingPassword;
             mRemainingAccounts = remainingAccounts;
+            mApplication = mActivity.getApplication();
         }
 
         @Override
@@ -857,6 +860,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 // Save the account settings
                 mAccount.save(Preferences.getPreferences(mContext));
+
+                // Start services if necessary
+                K9.setServicesEnabled(mContext);
+
+                // Get list of folders from remote server
+                MessagingController.getInstance(mApplication).listFolders(mAccount, true, null);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Something went while setting account passwords", e);
             }
