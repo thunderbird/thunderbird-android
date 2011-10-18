@@ -90,29 +90,12 @@ public class Preferences {
         Account[] allAccounts = getAccounts();
         Collection<Account> retval = new ArrayList<Account>(accounts.size());
         for (Account account : allAccounts) {
-            if (account.isAvailable(mContext)) {
+            if (account.isEnabled() && account.isAvailable(mContext)) {
                 retval.add(account);
             }
         }
 
         return retval;
-    }
-
-    /**
-     * Returns all enabled accounts.
-     *
-     * @return All accounts with {@link Account#isEnabled()}
-     */
-    public List<Account> getEnabledAccounts() {
-        Account[] allAccounts = getAccounts();
-        List<Account> enabledAccounts = new ArrayList<Account>();
-        for (Account account : allAccounts) {
-            if (account.isEnabled()) {
-                enabledAccounts.add(account);
-            }
-        }
-
-        return enabledAccounts;
     }
 
     public synchronized Account getAccount(String uuid) {

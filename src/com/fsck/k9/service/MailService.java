@@ -146,7 +146,7 @@ public class MailService extends CoreService {
             } else if (ACTION_RESET.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
-                rescheduleAll(hasConnectivity, doBackground, startId); 
+                rescheduleAll(hasConnectivity, doBackground, startId);
             } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
@@ -228,7 +228,7 @@ public class MailService extends CoreService {
                     }
 
 
-                    for (Account account : prefs.getAccounts()) {
+                    for (Account account : prefs.getAvailableAccounts()) {
                         if (account.getAutomaticCheckIntervalMinutes() != -1
                                 && account.getFolderSyncMode() != FolderMode.NONE
                         && (account.getAutomaticCheckIntervalMinutes() < shortestInterval || shortestInterval == -1)) {
@@ -323,7 +323,7 @@ public class MailService extends CoreService {
                 for (Account account : Preferences.getPreferences(MailService.this).getAccounts()) {
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
-                    if (account.isAvailable(getApplicationContext())) {
+                    if (account.isEnabled() && account.isAvailable(getApplicationContext())) {
                         pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
                     } else {
                         //TODO: setupPushing of unavailable accounts when they become available (sd-card inserted)
