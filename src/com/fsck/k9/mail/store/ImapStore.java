@@ -191,8 +191,14 @@ public class ImapStore extends Store {
 
         if (imapUri.getUserInfo() != null) {
             try {
-                String[] userInfoParts = imapUri.getUserInfo().split(":");
-                if (userInfoParts.length == 2) {
+                String userinfo = imapUri.getUserInfo();
+                String[] userInfoParts = userinfo.split(":");
+
+                if (userinfo.endsWith(":")) {
+                    // Password is empty. This can only happen after an account was imported.
+                    authenticationType = AuthType.valueOf(userInfoParts[0]).name();
+                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                } else if (userInfoParts.length == 2) {
                     authenticationType = AuthType.PLAIN.name();
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");

@@ -115,8 +115,11 @@ public class Pop3Store extends Store {
         if (pop3Uri.getUserInfo() != null) {
             try {
                 int userIndex = 0, passwordIndex = 1;
-                String[] userInfoParts = pop3Uri.getUserInfo().split(":");
-                if (userInfoParts.length > 2) {
+                String userinfo = pop3Uri.getUserInfo();
+                String[] userInfoParts = userinfo.split(":");
+                if (userInfoParts.length > 2 || userinfo.endsWith(":") ) {
+                    // If 'userinfo' ends with ":" the password is empty. This can only happen
+                    // after an account was imported (so authType and username are present).
                     userIndex++;
                     passwordIndex++;
                     authType = userInfoParts[0];
