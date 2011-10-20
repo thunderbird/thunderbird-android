@@ -1741,23 +1741,11 @@ public class ImapStore extends Store {
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
             }
-            ArrayList<String> flagNames = new ArrayList<String>();
-            for (Flag flag : flags) {
-                if (flag == Flag.SEEN) {
-                    flagNames.add("\\Seen");
-                } else if (flag == Flag.DELETED) {
-                    flagNames.add("\\Deleted");
-                } else if (flag == Flag.ANSWERED) {
-                    flagNames.add("\\Answered");
-                } else if (flag == Flag.FLAGGED) {
-                    flagNames.add("\\Flagged");
-                }
-            }
             try {
                 executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
                                                    Utility.combine(uids, ','),
                                                    value ? "+" : "-",
-                                                   Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ')));
+                                                   combineFlags(flags)));
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
