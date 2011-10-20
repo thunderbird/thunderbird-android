@@ -309,9 +309,7 @@ public class LocalStore extends Store implements Serializable {
                             Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
 
                         } finally {
-                            if (cursor != null) {
-                                cursor.close();
-                            }
+                            Utility.closeQuietly(cursor);
                         }
                     }
                     if (db.getVersion() == 41) {
@@ -524,9 +522,7 @@ public class LocalStore extends Store implements Serializable {
                     cursor.moveToFirst();
                     return cursor.getInt(0);   // message count
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
             }
         });
@@ -600,9 +596,7 @@ public class LocalStore extends Store implements Serializable {
                     stats.flaggedMessageCount = cursor.getInt(1);
                     return null;
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
             }
         });
@@ -619,9 +613,7 @@ public class LocalStore extends Store implements Serializable {
                     cursor.moveToFirst();
                     return cursor.getInt(0);        // folder count
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
             }
         });
@@ -654,9 +646,7 @@ public class LocalStore extends Store implements Serializable {
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        Utility.closeQuietly(cursor);
                     }
                 }
             });
@@ -723,9 +713,7 @@ public class LocalStore extends Store implements Serializable {
                                     }
                                 }
                             } finally {
-                                if (cursor != null) {
-                                    cursor.close();
-                                }
+                                Utility.closeQuietly(cursor);
                             }
                         }
                         if (!force) {
@@ -793,9 +781,7 @@ public class LocalStore extends Store implements Serializable {
                     }
                     return commands;
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
             }
         });
@@ -1005,9 +991,7 @@ public class LocalStore extends Store implements Serializable {
                 } catch (Exception e) {
                     Log.d(K9.LOG_TAG, "Got an exception", e);
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
                 return i;
             }
@@ -1049,9 +1033,7 @@ public class LocalStore extends Store implements Serializable {
                     attachmentInfo.type = type;
                     return attachmentInfo;
                 } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+                    Utility.closeQuietly(cursor);
                 }
             }
         });
@@ -1185,9 +1167,7 @@ public class LocalStore extends Store implements Serializable {
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         } finally {
-                            if (cursor != null) {
-                                cursor.close();
-                            }
+                            Utility.closeQuietly(cursor);
                         }
                         return null;
                     }
@@ -1251,9 +1231,7 @@ public class LocalStore extends Store implements Serializable {
                             return false;
                         }
                     } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        Utility.closeQuietly(cursor);
                     }
                 }
             });
@@ -1309,9 +1287,7 @@ public class LocalStore extends Store implements Serializable {
                             cursor.moveToFirst();
                             return cursor.getInt(0);   //messagecount
                         } finally {
-                            if (cursor != null) {
-                                cursor.close();
-                            }
+                            Utility.closeQuietly(cursor);
                         }
                     }
                 });
@@ -1662,9 +1638,7 @@ public class LocalStore extends Store implements Serializable {
                                     } catch (Exception e) {
                                         Log.e(K9.LOG_TAG, "Exception fetching message:", e);
                                     } finally {
-                                        if (cursor != null) {
-                                            cursor.close();
-                                        }
+                                        Utility.closeQuietly(cursor);
                                     }
 
                                     try {
@@ -1729,9 +1703,7 @@ public class LocalStore extends Store implements Serializable {
                                             mp.addBodyPart(bp);
                                         }
                                     } finally {
-                                        if (cursor != null) {
-                                            cursor.close();
-                                        }
+                                        Utility.closeQuietly(cursor);
                                     }
 
                                     if (mp.getCount() == 0) {
@@ -1819,9 +1791,7 @@ public class LocalStore extends Store implements Serializable {
                             popMessages.get(id).addHeader(name, value);
                         }
                     } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        Utility.closeQuietly(cursor);
                     }
                     return null;
                 }
@@ -1852,9 +1822,7 @@ public class LocalStore extends Store implements Serializable {
                                 }
                                 message.populateFromGetMessageCursor(cursor);
                             } finally {
-                                if (cursor != null) {
-                                    cursor.close();
-                                }
+                                Utility.closeQuietly(cursor);
                             }
                             return message;
                         } catch (MessagingException e) {
@@ -2491,9 +2459,7 @@ public class LocalStore extends Store implements Serializable {
                                         }
                                     }
                                 } finally {
-                                    if (cursor != null) {
-                                        cursor.close();
-                                    }
+                                    Utility.closeQuietly(cursor);
                                 }
                             }
 
@@ -2697,9 +2663,7 @@ public class LocalStore extends Store implements Serializable {
                             }
                         }
                     } finally {
-                        if (attachmentsCursor != null) {
-                            attachmentsCursor.close();
-                        }
+                        Utility.closeQuietly(attachmentsCursor);
                     }
                     return null;
                 }
@@ -2725,9 +2689,7 @@ public class LocalStore extends Store implements Serializable {
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         } finally {
-                            if (messagesCursor != null) {
-                                messagesCursor.close();
-                            }
+                            Utility.closeQuietly(messagesCursor);
                         }
                         return null;
                     }
@@ -2840,9 +2802,7 @@ public class LocalStore extends Store implements Serializable {
                     } catch (Exception e) {
                         Log.e(K9.LOG_TAG, "Unable to updateLastUid: ", e);
                     } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        Utility.closeQuietly(cursor);
                     }
                     return null;
                 }
@@ -2867,9 +2827,7 @@ public class LocalStore extends Store implements Serializable {
                     } catch (Exception e) {
                         Log.e(K9.LOG_TAG, "Unable to fetch oldest message date: ", e);
                     } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        Utility.closeQuietly(cursor);
                     }
                     return null;
                 }

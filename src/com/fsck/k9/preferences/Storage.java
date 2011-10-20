@@ -185,9 +185,7 @@ public class Storage implements SharedPreferences {
                 storage.put(key, value);
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            Utility.closeQuietly(cursor);
             if (mDb != null) {
                 mDb.close();
             }
@@ -384,9 +382,7 @@ public class Storage implements SharedPreferences {
                 }
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            Utility.closeQuietly(cursor);
         }
 
         return value;
