@@ -81,7 +81,7 @@ public class LocalStore extends Store implements Serializable {
 
     private static final Set<String> HEADERS_TO_SAVE;
     static {
-        Set<String> set = new HashSet();
+        Set<String> set = new HashSet<String>();
         set.add(K9.IDENTITY_HEADER);
         set.add("To");
         set.add("Cc");
