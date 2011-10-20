@@ -47,6 +47,11 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.SimpleHtmlSerializer;
+import org.htmlcleaner.TagNode;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.MessageFormat;
@@ -2227,10 +2232,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     // Regexes to check for signature.
+    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
     private static final Pattern DASH_SIGNATURE_HTML = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
     private static final Pattern BLOCKQUOTE_START = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
     private static final Pattern BLOCKQUOTE_END = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
 
     /**
      * Build and populate the UI with the quoted message.
@@ -2246,32 +2251,70 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                          : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
         if (mMessageFormat == MessageFormat.HTML) {
             // Strip signature.
+            // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
             if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) ||
                                                 ACTION_REPLY.equals(getIntent().getAction()))) {
                 Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
-                Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
-                Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
-                if (!blockquoteStart.find() && dashSignatureHtml.find()) {
-                    content = content.substring(0, dashSignatureHtml.start());
-                } else if (dashSignatureHtml.find()) {
-                    // <blockquote></blockquote> is the html equivalent of plain quote prefixes (i.e. "> ").
-                    // We want to strip the first line of "-- " that is not in a blockquote.
-                    dashSignatureHtml.region(0, blockquoteStart.start());
-                    if (dashSignatureHtml.find()) {
-                        content = content.substring(0, dashSignatureHtml.start());
-                    } else {
-                        while (blockquoteEnd.find()) {
-                            if (!blockquoteStart.find()) {
-                                dashSignatureHtml.region(blockquoteEnd.start(), content.length() - 1);
-                            } else {
-                                dashSignatureHtml.region(blockquoteEnd.start(), blockquoteStart.start());
+                if (dashSignatureHtml.find()) {
+                    Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
+                    Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
+                    List<Integer> start = new ArrayList<Integer>();
+                    List<Integer> end = new ArrayList<Integer>();
+
+                    while(blockquoteStart.find()) {
+                        start.add(blockquoteStart.start());
+                    }
+                    while(blockquoteEnd.find()) {
+                        end.add(blockquoteEnd.start());
+                    }
+                    if (start.size() != end.size()) {
+                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " + 
+                                end.size() + " </blockquote> tags. Refusing to strip.");
+                    } else if (start.size() > 0) {
+                        // Ignore quoted signatures in blockquotes.
+                        dashSignatureHtml.region(0, start.get(0));
+                        if (dashSignatureHtml.find()) {
+                            // before first <blockquote>.
+                            content = content.substring(0, dashSignatureHtml.start());
+                        } else {
+                            for (int i = 0; i < start.size() - 1; i++) {
+                                // within blockquotes.
+                                if (end.get(i) < start.get(i+1)) {
+                                    dashSignatureHtml.region(end.get(i), start.get(i+1));
+                                    if (dashSignatureHtml.find()) {
+                                        content = content.substring(0, dashSignatureHtml.start());
+                                        break;
+                                    }
+                                }
                             }
-                            if (dashSignatureHtml.find()) {
-                                content = content.substring(0, dashSignatureHtml.start());
-                                break;
+                            if (end.get(end.size() - 1) < content.length()) {
+                                // after last </blockquote>.
+                                dashSignatureHtml.region(end.get(end.size() - 1), content.length());
+                                if (dashSignatureHtml.find())
+                                    content = content.substring(0, dashSignatureHtml.start());
                             }
                         }
+                    } else {
+                        // No blockquotes found.
+                        content = content.substring(0, dashSignatureHtml.start());
                     }
+                }
+
+                // Fix the stripping off of closing tags if a signature was stripped, 
+                // as well as clean up the HTML of the quoted message.
+                HtmlCleaner cleaner = new HtmlCleaner();
+                CleanerProperties props = cleaner.getProperties();
+                props.setTranslateSpecialEntities(false);
+                props.setNamespacesAware(false);
+                props.setAdvancedXmlEscape(false);
+                props.setRecognizeUnicodeChars(false);
+                TagNode node = cleaner.clean(content);
+                SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(props);
+                try {
+                    content = htmlSerialized.getAsString(node, "UTF8");
+                } catch (java.io.IOException ioe) {
+                    // Can't imagine this happening.
+                    Log.e(K9.LOG_TAG, "Problem cleaning quoted message.");
                 }
             }
             // Add the HTML reply header to the top of the content.
