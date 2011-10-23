@@ -163,14 +163,14 @@
     <string name="notification_bg_send_title">메일 전송중</string>
     <string name="notification_bg_title_separator">:</string>
 
-    <string name="special_mailbox_name_inbox">받은 메일함</string>
-    <string name="special_mailbox_name_outbox">보낸 메일함</string>
+    <string name="special_mailbox_name_inbox">받은편지함</string>
+    <string name="special_mailbox_name_outbox">보낸편지함</string>
     <!-- The following mailbox names will be used if the user has not specified one from the server -->
-    <string name="special_mailbox_name_drafts">임시 메일함</string>
+    <string name="special_mailbox_name_drafts">임시보관함</string>
     <string name="special_mailbox_name_trash">휴지통</string>
-    <string name="special_mailbox_name_sent">보낸 메일함</string>
+    <string name="special_mailbox_name_sent">보낸편지함</string>
     <string name="special_mailbox_name_archive">보관</string>
-    <string name="special_mailbox_name_spam">스팸메일함</string>
+    <string name="special_mailbox_name_spam">스팸편지함</string>
     <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (임시보관함)</string>
@@ -229,7 +229,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="combined_inbox_title">모든 메일</string>
     <string name="combined_inbox_label">모든 계정의 모든 메시지</string>
-    <string name="combined_inbox_list_title">받은 편지함의 모든 메일</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
+    <string name="combined_inbox_list_title">받은편지함의 모든 메일</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
 
     <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
                        <xliff:g id="unread_count">%s</xliff:g>
@@ -908,8 +908,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="manage_back_title"> \"뒤로\" 버튼 관리</string>
     <string name="manage_back_summary">\"뒤로\" 버튼이 항상 위로</string>
 
-    <string name="start_integrated_inbox_title">통합 메일함으로 시작</string>
-    <string name="start_integrated_inbox_summary">통합 메일함을 시작시 보여줍니다</string>
+    <string name="start_integrated_inbox_title">통합 편지함으로 시작</string>
+    <string name="start_integrated_inbox_summary">통합 편지함을 시작시 보여줍니다</string>
 
     <string name="measure_accounts_title">계정 용량을 보여줍니다</string>
     <string name="measure_accounts_summary">빠른 처리를 위해 비활성화</string>
@@ -918,7 +918,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="count_search_summary">빠른 처리를 위해 비활성화</string>
 
     <string name="hide_special_accounts_title">특정 계정 숨기기</string>
-    <string name="hide_special_accounts_summary">통합 이메일함과 모든 편지함 숨기기</string>
+    <string name="hide_special_accounts_summary">통합 편지함과 모든 편지함 숨기기</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - 즐겨찾기 메일수</string>
@@ -927,13 +927,13 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="search_all_messages_title">모든 편지</string>
     <string name="search_all_messages_detail">검색가능한 모든 편지</string>
 
-    <string name="integrated_inbox_title">통합 이메일함</string>
+    <string name="integrated_inbox_title">통합 편지함</string>
     <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
 
     <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">모든 메시지는 통합 이메일함에 보여집니다</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">모든 메시지는 통합 편지함에 보여집니다</string>
 
     <string name="account_settings_searchable_label">찾을 폴더</string>
     <string name="account_settings_searchable_all">모두</string>
