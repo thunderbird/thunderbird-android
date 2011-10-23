@@ -2302,8 +2302,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             if (end.get(end.size() - 1) < content.length()) {
                                 // after last </blockquote>.
                                 dashSignatureHtml.region(end.get(end.size() - 1), content.length());
-                                if (dashSignatureHtml.find())
+                                if (dashSignatureHtml.find()) {
                                     content = content.substring(0, dashSignatureHtml.start());
+                                }
                             }
                         }
                     } else {
