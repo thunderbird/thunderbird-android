@@ -6,6 +6,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 
 import java.io.*;
+import java.util.Random;
 
 public class MimeMultipart extends Multipart {
     protected String mPreamble;
@@ -37,10 +38,11 @@ public class MimeMultipart extends Multipart {
     }
 
     public String generateBoundary() {
+        Random random = new Random();
         StringBuilder sb = new StringBuilder();
         sb.append("----");
         for (int i = 0; i < 30; i++) {
-            sb.append(Integer.toString((int)(Math.random() * 35), 36));
+            sb.append(Integer.toString(random.nextInt(36), 36));
         }
         return sb.toString().toUpperCase();
     }
