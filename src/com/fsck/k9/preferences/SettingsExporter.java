@@ -168,16 +168,27 @@ public class SettingsExporter {
             Map<String, Object> prefs) throws IOException {
 
         for (String key : GlobalSettings.SETTINGS.keySet()) {
-            String valueString = prefs.get(key).toString();
+            String valueString = (String) prefs.get(key);
+            if (valueString != null) {
+                try {
+                    SettingsDescription setting = GlobalSettings.SETTINGS.get(key);
+                    Object value = setting.fromString(valueString);
+                    String outputValue = setting.toPrettyString(value);
+                    writeKeyValue(serializer, key, outputValue);
+                } catch (InvalidSettingValueException e) {
+                    Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
+                            valueString + "\" in preference storage. This shouldn't happen!");
+                }
+            } else {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "Couldn't find key \"" + key + "\" in preference storage." +
+                            "Using default value.");
+                }
 
-            try {
                 SettingsDescription setting = GlobalSettings.SETTINGS.get(key);
-                Object value = setting.fromString(valueString);
+                Object value = setting.getDefaultValue();
                 String outputValue = setting.toPrettyString(value);
                 writeKeyValue(serializer, key, outputValue);
-            } catch (InvalidSettingValueException e) {
-                Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
-                        valueString + "\" in preference storage. This shouldn't happen!");
             }
         }
     }
