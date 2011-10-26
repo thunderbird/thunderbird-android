@@ -17,6 +17,7 @@ public class ImapResponseParser {
     private static final SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat3 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 
+    private final StringBuilder sb = new StringBuilder();
     private PeekableInputStream mIn;
     private ImapResponse mResponse;
     private Exception mException;
@@ -195,7 +196,7 @@ public class ImapResponseParser {
     }
 
     private String parseAtom() throws IOException {
-        StringBuilder sb = new StringBuilder();
+        sb.setLength(0);
         int ch;
         while (true) {
             ch = mIn.peek();
@@ -281,7 +282,7 @@ public class ImapResponseParser {
     private String parseQuoted() throws IOException {
         expect('"');
 
-        StringBuilder sb = new StringBuilder();
+        sb.setLength(0);
         int ch;
         boolean escape = false;
         while ((ch = mIn.read()) != -1) {
@@ -299,7 +300,7 @@ public class ImapResponseParser {
     }
 
     private String readStringUntil(char end) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        sb.setLength(0);
         int ch;
         while ((ch = mIn.read()) != -1) {
             if (ch == end) {
@@ -471,9 +472,9 @@ public class ImapResponseParser {
 
         public String getAlertText() {
             if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1))) {
-                StringBuilder sb = new StringBuilder();
+                sb.setLength(0);
                 for (int i = 2, count = size(); i < count; i++) {
-                    sb.append(get(i).toString());
+                    sb.append(get(i));
                     sb.append(' ');
                 }
                 return sb.toString();
