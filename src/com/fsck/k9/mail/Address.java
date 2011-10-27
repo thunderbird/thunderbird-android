@@ -131,7 +131,7 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parse(String addressList) {
-        if (addressList == null || addressList.isEmpty()) {
+        if (addressList == null || addressList.length() == 0) {
             return EMPTY_ADDRESS_ARRAY;
         }
         List<Address> addresses = new ArrayList<Address>();
