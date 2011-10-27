@@ -1590,7 +1590,7 @@ public class WebDavStore extends Store {
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
-                try { 
+                try {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 } catch (NullPointerException e) {
                     Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
@@ -1852,7 +1852,7 @@ public class WebDavStore extends Store {
         public void setUrl(String url) {
             // TODO: This is a not as ugly hack (ie, it will actually work)
             // XXX: prevent URLs from getting to us that are broken
-            if (!(url.toLowerCase().contains("http"))) {
+            if (!(url.toLowerCase(Locale.US).contains("http"))) {
                 if (!(url.startsWith("/"))) {
                     url = "/" + url;
                 }

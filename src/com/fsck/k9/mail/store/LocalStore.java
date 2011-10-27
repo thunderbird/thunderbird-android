@@ -1601,10 +1601,10 @@ public class LocalStore extends Store implements Serializable {
                                         String htmlContent = cursor.getString(0);
                                         String textContent = cursor.getString(1);
                                         String mimeType = cursor.getString(2);
-                                        if (mimeType != null && mimeType.toLowerCase().startsWith("multipart/")) {
+                                        if (mimeType != null && mimeType.toLowerCase(Locale.US).startsWith("multipart/")) {
                                             // If this is a multipart message, preserve both text
                                             // and html parts, as well as the subtype.
-                                            mp.setSubType(mimeType.toLowerCase().replaceFirst("^multipart/", ""));
+                                            mp.setSubType(mimeType.toLowerCase(Locale.US).replaceFirst("^multipart/", ""));
                                             if (textContent != null) {
                                                 LocalTextBody body = new LocalTextBody(textContent, htmlContent);
                                                 MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
@@ -2144,7 +2144,7 @@ public class LocalStore extends Store implements Serializable {
                                     cv.put("sender_list", Address.pack(message.getFrom()));
                                     cv.put("date", message.getSentDate() == null
                                            ? System.currentTimeMillis() : message.getSentDate().getTime());
-                                    cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase());
+                                    cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase(Locale.US));
                                     cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
                                     cv.put("folder_id", mFolderId);
                                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
@@ -2263,7 +2263,7 @@ public class LocalStore extends Store implements Serializable {
                                                message.getSentDate() == null ? System
                                                .currentTimeMillis() : message.getSentDate()
                                                .getTime(),
-                                               Utility.combine(message.getFlags(), ',').toUpperCase(),
+                                               Utility.combine(message.getFlags(), ',').toUpperCase(Locale.US),
                                                mFolderId,
                                                Address.pack(message
                                                             .getRecipients(RecipientType.TO)),
@@ -2337,7 +2337,7 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
                                    new Object[]
-                                   { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
+                                   { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
                     }
                     return null;
                 }
@@ -3189,7 +3189,7 @@ public class LocalStore extends Store implements Serializable {
                          * Set the flags on the message.
                          */
                         db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-                                   { Utility.combine(getFlags(), ',').toUpperCase(), mId });
+                                   { Utility.combine(getFlags(), ',').toUpperCase(Locale.US), mId });
                         return null;
                     }
                 });

@@ -1931,7 +1931,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if (message.getSubject() != null) {
                     final String subject = prefix.matcher(message.getSubject()).replaceFirst("");
 
-                    if (!subject.toLowerCase().startsWith("re:")) {
+                    if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
                         mSubjectView.setText("Re: " + subject);
                     } else {
                         mSubjectView.setText(subject);
@@ -2028,10 +2028,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             } else if (ACTION_FORWARD.equals(action)) {
-                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:")) {
-                    mSubjectView.setText("Fwd: " + message.getSubject());
+                String subject = message.getSubject();
+                if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
+                    mSubjectView.setText("Fwd: " + subject);
                 } else {
-                    mSubjectView.setText(message.getSubject());
+                    mSubjectView.setText(subject);
                 }
 
                 // Quote the message and setup the UI.

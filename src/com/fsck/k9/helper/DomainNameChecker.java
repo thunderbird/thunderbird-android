@@ -26,6 +26,7 @@ import java.security.cert.CertificateParsingException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -60,7 +61,7 @@ public class DomainNameChecker {
             return false;
         }
 
-        thisDomain = thisDomain.toLowerCase();
+        thisDomain = thisDomain.toLowerCase(Locale.US);
         if (!isIpAddress(thisDomain)) {
             return matchDns(certificate, thisDomain);
         } else {
@@ -223,7 +224,7 @@ public class DomainNameChecker {
             return false;
         }
 
-        thatDomain = thatDomain.toLowerCase();
+        thatDomain = thatDomain.toLowerCase(Locale.US);
 
         // (a) domain name strings are equal, ignoring case: X matches X
         boolean rval = thisDomain.equals(thatDomain);
