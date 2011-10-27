@@ -6,6 +6,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Random;
 
 public class MimeMultipart extends Multipart {
@@ -44,7 +45,7 @@ public class MimeMultipart extends Multipart {
         for (int i = 0; i < 30; i++) {
             sb.append(Integer.toString(random.nextInt(36), 36));
         }
-        return sb.toString().toUpperCase();
+        return sb.toString().toUpperCase(Locale.US);
     }
 
     public String getPreamble() {
