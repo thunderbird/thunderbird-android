@@ -2189,14 +2189,22 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                     if (textPart != null) {
                         String text = MimeUtility.getTextFromPart(textPart);
+                        if (K9.DEBUG) {
+                            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                        }
+
                         // If we had a body length (and it was valid), separate the composition from the quoted text
                         // and put them in their respective places in the UI.
                         if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
-                            String bodyText = text.substring(0, bodyLength);
-                            String quotedText = text.substring(bodyLength + 1, text.length());
+                            String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+
+                            // Regenerate the quoted text without our user content in it.
+                            StringBuilder quotedText = new StringBuilder();
+                            quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                            quotedText.append(text.substring(bodyOffset + bodyLength));
 
                             mMessageContentView.setText(bodyText);
-                            mQuotedText.setText(quotedText);
+                            mQuotedText.setText(quotedText.toString());
                         } else {
                             mMessageContentView.setText(text);
                         }
