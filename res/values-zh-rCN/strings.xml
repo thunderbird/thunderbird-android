@@ -83,8 +83,6 @@
     <string name="remove_account_action">删除账户</string>
     <string name="clear_pending_action">取消挂起的操作（慎用）</string>
 
-
-
     <string name="accounts_action">账户</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -109,6 +107,9 @@
     <string name="view_hide_details_action">显示/隐藏详细信息</string>
     <string name="add_cc_bcc_action">添加抄送/暗送</string>
     <string name="edit_subject_action">编辑主题</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">添加附件</string>
     <string name="add_attachment_action_image">添加图片附件</string>
     <string name="add_attachment_action_video">添加视频附件</string>
@@ -255,8 +256,7 @@
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">一些附件没有被下载。在这个邮件发送前会自动的下载这些附件。</string>
     <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">收件人：</string>
@@ -275,7 +275,6 @@
     <string name="message_view_show_pictures_action">显示图片</string>
     <string name="message_view_fetching_attachment_toast">正在接收附件。</string>
     <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
-
 
     <string name="message_view_download_remainder">下载完整邮件</string>
 
@@ -303,7 +302,6 @@
     <string name="about_header">关于<xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">版本：<xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">显示星标</string>
     <string name="global_settings_flag_summary">星标指示标记过的邮件</string>
     <string name="global_settings_checkbox_label">复选框</string>
@@ -323,6 +321,8 @@
     <string name="global_settings_messageview_fixedwidth_summary">使用定宽字体显示纯文本邮件</string>
     <string name="global_settings_messageview_return_to_list_label">删除后回到自动返回到列表</string>
     <string name="global_settings_messageview_return_to_list_summary">邮件删除后自动返回到邮件列表</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">确认操作</string>
     <string name="global_settings_confirm_actions_summary">进行选择操作时总是显示一个对话框进行确认</string>
@@ -335,12 +335,10 @@
     <string name="global_settings_privacy_mode_title">锁屏通知</string>
     <string name="global_settings_privacy_mode_summary">屏幕锁定时不要在通知栏中显示邮件主题</string>
 
-
     <!-- NEW: <string name="quiet_time">Quiet Time</string>-->
     <!-- NEW: <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>-->
     <!-- NEW: <string name="quiet_time_starts">Quiet Time starts</string>-->
     <!-- NEW: <string name="quiet_time_ends">Quiet Time ends</string>-->
-
 
     <string name="account_setup_basics_title">设置新账户</string>
     <string name="account_setup_basics_instructions">输入该账户的电子邮件地址：</string>
@@ -505,7 +503,6 @@
     <string name="account_setup_options_mail_display_count_1000">1000封</string>
     <!-- NEW: <string name="account_setup_options_mail_display_count_all">all messages</string>-->
 
-
     <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
 
     <string name="account_setup_failed_dlg_title">无法完成设置</string>
@@ -549,12 +546,18 @@
 
     <string name="account_settings_composition">正在发送邮件</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">在引用的文本后进行回复</string>
     <string name="account_settings_reply_after_quote_summary">回复邮件时，原始邮件会显示在您的邮件的上方。</string>
 
     <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
     <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
     <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
     <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
@@ -579,7 +582,6 @@
 
     <!-- NEW: <string name="account_settings_storage_title">Storage</string>-->
 
-
     <string name="account_settings_color_label">账户颜色</string>
     <string name="account_settings_color_summary">选择账户在文件夹和账户列表中显示时所使用的颜色</string>
 
@@ -601,6 +603,8 @@
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">任意（无限制）</string>
 
     <string name="account_settings_message_age_label">同步该时段内的邮件</string>
@@ -616,7 +620,6 @@
     <string name="account_settings_message_age_3_months">三个月内</string>
     <string name="account_settings_message_age_6_months">六个月内</string>
     <string name="account_settings_message_age_1_year">一年内</string>
-
 
     <string name="account_settings_folder_display_mode_label">显示的文件夹</string>
     <string name="account_settings_folder_display_mode_all">全部</string>
@@ -692,7 +695,6 @@
     <string name="account_settings_led_label">闪烁LED灯</string>
     <string name="account_settings_led_summary">有新邮件时闪烁LED灯</string>
 
-
     <string name="account_settings_servers">服务器设置</string>
 
     <string name="account_settings_composition_title">撰写新邮件选项</string>
@@ -740,7 +742,6 @@
     <string name="choose_account_title">选择账户/身份标识</string>
     <!-- NEW: <string name="send_as">Send as</string>-->
 
-
     <string name="no_identities">请使用“账户设置”-&gt;“管理身份标识”来创建身份标识</string>
     <string name="no_removable_identity">您必须保留一个身份标识</string>
     <string name="identity_has_no_email">身份标识中必须包含电子邮件地址</string>
@@ -778,8 +779,11 @@
     <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="provider_note_live">只有一些“高级账户”允许POP访问并允许该程序连接。如果您使用了正确的用户名和密码却仍旧无法登录，则您可能没有购买这些“高级账户”。请使用浏览器来访问这些账户。</string>
-
     <!-- NEW: <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
@@ -807,8 +811,6 @@
     <string name="folder_list_display_mode_first_and_second_class">显示初级和次级文件夹</string>
     <string name="folder_list_display_mode_not_second_class">仅不显示次级文件夹</string>
 
-
-
     <string name="account_settings_signature__location_label">签名位置</string>
     <string name="account_settings_signature__location_before_quoted_text">在引用的文本之前</string>
     <string name="account_settings_signature__location_after_quoted_text">在引用的文本之后</string>
@@ -830,8 +832,6 @@
     <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
     <string name="settings_messageview_zoom_controls_label">系统放大控制</string>
     <string name="settings_messageview_zoom_controls_summary">如果设备支持则启用放大插件或多点触摸放大</string>
-
-
 
     <string name="setting_language_system">系统默认值</string>
 
@@ -1035,4 +1035,8 @@
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

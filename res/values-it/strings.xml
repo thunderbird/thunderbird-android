@@ -83,8 +83,6 @@
     <string name="remove_account_action">Rimuovi account</string>
     <string name="clear_pending_action">Annulla tutte le azioni in corso (pericolo!)</string>
 
-
-
     <string name="accounts_action">Account</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -271,8 +269,7 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima che questo messaggio venga inviato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">A:</string>
@@ -291,7 +288,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="message_view_show_pictures_action">Mostra immagini</string>
     <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
     <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Scarica intero messaggio</string>
 
@@ -319,7 +315,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="about_header">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Versione: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Mostra stelle</string>
     <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
     <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
@@ -339,6 +334,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_messageview_fixedwidth_summary">Usa font a larghezza fissa quando mostri i messaggi di testo</string>
     <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
     <string name="global_settings_messageview_return_to_list_summary">Ritorna all\'elenco dei messaggi dopo l\'eliminazione del messaggio</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Conferma azioni</string>
     <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
@@ -351,12 +348,10 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="global_settings_privacy_mode_title">Notifiche con blocco dello schermo</string>
     <string name="global_settings_privacy_mode_summary">Non visualizzare l\'oggetto del messaggio nella barra di notifica quando il sistema è bloccato</string>
 
-
     <string name="quiet_time">Silenzioso a tempo</string>
     <string name="quiet_time_description">Disabilita chiamata, vibrazione e lampeggi di notte</string>
     <string name="quiet_time_starts">Attiva alle</string>
     <string name="quiet_time_ends">Disattiva alle</string>
-
 
     <string name="account_setup_basics_title">Configura un nuovo account</string>
     <string name="account_setup_basics_instructions">Inserisci l\'indirizzo e-mail di questo account:</string>
@@ -521,7 +516,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_setup_options_mail_display_count_1000">1000 messaggi</string>
     <string name="account_setup_options_mail_display_count_all">tutti i messaggi</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Non è possibile copiare o spostare un messaggio che non sia sincronizzato con il server</string>
 
     <string name="account_setup_failed_dlg_title">Impossibile completare la configurazione</string>
@@ -565,6 +559,9 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="account_settings_composition">Composizione messaggio</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Risposta dopo testo quotato</string>
     <string name="account_settings_reply_after_quote_summary">Quando si risponde ai messaggi, il messaggio originale viene visualizzato sopra la tua risposta.</string>
 
@@ -598,7 +595,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
 
     <string name="account_settings_storage_title">Memorizzazione</string>
 
-
     <string name="account_settings_color_label">Colore dell\'account</string>
     <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nell\'elenco delle cartelle e degli account</string>
 
@@ -620,6 +616,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_autodownload_message_size_512">512KB</string>
     <string name="account_settings_autodownload_message_size_1024">1MB</string>
     <string name="account_settings_autodownload_message_size_2048">2MB</string>
+    <string name="account_settings_autodownload_message_size_5120">5MB</string>
+    <string name="account_settings_autodownload_message_size_10240">10MB</string>
     <string name="account_settings_autodownload_message_size_any">qualsiasi dimensione (nessun limite)</string>
 
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
@@ -635,7 +633,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_message_age_3_months">gli ultimi 3 mesi</string>
     <string name="account_settings_message_age_6_months">gli ultimi 6 mesi</string>
     <string name="account_settings_message_age_1_year">l\'ultimo anno</string>
-
 
     <string name="account_settings_folder_display_mode_label">Visualizza cartelle</string>
     <string name="account_settings_folder_display_mode_all">Tutte</string>
@@ -711,7 +708,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_led_label">LED lampeggiante</string>
     <string name="account_settings_led_summary">LED lampeggiante quando arriva un messaggio</string>
 
-
     <string name="account_settings_servers">Impostazioni del server</string>
 
     <string name="account_settings_composition_title">Opzioni composizione messaggi</string>
@@ -759,7 +755,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="choose_account_title">Scegli account/identità</string>
     <string name="send_as">Invia come</string>
 
-
     <string name="no_identities">Vai a Impostazioni account -&gt; Gestione identità per creare identità</string>
     <string name="no_removable_identity">Non è possibile rimuovere la propria unica identità</string>
     <string name="identity_has_no_email">Non è possibile utilizzare una identità senza un indirizzo e-mail</string>
@@ -801,8 +796,11 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
         indirizzo email e password corretti, è possibile che non sia stato pagato un account
         \"Plus\". Esegui il browser Internet per acquistare l\'accesso a questo
         genere di account e-mail.</string>
-
     <string name="provider_note_yahoojp">Se si desidera utilizzare POP3 per questo provider, si deve consentire l\'utilizzo di POP3 sulla pagina delle impostazioni di Yahoo.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
@@ -831,8 +829,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="folder_list_display_mode_first_and_second_class">Visualizza cartelle di 1a e 2a Classe</string>
     <string name="folder_list_display_mode_not_second_class">Visualizza tutte eccetto le cartelle di 2a Classe</string>
 
-
-
     <string name="account_settings_signature__location_label">Posizione della firma</string>
     <string name="account_settings_signature__location_before_quoted_text">Prima del testo quotato</string>
     <string name="account_settings_signature__location_after_quoted_text">Dopo il testo quotato</string>
@@ -854,8 +850,6 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
     <string name="settings_messageview_zoom_controls_label">Zoom di sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Abilita widgets dello zoom o pinch-zoom se il dispositivo lo supporta</string>
-
-
 
     <string name="setting_language_system">Impostazioni predefinite di sistema</string>
 
@@ -1061,4 +1055,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

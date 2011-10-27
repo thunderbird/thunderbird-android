@@ -83,8 +83,6 @@
     <string name="remove_account_action">Ta bort konto</string>
     <string name="clear_pending_action">Rensa avvaktande handlingar (farligt!)</string>
 
-
-
     <string name="accounts_action">Konton</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -110,6 +108,9 @@
     <string name="view_hide_details_action">Visa/dölj detaljer</string>
     <string name="add_cc_bcc_action">Lägg till Cc/Bcc</string>
     <string name="edit_subject_action">Redigera ämne</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Lägg till bilaga</string>
     <string name="add_attachment_action_image">Lägg till bilaga (Bild)</string>
     <string name="add_attachment_action_video">Lägg till bilaga (Video)</string>
@@ -268,8 +269,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Några bilagor hämtades inte. De kommer att hämtas automatiskt innan detta brev sänds.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Från: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Till:</string>
@@ -288,7 +288,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="message_view_show_pictures_action">Visa bilder</string>
     <string name="message_view_fetching_attachment_toast">Hämtar bilaga.</string>
     <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Hämta hem hela brevet</string>
 
@@ -316,7 +315,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="about_header">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Stjärnor</string>
     <string name="global_settings_flag_summary">Stjärnor indikerar flaggade brev</string>
     <string name="global_settings_checkbox_label">Checkboxar för flerval</string>
@@ -336,6 +334,8 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd för att visa brev med enbart text</string>
     <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter radering</string>
     <string name="global_settings_messageview_return_to_list_summary">Återvänd till listan efter att ha raderat ett brev</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>
     <string name="global_settings_confirm_actions_summary">Visa en dialogruta när du genomför utvalda åtgärder</string>
@@ -348,12 +348,10 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="global_settings_privacy_mode_title">Privatläge</string>
     <string name="global_settings_privacy_mode_summary">Visa inte e-postens ämnen i notifieringsytan när systemet är låst</string>
 
-
     <string name="quiet_time">Tyst tid</string>
     <string name="quiet_time_description">Avaktivera ringsignaler, vibration och blinkande på natten</string>
     <string name="quiet_time_starts">Tyst tid börjar</string>
     <string name="quiet_time_ends">Tyst tid slutar</string>
-
 
     <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
     <string name="account_setup_basics_instructions">Ange detta kontos e-post-adress:</string>
@@ -518,7 +516,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_setup_options_mail_display_count_1000">1000 brev</string>
     <string name="account_setup_options_mail_display_count_all">alla brev</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Kan inte kopiera eller flytta ett brev som inte är synkroniserat med servern</string>
 
     <string name="account_setup_failed_dlg_title">Kunde inte fullborda konfigurationen</string>
@@ -562,12 +559,18 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
 
     <string name="account_settings_composition">Skriva brev</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Svar efter citat</string>
     <string name="account_settings_reply_after_quote_summary">Vid svar på e-post placeras originalmeddelandet ovanför ditt svar.</string>
 
     <string name="account_settings_message_format_label">Brevformat</string>
     <string name="account_settings_message_format_text">Ren text (bilder och formatering tas bort)</string>
     <string name="account_settings_message_format_html">HTML (bilder och formatering behålls)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">Citationsstil vid svar</string>
     <string name="account_settings_quote_style_prefix">Prefix (som Gmail, Pine)</string>
@@ -592,7 +595,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
 
     <string name="account_settings_storage_title">Lagring</string>
 
-
     <string name="account_settings_color_label">Kontofärg</string>
     <string name="account_settings_color_summary">Välj färg för att visa detta konto i mappar och kontolistor</string>
 
@@ -614,6 +616,8 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">Ingen gräns</string>
 
     <string name="account_settings_message_age_label">Synka e-post från</string>
@@ -629,7 +633,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_settings_message_age_3_months">senaste 3 månaderna</string>
     <string name="account_settings_message_age_6_months">senaste 6 månaderna</string>
     <string name="account_settings_message_age_1_year">senaste året</string>
-
 
     <string name="account_settings_folder_display_mode_label">Mappar att visa</string>
     <string name="account_settings_folder_display_mode_all">Alla</string>
@@ -705,7 +708,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_settings_led_label">Blinka LED</string>
     <string name="account_settings_led_summary">Blinka LED när det kommer ny e-post</string>
 
-
     <string name="account_settings_servers">Serverinställningar</string>
 
     <string name="account_settings_composition_title">Inställningar för att skriva brev</string>
@@ -753,7 +755,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="choose_account_title">Välj konto/identitet</string>
     <string name="send_as">Skicka som</string>
 
-
     <string name="no_identities">Gå till Kontoinställningar -&gt; Hantera identiteter för att skapa en identitet</string>
     <string name="no_removable_identity">Du kan inte radera din enda identitet</string>
     <string name="identity_has_no_email">Du kan inte använda en identitet utan e-postadress</string>
@@ -794,8 +795,11 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
         vilket krävs för detta program för att ansluta. Om du misslyckas med att logga in
         med din korrekta adress och lösenord så kanske du inte har ett betalt
         \"Plus\"-konto. Vänligen starta webbläsaren för att komma åt dessa konton.</string>
-
     <string name="provider_note_yahoojp">Om du vill använda POP3 med denna leverantör måste du välja att tillåta POP3 på inställningssidan för Yahoo!.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt Certifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
@@ -824,8 +828,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="folder_list_display_mode_first_and_second_class">Visa första och andra klassens mappar</string>
     <string name="folder_list_display_mode_not_second_class">Visa alla förutom andra klassens mappar</string>
 
-
-
     <string name="account_settings_signature__location_label">Signaturposition</string>
     <string name="account_settings_signature__location_before_quoted_text">Före citerad text</string>
     <string name="account_settings_signature__location_after_quoted_text">Efter citerad text</string>
@@ -847,8 +849,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="settings_messageview_mobile_layout_summary">Formatera om HTML-brev för mindre skärmar</string>
     <string name="settings_messageview_zoom_controls_label">Kontroll av zoom</string>
     <string name="settings_messageview_zoom_controls_summary">Aktivera zoom-widgets eller nyp-zoom om din enhet stödjer det</string>
-
-
 
     <string name="setting_language_system">Systemstandard</string>
 
@@ -1054,4 +1054,8 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

@@ -83,8 +83,6 @@
     <string name="remove_account_action">Eliminar conta</string>
     <string name="clear_pending_action">Limpar accións pendentes (perigroso!)</string>
 
-
-
     <string name="accounts_action">Contas</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -109,6 +107,9 @@
     <string name="view_hide_details_action">Ver/Ocultar detalles</string>
     <string name="add_cc_bcc_action">Engadir Cc/Bcc</string>
     <string name="edit_subject_action">Editar Asunto</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Engadir adxunto</string>
     <string name="add_attachment_action_image">Engadir adxunto (Imaxe)</string>
     <string name="add_attachment_action_video">Engadir adxunto (Vídeo)</string>
@@ -266,8 +267,7 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
     <string name="message_compose_downloading_attachments_toast">Algúns adxuntos non se descargaron. Serán descargados automáticamente antes de que mandar a mensaxe</string>
     <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Dende: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
@@ -286,7 +286,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="message_view_show_pictures_action">Amosar imaxe</string>
     <string name="message_view_fetching_attachment_toast">Obtendo adxuntos.</string>
     <string name="message_view_no_viewer">Imposible atopar visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Descargar mensaxe completa</string>
 
@@ -314,7 +313,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="about_header">Sobre <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Versión: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Ver estrelas</string>
     <string name="global_settings_flag_summary">As estrelas indican unha mensaxe destacada</string>
     <string name="global_settings_checkbox_label">Selección múltiple</string>
@@ -334,6 +332,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="global_settings_messageview_fixedwidth_summary">Usar tamaño fixo de fonte nas mensaxes en texto plano</string>
     <string name="global_settings_messageview_return_to_list_label">Voltar á lista despois de borrar</string>
     <string name="global_settings_messageview_return_to_list_summary">Voltar á lista despois da acción de borrado</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Confirmar acción</string>
     <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
@@ -346,12 +346,10 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="global_settings_privacy_mode_title">Bloquear notificacións</string>
     <string name="global_settings_privacy_mode_summary">Non amosar asunto da mensaxe na barra de notificacións cando o sistema está bloqueado.</string>
 
-
     <string name="quiet_time">Tempo de Silencio</string>
     <string name="quiet_time_description">Desactivar sons, alertas e luces pola noite</string>
     <string name="quiet_time_starts">Silencio empeza</string>
     <string name="quiet_time_ends">Silencio remata</string>
-
 
     <string name="account_setup_basics_title">Configurar nova conta</string>
     <string name="account_setup_basics_instructions">Introduzca enderezo de correo</string>
@@ -516,7 +514,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_setup_options_mail_display_count_1000">1000 mensaxes</string>
     <string name="account_setup_options_mail_display_count_all">Todas as mensaxes</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Non se pode copiar/mover unha mensaxe que non foi sincronizada co servidor</string>
 
     <string name="account_setup_failed_dlg_title">No se puido rematar a Configuración</string>
@@ -560,12 +557,18 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
 
     <string name="account_settings_composition">Configuración Saínte</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Resposta tras cita</string>
     <string name="account_settings_reply_after_quote_summary">Cando se responda a un correo, o texto orixinal estará por riba da sua resposta</string>
 
     <string name="account_settings_message_format_label">Formato da mensaxe</string>
     <string name="account_settings_message_format_text">Texto plano (borraránse imaxes e formato)</string>
     <string name="account_settings_message_format_html">HTML (mantéñense imaxes e formato)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">Responder estilo comentario</string>
     <string name="account_settings_quote_style_prefix">Prefixo (coma Gmail, Pine)</string>
@@ -590,7 +593,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
 
     <string name="account_settings_storage_title">Almacenamento</string>
 
-
     <string name="account_settings_color_label">Cor da conta</string>
     <string name="account_settings_color_summary">Elixe a cor a usar na carpeta e na conta</string>
 
@@ -612,6 +614,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">calquera tamaño (sen límite)</string>
 
     <string name="account_settings_message_age_label">Sincronizar dende</string>
@@ -627,7 +631,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_settings_message_age_3_months">os últimos 3 meses</string>
     <string name="account_settings_message_age_6_months">os últimos 6 meses</string>
     <string name="account_settings_message_age_1_year">o último ano</string>
-
 
     <string name="account_settings_folder_display_mode_label">Carpetas a amosar</string>
     <string name="account_settings_folder_display_mode_all">Todas</string>
@@ -703,7 +706,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_settings_led_label">Pestanexo LED</string>
     <string name="account_settings_led_summary">Pestanexar o LED cando chega novo correo</string>
 
-
     <string name="account_settings_servers">Configurar Servidor</string>
 
     <string name="account_settings_composition_title">Opcións de edición de mensaxe</string>
@@ -751,7 +753,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="choose_account_title">Seleccionar conta/identidade</string>
     <string name="send_as">Enviar como</string>
 
-
     <string name="no_identities">Ir a Configuración contas -&gt; e a identidade para crear unha nova identidade</string>
     <string name="no_removable_identity">Non podes eliminar a túa única identidade</string>
     <string name="identity_has_no_email">Non podes usar unha identidade sen enderezo de correo</string>
@@ -791,8 +792,11 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="provider_note_live">Só algunhas contas \"Plus\" poden usar acceso POP
         Se non podes acceder coa tua contrasinal e usuario e non tes unha conta de pago.
         É posible que podas acceder só vía web.</string>
-
     <string name="provider_note_yahoojp">Se queres usar o correo POP3 para este proveedor debes activar este acceso na Configuración de Yahoo.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado descoñecido</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
@@ -821,8 +825,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1a e 2a Clase</string>
     <string name="folder_list_display_mode_not_second_class">Ver todas agás as de 2a Clase</string>
 
-
-
     <string name="account_settings_signature__location_label">Posición da sinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes do texto citado</string>
     <string name="account_settings_signature__location_after_quoted_text">Despois do texto citado</string>
@@ -844,8 +846,6 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="settings_messageview_mobile_layout_summary">Reformatea mensaxes HTML para pantallas pequenas</string>
     <string name="settings_messageview_zoom_controls_label">Controles do Zoom por sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Permitir opcións de zoom que soporta o propio dispositivo</string>
-
-
 
     <string name="setting_language_system">Configurado no sistema</string>
 
@@ -1052,4 +1052,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

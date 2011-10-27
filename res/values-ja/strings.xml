@@ -83,8 +83,6 @@
     <string name="remove_account_action">アカウント削除</string>
     <string name="clear_pending_action">保留中のアクションをクリア (危険！)</string>
 
-
-
     <string name="accounts_action">アカウント一覧</string>
     <string name="back_to_accounts_action">\u25c0</string>
     <string name="back_to_folder_list_action">\u25c0</string>
@@ -272,8 +270,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
     <string name="message_compose_show_quoted_text_action">元のメッセージを引用する</string>
 
-
-
     <string name="message_view_from_format">送信者: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">宛先:</string>
     <string name="message_view_cc_label">Cc:</string>
@@ -318,7 +314,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="about_header"><xliff:g id="app_name">%s</xliff:g> について</string>
     <string name="about_version">バージョン: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">スターを表示</string>
     <string name="global_settings_flag_summary">スターは印の付いたメッセージを示す</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
@@ -352,12 +347,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
     <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
 
-
     <string name="quiet_time">夜間時間帯</string>
     <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定</string>
     <string name="quiet_time_starts">開始時刻</string>
     <string name="quiet_time_ends">終了時刻</string>
-
 
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
@@ -601,7 +594,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_storage_title">ストレージ</string>
 
-
     <string name="account_settings_color_label">アカウントの色</string>
     <string name="account_settings_color_summary">アカウント一覧とフォルダで使用する色を選択</string>
 
@@ -640,7 +632,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_message_age_3_months">３ヶ月前</string>
     <string name="account_settings_message_age_6_months">６ヶ月前</string>
     <string name="account_settings_message_age_1_year">１年前</string>
-
 
     <string name="account_settings_folder_display_mode_label">表示するフォルダ</string>
     <string name="account_settings_folder_display_mode_all">すべて</string>
@@ -716,7 +707,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_led_label">LEDを点滅</string>
     <string name="account_settings_led_summary">メール着信時にLEDを点滅</string>
 
-
     <string name="account_settings_servers">サーバ設定</string>
 
     <string name="account_settings_composition_title">メール本文構成管理</string>
@@ -763,7 +753,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="choose_identity_title">差出人情報選択</string>
     <string name="choose_account_title">アカウント選択</string>
     <string name="send_as">他のアカウントで送信</string>
-
 
     <string name="no_identities">アカウント設定 -&gt; 差出人情報管理 で差出人情報を作成してください</string>
     <string name="no_removable_identity">最後の差出人情報は削除できません</string>
@@ -831,8 +820,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="folder_list_display_mode_first_and_second_class">1st と 2nd クラスフォルダ表示</string>
     <string name="folder_list_display_mode_not_second_class">2nd クラスフォルダを除くすべて表示</string>
 
-
-
     <string name="account_settings_signature__location_label">署名挿入場所</string>
     <string name="account_settings_signature__location_before_quoted_text">引用テキストの前に挿入</string>
     <string name="account_settings_signature__location_after_quoted_text">引用テキストの後に挿入</string>
@@ -854,8 +841,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
     <string name="settings_messageview_zoom_controls_label">ズーム制御</string>
     <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にする</string>
-
-
 
     <string name="setting_language_system">システム設定</string>
 
