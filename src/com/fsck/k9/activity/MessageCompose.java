@@ -910,7 +910,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         boolean replyAfterQuote = false;
         String action = getIntent().getAction();
         if (mAccount.isReplyAfterQuote() &&
-                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))) {
+                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
+                        ACTION_EDIT_DRAFT.equals(action))) {
             replyAfterQuote = true;
         }
 
