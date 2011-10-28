@@ -339,10 +339,6 @@ public class ImapResponseParser {
             return (String)get(index);
         }
 
-        public InputStream getLiteral(int index) {
-            return (InputStream)get(index);
-        }
-
         public int getNumber(int index) {
             return Integer.parseInt(getString(index));
         }
@@ -382,10 +378,6 @@ public class ImapResponseParser {
 
         public String getKeyedString(Object key) {
             return (String)getKeyedValue(key);
-        }
-
-        public InputStream getKeyedLiteral(Object key) {
-            return (InputStream)getKeyedValue(key);
         }
 
         public int getKeyedNumber(Object key) {
