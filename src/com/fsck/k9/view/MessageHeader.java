@@ -18,6 +18,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.mail.Address;
@@ -208,7 +209,7 @@ public class MessageHeader extends LinearLayout {
 
         initializeLayout();
         String subject = message.getSubject();
-        if (subject == null || subject.equals("")) {
+        if(StringUtils.isNullOrEmpty(subject)){
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
         } else {
             mSubjectView.setText(subject);

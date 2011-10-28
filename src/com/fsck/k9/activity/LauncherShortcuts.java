@@ -17,6 +17,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.StringUtils;
 
 public class LauncherShortcuts extends K9ListActivity implements OnItemClickListener {
     private AccountsAdapter mAdapter;
@@ -53,7 +54,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         String description = account.getDescription();
-        if (description == null || description.length() == 0) {
+        if (StringUtils.isNullOrEmpty(description)) {
             description = account.getEmail();
         }
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, description);
@@ -104,7 +105,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
                 holder.email.setText(account.getEmail());
             }
 
-            if (description == null || description.length() == 0) {
+            if (StringUtils.isNullOrEmpty(description)) {
                 description = account.getEmail();
             }
 

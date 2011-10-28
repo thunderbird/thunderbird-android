@@ -38,6 +38,7 @@ import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -2468,7 +2469,7 @@ public class MessagingController implements Runnable {
             return;
         }
         try {
-            if (body == null || body.length() < 1) {
+            if (StringUtils.isNullOrEmpty(body)) {
                 return;
             }
 

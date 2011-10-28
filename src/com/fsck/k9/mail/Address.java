@@ -12,6 +12,7 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.StringUtils;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
@@ -60,7 +61,7 @@ public class Address {
                 Rfc822Token token = tokens[0];
                 mAddress = token.getAddress();
                 String name = token.getName();
-                if ((name != null) && !("".equals(name))) {
+                if(!StringUtils.isNullOrEmpty(name)){
                     /*
                      * Don't use the "personal" argument if "address" is of the form:
                      * James Bond <james.bond@mi6.uk>
@@ -111,11 +112,11 @@ public class Address {
      */
     public static Address[] parseUnencoded(String addressList) {
         List<Address> addresses = new ArrayList<Address>();
-        if ((addressList != null) && !("".equals(addressList))) {
+        if(!StringUtils.isNullOrEmpty(addressList)){
             Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens) {
                 String address = token.getAddress();
-                if ((address != null) && !("".equals(address))) {
+                if(!StringUtils.isNullOrEmpty(address)){
                     addresses.add(new Address(token.getAddress(), token.getName(), false));
                 }
             }
@@ -131,7 +132,7 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parse(String addressList) {
-        if (addressList == null || addressList.isEmpty()) {
+        if(StringUtils.isNullOrEmpty(addressList)){	
             return EMPTY_ADDRESS_ARRAY;
         }
         List<Address> addresses = new ArrayList<Address>();
@@ -168,7 +169,7 @@ public class Address {
 
     @Override
     public String toString() {
-        if (mPersonal != null && !mPersonal.equals("")) {
+        if (!StringUtils.isNullOrEmpty(mPersonal)){
             return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -190,7 +191,7 @@ public class Address {
     }
 
     public String toEncodedString() {
-        if (mPersonal != null && !mPersonal.equals("")) {
+        if (!StringUtils.isNullOrEmpty(mPersonal)){
             return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -256,7 +257,7 @@ public class Address {
             }
         }
 
-        return ((mPersonal != null) && (mPersonal.length() > 0)) ? mPersonal : mAddress;
+        return StringUtils.isNullOrEmpty(mPersonal) ? mAddress : mPersonal;
     }
 
     public static CharSequence toFriendly(Address[] addresses) {

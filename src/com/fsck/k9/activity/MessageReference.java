@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
@@ -34,7 +35,7 @@ public class MessageReference implements Parcelable {
      */
     public MessageReference(final String identity) throws MessagingException {
         // Can't be null and must be at least length one so we can check the version.
-        if (identity == null || identity.length() < 1) {
+        if (StringUtils.isNullOrEmpty(identity)) {
             throw new MessagingException("Null or truncated MessageReference identity.");
         }
 
