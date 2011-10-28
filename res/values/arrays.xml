@@ -534,7 +534,19 @@
         <item>ALWAYS</item>
         <item>NEVER</item>
     </string-array>
+    
+    <string-array name="background_ops_wifi_entries">
+        <item>@string/background_ops_wifi_roaming</item>
+        <item>@string/background_ops_wifi_always</item>
+        <item>@string/background_ops_wifi_never</item>
+    </string-array>
 
+    <string-array name="background_ops_wifi_values">
+        <item>WHEN_ROAMING</item>
+        <item>ALWAYS</item>
+        <item>NEVER</item>
+    </string-array>
+    
     <string-array name="date_formats">
         <item>@string/date_format_short</item>
         <item>@string/date_format_medium</item>

@@ -91,12 +91,16 @@ public class MailService extends CoreService {
             ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
             boolean doBackground = true;
             boolean hasConnectivity = false;
-
             if (connectivityManager != null) {
+                boolean wifiAvailiable = false;
+                boolean isRoaming = false;
+                
                 NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
                 if (netInfo != null) {
                     State state = netInfo.getState();
                     hasConnectivity = state == State.CONNECTED;
+                    wifiAvailiable = netInfo.getType() == ConnectivityManager.TYPE_WIFI;
+                    isRoaming = netInfo.isRoaming();
                 }
                 boolean backgroundData = connectivityManager.getBackgroundDataSetting();
                 boolean autoSync = true;
@@ -121,6 +125,24 @@ public class MailService extends CoreService {
                 case WHEN_CHECKED_AUTO_SYNC:
                     doBackground = backgroundData & autoSync;
                     break;
+                }
+                
+                //if based on the background sync settings we still need to do a 
+                //background sync then apply the wifi settings 
+                if(doBackground) {
+                    K9.BACKGROUND_OPS_WIFI bOpsWifi = K9.getBackgroundOpsWifi();
+                    switch (bOpsWifi) {
+                    case WHEN_ROAMING:
+                	if(isRoaming && !wifiAvailiable)
+                	    doBackground = false;    
+                	break;
+                    case ALWAYS:
+                	doBackground = wifiAvailiable;
+                	break;
+                    case NEVER:
+                	doBackground = !wifiAvailiable; 
+                	break;
+                    }
                 }
 
             }

@@ -78,6 +78,7 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
+    private static final String PREFERENCE_BACKGROUND_OPS_WIFI = "background_ops_wifi";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
@@ -111,6 +112,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mZoomControlsEnabled;
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
+    private ListPreference mBackgroundOpsWifi;
     private CheckBoxPreference mUseGalleryBugWorkaround;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -301,6 +303,7 @@ public class Prefs extends K9PreferenceActivity {
 
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
+        mBackgroundOpsWifi = setupListPreference(PREFERENCE_BACKGROUND_OPS_WIFI, K9.getBackgroundOpsWifi().toString());
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
@@ -380,7 +383,8 @@ public class Prefs extends K9PreferenceActivity {
 
         K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
-        boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
+        boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue()) |  
+        	K9.setBackgroundOpsWifi(mBackgroundOpsWifi.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
 
         if (!K9.DEBUG && mDebugLogging.isChecked()) {

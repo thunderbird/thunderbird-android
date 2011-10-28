@@ -276,6 +276,14 @@
             android:entries="@array/background_ops_entries"
             android:entryValues="@array/background_ops_values"
             android:dialogTitle="@string/background_ops_label" />
+        
+         <ListPreference
+            android:persistent="false"
+            android:key="background_ops_wifi"
+            android:title="@string/background_ops_wifi_label"
+            android:entries="@array/background_ops_wifi_entries"
+            android:entryValues="@array/background_ops_wifi_values"
+            android:dialogTitle="@string/background_ops_wifi_label" />
 
     </PreferenceScreen>
 
