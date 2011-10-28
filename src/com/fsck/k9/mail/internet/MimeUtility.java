@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -940,7 +941,7 @@ public class MimeUtility {
             return parts[0];
         }
         for (String part : parts) {
-            if (part.trim().toLowerCase().startsWith(name.toLowerCase())) {
+            if (part.trim().toLowerCase(Locale.US).startsWith(name.toLowerCase(Locale.US))) {
                 String parameter = part.split("=", 2)[1].trim();
                 if (parameter.startsWith("\"") && parameter.endsWith("\"")) {
                     return parameter.substring(1, parameter.length() - 1);
@@ -1184,7 +1185,7 @@ public class MimeUtility {
         String extension = null;
 
         if (filename != null && filename.lastIndexOf('.') != -1) {
-            extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+            extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase(Locale.US);
             returnedType = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
         // If the MIME type set by the user's mailer is application/octet-stream, try to figure
@@ -1263,7 +1264,7 @@ public class MimeUtility {
         if (charset == null || "0".equals(charset))
             charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
 
-        charset = charset.toLowerCase();
+        charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
             charset = "shift_jis";
         else if (charset.equals("koi8-u"))

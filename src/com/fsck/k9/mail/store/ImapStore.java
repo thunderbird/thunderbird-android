@@ -1461,7 +1461,7 @@ public class ImapStore extends Store {
                          * what type it is and bail out.
                          */
                         String subType = bs.getString(i);
-                        mp.setSubType(subType.toLowerCase());
+                        mp.setSubType(subType.toLowerCase(Locale.US));
                         break;
                     }
                 }
@@ -1490,7 +1490,7 @@ public class ImapStore extends Store {
 
                 String type = bs.getString(0);
                 String subType = bs.getString(1);
-                String mimeType = (type + "/" + subType).toLowerCase();
+                String mimeType = (type + "/" + subType).toLowerCase(Locale.US);
 
                 ImapList bodyParams = null;
                 if (bs.get(2) instanceof ImapList) {
@@ -1546,7 +1546,7 @@ public class ImapStore extends Store {
 
                 if (bodyDisposition != null && bodyDisposition.size() > 0) {
                     if (!"NIL".equalsIgnoreCase(bodyDisposition.getString(0))) {
-                        contentDisposition = bodyDisposition.getString(0).toLowerCase();
+                        contentDisposition = bodyDisposition.getString(0).toLowerCase(Locale.US);
                     }
 
                     if ((bodyDisposition.size() > 1)
@@ -1558,7 +1558,7 @@ public class ImapStore extends Store {
                          */
                         for (int i = 0, count = bodyDispositionParams.size(); i < count; i += 2) {
                             contentDisposition += String.format(";\n %s=\"%s\"",
-                                                                bodyDispositionParams.getString(i).toLowerCase(),
+                                                                bodyDispositionParams.getString(i).toLowerCase(Locale.US),
                                                                 bodyDispositionParams.getString(i + 1));
                         }
                     }
@@ -1841,7 +1841,7 @@ public class ImapStore extends Store {
 //                                {
 //                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
 //                                }
-                                capabilities.add(((String)capability).toUpperCase());
+                                capabilities.add(((String)capability).toUpperCase(Locale.US));
                             }
                         }
 
@@ -2151,7 +2151,7 @@ public class ImapStore extends Store {
         }
 
         protected boolean hasCapability(String capability) {
-            return capabilities.contains(capability.toUpperCase());
+            return capabilities.contains(capability.toUpperCase(Locale.US));
         }
 
         public boolean isOpen() {
