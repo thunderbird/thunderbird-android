@@ -20,40 +20,40 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 /**
  * Note: All documentation in this file market <CK:RE> is documentation written by Christian Knecht by reverse engineering.
  *       This documentation is without warranty and may not be accurate nor reflect the author's original intent.
- *      
+ *
  * <CK:RE>
  * CoreService is the base class for all K9 Services.
- * 
+ *
  * An Android service is a way to model a part of an application that needs to accomplish certain tasks without the
  * UI part of the application being necessarily active (of course an application could also be a pure service, without
  * any UI; this is not the case of K9). By declaring a service and starting it, the OS knows that the application has
  * work to do and should avoid killing the process.
- * 
+ *
  * A service's main purpose is to do some task (usually in the background) which requires one of more threads. The
  * thread that starts the service is the same as the UI thread of the process. It should thus not be used to run
  * the tasks.
- * 
+ *
  * CoreService is providing the execution plumbing for background tasks including the required thread and task queuing
  * for all K9 services to use.
- * 
+ *
  * A service is supposed to run only as long as it has some work to do whether that work is active processing or some
  * just some monitoring, like listening on a network port for incoming connections or listing on an open network
  * connection for incoming data (push mechanism).
- * 
+ *
  * To make sure the service is running only when required, is must be shutdown after tasks are done. As the
  * execution of tasks is abstracted away in this class, it also proper shutdown handling if approriate. If
- * the Service requires this is should call enableAutoShutdown(true) in it's onCreate() method. 
+ * the Service requires this is should call enableAutoShutdown(true) in it's onCreate() method.
  *
  * While a service is running it's tasks, it is usually not a good idea to let the device go to sleep more.
  * WakeLocks are used to avoid this. CoreService provides a central registry (singleton) that can be used
  * application-wide to store WakeLocks.
- * 
+ *
  * In short, CoreService provides the following features to K9 Services:
  *  - task execution and queuing
  *  - Service life cycle management (insures the service is stopped when not needed anymore); disabled by default
  *  - WakeLock registry and management
- *  
- * </CK:RE>      
+ *
+ * </CK:RE>
  */
 public abstract class CoreService extends Service {
 
@@ -69,13 +69,13 @@ public abstract class CoreService extends Service {
      * only as long as a task is running. If a service should behave differently, disable auto-shutdown.
      */
     private boolean mAutoShutdown = true;
-    
+
     /**
      * This variable is part of the auto-shutdown feature and determines whether the service has to be shutdown at the
      * end of the onStart() method or not.
      */
-    protected boolean mImmediateShutdown = true; // 
-    
+    protected boolean mImmediateShutdown = true; //
+
     @Override
     public void onCreate() {
         if (K9.DEBUG)
@@ -140,7 +140,7 @@ public abstract class CoreService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         // deprecated method but still used for backwards compatibility with Android version <2.0
-      
+
         // CK:DocAdded: Manage wake-locks, especially, release any wake-locks held so far and define a new "local" wake lock.
         //           Also, because we create a new wakelock, we re-initialize the wakelock timeout and give
         //           the service-start code a protection of up to MAIL_SERVICE_WAKE_LOCK_TIMEOUT (currently 30s).
@@ -172,12 +172,12 @@ public abstract class CoreService extends Service {
             startService(intent, startId);
         } finally {
             try{wakeLock.release();} catch (Exception e) {/* ignore */}
-            try{if (mAutoShutdown && mImmediateShutdown && startId != -1) stopSelf(startId);} catch (Exception e) {/* ignore */} 
+            try{if (mAutoShutdown && mImmediateShutdown && startId != -1) stopSelf(startId);} catch (Exception e) {/* ignore */}
         }
     }
 
     /**
-     * 
+     *
      * @param context
      * @param runner
      * @param wakeLockTime
@@ -233,7 +233,7 @@ public abstract class CoreService extends Service {
                 Log.i(K9.LOG_TAG, "CoreService: " + className + " is shutting down, ignoring rejected execution exception: " + e.getMessage());
             }
         }
-        mImmediateShutdown = !serviceShutdownScheduled; 
+        mImmediateShutdown = !serviceShutdownScheduled;
         return serviceShutdownScheduled;
     }
 
