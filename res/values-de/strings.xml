@@ -275,7 +275,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_view_attachment_download_action">Speichern</string>
     <string name="message_view_prev_action">\u25BC</string>
     <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Sichern</string>
+    <string name="message_view_archive_action">Archivieren</string>
     <string name="message_view_move_action">Verschieben</string>
     <string name="message_view_spam_action">Spam</string>
     <string name="message_view_datetime_fmt">dd. MMM yyyy HH:mm</string>
@@ -546,7 +546,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_hide_buttons_always">Immer</string>
 
     <string name="account_settings_enable_move_buttons_label">Spam-Leiste</string>
-    <string name="account_settings_enable_move_buttons_summary">Zeige Sichern-, Verschieben- und Spam-Schaltfläche.</string>
+    <string name="account_settings_enable_move_buttons_summary">Zeige Archivieren-, Verschieben- und Spam-Schaltfläche.</string>
     <string name="account_settings_hide_move_buttons_label">Scrolle Spam-Leiste</string>
 
     <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>
@@ -873,7 +873,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="batch_mark_unread_op">Gewählte als ungelesen markieren</string>
     <string name="batch_flag_op">Gewählte als wichtig markieren</string>
     <string name="batch_unflag_op">Markierung bei Gewählten entfernen</string>
-    <string name="batch_archive_op">Gewählte sichern</string>
+    <string name="batch_archive_op">Gewählte archivieren</string>
     <string name="batch_spam_op">Gewählte als Spam markieren</string>
     <string name="batch_move_op">Gewählte verschieben</string>
     <string name="batch_copy_op">Gewählte kopieren</string>
