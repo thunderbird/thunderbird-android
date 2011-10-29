@@ -86,91 +86,88 @@ public class MailService extends CoreService {
     @Override
     public void startService(Intent intent, int startId) {
         long startTime = System.currentTimeMillis();
-        try {
-            boolean oldIsSyncDisabled = isSyncDisabled();
-            ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
-            boolean doBackground = true;
-            boolean hasConnectivity = false;
+        boolean oldIsSyncDisabled = isSyncDisabled();
+        ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        boolean doBackground = true;
+        boolean hasConnectivity = false;
 
-            if (connectivityManager != null) {
-                NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-                if (netInfo != null) {
-                    State state = netInfo.getState();
-                    hasConnectivity = state == State.CONNECTED;
-                }
-                boolean backgroundData = connectivityManager.getBackgroundDataSetting();
-                boolean autoSync = true;
-                if (AutoSyncHelper.isAvailable()) {
-                    autoSync = AutoSyncHelper.getMasterSyncAutomatically();
+        if (connectivityManager != null) {
+            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            if (netInfo != null) {
+                State state = netInfo.getState();
+                hasConnectivity = state == State.CONNECTED;
+            }
+            boolean backgroundData = connectivityManager.getBackgroundDataSetting();
+            boolean autoSync = true;
+            if (AutoSyncHelper.isAvailable()) {
+                autoSync = AutoSyncHelper.getMasterSyncAutomatically();
 
-                    Log.i(K9.LOG_TAG, "AutoSync help is available, autoSync = " + autoSync);
-                }
-
-                K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-
-                switch (bOps) {
-                case NEVER:
-                    doBackground = false;
-                    break;
-                case ALWAYS:
-                    doBackground = true;
-                    break;
-                case WHEN_CHECKED:
-                    doBackground = backgroundData;
-                    break;
-                case WHEN_CHECKED_AUTO_SYNC:
-                    doBackground = backgroundData & autoSync;
-                    break;
-                }
-
+                Log.i(K9.LOG_TAG, "AutoSync help is available, autoSync = " + autoSync);
             }
 
-            syncBlocked = !(doBackground && hasConnectivity);
+            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
 
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
-                      + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
-
-            // MessagingController.getInstance(getApplication()).addListener(mListener);
-            if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "***** MailService *****: checking mail");
-                if (hasConnectivity && doBackground) {
-                    PollService.startService(this);
-                }
-                reschedulePollInBackground(hasConnectivity, doBackground, startId, false);
-            } else if (ACTION_CANCEL.equals(intent.getAction())) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
-                cancel();
-            } else if (ACTION_RESET.equals(intent.getAction())) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
-                rescheduleAllInBackground(hasConnectivity, doBackground, startId);
-            } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
-                reschedulePushersInBackground(hasConnectivity, doBackground, startId);
-            } else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction())) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
-                reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
-            } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
-                refreshPushersInBackground(hasConnectivity, doBackground, startId);
-            } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
-                rescheduleAllInBackground(hasConnectivity, doBackground, startId);
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
-            } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
-                /* do nothing */
+            switch (bOps) {
+            case NEVER:
+                doBackground = false;
+                break;
+            case ALWAYS:
+                doBackground = true;
+                break;
+            case WHEN_CHECKED:
+                doBackground = backgroundData;
+                break;
+            case WHEN_CHECKED_AUTO_SYNC:
+                doBackground = backgroundData & autoSync;
+                break;
             }
 
-            if (isSyncDisabled() != oldIsSyncDisabled) {
-                MessagingController.getInstance(getApplication()).systemStatusChanged();
-            }
-        } finally {
-          /* nothing to do */
         }
+
+        syncBlocked = !(doBackground && hasConnectivity);
+
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
+                  + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+
+        // MessagingController.getInstance(getApplication()).addListener(mListener);
+        if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "***** MailService *****: checking mail");
+            if (hasConnectivity && doBackground) {
+                PollService.startService(this);
+            }
+            reschedulePollInBackground(hasConnectivity, doBackground, startId, false);
+        } else if (ACTION_CANCEL.equals(intent.getAction())) {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
+            cancel();
+        } else if (ACTION_RESET.equals(intent.getAction())) {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
+            rescheduleAllInBackground(hasConnectivity, doBackground, startId);
+        } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
+            reschedulePushersInBackground(hasConnectivity, doBackground, startId);
+        } else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction())) {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
+            reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
+        } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
+            refreshPushersInBackground(hasConnectivity, doBackground, startId);
+        } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
+            rescheduleAllInBackground(hasConnectivity, doBackground, startId);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+        } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
+            /* do nothing */
+        }
+
+        if (isSyncDisabled() != oldIsSyncDisabled) {
+            MessagingController.getInstance(getApplication()).systemStatusChanged();
+        }
+
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
     }
