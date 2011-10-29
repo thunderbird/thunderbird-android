@@ -131,10 +131,10 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parse(String addressList) {
-        ArrayList<Address> addresses = new ArrayList<Address>();
-        if ((addressList == null) && !("".equals(addressList))) {
+        if (addressList == null || addressList.length() == 0) {
             return EMPTY_ADDRESS_ARRAY;
         }
+        List<Address> addresses = new ArrayList<Address>();
         try {
             MailboxList parsedList = AddressBuilder.parseAddressList(addressList).flatten();
             for (int i = 0, count = parsedList.size(); i < count; i++) {

@@ -76,6 +76,8 @@ public final class TrustManagerFactory {
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
         throws CertificateException {
+            // FIXME: Using a static field to store the certificate chain is a bad idea. Instead
+            // create a CertificateException subclass and store the chain there.
             TrustManagerFactory.setLastCertChain(chain);
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);

@@ -2032,7 +2032,7 @@ public class WebDavStore extends Store {
         public void setUrl(String url) {
             // TODO: This is a not as ugly hack (ie, it will actually work)
             // XXX: prevent URLs from getting to us that are broken
-            if (!(url.toLowerCase().contains("http"))) {
+            if (!(url.toLowerCase(Locale.US).contains("http"))) {
                 if (!(url.startsWith("/"))) {
                     url = "/" + url;
                 }

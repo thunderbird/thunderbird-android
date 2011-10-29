@@ -88,8 +88,6 @@
     <string name="remove_account_action">Odstranit účet</string>
     <string name="clear_pending_action">Vynulovat nevyřízené akce (nebezpečné!)</string>
 
-
-
     <string name="accounts_action">Účty</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -115,6 +113,9 @@
     <string name="view_hide_details_action">Zobrazit/skrýt podrobnosti</string>
     <string name="add_cc_bcc_action">Přidat kopii/skrytou</string>
     <string name="edit_subject_action">Upravit předmět</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Přidat přílohu</string>
     <string name="add_attachment_action_image">Přidat přílohu (obrázek)</string>
     <string name="add_attachment_action_video">Přidat přílohu (video)</string>
@@ -274,8 +275,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Některé přílohy nebyly staženy. Budou staženy automaticky, než bude tato zpráva odeslána.</string>
     <string name="message_compose_attachments_skipped_toast">Některé přílohy nelze přeposlat, protože ještě nebyly staženy.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Odesílatel: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Komu:</string>
@@ -294,7 +294,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="message_view_show_pictures_action">Zobrazovat obrázky</string>
     <string name="message_view_fetching_attachment_toast">Stahuji přílohu.</string>
     <string name="message_view_no_viewer">Nelze nalézt prohlížeč pro <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Stáhnout úplnou zprávu</string>
 
@@ -322,7 +321,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="about_header">O aplikaci<xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Verze: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Zprávy s \u2605</string>
     <string name="global_settings_flag_summary">Hvězdička indikuje označenou zprávu</string>
     <string name="global_settings_checkbox_label">Výběrová zaškrtávací pole</string>
@@ -342,6 +340,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="global_settings_messageview_fixedwidth_summary">Použít písmo s pevnou šířkou při zobrazování textových zpráv</string>
     <string name="global_settings_messageview_return_to_list_label">Návrat do seznamu po smazání</string>
     <string name="global_settings_messageview_return_to_list_summary">Vrátit se do seznamu zpráv po smazání zprávy</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Potvrzování akcí</string>
     <string name="global_settings_confirm_actions_summary">Zobrazit dialog, když provádíte zvolené akce</string>
@@ -354,12 +354,10 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="global_settings_privacy_mode_title">Oznámení při zamčené obrazovce</string>
     <string name="global_settings_privacy_mode_summary">Nezobrazovat v oznámení předmět zpráv, když je systém zamčen</string>
 
-
     <string name="quiet_time">Doba klidu</string>
     <string name="quiet_time_description">Zakázat v noci zvonění, vibrace a blikání</string>
     <string name="quiet_time_starts">Doba klidu začíná</string>
     <string name="quiet_time_ends">Doba klidu končí</string>
-
 
     <string name="account_setup_basics_title">Založit nový účet</string>
     <string name="account_setup_basics_instructions">Zadejte emailovou adresu tohoto účtu:</string>
@@ -524,7 +522,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_setup_options_mail_display_count_1000">1000 zpráv</string>
     <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
 
     <string name="account_setup_failed_dlg_title">Konfiguraci nastavení nelze dokončit</string>
@@ -568,12 +565,18 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
 
     <string name="account_settings_composition">Odesílání zpráv</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Odpovědět za citovaným textem</string>
     <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví ned vaší odpovědí.</string>
 
     <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
     <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
     <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
     <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
@@ -598,7 +601,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
 
     <string name="account_settings_storage_title">Úložiště</string>
 
-
     <string name="account_settings_color_label">Barva účtu</string>
     <string name="account_settings_color_summary">Vyberte barvu účtu používanou v seznamech složek a zpráv</string>
 
@@ -620,6 +622,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="account_settings_autodownload_message_size_any">jakékoli velikosti (bez omezení)</string>
 
     <string name="account_settings_message_age_label">Synchronizovat odeslané zprávy</string>
@@ -635,7 +639,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_settings_message_age_3_months">za poslední 3 měsíce</string>
     <string name="account_settings_message_age_6_months">za posledních 6 měsíců</string>
     <string name="account_settings_message_age_1_year">za poslední rok</string>
-
 
     <string name="account_settings_folder_display_mode_label">Zobrazované složky</string>
     <string name="account_settings_folder_display_mode_all">Všechny</string>
@@ -711,7 +714,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_settings_led_label">Blikání LED</string>
     <string name="account_settings_led_summary">Blikat LED, když přijde pošta</string>
 
-
     <string name="account_settings_servers">Nastavení serveru</string>
 
     <string name="account_settings_composition_title">Možnosti tvorby nových zpráv</string>
@@ -759,7 +761,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="choose_account_title">Vyberte účet/identitu</string>
     <string name="send_as">Odeslat jako</string>
 
-
     <string name="no_identities">Vytvořte identity v Nastavení účtu -&gt; Správa identit</string>
     <string name="no_removable_identity">Nemůžete odebrat vaši jedinou zbývající identitu</string>
     <string name="identity_has_no_email">Nemůžete použít identitu bez emailové adresy</string>
@@ -801,8 +802,11 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
         s vaší správnou emailovou adresou a heslem, nemusíte mít placený \"Plus\"
         účet. Spusťte si prosím webový prohlížeč, kterým na takové účty získáte
         přístup.</string>
-
     <string name="provider_note_yahoojp">Pokud chcete používat POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Yahoo.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámý certifikát</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
@@ -831,8 +835,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="folder_list_display_mode_first_and_second_class">Zobrazit složky 1. a 2. třídy</string>
     <string name="folder_list_display_mode_not_second_class">Zobrazit všechny vyjma složek 2. třídy</string>
 
-
-
     <string name="account_settings_signature__location_label">Umístění podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Před citovanými zprávami</string>
     <string name="account_settings_signature__location_after_quoted_text">Za citovanými zprávami</string>
@@ -854,8 +856,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="settings_messageview_mobile_layout_summary">Přeformátovat HTML zprávy pro menší obrazovky</string>
     <string name="settings_messageview_zoom_controls_label">Systémové ovládání zvětšování</string>
     <string name="settings_messageview_zoom_controls_summary">Povolit zvětšovací doplňky nebo zvětšování štípnutím, pokud to zařízení podporuje</string>
-
-
 
     <string name="setting_language_system">Systémový výchozí</string>
 
@@ -1061,4 +1061,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

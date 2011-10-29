@@ -259,7 +259,7 @@ public class K9 extends Application {
 
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
 
-    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
+    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000;
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 

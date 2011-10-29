@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 
@@ -64,7 +65,7 @@ public class HtmlConverter {
 
         @Override
         public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-            tag = tag.toLowerCase();
+            tag = tag.toLowerCase(Locale.US);
             if (tag.equals("hr") && opening) {
                 // In the case of an <hr>, replace it with a bunch of underscores. This is roughly
                 // the behaviour of Outlook in Rich Text mode.
