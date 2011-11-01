@@ -3276,9 +3276,11 @@ public class MessagingController implements Runnable {
                     localSrcFolder.copyMessages(messages, localDestFolder);
                 } else {
                     localSrcFolder.moveMessages(messages, localDestFolder);
-                    for (String origUid : origUidMap.keySet()) {
+                    for (Map.Entry<String, Message> entry : origUidMap.entrySet()) {
+                        String origUid = entry.getKey();
+                        Message message = entry.getValue();
                         for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, srcFolder, origUid, origUidMap.get(origUid).getUid());
+                            l.messageUidChanged(account, srcFolder, origUid, message.getUid());
                         }
                         unsuppressMessage(account, srcFolder, origUid);
                     }
