@@ -422,13 +422,13 @@ public class MimeMessage extends Message {
     }
 
     class MimeMessageBuilder implements ContentHandler {
-        private Stack<Object> stack = new Stack<Object>();
+        private final Deque<Object> stack = new ArrayDeque<Object>();
 
         public MimeMessageBuilder() {
         }
 
         private void expect(Class<?> c) {
-            if (!c.isInstance(stack.peek())) {
+            if (!c.isInstance(stack.peekFirst())) {
                 throw new IllegalStateException("Internal stack error: " + "Expected '"
                                                 + c.getName() + "' found '" + stack.peek().getClass().getName() + "'");
             }
@@ -436,13 +436,13 @@ public class MimeMessage extends Message {
 
         public void startMessage() {
             if (stack.isEmpty()) {
-                stack.push(MimeMessage.this);
+                stack.addFirst(MimeMessage.this);
             } else {
                 expect(Part.class);
                 try {
                     MimeMessage m = new MimeMessage();
-                    ((Part)stack.peek()).setBody(m);
-                    stack.push(m);
+                    ((Part)stack.peekFirst()).setBody(m);
+                    stack.addFirst(m);
                 } catch (MessagingException me) {
                     throw new Error(me);
                 }
@@ -451,7 +451,7 @@ public class MimeMessage extends Message {
 
         public void endMessage() {
             expect(MimeMessage.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startHeader() {
@@ -462,7 +462,7 @@ public class MimeMessage extends Message {
             expect(Part.class);
             try {
                 Field parsedField = DefaultFieldParser.parse(field.getRaw(), null);
-                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+                ((Part)stack.peekFirst()).addHeader(parsedField.getName(), parsedField.getBody().trim());
             } catch (MessagingException me) {
                 throw new Error(me);
             } catch (MimeException me) {
@@ -474,7 +474,7 @@ public class MimeMessage extends Message {
             expect(Part.class);
             try {
                 String[] tokens = fieldData.split(":", 2);
-                ((Part)stack.peek()).addHeader(tokens[0], tokens[1].trim());
+                ((Part)stack.peekFirst()).addHeader(tokens[0], tokens[1].trim());
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -487,11 +487,11 @@ public class MimeMessage extends Message {
         public void startMultipart(BodyDescriptor bd) {
             expect(Part.class);
 
-            Part e = (Part)stack.peek();
+            Part e = (Part)stack.peekFirst();
             try {
                 MimeMultipart multiPart = new MimeMultipart(e.getContentType());
                 e.setBody(multiPart);
-                stack.push(multiPart);
+                stack.addFirst(multiPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -501,14 +501,14 @@ public class MimeMessage extends Message {
             expect(Part.class);
             Body body = MimeUtility.decodeBody(in, bd.getTransferEncoding());
             try {
-                ((Part)stack.peek()).setBody(body);
+                ((Part)stack.peekFirst()).setBody(body);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
         }
 
         public void endMultipart() {
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startBodyPart() {
@@ -516,8 +516,8 @@ public class MimeMessage extends Message {
 
             try {
                 MimeBodyPart bodyPart = new MimeBodyPart();
-                ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
-                stack.push(bodyPart);
+                ((MimeMultipart)stack.peekFirst()).addBodyPart(bodyPart);
+                stack.addFirst(bodyPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -525,7 +525,7 @@ public class MimeMessage extends Message {
 
         public void endBodyPart() {
             expect(BodyPart.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void epilogue(InputStream is) throws IOException {
@@ -535,7 +535,7 @@ public class MimeMessage extends Message {
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
             }
-            // ((Multipart) stack.peek()).setEpilogue(sb.toString());
+            // ((Multipart) stack.peekFirst()).setEpilogue(sb.toString());
         }
 
         public void preamble(InputStream is) throws IOException {
@@ -545,7 +545,7 @@ public class MimeMessage extends Message {
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
             }
-            ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
+            ((MimeMultipart)stack.peekFirst()).setPreamble(sb.toString());
 
         }
 
