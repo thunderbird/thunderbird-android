@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
@@ -944,8 +945,8 @@ public class WebDavStore extends Store {
             }
 
             if (headers != null) {
-                for (String headerName : headers.keySet()) {
-                    httpmethod.setHeader(headerName, headers.get(headerName));
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    httpmethod.setHeader(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -2207,10 +2208,11 @@ public class WebDavStore extends Store {
                 HashMap<String, String> data = mData.get(uid);
 
                 if (data != null) {
-                    for (String header : data.keySet()) {
+                    for (Map.Entry<String, String> entry : data.entrySet()) {
+                        String header = entry.getKey();
                         if (header.equals("read")) {
-                            String read = data.get(header);
-                            Boolean readStatus = !read.equals("0");
+                            String read = entry.getValue();
+                            boolean readStatus = !read.equals("0");
 
                             envelope.setReadStatus(readStatus);
                         } else if (header.equals("date")) {
@@ -2219,7 +2221,7 @@ public class WebDavStore extends Store {
                              * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
                              * are Z>
                              */
-                            String date = data.get(header);
+                            String date = entry.getValue();
                             date = date.substring(0, date.length() - 1);
 
                             DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
@@ -2234,7 +2236,7 @@ public class WebDavStore extends Store {
                             }
                             envelope.addHeader(header, tempDate);
                         } else {
-                            envelope.addHeader(header, data.get(header));
+                            envelope.addHeader(header, entry.getValue());
                         }
                     }
                 }
