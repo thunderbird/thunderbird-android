@@ -11,6 +11,7 @@ import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.transport.TrustedSocketFactory;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -1485,26 +1486,32 @@ public class WebDavStore extends Store {
                         StringBuilder buffer = new StringBuilder();
                         String tempText = "";
                         String resultText = "";
-                        BufferedReader reader;
+                        BufferedReader reader = null;
                         int currentLines = 0;
 
-                        istream = WebDavHttpClient.getUngzippedContent(entity);
+                        try {
+                            istream = WebDavHttpClient.getUngzippedContent(entity);
 
-                        if (lines != -1) {
-                            reader = new BufferedReader(new InputStreamReader(istream), 8192);
+                            if (lines != -1) {
+                                reader = new BufferedReader(new InputStreamReader(istream), 8192);
 
-                            while ((tempText = reader.readLine()) != null &&
-                                    (currentLines < lines)) {
-                                buffer.append(tempText).append("\r\n");
-                                currentLines++;
+                                while ((tempText = reader.readLine()) != null &&
+                                        (currentLines < lines)) {
+                                    buffer.append(tempText).append("\r\n");
+                                    currentLines++;
+                                }
+
+                                istream.close();
+                                resultText = buffer.toString();
+                                istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
                             }
 
-                            istream.close();
-                            resultText = buffer.toString();
-                            istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                        }
+                            wdMessage.parse(istream);
 
-                        wdMessage.parse(istream);
+                        } finally {
+                            IOUtils.closeQuietly(reader);
+                            IOUtils.closeQuietly(istream);
+                        }
                     }
 
                 } catch (IllegalArgumentException iae) {
