@@ -45,14 +45,15 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -1949,7 +1950,7 @@ public class WebDavStore extends Store {
      */
     public class WebDavHandler extends DefaultHandler {
         private DataSet mDataSet = new DataSet();
-        private Stack<String> mOpenTags = new Stack<String>();
+        private final Deque<String> mOpenTags = new ArrayDeque<String>();
 
         public DataSet getDataSet() {
             return this.mDataSet;
@@ -1968,12 +1969,12 @@ public class WebDavStore extends Store {
         @Override
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes atts) throws SAXException {
-            mOpenTags.push(localName);
+            mOpenTags.addFirst(localName);
         }
 
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
-            mOpenTags.pop();
+            mOpenTags.removeFirst();
 
             /** Reset the hash temp variables */
             if (localName.equals("response")) {
@@ -1984,7 +1985,7 @@ public class WebDavStore extends Store {
         @Override
         public void characters(char ch[], int start, int length) {
             String value = new String(ch, start, length);
-            mDataSet.addValue(value, mOpenTags.peek());
+            mDataSet.addValue(value, mOpenTags.peekFirst());
         }
     }
 
