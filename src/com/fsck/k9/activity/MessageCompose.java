@@ -106,6 +106,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_MESSAGE_FORMAT = "com.fsck.k9.activity.MessageCompose.messageFormat";
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
+    private static final String STATE_KEY_DRAFT_NEEDS_SAVING = "com.fsck.k9.activity.MessageCompose.mDraftNeedsSaving";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -789,7 +790,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public void onPause() {
         super.onPause();
-        saveIfNeeded();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
 
@@ -804,7 +804,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        saveIfNeeded();
         ArrayList<Uri> attachments = new ArrayList<Uri>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             View view = mAttachments.getChildAt(i);
@@ -825,6 +824,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putSerializable(STATE_KEY_HTML_QUOTE, mQuotedHtmlContent);
         outState.putSerializable(STATE_KEY_MESSAGE_FORMAT, mMessageFormat);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, mReadReceipt);
+        outState.putBoolean(STATE_KEY_DRAFT_NEEDS_SAVING, mDraftNeedsSaving);
     }
 
     @Override
@@ -859,13 +859,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
+        mDraftNeedsSaving = savedInstanceState.getBoolean(STATE_KEY_DRAFT_NEEDS_SAVING);
 
         initializeCrypto();
         updateFrom();
         updateSignature();
         updateEncryptLayout();
 
-        mDraftNeedsSaving = false;
     }
 
     private void updateTitle() {
@@ -1427,7 +1427,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void onSave() {
-        mDraftNeedsSaving = true;
         saveIfNeeded();
         finish();
     }
@@ -2644,10 +2643,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Message draftMessage = messagingController.saveDraft(mAccount, message);
             mDraftUid = draftMessage.getUid();
 
-            // Don't display the toast if the user is just changing the orientation
-            if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
-                mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
-            }
+            mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
             return null;
         }
     }
