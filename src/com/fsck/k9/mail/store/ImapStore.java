@@ -2982,7 +2982,7 @@ public class ImapStore extends Store {
                 message.parse(literal);
 
                 // Return placeholder object
-                return new Integer(1);
+                return Integer.valueOf(1);
             }
             return null;
         }
