@@ -1366,7 +1366,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
             // key selection before encryption
-            String emails = "";
+            StringBuilder emails = new StringBuilder();
             Address[][] addresses = new Address[][] { getAddresses(mToView),
                     getAddresses(mCcView),
                     getAddresses(mBccView)
@@ -1374,18 +1374,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             for (Address[] addressArray : addresses) {
                 for (Address address : addressArray) {
                     if (emails.length() != 0) {
-                        emails += ",";
+                        emails.append(',');
                     }
-                    emails += address.getAddress();
+                    emails.append(address.getAddress());
                 }
             }
             if (emails.length() != 0) {
-                emails += ",";
+                emails.append(',');
             }
-            emails += mIdentity.getEmail();
+            emails.append(mIdentity.getEmail());
 
             mPreventDraftSaving = true;
-            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails, mPgpData)) {
+            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
                 mPreventDraftSaving = false;
             }
             return;
