@@ -56,6 +56,8 @@ public class Utility {
             return null;
         } else if (parts.length == 0) {
             return "";
+        } else if (parts.length == 1) {
+            return parts[0].toString();
         }
         StringBuilder sb = new StringBuilder();
         sb.append(parts[0]);
