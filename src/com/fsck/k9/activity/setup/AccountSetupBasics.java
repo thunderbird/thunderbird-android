@@ -240,7 +240,6 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
-    @Override
     protected void onNext() {
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);

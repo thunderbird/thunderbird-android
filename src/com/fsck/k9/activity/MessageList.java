@@ -1660,35 +1660,34 @@ public class MessageList
         }
     }
 
-    class MyGestureDetector extends SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (e2 == null || e1 == null)
-                return true;
+    @Override
+    protected void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
+        // Handle right-to-left as an un-select
+        handleSwipe(e1, false);
+    }
 
-            float deltaX = e2.getX() - e1.getX(),
-                  deltaY = e2.getY() - e1.getY();
+    @Override
+    protected void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+        // Handle left-to-right as a select.
+        handleSwipe(e1, true);
+    }
 
-            boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-            boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
+    /**
+     * Handle a select or unselect swipe event
+     * @param downMotion Event that started the swipe
+     * @param selected true if this was an attempt to select (i.e. left to right).
+     */
+    private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
+        int position = mListView.pointToPosition((int) downMotion.getX(), (int) downMotion.getY());
+        if (position != AdapterView.INVALID_POSITION) {
+            MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
-            if (movedAcross && steadyHand) {
-                boolean selected = (deltaX > 0);
-                int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
-
-                if (position != AdapterView.INVALID_POSITION) {
-                    MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
-
-                    if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
-                        msgInfoHolder.selected = selected;
-                        mSelectedCount += (selected ? 1 : -1);
-                        mAdapter.notifyDataSetChanged();
-                        toggleBatchButtons();
-                    }
-                }
+            if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
+                msgInfoHolder.selected = selected;
+                mSelectedCount += (selected ? 1 : -1);
+                mAdapter.notifyDataSetChanged();
+                toggleBatchButtons();
             }
-
-            return false;
         }
     }
 
