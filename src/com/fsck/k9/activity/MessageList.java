@@ -818,7 +818,7 @@ public class MessageList
         mBatchDoneButton.setOnClickListener(this);
 
         // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(new MyGestureDetector(true));
         gestureListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

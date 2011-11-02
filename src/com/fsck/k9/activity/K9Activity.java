@@ -128,6 +128,25 @@ public class K9Activity extends Activity {
     }
 
     class MyGestureDetector extends SimpleOnGestureListener {
+        private boolean gesturesEnabled = false;
+
+        /**
+         * Creates a new {@link android.view.GestureDetector.OnGestureListener}.  Enabled/disabled based upon
+         * {@link com.fsck.k9.K9#gesturesEnabled()}}.
+         */
+        public MyGestureDetector() {
+            super();
+        }
+
+        /**
+         * Create a new {@link android.view.GestureDetector.OnGestureListener}.
+         * @param gesturesEnabled Setting to <code>true</code> will enable gesture detection,
+         * regardless of the system-wide gesture setting.
+         */
+        public MyGestureDetector(final boolean gesturesEnabled) {
+            super();
+            this.gesturesEnabled = gesturesEnabled;
+        }
 
         private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
@@ -151,7 +170,8 @@ public class K9Activity extends Activity {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (K9.gesturesEnabled()) {
+            // Do fling-detection if gestures are force-enabled or we have system-wide gestures enabled.
+            if (gesturesEnabled || K9.gesturesEnabled()) {
                 // Convert the dips to pixels
                 final float mGestureScale = getResources().getDisplayMetrics().density;
                 int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
