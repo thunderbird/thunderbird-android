@@ -88,8 +88,8 @@ public class LocalStore extends Store implements Serializable {
         set.add("From");
         set.add("In-Reply-To");
         set.add("References");
-        set.add("Content-ID");
-        set.add("Content-Disposition");
+        set.add(MimeHeader.HEADER_CONTENT_ID);
+        set.add(MimeHeader.HEADER_CONTENT_DISPOSITION);
         set.add("User-Agent");
         HEADERS_TO_SAVE = Collections.unmodifiableSet(set);
     }
