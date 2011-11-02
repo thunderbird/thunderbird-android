@@ -38,6 +38,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_ORIGINATING_INTENT = "com.fsck.k9.MessageView_originatingIntent";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
+    private static final String EXTRA_SCROLL_PERCENTAGE = "com.fsck.k9.MessageView_scrollPercentage";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -96,6 +97,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+    private MessagingListener mLoadCompleteListener = new ScrollToLastLocationListener();
 
     /** this variable is used to save the calling AttachmentView
      *  until the onActivityResult is called.
@@ -108,6 +110,11 @@ public class MessageView extends K9Activity implements OnClickListener {
      * dialog is shown.
      */
     private String mDstFolder;
+
+    /**
+     * Used after restore/rotation to scroll our message to the last known location.
+     */
+    private double mScrollPercentage;
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
@@ -408,7 +415,13 @@ public class MessageView extends K9Activity implements OnClickListener {
                 }
             };
         });
+
         mMessageView.initialize(this);
+
+        // Add listener for message load completion.  We'll use this to scroll the page to user's last known
+        // location.
+        mController.addListener(mLoadCompleteListener);
+        mMessageView.setListeners(mController.getListeners());
 
         setTitle("");
         final Intent intent = getIntent();
@@ -530,6 +543,9 @@ public class MessageView extends K9Activity implements OnClickListener {
         outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
+        if(mTopView != null) {
+            outState.putDouble(EXTRA_SCROLL_PERCENTAGE, mTopView.getScrollPercentage());
+        }
     }
 
     @Override
@@ -538,6 +554,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
         mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
+        mScrollPercentage = savedInstanceState.getDouble(EXTRA_SCROLL_PERCENTAGE);
     }
 
     private void displayMessage(MessageReference ref) {
@@ -657,11 +674,13 @@ public class MessageView extends K9Activity implements OnClickListener {
             onAccountUnavailable();
             return;
         }
+        mController.addListener(mLoadCompleteListener);
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
     }
 
     @Override
     protected void onPause() {
+        mController.removeListener(mLoadCompleteListener);
         StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
         super.onPause();
     }
@@ -873,6 +892,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     protected void onNext() {
+        // Reset scroll percentage when we change messages
+        mScrollPercentage = 0;
         if (mNextMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -888,6 +909,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     protected void onPrevious() {
+        // Reset scroll percentage when we change messages
+        mScrollPercentage = 0;
         if (mPreviousMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -1115,8 +1138,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                 mTopView.scrollTo(0, 0);
                 try {
                     if (MessageView.this.mMessage != null
-                            && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                    && message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                        && message.isSet(Flag.X_DOWNLOADED_FULL)) {
                         mMessageView.setHeaders(message, account);
                     }
                     MessageView.this.mMessage = message;
@@ -1277,4 +1300,17 @@ public class MessageView extends K9Activity implements OnClickListener {
         mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
     }
 
+    /**
+     * This is a {@link MessagingListener} which listens for when the a message has finished being displayed on the
+     * screen.  We'll scroll the message to the user's last known location once it's done.
+     */
+    class ScrollToLastLocationListener extends MessagingListener {
+        public void messageViewFinished() {
+            // Don't scroll if our last position was at the top.
+            if(mTopView != null && mScrollPercentage != 0.0) {
+                Log.d(K9.LOG_TAG, "MessageView has finished loading, scrolling to last known location.");
+                mTopView.setScrollPercentage(mScrollPercentage);
+            }
+        }
+    }
 }

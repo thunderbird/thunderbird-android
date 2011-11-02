@@ -29,6 +29,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -116,11 +117,10 @@ public class SingleMessageView extends LinearLayout {
         return false;
     }
 
-
-
     public boolean showPictures() {
         return mShowPictures;
     }
+
     public void setShowPictures(Boolean show) {
         mShowPictures = show;
     }
@@ -311,5 +311,22 @@ public class SingleMessageView extends LinearLayout {
     public void setAttachmentCallback(
         AttachmentView.AttachmentFileDownloadCallback attachmentCallback) {
         this.attachmentCallback = attachmentCallback;
+    }
+
+    /**
+     * Save a copy of the {@link com.fsck.k9.controller.MessagingController#getListeners()}.  This method will also
+     * pass along these listeners to the underlying views.
+     * @param listeners Set of listeners.
+     */
+    public void setListeners(final Set<MessagingListener> listeners) {
+        if(!mScreenReaderEnabled) {
+            if(mMessageContentView != null) {
+                mMessageContentView.setListeners(listeners);
+            }
+        } else {
+            if(mAccessibleMessageContentView != null) {
+                mAccessibleMessageContentView.setListeners(listeners);
+            }
+        }
     }
 }
