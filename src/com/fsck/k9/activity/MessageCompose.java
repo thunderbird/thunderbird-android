@@ -2327,7 +2327,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     content = htmlSerialized.getAsString(node, "UTF8");
                 } catch (java.io.IOException ioe) {
                     // Can't imagine this happening.
-                    Log.e(K9.LOG_TAG, "Problem cleaning quoted message.");
+                    Log.e(K9.LOG_TAG, "Problem cleaning quoted message.", ioe);
                 }
             }
             // Add the HTML reply header to the top of the content.
