@@ -793,6 +793,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
 
+    // Save email as draft when activity is changed (go to home screen, call received)
+    @Override
+    public void onStop() {
+        super.onStop();
+        // don't do this if only changing orientations
+        if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
+            // don't do this if selecting signature or if "Encrypt" is checked
+            if (!mPreventDraftSaving && !mEncryptCheckbox.isChecked()){
+                saveIfNeeded();
+                finish();
+            }
+        }
+    }
+
     /**
      * The framework handles most of the fields, but we need to handle stuff that we
      * dynamically show and hide:
