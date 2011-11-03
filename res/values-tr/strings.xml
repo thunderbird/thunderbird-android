@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Kaiten Posta</string>
-    <string name="beta_app_name">Kaiten Mail BETA</string>
-    <string name="app_license">Her Hakkı Saklıdır. All Rights Reserved</string>
+    <string name="app_name">K-9 Posta</string>
+    <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revizyon Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">Kaiten posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
 
     <string name="read_attachment_label">Eposta eklerini oku</string>
     <string name="read_attachment_desc">Bu uygulamaya Eposta eklerinizi okumasına izin ver.</string>
@@ -18,7 +17,7 @@
     <string name="accounts_title">Hesaplar</string>
     <string name="advanced">Gelişmiş</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">Kaiten Hesaplar</string>
+    <string name="shortcuts_title">K-9 Hesaplar</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -34,7 +33,6 @@
     <string name="status_loading_account_folder_headers">\u0020(Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_sending_account">\u0020(Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g><xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_processing">\u0020(<xliff:g id="account">%s</xliff:g><xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
 
     <string name="status_next_poll">\u0020(Next poll @ <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_syncing_off">\u0020(Sync disabled)</string>
@@ -63,7 +61,6 @@
     <string name="remove_action">Kaldır</string>
     <string name="discard_action">Çıkart</string>
     <string name="save_draft_action">Taslak olarak Kaydet</string>
-    <string name="edit_draft_action">Taslağı Düzenle</string>
     <string name="retry_action">Yeniden dene</string>
     <string name="refresh_action">Yinele</string>
     <string name="check_mail_action">Epostayı Kontrol et</string>
@@ -95,7 +92,7 @@
 
     <string name="mark_all_as_read_dlg_title">Hepsini okundu olarak işaretle</string>
     <string name="mark_all_as_read_dlg_instructions_fmt">içindeki bütün mesajları \'<xliff:g id="folder">%s</xliff:g>\' okundu olarak işaretle?  (Klasöre
-    eklenen mesajlar Kaiten de gösterilemez.)</string>
+    eklenen mesajlar K-9 de gösterilemez.)</string>
 
     <string name="flag_action">Yıldız Ekle</string>
     <string name="unflag_action">Yıldızı Kaldır</string>
@@ -191,20 +188,20 @@
 
     <string name="send_failure_subject">Bazı mesajların gönderilmesi başarısız</string>
     <string name="send_failure_body_abbrev">Bakın <xliff:g id="errorFolder">%s</xliff:g> klasörüne detaylar için.</string>
-    <string name="send_failure_body_fmt">Kaiten mesajlarınızın bir kısmını gönderirken bir sorunla karşılaştı.
-    Ancak, sorunun yapısına uygun olarak, Kaiten mesajların gidip gitmediğinden emin olamamakta,
+    <string name="send_failure_body_fmt">K-9 mesajlarınızın bir kısmını gönderirken bir sorunla karşılaştı.
+    Ancak, sorunun yapısına uygun olarak, K-9 mesajların gidip gitmediğinden emin olamamakta,
     Alıcılar çoktan mesajın kopyalarını almış da olabilir.
     \u000a\u000a Mesajlar bu tip sorunlar çıkarttığı için Giden kutusunda şimdi yıldızla işaretlendi.
-    Yıldızları kaldırırsanız, Kaiten mesajları tekrar göndermeyi dener.
+    Yıldızları kaldırırsanız, K-9 mesajları tekrar göndermeyi dener.
     Giden kutusuna uzun basın  \"Giden mesajlar\" eylemini sırayla diğer gönderme girişimlerini başlatmayı bulmak için.\u000A\u000a
      <xliff:g id="errorFolder">%s</xliff:g> klasör başarısızlıklarla ilgili hata mesajları içerebilir.</string>
 
-    <string name="alert_header">Kaiten uyarı</string>
+    <string name="alert_header">K-9 uyarı</string>
     <string name="no_connection_alert">Ağın olmaması yüzünden Eşleştirme ve Gönderme durduruldu.</string>
 
     <string name="end_of_folder">Daha fazla mesaj yok</string>
 
-    <string name="accounts_welcome">Kaiten Posta\'ya Hoşgeldiniz!\n Kaiten Android için bir gelişmiş eposta alıcısıdır ki birçok gelişmiş posta sunucusu özelliklerini destekler. Her ağ merkezli iletişim uygulaması gibi, Kaiten\'i ağ bant genişliğinin bir büyük kısmını kullanmaya yapılandırmak mümkündür.  Eğer sınırsız bir data paketiniz yoksa veya uluslararası dolaşıma niyetleniyorsanız, lütfen bant genişliğinizin kullanımına dikkat edin.  Bu uygulama olduğu gibi sağlanır, her türlü garanti kapsamı dışında.  Bu uygulamanın ne yazar ne de dağıtıcısı herhangi bir davranıştan, kullanımdan, terbiyesizlik veya bu uygulamanın kötüye kullanımından sorumlu tutulamaz.  Tüm bunlar söylenildi, biz Kaiten\'in iyi çalışacağına çok inanıyoruz ve biz sizin onunla bulacağınız hakkındaki her problemi duymak istiyoruz. Lütfen eposta atın support@kaitenmail.com  Eğer sorun yaşıyorsanız, doğru şeyler yapmak için elimizden gelenin en iyisini yapacağız. </string>
+    <string name="accounts_welcome">K-9 Posta\'ya Hoşgeldiniz!\n K-9 Android için bir gelişmiş eposta alıcısıdır ki birçok gelişmiş posta sunucusu özelliklerini destekler. Her ağ merkezli iletişim uygulaması gibi, K-9\'i ağ bant genişliğinin bir büyük kısmını kullanmaya yapılandırmak mümkündür.  Eğer sınırsız bir data paketiniz yoksa veya uluslararası dolaşıma niyetleniyorsanız, lütfen bant genişliğinizin kullanımına dikkat edin.  Bu uygulama olduğu gibi sağlanır, her türlü garanti kapsamı dışında.  Bu uygulamanın ne yazar ne de dağıtıcısı herhangi bir davranıştan, kullanımdan, terbiyesizlik veya bu uygulamanın kötüye kullanımından sorumlu tutulamaz.  Tüm bunlar söylenildi, biz K-9\'in iyi çalışacağına çok inanıyoruz ve biz sizin onunla bulacağınız hakkındaki her problemi duymak istiyoruz. Lütfen eposta atın support@kaitenmail.com  Eğer sorun yaşıyorsanız, doğru şeyler yapmak için elimizden gelenin en iyisini yapacağız. </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Onarma günlüğünü Etkinleştir</string>
@@ -212,7 +209,7 @@
     <string name="debug_enable_sensitive_logging_title">Hassas bigi günlüğü tut</string>
     <string name="debug_enable_sensitive_logging_summary">Günlüklerde şifreler görünebilir.</string>
 
-    <string name="message_header_mua">Android için Kaiten Posta</string>
+    <string name="message_header_mua">Android için K-9 Posta</string>
 
     <string name="combined_inbox_title">Bütün Postalar</string>
     <string name="combined_inbox_label">Bütün hesaplardan gelen yeni mesajlar</string>
@@ -298,8 +295,6 @@
 
 
 
-    <string name="actionbar_color_label">Başlık Çubuğu Rengi</string>
-    <string name="actionbar_color_summary"></string>
 
     <string name="global_settings_flag_label">Yıldızları Göster</string>
     <string name="global_settings_flag_summary">Yıldızlar bayraklı mesajları gösterir.</string>
@@ -311,8 +306,6 @@
     <string name="global_settings_show_correspondent_names_label">Mektuplaşanların isimlerini göster.</string>
     <string name="global_settings_show_correspondent_names_summary">Mektuplaşanların eposta adresleri yerine isimlerini göster.</string>
 
-    <string name="global_settings_sender_above_subject_label">Konu üzerine yazışma</string>
-    <string name="global_settings_sender_above_subject_summary">Mektuplaşanların isimlerini konu satırı altı yerine, üzerinde göster.</string>
 
     <string name="global_settings_show_contact_name_label">Rehberdeki kişi isimlerini göster.</string>
     <string name="global_settings_show_contact_name_summary">Alıcı isimlerini mümkün olduğunda rehberdeki isimlerden kullan.</string>
@@ -325,11 +318,6 @@
     <string name="global_settings_messageview_return_to_list_label">Sildikten sonra listeye dön.</string>
     <string name="global_settings_messageview_return_to_list_summary">Mesajı sildikten sonra mesaj listesine dön.</string>
 
-    <string name="global_settings_messagelist_show_split_label">Bölünmüş Ekran</string>
-    <string name="global_settings_messagelist_show_split_summary">Mesaj listesini ve mesajları aynı anda göster</string>
-    <string name="global_settings_show_split_never">Asla</string>
-    <string name="global_settings_show_split_automatic">Otomatik</string>
-    <string name="global_settings_show_split_always">Daima</string>
     <string name="global_settings_confirm_actions_title">Eylemleri Onaylayın</string>
     <string name="global_settings_confirm_actions_summary">Seçilmiş eylemleri yaptığınız zaman bir diyalog göster</string>
     <string name="global_settings_confirm_action_archive">Arşiv</string>
@@ -747,7 +735,7 @@
     <string name="account_settings_signature_label">İmza</string>
     <string name="account_settings_signature_summary">Gönderdiğiniz her mesaja bir imza atın</string>
 
-    <string name="default_signature">-- \n Android için Kaiten Posta\'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_signature">-- \n Android için K-9 Posta\'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
     <string name="default_identity_description">İlk kimlik</string>
     <string name="choose_identity">Kimlik seç</string>
     <string name="choose_identity_title">Kimlik seç</string>
@@ -783,13 +771,13 @@
     <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Hesabı Kaldır</string>
-    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak.</string>
+    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
 
     <string name="account_recreate_dlg_title">Hesabı canlandırmak</string>
-    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi için \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi için \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
 
     <string name="account_clear_dlg_title">Hesabı Temizle</string>
-    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar içinde \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar içinde \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
 
     <string name="provider_note_live">Sadece bazı \"Plus\" hesaplar bu programın POP
         erişiminden bağlanmasına izin verir.Eğer doğru eposta adresi ve şifre ile
@@ -946,8 +934,8 @@
     <string name="account_settings_searchable_displayable">Görüntülenebilir</string>
     <string name="account_settings_searchable_none">Hiçbiri</string>
 
-    <string name="remote_control_label">Kaiten Posta\'ya uzaktan erişim</string>
-    <string name="remote_control_desc">Bu programın Kaiten Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
+    <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
+    <string name="remote_control_desc">Bu programın K-9 Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
 
     <string name="font_size_settings_title">Yazı tipi Boyutu</string>
     <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
@@ -1009,7 +997,7 @@
     <string name="btn_verify">Doğrulamak</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">Kaiten tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için Kaiten\'i yeniden kurun.</string>
+    <string name="insufficient_apg_permissions">K-9 tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için K-9\'i yeniden kurun.</string>
     <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
     <string name="attachment_encryption_unsupported">Uyarı: Ekler henüz işaretli veya şifreli değil.</string>
     <string name="send_aborted">İptal gönder.</string>
@@ -1052,7 +1040,6 @@
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Bağlanılamadı.</string>
-    <string name="error_contact_address_not_found">Bağlantı için eposta adresi bulunamadı.</string>
 
 
     <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
