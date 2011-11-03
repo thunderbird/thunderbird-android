@@ -150,6 +150,8 @@ public class Address {
             }
         } catch (MimeException pe) {
             Log.e(K9.LOG_TAG, "MimeException in Address.parse()", pe);
+            //but we do an silent failover : we just use the given string as name with empty address
+            addresses.add(new Address(null, addressList,false));
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
