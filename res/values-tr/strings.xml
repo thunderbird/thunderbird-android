@@ -872,10 +872,6 @@
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">KISA</string>
-    <string name="date_format_medium">ORTA</string>
-    <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Yığın Seçenekleri</string>
     <string name="batch_delete_op">Seçileni Sil</string>
