@@ -90,6 +90,7 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * <pre>
@@ -2166,21 +2167,9 @@ public class ImapStore extends Store {
 //
 //                }
 //            }
-            try {
-                mIn.close();
-            } catch (Exception e) {
-
-            }
-            try {
-                mOut.close();
-            } catch (Exception e) {
-
-            }
-            try {
-                mSocket.close();
-            } catch (Exception e) {
-
-            }
+            IOUtils.closeQuietly(mIn);
+            IOUtils.closeQuietly(mOut);
+            IOUtils.closeQuietly(mSocket);
             mIn = null;
             mOut = null;
             mSocket = null;
