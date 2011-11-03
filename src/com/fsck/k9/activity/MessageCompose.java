@@ -2567,13 +2567,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         // Read subject from the "subject" parameter.
         List<String> subject = uri.getQueryParameters("subject");
-        if (subject.size() > 0) {
+        if (!subject.isEmpty()) {
             mSubjectView.setText(subject.get(0));
         }
 
         // Read message body from the "body" parameter.
         List<String> body = uri.getQueryParameters("body");
-        if (body.size() > 0) {
+        if (!body.isEmpty()) {
             mMessageContentView.setText(body.get(0));
         }
     }

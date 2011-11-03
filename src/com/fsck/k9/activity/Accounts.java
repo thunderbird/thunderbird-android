@@ -388,7 +388,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         mAdapter = new AccountsAdapter(newAccounts.toArray(EMPTY_BASE_ACCOUNT_ARRAY));
         getListView().setAdapter(mAdapter);
-        if (newAccounts.size() > 0) {
+        if (!newAccounts.isEmpty()) {
             mHandler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
