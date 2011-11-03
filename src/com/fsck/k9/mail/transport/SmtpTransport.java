@@ -254,7 +254,7 @@ public class SmtpTransport extends Transport {
                         mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
                     } catch (Exception e) {
                         if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word: " + e);
+                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word", e);
                         }
                     }
                 }
