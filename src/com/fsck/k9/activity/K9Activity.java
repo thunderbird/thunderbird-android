@@ -14,15 +14,15 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ScrollView;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.view.ToggleScrollView;
 
 
 public class K9Activity extends Activity {
     private GestureDetector gestureDetector;
 
-    protected ScrollView mTopView;
+    protected ToggleScrollView mTopView;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -86,12 +86,26 @@ public class K9Activity extends Activity {
     public java.text.DateFormat getDateFormat() {
         return mDateFormat;
     }
-    protected void onNext() {
 
-    }
-    protected void onPrevious() {
+    /**
+     * Called when a swipe from right to left is handled by {@link MyGestureDetector}.  See
+     * {@link android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)}
+     * for more information on the {@link MotionEvent}s being passed.
+     * @param e1 First down motion event that started the fling.
+     * @param e2 The move motion event that triggered the current onFling.
+     */
+    protected void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
     }
 
+    /**
+     * Called when a swipe from left to right is handled by {@link MyGestureDetector}.  See
+     * {@link android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)}
+     * for more information on the {@link MotionEvent}s being passed.
+     * @param e1 First down motion event that started the fling.
+     * @param e2 The move motion event that triggered the current onFling.
+     */
+    protected void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+    }
 
     protected Animation inFromRightAnimation() {
         return slideAnimation(0.0f, +1.0f);
@@ -114,6 +128,25 @@ public class K9Activity extends Activity {
     }
 
     class MyGestureDetector extends SimpleOnGestureListener {
+        private boolean gesturesEnabled = false;
+
+        /**
+         * Creates a new {@link android.view.GestureDetector.OnGestureListener}.  Enabled/disabled based upon
+         * {@link com.fsck.k9.K9#gesturesEnabled()}}.
+         */
+        public MyGestureDetector() {
+            super();
+        }
+
+        /**
+         * Create a new {@link android.view.GestureDetector.OnGestureListener}.
+         * @param gesturesEnabled Setting to <code>true</code> will enable gesture detection,
+         * regardless of the system-wide gesture setting.
+         */
+        public MyGestureDetector(final boolean gesturesEnabled) {
+            super();
+            this.gesturesEnabled = gesturesEnabled;
+        }
 
         private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
@@ -137,7 +170,8 @@ public class K9Activity extends Activity {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (K9.gesturesEnabled()) {
+            // Do fling-detection if gestures are force-enabled or we have system-wide gestures enabled.
+            if (gesturesEnabled || K9.gesturesEnabled()) {
                 // Convert the dips to pixels
                 final float mGestureScale = getResources().getDisplayMetrics().density;
                 int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
@@ -150,9 +184,9 @@ public class K9Activity extends Activity {
                         return false;
                     // right to left swipe
                     if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
-                        onNext();
+                        onSwipeRightToLeft(e1, e2);
                     } else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
-                        onPrevious();
+                        onSwipeLeftToRight(e1, e2);
                     }
                 } catch (Exception e) {
                     // nothing
