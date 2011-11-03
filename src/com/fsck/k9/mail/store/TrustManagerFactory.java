@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DomainNameChecker;
+import org.apache.commons.io.IOUtils;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -105,12 +106,12 @@ public final class TrustManagerFactory {
     }
 
     static {
+        java.io.InputStream fis = null;
         try {
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
             Application app = K9.app;
             keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator + "KeyStore.bks");
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            java.io.FileInputStream fis;
             try {
                 fis = new java.io.FileInputStream(keyStoreFile);
             } catch (FileNotFoundException e1) {
@@ -118,9 +119,6 @@ public final class TrustManagerFactory {
             }
             try {
                 keyStore.load(fis, "".toCharArray());
-                //if (fis != null) {
-                // fis.close();
-                //}
             } catch (IOException e) {
                 Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
                 keyStore = null;
@@ -154,6 +152,8 @@ public final class TrustManagerFactory {
             Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
+        } finally {
+            IOUtils.closeQuietly(fis);
         }
         unsecureTrustManager = new SimpleX509TrustManager();
     }
@@ -195,17 +195,18 @@ public final class TrustManagerFactory {
                     }
                 }
             }
-            java.io.FileOutputStream keyStoreStream;
+            java.io.OutputStream keyStoreStream = null;
             try {
                 keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
                 keyStore.store(keyStoreStream, "".toCharArray());
-                keyStoreStream.close();
             } catch (FileNotFoundException e) {
                 throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
             } catch (CertificateException e) {
                 throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
             } catch (IOException e) {
                 throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
+            } finally {
+                IOUtils.closeQuietly(keyStoreStream);
             }
 
         } catch (NoSuchAlgorithmException e) {
