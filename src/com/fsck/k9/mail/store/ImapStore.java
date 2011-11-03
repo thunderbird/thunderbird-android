@@ -1514,7 +1514,8 @@ public class ImapStore extends Store {
                 /*
                  * Set the content type with as much information as we know right now.
                  */
-                String contentType = String.format("%s", mimeType);
+                StringBuilder contentType = new StringBuilder();
+                contentType.append(mimeType);
 
                 if (bodyParams != null) {
                     /*
@@ -1522,13 +1523,13 @@ public class ImapStore extends Store {
                      * of them.
                      */
                     for (int i = 0, count = bodyParams.size(); i < count; i += 2) {
-                        contentType += String.format(";\n %s=\"%s\"",
-                                                     bodyParams.getString(i),
-                                                     bodyParams.getString(i + 1));
+                        contentType.append(String.format(";\n %s=\"%s\"",
+                                           bodyParams.getString(i),
+                                           bodyParams.getString(i + 1)));
                     }
                 }
 
-                part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
+                part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType.toString());
 
                 // Extension items
                 ImapList bodyDisposition = null;
@@ -1542,11 +1543,11 @@ public class ImapStore extends Store {
                     bodyDisposition = bs.getList(8);
                 }
 
-                String contentDisposition = "";
+                StringBuilder contentDisposition = new StringBuilder();
 
                 if (bodyDisposition != null && bodyDisposition.size() > 0) {
                     if (!"NIL".equalsIgnoreCase(bodyDisposition.getString(0))) {
-                        contentDisposition = bodyDisposition.getString(0).toLowerCase(Locale.US);
+                        contentDisposition.append(bodyDisposition.getString(0).toLowerCase(Locale.US));
                     }
 
                     if ((bodyDisposition.size() > 1)
@@ -1557,22 +1558,22 @@ public class ImapStore extends Store {
                          * about the attachment out.
                          */
                         for (int i = 0, count = bodyDispositionParams.size(); i < count; i += 2) {
-                            contentDisposition += String.format(";\n %s=\"%s\"",
-                                                                bodyDispositionParams.getString(i).toLowerCase(Locale.US),
-                                                                bodyDispositionParams.getString(i + 1));
+                            contentDisposition.append(String.format(";\n %s=\"%s\"",
+                                                      bodyDispositionParams.getString(i).toLowerCase(Locale.US),
+                                                      bodyDispositionParams.getString(i + 1)));
                         }
                     }
                 }
 
-                if (MimeUtility.getHeaderParameter(contentDisposition, "size") == null) {
-                    contentDisposition += String.format(";\n size=%d", size);
+                if (MimeUtility.getHeaderParameter(contentDisposition.toString(), "size") == null) {
+                    contentDisposition.append(String.format(";\n size=%d", size));
                 }
 
                 /*
                  * Set the content disposition containing at least the size. Attachment
                  * handling code will use this down the road.
                  */
-                part.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, contentDisposition);
+                part.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, contentDisposition.toString());
 
 
                 /*
