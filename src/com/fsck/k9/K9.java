@@ -599,7 +599,7 @@ public class K9 extends Application {
 
         catch (Exception e) {
             // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode " + e);
+            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
         }
 
     }
