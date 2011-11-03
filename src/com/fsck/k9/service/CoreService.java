@@ -202,12 +202,26 @@ public abstract class CoreService extends Service {
     public final void onStart(Intent intent, int startId) {
         // deprecated method but still used for backwards compatibility with Android version <2.0
 
+        /*
+         * When a process is killed due to low memory, it's later restarted and services that were
+         * started with START_STICKY are started with the intent being null.
+         *
+         * For now we just ignore these restart events. This should be fine because all necessary
+         * services are started from K9.onCreate() when the Application object is initialized.
+         *
+         * See issue 3750
+         */
+        if (intent == null) {
+            stopSelf(startId);
+            return;
+        }
+
         // Acquire new wake lock
         TracingWakeLock wakeLock = acquireWakeLock(this, "CoreService onStart",
                 K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "CoreService: " + className + ".onStart(" + intent + ", " + startId);
+            Log.i(K9.LOG_TAG, "CoreService: " + className + ".onStart(" + intent + ", " + startId + ")");
         }
 
         // If we were started by BootReceiver, release the wake lock acquired there.
