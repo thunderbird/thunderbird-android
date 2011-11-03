@@ -217,9 +217,9 @@ public abstract class Message implements Part, Body {
             eolOut.flush();
             return out.getCount();
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size: " + e);
+            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size: " + e);
+            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
         }
         return 0;
     }
