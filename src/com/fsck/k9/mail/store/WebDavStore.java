@@ -1990,21 +1990,22 @@ public class WebDavStore extends Store {
         /**
          * Holds the mappings from the name returned from Exchange to the MIME format header name
          */
-        private final HashMap<String, String> mHeaderMappings = new HashMap<String, String>() {
-            {
-                put("mime-version", "MIME-Version");
-                put("content-type", "Content-Type");
-                put("subject", "Subject");
-                put("date", "Date");
-                put("thread-topic", "Thread-Topic");
-                put("thread-index", "Thread-Index");
-                put("from", "From");
-                put("to", "To");
-                put("in-reply-to", "In-Reply-To");
-                put("cc", "Cc");
-                put("getcontentlength", "Content-Length");
-            }
-        };
+        private static final Map<String, String> HEADER_MAPPINGS;
+        static {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("mime-version", "MIME-Version");
+            map.put("content-type", "Content-Type");
+            map.put("subject", "Subject");
+            map.put("date", "Date");
+            map.put("thread-topic", "Thread-Topic");
+            map.put("thread-index", "Thread-Index");
+            map.put("from", "From");
+            map.put("to", "To");
+            map.put("in-reply-to", "In-Reply-To");
+            map.put("cc", "Cc");
+            map.put("getcontentlength", "Content-Length");
+            HEADER_MAPPINGS = Collections.unmodifiableMap(map);
+        }
 
         private boolean mReadStatus = false;
         private String mUid = "";
@@ -2012,11 +2013,11 @@ public class WebDavStore extends Store {
         private ArrayList<String> mHeaders = new ArrayList<String>();
 
         public void addHeader(String field, String value) {
-            String headerName = mHeaderMappings.get(field);
+            String headerName = HEADER_MAPPINGS.get(field);
 
             if (headerName != null) {
-                this.mMessageHeaders.put(mHeaderMappings.get(field), value);
-                this.mHeaders.add(mHeaderMappings.get(field));
+                this.mMessageHeaders.put(HEADER_MAPPINGS.get(field), value);
+                this.mHeaders.add(HEADER_MAPPINGS.get(field));
             }
         }
 
