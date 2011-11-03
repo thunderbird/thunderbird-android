@@ -7,6 +7,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 import com.fsck.k9.K9;
+import com.fsck.k9.controller.MessagingListener;
 
 /**
  * An extension of {@link ScrollView} that allows scrolling to be selectively disabled.
@@ -14,7 +15,9 @@ import com.fsck.k9.K9;
 public class ToggleScrollView extends ScrollView {
     private GestureDetector mDetector;
     private boolean mScrolling = true;
-    private int currentYPosition;
+    private int mCurrentYPosition;
+    private double mScrollPercentage;
+    private ScrollToLastLocationListener mListener;
 
     public ToggleScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -72,20 +75,23 @@ public class ToggleScrollView extends ScrollView {
      * be 100, unless the screen is of 0 height...
      */
     public double getScrollPercentage() {
-        if(computeVerticalScrollRange() == 0) {
+        // We save only the Y coordinate instead of the percentage because I don't know how expensive the
+        // computeVerticalScrollRange() call is.
+        final int scrollRange = computeVerticalScrollRange();
+        if(scrollRange == 0) {
             return 0;
         }
-        return (double)currentYPosition / computeVerticalScrollRange();
+        return (double) mCurrentYPosition / scrollRange;
     }
 
     /**
-     * Scroll the screen to a specific percentage of the page.  This is based on the top edge of the page.
+     * Set the percentage by which we should scroll the page once we get the load complete event.  This is
+     * based on the top edge of the view.
      * @param percentage Percentage of page to scroll to.
      */
     public void setScrollPercentage(final double percentage) {
-        final int newY = (int)(percentage * computeVerticalScrollRange());
-        Log.d(K9.LOG_TAG, "ToggleScrollView: requested " + (100 * percentage) + "%, scrolling to " + newY + "/" + computeVerticalScrollRange());
-        scrollTo(0, newY);
+        Log.d(K9.LOG_TAG, "ToggleView: Setting last scroll percentage to " + percentage);
+        this.mScrollPercentage = percentage;
     }
 
     /**
@@ -101,8 +107,37 @@ public class ToggleScrollView extends ScrollView {
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
 
-        this.currentYPosition = y;
+        this.mCurrentYPosition = y;
         // I wish Android has a TRACE log level so I wouldn't have to comment this out.  This one is really noisy.
-        // Log.d(K9.LOG_TAG, "ToggleScrollView: currentYPosition=" + y + " scrollRange=" + computeVerticalScrollRange() + " pct=" + getScrollPercentage());
+        // Log.d(K9.LOG_TAG, "ToggleScrollView: mCurrentYPosition=" + y + " scrollRange=" + computeVerticalScrollRange() + " pct=" + getScrollPercentage());
+    }
+
+    /**
+     * This is a {@link MessagingListener} which listens for when the a message has finished being displayed on the
+     * screen.  We'll scroll the message to the user's last known location once it's done.
+     */
+    class ScrollToLastLocationListener extends MessagingListener {
+        public void messageViewFinished() {
+            // Don't scroll if our last position was at the top.
+            if(mScrollPercentage != 0.0) {
+                final int scrollRange = computeVerticalScrollRange();
+                final int newY = (int)(mScrollPercentage * scrollRange);
+                Log.d(K9.LOG_TAG, "ToggleScrollView: requested " + (100 * mScrollPercentage) + "%, " +
+                    "scrolling to " + newY + "/" + scrollRange);
+                scrollTo(0, newY);
+            }
+        }
+    }
+
+    /**
+     * Fetch the {@link MessagingListener} for this <code>ScrollView</code>.
+     * @return
+     */
+    public MessagingListener getListener() {
+        if(this.mListener != null) {
+            return this.mListener;
+        } else {
+            return this.mListener = new ScrollToLastLocationListener();
+        }
     }
 }
