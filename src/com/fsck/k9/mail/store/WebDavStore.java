@@ -1203,7 +1203,6 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read) throws MessagingException {
             String isRead;
             int messageCount = 0;
-            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
@@ -1215,7 +1214,7 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageCountXml(isRead);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
             if (dataset != null) {
                 messageCount = dataset.getMessageCount();
             }
@@ -1292,7 +1291,6 @@ public class WebDavStore extends Store {
         throws MessagingException {
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
-            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             int uidsLength = -1;
 
@@ -1316,7 +1314,7 @@ public class WebDavStore extends Store {
 
             headers.put("Brief", "t");
             headers.put("Range", "rows=" + start + "-" + end);
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             uids = dataset.getUids();
             HashMap<String, String> uidToUrl = dataset.getUidToUrl();
@@ -1371,17 +1369,15 @@ public class WebDavStore extends Store {
         }
 
         private HashMap<String, String> getMessageUrls(String[] uids) throws MessagingException {
-            HashMap<String, String> uidToUrl = new HashMap<String, String>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody;
 
             /** Retrieve and parse the XML entity for our messages */
             messageBody = getMessageUrlsXml(uids);
             headers.put("Brief", "t");
 
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            uidToUrl = dataset.getUidToUrl();
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
 
             return uidToUrl;
         }
@@ -1531,9 +1527,7 @@ public class WebDavStore extends Store {
          * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
-            HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody = "";
             Message[] messages = new Message[20];
             String[] uids;
@@ -1566,13 +1560,13 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageFlagsXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             if (dataset == null) {
                 throw new MessagingException("Data Set from request was null");
             }
 
-            uidToReadStatus = dataset.getUidToRead();
+            HashMap<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 if (!(messages[i] instanceof WebDavMessage)) {
@@ -1603,9 +1597,7 @@ public class WebDavStore extends Store {
          */
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
         throws MessagingException {
-            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody = "";
             String[] uids;
             Message[] messages = new Message[10];
@@ -1638,9 +1630,9 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageEnvelopeXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
-            envelopes = dataset.getMessageEnvelopes();
+            Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
