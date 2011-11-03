@@ -740,8 +740,8 @@ public class Pop3Store extends Store {
             }
 
             if (response == null) {
-                response = executeSimpleCommand(String.format(RETR_COMMAND + " %d",
-                                                mUidToMsgNumMap.get(message.getUid())));
+                executeSimpleCommand(String.format(RETR_COMMAND + " %d",
+                                     mUidToMsgNumMap.get(message.getUid())));
             }
 
             try {
