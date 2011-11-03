@@ -204,7 +204,7 @@
 
     <string name="end_of_folder">Daha fazla mesaj yok</string>
 
-    <string name="accounts_welcome">Kaiten Posta'ya Hoşgeldiniz!\n Kaiten Android için bir gelişmiş eposta alıcısıdır ki birçok gelişmiş posta sunucusu özelliklerini destekler. Her ağ merkezli iletişim uygulaması gibi, Kaiten'i ağ bant genişliğinin bir büyük kısmını kullanmaya yapılandırmak mümkündür.  Eğer sınırsız bir data paketiniz yoksa veya uluslararası dolaşıma niyetleniyorsanız, lütfen bant genişliğinizin kullanımına dikkat edin.  Bu uygulama olduğu gibi sağlanır, her türlü garanti kapsamı dışında.  Bu uygulamanın ne yazar ne de dağıtıcısı herhangi bir davranıştan, kullanımdan, terbiyesizlik veya bu uygulamanın kötüye kullanımından sorumlu tutulamaz.  Tüm bunlar söylenildi, biz Kaiten'in iyi çalışacağına çok inanıyoruz ve biz sizin onunla bulacağınız hakkındaki her problemi duymak istiyoruz. Lütfen eposta atın support@kaitenmail.com  Eğer sorun yaşıyorsanız, doğru şeyler yapmak için elimizden gelenin en iyisini yapacağız. </string>
+    <string name="accounts_welcome">Kaiten Posta\'ya Hoşgeldiniz!\n Kaiten Android için bir gelişmiş eposta alıcısıdır ki birçok gelişmiş posta sunucusu özelliklerini destekler. Her ağ merkezli iletişim uygulaması gibi, Kaiten\'i ağ bant genişliğinin bir büyük kısmını kullanmaya yapılandırmak mümkündür.  Eğer sınırsız bir data paketiniz yoksa veya uluslararası dolaşıma niyetleniyorsanız, lütfen bant genişliğinizin kullanımına dikkat edin.  Bu uygulama olduğu gibi sağlanır, her türlü garanti kapsamı dışında.  Bu uygulamanın ne yazar ne de dağıtıcısı herhangi bir davranıştan, kullanımdan, terbiyesizlik veya bu uygulamanın kötüye kullanımından sorumlu tutulamaz.  Tüm bunlar söylenildi, biz Kaiten\'in iyi çalışacağına çok inanıyoruz ve biz sizin onunla bulacağınız hakkındaki her problemi duymak istiyoruz. Lütfen eposta atın support@kaitenmail.com  Eğer sorun yaşıyorsanız, doğru şeyler yapmak için elimizden gelenin en iyisini yapacağız. </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Onarma günlüğünü Etkinleştir</string>
@@ -747,7 +747,7 @@
     <string name="account_settings_signature_label">İmza</string>
     <string name="account_settings_signature_summary">Gönderdiğiniz her mesaja bir imza atın</string>
 
-    <string name="default_signature">-- \n Android için Kaiten Posta'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_signature">-- \n Android için Kaiten Posta\'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
     <string name="default_identity_description">İlk kimlik</string>
     <string name="choose_identity">Kimlik seç</string>
     <string name="choose_identity_title">Kimlik seç</string>
@@ -783,13 +783,13 @@
     <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Hesabı Kaldır</string>
-    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail'den kaldırılacak.</string>
+    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak.</string>
 
     <string name="account_recreate_dlg_title">Hesabı canlandırmak</string>
-    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi için \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi için \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
 
     <string name="account_clear_dlg_title">Hesabı Temizle</string>
-    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar içinde \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar içinde \"<xliff:g id="account">%s</xliff:g>\" Kaiten Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
 
     <string name="provider_note_live">Sadece bazı \"Plus\" hesaplar bu programın POP
         erişiminden bağlanmasına izin verir.Eğer doğru eposta adresi ve şifre ile
@@ -853,7 +853,7 @@
     <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
     <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
     <string name="settings_messageview_zoom_controls_label">Sistem yakınlaştırma kontrolleri</string>
-    <string name="settings_messageview_zoom_controls_summary">Yakınlaştırma araçlarını veya cihazınız onu destekliyorsa pinch-zoom'u etkinleştir</string>
+    <string name="settings_messageview_zoom_controls_summary">Yakınlaştırma araçlarını veya cihazınız onu destekliyorsa pinch-zoom\'u etkinleştir</string>
 
 
 
@@ -884,7 +884,7 @@
     <string name="batch_flag_op">Seçilmiş olana Yıldız ekle</string>
     <string name="batch_unflag_op">Seçilmi olandan Yıldızı kaldır</string>
     <string name="batch_archive_op">Seçilmişi Arşive Taşı</string>
-    <string name="batch_spam_op">Seçilmişi Spam'a Taşı</string>
+    <string name="batch_spam_op">Seçilmişi Spam\'a Taşı</string>
     <string name="batch_move_op">Seçileni Taşı</string>
     <string name="batch_copy_op">Seçileni Kopyala</string>
     <string name="batch_flag_mode">Yıldız modu</string>
@@ -950,7 +950,7 @@
     <string name="account_settings_searchable_displayable">Görüntülenebilir</string>
     <string name="account_settings_searchable_none">Hiçbiri</string>
 
-    <string name="remote_control_label">Kaiten Posta'ya uzaktan erişim</string>
+    <string name="remote_control_label">Kaiten Posta\'ya uzaktan erişim</string>
     <string name="remote_control_desc">Bu programın Kaiten Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
 
     <string name="font_size_settings_title">Yazı tipi Boyutu</string>
@@ -1013,7 +1013,7 @@
     <string name="btn_verify">Doğrulamak</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">Kaiten tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için Kaiten'i yeniden kurun.</string>
+    <string name="insufficient_apg_permissions">Kaiten tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için Kaiten\'i yeniden kurun.</string>
     <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
     <string name="attachment_encryption_unsupported">Uyarı: Ekler henüz işaretli veya şifreli değil.</string>
     <string name="send_aborted">İptal gönder.</string>
