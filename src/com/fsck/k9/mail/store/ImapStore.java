@@ -655,7 +655,7 @@ public class ImapStore extends Store {
                         if (bracketedObj instanceof ImapList) {
                             ImapList bracketed = (ImapList)bracketedObj;
 
-                            if (bracketed.size() > 0) {
+                            if (!bracketed.isEmpty()) {
                                 Object keyObj = bracketed.get(0);
                                 if (keyObj instanceof String) {
                                     String key = (String)keyObj;
@@ -1409,7 +1409,7 @@ public class ImapStore extends Store {
 //                {
 //                    ImapList bracketed = (ImapList)bracketedObj;
 //
-//                    if (bracketed.size() > 0)
+//                    if (!bracketed.isEmpty())
 //                    {
 //                        Object keyObj = bracketed.get(0);
 //                        if (keyObj instanceof String)
@@ -1545,7 +1545,7 @@ public class ImapStore extends Store {
 
                 StringBuilder contentDisposition = new StringBuilder();
 
-                if (bodyDisposition != null && bodyDisposition.size() > 0) {
+                if (bodyDisposition != null && !bodyDisposition.isEmpty()) {
                     if (!"NIL".equalsIgnoreCase(bodyDisposition.getString(0))) {
                         contentDisposition.append(bodyDisposition.getString(0).toLowerCase(Locale.US));
                     }
@@ -1817,7 +1817,7 @@ public class ImapStore extends Store {
         private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
             for (ImapResponse response : responses) {
                 ImapList capabilityList = null;
-                if (response.size() > 0 && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
+                if (!response.isEmpty() && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
                     for (Object thisPart : response) {
                         if (thisPart instanceof ImapList) {
                             ImapList thisList = (ImapList)thisPart;
@@ -1832,7 +1832,7 @@ public class ImapStore extends Store {
                 }
 
                 if (capabilityList != null) {
-                    if (capabilityList.size() > 0 && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
+                    if (!capabilityList.isEmpty() && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
                         if (K9.DEBUG) {
                             Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
                         }
@@ -2495,13 +2495,13 @@ public class ImapStore extends Store {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                                     messages.add(message);
                                 }
-                                if (messages.size() > 0) {
+                                if (!messages.isEmpty()) {
                                     pushMessages(messages, true);
                                 }
 
                             } else {
                                 List<ImapResponse> untaggedResponses = null;
-                                while (storedUntaggedResponses.size() > 0) {
+                                while (!storedUntaggedResponses.isEmpty()) {
                                     if (K9.DEBUG)
                                         Log.i(K9.LOG_TAG, "Processing " + storedUntaggedResponses.size() + " untagged responses from previous commands for " + getLogId());
                                     untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
@@ -2608,10 +2608,10 @@ public class ImapStore extends Store {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
 
-            if (flagSyncMsgSeqs.size() > 0) {
+            if (!flagSyncMsgSeqs.isEmpty()) {
                 syncMessages(flagSyncMsgSeqs);
             }
-            if (removeMsgUids.size() > 0) {
+            if (!removeMsgUids.isEmpty()) {
                 removeMessages(removeMsgUids);
             }
         }
@@ -2649,7 +2649,7 @@ public class ImapStore extends Store {
                         ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                         messages.add(message);
                     }
-                    if (messages.size() > 0) {
+                    if (!messages.isEmpty()) {
                         pushMessages(messages, true);
                     }
                 }

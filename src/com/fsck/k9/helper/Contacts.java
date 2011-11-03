@@ -187,8 +187,8 @@ public abstract class Contacts {
      */
     public boolean hasContactPicker() {
         if (mHasContactPicker == null) {
-            mHasContactPicker = (mContext.getPackageManager().
-                                 queryIntentActivities(contactPickerIntent(), 0).size() > 0);
+            mHasContactPicker = !(mContext.getPackageManager().
+                                  queryIntentActivities(contactPickerIntent(), 0).isEmpty());
         }
         return mHasContactPicker;
     }

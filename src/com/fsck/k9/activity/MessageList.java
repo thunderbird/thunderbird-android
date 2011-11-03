@@ -1977,7 +1977,7 @@ public class MessageList
                 }
             }
 
-            if (messagesToSearch.size() > 0) {
+            if (!messagesToSearch.isEmpty()) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
                 new MessagingListener() {
                     @Override
@@ -1987,11 +1987,11 @@ public class MessageList
                 });
             }
 
-            if (messagesToRemove.size() > 0) {
+            if (!messagesToRemove.isEmpty()) {
                 removeMessages(messagesToRemove);
             }
 
-            if (messagesToAdd.size() > 0) {
+            if (!messagesToAdd.isEmpty()) {
                 mHandler.addMessages(messagesToAdd);
             }
 

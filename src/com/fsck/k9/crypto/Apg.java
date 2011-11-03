@@ -176,7 +176,7 @@ public class Apg extends CryptoProvider {
                                activity.getResources().getString(R.string.insufficient_apg_permissions),
                                Toast.LENGTH_LONG).show();
             }
-            if (keyIds.size() > 0) {
+            if (!keyIds.isEmpty()) {
                 initialKeyIds = new long[keyIds.size()];
                 for (int i = 0, size = keyIds.size(); i < size; ++i) {
                     initialKeyIds[i] = keyIds.get(i);
