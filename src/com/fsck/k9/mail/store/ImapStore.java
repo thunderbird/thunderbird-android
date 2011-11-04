@@ -371,7 +371,7 @@ public class ImapStore extends Store {
         LinkedList<Folder> folders = new LinkedList<Folder>();
 
         List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format(commandResponse + " \"\" %s",
+            connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
                                             encodeString(getCombinedPrefix() + "*")));
 
         for (ImapResponse response : responses) {
@@ -639,7 +639,7 @@ public class ImapStore extends Store {
             // 2 OK [READ-WRITE] Select completed.
             try {
                 msgSeqUidMap.clear();
-                String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " %s",
+                String command = String.format("%s %s", mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE",
                                                encodeString(encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
@@ -896,7 +896,7 @@ public class ImapStore extends Store {
                 int count = 0;
                 int start = 1;
 
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* " + criteria, start));
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* %s", start, criteria));
                 for (ImapResponse response : responses) {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                         count += response.size() - 1;
@@ -973,7 +973,7 @@ public class ImapStore extends Store {
 
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %d:%d%s" + (includeDeleted ? "" : " NOT DELETED"), start, end, dateSearchString));
+                    return executeSimpleCommand(String.format("UID SEARCH %d:%d%s%s", start, end, dateSearchString, includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -983,7 +983,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %s" + (includeDeleted ? "" : " NOT DELETED"), Utility.combine(mesgSeqs.toArray(), ',')));
+                    return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -993,7 +993,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH UID %s" + (includeDeleted ? "" : " NOT DELETED"), Utility.combine(mesgUids.toArray(), ',')));
+                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
