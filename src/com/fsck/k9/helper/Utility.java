@@ -1,6 +1,7 @@
 
 package com.fsck.k9.helper;
 
+import android.database.Cursor;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
@@ -584,5 +585,17 @@ public class Utility {
             Log.d(K9.LOG_TAG, "No external images.");
         }
         return false;
+    }
+
+    /**
+     * Unconditionally close a Cursor.  Equivalent to {@link Cursor#close()},
+     * if cursor is non-null.  This is typically used in finally blocks.
+     *
+     * @param cursor cursor to close
+     */
+    public static void closeQuietly(final Cursor cursor) {
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 }
