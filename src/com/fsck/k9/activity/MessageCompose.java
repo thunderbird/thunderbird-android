@@ -794,12 +794,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public void onPause() {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
-    }
-
-    // Save email as draft when activity is changed (go to home screen, call received)
-    @Override
-    public void onStop() {
-        super.onStop();
+        // Save email as draft when activity is changed (go to home screen, call received) or screen locked
         // don't do this if only changing orientations
         if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
             // don't do this if selecting signature or if "Encrypt" is checked or if adding an attachment
