@@ -83,8 +83,6 @@
     <string name="remove_account_action">Poista tili</string>
     <string name="clear_pending_action">Tyhjennä odottavat toimenpiteet (vaara!)</string>
 
-
-
     <string name="accounts_action">Tilit</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -110,6 +108,9 @@
     <string name="view_hide_details_action">Näytä/piilota lisätiedot</string>
     <string name="add_cc_bcc_action">Lisää Kopio/Piilokopio</string>
     <string name="edit_subject_action">Muokkaa aihetta</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Lisää liite</string>
     <string name="add_attachment_action_image">Lisää liite (kuva)</string>
     <string name="add_attachment_action_video">Lisää liite (video)</string>
@@ -264,8 +265,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Kaikkia liitteitä ei ladattu. Ne ladataan automaattisest ennen tämän viestin lähettämistä.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida jatkolähettää, koska niitä ei ole ladattu.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Lähettäjä: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Vast.ottaja:</string>
@@ -284,7 +284,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="message_view_show_pictures_action">Näytä kuvat</string>
     <string name="message_view_fetching_attachment_toast">Haetaan liitettä.</string>
     <string name="message_view_no_viewer">Ei löydy katseluohjelmaa tyypille <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Lataa koko viesti</string>
 
@@ -312,7 +311,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="about_header">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Versio: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Viestin tähdet</string>
     <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
@@ -332,6 +330,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
     <string name="global_settings_messageview_return_to_list_label">Palaa poiston jälkeen listanäkymään</string>
     <string name="global_settings_messageview_return_to_list_summary">Palaa viestilistaan viestin poiston jälkeen</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Vahvista toimenpiteet</string>
     <string name="global_settings_confirm_actions_summary">Näytä keskusteluikkuna valitun toimenpiteen suorituksesta</string>
@@ -344,12 +344,10 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="global_settings_privacy_mode_title">Lukitusnäytön ilmoitukset</string>
     <string name="global_settings_privacy_mode_summary">Älä näytä viestin aihetta ilmoituspalkissa jos laite on lukittuna</string>
 
-
     <string name="quiet_time">Hiljainen aika</string>
     <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
     <string name="quiet_time_starts">Hiljainen aika alkaa</string>
     <string name="quiet_time_ends">Hiljainen aika päättyy</string>
-
 
     <string name="account_setup_basics_title">Lisää uusi tili</string>
     <string name="account_setup_basics_instructions">Anna tilin sähköpostiosoite:</string>
@@ -512,7 +510,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
     <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää koska se ei ole synkronoitu palvelimelle</string>
 
     <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
@@ -556,12 +553,18 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
 
     <string name="account_settings_composition">Lähetetään postia</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Vastaa lainauksen jälkeen</string>
     <string name="account_settings_reply_after_quote_summary">Kun viestiin vastataan, alkuperäinen viesti on vastauksesi yläpuolella.</string>
 
     <string name="account_settings_message_format_label">Viestimuoto</string>
     <string name="account_settings_message_format_text">Pelkkä teksti (kuvat ja muotoilu on poistettu)</string>
     <string name="account_settings_message_format_html">HTML (kuvat ja muotoilu säilytetään)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">Vastaa lainaamalla tyyli</string>
     <string name="account_settings_quote_style_prefix">Etuliite (kuten Gmail, Pine)</string>
@@ -586,7 +589,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
 
     <string name="account_settings_storage_title">Tallennus</string>
 
-
     <string name="account_settings_color_label">Tilin väri</string>
     <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaukseen</string>
 
@@ -608,6 +610,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_settings_autodownload_message_size_512">512 kt</string>
     <string name="account_settings_autodownload_message_size_1024">1 Mt</string>
     <string name="account_settings_autodownload_message_size_2048">2 Mt</string>
+    <string name="account_settings_autodownload_message_size_5120">5 Mt</string>
+    <string name="account_settings_autodownload_message_size_10240">10 Mt</string>
     <string name="account_settings_autodownload_message_size_any">mikä tahansa (ei rajoitusta)</string>
 
     <string name="account_settings_message_age_label">Synkronoi viestit</string>
@@ -623,7 +627,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_settings_message_age_3_months">viimeiset 3 kuukautta</string>
     <string name="account_settings_message_age_6_months">viimeiset 6 kuukautta</string>
     <string name="account_settings_message_age_1_year">viime vuonna</string>
-
 
     <string name="account_settings_folder_display_mode_label">Näytä kansiot</string>
     <string name="account_settings_folder_display_mode_all">Kaikki</string>
@@ -699,7 +702,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_settings_led_label">Merkkivalo vilkkuu</string>
     <string name="account_settings_led_summary">Viestin saapuessa merkkivalo vilkkuu</string>
 
-
     <string name="account_settings_servers">Palvelimen asetukset</string>
 
     <string name="account_settings_composition_title">Viestin kirjoituksen asetukset</string>
@@ -747,7 +749,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="choose_account_title">Valitse tili/identiteetti</string>
     <string name="send_as">Lähetä</string>
 
-
     <string name="no_identities">Mene tilin asetuksiin -> Hallitse identiteettejä luodaksesi identiteetin</string>
     <string name="no_removable_identity">Et voi poistaa ainoaa identiteettiäsi</string>
     <string name="identity_has_no_email">Identiteettiä ei voi käyttää ilman sähköpostiosoitetta</string>
@@ -788,8 +789,11 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
         joka sallii tämän ohjelman ottaa yhteyden. Jos et voi kirjautua
         oikealla sähköpostiosoitteella ja salasanalla, sinulla ei voi olla maksullista
         \"Plus\"-tiliä. Ole hyvä ja käytä www-selainta käyttääksesi niihin sähköpostitileihin.</string>
-
     <string name="provider_note_yahoojp">Jos haluat käyttää tämän palveluntarjoajan POP3:a, sinun tulee sallia käyttää POP3 Yahoon sähköpostin asetukset-sivulla.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton sertifikaatti</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
@@ -818,8 +822,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="folder_list_display_mode_first_and_second_class">Näytä 1. ja 2. luokan kansiot</string>
     <string name="folder_list_display_mode_not_second_class">Näytä kaikki paitsi 2. luokan kansiot</string>
 
-
-
     <string name="account_settings_signature__location_label">Allekirjoituksen sijainti</string>
     <string name="account_settings_signature__location_before_quoted_text">Ennen lainattua viestiä</string>
     <string name="account_settings_signature__location_after_quoted_text">Lainatun viestin jälkeen</string>
@@ -841,8 +843,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
     <string name="settings_messageview_zoom_controls_label">Järjestelmän zoomin ohjaus</string>
     <string name="settings_messageview_zoom_controls_summary">Ota widgetin zoomaus tai nipistys-zoomaus, jos laite tukee</string>
-
-
 
     <string name="setting_language_system">Järjestelmän oletus</string>
 
@@ -1048,4 +1048,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

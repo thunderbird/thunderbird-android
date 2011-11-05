@@ -108,6 +108,9 @@
     <string name="view_hide_details_action">Показать/спрятать подробности</string>
     <string name="add_cc_bcc_action">Добавить Копию/СК</string>
     <string name="edit_subject_action">Редактировать тему</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Добавить вложение</string>
     <string name="add_attachment_action_image">Добавить вложение (Изображение)</string>
     <string name="add_attachment_action_video">Добавить вложение (Видео)</string>
@@ -256,9 +259,9 @@
     <string name="error_contact_address_not_found">Не найден адрес почты.</string>
     <string name="message_compose_downloading_attachments_toast">Некоторые вложения не были загружены. Они будут автоматически загружены перед отправкой этого сообщения.</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>
-		<string name="message_compose_show_quoted_text_action">Цитировать сообщение</string>
+    <string name="message_compose_show_quoted_text_action">Цитировать сообщение</string>
 
-		<string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Для:</string>
     <string name="message_view_cc_label">Копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
@@ -302,7 +305,6 @@
     <string name="about_header">О Программе <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Версия: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Показывать звезды</string>
     <string name="global_settings_flag_summary">Звезды указывают отмеченные сообщения</string>
     <string name="global_settings_checkbox_label">Флажки множественного выбора</string>
@@ -322,6 +324,8 @@
     <string name="global_settings_messageview_fixedwidth_summary">Использовать шрифт фиксированной ширины при показе плоского текста</string>
     <string name="global_settings_messageview_return_to_list_label">Вернуться к списку после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Вернуться к списку сообщений после удаления сообщения</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Подтверждение действий</string>
     <string name="global_settings_confirm_actions_summary">Показывать диалог при совершении действий</string>
@@ -333,7 +337,6 @@
 
     <string name="global_settings_privacy_mode_title">Уведомления при заблокированном экране</string>
     <string name="global_settings_privacy_mode_summary">Не показывать тему письма в уведомлениях, когда система заблокирована</string>
-
 
     <string name="quiet_time">Время тишины</string>
     <string name="quiet_time_description">Запретить сигнал, вибрацию, мигание в ночное время</string>
@@ -546,15 +549,18 @@
 
     <string name="account_settings_composition">Написание сообщений</string>
 
-		<string name="account_settings_default_quoted_text_shown_label">Цитировать оригинальное сообщение при ответе</string>
-		<string name="account_settings_default_quoted_text_shown_summary">Оригинальное сообщение вставляется в ответное сообщение.</string>
+    <string name="account_settings_default_quoted_text_shown_label">Цитировать оригинальное сообщение при ответе</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Оригинальное сообщение вставляется в ответное сообщение.</string>
 
-		<string name="account_settings_reply_after_quote_label">Отвечать после цитаты</string>
+    <string name="account_settings_reply_after_quote_label">Отвечать после цитаты</string>
     <string name="account_settings_reply_after_quote_summary">При ответе цитата будет выше ответа.</string>
 
     <string name="account_settings_message_format_label">Формат сообщения</string>
     <string name="account_settings_message_format_text">Плоский текст (изображения и форматирование не сохраняется)</string>
     <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">Стиль цитирования</string>
     <string name="account_settings_quote_style_prefix">Префикс (например Gmail, Pine)</string>
@@ -579,7 +585,6 @@
 
     <string name="account_settings_storage_title">Хранилище</string>
 
-
     <string name="account_settings_color_label">Цвет учётной записи</string>
     <string name="account_settings_color_summary">Выберите цвет учётной записи, используемый в папке и списке учётных записей</string>
 
@@ -601,6 +606,8 @@
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">любого размера без ограничений</string>
 
     <string name="account_settings_message_age_label">Синхронизировать сообщения</string>
@@ -616,7 +623,6 @@
     <string name="account_settings_message_age_3_months">за 3 последних месяца</string>
     <string name="account_settings_message_age_6_months">за 6 последних месяцев</string>
     <string name="account_settings_message_age_1_year">за последний год</string>
-
 
     <string name="account_settings_folder_display_mode_label">Выбор показываемых папок</string>
     <string name="account_settings_folder_display_mode_all">Все</string>
@@ -739,7 +745,6 @@
     <string name="choose_account_title">Выбрать учётную запись/личность</string>
     <string name="send_as">Послать как</string>
 
-
     <string name="no_identities">Добавить личность можно в Настройке Ящиков -&gt; Управление личностями</string>
     <string name="no_removable_identity">Нельзя удалить единственную личность.</string>
     <string name="identity_has_no_email">Личность без адреса электронной почты не позволяется.</string>
@@ -779,15 +784,13 @@
     <string name="provider_note_live">Только некоторые \"Plus\" ящики поддерживают получение почты через \"POP\". Если вы не можете подключится
         с верными данными подключения, то ваш почтовый ящик не имеет такого доступа.
         Воспользуйтесь мобильной версией Yahoo! Mail для получения сообщений.</string>
-
     <string name="provider_note_yahoojp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использование POP3 на странице настроек почты Yahoo.</string>
+    <string name="provider_note_naver">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Naver.</string>
+    <string name="provider_note_hanmail">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Hanmail(Daum).</string>
+    <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
+    <string name="provider_note_nate">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Nate.</string>
 
-		<string name="provider_note_naver">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Naver.</string>
-		<string name="provider_note_hanmail">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Hanmail(Daum).</string>
-		<string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
-		<string name="provider_note_nate">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Nate.</string>
-
-		<string name="account_setup_failed_dlg_invalid_certificate_title">Сертификат не признан</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Сертификат не признан</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять сертификат</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить сертификат</string>
 
@@ -813,8 +816,6 @@
     <string name="folder_list_display_mode_first_class">Показывать только папки 1-го класса</string>
     <string name="folder_list_display_mode_first_and_second_class">Показывать папки 1-го и 2-го классов</string>
     <string name="folder_list_display_mode_not_second_class">Показывать все папки, за исключением 2-го класса</string>
-
-
 
     <string name="account_settings_signature__location_label">Размещение подписи</string>
     <string name="account_settings_signature__location_before_quoted_text">перед цитатой</string>
@@ -849,16 +850,16 @@
     <string name="no_message_seletected_toast">Никаких сообщшний не выбранно</string>
 
     <string name="date_format_label">Формат даты</string>
-	<!--
-				The values of the date_format_* strings MUST be valid date format strings.
-				See Android SDK documentation for the class SimpleDateFormat.
-			-->
-		<string name="date_format_short">SHORT</string>
-		<string name="date_format_medium">MEDIUM</string>
-		<string name="date_format_common">dd-MMM-yyyy</string>
-		<string name="date_format_iso8601">yyyy-MM-dd</string>
+    <!--
+      The values of the date_format_* strings MUST be valid date format strings.
+      See Android SDK documentation for the class SimpleDateFormat.
+    -->
+    <string name="date_format_short">SHORT</string>
+    <string name="date_format_medium">MEDIUM</string>
+    <string name="date_format_common">dd-MMM-yyyy</string>
+    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
-		<string name="batch_ops">Групповые операции</string>
+    <string name="batch_ops">Групповые операции</string>
     <string name="batch_delete_op">Удалить выбранное</string>
     <string name="batch_mark_read_op">Пометить выбранное как прочитанное</string>
     <string name="batch_mark_unread_op">Пометить выбранное как не прочитанное</string>
@@ -934,111 +935,117 @@
     <string name="remote_control_label">Дистанционное управление K-9 Mail</string>
     <string name="remote_control_desc">Позволяет этому приложению управлеть деятельностью и настройками K-9 Mail.</string>
 
-	<string name="font_size_settings_title">Размер шрифта</string>
-	<string name="font_size_settings_description">Настройте размер шрифта</string>
+    <string name="font_size_settings_title">Размер шрифта</string>
+    <string name="font_size_settings_description">Настройте размер шрифта</string>
 
-	<string name="font_size_account_list">Список учётных записей</string>
-	<string name="font_size_account_name">Название учётной записи</string>
-	<string name="font_size_account_description">Описание учётной записи</string>
+    <string name="font_size_account_list">Список учётных записей</string>
+    <string name="font_size_account_name">Название учётной записи</string>
+    <string name="font_size_account_description">Описание учётной записи</string>
 
-	<string name="font_size_folder_list">Список папок</string>
-	<string name="font_size_folder_name">Имя папки</string>
-	<string name="font_size_folder_status">Статус папки</string>
+    <string name="font_size_folder_list">Список папок</string>
+    <string name="font_size_folder_name">Имя папки</string>
+    <string name="font_size_folder_status">Статус папки</string>
 
-	<string name="font_size_message_list">Список сообщений</string>
-	<string name="font_size_message_list_subject">Тема</string>
-	<string name="font_size_message_list_sender">Отпрвитель</string>
-	<string name="font_size_message_list_date">Дата</string>
-	<string name="font_size_message_list_preview">Предпросмотр</string>
+    <string name="font_size_message_list">Список сообщений</string>
+    <string name="font_size_message_list_subject">Тема</string>
+    <string name="font_size_message_list_sender">Отпрвитель</string>
+    <string name="font_size_message_list_date">Дата</string>
+    <string name="font_size_message_list_preview">Предпросмотр</string>
 
-	<string name="font_size_message_view">Сообщения</string>
-	<string name="font_size_message_view_sender">отправитель</string>
-	<string name="font_size_message_view_to">Кому</string>
-	<string name="font_size_message_view_cc">Скрытая копия</string>
-	<string name="font_size_message_view_additional_headers">дополнительные заголовки</string>
-	<string name="font_size_message_view_subject">Тема</string>
-	<string name="font_size_message_view_time">Время</string>
-	<string name="font_size_message_view_date">Дата</string>
-	<string name="font_size_message_view_content">Тело сообщения</string>
+    <string name="font_size_message_view">Сообщения</string>
+    <string name="font_size_message_view_sender">отправитель</string>
+    <string name="font_size_message_view_to">Кому</string>
+    <string name="font_size_message_view_cc">Скрытая копия</string>
+    <string name="font_size_message_view_additional_headers">дополнительные заголовки</string>
+    <string name="font_size_message_view_subject">Тема</string>
+    <string name="font_size_message_view_time">Время</string>
+    <string name="font_size_message_view_date">Дата</string>
+    <string name="font_size_message_view_content">Тело сообщения</string>
 
-	<string name="font_size_tiniest">самый крочшечный</string>
-	<string name="font_size_tiny">Крошечный</string>
-	<string name="font_size_smaller">Еще меньше</string>
-	<string name="font_size_small">Маленький</string>
-	<string name="font_size_medium">средний</string>
-	<string name="font_size_large">Большой</string>
-	<string name="font_size_larger">Наибольший</string>
+    <string name="font_size_tiniest">самый крочшечный</string>
+    <string name="font_size_tiny">Крошечный</string>
+    <string name="font_size_smaller">Еще меньше</string>
+    <string name="font_size_small">Маленький</string>
+    <string name="font_size_medium">средний</string>
+    <string name="font_size_large">Большой</string>
+    <string name="font_size_larger">Наибольший</string>
 
-	<string name="font_size_webview_smaller">Крошечный</string>
-	<string name="font_size_webview_small">Маленький</string>
-	<string name="font_size_webview_normal">Нормальный</string>
-	<string name="font_size_webview_large">Большой</string>
-	<string name="font_size_webview_larger">Наибольший</string>
+    <string name="font_size_webview_smaller">Крошечный</string>
+    <string name="font_size_webview_small">Маленький</string>
+    <string name="font_size_webview_normal">Нормальный</string>
+    <string name="font_size_webview_large">Большой</string>
+    <string name="font_size_webview_larger">Наибольший</string>
 
-	<!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-		 <string name="message_compose_buggy_gallery">Выберите \"Настройка\" -&gt; \"Использовать обход проблемы...\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
+    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
+    <string name="message_compose_buggy_gallery">Выберите \"Настройка\" -&gt; \"Использовать обход проблемы...\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
 
-		 <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-		 <string name="message_compose_use_workaround">Выберите \"Добавить вложение (Картинка)\" или "Добвить вложение (Видео)\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
+    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
+    <string name="message_compose_use_workaround">Выберите \"Добавить вложение (Картинка)\" или "Добвить вложение (Видео)\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
 
-		 <string name="miscellaneous_preferences">Разное</string>
-		 <string name="misc_preferences_attachment_title">Использовать обход проблемы с \"Использовать галерею\"</string>
-		 <string name="misc_preferences_attachment_description">Показывать кнопки для добавления картинок и видео вложений (чтобы обойти проблемы с 3D в Gallery)</string>
-		 <!-- APG related -->
-		 <string name="error_activity_not_found">Нет подходящего приложения для действия.</string>
-		 <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается.</string>
-		 <string name="btn_crypto_sign">подписать</string>
-		 <string name="btn_encrypt">Зашифровать</string>
-		 <string name="btn_decrypt">Расшифровать</string>
-		 <string name="btn_verify">проверить</string>
-		 <string name="unknown_crypto_signature_user_id">&lt;неизвестный&gt;</string>
-		 <string name="key_id">id: %s</string>
-		 <string name="insufficient_apg_permissions">K-9 Mail не имеет разрешения для полного доступа к APG, please пожалуйста переустановите приложение.</string>
-		 <string name="pgp_mime_unsupported">PGP/MIME сообщения пока не поддерживаются.</string>
-		 <string name="attachment_encryption_unsupported">Предупреждение: вложения еще не подписаны и не зашифрованы.</string>
-		 <string name="send_aborted">Отправка отменена.</string>
+    <string name="miscellaneous_preferences">Разное</string>
+    <string name="misc_preferences_attachment_title">Использовать обход проблемы с \"Использовать галерею\"</string>
+    <string name="misc_preferences_attachment_description">Показывать кнопки для добавления картинок и видео вложений (чтобы обойти проблемы с 3D в Gallery)</string>
 
-		 <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
-		 <string name="save_or_discard_draft_message_instructions_fmt">Сохранить или уничтожить сообщение?</string>
+    <!-- APG related -->
+    <string name="error_activity_not_found">Нет подходящего приложения для действия.</string>
+    <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается.</string>
+    <string name="btn_crypto_sign">подписать</string>
+    <string name="btn_encrypt">Зашифровать</string>
+    <string name="btn_decrypt">Расшифровать</string>
+    <string name="btn_verify">проверить</string>
+    <string name="unknown_crypto_signature_user_id">&lt;неизвестный&gt;</string>
+    <string name="key_id">id: %s</string>
+    <string name="insufficient_apg_permissions">K-9 Mail не имеет разрешения для полного доступа к APG, please пожалуйста переустановите приложение.</string>
+    <string name="pgp_mime_unsupported">PGP/MIME сообщения пока не поддерживаются.</string>
+    <string name="attachment_encryption_unsupported">Предупреждение: вложения еще не подписаны и не зашифрованы.</string>
+    <string name="send_aborted">Отправка отменена.</string>
 
-		 <string name="charset_not_found">Это сообщение не может быть отображено, так как кодовая страница \"<xliff:g id="charset">%s</xliff:g>\" не найдена.</string>
+    <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Сохранить или уничтожить сообщение?</string>
 
-		 <string name="select_text_now">Выберите текс для копирования.</string>
+    <string name="charset_not_found">Это сообщение не может быть отображено, так как кодовая страница \"<xliff:g id="charset">%s</xliff:g>\" не найдена.</string>
 
-		 <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
-		 <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
-		 <string name="dialog_confirm_delete_confirm_button">Удалить</string>
-		 <string name="dialog_confirm_delete_cancel_button">Не удалять</string>
+    <string name="select_text_now">Выберите текс для копирования.</string>
 
-		 <string name="dialog_confirm_spam_title">Подтвердите перенос в папку Спам</string>
-		 <plurals name="dialog_confirm_spam_message">
-				 <item quantity="one">Вы действительно хотите переместить сообщение в папку Спам?</item>
-				 <item quantity="other">Вы действительно хотите переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в папку Спам?</item>
+    <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
+    <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
+    <string name="dialog_confirm_delete_confirm_button">Удалить</string>
+    <string name="dialog_confirm_delete_cancel_button">Не удалять</string>
+
+    <string name="dialog_confirm_spam_title">Подтвердите перенос в папку Спам</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Вы действительно хотите переместить сообщение в папку Спам?</item>
+        <item quantity="other">Вы действительно хотите переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в папку Спам?</item>
 <!--
-	 Translators:
+  Translators:
 
-	 Please review how to handle pluralization for your language at (1) and ajust
-	 the <item> elements accordingly
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
 
-	 Possible values for 'quantity': zero, one, two, few, many, other
+  Possible values for 'quantity': zero, one, two, few, many, other
 
-	 (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
 -->
-		 </plurals>
-		 <string name="dialog_confirm_spam_confirm_button">Да</string>
-		 <string name="dialog_confirm_spam_cancel_button">Нет</string>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Да</string>
+    <string name="dialog_confirm_spam_cancel_button">Нет</string>
 
-		 <string name="dialog_attachment_progress_title">Скачивание вложения</string>
+    <string name="dialog_attachment_progress_title">Скачивание вложения</string>
 
-		 <string name="debug_logging_enabled">Разрешить журналирование отладочной информайии</string>
+    <string name="debug_logging_enabled">Разрешить журналирование отладочной информайии</string>
 
-		 <string name="messagelist_sent_to_me_sigil">»</string>
-		 <string name="messagelist_sent_cc_me_sigil">›</string>
-		 <string name="error_unable_to_connect">Не получается соединиться.</string>
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
+    <string name="error_unable_to_connect">Не получается соединиться.</string>
 
-		 <string name="account_unavailable">Учётная запись\"<xliff:g id="account">%s</xliff:g>\" недоступна; проверьте хранилище</string>
+    <string name="account_unavailable">Учётная запись\"<xliff:g id="account">%s</xliff:g>\" недоступна; проверьте хранилище</string>
 
-		 <string name="settings_attachment_default_path">Сохранять вложения в...</string>
-		 <string name="attachment_save_title">Сохранить вложение</string>
-		 <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
+    <string name="settings_attachment_default_path">Сохранять вложения в...</string>
+    <string name="attachment_save_title">Сохранить вложение</string>
+    <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

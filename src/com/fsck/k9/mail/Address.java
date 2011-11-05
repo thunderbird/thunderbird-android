@@ -12,6 +12,7 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.StringUtils;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
@@ -60,7 +61,7 @@ public class Address {
                 Rfc822Token token = tokens[0];
                 mAddress = token.getAddress();
                 String name = token.getName();
-                if ((name != null) && !("".equals(name))) {
+                if (!StringUtils.isNullOrEmpty(name)) {
                     /*
                      * Don't use the "personal" argument if "address" is of the form:
                      * James Bond <james.bond@mi6.uk>
@@ -111,11 +112,11 @@ public class Address {
      */
     public static Address[] parseUnencoded(String addressList) {
         List<Address> addresses = new ArrayList<Address>();
-        if ((addressList != null) && !("".equals(addressList))) {
+        if (!StringUtils.isNullOrEmpty(addressList)) {
             Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens) {
                 String address = token.getAddress();
-                if ((address != null) && !("".equals(address))) {
+                if (!StringUtils.isNullOrEmpty(address)) {
                     addresses.add(new Address(token.getAddress(), token.getName(), false));
                 }
             }
@@ -131,10 +132,10 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parse(String addressList) {
-        ArrayList<Address> addresses = new ArrayList<Address>();
-        if ((addressList == null) && !("".equals(addressList))) {
+        if (StringUtils.isNullOrEmpty(addressList)) {
             return EMPTY_ADDRESS_ARRAY;
         }
+        List<Address> addresses = new ArrayList<Address>();
         try {
             MailboxList parsedList = AddressBuilder.parseAddressList(addressList).flatten();
             for (int i = 0, count = parsedList.size(); i < count; i++) {
@@ -149,6 +150,8 @@ public class Address {
             }
         } catch (MimeException pe) {
             Log.e(K9.LOG_TAG, "MimeException in Address.parse()", pe);
+            //but we do an silent failover : we just use the given string as name with empty address
+            addresses.add(new Address(null, addressList,false));
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
@@ -168,7 +171,7 @@ public class Address {
 
     @Override
     public String toString() {
-        if (mPersonal != null && !mPersonal.equals("")) {
+        if (!StringUtils.isNullOrEmpty(mPersonal)) {
             return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -179,7 +182,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addresses.length; i++) {
             sb.append(addresses[i].toString());
             if (i < addresses.length - 1) {
@@ -190,7 +193,7 @@ public class Address {
     }
 
     public String toEncodedString() {
-        if (mPersonal != null && !mPersonal.equals("")) {
+        if (!StringUtils.isNullOrEmpty(mPersonal)) {
             return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -201,7 +204,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addresses.length; i++) {
             sb.append(addresses[i].toEncodedString());
             if (i < addresses.length - 1) {
@@ -256,7 +259,7 @@ public class Address {
             }
         }
 
-        return ((mPersonal != null) && (mPersonal.length() > 0)) ? mPersonal : mAddress;
+        return (!StringUtils.isNullOrEmpty(mPersonal)) ? mPersonal : mAddress;
     }
 
     public static CharSequence toFriendly(Address[] addresses) {

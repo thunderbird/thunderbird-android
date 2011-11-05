@@ -41,7 +41,7 @@ public class PeekableInputStream extends InputStream {
         if (!mPeeked) {
             return mIn.read(b, offset, length);
         } else {
-            b[0] = (byte)mPeekedByte;
+            b[offset] = (byte)mPeekedByte;
             mPeeked = false;
             int r = mIn.read(b, offset + 1, length - 1);
             if (r == -1) {

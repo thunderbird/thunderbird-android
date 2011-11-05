@@ -1,6 +1,7 @@
 
 package com.fsck.k9.helper;
 
+import android.database.Cursor;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
@@ -12,9 +13,6 @@ import com.fsck.k9.mail.filter.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -35,17 +33,6 @@ public class Utility {
      */
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
-
-    public static String readInputStream(InputStream in, String encoding) throws IOException {
-        InputStreamReader reader = new InputStreamReader(in, encoding);
-        StringBuffer sb = new StringBuffer();
-        int count;
-        char[] buf = new char[512];
-        while ((count = reader.read(buf)) != -1) {
-            sb.append(buf, 0, count);
-        }
-        return sb.toString();
-    }
 
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
@@ -70,6 +57,8 @@ public class Utility {
             return null;
         } else if (parts.length == 0) {
             return "";
+        } else if (parts.length == 1) {
+            return parts[0].toString();
         }
         StringBuilder sb = new StringBuilder();
         sb.append(parts[0]);
@@ -596,5 +585,17 @@ public class Utility {
             Log.d(K9.LOG_TAG, "No external images.");
         }
         return false;
+    }
+
+    /**
+     * Unconditionally close a Cursor.  Equivalent to {@link Cursor#close()},
+     * if cursor is non-null.  This is typically used in finally blocks.
+     *
+     * @param cursor cursor to close
+     */
+    public static void closeQuietly(final Cursor cursor) {
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 }

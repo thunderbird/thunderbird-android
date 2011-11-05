@@ -83,8 +83,6 @@
     <string name="remove_account_action">Remove account</string>
     <string name="clear_pending_action">Clear pending actions (danger!)</string>
 
-
-
     <string name="accounts_action">Accounts</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -273,7 +271,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
 
-
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
@@ -291,7 +288,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_view_show_pictures_action">Show pictures</string>
     <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Download complete message</string>
 
@@ -319,7 +315,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="about_header">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Show stars</string>
     <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
@@ -339,6 +334,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
     <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
+    <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
+    <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
@@ -351,12 +348,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>
     <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>
 
-
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="quiet_time_ends">Quiet Time ends</string>
-
 
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_instructions">Enter this account\'s email address:</string>
@@ -523,7 +518,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
     <string name="account_setup_options_mail_display_count_all">all messages</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
@@ -603,7 +597,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_storage_title">Storage</string>
 
-
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>
 
@@ -642,7 +635,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_message_age_3_months">the last 3 months</string>
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
-
 
     <string name="account_settings_folder_display_mode_label">Folders to display</string>
     <string name="account_settings_folder_display_mode_all">All</string>
@@ -718,7 +710,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_led_label">Blink LED</string>
     <string name="account_settings_led_summary">Blink LED when mail arrives</string>
 
-
     <string name="account_settings_servers">Server settings</string>
 
     <string name="account_settings_composition_title">Message composition options</string>
@@ -766,7 +757,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="choose_account_title">Choose account/identity</string>
     <string name="send_as">Send as</string>
 
-
     <string name="no_identities">Go to Account Settings -&gt; Manage Identities to create identities</string>
     <string name="no_removable_identity">You can\'t remove your only identity</string>
     <string name="identity_has_no_email">You can\'t use an identity without an email address</string>
@@ -808,14 +798,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
         your correct email address and password, you may not have a paid
         \"Plus\" account. Please launch the Web browser to gain access to
         these mail accounts.</string>
-
     <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>
-
     <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>
     <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>
     <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>
     <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>
-    
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
@@ -843,8 +831,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>
     <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
 
-
-
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted text</string>
     <string name="account_settings_signature__location_after_quoted_text">After quoted text</string>
@@ -866,8 +852,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="settings_messageview_mobile_layout_summary">Reformat HTML messages for smaller screens</string>
     <string name="settings_messageview_zoom_controls_label">System zoom controls</string>
     <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
-
-
 
     <string name="setting_language_system">System default</string>
 
@@ -1077,5 +1061,5 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="manage_accounts_move_up_action">Move up</string>
     <string name="manage_accounts_move_down_action">Move down</string>
-    
+
 </resources>

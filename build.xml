@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="K9" default="help">
 
-<!-- The local.properties file is created and updated by the 'android'
-     tool.
-     It contains the path to the SDK. It should *NOT* be checked into
-     Version Control Systems. -->
-    <property file="local.properties" />
+    <!-- The local.properties file is created and updated by the 'android' tool.
+         It contains the path to the SDK. It should *NOT* be checked into
+         Version Control Systems. -->
+    <loadproperties srcFile="local.properties" />
 
-    <!-- The build.properties file can be created by you and is never touched
-         by the 'android' tool. This is the place to change some of the
-         default property values used by the Ant rules.
+    <!-- The ant.properties file can be created by you. It is only edited by the
+         'android' tool to add properties to it.
+         This is the place to change some Ant specific build properties.
          Here are some properties you may want to change/update:
 
          source.dir
              The name of the source directory. Default is 'src'.
          out.dir
              The name of the output directory. Default is 'bin'.
+
+         For other overridable properties, look at the beginning of the rules
+         files in the SDK, at tools/ant/build.xml
 
          Properties related to the SDK location or the project target should
          be updated using the 'android' tool with the 'update' action.
@@ -24,87 +26,119 @@
          application and should be checked into Version Control Systems.
 
          -->
-    <property file="build.properties" />
+    <property file="ant.properties" />
 
-    <!-- The default.properties file is created and updated by the 'android'
+    <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
+
+         This contains project specific properties such as project target, and library
+         dependencies. Lower level build properties are stored in ant.properties
+         (or in .classpath for Eclipse projects).
+
          This file is an integral part of the build system for your
          application and should be checked into Version Control Systems. -->
-    <property file="default.properties" />
+    <loadproperties srcFile="project.properties" />
 
-    <!-- Custom Android task to deal with the project target, and import the
-         proper rules.
-         This requires ant 1.6.0 or above. -->
-    <path id="android.antlibs">
-        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
-    </path>
+    <!-- quick check on sdk.dir -->
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
+            unless="sdk.dir"
+    />
 
-    <taskdef name="setup"
-        classname="com.android.ant.SetupTask"
-        classpathref="android.antlibs" />
 
-    <!-- out folders for a parent project if this project is an instrumentation project -->
-    <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
-    <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
-
-    <!-- A bloody hack, but a useful and quick one -->
-    <target name="get-version">
-    <exec executable="perl" failonerror="true" outputproperty="version-name" errorproperty="version-error">
-        <!-- yes, ant needs &quot; for " in doublequoted strings. -->
-        <arg line="-ne'/android:versionName.*?=.*?&quot;(.*?)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
-    </exec>
-    <echo>Building version number ${version-name}</echo>
+<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
     </target>
 
-    <target name="get-version-from-git">
-    <exec executable="git" failonerror="true" outputproperty="version-name" errorproperty="version-error">
-        <arg line="describe --tags"/>
-    </exec>
-    <echo>Building version number ${version-name}</echo>
+    /* This is typically used for code obfuscation.
+       Compiled code location: ${out.classes.absolute.dir}
+       If this is not done in place, override ${out.dex.input.absolute.dir} */
+    <target name="-post-compile">
     </target>
+-->
 
-    <target name="set-version">
-        <echo>Setting version to ${version-name}</echo>
-        <fail unless="version-name">You can't set the version without passing -Dversion-name=1.234</fail>
-    <exec executable="perl" failonerror="true">
-        <arg line="-p -i.bak -e's/(?&lt;=android:versionName=&quot;)(.*?)(?=&quot;)/${version-name}/' AndroidManifest.xml"/>
-    </exec>
-    <exec executable="perl" failonerror="true">
-        <arg line="-p -i.bak -e's/(?&lt;=android:versionCode=&quot;)(\d+)(?=&quot;)/$1+1/e' AndroidManifest.xml" />
-    </exec>
-    </target>
+    <!-- Import the actual build file.
 
-    <!-- rules -->
-    <target name="bump-version" depends="set-version,commit-version">
-        <echo>Bumping K-9 to ${version-name}</echo>
-    </target>
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
 
-    <target name="commit-version">
-    <exec executable="git" failonerror="true">
-        <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-        <arg line="tag ${version-name}"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-        <arg line="push"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-        <arg line="push tag ${version-name}"/>
-    </exec>
-    </target>
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+    <!-- version-tag: custom -->
 
+    <!-- K9 CUSTOM STUFF -->
+ 
+     <!-- out folders for a parent project if this project is an instrumentation project -->
+     <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
+     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
+ 
+     <!-- A bloody hack, but a useful and quick one -->
+     <target name="get-version">
+     <exec executable="perl" failonerror="true" outputproperty="version-name" errorproperty="version-error">
+         <!-- yes, ant needs &quot; for " in doublequoted strings. -->
+         <arg line="-ne'/android:versionName.*?=.*?&quot;(.*?)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
+     </exec>
+     <echo>Building version number ${version-name}</echo>
+     </target>
+ 
+     <target name="get-version-from-git">
+     <exec executable="git" failonerror="true" outputproperty="version-name" errorproperty="version-error">
+         <arg line="describe --tags"/>
+     </exec>
+     <echo>Building version number ${version-name}</echo>
+     </target>
+ 
+     <target name="set-version">
+         <echo>Setting version to ${version-name}</echo>
+         <fail unless="version-name">You can't set the version without passing -Dversion-name=1.234</fail>
+     <exec executable="perl" failonerror="true">
+         <arg line="-p -i.bak -e's/(?&lt;=android:versionName=&quot;)(.*?)(?=&quot;)/${version-name}/' AndroidManifest.xml"/>
+     </exec>
+     <exec executable="perl" failonerror="true">
+         <arg line="-p -i.bak -e's/(?&lt;=android:versionCode=&quot;)(\d+)(?=&quot;)/$1+1/e' AndroidManifest.xml" />
+     </exec>
+     </target>
+ 
+     <!-- rules -->
+     <target name="bump-version" depends="set-version,commit-version">
+         <echo>Bumping K-9 to ${version-name}</echo>
+     </target>
+ 
+     <target name="commit-version">
+     <exec executable="git" failonerror="true">
+         <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
+     </exec>
+     <exec executable="git" failonerror="true">
+         <arg line="tag ${version-name}"/>
+     </exec>
+     <exec executable="git" failonerror="true">
+         <arg line="push"/>
+     </exec>
+     <exec executable="git" failonerror="true">
+         <arg line="push tag ${version-name}"/>
+     </exec>
+     </target>
 
     <!-- Create the output directories if they don't exist yet. -->
-    <target name="rclib" depends="compile">
-        <echo>Creating library ${rclib} for remote control
-        applications</echo>
-
-    <jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
+    <target name="rclib" depends="-compile">
+        <echo>Creating library ${rclib} for remote control applications</echo>
+        <jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
     </target>
-
     <target name="upload" depends="clean,get-version,release">
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="mv" failonerror="true">
@@ -125,7 +159,7 @@
             <arg value="bin/k9-${version-name}-release.apk" />
         </exec>
     </target>
-
+ 
     <!-- Install the package on the default emulator -->
     <target name="install" depends="debug">
         <echo>Installing ${out.debug.file} onto default emulator...</echo>
@@ -134,12 +168,20 @@
             <arg path="${out.debug.file}" />
         </exec>
     </target>
+    <!-- Re-Install the package on the default emulator -->
+    <target name="reinstall" depends="debug">
+        <echo>Reinstalling ${out.debug.file} onto default emulator...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg value="install" />
+            <arg value="-r" />
+            <arg path="${out.debug.file}" />
+        </exec>
+     </target>
     <target name="astyle">
     <exec executable="astyle" failonerror="true">
         <arg line="--style=java --indent=spaces=4 --brackets=attach --convert-tabs   --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java'"/>
     </exec>
-    </target>
-
+     </target>
     <target name="help">
         <!-- displays starts at col 13
               |13                                                              80| -->
@@ -160,33 +202,15 @@
         <echo>               Bumps the project version to 3.123,tags and commits it</echo>
         <echo>   astyle:     Make K-9's source look like it's supposed to</echo>
         <echo>   eclipse:    Apply template Eclipse settings</echo>
-    </target>
-
-
-    <!-- Execute the Android Setup task that will setup some properties
-         specific to the target, and import the build rules files.
-
-         The rules file is imported from
-            <SDK>/platforms/<target_platform>/ant/ant_rules_r#.xml
-
-         To customize existing targets, there are two options:
-         - Customize only one target:
-             - copy/paste the target into this file, *before* the
-               <setup> task.
-             - customize it to your needs.
-         - Customize the whole script.
-             - copy/paste the content of the rules files (minus the top node)
-               into this file, *after* the <setup> task
-             - disable the import of the rules by changing the setup task
-               below to <setup import="false" />.
-             - customize to your needs.
-    -->
-    <setup />
+     </target>
 
     <target name="eclipse" description="Apply template Eclipse settings">
         <copy todir=".settings">
             <fileset dir="tools/eclipse-settings"/>
         </copy>
     </target>
+
+    <!-- END K-9 STUFF-->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>

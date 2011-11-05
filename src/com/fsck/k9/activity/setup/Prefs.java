@@ -1,9 +1,10 @@
 package com.fsck.k9.activity.setup;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Vector;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -69,6 +70,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_COMPACT_LAYOUTS = "compact_layouts";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
+    private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
     private static final String PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED = "messageview_zoom_controls";
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
@@ -106,6 +108,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
+    private CheckBoxPreference mShowNext;
     private CheckBoxPreference mZoomControlsEnabled;
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
@@ -132,8 +135,8 @@ public class Prefs extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.global_preferences);
 
         mLanguage = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
-        Vector<CharSequence> entryVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntries()));
-        Vector<CharSequence> entryValueVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
+        List<CharSequence> entryVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntries()));
+        List<CharSequence> entryValueVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
         String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
         HashSet<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
         for (int i = entryVector.size() - 1; i > -1; --i) {
@@ -256,6 +259,9 @@ public class Prefs extends K9PreferenceActivity {
         mReturnToList = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST);
         mReturnToList.setChecked(K9.messageViewReturnToList());
 
+        mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
+        mShowNext.setChecked(K9.messageViewShowNext());
+
         mZoomControlsEnabled = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED);
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
@@ -365,6 +371,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
+        K9.setMessageViewShowNext(mShowNext.isChecked());
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
 

@@ -2,25 +2,28 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">K-9 메일</string>
     <string name="beta_app_name">K-9 메일 베타</string>
+    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">릴리즈 정보: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">K-9 메일은 아래의 서드파티 라이브러리를 이용합니다 : <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji 아이콘: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-    
+
     <string name="read_attachment_label">첨부 읽기</string>
     <string name="read_attachment_desc">K-9이 이메일의 첨부를 읽도록 합니다</string>
     <string name="read_messages_label">이메일 읽기</string>
     <string name="read_messages_desc">K-9이 이메일을 읽도록 합니다.</string>
     <string name="delete_messages_label">이메일 삭제</string>
     <string name="delete_messages_desc">K-9이 이메일을 삭제하도록 합니다</string>
-    
-     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
+
+    <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">계정</string>
     <string name="advanced">고급</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
     <string name="shortcuts_title">K-9 계정</string>
-    
-      <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+
+    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">작성</string>
     <string name="debug_title">디버그</string>
@@ -79,7 +82,7 @@
     <string name="global_settings_action">환경 설정</string>
     <string name="remove_account_action">계정 삭제</string>
     <string name="clear_pending_action">예정된 작업 삭제(위험!)</string>
-    
+
     <string name="accounts_action">계정</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -89,7 +92,8 @@
     <string name="send_alternate_chooser_title">발신자 선택</string>
 
     <string name="mark_all_as_read_dlg_title">모든 편지를 읽음으로 표시</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">\'<xliff:g id="folder">%s</xliff:g>\' 폴더의 모든 메시지를 읽음으로 표시하시겠습니까?  (K-9에서 보여지지 않은 폴더의 메시지포함)</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">\'<xliff:g id="folder">%s</xliff:g>\' 폴더의 모든 메시지를 읽은 메시지로 표시하시겠습니까?
+    (K-9에서 보여지지 않은 폴더의 메시지포함)</string>
 
     <string name="flag_action">즐겨찾기 등록</string>
     <string name="unflag_action">즐겨찾기 해제</string>
@@ -104,6 +108,9 @@
     <string name="view_hide_details_action">세부내용 보기/숨기기 </string>
     <string name="add_cc_bcc_action">참조/숨은참조 추가</string>
     <string name="edit_subject_action">제목 수정</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">첨부 추가</string>
     <string name="add_attachment_action_image">첨부 추가 (이미지)</string>
     <string name="add_attachment_action_video">첨부 추가 (비디오)</string>
@@ -163,14 +170,14 @@
     <string name="notification_bg_send_title">메일 전송중</string>
     <string name="notification_bg_title_separator">:</string>
 
-    <string name="special_mailbox_name_inbox">받은 메일함</string>
-    <string name="special_mailbox_name_outbox">보낸 메일함</string>
+    <string name="special_mailbox_name_inbox">받은편지함</string>
+    <string name="special_mailbox_name_outbox">보낸편지함</string>
     <!-- The following mailbox names will be used if the user has not specified one from the server -->
-    <string name="special_mailbox_name_drafts">임시 메일함</string>
+    <string name="special_mailbox_name_drafts">임시보관함</string>
     <string name="special_mailbox_name_trash">휴지통</string>
-    <string name="special_mailbox_name_sent">보낸 메일함</string>
+    <string name="special_mailbox_name_sent">보낸편지함</string>
     <string name="special_mailbox_name_archive">보관</string>
-    <string name="special_mailbox_name_spam">스팸메일함</string>
+    <string name="special_mailbox_name_spam">스팸편지함</string>
     <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (임시보관함)</string>
@@ -182,12 +189,12 @@
     <string name="send_failure_subject">일부 메시지를 보내는데 실패하였습니다</string>
     <string name="send_failure_body_abbrev"><xliff:g id="errorFolder">%s</xliff:g> 폴더 자세히 보기</string>
     <string name="send_failure_body_fmt">K-9에서 메시지를 보내는데 문제가 발생하였습니다.
-    하지만 문제의 특성상 K-9은 메시지가 확실히 보내졌는지 여부를 확인할 수 없습니다. 
-	수신자는 이미 메시지를 받았을 수도 있습니다.
+    하지만 문제의 특성상 K-9은 메시지가 확실히 보내졌는지 여부를 확인할 수 없습니다.
+    수신자는 이미 메시지를 받았을 수도 있습니다.
     \u000a\u000a발생된 문제 유형의 메시지는 보낸편지함에 즐겨찾기(stared) 표시가 되어있습니다.
     이 즐겨찾기(stared)를 없애면 K-9은 메시지를 재전송을 시도할것입니다.
-	다른 발신 작업을 하기위해서는 보낸편지함을 길게 눌러 메시지 보내기를 찾으십시오.\u000A\u000a
-	<xliff:g id="errorFolder">%s</xliff:g> 폴더에 실패에 대한 에러메시지가 있습니다.</string>
+    다른 발신 작업을 하기위해서는 보낸편지함을 길게 눌러 메시지 보내기를 찾으십시오.\u000A\u000a
+    <xliff:g id="errorFolder">%s</xliff:g> 폴더에 실패에 대한 에러메시지가 있습니다.</string>
 
     <string name="alert_header">K-9 알람</string>
     <string name="no_connection_alert">네트워크 문제로 동기화, 메일보내기가 지연되고있습니다.</string>
@@ -206,14 +213,14 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 \n * 폴더 구독
 \n * 모든 폴더 동기화
 \n * 회신주소 수정
-\n * 키보드 단축
+\n * 키보드 단축키
 \n * 향상된 IMAP 지원
 \n * SD 카드에 첨부파일 저장
 \n * 휴지통 비우기
 \n * 메시지 정렬
 \n * ...그리고 그 밖에
 \n
-\nK-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무료 hotmail 계정을 Microsoft Exchange와 연결할때 발생되는 문제로 인해 지원하지 않습니다. 
+\nK-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무료 hotmail 계정을 Microsoft Exchange와 연결할때 발생되는 문제로 인해 지원하지 않습니다.
 \n
 \n 버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 http://k9mail.googlecode.com/ 로 남겨주시기바랍니다.
 
@@ -229,7 +236,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="combined_inbox_title">모든 메일</string>
     <string name="combined_inbox_label">모든 계정의 모든 메시지</string>
-    <string name="combined_inbox_list_title">받은 편지함의 모든 메일</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
+    <string name="combined_inbox_list_title">받은편지함의 모든 메일</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
 
     <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
                        <xliff:g id="unread_count">%s</xliff:g>
@@ -261,8 +268,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
     <string name="message_compose_downloading_attachments_toast">일부 첨부파일을 다운로드 할 수 없습니다. 이 메시지가 보내지기 이전에 자동적으로 다운로드 됩니다.</string>
     <string name="message_compose_attachments_skipped_toast">다운로드 완료되지않은 일부 첨부파일을 보낼수 없습니다.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">발신자: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">수신자:</string>
@@ -281,7 +287,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="message_view_show_pictures_action">그림 보기</string>
     <string name="message_view_fetching_attachment_toast">첨부파일 가져오는 중.</string>
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
-
 
     <string name="message_view_download_remainder">다운로드 완료 메시지</string>
 
@@ -309,7 +314,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="about_header">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">버전: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">즐겨찾기 보기</string>
     <string name="global_settings_flag_summary">체크된 메시지 즐겨찾기등록</string>
     <string name="global_settings_checkbox_label">체크박스 여러게 선택하기</string>
@@ -329,6 +333,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="global_settings_messageview_fixedwidth_summary">일반텍스트(Plain) 메시지를 보여줄때 고정 넓이 폰트사용</string>
     <string name="global_settings_messageview_return_to_list_label">삭제후 목록으로</string>
     <string name="global_settings_messageview_return_to_list_summary">메시지 삭제후에 메시지 목록으로 되돌아갑니다.</string>
+    <string name="global_settings_messageview_show_next_label">삭제 후 다음 메시지 보기</string>
+    <string name="global_settings_messageview_show_next_summary">메시지 삭제 후 다음 메시지를 보도록 기본값으로 설정합니다</string>
 
     <string name="global_settings_confirm_actions_title">동작시 행동</string>
     <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 확인창을 보여줍니다.</string>
@@ -341,12 +347,10 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="global_settings_privacy_mode_title">잠긴화면에서 알림</string>
     <string name="global_settings_privacy_mode_summary">화면이 잠겨있을경우 메시지 수신시 제목을 화면에 보여주지 않습니다.</string>
 
-
     <string name="quiet_time">무음 시간</string>
     <string name="quiet_time_description">벨소리, 부져, 플래쉬를 밤시간에 사용하지않습니다</string>
     <string name="quiet_time_starts">무음 시작 시간</string>
     <string name="quiet_time_ends">무음 끝나는 시간</string>
-
 
     <string name="account_setup_basics_title">계정 추가</string>
     <string name="account_setup_basics_instructions">이메일 계정을 입력하시오:</string>
@@ -511,7 +515,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_setup_options_mail_display_count_1000">1000 메시지</string>
     <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화 되지않은 메시지를 복사하거나 이동할 수 없습니다.</string>
 
     <string name="account_setup_failed_dlg_title">설정이 완료되지 않았습니다</string>
@@ -555,12 +558,18 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="account_settings_composition">메일 보내기</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
     <string name="account_settings_reply_after_quote_summary">메시지 회신시 원본 메시지를 회신메시지에 포함시킵니다.</string>
 
     <string name="account_settings_message_format_label">메시지 형식</string>
     <string name="account_settings_message_format_text">일반 텍스트(Plain) (이미지와 꾸밈format은 없어집니다)</string>
     <string name="account_settings_message_format_html">HTML (이미지와 꾸밈format이 보존됩니다)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">회신시 인용문 위치</string>
     <string name="account_settings_quote_style_prefix">Prefix (Gmail, Pine 처럼)</string>
@@ -585,7 +594,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="account_settings_storage_title">저장장치</string>
 
-
     <string name="account_settings_color_label">계정 색깔</string>
     <string name="account_settings_color_summary">계정 목록과 폴더내에서 사용될 계정 색깔을 선택하시오.</string>
 
@@ -607,6 +615,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">any size (제한없음)</string>
 
     <string name="account_settings_message_age_label">메시지 동기화 기간</string>
@@ -622,7 +632,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_settings_message_age_3_months">최근 3달</string>
     <string name="account_settings_message_age_6_months">최근 6달</string>
     <string name="account_settings_message_age_1_year">최근 1년</string>
-
 
     <string name="account_settings_folder_display_mode_label">보여질 폴더</string>
     <string name="account_settings_folder_display_mode_all">모든 폴더</string>
@@ -698,7 +707,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_settings_led_label">LED 깜빡임</string>
     <string name="account_settings_led_summary">메일 도착시 LED를 깜빡입니다.</string>
 
-
     <string name="account_settings_servers">서버 설정</string>
 
     <string name="account_settings_composition_title">메시지 작성 옵션</string>
@@ -746,7 +754,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="choose_account_title">계정을 선택하시오</string>
     <string name="send_as">다른 계정으로 보내기</string>
 
-
     <string name="no_identities">신원 설정 가기 -&gt; 새로운 신원(Identity) 생성을 위한 신원(Identity) 관리</string>
     <string name="no_removable_identity">신원(Identity)를 제거할 수 없습니다.</string>
     <string name="identity_has_no_email">이메일 주소없이 신원(Identity)을 사용할 수 없습니다</string>
@@ -783,17 +790,15 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_clear_dlg_title">계정 비우기</string>
     <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제될것입니다. 하지만 계정 설정은 보존됩니다.</string>
 
-	<string name="provider_note_live">\"Plus\" 계정만이 이 프로그램을 POP 접근 하도록 허락합니다. 
-	올바른 이메일 주소와 비밀번호로 로그인 실패할 경우 \"Plus\" 계정을 위해 유료전환 해야 할 것입니다. 
-	웹브라우저를 통해 접근을 얻도록 하십시오</string>	
-		
+    <string name="provider_note_live">\"Plus\" 계정만이 이 프로그램을 POP 접근 하도록 허락합니다.
+    올바른 이메일 주소와 비밀번호로 로그인 실패할 경우 \"Plus\" 계정을 위해 유료전환 해야 할 것입니다.
+    웹브라우저를 통해 접근을 얻도록 하십시오</string>
     <string name="provider_note_yahoojp">POP3를 이용하기위해서는 야휴 메일 설정페이지에서 POP3 이용을 설정하여야합니다.</string>
-   
     <string name="provider_note_naver">IMAP/POP3를 이용하기위해서는 네이버 메일 설정페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
     <string name="provider_note_hanmail">IMAP/POP3을 이용하기위해서는 한메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
     <string name="provider_note_paran">IMAP/POP3을 이용하기위해서는 파란 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
     <string name="provider_note_nate">IMAP/POP3을 이용하기위해서는 네이트 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
-    
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증정보</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
@@ -821,8 +826,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>
     <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
 
-
-
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
     <string name="account_settings_signature__location_after_quoted_text">본문 뒤에</string>
@@ -844,8 +847,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="settings_messageview_mobile_layout_summary">작은 스크린에서 HTML 메시지를 다시만듬(reformat)</string>
     <string name="settings_messageview_zoom_controls_label">시스템 줌 컨트롤</string>
     <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
-
-
 
     <string name="setting_language_system">시스템 기본값</string>
 
@@ -908,8 +909,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="manage_back_title"> \"뒤로\" 버튼 관리</string>
     <string name="manage_back_summary">\"뒤로\" 버튼이 항상 위로</string>
 
-    <string name="start_integrated_inbox_title">통합 메일함으로 시작</string>
-    <string name="start_integrated_inbox_summary">통합 메일함을 시작시 보여줍니다</string>
+    <string name="start_integrated_inbox_title">통합 편지함으로 시작</string>
+    <string name="start_integrated_inbox_summary">통합 편지함을 시작시 보여줍니다</string>
 
     <string name="measure_accounts_title">계정 용량을 보여줍니다</string>
     <string name="measure_accounts_summary">빠른 처리를 위해 비활성화</string>
@@ -918,7 +919,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="count_search_summary">빠른 처리를 위해 비활성화</string>
 
     <string name="hide_special_accounts_title">특정 계정 숨기기</string>
-    <string name="hide_special_accounts_summary">통합 이메일함과 모든 편지함 숨기기</string>
+    <string name="hide_special_accounts_summary">통합 편지함과 모든 편지함 숨기기</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - 즐겨찾기 메일수</string>
@@ -927,13 +928,13 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="search_all_messages_title">모든 편지</string>
     <string name="search_all_messages_detail">검색가능한 모든 편지</string>
 
-    <string name="integrated_inbox_title">통합 이메일함</string>
+    <string name="integrated_inbox_title">통합 편지함</string>
     <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
 
     <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">모든 메시지는 통합 이메일함에 보여집니다</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">모든 메시지는 통합 편지함에 보여집니다</string>
 
     <string name="account_settings_searchable_label">찾을 폴더</string>
     <string name="account_settings_searchable_all">모두</string>
@@ -1049,7 +1050,11 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" 계정을 이용할 수 없습니다.; 저장장치를 확인하십시오.</string>
 
-	<string name="settings_attachment_default_path">첨부파일 저장위치</string>
-	<string name="attachment_save_title">첨부파일 저장</string>
-	<string name="attachment_save_desc">파일 브라우져를 찾을 수 없습니다. 첨부파일을 저장할 경로를 입력하시오</string>
+    <string name="settings_attachment_default_path">첨부파일 저장위치</string>
+    <string name="attachment_save_title">첨부파일 저장</string>
+    <string name="attachment_save_desc">파일 브라우져를 찾을 수 없습니다. 첨부파일을 저장할 경로를 입력하시오</string>
+
+    <string name="manage_accounts_move_up_action">위로</string>
+    <string name="manage_accounts_move_down_action">아래로</string>
+
 </resources>

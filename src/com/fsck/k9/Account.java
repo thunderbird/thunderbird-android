@@ -379,18 +379,6 @@ public class Account implements BaseAccount {
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
     
-    private String combineUuids(String[] uuids) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0, length = uuids.length; i < length; i++) {
-            if (sb.length() > 0) {
-                sb.append(',');
-            }
-            sb.append(uuids[i]);
-        }
-        String accountUuids = sb.toString();
-        return accountUuids;
-    }
-    
     protected synchronized void delete(Preferences preferences) {
         String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
         String[] newUuids = new String[uuids.length - 1];
@@ -401,7 +389,7 @@ public class Account implements BaseAccount {
             }
         }
         
-        String accountUuids = combineUuids(newUuids);
+        String accountUuids = Utility.combine(newUuids, ',');
         SharedPreferences.Editor editor = preferences.getPreferences().edit();
         editor.putString("accountUuids", accountUuids);
 
@@ -519,7 +507,7 @@ public class Account implements BaseAccount {
                 }
             }
         }
-        String accountUuids = combineUuids(newUuids);
+        String accountUuids = Utility.combine(newUuids, ',');
         editor.putString("accountUuids", accountUuids);
         editor.commit();
         preferences.refreshAccounts();
@@ -1053,7 +1041,7 @@ public class Account implements BaseAccount {
     }
 
     // It'd be great if this actually went into the store implementation
-    // to get this, but that's expensive and not easilly accessible
+    // to get this, but that's expensive and not easily accessible
     // during initialization
     public boolean isSearchByDateCapable() {
         if (getStoreUri().startsWith("imap")) {
@@ -1135,7 +1123,7 @@ public class Account implements BaseAccount {
             ident++;
         } while (gotOne);
 
-        if (newIdentities.size() == 0) {
+        if (newIdentities.isEmpty()) {
             String name = prefs.getString(mUuid + ".name", null);
             String email = prefs.getString(mUuid + ".email", null);
             boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse", true);

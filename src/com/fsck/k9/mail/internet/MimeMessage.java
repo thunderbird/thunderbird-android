@@ -131,7 +131,7 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType.toLowerCase();
+        return (contentType == null) ? "text/plain" : contentType.toLowerCase(Locale.US);
     }
 
     public String getDisposition() throws MessagingException {
@@ -422,7 +422,7 @@ public class MimeMessage extends Message {
     }
 
     class MimeMessageBuilder implements ContentHandler {
-        private Stack<Object> stack = new Stack<Object>();
+        private final LinkedList<Object> stack = new LinkedList<Object>();
 
         public MimeMessageBuilder() {
         }
@@ -436,13 +436,13 @@ public class MimeMessage extends Message {
 
         public void startMessage() {
             if (stack.isEmpty()) {
-                stack.push(MimeMessage.this);
+                stack.addFirst(MimeMessage.this);
             } else {
                 expect(Part.class);
                 try {
                     MimeMessage m = new MimeMessage();
                     ((Part)stack.peek()).setBody(m);
-                    stack.push(m);
+                    stack.addFirst(m);
                 } catch (MessagingException me) {
                     throw new Error(me);
                 }
@@ -451,7 +451,7 @@ public class MimeMessage extends Message {
 
         public void endMessage() {
             expect(MimeMessage.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startHeader() {
@@ -491,7 +491,7 @@ public class MimeMessage extends Message {
             try {
                 MimeMultipart multiPart = new MimeMultipart(e.getContentType());
                 e.setBody(multiPart);
-                stack.push(multiPart);
+                stack.addFirst(multiPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -508,7 +508,7 @@ public class MimeMessage extends Message {
         }
 
         public void endMultipart() {
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startBodyPart() {
@@ -517,7 +517,7 @@ public class MimeMessage extends Message {
             try {
                 MimeBodyPart bodyPart = new MimeBodyPart();
                 ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
-                stack.push(bodyPart);
+                stack.addFirst(bodyPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -525,12 +525,12 @@ public class MimeMessage extends Message {
 
         public void endBodyPart() {
             expect(BodyPart.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void epilogue(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
@@ -540,7 +540,7 @@ public class MimeMessage extends Message {
 
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);

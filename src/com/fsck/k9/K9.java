@@ -168,6 +168,7 @@ public class K9 extends Application {
     private static int mContactNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
+    private static boolean mMessageViewShowNext = false;
 
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
@@ -258,7 +259,7 @@ public class K9 extends Application {
 
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
 
-    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
+    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000;
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
@@ -435,6 +436,7 @@ public class K9 extends Application {
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
+        editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
 
         editor.putString("language", language);
         editor.putInt("theme", theme);
@@ -491,6 +493,7 @@ public class K9 extends Application {
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
@@ -575,7 +578,7 @@ public class K9 extends Application {
 
             @Override
             public void searchStats(final AccountStats stats) {
-                // let observers know a fetch occured
+                // let observers know a fetch occurred
                 K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
             }
 
@@ -596,7 +599,7 @@ public class K9 extends Application {
 
         catch (Exception e) {
             // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode " + e);
+            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
         }
 
     }
@@ -873,6 +876,14 @@ public class K9 extends Application {
 
     public static void setMessageViewReturnToList(boolean messageViewReturnToList) {
         mMessageViewReturnToList = messageViewReturnToList;
+    }
+
+    public static boolean messageViewShowNext() {
+        return mMessageViewShowNext;
+    }
+
+    public static void setMessageViewShowNext(boolean messageViewShowNext) {
+        mMessageViewShowNext = messageViewShowNext;
     }
 
     public static Method getMethod(Class<?> classObject, String methodName) {

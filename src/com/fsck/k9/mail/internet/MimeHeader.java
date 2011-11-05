@@ -78,7 +78,7 @@ public class MimeHeader {
                 values.add(field.value);
             }
         }
-        if (values.size() == 0) {
+        if (values.isEmpty()) {
             return null;
         }
         return values.toArray(EMPTY_STRING_ARRAY);

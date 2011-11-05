@@ -219,6 +219,12 @@
 
         <CheckBoxPreference
             android:persistent="false"
+            android:key="messageview_show_next"
+            android:title="@string/global_settings_messageview_show_next_label"
+            android:summary="@string/global_settings_messageview_show_next_summary" />
+
+        <CheckBoxPreference
+            android:persistent="false"
             android:key="messageview_zoom_controls"
             android:title="@string/settings_messageview_zoom_controls_label"
             android:summary="@string/settings_messageview_zoom_controls_summary" />

@@ -90,6 +90,7 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * <pre>
@@ -370,7 +371,7 @@ public class ImapStore extends Store {
         LinkedList<Folder> folders = new LinkedList<Folder>();
 
         List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format(commandResponse + " \"\" %s",
+            connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
                                             encodeString(getCombinedPrefix() + "*")));
 
         for (ImapResponse response : responses) {
@@ -638,7 +639,7 @@ public class ImapStore extends Store {
             // 2 OK [READ-WRITE] Select completed.
             try {
                 msgSeqUidMap.clear();
-                String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " %s",
+                String command = String.format("%s %s", mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE",
                                                encodeString(encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
@@ -655,7 +656,7 @@ public class ImapStore extends Store {
                         if (bracketedObj instanceof ImapList) {
                             ImapList bracketed = (ImapList)bracketedObj;
 
-                            if (bracketed.size() > 0) {
+                            if (!bracketed.isEmpty()) {
                                 Object keyObj = bracketed.get(0);
                                 if (keyObj instanceof String) {
                                     String key = (String)keyObj;
@@ -895,7 +896,7 @@ public class ImapStore extends Store {
                 int count = 0;
                 int start = 1;
 
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* " + criteria, start));
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* %s", start, criteria));
                 for (ImapResponse response : responses) {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                         count += response.size() - 1;
@@ -972,7 +973,7 @@ public class ImapStore extends Store {
 
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %d:%d%s" + (includeDeleted ? "" : " NOT DELETED"), start, end, dateSearchString));
+                    return executeSimpleCommand(String.format("UID SEARCH %d:%d%s%s", start, end, dateSearchString, includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -982,7 +983,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %s" + (includeDeleted ? "" : " NOT DELETED"), Utility.combine(mesgSeqs.toArray(), ',')));
+                    return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -992,7 +993,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH UID %s" + (includeDeleted ? "" : " NOT DELETED"), Utility.combine(mesgUids.toArray(), ',')));
+                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -1409,7 +1410,7 @@ public class ImapStore extends Store {
 //                {
 //                    ImapList bracketed = (ImapList)bracketedObj;
 //
-//                    if (bracketed.size() > 0)
+//                    if (!bracketed.isEmpty())
 //                    {
 //                        Object keyObj = bracketed.get(0);
 //                        if (keyObj instanceof String)
@@ -1417,7 +1418,7 @@ public class ImapStore extends Store {
 //                            String key = (String)keyObj;
 //                            if ("ALERT".equalsIgnoreCase(key))
 //                            {
-//                                StringBuffer sb = new StringBuffer();
+//                                StringBuilder sb = new StringBuilder();
 //                                for (int i = 2, count = response.size(); i < count; i++) {
 //                                    sb.append(response.get(i).toString());
 //                                    sb.append(' ');
@@ -1461,7 +1462,7 @@ public class ImapStore extends Store {
                          * what type it is and bail out.
                          */
                         String subType = bs.getString(i);
-                        mp.setSubType(subType.toLowerCase());
+                        mp.setSubType(subType.toLowerCase(Locale.US));
                         break;
                     }
                 }
@@ -1490,7 +1491,7 @@ public class ImapStore extends Store {
 
                 String type = bs.getString(0);
                 String subType = bs.getString(1);
-                String mimeType = (type + "/" + subType).toLowerCase();
+                String mimeType = (type + "/" + subType).toLowerCase(Locale.US);
 
                 ImapList bodyParams = null;
                 if (bs.get(2) instanceof ImapList) {
@@ -1514,7 +1515,8 @@ public class ImapStore extends Store {
                 /*
                  * Set the content type with as much information as we know right now.
                  */
-                String contentType = String.format("%s", mimeType);
+                StringBuilder contentType = new StringBuilder();
+                contentType.append(mimeType);
 
                 if (bodyParams != null) {
                     /*
@@ -1522,13 +1524,13 @@ public class ImapStore extends Store {
                      * of them.
                      */
                     for (int i = 0, count = bodyParams.size(); i < count; i += 2) {
-                        contentType += String.format(";\n %s=\"%s\"",
-                                                     bodyParams.getString(i),
-                                                     bodyParams.getString(i + 1));
+                        contentType.append(String.format(";\n %s=\"%s\"",
+                                           bodyParams.getString(i),
+                                           bodyParams.getString(i + 1)));
                     }
                 }
 
-                part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
+                part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType.toString());
 
                 // Extension items
                 ImapList bodyDisposition = null;
@@ -1542,11 +1544,11 @@ public class ImapStore extends Store {
                     bodyDisposition = bs.getList(8);
                 }
 
-                String contentDisposition = "";
+                StringBuilder contentDisposition = new StringBuilder();
 
-                if (bodyDisposition != null && bodyDisposition.size() > 0) {
+                if (bodyDisposition != null && !bodyDisposition.isEmpty()) {
                     if (!"NIL".equalsIgnoreCase(bodyDisposition.getString(0))) {
-                        contentDisposition = bodyDisposition.getString(0).toLowerCase();
+                        contentDisposition.append(bodyDisposition.getString(0).toLowerCase(Locale.US));
                     }
 
                     if ((bodyDisposition.size() > 1)
@@ -1557,22 +1559,22 @@ public class ImapStore extends Store {
                          * about the attachment out.
                          */
                         for (int i = 0, count = bodyDispositionParams.size(); i < count; i += 2) {
-                            contentDisposition += String.format(";\n %s=\"%s\"",
-                                                                bodyDispositionParams.getString(i).toLowerCase(),
-                                                                bodyDispositionParams.getString(i + 1));
+                            contentDisposition.append(String.format(";\n %s=\"%s\"",
+                                                      bodyDispositionParams.getString(i).toLowerCase(Locale.US),
+                                                      bodyDispositionParams.getString(i + 1)));
                         }
                     }
                 }
 
-                if (MimeUtility.getHeaderParameter(contentDisposition, "size") == null) {
-                    contentDisposition += String.format(";\n size=%d", size);
+                if (MimeUtility.getHeaderParameter(contentDisposition.toString(), "size") == null) {
+                    contentDisposition.append(String.format(";\n size=%d", size));
                 }
 
                 /*
                  * Set the content disposition containing at least the size. Attachment
                  * handling code will use this down the road.
                  */
-                part.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, contentDisposition);
+                part.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, contentDisposition.toString());
 
 
                 /*
@@ -1741,23 +1743,11 @@ public class ImapStore extends Store {
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
             }
-            ArrayList<String> flagNames = new ArrayList<String>();
-            for (Flag flag : flags) {
-                if (flag == Flag.SEEN) {
-                    flagNames.add("\\Seen");
-                } else if (flag == Flag.DELETED) {
-                    flagNames.add("\\Deleted");
-                } else if (flag == Flag.ANSWERED) {
-                    flagNames.add("\\Answered");
-                } else if (flag == Flag.FLAGGED) {
-                    flagNames.add("\\Flagged");
-                }
-            }
             try {
                 executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
                                                    Utility.combine(uids, ','),
                                                    value ? "+" : "-",
-                                                   Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ')));
+                                                   combineFlags(flags)));
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
@@ -1828,7 +1818,7 @@ public class ImapStore extends Store {
         private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
             for (ImapResponse response : responses) {
                 ImapList capabilityList = null;
-                if (response.size() > 0 && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
+                if (!response.isEmpty() && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
                     for (Object thisPart : response) {
                         if (thisPart instanceof ImapList) {
                             ImapList thisList = (ImapList)thisPart;
@@ -1843,7 +1833,7 @@ public class ImapStore extends Store {
                 }
 
                 if (capabilityList != null) {
-                    if (capabilityList.size() > 0 && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
+                    if (!capabilityList.isEmpty() && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
                         if (K9.DEBUG) {
                             Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
                         }
@@ -1853,7 +1843,7 @@ public class ImapStore extends Store {
 //                                {
 //                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
 //                                }
-                                capabilities.add(((String)capability).toUpperCase());
+                                capabilities.add(((String)capability).toUpperCase(Locale.US));
                             }
                         }
 
@@ -2163,7 +2153,7 @@ public class ImapStore extends Store {
         }
 
         protected boolean hasCapability(String capability) {
-            return capabilities.contains(capability.toUpperCase());
+            return capabilities.contains(capability.toUpperCase(Locale.US));
         }
 
         public boolean isOpen() {
@@ -2178,21 +2168,9 @@ public class ImapStore extends Store {
 //
 //                }
 //            }
-            try {
-                mIn.close();
-            } catch (Exception e) {
-
-            }
-            try {
-                mOut.close();
-            } catch (Exception e) {
-
-            }
-            try {
-                mSocket.close();
-            } catch (Exception e) {
-
-            }
+            IOUtils.closeQuietly(mIn);
+            IOUtils.closeQuietly(mOut);
+            IOUtils.closeQuietly(mSocket);
             mIn = null;
             mOut = null;
             mSocket = null;
@@ -2506,13 +2484,13 @@ public class ImapStore extends Store {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                                     messages.add(message);
                                 }
-                                if (messages.size() > 0) {
+                                if (!messages.isEmpty()) {
                                     pushMessages(messages, true);
                                 }
 
                             } else {
                                 List<ImapResponse> untaggedResponses = null;
-                                while (storedUntaggedResponses.size() > 0) {
+                                while (!storedUntaggedResponses.isEmpty()) {
                                     if (K9.DEBUG)
                                         Log.i(K9.LOG_TAG, "Processing " + storedUntaggedResponses.size() + " untagged responses from previous commands for " + getLogId());
                                     untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
@@ -2619,10 +2597,10 @@ public class ImapStore extends Store {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
 
-            if (flagSyncMsgSeqs.size() > 0) {
+            if (!flagSyncMsgSeqs.isEmpty()) {
                 syncMessages(flagSyncMsgSeqs);
             }
-            if (removeMsgUids.size() > 0) {
+            if (!removeMsgUids.isEmpty()) {
                 removeMessages(removeMsgUids);
             }
         }
@@ -2660,7 +2638,7 @@ public class ImapStore extends Store {
                         ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                         messages.add(message);
                     }
-                    if (messages.size() > 0) {
+                    if (!messages.isEmpty()) {
                         pushMessages(messages, true);
                     }
                 }
@@ -2994,7 +2972,7 @@ public class ImapStore extends Store {
                 message.parse(literal);
 
                 // Return placeholder object
-                return new Integer(1);
+                return Integer.valueOf(1);
             }
             return null;
         }

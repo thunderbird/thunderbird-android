@@ -11,6 +11,7 @@ import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.transport.TrustedSocketFactory;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -45,13 +46,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Stack;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -398,7 +393,7 @@ public class WebDavStore extends Store {
     }
 
     private String getSpecialFoldersList() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
         buffer.append("<propfind xmlns=\"DAV:\">");
         buffer.append("<prop>");
@@ -421,7 +416,7 @@ public class WebDavStore extends Store {
      * WebDAV XML Request body retrieval functions
      */
     private String getFolderListXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
@@ -432,7 +427,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageCountXml(String messageState) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
@@ -445,7 +440,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageEnvelopeXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:getcontentlength\",");
@@ -475,7 +470,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessagesXml() {
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\"\r\n");
@@ -486,7 +481,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMessageUrlsXml(String[] uids) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -510,7 +505,7 @@ public class WebDavStore extends Store {
             throw new MessagingException("Attempt to get flags on 0 length array for uids");
         }
 
-        StringBuffer buffer = new StringBuffer(200);
+        StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
@@ -529,7 +524,7 @@ public class WebDavStore extends Store {
     }
 
     private String getMarkMessagesReadXml(String[] urls, boolean read) {
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -553,7 +548,7 @@ public class WebDavStore extends Store {
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove) {
 
         String action = (isMove ? "move" : "copy");
-        StringBuffer buffer = new StringBuffer(600);
+        StringBuilder buffer = new StringBuilder(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:").append(action).append(" xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
@@ -944,8 +939,8 @@ public class WebDavStore extends Store {
             }
 
             if (headers != null) {
-                for (String headerName : headers.keySet()) {
-                    httpmethod.setHeader(headerName, headers.get(headerName));
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    httpmethod.setHeader(entry.getKey(), entry.getValue());
                 }
             }
 
@@ -1209,7 +1204,6 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read) throws MessagingException {
             String isRead;
             int messageCount = 0;
-            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
@@ -1221,7 +1215,7 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageCountXml(isRead);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
             if (dataset != null) {
                 messageCount = dataset.getMessageCount();
             }
@@ -1298,7 +1292,6 @@ public class WebDavStore extends Store {
         throws MessagingException {
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
-            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             int uidsLength = -1;
 
@@ -1322,7 +1315,7 @@ public class WebDavStore extends Store {
 
             headers.put("Brief", "t");
             headers.put("Range", "rows=" + start + "-" + end);
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             uids = dataset.getUids();
             HashMap<String, String> uidToUrl = dataset.getUidToUrl();
@@ -1377,17 +1370,15 @@ public class WebDavStore extends Store {
         }
 
         private HashMap<String, String> getMessageUrls(String[] uids) throws MessagingException {
-            HashMap<String, String> uidToUrl = new HashMap<String, String>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody;
 
             /** Retrieve and parse the XML entity for our messages */
             messageBody = getMessageUrlsXml(uids);
             headers.put("Brief", "t");
 
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            uidToUrl = dataset.getUidToUrl();
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
 
             return uidToUrl;
         }
@@ -1488,29 +1479,35 @@ public class WebDavStore extends Store {
 
                     if (entity != null) {
                         InputStream istream = null;
-                        StringBuffer buffer = new StringBuffer();
+                        StringBuilder buffer = new StringBuilder();
                         String tempText = "";
                         String resultText = "";
-                        BufferedReader reader;
+                        BufferedReader reader = null;
                         int currentLines = 0;
 
-                        istream = WebDavHttpClient.getUngzippedContent(entity);
+                        try {
+                            istream = WebDavHttpClient.getUngzippedContent(entity);
 
-                        if (lines != -1) {
-                            reader = new BufferedReader(new InputStreamReader(istream), 8192);
+                            if (lines != -1) {
+                                reader = new BufferedReader(new InputStreamReader(istream), 8192);
 
-                            while ((tempText = reader.readLine()) != null &&
-                                    (currentLines < lines)) {
-                                buffer.append(tempText).append("\r\n");
-                                currentLines++;
+                                while ((tempText = reader.readLine()) != null &&
+                                        (currentLines < lines)) {
+                                    buffer.append(tempText).append("\r\n");
+                                    currentLines++;
+                                }
+
+                                istream.close();
+                                resultText = buffer.toString();
+                                istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
                             }
 
-                            istream.close();
-                            resultText = buffer.toString();
-                            istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                        }
+                            wdMessage.parse(istream);
 
-                        wdMessage.parse(istream);
+                        } finally {
+                            IOUtils.closeQuietly(reader);
+                            IOUtils.closeQuietly(istream);
+                        }
                     }
 
                 } catch (IllegalArgumentException iae) {
@@ -1537,9 +1534,7 @@ public class WebDavStore extends Store {
          * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
-            HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody = "";
             Message[] messages = new Message[20];
             String[] uids;
@@ -1572,13 +1567,13 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageFlagsXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             if (dataset == null) {
                 throw new MessagingException("Data Set from request was null");
             }
 
-            uidToReadStatus = dataset.getUidToRead();
+            HashMap<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 if (!(messages[i] instanceof WebDavMessage)) {
@@ -1590,7 +1585,7 @@ public class WebDavStore extends Store {
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
-                try { 
+                try {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 } catch (NullPointerException e) {
                     Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
@@ -1609,9 +1604,7 @@ public class WebDavStore extends Store {
          */
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
         throws MessagingException {
-            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            DataSet dataset = new DataSet();
             String messageBody = "";
             String[] uids;
             Message[] messages = new Message[10];
@@ -1644,9 +1637,9 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageEnvelopeXml(uids);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
-            envelopes = dataset.getMessageEnvelopes();
+            Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
@@ -1852,7 +1845,7 @@ public class WebDavStore extends Store {
         public void setUrl(String url) {
             // TODO: This is a not as ugly hack (ie, it will actually work)
             // XXX: prevent URLs from getting to us that are broken
-            if (!(url.toLowerCase().contains("http"))) {
+            if (!(url.toLowerCase(Locale.US).contains("http"))) {
                 if (!(url.startsWith("/"))) {
                     url = "/" + url;
                 }
@@ -1948,7 +1941,7 @@ public class WebDavStore extends Store {
      */
     public class WebDavHandler extends DefaultHandler {
         private DataSet mDataSet = new DataSet();
-        private Stack<String> mOpenTags = new Stack<String>();
+        private final LinkedList<String> mOpenTags = new LinkedList<String>();
 
         public DataSet getDataSet() {
             return this.mDataSet;
@@ -1967,12 +1960,12 @@ public class WebDavStore extends Store {
         @Override
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes atts) throws SAXException {
-            mOpenTags.push(localName);
+            mOpenTags.addFirst(localName);
         }
 
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
-            mOpenTags.pop();
+            mOpenTags.removeFirst();
 
             /** Reset the hash temp variables */
             if (localName.equals("response")) {
@@ -1996,21 +1989,22 @@ public class WebDavStore extends Store {
         /**
          * Holds the mappings from the name returned from Exchange to the MIME format header name
          */
-        private final HashMap<String, String> mHeaderMappings = new HashMap<String, String>() {
-            {
-                put("mime-version", "MIME-Version");
-                put("content-type", "Content-Type");
-                put("subject", "Subject");
-                put("date", "Date");
-                put("thread-topic", "Thread-Topic");
-                put("thread-index", "Thread-Index");
-                put("from", "From");
-                put("to", "To");
-                put("in-reply-to", "In-Reply-To");
-                put("cc", "Cc");
-                put("getcontentlength", "Content-Length");
-            }
-        };
+        private static final Map<String, String> HEADER_MAPPINGS;
+        static {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("mime-version", "MIME-Version");
+            map.put("content-type", "Content-Type");
+            map.put("subject", "Subject");
+            map.put("date", "Date");
+            map.put("thread-topic", "Thread-Topic");
+            map.put("thread-index", "Thread-Index");
+            map.put("from", "From");
+            map.put("to", "To");
+            map.put("in-reply-to", "In-Reply-To");
+            map.put("cc", "Cc");
+            map.put("getcontentlength", "Content-Length");
+            HEADER_MAPPINGS = Collections.unmodifiableMap(map);
+        }
 
         private boolean mReadStatus = false;
         private String mUid = "";
@@ -2018,11 +2012,11 @@ public class WebDavStore extends Store {
         private ArrayList<String> mHeaders = new ArrayList<String>();
 
         public void addHeader(String field, String value) {
-            String headerName = mHeaderMappings.get(field);
+            String headerName = HEADER_MAPPINGS.get(field);
 
             if (headerName != null) {
-                this.mMessageHeaders.put(mHeaderMappings.get(field), value);
-                this.mHeaders.add(mHeaderMappings.get(field));
+                this.mMessageHeaders.put(HEADER_MAPPINGS.get(field), value);
+                this.mHeaders.add(HEADER_MAPPINGS.get(field));
             }
         }
 
@@ -2135,7 +2129,7 @@ public class WebDavStore extends Store {
                 } else {
                     // We don't actually want to have null values in our hashmap,
                     // as it causes the calling code to crash with an NPE as it
-                    // does a lookup in the maap.
+                    // does a lookup in the map.
                     uidToRead.put(uid, false);
                 }
             }
@@ -2207,10 +2201,11 @@ public class WebDavStore extends Store {
                 HashMap<String, String> data = mData.get(uid);
 
                 if (data != null) {
-                    for (String header : data.keySet()) {
+                    for (Map.Entry<String, String> entry : data.entrySet()) {
+                        String header = entry.getKey();
                         if (header.equals("read")) {
-                            String read = data.get(header);
-                            Boolean readStatus = !read.equals("0");
+                            String read = entry.getValue();
+                            boolean readStatus = !read.equals("0");
 
                             envelope.setReadStatus(readStatus);
                         } else if (header.equals("date")) {
@@ -2219,7 +2214,7 @@ public class WebDavStore extends Store {
                              * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
                              * are Z>
                              */
-                            String date = data.get(header);
+                            String date = entry.getValue();
                             date = date.substring(0, date.length() - 1);
 
                             DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
@@ -2234,7 +2229,7 @@ public class WebDavStore extends Store {
                             }
                             envelope.addHeader(header, tempDate);
                         } else {
-                            envelope.addHeader(header, data.get(header));
+                            envelope.addHeader(header, entry.getValue());
                         }
                     }
                 }

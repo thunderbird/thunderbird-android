@@ -83,8 +83,6 @@
     <string name="remove_account_action">Remover conta</string>
     <string name="clear_pending_action">Limpar ações pendentes (perigoso!)</string>
 
-
-
     <string name="accounts_action">Contas</string>
     <string name="back_to_accounts_action">â—€</string>
     <string name="back_to_folder_list_action">â—€</string>
@@ -110,6 +108,9 @@
     <string name="view_hide_details_action">Ver/esconder detalhes</string>
     <string name="add_cc_bcc_action">Incluir Cc/Bcc</string>
     <string name="edit_subject_action">Editar assunto</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Incluir anexo</string>
     <string name="add_attachment_action_image">Incluir anexo (Imagem)</string>
     <string name="add_attachment_action_video">Incluir anexo (Video)</string>
@@ -264,8 +265,7 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Alguns anexos não foram incluídos. Eles poderão ser incluídos automaticamente antes desta mensagem ser enviada.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
@@ -284,7 +284,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="message_view_show_pictures_action">Mostar imagens</string>
     <string name="message_view_fetching_attachment_toast">Buscando anexo.</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Transferir mensagem completa</string>
 
@@ -312,7 +311,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="about_header">Sobre <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Versão: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Mostrar favoritos</string>
     <string name="global_settings_flag_summary">Estrelas indicam mensagens favoritas</string>
     <string name="global_settings_checkbox_label">Caixas de multi-seleção</string>
@@ -332,6 +330,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_messageview_fixedwidth_summary">Use um tamanho fixo de fonte quando mostrar mensagens com texto simples</string>
     <string name="global_settings_messageview_return_to_list_label">Retornar para lista após exclusão</string>
     <string name="global_settings_messageview_return_to_list_summary">Retornar para lista de mensagem após exclusão de mensagens</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>
     <string name="global_settings_confirm_actions_summary">Mostrar diálogo sempre quando for disparada uma ação</string>
@@ -344,12 +344,10 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>
     <string name="global_settings_privacy_mode_summary">Não mostrar assunto da mensagem na barra de status do sistema quando estiver bloqueado</string>
 
-
     <string name="quiet_time">Período de silêncio</string>
     <string name="quiet_time_description">Desabilitar sons, vibração e luz indicadora à noite</string>
     <string name="quiet_time_starts">Início do período de silêncio</string>
     <string name="quiet_time_ends">Fim do período de silêncio</string>
-
 
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
     <string name="account_setup_basics_instructions">Informe o endereço de e-mail da conta:</string>
@@ -514,7 +512,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_setup_options_mail_display_count_1000">1000 mensagens</string>
     <string name="account_setup_options_mail_display_count_all">Todas as mensagens</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
 
     <string name="account_setup_failed_dlg_title">A configuração não pode ser concluída</string>
@@ -558,12 +555,18 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
     <string name="account_settings_composition">Enviando e-mails</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Resposta após texto da mensagem</string>
     <string name="account_settings_reply_after_quote_summary">Quando respondendo mensagens, o texto original deverá aparecer acima da minha resposta.</string>
 
     <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
     <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
     <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
     <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
@@ -588,7 +591,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
 
     <string name="account_settings_storage_title">Armazenamento</string>
 
-
     <string name="account_settings_color_label">Cor da conta</string>
     <string name="account_settings_color_summary">Escolha uma cor para pastas e listas desta conta</string>
 
@@ -610,6 +612,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">Qualquer tamanho (sem limites)</string>
 
     <string name="account_settings_message_age_label">Sincronização de mensagens</string>
@@ -625,7 +629,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_message_age_3_months">Dos últimos 3 mêses</string>
     <string name="account_settings_message_age_6_months">Dos últimos 6 mêses</string>
     <string name="account_settings_message_age_1_year">Do último ano</string>
-
 
     <string name="account_settings_folder_display_mode_label">Visualização</string>
     <string name="account_settings_folder_display_mode_all">Todas</string>
@@ -701,7 +704,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_led_label">Piscar LED</string>
     <string name="account_settings_led_summary">Piscar LED quando chegar e-mail</string>
 
-
     <string name="account_settings_servers">Configuração de servidor</string>
 
     <string name="account_settings_composition_title">Opções para composição de uma mensagem</string>
@@ -749,7 +751,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="choose_account_title">Escolher conta/identidade</string>
     <string name="send_as">Enviar como</string>
 
-
     <string name="no_identities">Abra Configurações de Conta -&gt; Gerenciamento de identidade para criar uma nova</string>
     <string name="no_removable_identity">Você não pode remover sua única identidade</string>
     <string name="identity_has_no_email">Você não pode usar uma identidade sem um endereço de e-mail</string>
@@ -790,8 +791,11 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
         permitindo que este programa se conecte. Se não estiver conseguindo logar nela com seu
         endereço de e-mail e senha corretos, talvez você não tenha uma conta \"Plus\" paga.
         Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
-
     <string name="provider_note_yahoojp">Se desejar utilizar POP3 para este provedor, você deverá permitir o uso deste na página de configurações de se e-mail Yahoo.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconhecido</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
@@ -820,8 +824,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="folder_list_display_mode_first_and_second_class">Mostrar pastas de Primeira e Segunda Classe</string>
     <string name="folder_list_display_mode_not_second_class">Mostar todas exceto as de Segunda Classe</string>
 
-
-
     <string name="account_settings_signature__location_label">Local da Assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes de escrever o texto</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois do texto escrito</string>
@@ -843,8 +845,6 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="settings_messageview_mobile_layout_summary">Formatar o HTML de mensagens para telas pequenas</string>
     <string name="settings_messageview_zoom_controls_label">Controle de zoom do sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Habilitar widgets de zoom se o telefone suportar</string>
-
-
 
     <string name="setting_language_system">Padrões de sistema</string>
 
@@ -1048,4 +1048,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+
 </resources>

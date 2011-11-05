@@ -231,12 +231,8 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts {
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (cursor2 != null) {
-                cursor2.close();
-            }
+            Utility.closeQuietly(cursor);
+            Utility.closeQuietly(cursor2);
         }
 
         return email;

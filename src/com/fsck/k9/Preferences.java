@@ -129,8 +129,13 @@ public class Preferences {
     }
 
     public synchronized void deleteAccount(Account account) {
-        accounts.remove(account.getUuid());
-        accountsInOrder.remove(account);
+    	if (accounts != null) {
+    		accounts.remove(account.getUuid());
+    	}
+    	if (accountsInOrder != null) {
+    		accountsInOrder.remove(account);	
+    	}
+
         account.delete(this);
 
         if (newAccount == account) {
@@ -149,7 +154,7 @@ public class Preferences {
 
         if (defaultAccount == null) {
             Collection<Account> accounts = getAvailableAccounts();
-            if (accounts.size() > 0) {
+            if (!accounts.isEmpty()) {
                 defaultAccount = accounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }

@@ -818,7 +818,7 @@ public class MessageList
         mBatchDoneButton.setOnClickListener(this);
 
         // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(new MyGestureDetector(true));
         gestureListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -847,7 +847,7 @@ public class MessageList
 
     /* (non-Javadoc)
      *
-     * Method overriden for proper typing within this class (the return type is
+     * Method overridden for proper typing within this class (the return type is
      * more specific than the super implementation)
      *
      * @see android.app.Activity#onRetainNonConfigurationInstance()
@@ -863,7 +863,7 @@ public class MessageList
     /*
      * (non-Javadoc)
      *
-     * Method overriden for proper typing within this class (the return type is
+     * Method overridden for proper typing within this class (the return type is
      * more specific than the super implementation)
      *
      * @see android.app.Activity#getLastNonConfigurationInstance()
@@ -1633,7 +1633,7 @@ public class MessageList
         }
         case R.id.same_sender: {
             MessageList.actionHandle(MessageList.this,
-                                     "From " + holder.sender, holder.senderAddress, true,
+                                     "From " + holder.sender, holder.senderAddress, false,
                                      null, null);
             break;
         }
@@ -1660,35 +1660,34 @@ public class MessageList
         }
     }
 
-    class MyGestureDetector extends SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (e2 == null || e1 == null)
-                return true;
+    @Override
+    protected void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
+        // Handle right-to-left as an un-select
+        handleSwipe(e1, false);
+    }
 
-            float deltaX = e2.getX() - e1.getX(),
-                  deltaY = e2.getY() - e1.getY();
+    @Override
+    protected void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+        // Handle left-to-right as a select.
+        handleSwipe(e1, true);
+    }
 
-            boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-            boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
+    /**
+     * Handle a select or unselect swipe event
+     * @param downMotion Event that started the swipe
+     * @param selected true if this was an attempt to select (i.e. left to right).
+     */
+    private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
+        int position = mListView.pointToPosition((int) downMotion.getX(), (int) downMotion.getY());
+        if (position != AdapterView.INVALID_POSITION) {
+            MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
-            if (movedAcross && steadyHand) {
-                boolean selected = (deltaX > 0);
-                int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
-
-                if (position != AdapterView.INVALID_POSITION) {
-                    MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
-
-                    if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
-                        msgInfoHolder.selected = selected;
-                        mSelectedCount += (selected ? 1 : -1);
-                        mAdapter.notifyDataSetChanged();
-                        toggleBatchButtons();
-                    }
-                }
+            if (msgInfoHolder != null && msgInfoHolder.selected != selected) {
+                msgInfoHolder.selected = selected;
+                mSelectedCount += (selected ? 1 : -1);
+                mAdapter.notifyDataSetChanged();
+                toggleBatchButtons();
             }
-
-            return false;
         }
     }
 
@@ -1978,7 +1977,7 @@ public class MessageList
                 }
             }
 
-            if (messagesToSearch.size() > 0) {
+            if (!messagesToSearch.isEmpty()) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
                 new MessagingListener() {
                     @Override
@@ -1988,11 +1987,11 @@ public class MessageList
                 });
             }
 
-            if (messagesToRemove.size() > 0) {
+            if (!messagesToRemove.isEmpty()) {
                 removeMessages(messagesToRemove);
             }
 
-            if (messagesToAdd.size() > 0) {
+            if (!messagesToAdd.isEmpty()) {
                 mHandler.addMessages(messagesToAdd);
             }
 

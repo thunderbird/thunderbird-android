@@ -727,7 +727,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private boolean setRecipients(TextView view, List<String> recipients) {
         boolean recipientAdded = false;
         if (recipients != null) {
-            StringBuffer addressList = new StringBuffer();
+            StringBuilder addressList = new StringBuilder();
             for (String recipient : recipients) {
                 addressList.append(recipient);
                 addressList.append(", ");
@@ -910,7 +910,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         boolean replyAfterQuote = false;
         String action = getIntent().getAction();
         if (mAccount.isReplyAfterQuote() &&
-                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))) {
+                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
+                        ACTION_EDIT_DRAFT.equals(action))) {
             replyAfterQuote = true;
         }
 
@@ -1365,7 +1366,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
             // key selection before encryption
-            String emails = "";
+            StringBuilder emails = new StringBuilder();
             Address[][] addresses = new Address[][] { getAddresses(mToView),
                     getAddresses(mCcView),
                     getAddresses(mBccView)
@@ -1373,18 +1374,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             for (Address[] addressArray : addresses) {
                 for (Address address : addressArray) {
                     if (emails.length() != 0) {
-                        emails += ",";
+                        emails.append(',');
                     }
-                    emails += address.getAddress();
+                    emails.append(address.getAddress());
                 }
             }
             if (emails.length() != 0) {
-                emails += ",";
+                emails.append(',');
             }
-            emails += mIdentity.getEmail();
+            emails.append(mIdentity.getEmail());
 
             mPreventDraftSaving = true;
-            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails, mPgpData)) {
+            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
                 mPreventDraftSaving = false;
             }
             return;
@@ -1930,7 +1931,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if (message.getSubject() != null) {
                     final String subject = prefix.matcher(message.getSubject()).replaceFirst("");
 
-                    if (!subject.toLowerCase().startsWith("re:")) {
+                    if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
                         mSubjectView.setText("Re: " + subject);
                     } else {
                         mSubjectView.setText(subject);
@@ -1964,7 +1965,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mInReplyTo = message.getMessageId();
 
                     if (message.getReferences() != null && message.getReferences().length > 0) {
-                        StringBuffer buffy = new StringBuffer();
+                        StringBuilder buffy = new StringBuilder();
                         for (int i = 0; i < message.getReferences().length; i++)
                             buffy.append(message.getReferences()[i]);
 
@@ -2027,10 +2028,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             } else if (ACTION_FORWARD.equals(action)) {
-                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:")) {
-                    mSubjectView.setText("Fwd: " + message.getSubject());
+                String subject = message.getSubject();
+                if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
+                    mSubjectView.setText("Fwd: " + subject);
                 } else {
-                    mSubjectView.setText(message.getSubject());
+                    mSubjectView.setText(subject);
                 }
 
                 // Quote the message and setup the UI.
@@ -2189,14 +2191,22 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                     if (textPart != null) {
                         String text = MimeUtility.getTextFromPart(textPart);
+                        if (K9.DEBUG) {
+                            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                        }
+
                         // If we had a body length (and it was valid), separate the composition from the quoted text
                         // and put them in their respective places in the UI.
                         if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
-                            String bodyText = text.substring(0, bodyLength);
-                            String quotedText = text.substring(bodyLength + 1, text.length());
+                            String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+
+                            // Regenerate the quoted text without our user content in it.
+                            StringBuilder quotedText = new StringBuilder();
+                            quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                            quotedText.append(text.substring(bodyOffset + bodyLength));
 
                             mMessageContentView.setText(bodyText);
-                            mQuotedText.setText(quotedText);
+                            mQuotedText.setText(quotedText.toString());
                         } else {
                             mMessageContentView.setText(text);
                         }
@@ -2557,13 +2567,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         // Read subject from the "subject" parameter.
         List<String> subject = uri.getQueryParameters("subject");
-        if (subject.size() > 0) {
+        if (!subject.isEmpty()) {
             mSubjectView.setText(subject.get(0));
         }
 
         // Read message body from the "body" parameter.
         List<String> body = uri.getQueryParameters("body");
-        if (body.size() > 0) {
+        if (!body.isEmpty()) {
             mMessageContentView.setText(body.get(0));
         }
     }
