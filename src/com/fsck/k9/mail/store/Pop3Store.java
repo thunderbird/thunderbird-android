@@ -26,11 +26,18 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Pop3Store extends Store {
+    public static final String STORE_TYPE = "POP3";
+
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
+
+    private enum AuthType {
+        PLAIN,
+        CRAM_MD5
+    }
 
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
@@ -52,11 +59,150 @@ public class Pop3Store extends Store {
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED };
 
+    /**
+     * Decodes a Pop3Store URI.
+     *
+     * <p>Possible forms:</p>
+     * <pre>
+     * pop3://user:password@server:port CONNECTION_SECURITY_NONE
+     * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * pop3+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * </pre>
+     */
+    public static ServerSettings decodeUri(String uri) {
+        String host;
+        int port;
+        ConnectionSecurity connectionSecurity;
+        String username = null;
+        String password = null;
+
+        URI pop3Uri;
+        try {
+            pop3Uri = new URI(uri);
+        } catch (URISyntaxException use) {
+            throw new IllegalArgumentException("Invalid Pop3Store URI", use);
+        }
+
+        String scheme = pop3Uri.getScheme();
+        if (scheme.equals("pop3")) {
+            connectionSecurity = ConnectionSecurity.NONE;
+            port = 110;
+        } else if (scheme.equals("pop3+tls")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
+            port = 110;
+        } else if (scheme.equals("pop3+tls+")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
+            port = 110;
+        } else if (scheme.equals("pop3+ssl+")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
+            port = 995;
+        } else if (scheme.equals("pop3+ssl")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
+            port = 995;
+        } else {
+            throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
+        }
+
+        host = pop3Uri.getHost();
+
+        if (pop3Uri.getPort() != -1) {
+            port = pop3Uri.getPort();
+        }
+
+        String authType = AuthType.PLAIN.name();
+        if (pop3Uri.getUserInfo() != null) {
+            try {
+                int userIndex = 0, passwordIndex = 1;
+                String userinfo = pop3Uri.getUserInfo();
+                String[] userInfoParts = userinfo.split(":");
+                if (userInfoParts.length > 2 || userinfo.endsWith(":") ) {
+                    // If 'userinfo' ends with ":" the password is empty. This can only happen
+                    // after an account was imported (so authType and username are present).
+                    userIndex++;
+                    passwordIndex++;
+                    authType = userInfoParts[0];
+                }
+                username = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
+                if (userInfoParts.length > passwordIndex) {
+                    password = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
+                }
+            } catch (UnsupportedEncodingException enc) {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            }
+        }
+
+        return new ServerSettings(STORE_TYPE, host, port, connectionSecurity, authType, username,
+                password);
+    }
+
+    /**
+     * Creates a Pop3Store URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A Pop3Store URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see Pop3Store#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "pop3+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "pop3+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "pop3+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "pop3+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "pop3";
+                break;
+        }
+
+        try {
+            AuthType.valueOf(server.authenticationType);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid authentication type (" +
+                    server.authenticationType + ")");
+        }
+
+        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, null, null,
+                    null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create Pop3Store URI", e);
+        }
+    }
+
+
     private String mHost;
     private int mPort;
     private String mUsername;
     private String mPassword;
-    private boolean useCramMd5;
+    private AuthType mAuthType;
     private int mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
@@ -68,68 +214,41 @@ public class Pop3Store extends Store {
      */
     private boolean mTopNotSupported;
 
-    /**
-     * pop3://user:password@server:port CONNECTION_SECURITY_NONE
-     * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * pop3+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     */
+
     public Pop3Store(Account account) throws MessagingException {
         super(account);
 
-        URI uri;
+        ServerSettings settings;
         try {
-            uri = new URI(mAccount.getStoreUri());
-        } catch (URISyntaxException use) {
-            throw new MessagingException("Invalid Pop3Store URI", use);
+            settings = decodeUri(mAccount.getStoreUri());
+        } catch (IllegalArgumentException e) {
+            throw new MessagingException("Error while decoding store URI", e);
         }
 
-        String scheme = uri.getScheme();
-        if (scheme.equals("pop3")) {
+        mHost = settings.host;
+        mPort = settings.port;
+
+        switch (settings.connectionSecurity) {
+        case NONE:
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            mPort = 110;
-        } else if (scheme.equals("pop3+tls")) {
+            break;
+        case STARTTLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            mPort = 110;
-        } else if (scheme.equals("pop3+tls+")) {
+            break;
+        case STARTTLS_REQUIRED:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            mPort = 110;
-        } else if (scheme.equals("pop3+ssl+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            mPort = 995;
-        } else if (scheme.equals("pop3+ssl")) {
+            break;
+        case SSL_TLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            mPort = 995;
-        } else {
-            throw new MessagingException("Unsupported protocol");
+            break;
+        case SSL_TLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
+            break;
         }
 
-        mHost = uri.getHost();
-
-        if (uri.getPort() != -1) {
-            mPort = uri.getPort();
-        }
-
-        useCramMd5 = false;
-        if (uri.getUserInfo() != null) {
-            try {
-                int userIndex = 0, passwordIndex = 1;
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length > 2) {
-                    userIndex++;
-                    passwordIndex++;
-                    useCramMd5 = true;
-                }
-                mUsername = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
-                if (userInfoParts.length > passwordIndex) {
-                    mPassword = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
-            }
-        }
+        mUsername = settings.username;
+        mPassword = settings.password;
+        mAuthType = AuthType.valueOf(settings.authenticationType);
     }
 
     @Override
@@ -249,7 +368,7 @@ public class Pop3Store extends Store {
                     }
                 }
 
-                if (useCramMd5) {
+                if (mAuthType == AuthType.CRAM_MD5) {
                     try {
                         String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 

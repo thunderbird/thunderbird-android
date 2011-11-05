@@ -35,4 +35,13 @@
         android:title="@string/preferences_action" 
         android:icon="@android:drawable/ic_menu_preferences"
     />
+        <item android:id="@+id/import_export"
+            android:title="@string/import_export_action">
+        <menu>
+            <item android:id="@+id/export_all"
+               android:title="@string/settings_export_all" /> 
+            <item android:id="@+id/import_settings"
+               android:title="@string/settings_import" /> 
+        </menu>
+    </item>
 </menu>
