@@ -1207,31 +1207,34 @@ public class MimeUtility {
     }
 
     /**
-     * Convert some wrong MIME types encountered in the wild to canonical MIME
-     * types.
+     * Convert some wrong MIME types encountered in the wild to canonical MIME types.
      *
-     * @param mimeType The original MIME type
-     * @return If {@code mimeType} is known to be wrong the correct MIME type
-     *         is returned. Otherwise the value of {@code mimeType} is returned
-     *         unmodified.
+     * @param mimeType
+     *         The original MIME type
+     *
+     * @return If {@code mimeType} is known to be wrong the correct MIME type is returned.
+     *         Otherwise the lower case version of {@code mimeType} is returned.
      *
      * @see #MIME_TYPE_REPLACEMENT_MAP
      */
     public static String canonicalizeMimeType(String mimeType) {
+        String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
         for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
-            if (mimeTypeMapEntry[0].equals(mimeType)) {
+            if (mimeTypeMapEntry[0].equals(lowerCaseMimeType)) {
                 return mimeTypeMapEntry[1];
             }
         }
-        return mimeType;
+        return lowerCaseMimeType;
     }
 
     /**
-     * When viewing the attachment we want the MIME type to be as sensible as
-     * possible. So we fix it up if necessary.
+     * When viewing the attachment we want the MIME type to be as sensible as possible. So we fix
+     * it up if necessary.
      *
-     * @param mimeType The original MIME type of the attachment.
-     * @param name The (file)name of the attachment.
+     * @param mimeType
+     *         The original MIME type of the attachment.
+     * @param name
+     *         The (file)name of the attachment.
      *
      * @return The best MIME type we can come up with.
      */
@@ -1240,10 +1243,10 @@ public class MimeUtility {
             // If the MIME type is the generic "application/octet-stream"
             // we try to find a better one by looking at the file extension.
             return getMimeTypeByExtension(name);
-        } else {
-            // Some messages contain wrong MIME types. See if we know better.
-            return canonicalizeMimeType(mimeType);
         }
+
+        // Some messages contain wrong MIME types. See if we know better.
+        return canonicalizeMimeType(mimeType);
     }
 
     private static Message getMessageFromPart(Part part) {
