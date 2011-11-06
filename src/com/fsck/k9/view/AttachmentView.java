@@ -239,8 +239,10 @@ public class AttachmentView extends FrameLayout {
     public void showFile() {
         Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(uri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        // We explicitly set the ContentType in addition to the URI because some attachment viewers (such as Polaris office 3.0.x) choke on documents without a mime type
+        intent.setDataAndType(uri, contentType);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
         try {
             mContext.startActivity(intent);
         } catch (Exception e) {
@@ -271,7 +273,7 @@ public class AttachmentView extends FrameLayout {
             Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(uri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             if (intent.resolveActivity(mContext.getPackageManager()) == null) {
                 viewButton.setEnabled(false);
             }
