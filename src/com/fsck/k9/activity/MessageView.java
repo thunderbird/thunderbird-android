@@ -35,6 +35,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
+    private static final String EXTRA_SCROLL_PERCENTAGE = "com.fsck.k9.MessageView_scrollPercentage";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -372,13 +373,19 @@ public class MessageView extends K9Activity implements OnClickListener {
                 }
             };
         });
+
         mMessageView.initialize(this);
+
+        // Register the ScrollView's listener to handle scrolling to last known location on resume.
+        mController.addListener(mTopView.getListener());
+        mMessageView.setListeners(mController.getListeners());
 
         setTitle("");
         final Intent intent = getIntent();
 
         Uri uri = intent.getData();
         if (icicle != null) {
+            // TODO This code seems unnecessary since the icicle should already be thawed in onRestoreInstanceState().
             mMessageReference = icicle.getParcelable(EXTRA_MESSAGE_REFERENCE);
             mMessageReferences = icicle.getParcelableArrayList(EXTRA_MESSAGE_REFERENCES);
             mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
@@ -492,6 +499,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
+        outState.putDouble(EXTRA_SCROLL_PERCENTAGE, mTopView.getScrollPercentage());
     }
 
     @Override
@@ -500,6 +508,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
         mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
+        mTopView.setScrollPercentage(savedInstanceState.getDouble(EXTRA_SCROLL_PERCENTAGE));
     }
 
     private void displayMessage(MessageReference ref) {
@@ -619,11 +628,13 @@ public class MessageView extends K9Activity implements OnClickListener {
             onAccountUnavailable();
             return;
         }
+        mController.addListener(mTopView.getListener());
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
     }
 
     @Override
     protected void onPause() {
+        mController.removeListener(mTopView.getListener());
         StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
         super.onPause();
     }
@@ -850,6 +861,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     protected void onNext() {
+        // Reset scroll percentage when we change messages
+        mTopView.setScrollPercentage(0);
         if (mNextMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -864,6 +877,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     protected void onPrevious() {
+        // Reset scroll percentage when we change messages
+        mTopView.setScrollPercentage(0);
         if (mPreviousMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -1091,8 +1106,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                 mTopView.scrollTo(0, 0);
                 try {
                     if (MessageView.this.mMessage != null
-                            && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                    && message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                        && message.isSet(Flag.X_DOWNLOADED_FULL)) {
                         mMessageView.setHeaders(message, account);
                     }
                     MessageView.this.mMessage = message;
@@ -1252,5 +1267,4 @@ public class MessageView extends K9Activity implements OnClickListener {
         // sometimes shows the original encrypted content
         mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
     }
-
 }
