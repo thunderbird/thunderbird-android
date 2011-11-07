@@ -63,7 +63,7 @@ public class SmtpTransport extends Transport {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        String authenticationType = null;
+        String authenticationType = AUTH_AUTOMATIC;
         String username = null;
         String password = null;
 
