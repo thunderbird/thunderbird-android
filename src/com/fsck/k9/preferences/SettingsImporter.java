@@ -80,10 +80,13 @@ public class SettingsImporter {
     public static class AccountDescriptionPair {
         public final AccountDescription original;
         public final AccountDescription imported;
+        public final boolean overwritten;
 
-        private AccountDescriptionPair(AccountDescription original, AccountDescription imported) {
+        private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
+                boolean overwritten) {
             this.original = original;
             this.imported = imported;
+            this.overwritten = overwritten;
         }
     }
 
@@ -222,7 +225,7 @@ public class SettingsImporter {
                                         editor, account, overwrite);
 
                                 String newUuid = importResult.imported.uuid;
-                                if (!newUuid.equals(importResult.original.uuid)) {
+                                if (!importResult.overwritten) {
                                     newUuids.add(newUuid);
                                 }
                                 if (editor.commit()) {
@@ -431,7 +434,7 @@ public class SettingsImporter {
         //TODO: sync folder settings with localstore?
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
-        return new AccountDescriptionPair(original, imported);
+        return new AccountDescriptionPair(original, imported, mergeImportedAccount);
     }
 
     private static void importFolder(SharedPreferences.Editor editor, String uuid,
