@@ -2183,7 +2183,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         if (quotedHTML.length() > 0) {
                             mQuotedHtmlContent = new InsertableHtmlContent();
                             mQuotedHtmlContent.setQuotedContent(quotedHTML);
+                            // We don't know if bodyOffset refers to the header or to the footer
                             mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
+                            mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
                         }
                     }
