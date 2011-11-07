@@ -1383,11 +1383,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             List<Account> disabledAccounts = new ArrayList<Account>();
             for (AccountDescriptionPair accountPair : mImportResults.importedAccounts) {
                 Account account = preferences.getAccount(accountPair.imported.uuid);
-                if (!account.isEnabled()) {
+                if (account != null && !account.isEnabled()) {
                     disabledAccounts.add(account);
                 }
             }
-            activity.promptForServerPasswords(disabledAccounts);
+            if (disabledAccounts.size() > 0) {
+                activity.promptForServerPasswords(disabledAccounts);
+            } else {
+                activity.setNonConfigurationInstance(null);
+            }
         }
     }
 
