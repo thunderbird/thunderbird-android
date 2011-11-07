@@ -112,6 +112,11 @@ public class MessagingListener {
     public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
     }
 
+    /**
+     * Called when a message for view has been fully displayed on the screen.
+     */
+    public void messageViewFinished() {}
+
     public void checkMailStarted(Context context, Account account) {
     }
 
