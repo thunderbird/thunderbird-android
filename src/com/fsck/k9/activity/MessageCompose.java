@@ -1010,6 +1010,75 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    // Placed at the beginning of text/plain Body draft when the message contains HTML as well.
+    private static final String K9_REPLY_TAG = "K9_REPLY_TAG";
+    private static final String K9_FORWARD_TAG = "K9_FORWARD_TAG";
+
+    /**
+     * Build the text/plain Body when the message contains HTML as well.
+     */
+     // Because converting the HTML body being sent to text is broken as android.text.Html strips
+     // out blockquote tags.  This uses the text/plain part of the message and adds the reply to
+     // that, if it exists, otherwise getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT)
+     // returns same/similar broken result as before.
+    private TextBody buildTextPlain(boolean isDraft) throws MessagingException {
+        String quote = "";
+        String tag = K9_REPLY_TAG;
+        if (mSourceMessage != null) {
+            String content = getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT);
+            if (content.startsWith(K9_REPLY_TAG)) {
+                quote = content.substring(K9_REPLY_TAG.length());
+            } else if (content.startsWith(K9_FORWARD_TAG)) {
+                quote = content.substring(K9_FORWARD_TAG.length());
+                tag = K9_FORWARD_TAG;
+            } else {
+                quote = quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle());
+            }
+        }
+
+        String text;
+        String action = getIntent().getAction();
+        if (isDraft) {
+            // just keep the quoted text/plain message with a tag so we know it's been processed
+            text = (ACTION_FORWARD.equals(action) || tag.equals(K9_FORWARD_TAG))
+                    ? K9_FORWARD_TAG + quote : K9_REPLY_TAG + quote;
+        } else {
+            boolean replyAfterQuote = false;
+            if (mAccount.isReplyAfterQuote() && !tag.equals(K9_FORWARD_TAG) &&
+                    (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
+                            ACTION_EDIT_DRAFT.equals(action))) {
+                replyAfterQuote = true;
+            }
+
+            // text of new content
+            text = mMessageContentView.getText().toString();
+
+            // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
+            if (!replyAfterQuote &&
+                    (mAccount.isSignatureBeforeQuotedText() || tag.equals(K9_FORWARD_TAG))) {
+                text = appendSignature(text);
+            }
+
+            if (mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
+                if (replyAfterQuote) {
+                    text = quote + "\n" + text;
+                } else {
+                    text += "\n\n" + quote;
+                }
+            }
+
+            // Note: If user has selected reply after quote AND signature before quote, ignore the
+            // latter setting and append the signature at the end. But the signature is always
+            // before the quote on forwards.
+            if (replyAfterQuote ||
+                    (!mAccount.isSignatureBeforeQuotedText() && !tag.equals(K9_FORWARD_TAG))) {
+                text = appendSignature(text);
+            }
+        }
+        return new TextBody(text);
+    }
+
+
     /**
      * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the final message here.
@@ -1066,7 +1135,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             MimeMultipart composedMimeMessage = new MimeMultipart();
             composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
             composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
-            composedMimeMessage.addBodyPart(new MimeBodyPart(new TextBody(HtmlConverter.htmlToText(body.getText())), "text/plain"));
+            composedMimeMessage.addBodyPart(new MimeBodyPart(buildTextPlain(isDraft), "text/plain"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the
