@@ -469,6 +469,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
+        editor.remove(mUuid + ".stripSignature");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".enabled");
