@@ -1014,6 +1014,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String K9_REPLY_TAG = "K9_REPLY_TAG";
     private static final String K9_FORWARD_TAG = "K9_FORWARD_TAG";
 
+    // Regex to check for signature in text/plain.
+    /* Commented out until issue-1683 is merged, then the latter declaration needs to be removed.
+    private static final Pattern DASH_SIGNATURE_PLAIN =
+            Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
+    */
+
     /**
      * Build the text/plain Body when the message contains HTML as well.
      */
@@ -1024,20 +1030,29 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private TextBody buildTextPlain(boolean isDraft) throws MessagingException {
         String quote = "";
         String tag = K9_REPLY_TAG;
+        String action = getIntent().getAction();
+
         if (mSourceMessage != null) {
-            String content = getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT);
-            if (content.startsWith(K9_REPLY_TAG)) {
-                quote = content.substring(K9_REPLY_TAG.length());
-            } else if (content.startsWith(K9_FORWARD_TAG)) {
-                quote = content.substring(K9_FORWARD_TAG.length());
+            quote = getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT);
+            if (quote.startsWith(K9_REPLY_TAG)) {
+                quote = quote.substring(K9_REPLY_TAG.length());
+            } else if (quote.startsWith(K9_FORWARD_TAG)) {
+                quote = quote.substring(K9_FORWARD_TAG.length());
                 tag = K9_FORWARD_TAG;
             } else {
-                quote = quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle());
+                /* Commented out until issue-1683 is merged.
+                if (mAccount.isStripSignature() &&
+                        (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))) {
+                    if (DASH_SIGNATURE_PLAIN.matcher(quote).find()) {
+                        quote = DASH_SIGNATURE_PLAIN.matcher(quote).replaceFirst("\r\n");
+                    }
+                }
+                */
+                quote = quoteOriginalTextMessage(mSourceMessage, quote, mAccount.getQuoteStyle());
             }
         }
 
         String text;
-        String action = getIntent().getAction();
         if (isDraft) {
             // just keep the quoted text/plain message with a tag so we know it's been processed
             text = (ACTION_FORWARD.equals(action) || tag.equals(K9_FORWARD_TAG))
