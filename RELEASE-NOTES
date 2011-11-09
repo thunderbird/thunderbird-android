@@ -1,0 +1,50 @@
+Release Notes 4.000 - *DRAFT*
+
+* get rid of android.permission.GET_ACCOUNTS and android.permission.READ_OWNER_DATA / don't make suggestions for display name
+* don't open connection to pop3 server if a message is marked as read (since that's a local operation)
+* german translation: changed "Mehrfachauswahl" to "Gruppenoperationen" (batch operations)
+* updated japanese translation 
+* Fixed counting of new unread messages
+* Updated catalan translation (dvbotet)
+* Updated german translation
+* Added option to readd the quoted text editbox after it has been removed
+* Added account setting to configure whether or not to quote the original message by default
+* Reset visible limit when "clear messages" is used
+* Updated korean translation
+* Respect "move/copy destination folders" setting in ChooseFolder
+* Explicitly use Locale.US when dealing with dates in message headers
+* Treat 5xx SMTP return codes as permanent failures
+* Added field UNREAD to Message ContentProvider (João Pedro Taveira)
+* MessageList: Properly keep selection in case of a configuration change (orientation, keyboard, etc.) during user interaction (e.g. a dialog)
+* Update French (+ French Canadian specific parts) translation
+* MessageList: Switch subject to marquee ellipsis for landscape layout
+* Updated dutch translation (Jan-Bart)
+* Fixed bug with generation of HTML replies where no text was quoted
+* Add 2MB, 5MB and "All" message download options
+* Added a Hungarian translation (Sándor Péter Nagy)
+* Rewrite broken MIME types to standard values (e.g. image/pjpeg to image/jpeg)
+* Changed code to show/hide the correct views for CC/BCC (Issue 3509)
+* Disable "download by date range" for webdav and pop3. The previous behavior caused catastrophic network abuse, downloading messages outside the date range over and over.
+* Should not HTMLify the message when it is sent without quoted message (Issue 3530)
+* Implemented work-around to handle malformed UIDL responses (POP3) (Issue 3546)
+* Updated russian translation (Alexei Emanov)
+* Fixes some crashes with WebDAV
+* Fixed parsing of messages with a very large header
+* WebDAV: Fixed bug where uid in response was truncated [Adam]
+* Added support for requesting read receipts [Alessandro Russo]
+* Loosened the restrictions on the TLD to support custom private TLD's, as well as single label hostnames (issue 2784) [rpimonitrbtch]
+* Expose SenderAddress through ContentProvider (Issue 3665) [Chris Banes]
+* Stop service(s) if not in use (Issue 2777) [Christian Knecht, cketti]
+* Dynamically update the FolderList titlebar when the unread state of a listed folder changes (Issue 3177)
+* Added ability to move accounts in the account list (Issue 1251)
+* Work around cases where mail was last checked in the future
+* Search same sender from searchable folders instead of the unified inbox
+* Bugfix: Make sure disposition size parameter is a valid number before using it (Issue 3712)
+* Bugfix: Don't crash on messages without valid From-header (Issue 3683, 3814)
+* Option to show next message after delete by default instead of previous
+* Fixed restoring drafts saved with "reply after quoted text" enabled (Issue 2568)
+* Fixed bug where invalid MIME boundaries could be created when using locales with difficult uppercasing rules (e.g. turkish) (issue 3733)
+* Don't crash when trying to connect to an non-SSL service using SSL (Issue 3798)
+* Added settings import/export
+* Improved support for picky/buggy apps when viewing attachments
+* Added turkish translation (Recep PAYVERDI)
