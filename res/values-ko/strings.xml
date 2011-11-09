@@ -1048,6 +1048,47 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">연결실패</string>
 
+    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
+    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
+    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
+    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
+    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
+    <!-- NEW: <string name="settings_import">Import settings</string>-->
+    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
+    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
+    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
+    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
+    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
+    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_success">
+        <item quantity="one">1 account</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
+    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
+    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
+    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
+    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_server_passwords">
+        <item quantity="one">server password</item>
+        <item quantity="other">server passwords</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Setting password...</item>
+        <item quantity="other">Setting passwords...</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
+    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+
+    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+
     <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" 계정을 이용할 수 없습니다.; 저장장치를 확인하십시오.</string>
 
     <string name="settings_attachment_default_path">첨부파일 저장위치</string>
@@ -1056,5 +1097,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="manage_accounts_move_up_action">위로</string>
     <string name="manage_accounts_move_down_action">아래로</string>
+    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
 
 </resources>
