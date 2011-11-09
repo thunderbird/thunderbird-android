@@ -2316,13 +2316,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // Fix the stripping off of closing tags if a signature was stripped, 
                 // as well as clean up the HTML of the quoted message.
                 HtmlCleaner cleaner = new HtmlCleaner();
-                CleanerProperties props = cleaner.getProperties();
-                props.setTranslateSpecialEntities(false);
-                props.setNamespacesAware(false);
-                props.setAdvancedXmlEscape(false);
-                props.setRecognizeUnicodeChars(false);
+                CleanerProperties properties = cleaner.getProperties();
+
+                // see http://htmlcleaner.sourceforge.net/parameters.php for descriptions
+                properties.setNamespacesAware(false);
+                properties.setAdvancedXmlEscape(false);
+                properties.setOmitXmlDeclaration(true);
+                properties.setOmitDoctypeDeclaration(false);
+                properties.setTranslateSpecialEntities(false);
+                properties.setRecognizeUnicodeChars(false);
+
                 TagNode node = cleaner.clean(content);
-                SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(props);
+                SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(properties);
                 try {
                     content = htmlSerialized.getAsString(node, "UTF8");
                 } catch (java.io.IOException ioe) {
