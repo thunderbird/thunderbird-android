@@ -1112,11 +1112,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // If this is a draft, add metadata for thawing.
         if (isDraft) {
             // Add the identity to the message.
-            if (bodyPlain == null) {
-                message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body));
-            } else {
-                message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
-            }
+            message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
 
         return message;
