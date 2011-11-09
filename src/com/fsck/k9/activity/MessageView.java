@@ -27,8 +27,6 @@ import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class MessageView extends K9Activity implements OnClickListener {
@@ -40,27 +38,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
-
-    /**
-     * Whether parent class have the onBackPressed() method (with no argument)
-     */
-    private static final boolean HAS_SUPER_ON_BACK_METHOD;
-    static {
-        boolean hasOnBackMethod;
-        try {
-            final Class <? super MessageView > superClass = MessageView.class.getSuperclass();
-            final Method method = superClass.getMethod("onBackPressed", new Class[] {});
-            hasOnBackMethod = (method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC;
-        } catch (final SecurityException e) {
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Security exception while checking for 'onBackPressed' method", e);
-            }
-            hasOnBackMethod = false;
-        } catch (final NoSuchMethodException e) {
-            hasOnBackMethod = false;
-        }
-        HAS_SUPER_ON_BACK_METHOD = hasOnBackMethod;
-    }
 
     private SingleMessageView mMessageView;
 
@@ -269,8 +246,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             String folder = (mMessage != null) ? mMessage.getFolder().getName() : null;
             MessageList.actionHandleFolder(this, mAccount, folder);
             finish();
-        } else if (HAS_SUPER_ON_BACK_METHOD) {
-            super.onBackPressed();
         } else {
             finish();
         }
