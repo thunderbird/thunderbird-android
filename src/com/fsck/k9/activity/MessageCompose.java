@@ -907,6 +907,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
      */
     private TextBody buildText(boolean isDraft) {
+        return buildText(isDraft, mMessageFormat);
+    }
+
+    /*
+     * Build the Body that will contain the text of the message. We'll decide where to
+     * include it later. Draft messages are treated somewhat differently in that signatures are not
+     * appended and HTML separators between composed text and quoted text are not added.
+     * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
+     * @param messageFormat Set MessageFormat to build.
+     */
+    private TextBody buildText(boolean isDraft, MessageFormat messageFormat) {
         boolean replyAfterQuote = false;
         String action = getIntent().getAction();
         if (mAccount.isReplyAfterQuote() &&
@@ -926,7 +937,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
-        if (mMessageFormat == MessageFormat.HTML) {
+        if (messageFormat == MessageFormat.HTML) {
             // Add the signature.
             if (!isDraft) {
                 text = appendSignature(text);
@@ -970,7 +981,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 body.setComposedMessageOffset(0);
                 return body;
             }
-        } else if (mMessageFormat == MessageFormat.TEXT) {
+        } else if (messageFormat == MessageFormat.TEXT) {
             // Capture composed message length before we start attaching quoted parts and signatures.
             Integer composedMessageLength = text.length();
             Integer composedMessageOffset = 0;
@@ -1002,97 +1013,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             TextBody body = new TextBody(text);
             body.setComposedMessageLength(composedMessageLength);
             body.setComposedMessageOffset(composedMessageOffset);
-
             return body;
         } else {
             // Shouldn't happen.
             return new TextBody("");
         }
     }
-
-    // Placed at the beginning of text/plain Body draft when the message contains HTML as well.
-    private static final String K9_REPLY_TAG = "K9_REPLY_TAG";
-    private static final String K9_FORWARD_TAG = "K9_FORWARD_TAG";
-
-    // Regex to check for signature in text/plain.
-    /* Commented out until issue-1683 is merged, then the latter declaration needs to be removed.
-    private static final Pattern DASH_SIGNATURE_PLAIN =
-            Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
-    */
-
-    /**
-     * Build the text/plain Body when the message contains HTML as well.
-     */
-     // Because converting the HTML body being sent to text is broken as android.text.Html strips
-     // out blockquote tags.  This uses the text/plain part of the message and adds the reply to
-     // that, if it exists, otherwise getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT)
-     // returns same/similar broken result as before.
-    private TextBody buildTextPlain(boolean isDraft) throws MessagingException {
-        String quote = "";
-        String tag = K9_REPLY_TAG;
-        String action = getIntent().getAction();
-
-        if (mSourceMessage != null) {
-            quote = getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT);
-            if (quote.startsWith(K9_REPLY_TAG)) {
-                quote = quote.substring(K9_REPLY_TAG.length());
-            } else if (quote.startsWith(K9_FORWARD_TAG)) {
-                quote = quote.substring(K9_FORWARD_TAG.length());
-                tag = K9_FORWARD_TAG;
-            } else {
-                /* Commented out until issue-1683 is merged.
-                if (mAccount.isStripSignature() &&
-                        (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))) {
-                    if (DASH_SIGNATURE_PLAIN.matcher(quote).find()) {
-                        quote = DASH_SIGNATURE_PLAIN.matcher(quote).replaceFirst("\r\n");
-                    }
-                }
-                */
-                quote = quoteOriginalTextMessage(mSourceMessage, quote, mAccount.getQuoteStyle());
-            }
-        }
-
-        String text;
-        if (isDraft) {
-            // just keep the quoted text/plain message with a tag so we know it's been processed
-            text = (ACTION_FORWARD.equals(action) || tag.equals(K9_FORWARD_TAG))
-                    ? K9_FORWARD_TAG + quote : K9_REPLY_TAG + quote;
-        } else {
-            boolean replyAfterQuote = false;
-            if (mAccount.isReplyAfterQuote() && !tag.equals(K9_FORWARD_TAG) &&
-                    (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
-                            ACTION_EDIT_DRAFT.equals(action))) {
-                replyAfterQuote = true;
-            }
-
-            // text of new content
-            text = mMessageContentView.getText().toString();
-
-            // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
-            if (!replyAfterQuote &&
-                    (mAccount.isSignatureBeforeQuotedText() || tag.equals(K9_FORWARD_TAG))) {
-                text = appendSignature(text);
-            }
-
-            if (mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
-                if (replyAfterQuote) {
-                    text = quote + "\n" + text;
-                } else {
-                    text += "\n\n" + quote;
-                }
-            }
-
-            // Note: If user has selected reply after quote AND signature before quote, ignore the
-            // latter setting and append the signature at the end. But the signature is always
-            // before the quote on forwards.
-            if (replyAfterQuote ||
-                    (!mAccount.isSignatureBeforeQuotedText() && !tag.equals(K9_FORWARD_TAG))) {
-                text = appendSignature(text);
-            }
-        }
-        return new TextBody(text);
-    }
-
 
     /**
      * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
@@ -1132,7 +1058,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         // Build the body.
-        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
+        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in 
+        // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
         if (mPgpData.getEncryptedData() != null) {
             String text = mPgpData.getEncryptedData();
@@ -1140,6 +1067,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         } else {
             body = buildText(isDraft);
         }
+
+        // text/plain part when mMessageFormat == MessageFormat.HTML
+        TextBody bodyPlain = null;
 
         final boolean hasAttachments = mAttachments.getChildCount() > 0;
 
@@ -1150,7 +1080,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             MimeMultipart composedMimeMessage = new MimeMultipart();
             composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
             composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
-            composedMimeMessage.addBodyPart(new MimeBodyPart(buildTextPlain(isDraft), "text/plain"));
+            bodyPlain = buildText(isDraft, MessageFormat.TEXT);
+            composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the
@@ -1181,7 +1112,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // If this is a draft, add metadata for thawing.
         if (isDraft) {
             // Add the identity to the message.
-            message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body));
+            if (bodyPlain == null) {
+                message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body));
+            } else {
+                message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
+            }
         }
 
         return message;
@@ -1239,6 +1174,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private enum IdentityField {
         LENGTH("l"),
         OFFSET("o"),
+        PLAIN_LENGTH("pl"),
+        PLAIN_OFFSET("po"),
         MESSAGE_FORMAT("f"),
         MESSAGE_READ_RECEIPT("r"),
         SIGNATURE("s"),
@@ -1265,13 +1202,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * @return
          */
         public static IdentityField[] getIntegerFields() {
-            return new IdentityField[] { LENGTH, OFFSET };
+            return new IdentityField[] { LENGTH, OFFSET, PLAIN_LENGTH, PLAIN_OFFSET };
         }
     }
 
     // Version identifier for "new style" identity. ! is an impossible value in base64 encoding, so we
     // use that to determine which version we're in.
     private static final String IDENTITY_VERSION_1 = "!";
+    private static final String IDENTITY_VERSION_2 = "@";
 
     /**
      * Build the identity header string. This string contains metadata about a draft message to be
@@ -1283,6 +1221,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @return Identity string.
      */
     private String buildIdentityHeader(final TextBody body) {
+        return buildIdentityHeader(body, null);
+    }
+
+    private String buildIdentityHeader(final TextBody body, final TextBody bodyPlain) {
         Uri.Builder uri = new Uri.Builder();
         if (body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null) {
             // See if the message body length is already in the TextBody.
@@ -1292,6 +1234,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // If not, calculate it now.
             uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
+        }
+        if (bodyPlain != null) {
+            if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
+                // See if the message body length is already in the TextBody.
+                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), bodyPlain.getComposedMessageLength().toString());
+                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), bodyPlain.getComposedMessageOffset().toString());
+            } else {
+                // If not, calculate it now.
+                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), Integer.toString(body.getText().length()));
+                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), Integer.toString(0));
+            }
         }
         // Save the message format for this offset.
         uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
@@ -1314,7 +1267,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         uri.appendQueryParameter(IdentityField.QUOTED_TEXT_MODE.value(), mQuotedTextMode.name());
 
-        String k9identity = IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
+        String k9identity = (bodyPlain == null ? IDENTITY_VERSION_1 : IDENTITY_VERSION_2)
+                + uri.build().getEncodedQuery();
 
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Generated identity: " + k9identity);
@@ -1339,7 +1293,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         // Check to see if this is a "next gen" identity.
-        if (identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) && identityString.length() > 2) {
+        if ((identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) ||
+                identityString.charAt(0) == IDENTITY_VERSION_2.charAt(0))
+                && identityString.length() > 2) {
             Uri.Builder builder = new Uri.Builder();
             builder.encodedQuery(identityString.substring(1));  // Need to cut off the ! at the beginning.
             Uri uri = builder.build();
@@ -2169,8 +2125,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // Decode the identity header when loading a draft.
                 // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
                 Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
+                String k9identityVersion = "";
                 if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
                     k9identity = parseIdentityHeader(message.getHeader(K9.IDENTITY_HEADER)[0]);
+                    k9identityVersion = message.getHeader(K9.IDENTITY_HEADER)[0].substring(0,1);
                 }
 
                 Identity newIdentity = new Identity();
@@ -2230,6 +2188,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
                                      ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
                                      : 0;
+                Integer bodyPlainLength = null;
+                Integer bodyPlainOffset = null;
+                if (k9identityVersion.equals(IDENTITY_VERSION_2)) {
+                    bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
+                                      ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
+                                      : 0;
+                    bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
+                                      ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
+                                      : 0;
+                }
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
                 // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
@@ -2271,30 +2239,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
                         }
                     }
-                } else if (mMessageFormat == MessageFormat.TEXT) {
-                    Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                    if (textPart != null) {
-                        String text = MimeUtility.getTextFromPart(textPart);
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-                        }
-
-                        // If we had a body length (and it was valid), separate the composition from the quoted text
-                        // and put them in their respective places in the UI.
-                        if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
-                            String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-
-                            // Regenerate the quoted text without our user content in it.
-                            StringBuilder quotedText = new StringBuilder();
-                            quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                            quotedText.append(text.substring(bodyOffset + bodyLength));
-
-                            mMessageContentView.setText(bodyText);
-                            mQuotedText.setText(quotedText.toString());
-                        } else {
-                            mMessageContentView.setText(text);
-                        }
+                    if (k9identityVersion.equals(IDENTITY_VERSION_2)) {
+                        processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
                     }
+                } else if (mMessageFormat == MessageFormat.TEXT) {
+                    processSourceMessageText(message, bodyOffset, bodyLength, true);
                 } else {
                     Log.e(K9.LOG_TAG, "Unhandled message format.");
                 }
@@ -2320,6 +2269,42 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    /*
+     * Pull out the parts of the now loaded source message and apply them to the new message
+     * depending on the type of message being composed.
+     * @param message Source message
+     * @param bodyOffset Insertion point for reply.
+     * @param bodyLength Length of reply.
+     * @param viewMessageContent Update mMessageContentView or not.
+     * @throws MessagingException
+     */
+    private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
+            boolean viewMessageContent) throws MessagingException {
+        Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+        if (textPart != null) {
+            String text = MimeUtility.getTextFromPart(textPart);
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+            }
+
+            // If we had a body length (and it was valid), separate the composition from the quoted text
+            // and put them in their respective places in the UI.
+            if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
+                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+
+                // Regenerate the quoted text without our user content in it.
+                StringBuilder quotedText = new StringBuilder();
+                quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                quotedText.append(text.substring(bodyOffset + bodyLength));
+
+                if (viewMessageContent) mMessageContentView.setText(bodyText);
+                mQuotedText.setText(quotedText.toString());
+            } else {
+                if (viewMessageContent) mMessageContentView.setText(text);
+            }
+        }
+    }
+
     /**
      * Build and populate the UI with the quoted message.
      * @throws MessagingException
@@ -2337,6 +2322,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mAccount.getQuoteStyle());
             // Load the message with the reply header.
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
+            mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage,
+                    getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT), mAccount.getQuoteStyle()));
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
