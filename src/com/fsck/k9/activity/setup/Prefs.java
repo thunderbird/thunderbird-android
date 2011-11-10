@@ -17,7 +17,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
@@ -401,16 +400,15 @@ public class Prefs extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-            if (K9.manageBack()) {
-                Accounts.listAccounts(this);
-                finish();
-                return true;
-            }
+    public void onBackPressed() {
+        saveSettings();
+
+        if (K9.manageBack()) {
+            Accounts.listAccounts(this);
+            finish();
+        } else {
+            super.onBackPressed();
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     private void onFontSizeSettings() {
