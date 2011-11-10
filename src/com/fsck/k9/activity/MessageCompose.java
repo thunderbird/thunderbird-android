@@ -939,6 +939,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // mode.
         if (messageFormat == MessageFormat.HTML) {
             // Add the signature.
+            // FIXME where signature is at bottom if specified and mAccount.getQuoteStyle() == QuoteStyle.PREFIX
+            // instead of just after new content. issue-3676 ashleywillis 2011/11/10
             if (!isDraft) {
                 text = appendSignature(text);
             }
@@ -988,13 +990,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
             if (!isDraft) {
-                if (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText()) {
+                if (mAccount.getQuoteStyle() == QuoteStyle.HEADER ||
+                        (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText())) {
                     text = appendSignature(text);
                 }
             }
 
             if (saveQuotedText) {
-                if (replyAfterQuote) {
+                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX && replyAfterQuote) {
                     composedMessageOffset = mQuotedText.getText().toString().length() + "\n".length();
                     text = mQuotedText.getText().toString() + "\n" + text;
                 } else {
@@ -1005,7 +1008,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Note: If user has selected reply after quote AND signature before quote, ignore the
             // latter setting and append the signature at the end.
             if (!isDraft) {
-                if (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText()) {
+                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX &&
+                        (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText())) {
                     text = appendSignature(text);
                 }
             }
