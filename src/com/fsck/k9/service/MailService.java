@@ -4,6 +4,7 @@ package com.fsck.k9.service;
 import java.util.Collection;
 import java.util.Date;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +19,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.helper.AutoSyncHelper;
 import com.fsck.k9.mail.Pusher;
 
 public class MailService extends CoreService {
@@ -98,12 +98,7 @@ public class MailService extends CoreService {
                 hasConnectivity = state == State.CONNECTED;
             }
             boolean backgroundData = connectivityManager.getBackgroundDataSetting();
-            boolean autoSync = true;
-            if (AutoSyncHelper.isAvailable()) {
-                autoSync = AutoSyncHelper.getMasterSyncAutomatically();
-
-                Log.i(K9.LOG_TAG, "AutoSync help is available, autoSync = " + autoSync);
-            }
+            boolean autoSync = ContentResolver.getMasterSyncAutomatically();
 
             K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
 
