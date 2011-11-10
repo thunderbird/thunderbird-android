@@ -84,7 +84,7 @@ public class MailService extends CoreService {
     }
 
     @Override
-    public void startService(Intent intent, int startId) {
+    public int startService(Intent intent, int startId) {
         long startTime = System.currentTimeMillis();
         boolean oldIsSyncDisabled = isSyncDisabled();
         ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -165,6 +165,8 @@ public class MailService extends CoreService {
 
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
+
+        return START_NOT_STICKY;
     }
 
     @Override

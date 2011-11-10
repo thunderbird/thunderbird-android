@@ -199,9 +199,7 @@ public abstract class CoreService extends Service {
     }
 
     @Override
-    public final void onStart(Intent intent, int startId) {
-        // deprecated method but still used for backwards compatibility with Android version <2.0
-
+    public final int onStartCommand(Intent intent, int flags, int startId) {
         /*
          * When a process is killed due to low memory, it's later restarted and services that were
          * started with START_STICKY are started with the intent being null.
@@ -213,7 +211,7 @@ public abstract class CoreService extends Service {
          */
         if (intent == null) {
             stopSelf(startId);
-            return;
+            return START_NOT_STICKY;
         }
 
         // Acquire new wake lock
@@ -253,9 +251,9 @@ public abstract class CoreService extends Service {
 
         // Run the actual start-code of the service
         mImmediateShutdown = true;
+        int startFlag;
         try {
-            super.onStart(intent, startId);
-            startService(intent, startId);
+            startFlag = startService(intent, startId);
         } finally {
             try {
                 // Release the wake lock acquired at the start of this method
@@ -267,9 +265,12 @@ public abstract class CoreService extends Service {
                 // this service.
                 if (mAutoShutdown && mImmediateShutdown && startId != -1) {
                     stopSelf(startId);
+                    startFlag = START_NOT_STICKY;
                 }
             } catch (Exception e) { /* ignore */ }
         }
+
+        return startFlag;
     }
 
     /**
@@ -371,7 +372,7 @@ public abstract class CoreService extends Service {
     }
 
     /**
-     * Subclasses need to implement this instead of overriding {@link #onStart(Intent, int)}.
+     * Subclasses need to implement this instead of overriding {@link #onStartCommand(Intent, int, int)}.
      *
      * <p>
      * This allows {@link CoreService} to manage the service lifecycle, incl. wake lock management.
@@ -382,8 +383,12 @@ public abstract class CoreService extends Service {
      * @param startId
      *         A unique integer representing this specific request to start. Use with
      *         {@link #stopSelfResult(int)}.
+     *
+     * @return The return value indicates what semantics the system should use for the service's
+     *         current started state. It may be one of the constants associated with the
+     *         {@link Service#START_CONTINUATION_MASK} bits.
      */
-    public abstract void startService(Intent intent, int startId);
+    public abstract int startService(Intent intent, int startId);
 
     @Override
     public void onLowMemory() {
