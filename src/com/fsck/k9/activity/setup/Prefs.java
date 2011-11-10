@@ -265,7 +265,7 @@ public class Prefs extends K9PreferenceActivity {
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Integer.parseInt(Build.VERSION.SDK)  <= 7) {
+        if (Build.VERSION.SDK_INT <= 7) {
             mMobileOptimizedLayout.setEnabled(false);
         }
 

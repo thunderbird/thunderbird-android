@@ -40,10 +40,8 @@ public abstract class Contacts {
              * Check the version of the SDK we are running on. Choose an
              * implementation class designed for that version of the SDK.
              */
-            int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-
             String className = null;
-            if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ECLAIR_MR1) {
                 /*
                  * The new API was introduced with SDK 5. But Android versions < 2.2
                  * need some additional code to be able to search for phonetic names.
