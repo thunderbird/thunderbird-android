@@ -2302,10 +2302,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
                 String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
 
-                // Regenerate the quoted text without our user content in it.
+                // Regenerate the quoted text without our user content in it nor added newlines.
                 StringBuilder quotedText = new StringBuilder();
-                quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                quotedText.append(text.substring(bodyOffset + bodyLength));
+                if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 2).equals("\n\n")) {
+                    // top-posting: ignore two newlines at start of quote
+                    quotedText.append(text.substring(bodyLength + 2));
+                } else if (bodyOffset + bodyLength == text.length() &&
+                        text.substring(bodyOffset - 1, bodyOffset).equals("\n")) {
+                    // bottom-posting: ignore newline at end of quote
+                    quotedText.append(text.substring(0, bodyOffset - 1));
+                } else {
+                    quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                    quotedText.append(text.substring(bodyOffset + bodyLength));
+                }
 
                 if (viewMessageContent) mMessageContentView.setText(bodyText);
                 mQuotedText.setText(quotedText.toString());
