@@ -1875,8 +1875,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
 
             keyCode == KeyEvent.KEYCODE_BACK
-            && event.getRepeatCount() == 0
-            && K9.manageBack()) {
+            && event.getRepeatCount() == 0) {
             // Take care of calling this method on earlier versions of
             // the platform where it doesn't exist.
             onBackPressed();
