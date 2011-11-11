@@ -380,7 +380,9 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         case R.id.autoconfig_button_next:
             // autoconfig failed, proceed by manual setup
             if( bForceManual ){
-
+		// TODO: get boolean from user
+                AccountSetupAccountType.actionStartManualConfiguration(this, mEmailAddress, mPassword, false);
+                finish();
             // launch confirm activities
             }else{
                 AccountSetupConfirmIncoming.actionConfirmIncoming
