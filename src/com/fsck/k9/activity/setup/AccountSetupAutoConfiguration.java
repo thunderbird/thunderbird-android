@@ -42,6 +42,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
     private static final String EMAIL_ADDRESS = "account";
     private static final String PASSWORD = "password";
+    private static final String MAKEDEFAULT = "default";
 
     // timeout for testing services availability ( in ms )
     private static final int TIMEOUT = 5000;
@@ -87,6 +88,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private String mEmailAddress;
     private String mPassword;
     private String mLastMessage;
+    private boolean mMakeDefault;
     private AutoconfigInfo mAutoConfigInfo;
     private boolean bForceManual = false;
     private boolean bDoneSearching = false;
@@ -97,10 +99,11 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     /*
         Start the auto-configuration activity
      */
-    public static void actionAttemptConfiguration(Activity context, String email, String password) {
+    public static void actionAttemptConfiguration(Activity context, String email, String password, boolean makedefault) {
         Intent i = new Intent(context, AccountSetupAutoConfiguration.class);
         i.putExtra(EMAIL_ADDRESS, email);
         i.putExtra(PASSWORD, password);
+        i.putExtra(MAKEDEFAULT, makedefault);
         context.startActivity(i);
     }
 
@@ -129,6 +132,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         // Getting our data to work with
         mEmailAddress = getIntent().getStringExtra(EMAIL_ADDRESS);
         mPassword = getIntent().getStringExtra(PASSWORD);
+        mMakeDefault = getIntent().getBooleanExtra(MAKEDEFAULT, false);
 
         // The real action, in a separate thread
         new Thread() {
@@ -381,12 +385,12 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
             // autoconfig failed, proceed by manual setup
             if( bForceManual ){
             	// TODO: get boolean from user
-                AccountSetupAccountType.actionStartManualConfiguration(this, mEmailAddress, mPassword, false);
+                AccountSetupAccountType.actionStartManualConfiguration(this, mEmailAddress, mPassword, mMakeDefault);
                 finish();
             // launch confirm activities
             }else{
                 AccountSetupConfirmIncoming.actionConfirmIncoming
-                        (this, null, mEmailAddress, mPassword, mAutoConfigInfo);
+                        (this, null, mEmailAddress, mPassword, mAutoConfigInfo,mMakeDefault);
                 finish();
             }
             break;
@@ -447,7 +451,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
                                                     e.getMessage() == null ? "" : e.getMessage()), true);
                                         }
                                         // TODO: rework this so we just retry the last URL, DO NOT RESTART THE WHOLE ACTIVITY!!
-                                        AccountSetupAutoConfiguration.actionAttemptConfiguration(AccountSetupAutoConfiguration.this, mEmailAddress, mPassword);
+                                        AccountSetupAutoConfiguration.actionAttemptConfiguration(AccountSetupAutoConfiguration.this, mEmailAddress, mPassword, mMakeDefault);
                                     }
                                 })
                         .setNegativeButton(
@@ -475,3 +479,4 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         public int getErrorCode(){return errorCode;}
     }
 }
+

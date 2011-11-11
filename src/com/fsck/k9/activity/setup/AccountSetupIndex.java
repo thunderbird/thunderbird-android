@@ -38,7 +38,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     public enum SuggestionType { DEVICE, BACKUP, NEW }
 
     // temp hard coded value ( since we don't ask if it should be default account for now )
-    private boolean bTmpDefaultAccount = true;
+    private boolean bMakeDefault = true;
 
     private Account mAccount;
     private Button mNewAccountDialogButton;
@@ -119,6 +119,7 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
                 final EditText emailField = ((EditText)dialog.findViewById(R.id.account_dialog_address_field));
                 final EditText passwordField = ((EditText)dialog.findViewById(R.id.account_dialog_password_field));
                 final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);
+                final CheckBox defaultCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_default_box);
 
                 mNewAccountDialogButton = ((Button)dialog.findViewById(R.id.account_dialog_next));
 
@@ -160,12 +161,14 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
 
                 final EditText passwordField = ((EditText) dialog.findViewById(R.id.account_dialog_password_field));
                 final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);
+                final CheckBox defaultCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_default_box);
 
                 mPasswordDialogButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View view) {
                         String email = args.get(BUNDLE_TYPE_SUGGESTION).toString();
                         String password = passwordField.getText().toString();
-
+                        bMakeDefault = defaultCheck.isChecked();
+                        		
                         // TODO: replace this with a few listeners on the fields that activate/deactive the button on acceptable values
                         if( password.isEmpty() ) return;
 
@@ -180,12 +183,12 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     }
 
     private void onManualSetup(String email, String password) {
-        AccountSetupAccountType.actionStartManualConfiguration(this, email, password, bTmpDefaultAccount);
+        AccountSetupAccountType.actionStartManualConfiguration(this, email, password, bMakeDefault);
         finish();
     }
 
     private void startSettingsDetection(String email, String password) {
-        AccountSetupAutoConfiguration.actionAttemptConfiguration(this, email, password);
+        AccountSetupAutoConfiguration.actionAttemptConfiguration(this, email, password, bMakeDefault);
         finish();
     }
 
@@ -238,3 +241,4 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
         public SuggestionType getSuggestionType(){ return type; }
     }
 }
+

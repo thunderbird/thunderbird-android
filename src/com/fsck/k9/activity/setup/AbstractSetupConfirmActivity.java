@@ -40,7 +40,8 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     protected static final String EXTRA_CONFIG_INFO = "configInfo";
     protected static final String EXTRA_EMAIL = "email";
     protected static final String EXTRA_PASSWORD = "password";
-
+    protected static final String EXTRA_MAKEDEFAULT = "default";
+    
     private final String LOCALPART_EMAIL = "%EMAILLOCALPART%";
     private final String WHOLE_EMAIL = "%EMAILADDRESS%";
 
@@ -51,6 +52,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
     protected String mUsername;
     private boolean mCustomUsername = false;
     protected String mPassword;
+    protected boolean mMakeDefault;
 
     // references to current selections ( easier to code with )
     protected Server mCurrentServer;
@@ -104,6 +106,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         else mAccount = Account.getBlankAccount(this, mEmail, mPassword);
 
         mConfigInfo = getIntent().getParcelableExtra(EXTRA_CONFIG_INFO);
+        mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKEDEFAULT, false);
 
         // attach data to gui elements
         ArrayAdapter<ServerType> protocolAdapter = new ArrayAdapter<ServerType>(this,
@@ -259,3 +262,4 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         return scheme;
     }
 }
+
