@@ -941,7 +941,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // mode.
         if (messageFormat == MessageFormat.HTML) {
             // Add the signature.
-            // FIXME where signature is at bottom if specified and mAccount.getQuoteStyle() == QuoteStyle.PREFIX
+            // FIXME where signature is at bottom if specified and mQuoteStyle == QuoteStyle.PREFIX
             // instead of just after new content. issue-3676 ashleywillis 2011/11/10
             if (!isDraft) {
                 text = appendSignature(text);
@@ -958,7 +958,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // location. We only add the extra separators when we're sending, that way when we
                 // load a draft, we don't have to know the length of the separators to remove them
                 // before editing.
-                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX && replyAfterQuote) {
+                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
                     mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                     if (!isDraft) {
                         text = "<br clear=\"all\">" + text;
@@ -992,14 +992,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
             if (!isDraft) {
-                if (mAccount.getQuoteStyle() == QuoteStyle.HEADER ||
+                if (mQuoteStyle == QuoteStyle.HEADER ||
                         (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText())) {
                     text = appendSignature(text);
                 }
             }
 
             if (saveQuotedText) {
-                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX && replyAfterQuote) {
+                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
                     composedMessageOffset = mQuotedText.getText().toString().length() + "\n".length();
                     text = mQuotedText.getText().toString() + "\n" + text;
                 } else {
@@ -1010,7 +1010,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Note: If user has selected reply after quote AND signature before quote, ignore the
             // latter setting and append the signature at the end.
             if (!isDraft) {
-                if (mAccount.getQuoteStyle() == QuoteStyle.PREFIX &&
+                if (mQuoteStyle == QuoteStyle.PREFIX &&
                         (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText())) {
                     text = appendSignature(text);
                 }
@@ -2080,6 +2080,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 } else {
                     mSubjectView.setText(subject);
                 }
+                mQuoteStyle = QuoteStyle.HEADER;
 
                 // Quote the message and setup the UI.
                 populateUIWithQuotedMessage(true);
@@ -2328,14 +2329,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                          : getBodyTextFromMessage(mSourceMessage, mMessageFormat);
         if (mMessageFormat == MessageFormat.HTML) {
             // Add the HTML reply header to the top of the content.
-            mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mAccount.getQuoteStyle());
+            mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mQuoteStyle);
             // Load the message with the reply header.
             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage,
-                    getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT), mAccount.getQuoteStyle()));
+                    getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT), mQuoteStyle));
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
-            mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mAccount.getQuoteStyle()));
+            mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mQuoteStyle));
         }
 
         if (shown) {
