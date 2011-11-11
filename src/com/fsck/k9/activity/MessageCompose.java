@@ -207,6 +207,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private boolean mSourceProcessed = false;
     private MessageFormat mMessageFormat;
+    private QuoteStyle mQuoteStyle;
 
     private boolean mDraftNeedsSaving = false;
     private boolean mPreventDraftSaving = false;
@@ -534,6 +535,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         mMessageFormat = mAccount.getMessageFormat();
         mReadReceipt = mAccount.isMessageReadReceiptAlways();
+        mQuoteStyle = mAccount.getQuoteStyle();
 
         if (!mSourceMessageProcessed) {
             updateFrom();
@@ -1184,7 +1186,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // TODO - store a reference to the message being replied so we can mark it at the time of send.
         ORIGINAL_MESSAGE("m"),
         CURSOR_POSITION("p"),   // Where in the message your cursor was when you saved.
-        QUOTED_TEXT_MODE("q");
+        QUOTED_TEXT_MODE("q"),
+        QUOTE_STYLE("qs");
 
         private final String value;
 
@@ -1235,7 +1238,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
         }
-        if (bodyPlain != null) {
+        if (bodyPlain != null) { // IDENTITY_VERSION_2
             if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
                 // See if the message body length is already in the TextBody.
                 uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), bodyPlain.getComposedMessageLength().toString());
@@ -1246,6 +1249,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), Integer.toString(0));
             }
         }
+        // Save the quote style (useful for forwards). IDENTITY_VERSION_2
+        uri.appendQueryParameter(IdentityField.QUOTE_STYLE.value(), mQuoteStyle.name());
+
         // Save the message format for this offset.
         uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
 
@@ -2197,6 +2203,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
                                       ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
                                       : 0;
+                    mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
+                            ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
+                            : mAccount.getQuoteStyle();
                 }
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
