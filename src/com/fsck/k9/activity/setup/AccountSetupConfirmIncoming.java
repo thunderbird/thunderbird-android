@@ -24,7 +24,7 @@ import java.util.List;
 public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
 
     // account is allowed to be null
-    public static void actionConfirmIncoming(Context context, Account account, String email, String password, AutoconfigInfo info) {
+    public static void actionConfirmIncoming(Context context, Account account, String email, String password, AutoconfigInfo info, boolean makedefault) {
         Intent i = new Intent(context, AccountSetupConfirmIncoming.class);
         if( account != null )
             i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -32,6 +32,7 @@ public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
         i.putExtra(EXTRA_EMAIL, email);
         i.putExtra(EXTRA_PASSWORD, password);
         i.putExtra(EXTRA_CONFIG_INFO, info);
+        i.putExtra(EXTRA_MAKEDEFAULT, makedefault);
         context.startActivity(i);
     }
 
@@ -60,7 +61,7 @@ public class AccountSetupConfirmIncoming extends AbstractSetupConfirmActivity {
                     null,null,null);
             mAccount.setStoreUri(uri.toString());
 
-            AccountSetupConfirmOutgoing.actionConfirmOutgoing(this, mAccount, mEmail, mPassword, mConfigInfo);
+            AccountSetupConfirmOutgoing.actionConfirmOutgoing(this, mAccount, mEmail, mPassword, mConfigInfo, mMakeDefault);
         }
         catch (UnsupportedEncodingException enc) {}
         catch (URISyntaxException use) {

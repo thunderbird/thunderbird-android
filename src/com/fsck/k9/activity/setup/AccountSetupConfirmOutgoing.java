@@ -24,12 +24,13 @@ import java.util.List;
 public class AccountSetupConfirmOutgoing extends AbstractSetupConfirmActivity{
 
     // account is allowed to be null
-    public static void actionConfirmOutgoing(Context context, Account account, String email, String password, AutoconfigInfo info) {
+    public static void actionConfirmOutgoing(Context context, Account account, String email, String password, AutoconfigInfo info, boolean makedefault) {
         Intent i = new Intent(context, AccountSetupConfirmOutgoing.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_EMAIL, email);
         i.putExtra(EXTRA_PASSWORD, password);
         i.putExtra(EXTRA_CONFIG_INFO, info);
+        i.putExtra(EXTRA_MAKEDEFAULT, makedefault);
         context.startActivity(i);
     }
 
@@ -84,12 +85,11 @@ public class AccountSetupConfirmOutgoing extends AbstractSetupConfirmActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+		// should verify but this normaly shouldn't happen, this activity is only used for initial setup, not edit
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
             } else {
-                // have to pop up to ask if it should be default account now
-                // hard-coded now for test purposes
-                AccountSetupOptions.actionOptions(this, mAccount, true);
+                AccountSetupOptions.actionOptions(this, mAccount, mMakeDefault);
                 finish();
             }
         }
