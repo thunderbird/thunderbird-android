@@ -1212,7 +1212,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     // Version identifier for "new style" identity. ! is an impossible value in base64 encoding, so we
     // use that to determine which version we're in.
     private static final String IDENTITY_VERSION_1 = "!";
-    private static final String IDENTITY_VERSION_2 = "@";
 
     /**
      * Build the identity header string. This string contains metadata about a draft message to be
@@ -1227,6 +1226,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return buildIdentityHeader(body, null);
     }
 
+    /**
+     * Build the identity header string. This string contains metadata about a draft message to be
+     * used upon loading a draft for composition. This should be generated at the time of saving a
+     * draft.<br>
+     * <br>
+     * This is a URL-encoded key/value pair string.  The list of possible values are in {@link IdentityField}.
+     * @param body {@link TextBody} to analyze for body length and offset.
+     * @param bodyPlain {@link TextBody} to analyze for body length and offset. May be null.
+     * @return Identity string.
+     */
     private String buildIdentityHeader(final TextBody body, final TextBody bodyPlain) {
         Uri.Builder uri = new Uri.Builder();
         if (body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null) {
@@ -1238,7 +1247,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
         }
-        if (bodyPlain != null) { // IDENTITY_VERSION_2
+        if (bodyPlain != null) {
             if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
                 // See if the message body length is already in the TextBody.
                 uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), bodyPlain.getComposedMessageLength().toString());
@@ -1249,7 +1258,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), Integer.toString(0));
             }
         }
-        // Save the quote style (useful for forwards). IDENTITY_VERSION_2
+        // Save the quote style (useful for forwards).
         uri.appendQueryParameter(IdentityField.QUOTE_STYLE.value(), mQuoteStyle.name());
 
         // Save the message format for this offset.
@@ -1273,8 +1282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         uri.appendQueryParameter(IdentityField.QUOTED_TEXT_MODE.value(), mQuotedTextMode.name());
 
-        String k9identity = (bodyPlain == null ? IDENTITY_VERSION_1 : IDENTITY_VERSION_2)
-                + uri.build().getEncodedQuery();
+        String k9identity = IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Generated identity: " + k9identity);
@@ -1299,9 +1307,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         // Check to see if this is a "next gen" identity.
-        if ((identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) ||
-                identityString.charAt(0) == IDENTITY_VERSION_2.charAt(0))
-                && identityString.length() > 2) {
+        if (identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) && identityString.length() > 2) {
             Uri.Builder builder = new Uri.Builder();
             builder.encodedQuery(identityString.substring(1));  // Need to cut off the ! at the beginning.
             Uri uri = builder.build();
@@ -2195,19 +2201,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
                                      ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
                                      : 0;
-                Integer bodyPlainLength = null;
-                Integer bodyPlainOffset = null;
-                if (k9identityVersion.equals(IDENTITY_VERSION_2)) {
-                    bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                                      ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
-                                      : 0;
-                    bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                                      ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
-                                      : 0;
-                    mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
-                            ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
-                            : mAccount.getQuoteStyle();
-                }
+
+                Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
+                                          ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
+                                          : null;
+                Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
+                                          ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
+                                          : null;
+                mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
+                              ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
+                              : mAccount.getQuoteStyle();
+
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
                 // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
@@ -2249,7 +2253,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
                         }
                     }
-                    if (k9identityVersion.equals(IDENTITY_VERSION_2)) {
+                    if (bodyPlainOffset != null && bodyPlainLength != null) {
                         processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
                     }
                 } else if (mMessageFormat == MessageFormat.TEXT) {
