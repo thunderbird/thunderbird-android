@@ -940,11 +940,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
         // mode.
         if (messageFormat == MessageFormat.HTML) {
-            // Add the signature.
-            // FIXME where signature is at bottom if specified and mQuoteStyle == QuoteStyle.PREFIX
-            // instead of just after new content. issue-3676 ashleywillis 2011/11/10
+            // Place the signature immediately after the reply.
             if (!isDraft) {
-                text = appendSignature(text);
+                if (mQuoteStyle == QuoteStyle.HEADER || replyAfterQuote || mAccount.isSignatureBeforeQuotedText()) {
+                    Log.d("ASH", "appending signature after new content");
+                    text = appendSignature(text);
+                }
             }
             text = HtmlConverter.textToHtmlFragment(text);
             // Insert it into the existing content object.
@@ -967,6 +968,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                     if (!isDraft) {
                         text += "<br><br>";
+                    }
+                }
+
+                // Place signature immediately after quote.
+                if (!isDraft) {
+                    if (mQuoteStyle == QuoteStyle.PREFIX && !replyAfterQuote && !mAccount.isSignatureBeforeQuotedText()) {
+                        mQuotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
                     }
                 }
 
@@ -1176,6 +1184,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private enum IdentityField {
         LENGTH("l"),
         OFFSET("o"),
+        FOOTER_OFFSET("fo"),
         PLAIN_LENGTH("pl"),
         PLAIN_OFFSET("po"),
         MESSAGE_FORMAT("f"),
@@ -1205,7 +1214,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * @return
          */
         public static IdentityField[] getIntegerFields() {
-            return new IdentityField[] { LENGTH, OFFSET, PLAIN_LENGTH, PLAIN_OFFSET };
+            return new IdentityField[] { LENGTH, OFFSET, FOOTER_OFFSET, PLAIN_LENGTH, PLAIN_OFFSET };
         }
     }
 
@@ -1246,6 +1255,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // If not, calculate it now.
             uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
             uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
+        }
+        if (mQuotedHtmlContent != null) {
+            uri.appendQueryParameter(IdentityField.FOOTER_OFFSET.value(),
+                    Integer.toString(mQuotedHtmlContent.getFooterInsertionPoint()));
         }
         if (bodyPlain != null) {
             if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
@@ -1377,6 +1390,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return text;
     }
 
+    private String getSignatureHtml() {
+        String signature = "";
+        if (mIdentity.getSignatureUse()) {
+            signature = mSignatureView.getText().toString();
+            if (signature != null && !signature.contentEquals("")) {
+                signature = HtmlConverter.textToHtmlFragment("\n" + signature);
+            }
+        }
+        return signature;
+    }
 
     private void sendMessage() {
         new SendMessageTask().execute();
@@ -2199,16 +2222,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
                                      ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
                                      : 0;
-
+                Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
+                        ? Integer.parseInt(k9identity.get(IdentityField.FOOTER_OFFSET))
+                        : null;
                 Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                                          ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
-                                          : null;
+                        ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
+                        : null;
                 Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                                          ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
-                                          : null;
+                        ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
+                        : null;
                 mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
-                              ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
-                              : mAccount.getQuoteStyle();
+                        ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
+                        : mAccount.getQuoteStyle();
 
                 // Always respect the user's current composition format preference, even if the
                 // draft was saved in a different format.
@@ -2248,6 +2273,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             mQuotedHtmlContent = new InsertableHtmlContent();
                             mQuotedHtmlContent.setQuotedContent(quotedHTML);
                             mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
+                            if (bodyFooterOffset != null) {
+                                mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
+                            } else {
+                                mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                            }
                             mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
                         }
                     }
