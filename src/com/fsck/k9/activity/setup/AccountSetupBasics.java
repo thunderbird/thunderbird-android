@@ -193,9 +193,16 @@ public class AccountSetupBasics extends K9Activity
             incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
+
+            String namespace = null;
+            // Gmail uses a special namespace, otherwise everything ends up in the "[Imap]" namespace.
+            if(incomingUriTemplate.getHost().toLowerCase().endsWith("gmail.com")) {
+                namespace = "/[Gmail]";
+            }
+
             incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":"
-                                  + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
-                                  null, null);
+                + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(),
+                namespace, null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
 
