@@ -65,6 +65,7 @@ public class AccountSettings {
         s.put("quoteStyle",
                 new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
         s.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
+        //s.put("stripSignature", new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE));	// added to version 2
         s.put("ring", new BooleanSetting(true));
         s.put("ringtone", new RingtoneSetting("content://settings/system/notification_sound"));
         s.put("saveAllHeaders", new BooleanSetting(true));

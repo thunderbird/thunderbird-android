@@ -77,6 +77,18 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/main/java" />
+          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/test/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>

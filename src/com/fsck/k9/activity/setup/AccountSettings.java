@@ -93,6 +93,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
+    private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
@@ -152,6 +153,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
+    private CheckBoxPreference mStripSignature;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
     private CheckBoxPreference mPushPollOnConnect;
@@ -240,6 +242,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
+
+        mStripSignature = (CheckBoxPreference) findPreference(PREFERENCE_STRIP_SIGNATURE);
+        mStripSignature.setChecked(mAccount.isStripSignature());
 
         mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
 
@@ -726,6 +731,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
+        mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
