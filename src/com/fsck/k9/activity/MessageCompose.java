@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import android.text.*;
 import android.webkit.WebViewClient;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.view.MessageWebView;
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -1395,11 +1396,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return text;
     }
 
+    /**
+     * Get an HTML version of the signature in the #mSignatureView, if any.
+     * @return HTML version of signature.
+     */
     private String getSignatureHtml() {
         String signature = "";
         if (mIdentity.getSignatureUse()) {
             signature = mSignatureView.getText().toString();
-            if (signature != null && !signature.contentEquals("")) {
+            if(!StringUtils.isNullOrEmpty(signature)) {
                 signature = HtmlConverter.textToHtmlFragment("\n" + signature);
             }
         }
