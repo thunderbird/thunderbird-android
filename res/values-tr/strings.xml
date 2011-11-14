@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">K-9 Posta</string>
+    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
+    <string name="app_revision_fmt">Revizyon Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+
+    <string name="read_attachment_label">Eposta eklerini oku</string>
+    <string name="read_attachment_desc">Bu uygulamaya Eposta eklerinizi okumasına izin ver.</string>
+    <string name="read_messages_label">Epostaları oku</string>
+    <string name="read_messages_desc">Bu uygulamaya Epostalarınızı okumaya izin ver.</string>
+    <string name="delete_messages_label">Epostaları sil</string>
+    <string name="delete_messages_desc">Bu uygulamaya Epostalarınızı silmeye izin ver.</string>
+
+    <string name="about_title_fmt">Hakkında <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="accounts_title">Hesaplar</string>
+    <string name="advanced">Gelişmiş</string>
+    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
+    <string name="shortcuts_title">K-9 Hesaplar</string>
+
+    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+
+    <string name="compose_title">Oluştur</string>
+    <string name="debug_title">Onar</string>
+    <string name="choose_folder_title">Klasör Seç</string>
+    <string name="choose_color_title">Bir renk Seç</string>
+
+    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
+
+    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
+    <string name="status_loading_account_folder">\u0020(Poll <xliff:g id="account">%s</xliff:g><xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder_headers">\u0020(Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_sending_account">\u0020(Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g><xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+
+    <string name="status_next_poll">\u0020(Next poll @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_syncing_off">\u0020(Sync disabled)</string>
+
+    <!-- Actions will be used as buttons and in menu items -->
+    <string name="next_action">İleri</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Geri</string> <!-- Used as part of a multi-step process -->
+    <string name="okay_action">Tamam</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="cancel_action">İptal</string>
+    <string name="send_action">Gönder</string>
+    <string name="send_again_action">Tekrar Gönder</string>
+    <string name="select_action">Seç</string>
+    <string name="deselect_action">Kaldır</string>
+    <string name="reply_action">Cevap</string>
+    <string name="reply_all_action">Hepsini Cevapla</string>
+    <string name="delete_action">Sil</string>
+    <string name="archive_action">Arşiv</string>
+    <string name="spam_action">Spam</string>
+    <string name="delete_all_action">Klasörü temizle</string>
+    <string name="forward_action">İlet</string>
+    <string name="move_action">Taşı</string>
+    <string name="continue_action">Devam</string>
+    <string name="done_action">Tamam</string> <!--  Used to complete a multi-step process -->
+    <string name="remove_action">Kaldır</string>
+    <string name="discard_action">Çıkart</string>
+    <string name="save_draft_action">Taslak olarak Kaydet</string>
+    <string name="retry_action">Yeniden dene</string>
+    <string name="refresh_action">Yinele</string>
+    <string name="check_mail_action">Epostayı Kontrol et</string>
+    <string name="send_messages_action">Mesajları Gönder</string>
+    <string name="list_folders_action">Klasör Listesi</string>
+    <string name="refresh_folders_action">Klasörleri Yinele</string>
+    <string name="mark_all_as_read_action">Hepsini Okundu olarak işaretle</string>
+    <string name="add_account_action">Hesap Ekle</string>
+    <string name="compose_action">Oluştur</string>
+    <string name="search_action">Arama</string>
+    <string name="search_results">Arama Sonuçları</string>
+    <string name="preferences_action">Ayarlar</string>
+    <string name="open_action">Açık</string>
+    <string name="account_settings_action">Hesap Ayarları</string>
+    <string name="folder_settings_action">Klasör Ayarları</string>
+    <string name="global_settings_action">Genel Ayarlar</string>
+    <string name="remove_account_action">Hesabı Kaldır</string>
+    <string name="clear_pending_action">Bekleyen faaliyetleri Temizle (Tehlike!)</string>
+
+    <string name="accounts_action">Hesaplar</string>
+    <string name="back_to_accounts_action">◀</string>
+    <string name="back_to_folder_list_action">◀</string>
+    <string name="read_action">Oku</string>
+    <string name="mark_as_read_action">Okundu olarak işaretle</string>
+    <string name="send_alternate_action">Paylaş</string>
+    <string name="send_alternate_chooser_title">Gönderici Seç</string>
+
+    <string name="mark_all_as_read_dlg_title">Hepsini okundu olarak işaretle</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">içindeki bütün mesajları \'<xliff:g id="folder">%s</xliff:g>\' okundu olarak işaretle?  (Klasöre
+    eklenen mesajlar K-9 de gösterilemez.)</string>
+
+    <string name="flag_action">Yıldız Ekle</string>
+    <string name="unflag_action">Yıldızı Kaldır</string>
+    <string name="copy_action">Kopyala</string>
+    <string name="show_full_header_action">Tam Başlığı Göster</string>
+    <string name="hide_full_header_action">Tam Başlığı Sakla</string>
+    <string name="select_text_action">Metin Seç</string>
+
+    <string name="mark_as_unread_action">Okunmadı Olarak İşaretle</string>
+    <string name="move_to_action">Taşı</string>
+    <string name="folders_action">Klasörler</string>
+    <string name="view_hide_details_action">Ayrıntıları Göster/Sakla</string>
+    <string name="add_cc_bcc_action">Ekle Cc/Bcc</string>
+    <string name="edit_subject_action">Konuyu Düzenle</string>
+    <string name="read_receipt">Alındıyı Oku</string>
+    <string name="read_receipt_enabled">Okudu alındısı istenecek</string>
+    <string name="read_receipt_disabled">Okudu alındısı istenmeyecek</string>
+    <string name="add_attachment_action">Ekle</string>
+    <string name="add_attachment_action_image">Ekle (İmaj)</string>
+    <string name="add_attachment_action_video">Ekle (Video)</string>
+    <string name="dump_settings_action">Çöp Ayarları</string>
+    <string name="empty_trash_action">Çöpü Boşalt</string>
+    <string name="expunge_action">Silmek</string>
+    <string name="clear_local_folder_action">Yerel mesajları temizle</string>
+    <string name="set_sort_action">Sıralamayı Seç</string>
+    <string name="reverse_sort_action">Sıralamayı tersine çevir</string>
+    <string name="about_action">Hakkında</string>
+
+    <string name="prefs_title">Ayarlar</string>
+    <string name="accounts_context_menu_title">Hesap Seçenekleri</string>
+    <string name="folder_context_menu_title">Klasör Seçenekleri</string>
+
+    <string name="general_no_subject">(Konu yok)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_date">Tarih yok</string>
+    <string name="general_no_sender">Gönderen yok</string>
+    <string name="status_loading">Seçim</string>
+    <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_more">Yüklenen mesajlar\u2026</string>
+    <string name="status_network_error">Bağlantı hatası</string>
+    <string name="status_invalid_id_error">Mesaj bulunamadı</string>
+    <string name="status_error">Hata</string> <!-- Used in Outbox when a message has failed to send -->
+    <string name="status_sending">Gönderiliyor</string> <!-- Used in Outbox when a message is currently sending -->
+
+    <string name="status_loading_more_failed">Birden fazla mesaj yüklemeyi deniyor</string>
+
+    <string name="load_more_messages_fmt">Boyuta kadar yükle
+     <xliff:g id="messages_to_load">%d</xliff:g> daha fazla</string>
+
+    <string name="abbrev_gigabytes">GB</string>
+    <string name="abbrev_megabytes">MB</string>
+    <string name="abbrev_kilobytes">KB</string>
+    <string name="abbrev_bytes">B</string>
+
+    <string name="account_size_changed">
+    Hesap \"<xliff:g id="account">%s</xliff:g>\" den küçüldü
+    <xliff:g id="oldSize">%s</xliff:g>
+    to
+    <xliff:g id="newSize">%s</xliff:g>
+    </string>
+
+    <string name="compacting_account">Hesap sıkıştırma \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="clearing_account">Hesap temizleme \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Hesap yenileme \"<xliff:g id="account">%s</xliff:g>\"</string>
+
+    <string name="notification_new_title">Yeni posta</string>
+    <string name="notification_new_scrolling">den yeni posta <xliff:g id="sender">%s</xliff:g></string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Okunmadı (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> Yeni mesajlar (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
+    <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> hesaplar</string>
+    <string name="notification_unsent_title">Mesaj gönderilemedi</string>
+
+    <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_title">Posta kontrol ediliyor</string>
+    <string name="notification_bg_send_ticker">Posta gönderiliyor: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Posta gönderiliyor</string>
+    <string name="notification_bg_title_separator">:</string>
+
+    <string name="special_mailbox_name_inbox">Gelen Kutusu</string>
+    <string name="special_mailbox_name_outbox">Giden Kutusu</string>
+    <!-- The following mailbox names will be used if the user has not specified one from the server -->
+    <string name="special_mailbox_name_drafts">Taslaklar</string>
+    <string name="special_mailbox_name_trash">Çöp</string>
+    <string name="special_mailbox_name_sent">Gönderilen</string>
+    <string name="special_mailbox_name_archive">Arşiv</string>
+    <string name="special_mailbox_name_spam">Spam</string>
+    <!-- Mailbox names displayed to user -->
+
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Taslaklar)</string>
+    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Çöp)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Gönder)</string>
+    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arşiv)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
+
+    <string name="send_failure_subject">Bazı mesajların gönderilmesi başarısız</string>
+    <string name="send_failure_body_abbrev">Bakın <xliff:g id="errorFolder">%s</xliff:g> klasörüne detaylar için.</string>
+    <string name="send_failure_body_fmt">K-9 mesajlarınızın bir kısmını gönderirken bir sorunla karşılaştı.
+    Ancak, sorunun yapısına uygun olarak, K-9 mesajların gidip gitmediğinden emin olamamakta,
+    Alıcılar çoktan mesajın kopyalarını almış da olabilir.
+    \u000a\u000a Mesajlar bu tip sorunlar çıkarttığı için Giden kutusunda şimdi yıldızla işaretlendi.
+    Yıldızları kaldırırsanız, K-9 mesajları tekrar göndermeyi dener.
+    Giden kutusuna uzun basın  \"Giden mesajlar\" eylemini sırayla diğer gönderme girişimlerini başlatmayı bulmak için.\u000A\u000a
+     <xliff:g id="errorFolder">%s</xliff:g> klasör başarısızlıklarla ilgili hata mesajları içerebilir.</string>
+
+    <string name="alert_header">K-9 uyarı</string>
+    <string name="no_connection_alert">Ağın olmaması yüzünden Eşleştirme ve Gönderme durduruldu.</string>
+
+    <string name="end_of_folder">Daha fazla mesaj yok</string>
+
+    <string name="accounts_welcome">K-9 Posta\'ya Hoşgeldiniz!\n K-9 Android için bir gelişmiş eposta alıcısıdır ki birçok gelişmiş posta sunucusu özelliklerini destekler. Her ağ merkezli iletişim uygulaması gibi, K-9\'i ağ bant genişliğinin bir büyük kısmını kullanmaya yapılandırmak mümkündür.  Eğer sınırsız bir data paketiniz yoksa veya uluslararası dolaşıma niyetleniyorsanız, lütfen bant genişliğinizin kullanımına dikkat edin.  Bu uygulama olduğu gibi sağlanır, her türlü garanti kapsamı dışında.  Bu uygulamanın ne yazar ne de dağıtıcısı herhangi bir davranıştan, kullanımdan, terbiyesizlik veya bu uygulamanın kötüye kullanımından sorumlu tutulamaz.  Tüm bunlar söylenildi, biz K-9\'in iyi çalışacağına çok inanıyoruz ve biz sizin onunla bulacağınız hakkındaki her problemi duymak istiyoruz. Lütfen eposta atın support@kaitenmail.com  Eğer sorun yaşıyorsanız, doğru şeyler yapmak için elimizden gelenin en iyisini yapacağız. </string>
+
+    <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+    <string name="debug_enable_debug_logging_title">Onarma günlüğünü Etkinleştir</string>
+    <string name="debug_enable_debug_logging_summary">Extra tanı bilgisi günlüğü tut</string>
+    <string name="debug_enable_sensitive_logging_title">Hassas bigi günlüğü tut</string>
+    <string name="debug_enable_sensitive_logging_summary">Günlüklerde şifreler görünebilir.</string>
+
+    <string name="message_header_mua">Android için K-9 Posta</string>
+
+    <string name="combined_inbox_title">Bütün Postalar</string>
+    <string name="combined_inbox_label">Bütün hesaplardan gelen yeni mesajlar</string>
+    <string name="combined_inbox_list_title">Gelen Kutusu bütün postaları</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
+
+    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
+                       <xliff:g id="unread_count">%s</xliff:g>
+                       <xliff:g id="polling">%s</xliff:g>
+                       <xliff:g id="sending">%s</xliff:g>
+                       <xliff:g id="push">%s</xliff:g></string>
+    <string name="message_list_load_more_messages_action">Daha fazla mesaj yükle</string>
+    <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_delete_action">Sil</string>
+    <string name="message_list_mark_read_action">Okundu olarak işaretle</string>
+    <string name="message_list_mark_unread_action">Okunmadı olarak işaretle</string>
+    <string name="message_list_flag_action">Yıldız Ekle</string>
+    <string name="message_list_unflag_action">Yıldızı Kaldır</string>
+
+    <string name="message_compose_to_hint">Kime</string>
+    <string name="message_compose_cc_hint">Cc</string>
+    <string name="message_compose_bcc_hint">Bcc</string>
+    <string name="message_compose_subject_hint">Konu</string>
+    <string name="message_compose_content_hint">Mesaj Metni</string>
+    <string name="message_compose_quote_header_separator">-------- Orjinal Mesaj --------</string>
+    <string name="message_compose_quote_header_subject">Konu:</string>
+    <string name="message_compose_quote_header_send_date">Gönder:</string>
+    <string name="message_compose_quote_header_from">Kimden:</string>
+    <string name="message_compose_quote_header_to">Alıcı:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_quoted_text_label">Quoted text</string>
+    <string name="message_compose_error_no_recipients">En az bir Alıcı eklemelisiniz.</string>
+    <string name="error_contact_address_not_found">Eposta adresi bulunamadı.</string>
+    <string name="message_compose_downloading_attachments_toast">Bazı ekler indirilemedi.Bu mesaj gitmeden önce onlar otomatik indirilecek.</string>
+    <string name="message_compose_attachments_skipped_toast">Bazı ekler iletilemedi çünkü onlar indirilemedi.</string>
+    <string name="message_compose_show_quoted_text_action">Alıntı mesaj</string>
+
+    <string name="message_view_from_format">Kimden: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_to_label">Kime:</string>
+    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_attachment_view_action">Açık</string>
+    <string name="message_view_attachment_download_action">Kaydet</string>
+    <string name="message_view_prev_action">\u25BC</string>
+    <string name="message_view_next_action">\u25B2</string>
+    <string name="message_view_archive_action">Arşiv</string>
+    <string name="message_view_move_action">Taşı</string>
+    <string name="message_view_spam_action">Spam</string>
+    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
+    <string name="message_view_status_attachment_saved">SD Karta Ek kaydedildi  <xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_not_saved">SD Karta Ek kaydedilemedi.</string>
+    <string name="message_view_show_pictures_instructions">Seç \"Resimleri Göster\" gömülü resimleri göster.</string>
+    <string name="message_view_show_pictures_action">Resimleri Göster</string>
+    <string name="message_view_fetching_attachment_toast">Çekici Ek.</string>
+    <string name="message_view_no_viewer">için görüntüleyici bulunamadı. <xliff:g id="mimetype">%s</xliff:g>.</string>
+
+    <string name="message_view_download_remainder">Bütün mesajı indir.</string>
+
+    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <string name="message_additional_headers_not_downloaded">Bütün başlıklar indirilemedi veya kaydedilemedi. Seç \"Bütün başlıkları kaydet\" hesabın gelen sunucu ayarların içinde gelecek için bunu etkinleştirin.</string>
+    <string name="message_no_additional_headers_available">Bütün başlıklar indirildi, fakat göstermeye ek başlıklar yok.</string>
+    <string name="message_additional_headers_retrieval_failed">Veritabanından veya posta suncucundan ek başlıkların gerigetirilişi başarısız.</string>
+
+    <string name="mailbox_select_dlg_title">Klasörler</string>
+    <string name="mailbox_select_dlg_new_mailbox_action">Yeni Klasör</string>
+
+    <string name="new_mailbox_dlg_title">Yeni Klasör İsmi</string>
+
+    <string name="folder_push_active_symbol">(Push)</string>
+
+    <string name="from_same_sender">Bu Göndericiden daha fazla mesaj</string>
+
+    <string name="message_copied_toast">Mesaj kopyalandı</string>
+    <string name="message_moved_toast">Message taşındı</string>
+    <string name="message_deleted_toast">Message silindi</string>
+    <string name="message_discarded_toast">Message çıkartıldı</string>
+    <string name="message_saved_toast">Mesaj taslak olarak kaydedildi.</string>
+    <string name="message_delete_failed">Mesaj silinemedi</string>
+
+    <string name="about_header">Hakkında <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
+
+    <string name="global_settings_flag_label">Yıldızları Göster</string>
+    <string name="global_settings_flag_summary">Yıldızlar bayraklı mesajları gösterir.</string>
+    <string name="global_settings_checkbox_label">Çoklu-seçim işaretkutuları</string>
+    <string name="global_settings_checkbox_summary">Çoklu-seçim işaretkutularını Daima göster.</string>
+    <string name="global_settings_touchable_label">Mesaj önizleme</string>
+    <string name="global_settings_touchable_summary">Mesaj önizleme ile Roomier listesi ürünü.</string>
+    <string name="global_settings_preview_lines_label">Önizleme hatları</string>
+    <string name="global_settings_show_correspondent_names_label">Mektuplaşanların isimlerini göster.</string>
+    <string name="global_settings_show_correspondent_names_summary">Mektuplaşanların eposta adresleri yerine isimlerini göster.</string>
+    <string name="global_settings_show_contact_name_label">Rehberdeki kişi isimlerini göster.</string>
+    <string name="global_settings_show_contact_name_summary">Alıcı isimlerini mümkün olduğunda rehberdeki isimlerden kullan.</string>
+    <string name="global_settings_registered_name_color_label">Bağlantıları reklendir</string>
+    <string name="global_settings_registered_name_color_default">Rehberdeki kişilerin isimlerini renklendirme.</string>
+    <string name="global_settings_registered_name_color_changed">Rehberdeki kişilerin isimlerini renklendir.</string>
+
+    <string name="global_settings_messageview_fixedwidth_label">Sabit genişlikli fontlar</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Düz metin mesajları gösterdiğinde sabit genişlikli font kullan.</string>
+    <string name="global_settings_messageview_return_to_list_label">Sildikten sonra listeye dön.</string>
+    <string name="global_settings_messageview_return_to_list_summary">Mesajı sildikten sonra mesaj listesine dön.</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+
+    <string name="global_settings_confirm_actions_title">Eylemleri Onaylayın</string>
+    <string name="global_settings_confirm_actions_summary">Seçilmiş eylemleri yaptığınız zaman bir diyalog göster</string>
+    <string name="global_settings_confirm_action_archive">Arşiv</string>
+    <string name="global_settings_confirm_action_delete">Sil (message view only)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Hepsini okundu olarak işaretle</string>
+    <string name="global_settings_confirm_action_send">Gönder</string>
+
+    <string name="global_settings_privacy_mode_title">Ekran-kilidi bildirimleri</string>
+    <string name="global_settings_privacy_mode_summary">Sistem kilitlendiğinde bilidirim çubuğunda mesaj konusunu gösterme</string>
+
+    <string name="quiet_time">Sessiz Zaman</string>
+    <string name="quiet_time_description">Çalma, gürültü ve geceleyin flaş devre dışı</string>
+    <string name="quiet_time_starts">Sessiz Zaman başlıyor</string>
+    <string name="quiet_time_ends">Sessiz Zaman bitiyor</string>
+
+    <string name="account_setup_basics_title">Bir yeni hesap kurmak</string>
+    <string name="account_setup_basics_instructions">Bu hesabın eposta adresine giriş:</string>
+    <string name="account_setup_basics_instructions2_fmt">(Ekleyebilirsiniz <xliff:g id="number_accounts">%d</xliff:g> daha fazla hesap.)</string>
+    <string name="account_setup_basics_email_hint">Eposta adresi</string>
+    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> geçerli bir eposta adresi değil.</string>
+    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> çoktan eklendi.</string>
+    <string name="account_setup_basics_password_hint">Şifre</string>
+    <string name="account_setup_basics_default_label">Postaları varsayılan olarak bu hesaptan gönder</string>
+    <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
+
+    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Gelen sunucu ayarları kontrol ediliyor\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Giden sunucu ayarları kontrol ediliyor\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Kimlik Doğrulaması\u2026</string>
+    <string name="account_setup_check_settings_fetch">Çekici hesap ayarları\u2026</string>
+    <string name="account_setup_check_settings_finishing_msg">Bitiyor\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">İptal ediliyor\u2026</string>
+
+    <string name="account_setup_names_title">Hemen hemen tamam!</string>
+    <string name="account_setup_names_instructions">Hesabınız kurulu,ve posta onun yolunda!</string>
+    <string name="account_setup_names_account_name_label">Bu hesaba bir isim verin (isteğe bağlı):</string>
+    <string name="account_setup_names_user_name_label">İsminizi yazın (Giden mesajlarda görüntülenir):</string>
+
+    <string name="account_setup_finished_toast">Hesabınız kurulu!\n\nFetching mail\u2026</string>
+
+    <string name="account_setup_account_type_title">Hesap tipi</string>
+    <string name="account_setup_account_type_instructions">Bu ne tür bir hesaptır?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+
+    <string name="account_setup_incoming_title">Gelen sunucu ayarları</string>
+    <string name="account_setup_incoming_username_label">Kullanıcı adı</string>
+    <string name="account_setup_incoming_password_label">Şifre</string>
+    <string name="account_setup_incoming_pop_server_label">POP3 sunucu</string>
+    <string name="account_setup_incoming_imap_server_label">IMAP sunucu</string>
+    <string name="account_setup_incoming_webdav_server_label">Exchange sunucu</string>
+    <string name="account_setup_incoming_port_label">Port</string>
+    <string name="account_setup_incoming_security_label">Güvenlik tipi</string>
+    <string name="account_setup_incoming_auth_type_label">Kimlik doğrulama tipi</string>
+    <string name="account_setup_incoming_security_none_label">Hiçbiri</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL (Varsa)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL (daima)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">TLS (Varsa)</string>
+    <string name="account_setup_incoming_security_tls_label">TLS (Daima)</string>
+
+    <string name="account_setup_incoming_delete_policy_label">Bir mesaj sildiğim zaman</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
+    <string name="account_setup_incoming_delete_policy_7days_label">7 gün sonra</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Sunucudan sil</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Sunucuda okundu olarak işaretle</string>
+
+    <string name="account_setup_incoming_compression_label">Ağda sıkıştırma kullan:</string>
+    <string name="account_setup_incoming_mobile_label">Mobile</string>
+    <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
+    <string name="account_setup_incoming_other_label">Other</string>
+
+    <string name="account_setup_incoming_save_all_headers_title">Başlıkları indir</string>
+    <string name="account_setup_incoming_save_all_headers_label">Bütün mesaj başlıklarını yerel kaydet</string>
+
+    <string name="local_storage_provider_external_label">Harici depolama (SD card)</string>
+    <string name="local_storage_provider_internal_label">Düzenli dahili depolama</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s ek iç depolama</string>
+    <string name="local_storage_provider_label">Depolama yeri</string>
+
+    <string name="account_setup_expunge_policy_label">Silinen mesajları çıkart</string>
+    <string name="account_setup_expunge_policy_immediately">Hemen</string>
+    <string name="account_setup_expunge_policy_on_poll">Seçim zamanı</string>
+    <string name="account_setup_expunge_policy_manual">Sadece elle</string>
+
+    <string name="account_setup_incoming_imap_path_prefix_label">IMAP yolu öneki</string>
+    <string name="account_setup_incoming_imap_path_prefix_hint">(Eğer varsa Otomatik  NAMESPACE kullanılır)</string>
+
+    <string name="drafts_folder_label">Taslaklar klasörü</string>
+    <string name="sent_folder_label">Giden Klasörü</string>
+    <string name="trash_folder_label">Çöp Klasörü</string>
+    <string name="archive_folder_label">Arşiv Klasörü</string>
+    <string name="spam_folder_label">Spam Klasörü</string>
+
+    <string name="account_setup_incoming_subscribed_folders_only_label">Sadece abone olunan klasörleri göster</string>
+    <string name="account_setup_auto_expand_folder">Otomatik genişleyen klasör</string>
+
+    <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
+    <string name="account_setup_incoming_webdav_path_prefix_hint">İsteğe bağlı</string>
+
+    <string name="account_setup_incoming_webdav_auth_path_label">Kimlik doğrulama yolu</string>
+    <string name="account_setup_incoming_webdav_auth_path_hint">İsteğe bağlı</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox takma adı</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_hint">İsteğe bağlı</string>
+
+    <string name="account_setup_outgoing_title">Giden sunucu ayarları</string>
+    <string name="account_setup_outgoing_smtp_server_label">SMTP sunucu</string>
+    <string name="account_setup_outgoing_port_label">Port</string>
+    <string name="account_setup_outgoing_security_label">Güvenlik Tipi</string>
+    <string name="account_setup_outgoing_security_none_label">Hiçbiri</string>
+    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
+    <string name="account_setup_outgoing_security_tls_optional_label">TLS (Varsa)</string>
+    <string name="account_setup_outgoing_security_tls_label">TLS (Daima)</string>
+    <string name="account_setup_outgoing_require_login_label">Oturum açmayı gerektirir.</string>
+    <string name="account_setup_outgoing_username_label">Kullanıcı Adı</string>
+    <string name="account_setup_outgoing_password_label">Şifre</string>
+    <string name="account_setup_outgoing_authentication_label">Kimlik Doğrulama Tipi</string>
+    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
+    <string name="account_setup_outgoing_authentication_basic_label">Kullanıcı Adı &amp; şifre</string>
+    <string name="account_setup_outgoing_authentication_basic_username_label">Kullanıcı Adı</string>
+    <string name="account_setup_outgoing_authentication_basic_password_label">Şifre</string>
+    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP before SMTP</string>
+    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>
+    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) before SMTP</string>
+
+    <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
+
+    <string name="account_setup_options_title">Hesap seçenekleri</string>
+
+    <string name="compact_action">Sıkıştırmak</string>
+    <string name="clear_action">Mesajları temizle (tehlike!)</string>
+    <string name="recreate_action">Veriyi canlandır (Son çare!)</string>
+
+    <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi toplama sıklığı</string>
+    <!-- Frequency also used in account_settings_* -->
+    <string name="account_setup_options_mail_check_frequency_never">Asla</string>
+    <string name="account_setup_options_mail_check_frequency_1min">Her Dakika</string>
+    <string name="account_setup_options_mail_check_frequency_5min">Her 5 dakikada</string>
+    <string name="account_setup_options_mail_check_frequency_10min">Her 10 dakikada</string>
+    <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada</string>
+    <string name="account_setup_options_mail_check_frequency_30min">Her 30 dakikada</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Her Saat</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">Her 2 saatte</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">Her 3 saatte</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Her 6 saatte</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">Her 12 saatte</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Her 24 saatte</string>
+
+    <string name="push_poll_on_connect_label">Push için bağlandığında </string>
+    <string name="account_setup_options_enable_push_label">Push maili bu hesap için etkinleştir.</string>
+    <string name="account_setup_options_enable_push_summary">Eğer sunucunuz onu destekliyorsa, yeni mesajlar anında belirecek. Bu seçenek dramatik olarak performansı arttırabilir veya zarar verebilir.</string>
+    <string name="idle_refresh_period_label">IDLE bağlantıyı Yenile</string>
+    <string name="idle_refresh_period_1min">Her Dakika</string>
+    <string name="idle_refresh_period_2min">Her 2 dakikada</string>
+    <string name="idle_refresh_period_3min">Her 3 dakikada</string>
+    <string name="idle_refresh_period_6min">Her 6 dakikada</string>
+    <string name="idle_refresh_period_12min">Her 12 dakikada</string>
+    <string name="idle_refresh_period_24min">Her 24 dakikada</string>
+    <string name="idle_refresh_period_36min">Her 36 dakikada</string>
+    <string name="idle_refresh_period_48min">Her 48 dakikada</string>
+    <string name="idle_refresh_period_60min">Her 60 dakikada</string>
+
+    <string name="account_setup_options_default_label">Postayı varsayılan olarak bu hesaptan gönder.</string>
+    <string name="account_setup_options_notify_label">Posta vardığında beni uyar.</string>
+    <string name="account_setup_options_notify_sync_label">Posta kontrol edilirken beni uyar.</string>
+
+    <!-- Number of displayed messages, also used in account_settings_* -->
+    <string name="account_setup_options_mail_display_count_label">Görüntülenecek Mesaj sayısı</string>
+    <string name="account_setup_options_mail_display_count_10">10 mesaj</string>
+    <string name="account_setup_options_mail_display_count_25">25 mesaj</string>
+    <string name="account_setup_options_mail_display_count_50">50 mesaj</string>
+    <string name="account_setup_options_mail_display_count_100">100 mesaj</string>
+    <string name="account_setup_options_mail_display_count_250">250 mesaj</string>
+    <string name="account_setup_options_mail_display_count_500">500 mesaj</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 mesaj</string>
+    <string name="account_setup_options_mail_display_count_all">Bütün mesajlar</string>
+
+    <string name="move_copy_cannot_copy_unsynced_message">Sunucu ile eşleştirilmemiş bir mesaj kopyalanamaz veya taşınamaz.</string>
+
+    <string name="account_setup_failed_dlg_title">Kurulum bitirilmedi</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Kullanıcı Adı veya şifre doğru değil.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Sunucuya güvenli bağlantı kurulamadı.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">Sunucuya bağlanılamadı.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_edit_details_action">Ayrıntıları düzenle</string>
+    <string name="account_setup_failed_dlg_continue_action">Devam</string>
+
+    <string name="account_settings_push_advanced_title">Gelişmiş</string>
+    <string name="account_settings_title_fmt">Hesap ayarları</string>
+    <string name="account_settings_default">Varsayılan hesap</string>
+    <string name="account_settings_default_label">Varsayılan hesap</string>
+    <string name="account_settings_default_summary">Postayı varsayılan olarak bu hesaptan gönder</string>
+    <string name="account_settings_notify_label">Yeni posta bildirimleri</string>
+    <string name="account_settings_notify_sync_label">Eşleştirme bildirimleri</string>
+    <string name="account_settings_email_label">Eposta adresiniz</string>
+    <string name="account_settings_notify_summary">Posta geldiğinde durum çubuğunda bildir</string>
+    <string name="account_settings_notify_sync_summary">Posta kontrol edildiğinde durum çubuğunda bildir</string>
+    <string name="account_settings_show_combined_label">Birleşik Gelen kutusunu göster</string>
+    <string name="account_settings_notify_self_label">Giden postayı ekle</string>
+    <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
+    <string name="account_settings_notification_opens_unread_label">Okunmamış mesaj bildirimi açık</string>
+    <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
+    <string name="account_settings_notification_unread_count_label">Okunmamış sayısını göster</string>
+    <string name="account_settings_notification_unread_count_summary">Bildirim çubuğunda okunmamış mesaj numarasını göster.</string>
+
+    <string name="account_settings_hide_buttons_label">Gezinme tuşlarını kaydırma</string>
+    <string name="account_settings_hide_buttons_never">Asla</string>
+    <string name="account_settings_hide_buttons_keyboard_avail">Klavye olduğu zaman</string>
+    <string name="account_settings_hide_buttons_always">Daima</string>
+
+    <string name="account_settings_enable_move_buttons_label">İşaretleme düğmelerini etkinleştir</string>
+    <string name="account_settings_enable_move_buttons_summary">Arşiv, Taşıma ve Spam düğmelerini göster.</string>
+    <string name="account_settings_hide_move_buttons_label">İşaretleme düğmelerini kaydır</string>
+
+    <string name="account_settings_show_pictures_label">Daima imajları göster</string>
+    <string name="account_settings_show_pictures_never">Hayır</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>
+    <string name="account_settings_show_pictures_always">Herkesten</string>
+
+    <string name="account_settings_composition">Posta gönderiliyor</string>
+
+    <string name="account_settings_default_quoted_text_shown_label">Cevaplarken orjinal mesajı sakla</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Mesajları cevaplarken, orjinal mesaj cevabınızın içinde.</string>
+
+    <string name="account_settings_reply_after_quote_label">Alıntı metinden sonra cevapla</string>
+    <string name="account_settings_reply_after_quote_summary">Mesajları cevaplarken, orjinal mesaj cevabınızın üzerinde gözükecek.</string>
+
+    <string name="account_settings_message_format_label">Mesaj Biçimi</string>
+    <string name="account_settings_message_format_text">Düz Metin (imajlar ve biçimler kaldırılacak)</string>
+    <string name="account_settings_message_format_html">HTML (imajlar ve biçimler korunacak)</string>
+
+    <string name="account_settings_message_read_receipt_label">Alındı oku</string>
+    <string name="account_settings_message_read_receipt_summary">Daima bir alındı okuma iste</string>
+
+    <string name="account_settings_quote_style_label">Alıntı sitili</string>
+    <string name="account_settings_quote_style_prefix">Önek (Gmail, Pine gibi)</string>
+    <string name="account_settings_quote_style_header">Başlık (Outlook, Yahoo!, Hotmail gibi)</string>
+
+    <string name="account_settings_general_title">Genel Ayarlar</string>
+    <string name="account_settings_display_prefs_title">Görüntü</string>
+    <string name="account_settings_sync">Posta alma</string>
+    <string name="account_settings_folders">Klasörler</string>
+    <string name="account_settings_message_lists">Mesajları listeleme</string>
+    <string name="account_settings_message_view">Mesajlara bakmak</string>
+    <string name="account_settings_quote_prefix_label">Alınan metinden önek</string>
+    <string name="account_settings_crypto">Kriptografi</string>
+    <string name="account_settings_crypto_app">OpenPGP Sağlayıcı</string>
+    <string name="account_settings_crypto_app_none">Hiç</string>
+    <string name="account_settings_crypto_app_not_available">mevcut değil</string>
+    <string name="account_settings_crypto_auto_signature">Otomatik oturum açma</string>
+    <string name="account_settings_crypto_auto_signature_summary">Hesapların eposta adreslerini imza anahtarı sanmayı kullan.</string>
+
+    <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
+    <string name="account_settings_second_class_check_frequency_label">2ci sınıf kontrol etme sıklığı</string>
+
+    <string name="account_settings_storage_title">Depolama</string>
+
+    <string name="account_settings_color_label">Hesap rengi</string>
+    <string name="account_settings_color_summary">Klasör ve hesap listesinde kullanılan hesap rengini seç</string>
+
+    <string name="account_settings_led_color_label">Bildirim LED ışığı rengi</string>
+    <string name="account_settings_led_color_summary">Cihazınızın LED ışığına renk seçin bu hesap için ışıldasın</string>
+
+    <string name="account_settings_mail_display_count_label">Yerel klasör boyutu</string>
+
+    <string name="account_settings_autodownload_message_size_label">Mesajları şu boyut üzerinden getir</string>
+    <string name="account_settings_autodownload_message_size_1">1Kb</string>
+    <string name="account_settings_autodownload_message_size_2">2Kb</string>
+    <string name="account_settings_autodownload_message_size_4">4Kb</string>
+    <string name="account_settings_autodownload_message_size_8">8Kb</string>
+    <string name="account_settings_autodownload_message_size_16">16Kb</string>
+    <string name="account_settings_autodownload_message_size_32">32Kb</string>
+    <string name="account_settings_autodownload_message_size_64">64Kb</string>
+    <string name="account_settings_autodownload_message_size_128">128Kb</string>
+    <string name="account_settings_autodownload_message_size_256">256Kb</string>
+    <string name="account_settings_autodownload_message_size_512">512Kb</string>
+    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
+    <string name="account_settings_autodownload_message_size_any">Her boyutta (sınır yok)</string>
+
+    <string name="account_settings_message_age_label">Mesajları eşleştirme sıklığı</string>
+    <string name="account_settings_message_age_any">Her zaman (sınır yok)</string>
+    <string name="account_settings_message_age_0">Bugün</string>
+    <string name="account_settings_message_age_1">Son 2 gün</string>
+    <string name="account_settings_message_age_2">Son 3 gün</string>
+    <string name="account_settings_message_age_7">Son hafta</string>
+    <string name="account_settings_message_age_14">Son 2 hafta</string>
+    <string name="account_settings_message_age_21">Son 3 hafta</string>
+    <string name="account_settings_message_age_1_month">Son Ay</string>
+    <string name="account_settings_message_age_2_months">Son 2 ay</string>
+    <string name="account_settings_message_age_3_months">Son 3 ay</string>
+    <string name="account_settings_message_age_6_months">Son 6 ay</string>
+    <string name="account_settings_message_age_1_year">Geçen yıl</string>
+
+    <string name="account_settings_folder_display_mode_label">Görüntülenecek Klasörler</string>
+    <string name="account_settings_folder_display_mode_all">Hepsi</string>
+    <string name="account_settings_folder_display_mode_first_class">Sadece 1nci Sınıf klasörler</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1nci ve 2nci Sınıf klasörler</string>
+    <string name="account_settings_folder_display_mode_not_second_class">2nci Sınıf klasörler dışında hepsi</string>
+
+    <string name="account_settings_folder_sync_mode_label">Anket Klasörler</string>
+    <string name="account_settings_folder_sync_mode_all">Hepsi</string>
+    <string name="account_settings_folder_sync_mode_first_class">Sadece 1nci Sınıf klasörler</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">2nci Sınıf klasörler dışında hepsi</string>
+    <string name="account_settings_folder_sync_mode_none">Hiçbiri</string>
+
+    <string name="account_settings_folder_push_mode_label">Push Klasörleri</string>
+    <string name="account_settings_folder_push_mode_all">Hepsi</string>
+    <string name="account_settings_folder_push_mode_first_class">Sadece 1nci Sınıf klasörler</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">1nci ve 2nci Sınıf klasörler</string>
+    <string name="account_settings_folder_push_mode_not_second_class">2nci Sınıf klasörler dışında hepsi</string>
+    <string name="account_settings_folder_push_mode_none">Hiçbiri</string>
+
+    <string name="account_settings_folder_target_mode_label">Taşıma/Kopyalama hedef klasörleri</string>
+    <string name="account_settings_folder_target_mode_all">Hepsi</string>
+    <string name="account_settings_folder_target_mode_first_class">Sadece 1nci Sınıf klasörler</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1nci ve 2nci Sınıfı klasörler</string>
+    <string name="account_settings_folder_target_mode_not_second_class">2nci Sınıf klasörler dışında hepsi</string>
+
+    <string name="account_settings_sync_remote_deletetions_label">Sekron sunucusu silme işlemleri</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Mesajlar silindiğinde sunucudan kaldır</string>
+
+    <string name="folder_settings_title">Klasör Ayarları</string>
+
+    <string name="folder_settings_in_top_group_label">Zirve grupta göster</string>
+    <string name="folder_settings_in_top_group_summary">Klasör listesinin zirvesine yakın göster</string>
+
+    <string name="folder_settings_folder_display_mode_label">Klasör Görüntüleme Sınıfı</string>
+    <string name="folder_settings_folder_display_mode_normal">Hiçbiri</string>
+    <string name="folder_settings_folder_display_mode_first_class">1nci Sınıf</string>
+    <string name="folder_settings_folder_display_mode_second_class">2nci Sınıf</string>
+
+    <string name="folder_settings_folder_sync_mode_label">Klasör Senkronize Sınıfı</string>
+    <string name="folder_settings_folder_sync_mode_normal">Hiçbiri</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1nci Sınıf</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2nci Sınıf</string>
+    <string name="folder_settings_folder_sync_mode_inherited">Aynı görünüleme sınıfı</string>
+
+    <string name="folder_settings_folder_push_mode_label">Klasör itme sınıfı</string>
+    <string name="folder_settings_folder_push_mode_normal">Hiçbiri</string>
+    <string name="folder_settings_folder_push_mode_first_class">1nci Sınıf</string>
+    <string name="folder_settings_folder_push_mode_second_class">2nci Sınıf</string>
+    <string name="folder_settings_folder_push_mode_inherited">Aynı senkranizayon sınıfı</string>
+
+    <string name="account_settings_incoming_label">Gelen Sunucu</string>
+    <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>
+    <string name="account_settings_outgoing_label">Giden sunucu</string>
+    <string name="account_settings_outgoing_summary">Giden posta (SMTP) sunucusunu yapılandır</string>
+    <string name="account_settings_add_account_label">Birbaşka hesap ekle</string>
+    <string name="account_settings_description_label">Hesap ismi</string>
+    <string name="account_settings_name_label">İsminiz</string>
+    <string name="notifications_title">Bildirimler</string>
+    <string name="account_settings_ring_summary">Posta geldiğinde çal</string>
+    <string name="account_settings_vibrate_enable">Titre</string>
+    <string name="account_settings_vibrate_summary">Posta geldiğinde titre</string>
+    <string name="account_settings_vibrate_pattern_label">Titreme modeli</string>
+    <string name="account_settings_vibrate_pattern_default">Varsayılan</string>
+    <string name="account_settings_vibrate_pattern_1">Model 1</string>
+    <string name="account_settings_vibrate_pattern_2">Model 2</string>
+    <string name="account_settings_vibrate_pattern_3">Model 3</string>
+    <string name="account_settings_vibrate_pattern_4">Model 4</string>
+    <string name="account_settings_vibrate_pattern_5">Model 5</string>
+    <string name="account_settings_vibrate_times">Titreşimi tekrarla</string>
+    <string name="account_settings_ringtone">Yeni posta zilsesi</string>
+    <string name="account_settings_led_label">LED Işığı</string>
+    <string name="account_settings_led_summary">Posta geldiğinde LED ışıldasın</string>
+
+    <string name="account_settings_servers">Sunucu Ayarları</string>
+
+    <string name="account_settings_composition_title">Mesaj komposizyon seçenekleri</string>
+    <string name="account_settings_composition_label">Kompozisyon varsayılanları</string>
+    <string name="account_settings_composition_summary">Sizin varsayılan Kimden, Bcc ve imzayı ayarlayın</string>
+
+    <string name="account_settings_identities_label">Kimlikleri Yönetmek</string>
+    <string name="account_settings_identities_summary"> \'Kimden\' adresler ve imzaların alternatiflerini ayarlayın</string>
+
+    <string name="manage_identities_title">Kimlikleri Yönetmek</string>
+
+    <string name="manage_identities_context_menu_title">Kimlik Yönetmek</string>
+
+    <string name="edit_identity_title">Kimlik düzenlemek</string>
+    <string name="new_identity_action">Yeni kimlik</string>
+
+    <string name="account_settings_always_bcc_label">Bcc bütün mesajlar to</string>
+    <string name="account_settings_always_bcc_summary">Her giden mesajın bir kopyasını bu adrese gönder</string>
+
+    <string name="manage_identities_edit_action">Düzenle</string>
+    <string name="manage_identities_move_up_action">Yukarı hareket</string>
+    <string name="manage_identities_move_down_action">Aşağı hareket</string>
+    <string name="manage_identities_move_top_action">En üste taşı / varsayılan yap</string>
+    <string name="manage_identities_remove_action">Kaldır</string>
+
+    <string name="edit_identity_description_label">Kimlik Tanımlama</string>
+    <string name="edit_identity_description_hint">(İsteğe bağlı)</string>
+    <string name="edit_identity_name_label">İsminiz</string>
+    <string name="edit_identity_name_hint">(İsteğe bağlı)</string>
+    <string name="edit_identity_email_label">Eposta adresi</string>
+    <string name="edit_identity_email_hint">(Gerekli)</string>
+    <string name="edit_identity_reply_to_label">Cevap adresi</string>
+    <string name="edit_identity_reply_to_hint">(İsteğe bağlı)</string>
+    <string name="edit_identity_signature_label">İmza</string>
+    <string name="edit_identity_signature_hint">(İsteğe bağlı)</string>
+
+    <string name="account_settings_signature_use_label">İmza kullan</string>
+    <string name="account_settings_signature_label">İmza</string>
+    <string name="account_settings_signature_summary">Gönderdiğiniz her mesaja bir imza atın</string>
+
+    <string name="default_signature">-- \n Android için K-9 Posta\'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_identity_description">İlk kimlik</string>
+    <string name="choose_identity">Kimlik seç</string>
+    <string name="choose_identity_title">Kimlik seç</string>
+    <string name="choose_account_title">Hesap/Kimlik seç</string>
+    <string name="send_as">Olarak gönderin</string>
+
+    <string name="no_identities">Hesap ayarlarına gidin -&gt; Kimlikleri yönetin kimlikleri yaratın</string>
+    <string name="no_removable_identity">Sadece kimliğinizi kaldıramazsınız</string>
+    <string name="identity_has_no_email">Bir eposta adressiz bir kimlik kullanamazsınız</string>
+    <string name="identity_will_not_be_saved">Kimliğinizin seçimi ve imzası değişimi bir taslak ile kaydedilmeyecek</string>
+
+    <string name="sort_earliest_first">En erken mesajlar ilk</string>
+    <string name="sort_latest_first">En son mesajlar ilk</string>
+    <string name="sort_sender_alpha">Göndereni alfabetik sırala</string>
+    <string name="sort_sender_re_alpha">Göndereni ters alfabetik sırala</string>
+    <string name="sort_subject_alpha">Konuyu alfabetik sırala</string>
+    <string name="sort_subject_re_alpha">Konuyu ters alfabetik sırala</string>
+    <string name="sort_flagged_first">Yıldızlı mesajlar ilk</string>
+    <string name="sort_flagged_last">Yıldızsız mesajlar ilk</string>
+    <string name="sort_unread_first">Okunmamış mesajlar ilk</string>
+    <string name="sort_unread_last">Okunmuş mesajlar ilk</string>
+    <string name="sort_attach_first">Ekli mesajlar ilk</string>
+    <string name="sort_unattached_first">Eksiz mesajlar ilk</string>
+
+    <string name="sort_by">Göre sırala...</string>
+    <string name="sort_by_date">Tarih</string>
+    <string name="sort_by_sender">Gönderici</string>
+    <string name="sort_by_subject">Konu</string>
+    <string name="sort_by_flag">Yıldız</string>
+    <string name="sort_by_unread">Okundu/Okunmadı</string>
+    <string name="sort_by_attach">Ekler</string>
+    <string name="message_web_view_error">%s</string>
+
+    <string name="account_delete_dlg_title">Hesabı Kaldır</string>
+    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
+
+    <string name="account_recreate_dlg_title">Hesabı canlandırmak</string>
+    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi için \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+
+    <string name="account_clear_dlg_title">Hesabı Temizle</string>
+    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar içinde \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+
+    <string name="provider_note_live">Sadece bazı \"Plus\" hesaplar bu programın POP
+        erişiminden bağlanmasına izin verir.Eğer doğru eposta adresi ve şifre ile
+        oturum açamıyorsanız, \"Plus\" hesap için bir ödeme yapmamışsınız demektir.
+        Lütfen Web gezginini bu posta hesaplarına erişebilmek için başlatın. </string>
+    <string name="provider_note_yahoojp">Bu sağlayıcı için POP3 kullanmak isterseniz, Yahoo Mail ayarlar sayfasında POP3 kullanmak için vermelisiniz.</string>
+    <string name="provider_note_naver">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, Naver mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
+    <string name="provider_note_hanmail">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, Hanmail (Daum) mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz .</string>
+    <string name="provider_note_paran">Bu sağlayıcı için IMAP ve POP3 kullanmak isterseniz, Paran mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
+    <string name="provider_note_nate">Bu sağlayıcı için IMAP ve POP3 kullanmak isterseniz, Nate mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
+
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
+
+    <string name="message_help_key">Del (or D) - Sil\u000AR -
+    Cevapla\u000AA - Hepsini cevapla\u000AF - İlet\u000AJ or P - Önceki
+    Mesaj\u000AK, N - Sonraki Mesaj\u000AM - Taşı\u000AY - Kopyala\u000AZ - Uzaklaş\u000AShift-Z -
+    Yakınlaş\u000aG - Yıldız</string>
+    <string name="message_list_help_key">Del (or D) - Sil\u000AR -
+    Cevapla\u000AA - Hepsini cevapla\u000AC - Oluştur\u000AF - İlet\u000aM -
+    Taşı\u000AY - Kopyala\u000AG - Yıldız\u000AO - Sıralama tipi\u000AI - Sıralama şekli\u000AQ
+    - Klasörlere dön\u000AS - Seç/seçme\u000AZ - Geçiş oku/okuma\u000A/
+    - Ara\u000A5 - Postayı kontrol et</string>
+
+    <string name="folder_list_help_key">
+    1 - Yanlız 1nci Sınıf Klasörleri göster\u000A
+    2 - Yanlız 1nci ve 2nci Sınıf klasörleri göster\u000A
+    3 - 2nci Sınıf klasörler hariç hepsini göster\u000A
+    4 - Bütün klasörleri göster\u000A
+    Q - Hesaplara dön\u000A
+    S - Hesap ayarlarını düzenle</string>
+
+    <string name="folder_list_display_mode_label">Klasörler</string>
+    <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
+    <string name="folder_list_display_mode_first_class">Sadece 1nci Sınıf klasörleri göster</string>
+    <string name="folder_list_display_mode_first_and_second_class">1nci ve 2nci Sınıf klasörleri göster</string>
+    <string name="folder_list_display_mode_not_second_class">2nci Sınıf klasörler hariç hepsini göster</string>
+
+    <string name="account_settings_signature__location_label">İmza Konumu</string>
+    <string name="account_settings_signature__location_before_quoted_text">Saklanan metinden önce</string>
+    <string name="account_settings_signature__location_after_quoted_text">Saklanan metinden sonra</string>
+    <string name="setting_theme_dark">Karanlık</string>
+    <string name="setting_theme_light">Aydınlık</string>
+    <string name="display_preferences">Görüntü</string>
+    <string name="global_preferences">Genel</string>
+    <string name="debug_preferences">Hata ayıklama</string>
+    <string name="privacy_preferences">Özel</string>
+    <string name="network_preferences">Ağ</string>
+    <string name="interaction_preferences">Etkileşim</string>
+    <string name="accountlist_preferences">Hesap Listesi</string>
+    <string name="messagelist_preferences">Mesaj Listeleri</string>
+    <string name="messageview_preferences">Mesajlar</string>
+    <string name="settings_theme_label">Tema</string>
+    <string name="settings_language_label">Dil</string>
+
+    <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
+    <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
+    <string name="settings_messageview_zoom_controls_label">Sistem yakınlaştırma kontrolleri</string>
+    <string name="settings_messageview_zoom_controls_summary">Yakınlaştırma araçlarını veya cihazınız onu destekliyorsa pinch-zoom\'u etkinleştir</string>
+
+    <string name="setting_language_system">Sistem Varsayılanları</string>
+
+    <string name="background_ops_label">Arkaplan senkronizasyonu</string>
+    <string name="background_ops_never">Asla</string>
+    <string name="background_ops_always">Daima</string>
+    <string name="background_ops_enabled">\'Background data\' işaretli olduğu zaman</string>
+    <string name="background_ops_auto_sync">\'Background data\' &amp; \'Auto-sync\' işaretli olduğu zaman</string>
+
+    <string name="no_message_seletected_toast">Mesaj Seçilmedi</string>
+
+    <string name="date_format_label">Tarih Biçimi</string>
+    <!--
+      The values of the date_format_* strings MUST be valid date format strings.
+      See Android SDK documentation for the class SimpleDateFormat.
+    -->
+
+    <string name="batch_ops">Yığın Seçenekleri</string>
+    <string name="batch_delete_op">Seçileni Sil</string>
+    <string name="batch_mark_read_op">Seçilmiş olanı okundu işaretle</string>
+    <string name="batch_mark_unread_op">Seçilmiş olanı okunmadı işaretle</string>
+    <string name="batch_flag_op">Seçilmiş olana Yıldız ekle</string>
+    <string name="batch_unflag_op">Seçilmi olandan Yıldızı kaldır</string>
+    <string name="batch_archive_op">Seçilmişi Arşive Taşı</string>
+    <string name="batch_spam_op">Seçilmişi Spam\'a Taşı</string>
+    <string name="batch_move_op">Seçileni Taşı</string>
+    <string name="batch_copy_op">Seçileni Kopyala</string>
+    <string name="batch_flag_mode">Yıldız modu</string>
+    <string name="batch_select_mode">Seçim modu</string>
+    <string name="batch_plain_mode">Düz mod</string>
+    <string name="batch_select_all">Hepsini Seç</string>
+    <string name="batch_deselect_all">Bütün seçimleri temizle</string>
+
+    <string name="account_setup_push_limit_label">push ile max klasörü kontrol et</string>
+    <string name="account_setup_push_limit_10">10 klasör</string>
+    <string name="account_setup_push_limit_25">25 klasör</string>
+    <string name="account_setup_push_limit_50">50 klasör</string>
+    <string name="account_setup_push_limit_100">100 klasör</string>
+    <string name="account_setup_push_limit_250">250 klasör</string>
+    <string name="account_setup_push_limit_500">500 klasör</string>
+    <string name="account_setup_push_limit_1000">1000 klasör</string>
+
+    <string name="animations_title">Animasyon</string>
+    <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
+    <string name="gestures_title">Hareketleri</string>
+    <string name="gestures_summary">Hareket kontrolünü kabul et</string>
+
+    <string name="compact_layouts_title">Kompakt düzen</string>
+    <string name="compact_layouts_summary">Herbir sayfada daha fazlasını görüntülemek için düzeni ayarla</string>
+
+    <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
+    <string name="volume_navigation_summary">Ses kontrollerini kullanarak ürün sayfalarını çevir</string>
+    <string name="volume_navigation_message">Mesaj görünümü</string>
+    <string name="volume_navigation_list">Çeşitli liste görünümleri</string>
+
+    <string name="manage_back_title">Yönet \"Geri\" düğmesi</string>
+    <string name="manage_back_summary">Yap \"Geri\" daima bir üst seviyeye çıkart</string>
+
+    <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
+    <string name="start_integrated_inbox_summary">Başlangıçta Birleşik Gelen Kutusunu göster</string>
+
+    <string name="measure_accounts_title">Hesap boyutunu göster</string>
+    <string name="measure_accounts_summary">Daha hızlı görüntüleme için kapatın</string>
+
+    <string name="count_search_title">Arama sayısı sonuçları</string>
+    <string name="count_search_summary">Daha hızlı görüntüleme için kapatın</string>
+
+    <string name="hide_special_accounts_title">Özel hesapları sakla</string>
+    <string name="hide_special_accounts_summary">Bütün mesaj hesaplarını ve birleşik gelen kutusunu sakla</string>
+
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+    <string name="flagged_modifier"> - Yıldızlı</string>
+    <string name="unread_modifier"> - Okunmadı</string>
+
+    <string name="search_all_messages_title">Bütün mesajlar</string>
+    <string name="search_all_messages_detail">Bütün mesajlar aranabilir klasörlerde</string>
+
+    <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
+    <string name="integrated_inbox_detail">Bütün mesajlar birleşik gelen kutusunda</string>
+
+    <string name="tap_hint">Okunmamış veya yıldızlı mesajlar için yıldızı veya zarfı tıklayın</string>
+
+    <string name="folder_settings_include_in_integrated_inbox_label">Birleştirmek</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Birleşik Gelen Kutusunda bütün mesajlar görünür</string>
+
+    <string name="account_settings_searchable_label">Arama için Klasörler</string>
+    <string name="account_settings_searchable_all">Hepsi</string>
+    <string name="account_settings_searchable_displayable">Görüntülenebilir</string>
+    <string name="account_settings_searchable_none">Hiçbiri</string>
+
+    <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
+    <string name="remote_control_desc">Bu programın K-9 Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
+
+    <string name="font_size_settings_title">Yazı tipi Boyutu</string>
+    <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
+
+    <string name="font_size_account_list">Hesap listesi</string>
+    <string name="font_size_account_name">Hesap adı</string>
+    <string name="font_size_account_description">Hesap tanımı</string>
+
+    <string name="font_size_folder_list">Klasör listeleri</string>
+    <string name="font_size_folder_name">Klasör adı</string>
+    <string name="font_size_folder_status">Klasör durumu</string>
+
+    <string name="font_size_message_list">Mesaj listeleri</string>
+    <string name="font_size_message_list_subject">Konu</string>
+    <string name="font_size_message_list_sender">Gönderen</string>
+    <string name="font_size_message_list_date">Tarih</string>
+    <string name="font_size_message_list_preview">Önizleme</string>
+
+    <string name="font_size_message_view">Mesajlar</string>
+    <string name="font_size_message_view_sender">Gönderen</string>
+    <string name="font_size_message_view_to">Kime</string>
+    <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_additional_headers">Ek başlıklar</string>
+    <string name="font_size_message_view_subject">Konu</string>
+    <string name="font_size_message_view_time">Zaman</string>
+    <string name="font_size_message_view_date">Tarih</string>
+    <string name="font_size_message_view_content">Mesaj gövdesi</string>
+
+    <string name="font_size_tiniest">Çok küçük</string>
+    <string name="font_size_tiny">Küçücük</string>
+    <string name="font_size_smaller">Daha küçük</string>
+    <string name="font_size_small">Küçük</string>
+    <string name="font_size_medium">Orta</string>
+    <string name="font_size_large">Büyük</string>
+    <string name="font_size_larger">Daha büyük</string>
+
+    <string name="font_size_webview_smaller">En küçük</string>
+    <string name="font_size_webview_small">Daha küçük</string>
+    <string name="font_size_webview_normal">Normal</string>
+    <string name="font_size_webview_large">Daha büyük</string>
+    <string name="font_size_webview_larger">En büyük</string>
+
+    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
+    <string name="message_compose_buggy_gallery">Kontrol et \"Ayarlar\" -&gt; \"Use Gallery bug work-around\" 3D Galeri kullanarak imajlar veya videoları eklemeyi dene.</string>
+
+    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
+    <string name="message_compose_use_workaround">Kullan \"Ek Ekle (İmaj)\" veya \"Ek Ekle (Video)\" 3D Galeri ile imajları ve videoları eklemeyi.</string>
+
+    <string name="miscellaneous_preferences">Çeşitli</string>
+    <string name="misc_preferences_attachment_title">Geçici çözüm galeri hatasını kullan</string>
+    <string name="misc_preferences_attachment_description">İmaj/Video ekleri ekleme butonlarını göster (Bir galeri 3D hatası geçici çözümüne)</string>
+
+    <!-- APG related -->
+    <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
+    <string name="error_apg_version_not_supported">Kurulu APG versiyon desteklenmiyor.</string>
+    <string name="btn_crypto_sign">İşaret</string>
+    <string name="btn_encrypt">Şifrelemek</string>
+    <string name="btn_decrypt">Çözmek</string>
+    <string name="btn_verify">Doğrulamak</string>
+    <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
+    <string name="key_id">id: %s</string>
+    <string name="insufficient_apg_permissions">K-9 tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için K-9\'i yeniden kurun.</string>
+    <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
+    <string name="attachment_encryption_unsupported">Uyarı: Ekler henüz işaretli veya şifreli değil.</string>
+    <string name="send_aborted">İptal gönder.</string>
+
+    <string name="save_or_discard_draft_message_dlg_title">Taslak mesajı kaydet?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Bu mesajı kaydet veya at?</string>
+
+    <string name="charset_not_found">Bu mesaj görüntülemez çünkü karakterler \"<xliff:g id="charset">%s</xliff:g>\" bulunamadı.</string>
+
+    <string name="select_text_now">Kopyalamak için metni seç.</string>
+
+    <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
+    <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyormusunuz?</string>
+    <string name="dialog_confirm_delete_confirm_button">Sil</string>
+    <string name="dialog_confirm_delete_cancel_button">Silme</string>
+
+    <string name="dialog_confirm_spam_title">Spam klasörüne taşımayı onayla</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Bu mesajı gerçekten Spam klasörüne taşımak istiyormusunuz?</item>
+        <item quantity="other">Gerçekten taşımak istiyormusunuz <xliff:g id="message_count">%1$d</xliff:g> mesajları Spam klasörüne?</item>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Evet</string>
+    <string name="dialog_confirm_spam_cancel_button">Hayır</string>
+
+    <string name="dialog_attachment_progress_title">Ek indiriliyor</string>
+
+    <string name="debug_logging_enabled">Hata günlüğü Android günlük sistemine etkinleştirildi. pay</string>
+
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
+    <string name="error_unable_to_connect">Bağlanılamadı.</string>
+
+    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
+    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
+    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
+    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
+    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
+    <!-- NEW: <string name="settings_import">Import settings</string>-->
+    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
+    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
+    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
+    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
+    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
+    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_success">
+        <item quantity="one">1 account</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
+    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
+    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
+    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
+    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_server_passwords">
+        <item quantity="one">server password</item>
+        <item quantity="other">server passwords</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Setting password...</item>
+        <item quantity="other">Setting passwords...</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
+    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+
+    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+
+    <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
+
+    <string name="settings_attachment_default_path">Ekleri kaydet...</string>
+    <string name="attachment_save_title">Ekleri kaydet</string>
+    <string name="attachment_save_desc">Dosya gezgini bulunamadı. Bu eki nereye kaydetmek isterdiniz?</string>
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
+
+</resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="14010"
-    android:versionName="3.910" package="com.fsck.k9"
+    android:versionCode="14013"
+    android:versionName="3.913" package="com.fsck.k9"
     >
     <uses-sdk
        android:minSdkVersion="7"
@@ -26,9 +26,6 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- In order to properly manage the BACK key, we do some check on the running tasks -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-permission android:name="org.thialfihar.android.apg.permission.READ_KEY_DETAILS" />
 
@@ -67,13 +64,19 @@
 
         <activity
             android:name="com.fsck.k9.activity.Accounts"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:configChanges="locale"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:mimeType="application/x-k9settings" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
 
@@ -201,7 +204,7 @@
         </activity>
         <activity
             android:name="com.fsck.k9.activity.MessageList"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:configChanges="locale"
             >
         </activity>

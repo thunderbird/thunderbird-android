@@ -25,7 +25,6 @@ import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -554,6 +553,9 @@ public class MessageList
 
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
         if (folder != null) {
@@ -573,6 +575,9 @@ public class MessageList
         }
         intent.putExtra(EXTRA_INTEGRATE, integrate);
         intent.putExtra(EXTRA_TITLE, title);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
 
@@ -589,6 +594,9 @@ public class MessageList
         intent.putExtra(EXTRA_ACCOUNT_UUIDS, searchSpecification.getAccountUuids());
         intent.putExtra(EXTRA_FOLDER_NAMES, searchSpecification.getFolderNames());
         intent.putExtra(EXTRA_TITLE, title);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
 
@@ -618,6 +626,12 @@ public class MessageList
 
         mInflater = getLayoutInflater();
         initializeLayout();
+
+        // Only set "touchable" when we're first starting up the activity.
+        // Otherwise we get force closes when the user toggles it midstream.
+        mTouchView = K9.messageListTouchable();
+        mPreviewLines = K9.messageListPreviewLines();
+
         onNewIntent(getIntent());
     }
 
@@ -625,21 +639,29 @@ public class MessageList
     public void onNewIntent(Intent intent) {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        // Only set "touchable" when we're first starting up the activity.
-        // Otherwise we get force closes when the user toggles it midstream.
-        mTouchView = K9.messageListTouchable();
-        mPreviewLines = K9.messageListPreviewLines();
-
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
-        mQueryString = intent.getStringExtra(EXTRA_QUERY);
+        Account account = Preferences.getPreferences(this).getAccount(accountUuid);
+        String folderName = intent.getStringExtra(EXTRA_FOLDER);
+        String queryString = intent.getStringExtra(EXTRA_QUERY);
 
-        if (mAccount != null && !mAccount.isAvailable(this)) {
+        if (account != null && !account.isAvailable(this)) {
             Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
             onAccountUnavailable();
             return;
         }
+
+        if (account != null && account.equals(mAccount) &&
+                folderName != null && folderName.equals(mFolderName) &&
+                ((queryString != null && queryString.equals(mQueryString)) ||
+                        (queryString == null && mQueryString == null))) {
+            // We're likely just returning from the MessageView activity with "Manage back button"
+            // enabled. So just leave the activity in the state it was left in.
+            return;
+        }
+
+        mAccount = account;
+        mFolderName = folderName;
+        mQueryString = queryString;
 
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null) {
@@ -1070,7 +1092,7 @@ public class MessageList
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
-            MessageView.actionView(this, ref, messageRefs, getIntent());
+            MessageView.actionView(this, ref, messageRefs);
         }
 
         /*

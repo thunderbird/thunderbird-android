@@ -1037,6 +1037,47 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="messagelist_sent_cc_me_sigil">\u203a</string>
     <string name="error_unable_to_connect">接続できません</string>
 
+    <string name="import_export_action">設定のインポートとエクスポート</string>
+    <string name="settings_export_account">アカウント設定をエクスポート</string>
+    <string name="settings_export_all">設定とアカウント情報をエクスポート</string>
+    <string name="settings_import_dialog_title">インポート</string>
+    <string name="settings_export_dialog_title">エクスポート</string>
+    <string name="settings_import">設定をインポート</string>
+    <string name="settings_import_selection">インポート項目の選択</string>
+    <string name="settings_import_global_settings">グローバル設定</string>
+    <string name="settings_exporting">設定をエクスポートしています...</string>
+    <string name="settings_importing">設定をインポートしています...</string>
+    <string name="settings_import_scanning_file">ファイルを調べています...</string>
+    <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
+    <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
+    <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 アカウント</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> アカウント</item>
+    </plurals>
+    <string name="settings_export_failure">設定のエクスポートが失敗しました。</string>
+    <string name="settings_import_failure"><xliff:g id="filename">%s</xliff:g> からのインポートに失敗しました。</string>
+    <string name="settings_export_success_header">エクスポート成功</string>
+    <string name="settings_export_failed_header">エクスポート失敗</string>
+    <string name="settings_import_success_header">インポート成功</string>
+    <string name="settings_import_failed_header">インポート失敗</string>
+    <string name="settings_import_activate_account_header">アカウントを有効化</string>
+    <string name="settings_import_activate_account_intro">アカウント \"<xliff:g id="account">%s</xliff:g>\" を有効にするために、<xliff:g id="server_passwords">%s</xliff:g> を入力してください</string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">サーバのパスワード</item>
+        <item quantity="other">サーバのパスワード</item>
+    </plurals>
+    <string name="settings_import_incoming_server">受信メールサーバ (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">送信メールサーバ (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="one">パスワードを設定...</item>
+        <item quantity="other">パスワードを設定...</item>
+    </plurals>
+    <string name="settings_import_use_incoming_server_password">受信メールサーバパスワードを利用</string>
+    <string name="activate_account_action">有効</string>
+
+    <string name="settings_unknown_version">バージョン <xliff:g id="version">%s</xliff:g>のファイルは利用できません</string>
+
     <string name="account_unavailable">アカウント \"<xliff:g id="account">%s</xliff:g>\" は利用できません。ストレージを確認してください。</string>
 
     <string name="settings_attachment_default_path">添付ファイルの保存先</string>
@@ -1045,5 +1086,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="manage_accounts_move_up_action">上に移動</string>
     <string name="manage_accounts_move_down_action">下に移動</string>
+    <string name="manage_accounts_moving_message">アカウントを移動しています</string>
 
 </resources>

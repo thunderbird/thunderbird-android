@@ -16,6 +16,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -66,6 +67,7 @@ import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -75,6 +77,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -99,6 +102,8 @@ import org.apache.commons.io.IOUtils;
  * </pre>
  */
 public class ImapStore extends Store {
+    public static final String STORE_TYPE = "IMAP";
+
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
@@ -130,6 +135,191 @@ public class ImapStore extends Store {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
+     * Decodes an ImapStore URI.
+     *
+     * <p>Possible forms:</p>
+     * <pre>
+     * imap://auth:user:password@server:port CONNECTION_SECURITY_NONE
+     * imap+tls://auth:user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * </pre>
+     */
+    public static ImapStoreSettings decodeUri(String uri) {
+        String host;
+        int port;
+        ConnectionSecurity connectionSecurity;
+        String authenticationType = null;
+        String username = null;
+        String password = null;
+        String pathPrefix = null;
+
+        URI imapUri;
+        try {
+            imapUri = new URI(uri);
+        } catch (URISyntaxException use) {
+            throw new IllegalArgumentException("Invalid ImapStore URI", use);
+        }
+
+        String scheme = imapUri.getScheme();
+        if (scheme.equals("imap")) {
+            connectionSecurity = ConnectionSecurity.NONE;
+            port = 143;
+        } else if (scheme.equals("imap+tls")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
+            port = 143;
+        } else if (scheme.equals("imap+tls+")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
+            port = 143;
+        } else if (scheme.equals("imap+ssl+")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
+            port = 993;
+        } else if (scheme.equals("imap+ssl")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
+            port = 993;
+        } else {
+            throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
+        }
+
+        host = imapUri.getHost();
+
+        if (imapUri.getPort() != -1) {
+            port = imapUri.getPort();
+        }
+
+        if (imapUri.getUserInfo() != null) {
+            try {
+                String userinfo = imapUri.getUserInfo();
+                String[] userInfoParts = userinfo.split(":");
+
+                if (userinfo.endsWith(":")) {
+                    // Password is empty. This can only happen after an account was imported.
+                    authenticationType = AuthType.valueOf(userInfoParts[0]).name();
+                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                } else if (userInfoParts.length == 2) {
+                    authenticationType = AuthType.PLAIN.name();
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                } else {
+                    authenticationType = AuthType.valueOf(userInfoParts[0]).name();
+                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    password = URLDecoder.decode(userInfoParts[2], "UTF-8");
+                }
+            } catch (UnsupportedEncodingException enc) {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            }
+        }
+
+        String path = imapUri.getPath();
+        if (path != null && path.length() > 0) {
+            pathPrefix = path.substring(1);
+            if (pathPrefix != null && pathPrefix.trim().length() == 0) {
+                pathPrefix = null;
+            }
+        }
+
+        return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
+                password, pathPrefix);
+    }
+
+    /**
+     * Creates an ImapStore URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return An ImapStore URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see ImapStore#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "imap+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "imap+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "imap+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "imap+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "imap";
+                break;
+        }
+
+        AuthType authType;
+        try {
+            authType = AuthType.valueOf(server.authenticationType);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid authentication type: " +
+                    server.authenticationType);
+        }
+
+        String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
+        try {
+            Map<String, String> extra = server.getExtra();
+            String prefix = (extra != null) ? extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;
+            return new URI(scheme, userInfo, server.host, server.port,
+                prefix,
+                null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create ImapStore URI", e);
+        }
+    }
+
+    /**
+     * This class is used to store the decoded contents of an ImapStore URI.
+     *
+     * @see ImapStore#decodeUri(String)
+     */
+    private static class ImapStoreSettings extends ServerSettings {
+        private static final String PATH_PREFIX_KEY = "pathPrefix";
+
+        public final String pathPrefix;
+
+        protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
+                String authenticationType, String username, String password, String pathPrefix) {
+            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+                    password);
+            this.pathPrefix = pathPrefix;
+        }
+
+        @Override
+        public Map<String, String> getExtra() {
+            Map<String, String> extra = new HashMap<String, String>();
+            putIfNotNull(extra, PATH_PREFIX_KEY, pathPrefix);
+            return extra;
+        }
+
+        @Override
+        public ServerSettings newPassword(String newPassword) {
+            return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,
+                    username, newPassword, pathPrefix);
+        }
+    }
+
 
     private String mHost;
     private int mPort;
@@ -228,74 +418,42 @@ public class ImapStore extends Store {
      */
     private HashMap<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
-    /**
-     * imap://auth:user:password@server:port CONNECTION_SECURITY_NONE
-     * imap+tls://auth:user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     *
-     * @param _uri
-     */
     public ImapStore(Account account) throws MessagingException {
         super(account);
-        URI uri;
+
+        ImapStoreSettings settings;
         try {
-            uri = new URI(mAccount.getStoreUri());
-        } catch (URISyntaxException use) {
-            throw new MessagingException("Invalid ImapStore URI", use);
+            settings = decodeUri(mAccount.getStoreUri());
+        } catch (IllegalArgumentException e) {
+            throw new MessagingException("Error while decoding store URI", e);
         }
 
-        String scheme = uri.getScheme();
-        if (scheme.equals("imap")) {
+        mHost = settings.host;
+        mPort = settings.port;
+
+        switch (settings.connectionSecurity) {
+        case NONE:
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            mPort = 143;
-        } else if (scheme.equals("imap+tls")) {
+            break;
+        case STARTTLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            mPort = 143;
-        } else if (scheme.equals("imap+tls+")) {
+            break;
+        case STARTTLS_REQUIRED:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            mPort = 143;
-        } else if (scheme.equals("imap+ssl+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            mPort = 993;
-        } else if (scheme.equals("imap+ssl")) {
+            break;
+        case SSL_TLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            mPort = 993;
-        } else {
-            throw new MessagingException("Unsupported protocol");
+            break;
+        case SSL_TLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
+            break;
         }
 
-        mHost = uri.getHost();
+        mAuthType = AuthType.valueOf(settings.authenticationType);
+        mUsername = settings.username;
+        mPassword = settings.password;
 
-        if (uri.getPort() != -1) {
-            mPort = uri.getPort();
-        }
-
-        if (uri.getUserInfo() != null) {
-            try {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length == 2) {
-                    mAuthType = AuthType.PLAIN;
-                    mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else {
-                    mAuthType = AuthType.valueOf(userInfoParts[0]);
-                    mUsername = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    mPassword = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
-            }
-        }
-
-        if ((uri.getPath() != null) && (uri.getPath().length() > 0)) {
-            mPathPrefix = uri.getPath().substring(1);
-            if (mPathPrefix != null && mPathPrefix.trim().length() == 0) {
-                mPathPrefix = null;
-            }
-        }
+        mPathPrefix = settings.pathPrefix;
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
     }

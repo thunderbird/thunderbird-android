@@ -1053,6 +1053,47 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Unable to connect.</string>
 
+    <string name="import_export_action">Settings Import &amp; Export</string>
+    <string name="settings_export_account">Export account settings</string>
+    <string name="settings_export_all">Export settings and accounts</string>
+    <string name="settings_import_dialog_title">Import</string>
+    <string name="settings_export_dialog_title">Export</string>
+    <string name="settings_import">Import settings</string>
+    <string name="settings_import_selection">Import selection</string>
+    <string name="settings_import_global_settings">Global settings</string>
+    <string name="settings_exporting">Exporting settings...</string>
+    <string name="settings_importing">Importing settings...</string>
+    <string name="settings_import_scanning_file">Scanning file...</string>
+    <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 account</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+    </plurals>
+    <string name="settings_export_failure">Failed to export settings</string>
+    <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Export succeeded</string>
+    <string name="settings_export_failed_header">Export failed</string>
+    <string name="settings_import_success_header">Import succeeded</string>
+    <string name="settings_import_failed_header">Import failed</string>
+    <string name="settings_import_activate_account_header">Activate account</string>
+    <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">server password</item>
+        <item quantity="other">server passwords</item>
+    </plurals>
+    <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Setting password...</item>
+        <item quantity="other">Setting passwords...</item>
+    </plurals>
+    <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>
+    <string name="activate_account_action">Activate</string>
+
+    <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>
+
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
     <string name="settings_attachment_default_path">Save attachments to...</string>
@@ -1061,5 +1102,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="manage_accounts_move_up_action">Move up</string>
     <string name="manage_accounts_move_down_action">Move down</string>
+    <string name="manage_accounts_moving_message">Moving account...</string>
 
 </resources>

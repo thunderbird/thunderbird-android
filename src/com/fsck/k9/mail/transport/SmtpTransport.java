@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -29,14 +30,12 @@ import java.security.SecureRandom;
 import java.util.*;
 
 public class SmtpTransport extends Transport {
+    public static final String TRANSPORT_TYPE = "SMTP";
+
     public static final int CONNECTION_SECURITY_NONE = 0;
-
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
     public static final String AUTH_PLAIN = "PLAIN";
@@ -47,87 +46,187 @@ public class SmtpTransport extends Transport {
 
     public static final String AUTH_AUTOMATIC = "AUTOMATIC";
 
-    String mHost;
-
-    int mPort;
-
-    String mUsername;
-
-    String mPassword;
-
-    String mAuthType;
-
-    int mConnectionSecurity;
-
-    boolean mSecure;
-
-    Socket mSocket;
-
-    PeekableInputStream mIn;
-
-    OutputStream mOut;
-    private boolean m8bitEncodingAllowed;
-
-    private int mLargestAcceptableMessage;
 
     /**
+     * Decodes a SmtpTransport URI.
+     *
+     * <p>Possible forms:</p>
+     * <pre>
      * smtp://user:password@server:port CONNECTION_SECURITY_NONE
      * smtp+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
      * smtp+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
      * smtp+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * smtp+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     *
-     * @param _uri
+     * </pre>
      */
-    public SmtpTransport(String _uri) throws MessagingException {
-        URI uri;
+    public static ServerSettings decodeUri(String uri) {
+        String host;
+        int port;
+        ConnectionSecurity connectionSecurity;
+        String authenticationType = AUTH_AUTOMATIC;
+        String username = null;
+        String password = null;
+
+        URI smtpUri;
         try {
-            uri = new URI(_uri);
+            smtpUri = new URI(uri);
         } catch (URISyntaxException use) {
-            throw new MessagingException("Invalid SmtpTransport URI", use);
+            throw new IllegalArgumentException("Invalid SmtpTransport URI", use);
         }
 
-        String scheme = uri.getScheme();
+        String scheme = smtpUri.getScheme();
         if (scheme.equals("smtp")) {
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            mPort = 25;
+            connectionSecurity = ConnectionSecurity.NONE;
+            port = 25;
         } else if (scheme.equals("smtp+tls")) {
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            mPort = 25;
+            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
+            port = 25;
         } else if (scheme.equals("smtp+tls+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            mPort = 25;
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
+            port = 25;
         } else if (scheme.equals("smtp+ssl+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            mPort = 465;
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
+            port = 465;
         } else if (scheme.equals("smtp+ssl")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            mPort = 465;
+            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
+            port = 465;
         } else {
-            throw new MessagingException("Unsupported protocol");
+            throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }
 
-        mHost = uri.getHost();
+        host = smtpUri.getHost();
 
-        if (uri.getPort() != -1) {
-            mPort = uri.getPort();
+        if (smtpUri.getPort() != -1) {
+            port = smtpUri.getPort();
         }
 
-        if (uri.getUserInfo() != null) {
+        if (smtpUri.getUserInfo() != null) {
             try {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                String[] userInfoParts = smtpUri.getUserInfo().split(":");
+                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                 if (userInfoParts.length > 1) {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
                 if (userInfoParts.length > 2) {
-                    mAuthType = userInfoParts[2];
+                    authenticationType = userInfoParts[2];
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
+                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
+
+        return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
+                authenticationType, username, password);
+    }
+
+    /**
+     * Creates a SmtpTransport URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A SmtpTransport URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getTransportUri()
+     * @see SmtpTransport#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = (server.username != null) ?
+                    URLEncoder.encode(server.username, "UTF-8") : "";
+            passwordEnc = (server.password != null) ?
+                    URLEncoder.encode(server.password, "UTF-8") : "";
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+
+        String scheme;
+        switch (server.connectionSecurity) {
+            case SSL_TLS_OPTIONAL:
+                scheme = "smtp+ssl";
+                break;
+            case SSL_TLS_REQUIRED:
+                scheme = "smtp+ssl+";
+                break;
+            case STARTTLS_OPTIONAL:
+                scheme = "smtp+tls";
+                break;
+            case STARTTLS_REQUIRED:
+                scheme = "smtp+tls+";
+                break;
+            default:
+            case NONE:
+                scheme = "smtp";
+                break;
+        }
+
+        String authType = server.authenticationType;
+        if (!(AUTH_AUTOMATIC.equals(authType) ||
+                AUTH_LOGIN.equals(authType) ||
+                AUTH_PLAIN.equals(authType) ||
+                AUTH_CRAM_MD5.equals(authType))) {
+            throw new IllegalArgumentException("Invalid authentication type: " + authType);
+        }
+
+        String userInfo = userEnc + ":" + passwordEnc + ":" + authType;
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, null, null,
+                    null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create SmtpTransport URI", e);
+        }
+    }
+
+
+    String mHost;
+    int mPort;
+    String mUsername;
+    String mPassword;
+    String mAuthType;
+    int mConnectionSecurity;
+    boolean mSecure;
+    Socket mSocket;
+    PeekableInputStream mIn;
+    OutputStream mOut;
+    private boolean m8bitEncodingAllowed;
+    private int mLargestAcceptableMessage;
+
+    public SmtpTransport(String uri) throws MessagingException {
+        ServerSettings settings;
+        try {
+            settings = decodeUri(uri);
+        } catch (IllegalArgumentException e) {
+            throw new MessagingException("Error while decoding transport URI", e);
+        }
+
+        mHost = settings.host;
+        mPort = settings.port;
+
+        switch (settings.connectionSecurity) {
+        case NONE:
+            mConnectionSecurity = CONNECTION_SECURITY_NONE;
+            break;
+        case STARTTLS_OPTIONAL:
+            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
+            break;
+        case STARTTLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
+            break;
+        case SSL_TLS_OPTIONAL:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
+            break;
+        case SSL_TLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
+            break;
+        }
+
+        mAuthType = settings.authenticationType;
+        mUsername = settings.username;
+        mPassword = settings.password;
     }
 
     @Override

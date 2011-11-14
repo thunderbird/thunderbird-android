@@ -650,15 +650,10 @@ public class MessagingController implements Runnable {
             accountUuidsSet.addAll(Arrays.asList(accountUuids));
         }
         final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
-        Account[] accounts = prefs.getAccounts();
         List<LocalFolder> foldersToSearch = null;
         boolean displayableOnly = false;
         boolean noSpecialFolders = true;
-        for (final Account account : accounts) {
-            if (!account.isAvailable(mApplication)) {
-                Log.d(K9.LOG_TAG, "searchLocalMessagesSynchronous() ignores account that is not available");
-                continue;
-            }
+        for (final Account account : prefs.getAvailableAccounts()) {
             if (accountUuids != null && !accountUuidsSet.contains(account.getUuid())) {
                 continue;
             }
@@ -2851,8 +2846,7 @@ public class MessagingController implements Runnable {
 
     public void sendPendingMessages(MessagingListener listener) {
         final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
-        Account[] accounts = prefs.getAccounts();
-        for (Account account : accounts) {
+        for (Account account : prefs.getAvailableAccounts()) {
             sendPendingMessages(account, listener);
         }
     }
@@ -3612,13 +3606,12 @@ public class MessagingController implements Runnable {
                         Log.i(K9.LOG_TAG, "Starting mail check");
                     Preferences prefs = Preferences.getPreferences(context);
 
-                    Account[] accounts;
+                    Collection<Account> accounts;
                     if (account != null) {
-                        accounts = new Account[] {
-                            account
-                        };
+                        accounts = new ArrayList<Account>(1);
+                        accounts.add(account);
                     } else {
-                        accounts = prefs.getAccounts();
+                        accounts = prefs.getAvailableAccounts();
                     }
 
                     for (final Account account : accounts) {

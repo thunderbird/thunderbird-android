@@ -274,7 +274,7 @@ public class MailService extends CoreService {
         }
 
         int shortestInterval = -1;
-        for (Account account : prefs.getAccounts()) {
+        for (Account account : prefs.getAvailableAccounts()) {
             if (account.getAutomaticCheckIntervalMinutes() != -1 &&
                     account.getFolderSyncMode() != FolderMode.NONE &&
                     (account.getAutomaticCheckIntervalMinutes() < shortestInterval ||
@@ -363,7 +363,7 @@ public class MailService extends CoreService {
         for (Account account : Preferences.getPreferences(MailService.this).getAccounts()) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
-            if (account.isAvailable(getApplicationContext())) {
+            if (account.isEnabled() && account.isAvailable(getApplicationContext())) {
                 pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
             } else {
                 //TODO: setupPushing of unavailable accounts when they become available (sd-card inserted)

@@ -463,59 +463,7 @@ public class K9 extends Application {
         galleryBuggy = checkForBuggyGallery();
 
         Preferences prefs = Preferences.getPreferences(this);
-        SharedPreferences sprefs = prefs.getPreferences();
-        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
-        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-        mAnimations = sprefs.getBoolean("animations", true);
-        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
-        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
-        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mManageBack = sprefs.getBoolean("manageBack", false);
-        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
-        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
-        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
-        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
-        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
-
-        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", false);
-
-        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
-        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
-        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
-
-        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
-        mShowContactName = sprefs.getBoolean("showContactName", false);
-        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
-        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
-        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
-        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
-
-        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
-
-        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
-        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
-
-
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
-
-        compactLayouts = sprefs.getBoolean("compactLayouts", false);
-        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
-        fontSizes.load(sprefs);
-
-        try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
-        } catch (Exception e) {
-            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
-        }
-
-        K9.setK9Language(sprefs.getString("language", ""));
-        K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
+        loadPrefs(prefs);
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
@@ -585,6 +533,62 @@ public class K9 extends Application {
         });
 
         notifyObservers();
+    }
+
+    public static void loadPrefs(Preferences prefs) {
+        SharedPreferences sprefs = prefs.getPreferences();
+        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
+        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
+        mAnimations = sprefs.getBoolean("animations", true);
+        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
+        mManageBack = sprefs.getBoolean("manageBack", false);
+        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
+        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
+        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
+        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
+        mMessageListStars = sprefs.getBoolean("messageListStars", true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
+        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
+
+        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", false);
+
+        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
+        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
+        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
+
+        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
+        mShowContactName = sprefs.getBoolean("showContactName", false);
+        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
+        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
+        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
+
+        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
+
+        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
+        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
+        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
+
+
+        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+
+        compactLayouts = sprefs.getBoolean("compactLayouts", false);
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        fontSizes.load(sprefs);
+
+        try {
+            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
+        } catch (Exception e) {
+            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
+        }
+
+        K9.setK9Language(sprefs.getString("language", ""));
+        K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
     }
 
     private void maybeSetupStrictMode() {

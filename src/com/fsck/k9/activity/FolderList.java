@@ -152,6 +152,7 @@ public class FolderList extends K9ListActivity {
         }
     }
 
+
     /**
     * This class is responsible for reloading the list of local messages for a
     * given folder, notifying the adapter that the message have been loaded and
