@@ -75,6 +75,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
 
+    private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
@@ -280,6 +281,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.setAction(ACTION_COMPOSE);
         context.startActivity(i);
     }
 
@@ -533,6 +535,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mMessageFormat = mAccount.getMessageFormat();
+        if (mMessageFormat == MessageFormat.AUTO) {
+            if (ACTION_COMPOSE.equals(action)) {
+                mMessageFormat = MessageFormat.TEXT;
+            } else if (mSourceMessageBody != null) {
+                // mSourceMessageBody is set to something when replying to and forwarding decrypted
+                // messages, so we set the format to plain text.
+                mMessageFormat = MessageFormat.TEXT;
+            }
+        }
+
         mReadReceipt = mAccount.isMessageReadReceiptAlways();
 
         if (!mSourceMessageProcessed) {
@@ -2243,6 +2255,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @throws MessagingException
      */
     private void populateUIWithQuotedMessage(boolean shown) throws MessagingException {
+        if (mMessageFormat == MessageFormat.AUTO) {
+            mMessageFormat = MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/html") == null
+                    ? MessageFormat.TEXT
+                    : MessageFormat.HTML;
+        }
+
         // TODO -- I am assuming that mSourceMessageBody will always be a text part.  Is this a safe assumption?
 
         // Handle the original message in the reply

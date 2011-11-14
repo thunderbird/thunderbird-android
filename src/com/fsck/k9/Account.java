@@ -191,7 +191,7 @@ public class Account implements BaseAccount {
     }
 
     public enum MessageFormat {
-        TEXT, HTML
+        TEXT, HTML, AUTO
     }
 
     protected Account(Context context) {
