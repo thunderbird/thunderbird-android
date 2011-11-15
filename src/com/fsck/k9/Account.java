@@ -60,6 +60,7 @@ public class Account implements BaseAccount {
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    public static final boolean DEFAULT_AUTO_MESSAGE_FORMAT = false;
     public static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
     public static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     public static final String DEFAULT_QUOTE_PREFIX = ">";
@@ -137,6 +138,7 @@ public class Account implements BaseAccount {
     // current set of fetched messages
     private boolean mRingNotified;
     private MessageFormat mMessageFormat;
+    private boolean mAutoMessageFormat;
     private boolean mMessageReadReceipt;
     private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
@@ -226,6 +228,7 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
         mMessageFormat = DEFAULT_MESSAGE_FORMAT;
+        mAutoMessageFormat = DEFAULT_AUTO_MESSAGE_FORMAT;
         mMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT;
         mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
@@ -302,6 +305,10 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
+        mAutoMessageFormat = prefs.getBoolean(mUuid + ".autoMessageFormat", DEFAULT_AUTO_MESSAGE_FORMAT);
+        if (mAutoMessageFormat && mMessageFormat == MessageFormat.TEXT) {
+            mMessageFormat = MessageFormat.AUTO;
+        }
         mMessageReadReceipt = prefs.getBoolean(mUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
@@ -461,6 +468,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
+        editor.remove(mUuid + ".autoMessageFormat");
         editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
@@ -612,7 +620,16 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
-        editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+        if (MessageFormat.AUTO.equals(mMessageFormat)) {
+            // saving MessageFormat.AUTO as is to the database will cause downgrades to crash on
+            // startup, so we save as MessageFormat.TEXT instead with a separate flag for auto.
+            editor.putString(mUuid + ".messageFormat", Account.MessageFormat.TEXT.name());
+            mAutoMessageFormat = true;
+        } else {
+            editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+            mAutoMessageFormat = false;
+        }
+        editor.putBoolean(mUuid + ".autoMessageFormat", mAutoMessageFormat);
         editor.putBoolean(mUuid + ".messageReadReceipt", mMessageReadReceipt);
         editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
