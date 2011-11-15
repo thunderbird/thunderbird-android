@@ -55,6 +55,7 @@ public class AccountSettings {
                 R.array.account_settings_message_age_values));
         s.put("messageFormat",
                 new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
+        s.put("messageFormatAuto", new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO)); // added to version 2
         s.put("messageReadReceipt", new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT));
         s.put("notificationUnreadCount", new BooleanSetting(true));
         s.put("notifyMailCheck", new BooleanSetting(false));
@@ -65,7 +66,7 @@ public class AccountSettings {
         s.put("quoteStyle",
                 new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
         s.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
-        //s.put("stripSignature", new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE));	// added to version 2
+        s.put("stripSignature", new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE)); // added to version 2
         s.put("ring", new BooleanSetting(true));
         s.put("ringtone", new RingtoneSetting("content://settings/system/notification_sound"));
         s.put("saveAllHeaders", new BooleanSetting(true));
