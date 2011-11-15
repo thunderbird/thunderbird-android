@@ -596,11 +596,81 @@ public class ImapStore extends Store {
 
     }
 
+    /**
+     * Attempt to auto-configure folders by attributes if the server advertises that capability.
+     *
+     * The parsing here is essentially the same as
+     * {@link #listFolders(com.fsck.k9.mail.store.ImapStore.ImapConnection, boolean)}; we should try to consolidate
+     * this at some point. :(
+     * @param connection IMAP Connection
+     * @throws IOException uh oh!
+     * @throws MessagingException uh oh!
+     */
+    private void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
+        String commandResponse = null;
+        String commandOptions = "";
+
+        if (connection.capabilities.contains("XLIST")) {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using XLIST.");
+            commandResponse = "XLIST";
+        } else if(connection.capabilities.contains("SPECIAL-USE")) {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+            commandResponse = "LIST";
+            commandOptions = " (SPECIAL-USE)";
+        } else {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "No detected folder auto-configuration methods.");
+            return;
+        }
+
+        final List<ImapResponse> responses =
+            connection.executeSimpleCommand(String.format("%s%s \"\" %s", commandResponse, commandOptions,
+                encodeString(getCombinedPrefix() + "*")));
+
+        for (ImapResponse response : responses) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
+
+                String decodedFolderName;
+                try {
+                    decodedFolderName = decodeFolderName(response.getString(3));
+                } catch (CharacterCodingException e) {
+                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                        "as defined by RFC 3501: " + response.getString(3), e);
+                    // We currently just skip folders with malformed names.
+                    continue;
+                }
+
+                if (mPathDelimeter == null) {
+                    mPathDelimeter = response.getString(2);
+                    mCombinedPrefix = null;
+                }
+
+                ImapList attributes = response.getList(1);
+                for (int i = 0, count = attributes.size(); i < count; i++) {
+                    String attribute = attributes.getString(i);
+                    if (attribute.equals("\\Drafts")) {
+                        mAccount.setDraftsFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Sent")) {
+                        mAccount.setSentFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Spam")) {
+                        mAccount.setSpamFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Trash")) {
+                        mAccount.setTrashFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void checkSettings() throws MessagingException {
         try {
             ImapConnection connection = new ImapConnection(new StoreImapSettings());
             connection.open();
+            autoconfigureFolders(connection);
             connection.close();
         } catch (IOException ioe) {
             throw new MessagingException(K9.app.getString(R.string.error_unable_to_connect), ioe);
