@@ -153,6 +153,7 @@ public class K9 extends Application {
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
+    private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
     private static boolean mKeyguardPrivacy = false;
@@ -443,6 +444,7 @@ public class K9 extends Application {
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
+        editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
 
@@ -571,6 +573,7 @@ public class K9 extends Application {
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
+        mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
         mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
 
@@ -949,6 +952,14 @@ public class K9 extends Application {
 
     public static void setConfirmDelete(final boolean confirm) {
         mConfirmDelete = confirm;
+    }
+
+    public static boolean confirmDeleteStarred() {
+        return mConfirmDeleteStarred;
+    }
+
+    public static void setConfirmDeleteStarred(final boolean confirm) {
+        mConfirmDeleteStarred = confirm;
     }
 
     public static boolean confirmSpam() {

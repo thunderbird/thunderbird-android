@@ -649,7 +649,7 @@ public class MessageView extends K9Activity implements OnClickListener {
      * Called from UI thread when user select Delete
      */
     private void onDelete() {
-        if (K9.confirmDelete()) {
+        if (K9.confirmDelete() || (K9.confirmDeleteStarred() && mMessage.isSet(Flag.FLAGGED))) {
             showDialog(R.id.dialog_confirm_delete);
         } else {
             delete();
