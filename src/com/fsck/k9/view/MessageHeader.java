@@ -26,7 +26,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -256,7 +256,7 @@ public class MessageHeader extends LinearLayout {
         * message view header. But do show "From", "To", and "Cc" again.
         * This time including the email addresses. See issue 1805.
         */
-        Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
+        Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());
         headerNames.remove("Subject");
         for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);
