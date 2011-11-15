@@ -597,7 +597,7 @@ public class ImapStore extends Store {
     }
 
     /**
-     * Attempt to auto-configure Gmail folders, if we think the server is a Gmail server.
+     * Attempt to auto-configure folders by attributes if the server advertises XLIST capability.
      *
      * The parsing here is essentially the same as
      * {@link #listFolders(com.fsck.k9.mail.store.ImapStore.ImapConnection, boolean)}; we should try to consolidate
@@ -606,12 +606,12 @@ public class ImapStore extends Store {
      * @throws IOException uh oh!
      * @throws MessagingException uh oh!
      */
-    private void configureGmailFolders(final ImapConnection connection) throws IOException, MessagingException {
+    private void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
         final String commandResponse = "XLIST";
 
-        if (!connection.mSettings.getHost().toLowerCase().endsWith(".gmail.com") || !connection.capabilities.contains(commandResponse)) {
+        if (!connection.capabilities.contains(commandResponse)) {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Probably not a Gmail server, skipping Gmail namespace detection.");
+                Log.d(K9.LOG_TAG, "Server does not support XLIST; skipping folder auto-configuration.");
             }
             return;
         }
@@ -643,16 +643,16 @@ public class ImapStore extends Store {
                     String attribute = attributes.getString(i);
                     if (attribute.equals("\\Drafts")) {
                         mAccount.setDraftsFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail draft folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected draft folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Sent")) {
                         mAccount.setSentFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail sent folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected sent folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Spam")) {
                         mAccount.setSpamFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail spam folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected spam folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Trash")) {
                         mAccount.setTrashFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail trash folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected trash folder: " + decodedFolderName);
                     }
                 }
             }
@@ -664,7 +664,7 @@ public class ImapStore extends Store {
         try {
             ImapConnection connection = new ImapConnection(new StoreImapSettings());
             connection.open();
-            configureGmailFolders(connection);
+            autoconfigureFolders(connection);
             connection.close();
         } catch (IOException ioe) {
             throw new MessagingException(K9.app.getString(R.string.error_unable_to_connect), ioe);
