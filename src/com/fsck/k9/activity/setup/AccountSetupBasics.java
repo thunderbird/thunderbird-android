@@ -193,16 +193,9 @@ public class AccountSetupBasics extends K9Activity
             incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
-
-            String namespace = null;
-            // Gmail uses a special namespace, otherwise everything ends up in the "[Imap]" namespace.
-            if(incomingUriTemplate.getHost().toLowerCase().endsWith("gmail.com")) {
-                namespace = "/[Gmail]";
-            }
-
             incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":"
-                + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(),
-                namespace, null, null);
+                                  + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
+                                  null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
 
@@ -233,7 +226,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
             // Yahoo! has a special folder for Spam, called "Bulk Mail".
-            if (incomingUriTemplate.getHost().toLowerCase().endsWith("yahoo.com")) {
+            if (incomingUriTemplate.getHost().toLowerCase().endsWith(".yahoo.com")) {
                 mAccount.setSpamFolderName("Bulk Mail");
             } else {
                 mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));

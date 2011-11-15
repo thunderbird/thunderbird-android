@@ -596,11 +596,75 @@ public class ImapStore extends Store {
 
     }
 
+    /**
+     * Attempt to auto-configure Gmail folders, if we think the server is a Gmail server.
+     *
+     * The parsing here is essentially the same as
+     * {@link #listFolders(com.fsck.k9.mail.store.ImapStore.ImapConnection, boolean)}; we should try to consolidate
+     * this at some point. :(
+     * @param connection IMAP Connection
+     * @throws IOException uh oh!
+     * @throws MessagingException uh oh!
+     */
+    private void configureGmailFolders(final ImapConnection connection) throws IOException, MessagingException {
+        final String commandResponse = "XLIST";
+
+        if (!connection.mSettings.getHost().toLowerCase().endsWith(".gmail.com") || !connection.capabilities.contains(commandResponse)) {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Probably not a Gmail server, skipping Gmail namespace detection.");
+            }
+            return;
+        }
+
+        final List<ImapResponse> responses =
+            connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
+                encodeString(getCombinedPrefix() + "*")));
+
+        for (ImapResponse response : responses) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
+
+                String decodedFolderName;
+                try {
+                    decodedFolderName = decodeFolderName(response.getString(3));
+                } catch (CharacterCodingException e) {
+                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                        "as defined by RFC 3501: " + response.getString(3), e);
+                    // We currently just skip folders with malformed names.
+                    continue;
+                }
+
+                if (mPathDelimeter == null) {
+                    mPathDelimeter = response.getString(2);
+                    mCombinedPrefix = null;
+                }
+
+                ImapList attributes = response.getList(1);
+                for (int i = 0, count = attributes.size(); i < count; i++) {
+                    String attribute = attributes.getString(i);
+                    if (attribute.equals("\\Drafts")) {
+                        mAccount.setDraftsFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail draft folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Sent")) {
+                        mAccount.setSentFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail sent folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Spam")) {
+                        mAccount.setSpamFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail spam folder: " + decodedFolderName);
+                    } else if (attribute.equals("\\Trash")) {
+                        mAccount.setTrashFolderName(decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Detected Gmail trash folder: " + decodedFolderName);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void checkSettings() throws MessagingException {
         try {
             ImapConnection connection = new ImapConnection(new StoreImapSettings());
             connection.open();
+            configureGmailFolders(connection);
             connection.close();
         } catch (IOException ioe) {
             throw new MessagingException(K9.app.getString(R.string.error_unable_to_connect), ioe);
