@@ -55,6 +55,7 @@ public class AccountSettings {
                 R.array.account_settings_message_age_values));
         s.put("messageFormat",
                 new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
+        //s.put("messageFormatAuto", new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO)); // added to version 2
         s.put("messageReadReceipt", new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT));
         s.put("notificationUnreadCount", new BooleanSetting(true));
         s.put("notifyMailCheck", new BooleanSetting(false));
