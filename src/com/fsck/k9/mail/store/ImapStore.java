@@ -597,7 +597,7 @@ public class ImapStore extends Store {
     }
 
     /**
-     * Attempt to auto-configure folders by attributes if the server advertises XLIST capability.
+     * Attempt to auto-configure folders by attributes if the server advertises that capability.
      *
      * The parsing here is essentially the same as
      * {@link #listFolders(com.fsck.k9.mail.store.ImapStore.ImapConnection, boolean)}; we should try to consolidate
@@ -607,17 +607,23 @@ public class ImapStore extends Store {
      * @throws MessagingException uh oh!
      */
     private void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
-        final String commandResponse = "XLIST";
+        String commandResponse = null;
+        String commandOptions = "";
 
-        if (!connection.capabilities.contains(commandResponse)) {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Server does not support XLIST; skipping folder auto-configuration.");
-            }
+        if (connection.capabilities.contains("XLIST")) {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using XLIST.");
+            commandResponse = "XLIST";
+        } else if(connection.capabilities.contains("SPECIAL-USE")) {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+            commandResponse = "LIST";
+            commandOptions = " (SPECIAL-USE)";
+        } else {
+            if (K9.DEBUG) Log.d(K9.LOG_TAG, "No detected folder auto-configuration methods.");
             return;
         }
 
         final List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
+            connection.executeSimpleCommand(String.format("%s%s \"\" %s", commandResponse, commandOptions,
                 encodeString(getCombinedPrefix() + "*")));
 
         for (ImapResponse response : responses) {
@@ -643,16 +649,16 @@ public class ImapStore extends Store {
                     String attribute = attributes.getString(i);
                     if (attribute.equals("\\Drafts")) {
                         mAccount.setDraftsFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected draft folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Sent")) {
                         mAccount.setSentFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected sent folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Spam")) {
                         mAccount.setSpamFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected spam folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Trash")) {
                         mAccount.setTrashFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "XLIST auto-configuration detected trash folder: " + decodedFolderName);
+                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
                     }
                 }
             }
