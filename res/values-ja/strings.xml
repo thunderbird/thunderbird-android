@@ -340,7 +340,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_actions_summary">選択した動作を実行するときに常にダイアログを表示する</string>
     <string name="global_settings_confirm_action_archive">アーカイブ</string>
     <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
-    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示のみ)</string>
+    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示画面のみ)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
     <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
