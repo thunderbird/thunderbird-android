@@ -30,7 +30,6 @@ import android.os.Parcelable;
 import android.provider.OpenableColumns;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -683,9 +682,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              * it wrong! So go fix your program or get AOSP to change the documentation.
              */
         }
-        //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
-        else if (Intent.ACTION_SEND.equals(action) ||
-                 "android.intent.action.SEND_MULTIPLE".equals(action)) {
+        else if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) {
             /*
              * Note: Here we allow a slight deviation from the documentated behavior.
              * EXTRA_TEXT is used as message body (if available) regardless of the MIME
@@ -1930,13 +1927,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     @Override
     public void onBackPressed() {
-        // This will be called either automatically for you on 2.0
-        // or later, or by the code above on earlier versions of the
-        // platform.
         if (mDraftNeedsSaving) {
             showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 
@@ -1962,24 +1956,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                    .create();
         }
         return super.onCreateDialog(id);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (
-            // TODO - when we move to android 2.0, uncomment this.
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
-
-            keyCode == KeyEvent.KEYCODE_BACK
-            && event.getRepeatCount() == 0
-            && K9.manageBack()) {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            onBackPressed();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
     }
 
     /**

@@ -27,7 +27,8 @@ public class PushService extends CoreService {
     }
 
     @Override
-    public void startService(Intent intent, int startId) {
+    public int startService(Intent intent, int startId) {
+        int startFlag = START_STICKY;
         if (START_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PushService started with startId = " + startId);
@@ -35,8 +36,10 @@ public class PushService extends CoreService {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PushService stopping with startId = " + startId);
             stopSelf(startId);
+            startFlag = START_NOT_STICKY;
         }
 
+        return startFlag;
     }
 
     @Override

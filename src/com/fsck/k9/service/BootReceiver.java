@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.AutoSyncHelper;
 
 public class BootReceiver extends CoreReceiver {
 
@@ -41,7 +40,7 @@ public class BootReceiver extends CoreReceiver {
         } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             MailService.connectivityChange(context, tmpWakeLockId);
             tmpWakeLockId = null;
-        } else if (AutoSyncHelper.SYNC_CONN_STATUS_CHANGE.equals(action)) {
+        } else if ("com.android.sync.SYNC_CONN_STATUS_CHANGED".equals(action)) {
             K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
             if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
                 MailService.actionReset(context, tmpWakeLockId);
