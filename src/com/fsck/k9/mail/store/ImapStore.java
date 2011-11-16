@@ -839,12 +839,6 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-                    if (response.mCommandContinuationRequested) {
-                        EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.mOut);
-                        eolOut.write('\r');
-                        eolOut.write('\n');
-                        eolOut.flush();
-                    }
                     while (response.more());
                 } while (response.mTag == null);
 
@@ -2409,17 +2403,6 @@ public class ImapStore extends Store {
             ImapException, MessagingException {
             return executeSimpleCommand(command, sensitive, null);
         }
-
-//        public void logResponse (ImapList response) {
-//            for(int i=0;i<response.size();i++) {
-//                Object o = response.get(i);
-//                if(o instanceof String){
-//                    Log.w(K9.LOG_TAG+" "+i, (String) o);
-//                } else if (o instanceof ImapList) {
-//                    logResponse((ImapList)o);
-//                }
-//            }
-//        }
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
