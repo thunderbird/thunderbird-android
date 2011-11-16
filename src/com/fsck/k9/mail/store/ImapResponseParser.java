@@ -45,8 +45,7 @@ public class ImapResponseParser {
                 parseUntaggedResponse();
                 readTokens(response);
             } else if (ch == '+') {
-                response.mCommandContinuationRequested =
-                    parseCommandContinuationRequest();
+                response.mCommandContinuationRequested = parseCommandContinuationRequest();
                 parseResponseText(response);
             } else {
                 response.mTag = parseTaggedResponse();
@@ -87,8 +86,7 @@ public class ImapResponseParser {
         response.mCompleted = true;
     }
 
-    void parseResponseText(ImapResponse parent) throws IOException {
-
+    private void parseResponseText(ImapResponse parent) throws IOException {
         skipIfSpace();
 
         int next = mIn.peek();
@@ -104,10 +102,9 @@ public class ImapResponseParser {
             // The rest is free-form text.
             parent.add(rest);
         }
-
     }
 
-    void skipIfSpace() throws IOException {
+    private void skipIfSpace() throws IOException {
         if (mIn.peek() == ' ') {
             expect(' ');
         }
