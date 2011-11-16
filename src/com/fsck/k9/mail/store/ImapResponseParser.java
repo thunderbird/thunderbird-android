@@ -68,16 +68,14 @@ public class ImapResponseParser {
 
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
-        Object token;
+
         String firstToken = (String) readToken(response);
-
         response.add(firstToken);
-
-        skipIfSpace();
 
         if (isStatusResponse(firstToken)) {
             parseStatusResponse(response);
         } else {
+            Object token;
             while ((token = readToken(response)) != null) {
                 if (!(token instanceof ImapList)) {
                     response.add(token);
@@ -91,6 +89,8 @@ public class ImapResponseParser {
     }
 
     void parseStatusResponse(ImapResponse parent) throws IOException {
+
+        skipIfSpace();
 
         int next = mIn.peek();
         if (next == '[') {
