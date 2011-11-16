@@ -86,6 +86,31 @@ public class ImapResponseParser {
         response.mCompleted = true;
     }
 
+    /**
+     * Parse {@code resp-text} tokens
+     *
+     * <p>
+     * Responses "OK", "PREAUTH", "BYE", "NO", "BAD", and continuation request responses can
+     * contain {@code resp-text} tokens. We parse the {@code resp-text-code} part as tokens and
+     * read the rest as sequence of characters to avoid the parser interpreting things like
+     * "{123}" as start of a literal.
+     * </p>
+     * <p>Example:</p>
+     * <p>
+     * {@code * OK [UIDVALIDITY 3857529045] UIDs valid}
+     * </p>
+     * <p>
+     * See RFC 3501, Section 9 Formal Syntax (resp-text)
+     * </p>
+     *
+     * @param parent
+     *         The {@link ImapResponse} instance that holds the parsed tokens of the response.
+     *
+     * @throws IOException
+     *          If there's a network error.
+     *
+     * @see #isStatusResponse(String)
+     */
     private void parseResponseText(ImapResponse parent) throws IOException {
         skipIfSpace();
 
