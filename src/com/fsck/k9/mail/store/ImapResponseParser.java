@@ -73,7 +73,7 @@ public class ImapResponseParser {
         response.add(firstToken);
 
         if (isStatusResponse(firstToken)) {
-            parseStatusResponse(response);
+            parseResponseText(response);
         } else {
             Object token;
             while ((token = readToken(response)) != null) {
@@ -88,7 +88,7 @@ public class ImapResponseParser {
         response.mCompleted = true;
     }
 
-    void parseStatusResponse(ImapResponse parent) throws IOException {
+    void parseResponseText(ImapResponse parent) throws IOException {
 
         skipIfSpace();
 
