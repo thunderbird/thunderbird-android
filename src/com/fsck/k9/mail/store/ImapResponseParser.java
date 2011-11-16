@@ -47,8 +47,7 @@ public class ImapResponseParser {
             } else if (ch == '+') {
                 response.mCommandContinuationRequested =
                     parseCommandContinuationRequest();
-                //TODO: Add special "resp-text" parsing
-                readTokens(response);
+                parseResponseText(response);
             } else {
                 response.mTag = parseTaggedResponse();
                 readTokens(response);
