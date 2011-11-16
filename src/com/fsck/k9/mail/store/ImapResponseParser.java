@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store;
 
+import android.text.TextUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -44,10 +45,8 @@ public class ImapResponseParser {
                 parseUntaggedResponse();
                 readTokens(response);
             } else if (ch == '+') {
-                response.mCommandContinuationRequested =
-                    parseCommandContinuationRequest();
-                //TODO: Add special "resp-text" parsing
-                readTokens(response);
+                response.mCommandContinuationRequested = parseCommandContinuationRequest();
+                parseResponseText(response);
             } else {
                 response.mTag = parseTaggedResponse();
                 readTokens(response);
@@ -67,22 +66,70 @@ public class ImapResponseParser {
 
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
-        Object token;
-        while ((token = readToken(response)) != null) {
-            if (!(token instanceof ImapList)) {
-                response.add(token);
-            }
 
-            /*
-             * TODO: Check for responses ("OK", "PREAUTH", "BYE", "NO", "BAD")
-             * that can contain resp-text tokens. If found, hand over to a special
-             * method that parses a resp-text token. There's no need to use
-             * readToken()/parseToken() on that data.
-             *
-             * See RFC 3501, Section 9 Formal Syntax (resp-text)
-             */
+        String firstToken = (String) readToken(response);
+        response.add(firstToken);
+
+        if (isStatusResponse(firstToken)) {
+            parseResponseText(response);
+        } else {
+            Object token;
+            while ((token = readToken(response)) != null) {
+                if (!(token instanceof ImapList)) {
+                    response.add(token);
+                }
+            }
         }
         response.mCompleted = true;
+    }
+
+    /**
+     * Parse {@code resp-text} tokens
+     *
+     * <p>
+     * Responses "OK", "PREAUTH", "BYE", "NO", "BAD", and continuation request responses can
+     * contain {@code resp-text} tokens. We parse the {@code resp-text-code} part as tokens and
+     * read the rest as sequence of characters to avoid the parser interpreting things like
+     * "{123}" as start of a literal.
+     * </p>
+     * <p>Example:</p>
+     * <p>
+     * {@code * OK [UIDVALIDITY 3857529045] UIDs valid}
+     * </p>
+     * <p>
+     * See RFC 3501, Section 9 Formal Syntax (resp-text)
+     * </p>
+     *
+     * @param parent
+     *         The {@link ImapResponse} instance that holds the parsed tokens of the response.
+     *
+     * @throws IOException
+     *          If there's a network error.
+     *
+     * @see #isStatusResponse(String)
+     */
+    private void parseResponseText(ImapResponse parent) throws IOException {
+        skipIfSpace();
+
+        int next = mIn.peek();
+        if (next == '[') {
+            parseSequence(parent);
+            skipIfSpace();
+        }
+
+        String rest = readStringUntil('\r');
+        expect('\n');
+
+        if (!TextUtils.isEmpty(rest)) {
+            // The rest is free-form text.
+            parent.add(rest);
+        }
+    }
+
+    private void skipIfSpace() throws IOException {
+        if (mIn.peek() == ' ') {
+            expect(' ');
+        }
     }
 
     /**
@@ -478,6 +525,14 @@ public class ImapResponseParser {
         public String toString() {
             return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
         }
+    }
+
+    public boolean isStatusResponse(String symbol) {
+        return symbol.equalsIgnoreCase("OK") ||
+               symbol.equalsIgnoreCase("NO") ||
+               symbol.equalsIgnoreCase("BAD") ||
+               symbol.equalsIgnoreCase("PREAUTH") ||
+               symbol.equalsIgnoreCase("BYE");
     }
 
     public static boolean equalsIgnoreCase(Object o1, Object o2) {
