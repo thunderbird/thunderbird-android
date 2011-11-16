@@ -91,9 +91,7 @@ public class MessageWebView extends WebView {
 
         // SINGLE_COLUMN layout was broken on Android < 2.2, so we
         // administratively disable it
-        if (
-            (Integer.parseInt(Build.VERSION.SDK)  > 7)
-            &&  K9.mobileOptimizedLayout()) {
+        if (Build.VERSION.SDK_INT > 7 && K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         } else {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);

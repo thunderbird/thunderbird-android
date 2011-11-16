@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.*;
-import android.view.KeyEvent;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
 
@@ -160,10 +159,8 @@ public class FontSizeSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveSettings();
+        super.onBackPressed();
     }
 }

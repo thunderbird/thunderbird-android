@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -815,11 +814,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveSettings();
+        super.onBackPressed();
     }
 
     private void onCompositionSettings() {
