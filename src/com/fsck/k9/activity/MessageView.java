@@ -127,6 +127,15 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (
+            // XXX TODO - when we go to android 2.0, uncomment this
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+            keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
         switch (keyCode) {
         case KeyEvent.KEYCODE_VOLUME_UP: {
             if (K9.useVolumeKeysForNavigationEnabled()) {
