@@ -340,6 +340,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_actions_summary">選択した動作を実行するときに常にダイアログを表示する</string>
     <string name="global_settings_confirm_action_archive">アーカイブ</string>
     <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
+    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示のみ)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
     <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
@@ -564,9 +565,13 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_reply_after_quote_label">引用テキストの後に返信を書く</string>
     <string name="account_settings_reply_after_quote_summary">返信するときに元のメッセージを返信の上に表示</string>
 
+    <string name="account_settings_strip_signature_label">引用から署名を除く</string>
+    <string name="account_settings_strip_signature_summary">メッセージの返信時に引用文にある署名を取り除く</string>
+
     <string name="account_settings_message_format_label">メッセージの形式</string>
     <string name="account_settings_message_format_text">テキスト(画像や書式は取り除く)</string>
     <string name="account_settings_message_format_html">HTML (画像や書式を保持)</string>
+    <string name="account_settings_message_format_auto">自動 (HTMLメールに対する返信でなければテキスト)</string>
 
     <string name="account_settings_message_read_receipt_label">開封確認</string>
     <string name="account_settings_message_read_receipt_summary">常に開封確認を要求する</string>
