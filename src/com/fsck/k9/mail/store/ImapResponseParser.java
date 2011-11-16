@@ -77,9 +77,6 @@ public class ImapResponseParser {
             while ((token = readToken(response)) != null) {
                 if (!(token instanceof ImapList)) {
                     response.add(token);
-                    if (isSizeOrExpungeResponse((String) token)) {
-                        break;
-                    }
                 }
             }
         }
@@ -544,12 +541,6 @@ public class ImapResponseParser {
                symbol.equalsIgnoreCase("BAD") ||
                symbol.equalsIgnoreCase("PREAUTH") ||
                symbol.equalsIgnoreCase("BYE");
-    }
-
-    public boolean isSizeOrExpungeResponse(String symbol) {
-        return symbol.equalsIgnoreCase("EXISTS") ||
-               symbol.equalsIgnoreCase("RECENT") ||
-               symbol.equalsIgnoreCase("EXPUNGE");
     }
 
     public static boolean equalsIgnoreCase(Object o1, Object o2) {
