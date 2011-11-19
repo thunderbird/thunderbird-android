@@ -208,6 +208,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private ImageButton mAddBccFromContacts;
 
     private PgpData mPgpData = null;
+    private boolean mAutoEncrypt = false;
+    private boolean mDontSyncDrafts = false;
 
     private String mReferences;
     private String mInReplyTo;
@@ -442,6 +444,28 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             public void afterTextChanged(android.text.Editable s) { }
         };
 
+        TextWatcher recipientWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int before, int after) { }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mDraftNeedsSaving = true;
+            }
+
+            public void afterTextChanged(android.text.Editable s) {
+                final CryptoProvider crypto = mAccount.getCryptoProvider();
+                if (mAutoEncrypt && crypto.isAvailable(getApplicationContext())) {
+                    for (Address address : getRecipientAddresses()) {
+                        long ids[] = crypto.getPublicKeyIdsFromEmail(getApplicationContext(),
+                                address.getAddress());
+                        if (ids != null && ids.length > 0) {
+                            mEncryptCheckbox.setChecked(true);
+                            break;
+                        }
+                    }
+                }
+            }
+        };
+
         TextWatcher sigwatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start,
             int before, int after) { }
@@ -455,9 +479,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             public void afterTextChanged(android.text.Editable s) { }
         };
 
-        mToView.addTextChangedListener(watcher);
-        mCcView.addTextChangedListener(watcher);
-        mBccView.addTextChangedListener(watcher);
+        mToView.addTextChangedListener(recipientWatcher);
+        mCcView.addTextChangedListener(recipientWatcher);
+        mBccView.addTextChangedListener(recipientWatcher);
         mSubjectView.addTextChangedListener(watcher);
 
         mMessageContentView.addTextChangedListener(watcher);
@@ -616,6 +640,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
         mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
+        if (mSourceMessageBody != null) {
+            // mSourceMessageBody is set to something when replying to and forwarding decrypted
+            // messages, so the sender probably wants the message to be encrypted.
+            mEncryptCheckbox.setChecked(true);
+        }
 
         initializeCrypto();
         final CryptoProvider crypto = mAccount.getCryptoProvider();
@@ -649,6 +678,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
             updateEncryptLayout();
+            mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
+            mDontSyncDrafts = mAccount.isCryptoDontSyncDrafts();
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
@@ -776,6 +807,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mCryptoSignatureUserId.setVisibility(View.INVISIBLE);
             mCryptoSignatureUserIdRest.setVisibility(View.INVISIBLE);
         } else {
+            mMessageFormat = MessageFormat.TEXT;
             // if a signature key is selected, then the checkbox itself has no text
             mCryptoSignatureCheckbox.setText("");
             mCryptoSignatureCheckbox.setChecked(true);
@@ -919,6 +951,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return Address.parseUnencoded(view.getText().toString().trim());
     }
 
+    private Address[] getRecipientAddresses() {
+        String addresses = mToView.getText().toString() + mCcView.getText().toString()
+                + mBccView.getText().toString();
+        return Address.parseUnencoded(addresses.trim());
+    }
+
     /*
      * Build the Body that will contain the text of the message. We'll decide where to
      * include it later. Draft messages are treated somewhat differently in that signatures are not
@@ -960,7 +998,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Place the signature immediately after the reply.
             if (!isDraft) {
                 if (mQuoteStyle == QuoteStyle.HEADER || replyAfterQuote || mAccount.isSignatureBeforeQuotedText()) {
-                    Log.d("ASH", "appending signature after new content");
                     text = appendSignature(text);
                 }
             }
@@ -1461,6 +1498,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return;
         }
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
+            mMessageFormat = MessageFormat.TEXT;
             // key selection before encryption
             StringBuilder emails = new StringBuilder();
             Address[][] addresses = new Address[][] { getAddresses(mToView),
@@ -2876,7 +2914,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             final MessagingController messagingController = MessagingController.getInstance(getApplication());
-            Message draftMessage = messagingController.saveDraft(mAccount, message);
+            Message draftMessage = messagingController.saveDraft(mAccount, message,
+                    mDontSyncDrafts && mEncryptCheckbox.isChecked());
             mDraftUid = draftMessage.getUid();
 
             // Don't display the toast if the user is just changing the orientation

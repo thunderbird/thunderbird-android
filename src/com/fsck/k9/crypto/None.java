@@ -38,6 +38,11 @@ public class None extends CryptoProvider {
     }
 
     @Override
+    public long[] getPublicKeyIdsFromEmail(Context context, String email) {
+        return null;
+    }
+
+    @Override
     public String getUserId(Context context, long keyId) {
         return null;
     }

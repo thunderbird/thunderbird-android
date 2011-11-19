@@ -27,6 +27,8 @@ public class AccountSettings {
         s.put("chipColor", new ColorSetting(0xFF0000FF));
         s.put("cryptoApp", new StringSetting(Apg.NAME));
         s.put("cryptoAutoSignature", new BooleanSetting(false));
+        //s.put("cryptoAutoEncrypt", new BooleanSetting(false)); // added to version 3?
+        //s.put("cryptoDontSyncDrafts", new BooleanSetting(false)); // added to version 3?
         s.put("defaultQuotedTextShown", new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN));
         s.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
         s.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,

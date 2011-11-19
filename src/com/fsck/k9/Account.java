@@ -149,6 +149,8 @@ public class Account implements BaseAccount {
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
+    private boolean mCryptoAutoEncrypt;
+    private boolean mCryptoDontSyncDrafts;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -240,6 +242,8 @@ public class Account implements BaseAccount {
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
+        mCryptoAutoEncrypt = false;
+        mCryptoDontSyncDrafts = false;
         mEnabled = true;
 
         searchableFolders = Searchable.ALL;
@@ -408,6 +412,8 @@ public class Account implements BaseAccount {
 
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
+        mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mCryptoDontSyncDrafts = prefs.getBoolean(mUuid + ".cryptoDontSyncDrafts", false);
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
     }
 
@@ -480,6 +486,8 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".stripSignature");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
+        editor.remove(mUuid + ".cryptoAutoEncrypt");
+        editor.remove(mUuid + ".cryptoDontSyncDrafts");
         editor.remove(mUuid + ".enabled");
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
@@ -643,6 +651,8 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
+        editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
+        editor.putBoolean(mUuid + ".cryptoDontSyncDrafts", mCryptoAutoEncrypt);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
@@ -1464,6 +1474,22 @@ public class Account implements BaseAccount {
 
     public void setCryptoAutoSignature(boolean cryptoAutoSignature) {
         mCryptoAutoSignature = cryptoAutoSignature;
+    }
+
+    public boolean isCryptoAutoEncrypt() {
+        return mCryptoAutoEncrypt;
+    }
+
+    public void setCryptoAutoEncrypt(boolean cryptoAutoEncrypt) {
+        mCryptoAutoEncrypt = cryptoAutoEncrypt;
+    }
+
+    public boolean isCryptoDontSyncDrafts() {
+        return mCryptoDontSyncDrafts;
+    }
+
+    public void setCryptoDontSyncDrafts(boolean cryptoDontSyncDrafts) {
+        mCryptoDontSyncDrafts = cryptoDontSyncDrafts;
     }
 
     public String getInboxFolderName() {
