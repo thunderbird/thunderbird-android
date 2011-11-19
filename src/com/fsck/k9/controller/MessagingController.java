@@ -4059,7 +4059,7 @@ public class MessagingController implements Runnable {
      * @param message Message to save.
      * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message, final boolean dontSyncDraft) {
+    public Message saveDraft(final Account account, final Message message) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
@@ -4072,15 +4072,13 @@ public class MessagingController implements Runnable {
             // Fetch the message back from the store.  This is the Message that's returned to the caller.
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (!dontSyncDraft) {
-                PendingCommand command = new PendingCommand();
-                command.command = PENDING_COMMAND_APPEND;
-                command.arguments = new String[] {
-                    localFolder.getName(),
-                    localMessage.getUid()
-                };
-                queuePendingCommand(account, command);
-            }
+            PendingCommand command = new PendingCommand();
+            command.command = PENDING_COMMAND_APPEND;
+            command.arguments = new String[] {
+                localFolder.getName(),
+                localMessage.getUid()
+            };
+            queuePendingCommand(account, command);
             processPendingCommands(account);
 
         } catch (MessagingException e) {

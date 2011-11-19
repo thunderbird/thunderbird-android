@@ -209,7 +209,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
-    private boolean mDontSyncDrafts = false;
 
     private String mReferences;
     private String mInReplyTo;
@@ -679,7 +678,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             updateEncryptLayout();
             mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
-            mDontSyncDrafts = mAccount.isCryptoDontSyncDrafts();
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
@@ -2914,8 +2912,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             final MessagingController messagingController = MessagingController.getInstance(getApplication());
-            Message draftMessage = messagingController.saveDraft(mAccount, message,
-                    mDontSyncDrafts && mEncryptCheckbox.isChecked());
+            Message draftMessage = messagingController.saveDraft(mAccount, message);
             mDraftUid = draftMessage.getUid();
 
             // Don't display the toast if the user is just changing the orientation
