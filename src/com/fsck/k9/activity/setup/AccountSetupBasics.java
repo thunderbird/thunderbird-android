@@ -225,7 +225,12 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
-            mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
+            // Yahoo! has a special folder for Spam, called "Bulk Mail".
+            if (incomingUriTemplate.getHost().toLowerCase().endsWith(".yahoo.com")) {
+                mAccount.setSpamFolderName("Bulk Mail");
+            } else {
+                mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
+            }
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
         } catch (UnsupportedEncodingException enc) {

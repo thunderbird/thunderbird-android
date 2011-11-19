@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -93,6 +92,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
+    private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
@@ -152,6 +152,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
+    private CheckBoxPreference mStripSignature;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
     private CheckBoxPreference mPushPollOnConnect;
@@ -240,6 +241,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
+
+        mStripSignature = (CheckBoxPreference) findPreference(PREFERENCE_STRIP_SIGNATURE);
+        mStripSignature.setChecked(mAccount.isStripSignature());
 
         mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
 
@@ -726,6 +730,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
+        mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
@@ -809,11 +814,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveSettings();
+        super.onBackPressed();
     }
 
     private void onCompositionSettings() {
@@ -910,8 +913,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             }
 
-            allFolderValues = new String[folders.size()+1];
-            allFolderLabels = new String[folders.size()+1];
+            allFolderValues = new String[folders.size() + 1];
+            allFolderLabels = new String[folders.size() + 1];
 
             allFolderValues[0] = K9.FOLDER_NONE;
             allFolderLabels[0] = K9.FOLDER_NONE;

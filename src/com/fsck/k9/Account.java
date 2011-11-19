@@ -60,11 +60,13 @@ public class Account implements BaseAccount {
     private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
     public static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
     public static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
     public static final String DEFAULT_QUOTE_PREFIX = ">";
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
+    public static final boolean DEFAULT_STRIP_SIGNATURE = true;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
@@ -137,11 +139,13 @@ public class Account implements BaseAccount {
     // current set of fetched messages
     private boolean mRingNotified;
     private MessageFormat mMessageFormat;
+    private boolean mMessageFormatAuto;
     private boolean mMessageReadReceipt;
     private QuoteStyle mQuoteStyle;
     private String mQuotePrefix;
     private boolean mDefaultQuotedTextShown;
     private boolean mReplyAfterQuote;
+    private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
@@ -191,7 +195,7 @@ public class Account implements BaseAccount {
     }
 
     public enum MessageFormat {
-        TEXT, HTML
+        TEXT, HTML, AUTO
     }
 
     protected Account(Context context) {
@@ -226,11 +230,13 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
         mMessageFormat = DEFAULT_MESSAGE_FORMAT;
+        mMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO;
         mMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT;
         mQuoteStyle = DEFAULT_QUOTE_STYLE;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
+        mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
@@ -302,11 +308,16 @@ public class Account implements BaseAccount {
         maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
         mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
+        mMessageFormatAuto = prefs.getBoolean(mUuid + ".messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO);
+        if (mMessageFormatAuto && mMessageFormat == MessageFormat.TEXT) {
+            mMessageFormat = MessageFormat.AUTO;
+        }
         mMessageReadReceipt = prefs.getBoolean(mUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
         mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
+        mStripSignature = prefs.getBoolean(mUuid + ".stripSignature", DEFAULT_STRIP_SIGNATURE);
         for (String type : networkTypes) {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
                                      true);
@@ -461,10 +472,12 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
+        editor.remove(mUuid + ".messageFormatAuto");
         editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
+        editor.remove(mUuid + ".stripSignature");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".enabled");
@@ -612,12 +625,22 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
-        editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+        if (MessageFormat.AUTO.equals(mMessageFormat)) {
+            // saving MessageFormat.AUTO as is to the database will cause downgrades to crash on
+            // startup, so we save as MessageFormat.TEXT instead with a separate flag for auto.
+            editor.putString(mUuid + ".messageFormat", Account.MessageFormat.TEXT.name());
+            mMessageFormatAuto = true;
+        } else {
+            editor.putString(mUuid + ".messageFormat", mMessageFormat.name());
+            mMessageFormatAuto = false;
+        }
+        editor.putBoolean(mUuid + ".messageFormatAuto", mMessageFormatAuto);
         editor.putBoolean(mUuid + ".messageReadReceipt", mMessageReadReceipt);
         editor.putString(mUuid + ".quoteStyle", mQuoteStyle.name());
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putBoolean(mUuid + ".defaultQuotedTextShown", mDefaultQuotedTextShown);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
+        editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
@@ -1407,6 +1430,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setReplyAfterQuote(boolean replyAfterQuote) {
         mReplyAfterQuote = replyAfterQuote;
+    }
+
+    public synchronized boolean isStripSignature() {
+        return mStripSignature;
+    }
+
+    public synchronized void setStripSignature(boolean stripSignature) {
+        mStripSignature = stripSignature;
     }
 
     public boolean getEnableMoveButtons() {

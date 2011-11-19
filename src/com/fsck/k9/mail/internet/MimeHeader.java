@@ -64,7 +64,7 @@ public class MimeHeader {
     }
 
     public Set<String> getHeaderNames() {
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new LinkedHashSet<String>();
         for (Field field : mFields) {
             names.add(field.name);
         }

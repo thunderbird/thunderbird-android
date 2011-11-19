@@ -29,6 +29,7 @@ public class GlobalSettings {
         s.put("changeRegisteredNameColor", new BooleanSetting(false));
         s.put("compactLayouts", new BooleanSetting(false));
         s.put("confirmDelete", new BooleanSetting(false));
+        s.put("confirmDeleteStarred", new BooleanSetting(false)); // added to version 2
         s.put("confirmMarkAllAsRead", new BooleanSetting(false));
         s.put("confirmSpam", new BooleanSetting(false));
         s.put("countSearchMessages", new BooleanSetting(false));

@@ -259,6 +259,13 @@
             android:defaultValue="false"
             android:summary="@string/account_settings_reply_after_quote_summary" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="strip_signature"
+            android:title="@string/account_settings_strip_signature_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_strip_signature_summary" />
+
         <EditTextPreference
             android:persistent="false"
             android:key="account_quote_prefix"

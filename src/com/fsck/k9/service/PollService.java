@@ -42,7 +42,7 @@ public class PollService extends CoreService {
     }
 
     @Override
-    public void startService(Intent intent, int startId) {
+    public int startService(Intent intent, int startId) {
         if (START_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PollService started with startId = " + startId);
@@ -68,6 +68,7 @@ public class PollService extends CoreService {
             stopSelf();
         }
 
+        return START_NOT_STICKY;
     }
 
     @Override

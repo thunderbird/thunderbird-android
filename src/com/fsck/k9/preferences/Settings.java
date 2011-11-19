@@ -32,7 +32,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     public static Map<String, String> validate(Map<String, SettingsDescription> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {

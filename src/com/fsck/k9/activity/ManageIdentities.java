@@ -119,11 +119,9 @@ public class ManageIdentities extends ChooseIdentity {
 
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveIdentities();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveIdentities();
+        super.onBackPressed();
     }
 
     private void saveIdentities() {
