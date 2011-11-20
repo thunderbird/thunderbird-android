@@ -117,7 +117,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean ret = false;
         if (KeyEvent.ACTION_DOWN == event.getAction()) {
-            ret = onKeyDown(event.getKeyCode(), event);
+            ret = onCustomKeyDown(event.getKeyCode(), event);
         }
         if (!ret) {
             ret = super.dispatchKeyEvent(event);
@@ -125,29 +125,36 @@ public class MessageView extends K9Activity implements OnClickListener {
         return ret;
     }
 
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        if (
-            // XXX TODO - when we go to android 2.0, uncomment this
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
-            keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            onBackPressed();
-            return true;
-        }
+    /**
+     * Handle hotkeys
+     *
+     * <p>
+     * This method is called by {@link #dispatchKeyEvent(KeyEvent)} before any view had the chance
+     * to consume this key event.
+     * </p>
+     *
+     * @param keyCode
+     *         The value in {@code event.getKeyCode()}.
+     * @param event
+     *         Description of the key event.
+     *
+     * @return {@code true} if this event was consumed.
+     */
+    public boolean onCustomKeyDown(final int keyCode, final KeyEvent event) {
         switch (keyCode) {
         case KeyEvent.KEYCODE_VOLUME_UP: {
             if (K9.useVolumeKeysForNavigationEnabled()) {
                 onNext();
                 return true;
             }
+            break;
         }
         case KeyEvent.KEYCODE_VOLUME_DOWN: {
             if (K9.useVolumeKeysForNavigationEnabled()) {
                 onPrevious();
                 return true;
             }
+            break;
         }
         case KeyEvent.KEYCODE_SHIFT_LEFT:
         case KeyEvent.KEYCODE_SHIFT_RIGHT: {
@@ -222,7 +229,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             return true;
         }
         }
-        return super.onKeyDown(keyCode, event);
+        return false;
     }
 
     @Override
