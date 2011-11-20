@@ -4072,6 +4072,7 @@ public class MessagingController implements Runnable {
             // Fetch the message back from the store.  This is the Message that's returned to the caller.
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+
             PendingCommand command = new PendingCommand();
             command.command = PENDING_COMMAND_APPEND;
             command.arguments = new String[] {
