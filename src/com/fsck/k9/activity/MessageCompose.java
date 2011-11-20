@@ -80,6 +80,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
+    private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
 
     private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
@@ -1465,7 +1466,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void saveIfNeeded() {
-        if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys()) {
+        if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
+                mEncryptCheckbox.isChecked()) {
             return;
         }
 
@@ -1892,7 +1894,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             onSend();
             break;
         case R.id.save:
-            onSave();
+            if (mEncryptCheckbox.isChecked()) {
+                showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
+            } else {
+                onSave();
+            }
             break;
         case R.id.discard:
             onDiscard();
@@ -1969,7 +1975,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // This will be called either automatically for you on 2.0
         // or later, or by the code above on earlier versions of the
         // platform.
-        if (mDraftNeedsSaving) {
+        if (mEncryptCheckbox.isChecked()) {
+            showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
+        }
+        else if (mDraftNeedsSaving) {
             showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         } else {
             finish();
@@ -1993,6 +2002,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
                     onDiscard();
+                }
+            })
+                   .create();
+        case DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED:
+            return new AlertDialog.Builder(this)
+                   .setTitle(R.string.refuse_to_save_draft_marked_encrypted_dlg_title)
+                   .setMessage(R.string.refuse_to_save_draft_marked_encrypted_instructions_fmt)
+            .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
                 }
             })
                    .create();
