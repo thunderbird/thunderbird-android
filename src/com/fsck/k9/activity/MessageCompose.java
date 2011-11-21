@@ -81,6 +81,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
+    private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
 
     private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
@@ -210,6 +211,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
+    private boolean mContinueWithoutPublicKey = false;
 
     private String mReferences;
     private String mInReplyTo;
@@ -444,6 +446,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             public void afterTextChanged(android.text.Editable s) { }
         };
 
+        // For watching changes to the To:, Cc:, and Bcc: fields for auto-encryption on a matching
+        // address.
         TextWatcher recipientWatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int before, int after) { }
 
@@ -455,10 +459,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 final CryptoProvider crypto = mAccount.getCryptoProvider();
                 if (mAutoEncrypt && crypto.isAvailable(getApplicationContext())) {
                     for (Address address : getRecipientAddresses()) {
-                        long ids[] = crypto.getPublicKeyIdsFromEmail(getApplicationContext(),
-                                address.getAddress());
-                        if (ids != null && ids.length > 0) {
+                        if (crypto.hasPublicKeyForEmail(getApplicationContext(),
+                                address.getAddress())) {
                             mEncryptCheckbox.setChecked(true);
+                            mContinueWithoutPublicKey = false;
                             break;
                         }
                     }
@@ -950,6 +954,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return Address.parseUnencoded(view.getText().toString().trim());
     }
 
+    /*
+     * Returns an Address array of recipients this email will be sent to.
+     * @return Address array of recipients this email will be sent to.
+     */
     private Address[] getRecipientAddresses() {
         String addresses = mToView.getText().toString() + mCcView.getText().toString()
                 + mBccView.getText().toString();
@@ -1497,20 +1505,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
+        final CryptoProvider crypto = mAccount.getCryptoProvider();
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
             mMessageFormat = MessageFormat.TEXT;
             // key selection before encryption
             StringBuilder emails = new StringBuilder();
-            Address[][] addresses = new Address[][] { getAddresses(mToView),
-                    getAddresses(mCcView),
-                    getAddresses(mBccView)
-                                                    };
-            for (Address[] addressArray : addresses) {
-                for (Address address : addressArray) {
-                    if (emails.length() != 0) {
-                        emails.append(',');
-                    }
-                    emails.append(address.getAddress());
+            for (Address address : getRecipientAddresses()) {
+                if (emails.length() != 0) {
+                    emails.append(',');
+                }
+                emails.append(address.getAddress());
+                if (!mContinueWithoutPublicKey &&
+                        !crypto.hasPublicKeyForEmail(this, address.getAddress())) {
+                    showDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                    return;
                 }
             }
             if (emails.length() != 0) {
@@ -1519,7 +1527,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             emails.append(mIdentity.getEmail());
 
             mPreventDraftSaving = true;
-            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
+            if (!crypto.selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
                 mPreventDraftSaving = false;
             }
             return;
@@ -1528,7 +1536,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (mPgpData.getEncryptedData() == null) {
                 String text = buildText(false).getText();
                 mPreventDraftSaving = true;
-                if (!mAccount.getCryptoProvider().encrypt(this, text, mPgpData)) {
+                if (!crypto.encrypt(this, text, mPgpData)) {
                     mPreventDraftSaving = false;
                 }
                 return;
@@ -2012,6 +2020,24 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
+                }
+            })
+                   .create();
+        case DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY:
+            return new AlertDialog.Builder(this)
+                   .setTitle(R.string.continue_without_public_key_dlg_title)
+                   .setMessage(R.string.continue_without_public_key_instructions_fmt)
+            .setPositiveButton(R.string.continue_action, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                    mContinueWithoutPublicKey = true;
+                    onSend();
+                }
+            })
+            .setNegativeButton(R.string.back_action, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                    mContinueWithoutPublicKey = false;
                 }
             })
                    .create();

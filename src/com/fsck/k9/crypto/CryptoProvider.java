@@ -25,6 +25,8 @@ abstract public class CryptoProvider {
     abstract public boolean decrypt(Activity activity, String data, PgpData pgpData);
     abstract public long[] getSecretKeyIdsFromEmail(Context context, String email);
     abstract public long[] getPublicKeyIdsFromEmail(Context context, String email);
+    abstract public boolean hasSecretKeyForEmail(Context context, String email);
+    abstract public boolean hasPublicKeyForEmail(Context context, String email);
     abstract public String getUserId(Context context, long keyId);
     abstract public String getName();
     abstract public boolean test(Context context);

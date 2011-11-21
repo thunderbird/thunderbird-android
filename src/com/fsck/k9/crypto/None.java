@@ -43,6 +43,16 @@ public class None extends CryptoProvider {
     }
 
     @Override
+    public boolean hasSecretKeyForEmail(Context context, String email) {
+        return false;
+    }
+
+    @Override
+    public boolean hasPublicKeyForEmail(Context context, String email) {
+        return false;
+    }
+
+    @Override
     public String getUserId(Context context, long keyId) {
         return null;
     }
