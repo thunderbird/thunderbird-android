@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -897,9 +898,6 @@ public class MessageList
 
     @Override
     public void onBackPressed() {
-        // This will be called either automatically for you on 2.0
-        // or later, or by the code above on earlier versions of the
-        // platform.
         if (K9.manageBack()) {
             if (mQueryString == null) {
                 onShowFolderList();
@@ -907,24 +905,12 @@ public class MessageList
                 onAccounts();
             }
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (
-            // XXX TODO - when we go to android 2.0, uncomment this
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
-            keyCode == KeyEvent.KEYCODE_BACK
-            && event.getRepeatCount() == 0
-        ) {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            onBackPressed();
-            return true;
-        }
-
         // Shortcuts that work no matter what is selected
         switch (keyCode) {
 
@@ -2181,7 +2167,7 @@ public class MessageList
                                 0,
                                 noSender.length(),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
+                    str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
                                 0,
                                 noSender.length(),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -2270,7 +2256,7 @@ public class MessageList
                             0,
                             message.sender.length() + 1,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                str.setSpan(K9.createAbsoluteSizeSpan(mFontSizes.getMessageListSender()),
+                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
                             0,
                             message.sender.length() + 1,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

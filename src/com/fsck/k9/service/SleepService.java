@@ -113,12 +113,13 @@ public class SleepService extends CoreService {
     }
 
     @Override
-    public void startService(Intent intent, int startId) {
+    public int startService(Intent intent, int startId) {
         try {
           if (intent.getAction().startsWith(ALARM_FIRED)) {
               Integer id = intent.getIntExtra(LATCH_ID, -1);
               endSleep(id);
           }
+          return START_NOT_STICKY;
         }
         finally {
           stopSelf(startId);

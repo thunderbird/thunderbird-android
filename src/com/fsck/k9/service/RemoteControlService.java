@@ -34,7 +34,7 @@ public class RemoteControlService extends CoreService {
     public static final int REMOTE_CONTROL_SERVICE_WAKE_LOCK_TIMEOUT = 20000;
 
     @Override
-    public void startService(final Intent intent, final int startId) {
+    public int startService(final Intent intent, final int startId) {
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "RemoteControlService started with startId = " + startId);
         final Preferences preferences = Preferences.getPreferences(this);
@@ -155,6 +155,8 @@ public class RemoteControlService extends CoreService {
             }
             , RemoteControlService.REMOTE_CONTROL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
         }
+
+        return START_NOT_STICKY;
     }
 
 }

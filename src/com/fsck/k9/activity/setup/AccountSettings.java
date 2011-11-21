@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -823,11 +822,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveSettings();
+        super.onBackPressed();
     }
 
     private void onCompositionSettings() {
@@ -924,8 +921,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             }
 
-            allFolderValues = new String[folders.size()+1];
-            allFolderLabels = new String[folders.size()+1];
+            allFolderValues = new String[folders.size() + 1];
+            allFolderLabels = new String[folders.size() + 1];
 
             allFolderValues[0] = K9.FOLDER_NONE;
             allFolderLabels[0] = K9.FOLDER_NONE;
