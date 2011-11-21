@@ -96,6 +96,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
+    private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
 
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
 
@@ -160,6 +161,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
+    private CheckBoxPreference mCryptoAutoEncrypt;
 
     private ListPreference mLocalStorageProvider;
 
@@ -680,14 +682,19 @@ public class AccountSettings extends K9PreferenceActivity {
         mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
         mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
 
+        mCryptoAutoEncrypt = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_ENCRYPT);
+        mCryptoAutoEncrypt.setChecked(mAccount.isCryptoAutoEncrypt());
+
         handleCryptoAppDependencies();
     }
 
     private void handleCryptoAppDependencies() {
         if ("".equals(mCryptoApp.getValue())) {
             mCryptoAutoSignature.setEnabled(false);
+            mCryptoAutoEncrypt.setEnabled(false);
         } else {
             mCryptoAutoSignature.setEnabled(true);
+            mCryptoAutoEncrypt.setEnabled(true);
         }
     }
 
@@ -733,6 +740,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
+        mAccount.setCryptoAutoEncrypt(mCryptoAutoEncrypt.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
         // In webdav account we use the exact folder name also for inbox,
