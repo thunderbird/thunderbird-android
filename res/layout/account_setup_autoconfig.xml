@@ -1,65 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-        <TextView android:id="@+id/status_message"
-            android:layout_height="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/controls_group" >
+
+        <TextView
+            android:id="@+id/status_message"
             android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
-            android:paddingBottom="6dip"/>
+			android:textSize="10dp"
+            android:paddingBottom="6dip" />
+    </ScrollView>
 
-        <RelativeLayout
-            android:layout_below="@id/status_message"
+    <RelativeLayout
+        android:id="@+id/controls_group"
+        android:layout_width="fill_parent"
+        android:layout_height="158dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true">
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
 
-            <TextView android:id="@+id/autoconfig_warning"
-                android:gravity="center"
-                android:textColor="#C44141"
-                android:textStyle="bold"
+            <Button
+                android:id="@+id/autoconfig_button_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/account_setup_autoconfig_unsafe_connection" />
+                android:text="@string/cancel_action" />
 
-            <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentBottom="true">
-
-                <!-- kind of a hack.... need to have a look at whis this is behind the buttons -->
-               <ProgressBar android:id="@+id/autoconfig_progress"
+            <Button
+                android:id="@+id/autoconfig_button_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="50dp"
-                style="@android:style/Widget.ProgressBar.Large" />
+                android:drawableRight="@drawable/button_indicator_next"
+                android:text="@string/next_action" />
+        </LinearLayout>
 
-                <LinearLayout
-                        android:layout_below="@id/autoconfig_progress"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                   <Button android:id="@+id/autoconfig_button_cancel"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:text="@string/cancel_action"/>
+        <TextView
+            android:id="@+id/autoconfig_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="@string/account_setup_autoconfig_unsafe_connection"
+            android:textColor="#C44141"
+            android:textStyle="bold" />
 
-                   <Button android:id="@+id/autoconfig_button_next"
-                           android:drawableRight="@drawable/button_indicator_next"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:text="@string/next_action"/>
-                </LinearLayout>
-            </RelativeLayout>
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/autoconfig_progress"
+            style="@android:style/Widget.ProgressBar.Large.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/autoconfig_warning"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 </RelativeLayout>
