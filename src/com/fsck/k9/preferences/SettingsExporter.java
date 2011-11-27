@@ -114,7 +114,7 @@ public class SettingsExporter {
             XmlSerializer serializer = Xml.newSerializer();
             serializer.setOutput(os, "UTF-8");
 
-            serializer.startDocument(null, Boolean.valueOf(true));
+            serializer.startDocument(null, Boolean.TRUE);
 
             // Output with indentation
             serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
