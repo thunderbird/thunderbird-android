@@ -2812,7 +2812,7 @@ public class LocalStore extends Store implements Serializable {
             mLastUid = lastUid;
         }
 
-        public long getOldestMessageDate() throws MessagingException {
+        public Long getOldestMessageDate() throws MessagingException {
             return database.execute(false, new DbCallback<Long>() {
                 @Override
                 public Long doDbWork(final SQLiteDatabase db) {
