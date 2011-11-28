@@ -58,6 +58,15 @@ public class FixedLengthInputStream extends InputStream {
     }
 
     @Override
+    public long skip(long n) throws IOException {
+        long d = mIn.skip(Math.min(n, available()));
+        if (d > 0) {
+            mCount += d;
+        }
+        return d;
+    }
+
+    @Override
     public String toString() {
         return String.format("FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);
     }
