@@ -27,8 +27,11 @@ public class FixedLengthInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         if (mCount < mLength) {
-            mCount++;
-            return mIn.read();
+            int d = mIn.read();
+            if (d != -1) {
+                mCount++;
+            }
+            return d;
         } else {
             return -1;
         }
