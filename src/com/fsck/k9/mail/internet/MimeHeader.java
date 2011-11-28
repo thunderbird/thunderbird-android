@@ -109,7 +109,10 @@ public class MimeHeader {
                     v = EncoderUtil.encodeEncodedWord(field.value, charset);
                 }
 
-                writer.write(field.name + ": " + v + "\r\n");
+                writer.write(field.name);
+                writer.write(": ");
+                writer.write(v);
+                writer.write("\r\n");
             }
         }
         writer.flush();
