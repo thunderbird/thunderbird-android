@@ -242,9 +242,9 @@ public class WebDavStore extends Store {
             authPath = (authPath != null) ? authPath : "";
             String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
             mailboxPath = (mailboxPath != null) ? mailboxPath : "";
-            uriPath = path + "|" + authPath + "|" + mailboxPath;
+            uriPath = "/" + path + "|" + authPath + "|" + mailboxPath;
         } else {
-            uriPath = "||";
+            uriPath = "/||";
         }
 
         try {
