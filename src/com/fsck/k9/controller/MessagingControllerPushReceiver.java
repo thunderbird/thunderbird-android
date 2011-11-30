@@ -44,7 +44,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         if (K9.DEBUG)
             Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getName(), new MessagingListener() {
+        controller.synchronizeMailbox(account, folder.getRemoteName(), new MessagingListener() {
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
             int totalMessagesInMailbox, int numNewMessages) {

@@ -256,7 +256,7 @@ public class Pop3Store extends Store {
         Folder folder = mFolders.get(name);
         if (folder == null) {
             folder = new Pop3Folder(name);
-            mFolders.put(folder.getName(), folder);
+            mFolders.put(folder.getRemoteName(), folder);
         }
         return folder;
     }
@@ -458,6 +458,11 @@ public class Pop3Store extends Store {
             mIn = null;
             mOut = null;
             mSocket = null;
+        }
+
+        @Override
+        public String getRemoteName() {
+            return mName;
         }
 
         @Override

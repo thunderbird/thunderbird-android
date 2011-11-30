@@ -502,10 +502,10 @@ public class ImapStore extends Store {
                 HashSet<String> subscribedFolderNames = new HashSet<String>();
                 List <? extends Folder > subscribedFolders = listFolders(connection, true);
                 for (Folder subscribedFolder : subscribedFolders) {
-                    subscribedFolderNames.add(subscribedFolder.getName());
+                    subscribedFolderNames.add(subscribedFolder.getRemoteName());
                 }
                 for (Folder folder : allFolders) {
-                    if (subscribedFolderNames.contains(folder.getName())) {
+                    if (subscribedFolderNames.contains(folder.getRemoteName())) {
                         resultFolders.add(folder);
                     }
                 }
@@ -909,7 +909,6 @@ public class ImapStore extends Store {
                 Log.e(K9.LOG_TAG, "Unable to open connection for " + getLogId(), me);
                 throw me;
             }
-
         }
 
         @Override
@@ -935,6 +934,11 @@ public class ImapStore extends Store {
                 releaseConnection(mConnection);
                 mConnection = null;
             }
+        }
+
+        @Override
+        public String getRemoteName() {
+            return mName;
         }
 
         @Override
@@ -1084,7 +1088,7 @@ public class ImapStore extends Store {
             if (messages.length == 0)
                 return;
 
-            if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
+            if (trashFolderName == null || getRemoteName().equalsIgnoreCase(trashFolderName)) {
                 setFlags(messages, new Flag[] { Flag.DELETED }, true);
             } else {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
@@ -1999,14 +2003,14 @@ public class ImapStore extends Store {
         @Override
         public boolean equals(Object o) {
             if (o instanceof ImapFolder) {
-                return ((ImapFolder)o).getName().equalsIgnoreCase(getName());
+                return ((ImapFolder)o).getRemoteName().equalsIgnoreCase(getRemoteName());
             }
             return super.equals(o);
         }
 
         @Override
         public int hashCode() {
-            return getName().hashCode();
+            return getRemoteName().hashCode();
         }
 
         protected ImapStore getStore() {
@@ -2014,7 +2018,7 @@ public class ImapStore extends Store {
         }
 
         protected String getLogId() {
-            String id = getAccount().getDescription() + ":" + getName() + "/" + Thread.currentThread().getName();
+            String id = getAccount().getDescription() + ":" + getRemoteName() + "/" + Thread.currentThread().getName();
             if (mConnection != null) {
                 id += "/" + mConnection.getLogId();
             }
@@ -2603,7 +2607,7 @@ public class ImapStore extends Store {
             super(store, name);
             receiver = nReceiver;
             TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getAccount().getDescription() + ":" + getName());
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getAccount().getDescription() + ":" + getRemoteName());
             wakeLock.setReferenceCounted(false);
 
         }
@@ -2644,7 +2648,7 @@ public class ImapStore extends Store {
                         try {
                             int oldUidNext = -1;
                             try {
-                                String pushStateS = receiver.getPushState(getName());
+                                String pushStateS = receiver.getPushState(getRemoteName());
                                 ImapPushState pushState = ImapPushState.parse(pushStateS);
                                 oldUidNext = pushState.uidNext;
                                 if (K9.DEBUG)
@@ -2729,7 +2733,7 @@ public class ImapStore extends Store {
                                 if (K9.DEBUG)
                                     Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
 
-                                receiver.setPushActive(getName(), true);
+                                receiver.setPushActive(getRemoteName(), true);
                                 idling.set(true);
                                 doneSent.set(false);
 
@@ -2743,7 +2747,7 @@ public class ImapStore extends Store {
                             wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                             storedUntaggedResponses.clear();
                             idling.set(false);
-                            receiver.setPushActive(getName(), false);
+                            receiver.setPushActive(getRemoteName(), false);
                             try {
                                 close();
                             } catch (Exception me) {
@@ -2770,7 +2774,7 @@ public class ImapStore extends Store {
                             }
                         }
                     }
-                    receiver.setPushActive(getName(), false);
+                    receiver.setPushActive(getRemoteName(), false);
                     try {
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Pusher for " + getLogId() + " is exiting");
@@ -2836,7 +2840,7 @@ public class ImapStore extends Store {
         private void syncMessages(int end, boolean newArrivals) throws MessagingException {
             int oldUidNext = -1;
             try {
-                String pushStateS = receiver.getPushState(getName());
+                String pushStateS = receiver.getPushState(getRemoteName());
                 ImapPushState pushState = ImapPushState.parse(pushStateS);
                 oldUidNext = pushState.uidNext;
                 if (K9.DEBUG)

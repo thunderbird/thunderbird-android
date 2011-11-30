@@ -241,7 +241,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public void onBackPressed() {
         if (K9.manageBack()) {
-            String folder = (mMessage != null) ? mMessage.getFolder().getName() : null;
+            String folder = (mMessage != null) ? mMessage.getFolder().getRemoteName() : null;
             MessageList.actionHandleFolder(this, mAccount, folder);
             finish();
         } else {
@@ -717,7 +717,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private void onFlag() {
         if (mMessage != null) {
             mController.setFlag(mAccount,
-                                mMessage.getFolder().getName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+                                mMessage.getFolder().getRemoteName(), new String[] {mMessage.getUid()}, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
             try {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
                 mMessageView.setHeaders(mMessage, mAccount);

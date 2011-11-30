@@ -61,6 +61,7 @@ import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.exchange.Eas;
 import com.fsck.k9.mail.store.exchange.adapter.EasEmailSyncParser;
 import com.fsck.k9.mail.store.exchange.adapter.FolderSyncParser;
@@ -81,6 +82,8 @@ public class EasStore extends Store {
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+    
+    private static final String INITIAL_SYNC_KEY = "0";
 
     static private final String PING_COMMAND = "Ping";
     // Command timeout is the the time allowed for reading data from an open connection before an
@@ -131,10 +134,7 @@ public class EasStore extends Store {
 
     private HashMap<String, EasFolder> mFolderList = new HashMap<String, EasFolder>();
 
-    private String mStoreSyncKey = "0";
-    private String mStoreSecuritySyncKey = "0";
-
-	/**
+    /**
      * eas://user:password@server:port CONNECTION_SECURITY_NONE
      * eas+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
      * eas+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
@@ -187,18 +187,26 @@ public class EasStore extends Store {
                 Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
-        
+
         mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-        
+
         setupHttpClient();
     }
     
 	public String getStoreSyncKey() {
-		return mStoreSyncKey;
+		String key = mAccount.getSyncKey();
+		
+        // Set the default sync key if it has not yet been set.
+        if (TextUtils.isEmpty(key)) {
+        	key = INITIAL_SYNC_KEY;
+            mAccount.setSyncKey(key);
+        }
+        
+		return key;
 	}
 
-	public void setStoreSyncKey(String mStoreSyncKey) {
-		this.mStoreSyncKey = mStoreSyncKey;
+	public void setStoreSyncKey(String syncKey) {
+		mAccount.setSyncKey(syncKey);
 	}
 
     @Override
@@ -253,7 +261,7 @@ public class EasStore extends Store {
                 // Run second test here for provisioning failures...
                 Serializer s = new Serializer();
                 Log.e(K9.LOG_TAG, "Validate: try folder sync");
-                s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY).text("0")
+                s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY).text(INITIAL_SYNC_KEY)
                     .end().end().done();
                 resp = svc.sendHttpClientPost("FolderSync", s.toByteArray());
                 reclaimConnection(resp);
@@ -541,9 +549,9 @@ public class EasStore extends Store {
             // If there's an account in existence, use its key; otherwise (we're creating the
             // account), send "0".  The server will respond with code 449 if there are policies
             // to be enforced
-            String key = "0";
+            String key = INITIAL_SYNC_KEY;
             if (mAccount != null) {
-                String accountKey = mStoreSecuritySyncKey;
+                String accountKey = mAccount.getSecurityKey();
                 if (!TextUtils.isEmpty(accountKey)) {
                     key = accountKey;
                 }
@@ -585,11 +593,19 @@ public class EasStore extends Store {
     
     @Override
     public List <? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        synchronized (mFolderList) {
-        	if (forceListAll || mFolderList.isEmpty()) {
-        		return getInitialFolderList();
-        	} else {
-    	        return new ArrayList<EasFolder>(mFolderList.values());
+        if (forceListAll || getStoreSyncKey().equals(INITIAL_SYNC_KEY)) {
+        	if (forceListAll) {
+        		// Reset the sync key so the Exchange server will return the entire folder list
+        		// rather than just changes.
+        		setStoreSyncKey(INITIAL_SYNC_KEY);
+        	}
+        	return getInitialFolderList();
+        } else {
+        	synchronized (mFolderList) {
+        		if (mFolderList.isEmpty()) {
+        			syncFoldersFromLocalStore();
+        		}
+        		return new ArrayList<EasFolder>(mFolderList.values());
         	}
         }
     }
@@ -623,7 +639,7 @@ public class EasStore extends Store {
         }
     }
     
-    public List <? extends Folder > getInitialFolderList() throws MessagingException {
+    private List <? extends Folder > getInitialFolderList() throws MessagingException {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
         
     	try {
@@ -641,8 +657,7 @@ public class EasStore extends Store {
     	            if (len != 0) {
     	                InputStream is = entity.getContent();
     	                // Returns true if we need to sync again
-    	                if (new FolderSyncParser(is, this, folderList)
-    	                        .parse()) {
+    	                if (new FolderSyncParser(is, this, folderList).parse()) {
     	                	throw new RuntimeException();
     	                }
     	            }
@@ -672,26 +687,29 @@ public class EasStore extends Store {
     		throw new MessagingException("io", e);
     	}
     	
-    	for (Folder folder : folderList) {
-    		mFolderList.put(folder.getName(), (EasFolder) folder);
+    	synchronized (mFolderList) {
+    		mFolderList.clear();
+	    	for (Folder folder : folderList) {
+	    		mFolderList.put(folder.getRemoteName(), (EasFolder)folder);
+	    	}
     	}
     	
     	for (Folder folder : folderList) {
     		int type = ((EasFolder) folder).mType;
     		switch (type) {
     			case FolderSyncParser.INBOX_TYPE:
-        			String inboxFolderName = folder.getName();
+        			String inboxFolderName = folder.getRemoteName();
         	    	this.mAccount.setAutoExpandFolderName(inboxFolderName);
         	    	this.mAccount.setInboxFolderName(inboxFolderName);
     				break;
     			case FolderSyncParser.DRAFTS_TYPE:
-        	    	this.mAccount.setDraftsFolderName(folder.getName());
+        	    	this.mAccount.setDraftsFolderName(folder.getRemoteName());
     				break;
     			case FolderSyncParser.DELETED_TYPE:
-        	    	this.mAccount.setTrashFolderName(folder.getName());
+        	    	this.mAccount.setTrashFolderName(folder.getRemoteName());
     				break;
     			case FolderSyncParser.SENT_TYPE:
-        	    	this.mAccount.setSentFolderName(folder.getName());
+        	    	this.mAccount.setSentFolderName(folder.getRemoteName());
     				break;
     			case FolderSyncParser.OUTBOX_TYPE:
     				// outbox folder is not synced
@@ -708,25 +726,57 @@ public class EasStore extends Store {
         ProvisionParser pp = canProvision();
         if (pp != null) {
         	String policyKey = acknowledgeProvision(pp.getPolicyKey(), PROVISION_STATUS_OK);
-        	mStoreSecuritySyncKey = policyKey;
+        	mAccount.setSecurityKey(policyKey);
         	return true;
         } else {
         	return false;
         }
 	}
+    
+    private void syncFoldersFromLocalStore() {
+    	try {
+			LocalStore localStore = mAccount.getLocalStore();
+			if (localStore != null) {
+				List<? extends Folder> localFolders = localStore.getPersonalNamespaces(false);
+				synchronized (mFolderList) {
+					for (Folder folder : localFolders) {
+						int type = FolderSyncParser.USER_FOLDER_TYPE;
+						if (folder.getRemoteName().equals(mAccount.getInboxFolderName())) {
+							type = FolderSyncParser.INBOX_TYPE;
+						} else if (folder.getRemoteName().equals(mAccount.getDraftsFolderName())) {
+							type = FolderSyncParser.DRAFTS_TYPE;
+						} else if (folder.getRemoteName().equals(mAccount.getTrashFolderName())) {
+							type = FolderSyncParser.DELETED_TYPE;
+						} else if (folder.getRemoteName().equals(mAccount.getSentFolderName())) {
+							type = FolderSyncParser.SENT_TYPE;
+						}
+						
+						EasFolder remoteFolder = new EasFolder(folder.getName(), folder.getRemoteName(), type);
+						mFolderList.put(folder.getRemoteName(), remoteFolder);
+						remoteFolder.setLocalFolder((LocalFolder)folder, true);
+					}
+				}
+			}
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+    }
 
     @Override
-    public Folder getFolder(String name) {
-        synchronized (mFolderList) {
-            if (mFolderList.isEmpty()) {
-                try {
-                    getInitialFolderList();
-                }
-                catch (MessagingException e) {
-                    e.printStackTrace();
-                }
+    public Folder getFolder(String serverId) {
+        if (getStoreSyncKey().equals(INITIAL_SYNC_KEY)) {
+            try {
+                getInitialFolderList();
             }
-            return mFolderList.get(name);
+            catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+        synchronized (mFolderList) {
+    		if (mFolderList.isEmpty()) {
+    			syncFoldersFromLocalStore();
+    		}
+            return mFolderList.get(serverId);
         }
     }
 
@@ -798,11 +848,8 @@ public class EasStore extends Store {
 
             SchemeRegistry reg = new SchemeRegistry();
             try {
-                Scheme scheme = new Scheme("http", PlainSocketFactory.getSocketFactory(), 80);
-                reg.register(scheme);
-                
-                scheme = new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443);
-                reg.register(scheme);
+                reg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+                reg.register(new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443));
             } catch (NoSuchAlgorithmException nsa) {
                 Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
                 throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
@@ -837,8 +884,8 @@ public class EasStore extends Store {
         private String mServerId;
         private int mType;
         private boolean mIsOpen = false;
-        private int mMessageCount = 0;
-        private String mSyncKey;
+        private String mSyncKey = null;
+        private LocalFolder mLocalFolder = null;
 
         protected EasStore getStore() {
             return EasStore.this;
@@ -846,25 +893,34 @@ public class EasStore extends Store {
 
         public EasFolder(String name, String serverId, int type) {
             super(EasStore.this.getAccount());
-            this.mName = name;
-            this.mServerId = serverId;
-            this.mType = type;
+            mName = name;
+            mServerId = serverId;
+            mType = type;
         }
         
-		public String getSyncKeyUnmodified() {
-			return mSyncKey;
-		}
+        public void setLocalFolder(LocalFolder folder, boolean setSyncKey) {
+        	mLocalFolder = folder;
+        	if (setSyncKey && mLocalFolder != null) {
+        		if (mSyncKey != null && !mSyncKey.equals(INITIAL_SYNC_KEY)) {
+    	            Log.d(K9.LOG_TAG, "Overriding non-default SyncKey: " + mSyncKey);
+        		}
+        		mSyncKey = mLocalFolder.getPushState();
+        	}
+        }
 		
-		public String getSyncKey() {
+		public String getSyncKey() throws MessagingException {
 	        if (mSyncKey == null) {
 	            Log.d(K9.LOG_TAG, "Reset SyncKey to 0");
-	            mSyncKey = "0";
+	            setSyncKey(INITIAL_SYNC_KEY);
 	        }
 	        return mSyncKey;
 		}
 
-		public void setSyncKey(String mSyncKey) {
-			this.mSyncKey = mSyncKey;
+		public void setSyncKey(String key) throws MessagingException {
+			mSyncKey = key;
+			if (mLocalFolder != null) {
+				mLocalFolder.setPushState(mSyncKey);
+			}
 		}
 		
 		@Override
@@ -874,17 +930,17 @@ public class EasStore extends Store {
 
         @Override
         public void open(OpenMode mode) throws MessagingException {
-            this.mIsOpen = true;
+            mIsOpen = true;
         }
 
         @Override
         public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
-            moveOrCopyMessages(messages, folder.getName(), false);
+            moveOrCopyMessages(messages, folder.getRemoteName(), false);
         }
 
         @Override
         public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
-            moveOrCopyMessages(messages, folder.getName(), true);
+            moveOrCopyMessages(messages, folder.getRemoteName(), true);
         }
 
         @Override
@@ -899,34 +955,8 @@ public class EasStore extends Store {
         }
 
         private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
-        throws MessagingException {
-//            String[] uids = new String[messages.length];
-//
-//            for (int i = 0, count = messages.length; i < count; i++) {
-//                uids[i] = messages[i].getUid();
-//            }
-//            String messageBody = "";
-//            HashMap<String, String> headers = new HashMap<String, String>();
-//            HashMap<String, String> uidToUrl = getMessageUrls(uids);
-//            String[] urls = new String[uids.length];
-//
-//            for (int i = 0, count = uids.length; i < count; i++) {
-//                urls[i] = uidToUrl.get(uids[i]);
-//                if (urls[i] == null && messages[i] instanceof EasMessage) {
-//                    EasMessage wdMessage = (EasMessage) messages[i];
-//                    urls[i] = wdMessage.getUrl();
-//                }
-//            }
-//
-//            messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
-//            EasFolder destFolder = (EasFolder) store.getFolder(folderName);
-//            headers.put("Destination", destFolder.mFolderUrl);
-//            headers.put("Brief", "t");
-//            headers.put("If-Match", "*");
-//            String action = (isMove ? "BMOVE" : "BCOPY");
-//            Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
-//
-//            processRequest(mFolderUrl, action, messageBody, headers, false);
+        		throws MessagingException {
+        	// EASTODO
         }
 
         @Override
@@ -946,7 +976,7 @@ public class EasStore extends Store {
 
         @Override
         public boolean isOpen() {
-            return this.mIsOpen;
+            return mIsOpen;
         }
 
         @Override
@@ -955,8 +985,13 @@ public class EasStore extends Store {
         }
 
         @Override
+        public String getRemoteName() {
+            return mServerId;
+        }
+
+        @Override
         public String getName() {
-            return this.mName;
+            return mName;
         }
 
         @Override
@@ -966,8 +1001,7 @@ public class EasStore extends Store {
 
         @Override
         public void close() {
-            this.mMessageCount = 0;
-            this.mIsOpen = false;
+            mIsOpen = false;
         }
 
         @Override
@@ -977,7 +1011,8 @@ public class EasStore extends Store {
 
         @Override
         public void delete(boolean recursive) throws MessagingException {
-            throw new Error("WebDavFolder.delete() not implemeneted");
+        	// EASTODO
+            throw new Error("EasFolder.delete() not implemeneted");
         }
 
         @Override
@@ -987,7 +1022,7 @@ public class EasStore extends Store {
 
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
-        throws MessagingException {
+        		throws MessagingException {
         	try {
         		EasEmailSyncParser syncParser = getMessagesInternal(null, null, null, start, end);
             
@@ -1000,9 +1035,7 @@ public class EasStore extends Store {
         }
 
 		private EasEmailSyncParser getMessagesInternal(Message[] messages, FetchProfile fp, MessageRetrievalListener listener,
-				int start, int end) throws IOException,
-				MessagingException {
-
+				int start, int end) throws IOException, MessagingException {
         	Serializer s = new Serializer();
         	EasEmailSyncParser syncParser = null;
 //			EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
@@ -1024,7 +1057,7 @@ public class EasStore extends Store {
 		    // appears to cause the server to delay its response in some cases, and this delay
 		    // can be long enough to result in an IOException and total failure to sync.
 		    // Therefore, we don't send any options with the initial sync.
-			if (!syncKey.equals("0")) {
+			if (!syncKey.equals(INITIAL_SYNC_KEY)) {
 	            boolean fetchBodySane = (fp != null) && fp.contains(FetchProfile.Item.BODY_SANE);
 	            boolean fetchBody = (fp != null) && fp.contains(FetchProfile.Item.BODY);
 	            
@@ -1032,7 +1065,7 @@ public class EasStore extends Store {
 			    
 			    if (messages == null) {
 			    	s.tag(Tags.SYNC_GET_CHANGES);
-//			    	s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
+			    	// EASTODO: s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
 			    }
 			    // Handle options
 			    s.start(Tags.SYNC_OPTIONS);
@@ -1082,10 +1115,9 @@ public class EasStore extends Store {
 		    	}
 		    	s.end();
 		    }
-//	            // Send our changes up to the server
-//	            target.sendLocalChanges(s);
 
 			s.end().end().end().done();
+			
 			HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()), timeout);
 			try {
     			int code = resp.getStatusLine().getStatusCode();
@@ -1093,26 +1125,24 @@ public class EasStore extends Store {
     			    InputStream is = resp.getEntity().getContent();
     			    if (is != null) {
     		        	syncParser = new EasEmailSyncParser(is, this, mAccount);
-    			        
     		        	boolean moreAvailable = syncParser.parse();
-    		        	
-    			        if (moreAvailable && syncKey.equals("0")) {
+    			        if (moreAvailable && !syncParser.hasMessages()) {
+    			        	// Make sure we free the connection to the pool before recursing. Otherwise
+    			        	// we'll dead lock.
+    			        	reclaimConnection(resp);
     			        	return getMessagesInternal(messages, fp, listener, start, end);
     			        }
     			    } else {
     			    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
     			    }
     			} else {
-//	                userLog("Sync response error: ", code);
-//	                if (isProvisionError(code)) {
-//	                    mExitStatus = EXIT_SECURITY_FAILURE;
-//	                } else if (isAuthError(code)) {
-//	                    mExitStatus = EXIT_LOGIN_FAILURE;
-//	                } else {
-//	                    mExitStatus = EXIT_IO_ERROR;
-//	                }
-//	                return;
-    				throw new MessagingException("not ok status");
+	                if (isProvisionError(code)) {
+	                	throw new MessagingException("Provision error received while downloading messages");
+	                } else if (isAuthError(code)) {
+	                	throw new MessagingException("Authentication error received while downloading messages");
+	                } else {
+	                	throw new MessagingException("Unknown error received while downloading messages");
+	                }
     			}
 			} finally {
 			    reclaimConnection(resp);
@@ -1185,7 +1215,7 @@ public class EasStore extends Store {
 
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
-        throws MessagingException {
+        		throws MessagingException {
             if (messages == null ||
                     messages.length == 0) {
                 return;
@@ -1204,7 +1234,7 @@ public class EasStore extends Store {
 	            	EasEmailSyncParser syncParser = getMessagesInternal(messages, fp, listener, -1, -1);
 					messages = syncParser.getMessages().toArray(EMPTY_MESSAGE_ARRAY);
 	            } catch (IOException e) {
-	            	throw new MessagingException("io exception while fetching messages", e);
+	            	throw new MessagingException("IO exception while fetching messages", e);
 	            }
             }
 			
@@ -1228,7 +1258,7 @@ public class EasStore extends Store {
 
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
-        throws MessagingException {
+        		throws MessagingException {
             String[] uids = new String[messages.length];
 
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1281,17 +1311,20 @@ public class EasStore extends Store {
 
         @Override
         public void appendMessages(Message[] messages) throws MessagingException {
-//            appendWebDavMessages(messages);
+        	// EASTODO
         }
 
         @Override
         public boolean equals(Object o) {
+            if (o instanceof EasFolder) {
+            	return mServerId.equals(((EasFolder)o).mServerId);
+            }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return super.hashCode();
+            return mServerId.hashCode();
         }
 
         @Override
@@ -1308,6 +1341,11 @@ public class EasStore extends Store {
                   "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
+        
+        @Override
+       public String getNewPushState(String oldPushState, Message message) {
+           return mSyncKey;
+       }
     }
 
     /**
@@ -1400,13 +1438,15 @@ public class EasStore extends Store {
                         		.data(Tags.PING_HEARTBEAT_INTERVAL, String.valueOf(responseTimeout))
                         		.start(Tags.PING_FOLDERS);
 							
-							synchronized (mFolderList) {
-    							for (String folderName : folderNames) {
+							// Using getFolder here will ensure we have retrieved the folder list from the server.
+							for (String folderName : folderNames) {
+								EasFolder folder = (EasFolder)mStore.getFolder(folderName);
+								if (folder != null) {
         							s.start(Tags.PING_FOLDER)
-        								.data(Tags.PING_ID, mFolderList.get(folderName).mServerId)
+        								.data(Tags.PING_ID, folder.mServerId)
         								.data(Tags.PING_CLASS, "Email")
         							.end();
-    							}
+								}
 							}
 							
 							s.end().end().done();
@@ -1422,12 +1462,11 @@ public class EasStore extends Store {
     									PingParser pingParser = new PingParser(is);
     							    	if (!pingParser.parse()) {
     								    	for (String folderServerId : pingParser.getFolderList()) {
-    								    		for (EasFolder folder : mFolderList.values()) {
-    								    			if (folderServerId.equals(folder.mServerId)) {
-    								    				receiver.syncFolder(folder);
-    								    				break;
-    								    			}
-    								    		}
+    								    		Folder folder = mStore.getFolder(folderServerId);
+								    			if (folder != null) {
+								    				receiver.syncFolder(folder);
+								    				break;
+								    			}
     								    	}
     							    	} else {
     							    		throw new MessagingException("Parsing of Ping response failed");
@@ -1436,7 +1475,8 @@ public class EasStore extends Store {
     							    	Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
     							    }
     							} else {
-    								throw new MessagingException("not ok status");
+    								throw new MessagingException("Received an unsuccessful HTTP status during a ping request: "
+    										+ String.valueOf(code));
     							}
 							} finally {
 							    reclaimConnection(resp);
@@ -1535,7 +1575,7 @@ public class EasStore extends Store {
 			}
     	}
     	
-		byte[] prepare(EasFolder folder) throws IOException {
+		byte[] prepare(EasFolder folder) throws IOException, MessagingException {
         	Serializer s = new Serializer();
         	
 			String className = "Email";

@@ -703,9 +703,8 @@ public class FolderList extends K9ListActivity {
             return mFilteredFolders.get(position);
         }
 
-
         public long getItemId(int position) {
-            return mFilteredFolders.get(position).folder.getName().hashCode() ;
+            return mFilteredFolders.get(position).folder.getRemoteName().hashCode();
         }
 
         public int getCount() {
@@ -801,7 +800,7 @@ public class FolderList extends K9ListActivity {
 
                         FolderInfoHolder holder = null;
 
-                        int folderIndex = getFolderIndex(folder.getName());
+                        int folderIndex = getFolderIndex(folder.getRemoteName());
                         if (folderIndex >= 0) {
                             holder = (FolderInfoHolder) getItem(folderIndex);
                         }
@@ -983,7 +982,7 @@ public class FolderList extends K9ListActivity {
         public int getFolderIndex(String folder) {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.name = folder;
-            return   mFilteredFolders.indexOf(searchHolder);
+            return mFilteredFolders.indexOf(searchHolder);
         }
 
         public FolderInfoHolder getFolder(String folder) {

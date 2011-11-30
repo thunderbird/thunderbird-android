@@ -74,8 +74,7 @@ public class FolderSettings extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
-        category.setTitle(folderName);
-
+        category.setTitle(mFolder.getName());
 
         mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);
         mInTopGroup.setChecked(mFolder.isInTopGroup());

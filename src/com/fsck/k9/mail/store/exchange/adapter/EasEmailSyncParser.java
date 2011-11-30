@@ -535,7 +535,6 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 //            }
     }
 
-
 	public List<EasMessage> getMessages() throws MessagingException {
 		List<EasMessage> messages = new ArrayList<EasMessage>();
 		
@@ -561,4 +560,7 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 		return messages;
 	}
 
+	public boolean hasMessages() {
+		return !newEmails.isEmpty() || !changedEmails.isEmpty() || !deletedEmails.isEmpty();
+	}
 }

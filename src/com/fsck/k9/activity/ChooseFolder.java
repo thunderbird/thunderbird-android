@@ -246,7 +246,7 @@ public class ChooseFolder extends K9ListActivity {
             ArrayList<String> localFolders = new ArrayList<String>();
 
             for (Folder folder : folders) {
-                String name = folder.getName();
+                String name = folder.getRemoteName();
 
                 // Inbox needs to be compared case-insensitively
                 if (hideCurrentFolder && (name.equals(mFolder) ||
@@ -268,7 +268,7 @@ public class ChooseFolder extends K9ListActivity {
                     Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
                 }
 
-                localFolders.add(folder.getName());
+                localFolders.add(folder.getRemoteName());
 
             }
 

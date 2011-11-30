@@ -92,7 +92,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
     public void populate(Context context, Folder folder, Account account) {
         this.folder = folder;
-        this.name = folder.getName();
+        this.name = folder.getRemoteName();
+        this.displayName = folder.getName();
         this.lastChecked = folder.getLastUpdate();
 
         this.status = truncateStatus(folder.getStatus());
@@ -108,23 +109,23 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         }
 
         if (this.name.equals(account.getDraftsFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_drafts_fmt), this.name);
+            this.displayName = String.format(context.getString(R.string.special_mailbox_name_drafts_fmt), this.displayName);
         }
 
         if (this.name.equals(account.getTrashFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_trash_fmt), this.name);
+            this.displayName = String.format(context.getString(R.string.special_mailbox_name_trash_fmt), this.displayName);
         }
 
         if (this.name.equals(account.getSentFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_sent_fmt), this.name);
+            this.displayName = String.format(context.getString(R.string.special_mailbox_name_sent_fmt), this.displayName);
         }
 
         if (this.name.equals(account.getArchiveFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_archive_fmt), this.name);
+            this.displayName = String.format(context.getString(R.string.special_mailbox_name_archive_fmt), this.displayName);
         }
 
         if (this.name.equals(account.getSpamFolderName())) {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_spam_fmt), this.name);
+            this.displayName = String.format(context.getString(R.string.special_mailbox_name_spam_fmt), this.displayName);
         }
     }
 }

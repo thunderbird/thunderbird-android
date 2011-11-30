@@ -1336,12 +1336,12 @@ public class WebDavStore extends Store {
 
         @Override
         public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
-            moveOrCopyMessages(messages, folder.getName(), false);
+            moveOrCopyMessages(messages, folder.getRemoteName(), false);
         }
 
         @Override
         public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
-            moveOrCopyMessages(messages, folder.getName(), true);
+            moveOrCopyMessages(messages, folder.getRemoteName(), true);
         }
 
         @Override
@@ -1432,6 +1432,11 @@ public class WebDavStore extends Store {
         @Override
         public OpenMode getMode() {
             return OpenMode.READ_WRITE;
+        }
+
+        @Override
+        public String getRemoteName() {
+            return this.mName;
         }
 
         @Override

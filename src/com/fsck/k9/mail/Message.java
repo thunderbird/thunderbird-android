@@ -52,7 +52,7 @@ public abstract class Message implements Part, Body {
             return false;
         }
         Message other = (Message)o;
-        return (mFolder.getName().equals(other.getFolder().getName())
+        return (mFolder.getRemoteName().equals(other.getFolder().getRemoteName())
                 && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid())
                 && mUid.equals(other.getUid()));
     }
@@ -62,7 +62,7 @@ public abstract class Message implements Part, Body {
         final int MULTIPLIER = 31;
 
         int result = 1;
-        result = MULTIPLIER * result + mFolder.getName().hashCode();
+        result = MULTIPLIER * result + mFolder.getRemoteName().hashCode();
         result = MULTIPLIER * result + mFolder.getAccount().getUuid().hashCode();
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
@@ -197,7 +197,7 @@ public abstract class Message implements Part, Body {
         if (mReference == null) {
             mReference = new MessageReference();
             mReference.accountUuid = getFolder().getAccount().getUuid();
-            mReference.folderName = getFolder().getName();
+            mReference.folderName = getFolder().getRemoteName();
             mReference.uid = mUid;
         }
         return mReference;

@@ -138,6 +138,8 @@ public abstract class Folder {
     }
 
     public abstract void delete(boolean recurse) throws MessagingException;
+    
+    public abstract String getRemoteName();
 
     public abstract String getName();
 
@@ -193,6 +195,7 @@ public abstract class Folder {
     public FolderClass getSyncClass() {
         return getDisplayClass();
     }
+    
     public FolderClass getPushClass() {
         return getSyncClass();
     }
