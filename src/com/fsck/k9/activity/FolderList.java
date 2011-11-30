@@ -367,8 +367,7 @@ public class FolderList extends K9ListActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Shortcuts that work no matter what is selected
         switch (keyCode) {
-        case KeyEvent.KEYCODE_Q:
-        {
+        case KeyEvent.KEYCODE_Q: {
             onAccounts();
             return true;
         }

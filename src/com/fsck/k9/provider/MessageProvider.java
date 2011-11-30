@@ -60,7 +60,7 @@ public class MessageProvider extends ContentProvider {
          * <P>Type: TEXT</P>
          */
         String SENDER = "sender";
-        
+
         /**
          * <P>Type: TEXT</P>
          */

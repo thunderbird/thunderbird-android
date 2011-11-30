@@ -78,7 +78,7 @@ public class ToggleScrollView extends ScrollView {
         // We save only the Y coordinate instead of the percentage because I don't know how expensive the
         // computeVerticalScrollRange() call is.
         final int scrollRange = computeVerticalScrollRange();
-        if(scrollRange == 0) {
+        if (scrollRange == 0) {
             return 0;
         }
         return (double) mCurrentYPosition / scrollRange;
@@ -119,11 +119,11 @@ public class ToggleScrollView extends ScrollView {
     class ScrollToLastLocationListener extends MessagingListener {
         public void messageViewFinished() {
             // Don't scroll if our last position was at the top.
-            if(mScrollPercentage != 0.0) {
+            if (mScrollPercentage != 0.0) {
                 final int scrollRange = computeVerticalScrollRange();
                 final int newY = (int)(mScrollPercentage * scrollRange);
                 Log.d(K9.LOG_TAG, "ToggleScrollView: requested " + (100 * mScrollPercentage) + "%, " +
-                    "scrolling to " + newY + "/" + scrollRange);
+                      "scrolling to " + newY + "/" + scrollRange);
                 scrollTo(0, newY);
             }
         }
@@ -134,7 +134,7 @@ public class ToggleScrollView extends ScrollView {
      * @return
      */
     public MessagingListener getListener() {
-        if(this.mListener != null) {
+        if (this.mListener != null) {
             return this.mListener;
         } else {
             return this.mListener = new ScrollToLastLocationListener();

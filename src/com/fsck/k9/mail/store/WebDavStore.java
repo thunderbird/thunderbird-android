@@ -185,7 +185,7 @@ public class WebDavStore extends Store {
         }
 
         return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
-                alias, path, authPath, mailboxPath);
+                                       alias, path, authPath, mailboxPath);
     }
 
     /**
@@ -205,30 +205,29 @@ public class WebDavStore extends Store {
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
             passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
+                          URLEncoder.encode(server.password, "UTF-8") : "";
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
         }
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "webdav+ssl";
-                break;
-            case SSL_TLS_REQUIRED:
-                scheme = "webdav+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "webdav+tls";
-                break;
-            case STARTTLS_REQUIRED:
-                scheme = "webdav+tls+";
-                break;
-            default:
-            case NONE:
-                scheme = "webdav";
-                break;
+        case SSL_TLS_OPTIONAL:
+            scheme = "webdav+ssl";
+            break;
+        case SSL_TLS_REQUIRED:
+            scheme = "webdav+ssl+";
+            break;
+        case STARTTLS_OPTIONAL:
+            scheme = "webdav+tls";
+            break;
+        case STARTTLS_REQUIRED:
+            scheme = "webdav+tls+";
+            break;
+        default:
+        case NONE:
+            scheme = "webdav";
+            break;
         }
 
         String userInfo = userEnc + ":" + passwordEnc;
@@ -242,14 +241,14 @@ public class WebDavStore extends Store {
             authPath = (authPath != null) ? authPath : "";
             String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
             mailboxPath = (mailboxPath != null) ? mailboxPath : "";
-            uriPath = path + "|" + authPath + "|" + mailboxPath;
+            uriPath = "/" + path + "|" + authPath + "|" + mailboxPath;
         } else {
-            uriPath = "||";
+            uriPath = "/||";
         }
 
         try {
             return new URI(scheme, userInfo, server.host, server.port, uriPath,
-                null, null).toString();
+                           null, null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create WebDavStore URI", e);
         }
@@ -273,10 +272,10 @@ public class WebDavStore extends Store {
         public final String mailboxPath;
 
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                String authenticationType, String username, String password, String alias,
-                String path, String authPath, String mailboxPath) {
+                                      String authenticationType, String username, String password, String alias,
+                                      String path, String authPath, String mailboxPath) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
-                    password);
+                  password);
             this.alias = alias;
             this.path = path;
             this.authPath = authPath;
@@ -296,7 +295,7 @@ public class WebDavStore extends Store {
         @Override
         public ServerSettings newPassword(String newPassword) {
             return new WebDavStoreSettings(host, port, connectionSecurity, authenticationType,
-                    username, newPassword, alias, path, authPath, mailboxPath);
+                                           username, newPassword, alias, path, authPath, mailboxPath);
         }
     }
 
@@ -1399,7 +1398,7 @@ public class WebDavStore extends Store {
                 messageCount = dataset.getMessageCount();
             }
             if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
-                Log.v(K9.LOG_TAG, "Counted messages and webdav returned: "+messageCount);
+                Log.v(K9.LOG_TAG, "Counted messages and webdav returned: " + messageCount);
             }
 
             return messageCount;
@@ -1772,7 +1771,7 @@ public class WebDavStore extends Store {
                 try {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 } catch (NullPointerException e) {
-                    Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                    Log.v(K9.LOG_TAG, "Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
                 }
 
                 if (listener != null) {
@@ -1841,7 +1840,7 @@ public class WebDavStore extends Store {
                     wdMessage.setNewHeaders(envelope);
                     wdMessage.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
                 } else {
-                    Log.e(K9.LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
+                    Log.e(K9.LOG_TAG, "Asked to get metadata for a non-existent message: " + wdMessage.getUid());
                 }
 
                 if (listener != null) {

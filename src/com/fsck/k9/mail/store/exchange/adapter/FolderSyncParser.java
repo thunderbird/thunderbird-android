@@ -76,13 +76,13 @@ public class FolderSyncParser extends Parser {
 //    private long mAccountId;
 //    private String mAccountIdAsString;
 //    private String[] mBindArguments = new String[2];
-	private List<Folder> folderList;
+    private List<Folder> folderList;
 
-	private EasStore easStore;
+    private EasStore easStore;
 
     public FolderSyncParser(InputStream in, EasStore easStore, List<Folder> folderList) throws IOException {
-    	super(in);
-    	
+        super(in);
+
         this.easStore = easStore;
         this.folderList = folderList;
 //        mAccountId = mAccount.mId;
@@ -113,12 +113,12 @@ public class FolderSyncParser extends Parser {
                     } else {
                         // Other errors are at the server, so let's throw an error that will
                         // cause this sync to be retried at a later time
-                    	Log.e(K9.LOG_TAG, "Throwing IOException; will retry later");
+                        Log.e(K9.LOG_TAG, "Throwing IOException; will retry later");
                         throw new EasParserException("Folder status error");
                     }
                 }
             } else if (tag == Tags.FOLDER_SYNC_KEY) {
-            	easStore.setStoreSyncKey(getValue());
+                easStore.setStoreSyncKey(getValue());
                 userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
             } else if (tag == Tags.FOLDER_CHANGES) {
                 changesParser();
@@ -146,8 +146,8 @@ public class FolderSyncParser extends Parser {
     public void deleteParser(ArrayList<ContentProviderOperation> ops) throws IOException {
         while (nextTag(Tags.FOLDER_DELETE) != END) {
             switch (tag) {
-                case Tags.FOLDER_SERVER_ID:
-                    String serverId = getValue();
+            case Tags.FOLDER_SERVER_ID:
+                String serverId = getValue();
 //                    // Find the mailbox in this account with the given serverId
 //                    Cursor c = getServerIdCursor(serverId);
 //                    try {
@@ -162,9 +162,9 @@ public class FolderSyncParser extends Parser {
 //                    } finally {
 //                        c.close();
 //                    }
-                    break;
-                default:
-                    skipTag();
+                break;
+            default:
+                skipTag();
             }
         }
     }
@@ -177,29 +177,29 @@ public class FolderSyncParser extends Parser {
 
         while (nextTag(Tags.FOLDER_ADD) != END) {
             switch (tag) {
-                case Tags.FOLDER_DISPLAY_NAME: {
-                    name = getValue();
-                    break;
-                }
-                case Tags.FOLDER_TYPE: {
-                    type = getValueInt();
-                    break;
-                }
-                case Tags.FOLDER_PARENT_ID: {
-                    parentId = getValue();
-                    break;
-                }
-                case Tags.FOLDER_SERVER_ID: {
-                    serverId = getValue();
-                    break;
-                }
-                default:
-                    skipTag();
+            case Tags.FOLDER_DISPLAY_NAME: {
+                name = getValue();
+                break;
+            }
+            case Tags.FOLDER_TYPE: {
+                type = getValueInt();
+                break;
+            }
+            case Tags.FOLDER_PARENT_ID: {
+                parentId = getValue();
+                break;
+            }
+            case Tags.FOLDER_SERVER_ID: {
+                serverId = getValue();
+                break;
+            }
+            default:
+                skipTag();
             }
         }
         if (mValidFolderTypes.contains(type)) {
-        	Folder folder = easStore.new EasFolder(name, serverId, type);
-        	folderList.add(folder);
+            Folder folder = easStore.new EasFolder(name, serverId, type);
+            folderList.add(folder);
 //            Mailbox m = new Mailbox();
 //            m.mDisplayName = name;
 //            m.mServerId = serverId;
@@ -258,18 +258,18 @@ public class FolderSyncParser extends Parser {
         String parentId = null;
         while (nextTag(Tags.FOLDER_UPDATE) != END) {
             switch (tag) {
-                case Tags.FOLDER_SERVER_ID:
-                    serverId = getValue();
-                    break;
-                case Tags.FOLDER_DISPLAY_NAME:
-                    displayName = getValue();
-                    break;
-                case Tags.FOLDER_PARENT_ID:
-                    parentId = getValue();
-                    break;
-                default:
-                    skipTag();
-                    break;
+            case Tags.FOLDER_SERVER_ID:
+                serverId = getValue();
+                break;
+            case Tags.FOLDER_DISPLAY_NAME:
+                displayName = getValue();
+                break;
+            case Tags.FOLDER_PARENT_ID:
+                parentId = getValue();
+                break;
+            default:
+                skipTag();
+                break;
             }
         }
         // We'll make a change if one of parentId or displayName are specified
@@ -325,13 +325,13 @@ public class FolderSyncParser extends Parser {
         // Create the new mailboxes in a single batch operation
         // Don't save any data if the service has been stopped
 //        synchronized (mService.getSynchronizer()) {
-            if (!ops.isEmpty()/* && !mService.isStopped()*/) {
-                userLog("Applying ", ops.size(), " mailbox operations.");
+        if (!ops.isEmpty()/* && !mService.isStopped()*/) {
+            userLog("Applying ", ops.size(), " mailbox operations.");
 
-                // Execute the batch
+            // Execute the batch
 //                try {
 //                    mContentResolver.applyBatch(EmailProvider.EMAIL_AUTHORITY, ops);
-                    userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
+            userLog("New Account SyncKey: ", easStore.getStoreSyncKey());
 //                } catch (RemoteException e) {
 //                    // There is nothing to be done here; fail by returning null
 //                } catch (OperationApplicationException e) {
@@ -362,16 +362,16 @@ public class FolderSyncParser extends Parser {
 //                    mContentResolver.delete(Mailbox.CONTENT_URI, WHERE_PARENT_SERVER_ID_AND_ACCOUNT,
 //                            mBindArguments);
 //                }
-            }
+        }
 //        }
     }
 
     void userLog(String ...strings) {
-    	Log.i(K9.LOG_TAG, Arrays.toString(strings));
+        Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
     void userLog(String string, int num, String string2) {
-    	Log.i(K9.LOG_TAG, string + num + string2);
+        Log.i(K9.LOG_TAG, string + num + string2);
     }
-    
+
 }

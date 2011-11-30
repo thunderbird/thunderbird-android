@@ -70,22 +70,29 @@ public class MimeMultipart extends Multipart {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
 
         if (mPreamble != null) {
-            writer.write(mPreamble + "\r\n");
+            writer.write(mPreamble);
+            writer.write("\r\n");
         }
 
         if (mParts.isEmpty()) {
-            writer.write("--" + mBoundary + "\r\n");
+            writer.write("--");
+            writer.write(mBoundary);
+            writer.write("\r\n");
         }
 
         for (int i = 0, count = mParts.size(); i < count; i++) {
             BodyPart bodyPart = mParts.get(i);
-            writer.write("--" + mBoundary + "\r\n");
+            writer.write("--");
+            writer.write(mBoundary);
+            writer.write("\r\n");
             writer.flush();
             bodyPart.writeTo(out);
             writer.write("\r\n");
         }
 
-        writer.write("--" + mBoundary + "--\r\n");
+        writer.write("--");
+        writer.write(mBoundary);
+        writer.write("--\r\n");
         writer.flush();
     }
 

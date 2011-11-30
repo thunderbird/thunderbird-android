@@ -61,6 +61,7 @@
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
     <string name="continue_action">Continue</string>
+    <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
     <string name="remove_action">Remove</string>
     <string name="discard_action">Discard</string>
@@ -597,6 +598,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_crypto_app_not_available">not available</string>
     <string name="account_settings_crypto_auto_signature">Auto-sign</string>
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
+    <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>
@@ -1022,6 +1025,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
+
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>
+
+    <string name="continue_without_public_key_dlg_title">Continue without public key?</string>
+    <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>
 
     <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>
 

@@ -680,7 +680,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     String outgoingPassword = null;
                     if (mOutgoingPasswordView != null) {
                         outgoingPassword = (mUseIncomingView.isChecked()) ?
-                                incomingPassword : mOutgoingPasswordView.getText().toString();
+                                           incomingPassword : mOutgoingPasswordView.getText().toString();
                     }
 
                     dialog.dismiss();
@@ -704,21 +704,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             // Use the dialog's layout inflater so its theme is used (and not the activity's theme).
             View layout = mDialog.getLayoutInflater().inflate(
-                    R.layout.accounts_password_prompt, null);
+                              R.layout.accounts_password_prompt, null);
 
             // Set the intro text that tells the user what to do
             TextView intro = (TextView) layout.findViewById(R.id.password_prompt_intro);
             String serverPasswords = activity.getResources().getQuantityString(
-                    R.plurals.settings_import_server_passwords,
-                    (configureOutgoingServer) ? 2 : 1);
+                                         R.plurals.settings_import_server_passwords,
+                                         (configureOutgoingServer) ? 2 : 1);
             intro.setText(activity.getString(R.string.settings_import_activate_account_intro,
-                    mAccount.getDescription(), serverPasswords));
+                                             mAccount.getDescription(), serverPasswords));
 
             // Display the hostname of the incoming server
             TextView incomingText = (TextView) layout.findViewById(
-                    R.id.password_prompt_incoming_server);
+                                        R.id.password_prompt_incoming_server);
             incomingText.setText(activity.getString(R.string.settings_import_incoming_server,
-                    incoming.host));
+                                                    incoming.host));
 
             mIncomingPasswordView = (EditText) layout.findViewById(R.id.incoming_server_password);
             mIncomingPasswordView.addTextChangedListener(this);
@@ -726,16 +726,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (configureOutgoingServer) {
                 // Display the hostname of the outgoing server
                 TextView outgoingText = (TextView) layout.findViewById(
-                        R.id.password_prompt_outgoing_server);
+                                            R.id.password_prompt_outgoing_server);
                 outgoingText.setText(activity.getString(R.string.settings_import_outgoing_server,
-                        outgoing.host));
+                                                        outgoing.host));
 
                 mOutgoingPasswordView = (EditText) layout.findViewById(
-                        R.id.outgoing_server_password);
+                                            R.id.outgoing_server_password);
                 mOutgoingPasswordView.addTextChangedListener(this);
 
                 mUseIncomingView = (CheckBox) layout.findViewById(
-                        R.id.use_incoming_server_password);
+                                       R.id.use_incoming_server_password);
                 mUseIncomingView.setChecked(true);
                 mUseIncomingView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
@@ -786,7 +786,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 // If the checkbox to use the incoming server password is checked we need to make
                 // sure that the password box for the outgoing server isn't empty.
                 else if (mUseIncomingView.isChecked() ||
-                        mOutgoingPasswordView.getText().length() > 0) {
+                         mOutgoingPasswordView.getText().length() > 0) {
                     enable = true;
                 }
             }
@@ -817,8 +817,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private Application mApplication;
 
         protected SetPasswordsAsyncTask(Activity activity, Account account,
-                String incomingPassword, String outgoingPassword,
-                List<Account> remainingAccounts) {
+                                        String incomingPassword, String outgoingPassword,
+                                        List<Account> remainingAccounts) {
             super(activity);
             mAccount = account;
             mIncomingPassword = incomingPassword;
@@ -832,7 +832,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             String title = mActivity.getString(R.string.settings_import_activate_account_header);
             int passwordCount = (mOutgoingPassword == null) ? 1 : 2;
             String message = mActivity.getResources().getQuantityString(
-                    R.plurals.settings_import_setting_passwords, passwordCount);
+                                 R.plurals.settings_import_setting_passwords, passwordCount);
             mProgressDialog = ProgressDialog.show(mActivity, title, message, true);
         }
 
@@ -1218,19 +1218,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     item.setVisible(false);
                 }
             }
-        }
-        else {
+        } else {
             EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(account);
             if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
                 menu.findItem(R.id.move_up).setEnabled(false);
-            }
-            else {
+            } else {
                 menu.findItem(R.id.move_up).setEnabled(true);
             }
             if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
                 menu.findItem(R.id.move_down).setEnabled(false);
-            }
-            else {
+            } else {
                 menu.findItem(R.id.move_down).setEnabled(true);
             }
         }
@@ -1375,7 +1372,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
-                    R.plurals.settings_import_success, imported, imported);
+                                  R.plurals.settings_import_success, imported, imported);
             return activity.getString(R.string.settings_import_success, accounts, mFilename);
         }
 
@@ -1467,7 +1464,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             importSelectionView.setAdapter(new ArrayAdapter<String>(activity,
-                    android.R.layout.simple_list_item_checked, contents));
+                                           android.R.layout.simple_list_item_checked, contents));
             importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -1476,7 +1473,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> arg0) { /* Do nothing */ }
+                public void onNothingSelected(AdapterView<?> arg0) {
+                    /* Do nothing */
+                }
             });
 
             if (selection != null) {
@@ -1494,47 +1493,47 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             builder.setView(importSelectionView);
             builder.setInverseBackgroundForced(true);
             builder.setPositiveButton(R.string.okay_action,
-                new DialogInterface.OnClickListener() {
+            new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListAdapter adapter = importSelectionView.getAdapter();
-                        int count = adapter.getCount();
-                        SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ListAdapter adapter = importSelectionView.getAdapter();
+                    int count = adapter.getCount();
+                    SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
 
-                        boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
-                        List<String> accountUuids = new ArrayList<String>();
-                        int start = mImportContents.globalSettings ? 1 : 0;
-                        for (int i = start; i < count; i++) {
-                            if (pos.get(i)) {
-                                accountUuids.add(mImportContents.accounts.get(i-start).uuid);
-                            }
+                    boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                    List<String> accountUuids = new ArrayList<String>();
+                    int start = mImportContents.globalSettings ? 1 : 0;
+                    for (int i = start; i < count; i++) {
+                        if (pos.get(i)) {
+                            accountUuids.add(mImportContents.accounts.get(i - start).uuid);
                         }
-
-                        /*
-                         * TODO: Think some more about this. Overwriting could change the store
-                         * type. This requires some additional code in order to work smoothly
-                         * while the app is running.
-                         */
-                        boolean overwrite = false;
-
-                        dialog.dismiss();
-                        activity.setNonConfigurationInstance(null);
-
-                        ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
-                                includeGlobals, accountUuids, overwrite, mUri);
-                        activity.setNonConfigurationInstance(importAsyncTask);
-                        importAsyncTask.execute();
                     }
-                });
+
+                    /*
+                     * TODO: Think some more about this. Overwriting could change the store
+                     * type. This requires some additional code in order to work smoothly
+                     * while the app is running.
+                     */
+                    boolean overwrite = false;
+
+                    dialog.dismiss();
+                    activity.setNonConfigurationInstance(null);
+
+                    ImportAsyncTask importAsyncTask = new ImportAsyncTask(activity,
+                            includeGlobals, accountUuids, overwrite, mUri);
+                    activity.setNonConfigurationInstance(importAsyncTask);
+                    importAsyncTask.execute();
+                }
+            });
             builder.setNegativeButton(R.string.cancel_action,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            activity.setNonConfigurationInstance(null);
-                        }
-                    });
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.setNonConfigurationInstance(null);
+                }
+            });
             mDialog = builder.show();
         }
     }
@@ -1772,7 +1771,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
 
         private ExportAsyncTask(Accounts activity, boolean includeGlobals,
-                Set<String> accountUuids) {
+                                Set<String> accountUuids) {
             super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
@@ -1789,7 +1788,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         protected Boolean doInBackground(Void... params) {
             try {
                 mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
-                        mAccountUuids);
+                            mAccountUuids);
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
@@ -1808,11 +1807,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             if (success) {
                 activity.showSimpleDialog(R.string.settings_export_success_header,
-                        R.string.settings_export_success, mFileName);
+                                          R.string.settings_export_success, mFileName);
             } else {
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,
-                        R.string.settings_export_failure);
+                                          R.string.settings_export_failure);
             }
         }
     }
@@ -1828,7 +1827,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private ImportResults mImportResults;
 
         private ImportAsyncTask(Accounts activity, boolean includeGlobals,
-                List<String> accountUuids, boolean overwrite, Uri uri) {
+                                List<String> accountUuids, boolean overwrite, Uri uri) {
             super(activity);
             mIncludeGlobals = includeGlobals;
             mAccountUuids = accountUuids;
@@ -1849,11 +1848,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 InputStream is = mContext.getContentResolver().openInputStream(mUri);
                 try {
                     mImportResults = SettingsImporter.importSettings(mContext, is,
-                            mIncludeGlobals, mAccountUuids, mOverwrite);
+                                     mIncludeGlobals, mAccountUuids, mOverwrite);
                 } finally {
                     try {
                         is.close();
-                    } catch (IOException e) { /* Ignore */ }
+                    } catch (IOException e) {
+                        /* Ignore */
+                    }
                 }
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during import", e);
@@ -1883,7 +1884,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (success && (globalSettings || imported > 0)) {
                 if (imported == 0) {
                     activity.showSimpleDialog(R.string.settings_import_success_header,
-                            R.string.settings_import_global_settings_success, filename);
+                                              R.string.settings_import_global_settings_success, filename);
                 } else {
                     activity.showAccountsImportedDialog(mImportResults, filename);
                 }
@@ -1892,7 +1893,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             } else {
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                        R.string.settings_import_failure, filename);
+                                          R.string.settings_import_failure, filename);
             }
         }
     }
@@ -1924,13 +1925,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 } finally {
                     try {
                         is.close();
-                    } catch (IOException e) { /* Ignore */ }
+                    } catch (IOException e) {
+                        /* Ignore */
+                    }
                 }
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
                 return false;
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 Log.w(K9.LOG_TAG, "Couldn't read content from URI " + mUri);
                 return false;
             }
@@ -1952,7 +1954,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 String filename = mUri.getLastPathSegment();
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                        R.string.settings_import_failure, filename);
+                                          R.string.settings_import_failure, filename);
             }
         }
     }

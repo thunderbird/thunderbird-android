@@ -51,7 +51,7 @@ public abstract class Parser {
     private boolean logging = false;
     private boolean capture = false;
     private String logTag = "EAS Parser";
-    
+
     // Where tags start in a page
     private static final int TAG_BASE = 5;
 
@@ -227,7 +227,7 @@ public abstract class Parser {
      * @return the integer value of the current tag
      * @throws IOException
      */
-   public int getValueInt() throws IOException {
+    public int getValueInt() throws IOException {
         // The true argument to getNext indicates the desire for an integer return value
         getNext(true);
         if (type == END) {
@@ -264,7 +264,7 @@ public abstract class Parser {
             if (type == START) {
                 tag = page | startTag;
                 return tag;
-            // If we're at the ending tag we're looking for, return the END signal
+                // If we're at the ending tag we're looking for, return the END signal
             } else if (type == END && startTag == endTag) {
                 return END;
             }
@@ -329,7 +329,7 @@ public abstract class Parser {
     /*package*/ void resetInput(InputStream in) {
         this.in = in;
     }
-    
+
     void log(String str) {
         int cr = str.indexOf('\n');
         if (cr > 0) {
@@ -368,7 +368,7 @@ public abstract class Parser {
         text = null;
         name = null;
 
-        int id = nextId ();
+        int id = nextId();
         while (id == Wbxml.SWITCH_PAGE) {
             nextId = NOT_FETCHED;
             // Get the new page number
@@ -382,51 +382,51 @@ public abstract class Parser {
         nextId = NOT_FETCHED;
 
         switch (id) {
-            case EOF_BYTE:
-                // End of document
-                type = DONE;
-                break;
+        case EOF_BYTE:
+            // End of document
+            type = DONE;
+            break;
 
-            case Wbxml.END:
-                // End of tag
-                type = END;
-                if (logging) {
-                    name = nameArray[depth];
-                    //log("</" + name + '>');
-                }
-                // Retrieve the now-current startTag from our stack
-                startTag = endTag = startTagArray[depth];
-                break;
+        case Wbxml.END:
+            // End of tag
+            type = END;
+            if (logging) {
+                name = nameArray[depth];
+                //log("</" + name + '>');
+            }
+            // Retrieve the now-current startTag from our stack
+            startTag = endTag = startTagArray[depth];
+            break;
 
-            case Wbxml.STR_I:
-                // Inline string
-                type = TEXT;
-                if (asInt) {
-                    num = readInlineInt();
-                } else {
-                    text = readInlineString();
-                }
-                if (logging) {
-                    name = tagTable[startTag - TAG_BASE];
-                    log(name + ": " + (asInt ? Integer.toString(num) : text));
-                }
-                break;
+        case Wbxml.STR_I:
+            // Inline string
+            type = TEXT;
+            if (asInt) {
+                num = readInlineInt();
+            } else {
+                text = readInlineString();
+            }
+            if (logging) {
+                name = tagTable[startTag - TAG_BASE];
+                log(name + ": " + (asInt ? Integer.toString(num) : text));
+            }
+            break;
 
-            default:
-                // Start of tag
-                type = START;
-                // The tag is in the low 6 bits
-                startTag = id & 0x3F;
-                // If the high bit is set, there is content (a value) to be read
-                noContent = (id & 0x40) == 0;
-                depth++;
-                if (logging) {
-                    name = tagTable[startTag - TAG_BASE];
-                    //log('<' + name + '>');
-                    nameArray[depth] = name;
-                }
-                // Save the startTag to our stack
-                startTagArray[depth] = startTag;
+        default:
+            // Start of tag
+            type = START;
+            // The tag is in the low 6 bits
+            startTag = id & 0x3F;
+            // If the high bit is set, there is content (a value) to be read
+            noContent = (id & 0x40) == 0;
+            depth++;
+            if (logging) {
+                name = tagTable[startTag - TAG_BASE];
+                //log('<' + name + '>');
+                nameArray[depth] = name;
+            }
+            // Save the startTag to our stack
+            startTagArray[depth] = startTag;
         }
 
         // Return the type of data we're dealing with

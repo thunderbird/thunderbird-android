@@ -888,7 +888,8 @@ public class MimeUtility {
      */
     private static final String[][] MIME_TYPE_REPLACEMENT_MAP = new String[][] {
         {"image/jpg", "image/jpeg"},
-        {"image/pjpeg", "image/jpeg"}   // see issue 1712
+        {"image/pjpeg", "image/jpeg"},   // see issue 1712
+        {"application/x-zip-compressed", "application/zip"} // see issue 3791
     };
 
     public static String unfold(String s) {

@@ -199,7 +199,7 @@ public class MailService extends CoreService {
     }
 
     private void rescheduleAllInBackground(final boolean hasConnectivity,
-            final boolean doBackground, Integer startId) {
+                                           final boolean doBackground, Integer startId) {
 
         execute(getApplication(), new Runnable() {
             @Override
@@ -211,7 +211,7 @@ public class MailService extends CoreService {
     }
 
     private void reschedulePollInBackground(final boolean hasConnectivity,
-            final boolean doBackground, Integer startId, final boolean considerLastCheckEnd) {
+                                            final boolean doBackground, Integer startId, final boolean considerLastCheckEnd) {
 
         execute(getApplication(), new Runnable() {
             public void run() {
@@ -231,7 +231,7 @@ public class MailService extends CoreService {
     }
 
     private void refreshPushersInBackground(boolean hasConnectivity, boolean doBackground,
-            Integer startId) {
+                                            Integer startId) {
 
         if (hasConnectivity && doBackground) {
             execute(getApplication(), new Runnable() {
@@ -244,12 +244,12 @@ public class MailService extends CoreService {
     }
 
     private void reschedulePoll(final boolean hasConnectivity, final boolean doBackground,
-            boolean considerLastCheckEnd) {
+                                boolean considerLastCheckEnd) {
 
         if (!(hasConnectivity && doBackground)) {
             if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "No connectivity, canceling check for " +
-                        getApplication().getPackageName());
+                      getApplication().getPackageName());
             }
 
             nextCheck = -1;
@@ -265,8 +265,8 @@ public class MailService extends CoreService {
 
         if (lastCheckEnd > System.currentTimeMillis()) {
             Log.i(K9.LOG_TAG, "The database claims that the last time mail was checked was in " +
-                    "the future (" + lastCheckEnd + "). To try to get things back to normal, " +
-                    "the last check time has been reset to: " + System.currentTimeMillis());
+                  "the future (" + lastCheckEnd + "). To try to get things back to normal, " +
+                  "the last check time has been reset to: " + System.currentTimeMillis());
             lastCheckEnd = System.currentTimeMillis();
         }
 
@@ -275,7 +275,7 @@ public class MailService extends CoreService {
             if (account.getAutomaticCheckIntervalMinutes() != -1 &&
                     account.getFolderSyncMode() != FolderMode.NONE &&
                     (account.getAutomaticCheckIntervalMinutes() < shortestInterval ||
-                            shortestInterval == -1)) {
+                     shortestInterval == -1)) {
                 shortestInterval = account.getAutomaticCheckIntervalMinutes();
             }
         }
@@ -286,7 +286,7 @@ public class MailService extends CoreService {
         if (shortestInterval == -1) {
             if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "No next check scheduled for package " +
-                        getApplication().getPackageName());
+                      getApplication().getPackageName());
             }
 
             nextCheck = -1;
@@ -295,7 +295,7 @@ public class MailService extends CoreService {
         } else {
             long delay = (shortestInterval * (60 * 1000));
             long base = (previousInterval == -1 || lastCheckEnd == -1 ||
-                    !considerLastCheckEnd ? System.currentTimeMillis() : lastCheckEnd);
+                         !considerLastCheckEnd ? System.currentTimeMillis() : lastCheckEnd);
             long nextTime = base + delay;
 
             if (K9.DEBUG) {
@@ -311,8 +311,8 @@ public class MailService extends CoreService {
             try {
                 if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "Next check for package " +
-                            getApplication().getPackageName() + " scheduled for " +
-                            new Date(nextTime));
+                          getApplication().getPackageName() + " scheduled for " +
+                          new Date(nextTime));
                 }
             } catch (Exception e) {
                 // I once got a NullPointerException deep in new Date();
@@ -345,7 +345,7 @@ public class MailService extends CoreService {
         if (!(hasConnectivity && doBackground)) {
             if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "Not scheduling pushers:  connectivity? " + hasConnectivity +
-                        " -- doBackground? " + doBackground);
+                      " -- doBackground? " + doBackground);
             }
             return;
         }

@@ -18,11 +18,11 @@ public class PingParser extends Parser {
 
     public static final String TAG = "PingParser";
 
-	private List<String> folderList;
+    private List<String> folderList;
 
     public PingParser(InputStream in) throws IOException {
-    	super(in);
-    	
+        super(in);
+
         this.folderList = new ArrayList<String>();
     }
 
@@ -40,7 +40,7 @@ public class PingParser extends Parser {
                     throw new IOException("Ping status error");
                 }
             } else if (tag == Tags.PING_FOLDERS) {
-            	foldersParser();
+                foldersParser();
             } else
                 skipTag();
         }
@@ -50,26 +50,26 @@ public class PingParser extends Parser {
     public void foldersParser() throws IOException {
         while (nextTag(Tags.PING_FOLDERS) != END) {
             switch (tag) {
-                case Tags.PING_FOLDER:
-                    String serverId = getValue();
-                    folderList.add(serverId);
-                    break;
-                default:
-                    skipTag();
+            case Tags.PING_FOLDER:
+                String serverId = getValue();
+                folderList.add(serverId);
+                break;
+            default:
+                skipTag();
             }
         }
     }
-    
+
     public List<String> getFolderList() {
-		return folderList;
-	}
+        return folderList;
+    }
 
     void userLog(String ...strings) {
-    	Log.i(K9.LOG_TAG, Arrays.toString(strings));
+        Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
     void userLog(String string, int num, String string2) {
-    	Log.i(K9.LOG_TAG, string + num + string2);
+        Log.i(K9.LOG_TAG, string + num + string2);
     }
-    
+
 }

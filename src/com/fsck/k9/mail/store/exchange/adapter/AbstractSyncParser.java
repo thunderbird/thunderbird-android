@@ -53,7 +53,7 @@ public abstract class AbstractSyncParser extends Parser {
     /**
      * Read, parse, and act on incoming commands from the Exchange server
      * @throws IOException if the connection is broken
-     * @throws MessagingException 
+     * @throws MessagingException
      */
     public abstract void commandsParser() throws IOException, MessagingException;
 
@@ -106,7 +106,7 @@ public abstract class AbstractSyncParser extends Parser {
                 // Status = 1 is success; everything else is a failure
                 status = getValueInt();
                 if (status != 1) {
-                	Log.e(K9.LOG_TAG, "Sync failed: " + status);
+                    Log.e(K9.LOG_TAG, "Sync failed: " + status);
                     // Status = 3 means invalid sync key
                     if (status == 3) {
                         // Must delete all of the data and start over with syncKey of "0"
@@ -144,11 +144,11 @@ public abstract class AbstractSyncParser extends Parser {
                 }
                 // If we were pushing (i.e. auto-start), now we'll become ping-triggered
                 if (MailboxAdapter.mSyncInterval == MailboxAdapter.CHECK_INTERVAL_PUSH) {
-                	MailboxAdapter.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PING;
+                    MailboxAdapter.mSyncInterval = MailboxAdapter.CHECK_INTERVAL_PING;
                 }
-           } else {
+            } else {
                 skipTag();
-           }
+            }
         }
 
         // If we don't have a new sync key, ignore moreAvailable (or we'll loop)
@@ -194,11 +194,11 @@ public abstract class AbstractSyncParser extends Parser {
     }
 
     void userLog(String ...strings) {
-    	Log.i(K9.LOG_TAG, Arrays.toString(strings));
+        Log.i(K9.LOG_TAG, Arrays.toString(strings));
     }
 
     void userLog(String string, int num, String string2) {
-    	Log.i(K9.LOG_TAG, string + num + string2);
+        Log.i(K9.LOG_TAG, string + num + string2);
     }
-    
+
 }

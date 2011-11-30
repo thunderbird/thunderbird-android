@@ -214,7 +214,7 @@ public class Tags {
     public static final int FOLDER_UPDATE = FOLDER_PAGE + 0x11;
     public static final int FOLDER_SYNC_KEY = FOLDER_PAGE + 0x12;
     public static final int FOLDER_FOLDER_CREATE = FOLDER_PAGE + 0x13;
-    public static final int FOLDER_FOLDER_DELETE= FOLDER_PAGE + 0x14;
+    public static final int FOLDER_FOLDER_DELETE = FOLDER_PAGE + 0x14;
     public static final int FOLDER_FOLDER_UPDATE = FOLDER_PAGE + 0x15;
     public static final int FOLDER_FOLDER_SYNC = FOLDER_PAGE + 0x16;
     public static final int FOLDER_COUNT = FOLDER_PAGE + 0x17;
@@ -479,7 +479,8 @@ public class Tags {
     public static final int BASE_CONTENT_TYPE = BASE_PAGE + 0x17;
 
     static public String[][] pages = {
-        {    // 0x00 AirSync
+        {
+            // 0x00 AirSync
             "Sync", "Responses", "Add", "Change", "Delete", "Fetch", "SyncKey", "ClientId",
             "ServerId", "Status", "Collection", "Class", "Version", "CollectionId", "GetChanges",
             "MoreAvailable", "WindowSize", "Commands", "Options", "FilterType", "Truncation",

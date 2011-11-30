@@ -69,51 +69,51 @@ public class ProvisionParser extends Parser {
 
         while (nextTag(Tags.PROVISION_EAS_PROVISION_DOC) != END) {
             switch (tag) {
-                case Tags.PROVISION_DEVICE_PASSWORD_ENABLED:
-                    if (getValueInt() == 1) {
-                        if (passwordMode == PolicySet.PASSWORD_MODE_NONE) {
-                            passwordMode = PolicySet.PASSWORD_MODE_SIMPLE;
-                        }
+            case Tags.PROVISION_DEVICE_PASSWORD_ENABLED:
+                if (getValueInt() == 1) {
+                    if (passwordMode == PolicySet.PASSWORD_MODE_NONE) {
+                        passwordMode = PolicySet.PASSWORD_MODE_SIMPLE;
                     }
-                    break;
-                case Tags.PROVISION_MIN_DEVICE_PASSWORD_LENGTH:
-                    minPasswordLength = getValueInt();
-                    break;
-                case Tags.PROVISION_ALPHA_DEVICE_PASSWORD_ENABLED:
-                    if (getValueInt() == 1) {
-                        passwordMode = PolicySet.PASSWORD_MODE_STRONG;
-                    }
-                    break;
-                case Tags.PROVISION_MAX_INACTIVITY_TIME_DEVICE_LOCK:
-                    // EAS gives us seconds, which is, happily, what the PolicySet requires
-                    maxScreenLockTime = getValueInt();
-                    break;
-                case Tags.PROVISION_MAX_DEVICE_PASSWORD_FAILED_ATTEMPTS:
-                    maxPasswordFails = getValueInt();
-                    break;
-                case Tags.PROVISION_ALLOW_SIMPLE_DEVICE_PASSWORD:
-                    // Ignore this unless there's any MSFT documentation for what this means
-                    // Hint: I haven't seen any that's more specific than "simple"
-                    getValue();
-                    break;
+                }
+                break;
+            case Tags.PROVISION_MIN_DEVICE_PASSWORD_LENGTH:
+                minPasswordLength = getValueInt();
+                break;
+            case Tags.PROVISION_ALPHA_DEVICE_PASSWORD_ENABLED:
+                if (getValueInt() == 1) {
+                    passwordMode = PolicySet.PASSWORD_MODE_STRONG;
+                }
+                break;
+            case Tags.PROVISION_MAX_INACTIVITY_TIME_DEVICE_LOCK:
+                // EAS gives us seconds, which is, happily, what the PolicySet requires
+                maxScreenLockTime = getValueInt();
+                break;
+            case Tags.PROVISION_MAX_DEVICE_PASSWORD_FAILED_ATTEMPTS:
+                maxPasswordFails = getValueInt();
+                break;
+            case Tags.PROVISION_ALLOW_SIMPLE_DEVICE_PASSWORD:
+                // Ignore this unless there's any MSFT documentation for what this means
+                // Hint: I haven't seen any that's more specific than "simple"
+                getValue();
+                break;
                 // The following policy, if false, can't be supported at the moment
-                case Tags.PROVISION_ATTACHMENTS_ENABLED:
-                    if (getValueInt() == 0) {
-                       supported = false;
-                    }
-                    break;
+            case Tags.PROVISION_ATTACHMENTS_ENABLED:
+                if (getValueInt() == 0) {
+                    supported = false;
+                }
+                break;
                 // The following policies, if true, can't be supported at the moment
-                case Tags.PROVISION_DEVICE_ENCRYPTION_ENABLED:
-                case Tags.PROVISION_PASSWORD_RECOVERY_ENABLED:
-                case Tags.PROVISION_DEVICE_PASSWORD_EXPIRATION:
-                case Tags.PROVISION_DEVICE_PASSWORD_HISTORY:
-                case Tags.PROVISION_MAX_ATTACHMENT_SIZE:
-                    if (getValueInt() == 1) {
-                        supported = false;
-                    }
-                    break;
-                default:
-                    skipTag();
+            case Tags.PROVISION_DEVICE_ENCRYPTION_ENABLED:
+            case Tags.PROVISION_PASSWORD_RECOVERY_ENABLED:
+            case Tags.PROVISION_DEVICE_PASSWORD_EXPIRATION:
+            case Tags.PROVISION_DEVICE_PASSWORD_HISTORY:
+            case Tags.PROVISION_MAX_ATTACHMENT_SIZE:
+                if (getValueInt() == 1) {
+                    supported = false;
+                }
+                break;
+            default:
+                skipTag();
             }
 
             if (!supported) {
@@ -123,7 +123,7 @@ public class ProvisionParser extends Parser {
         }
 
         mPolicySet = new PolicySet(minPasswordLength, passwordMode,
-                    maxPasswordFails, maxScreenLockTime, true);
+                                   maxPasswordFails, maxScreenLockTime, true);
     }
 
     class ShadowPolicySet {
@@ -151,18 +151,18 @@ public class ProvisionParser extends Parser {
                 }
             }
         } catch (XmlPullParserException e) {
-           throw new IOException();
+            throw new IOException();
         }
 
         mPolicySet = new PolicySet(sps.mMinPasswordLength, sps.mPasswordMode, sps.mMaxPasswordFails,
-                sps.mMaxScreenLockTime, true);
+                                   sps.mMaxScreenLockTime, true);
     }
 
     /**
      * Return true if password is required; otherwise false.
      */
     boolean parseSecurityPolicy(XmlPullParser parser, ShadowPolicySet sps)
-            throws XmlPullParserException, IOException {
+    throws XmlPullParserException, IOException {
         boolean passwordRequired = true;
         while (true) {
             int type = parser.nextTag();
@@ -185,7 +185,7 @@ public class ProvisionParser extends Parser {
     }
 
     void parseCharacteristic(XmlPullParser parser, ShadowPolicySet sps)
-            throws XmlPullParserException, IOException {
+    throws XmlPullParserException, IOException {
         boolean enforceInactivityTimer = true;
         while (true) {
             int type = parser.nextTag();
@@ -200,7 +200,7 @@ public class ProvisionParser extends Parser {
                             if (value.equals("0")) {
                                 sps.mMaxScreenLockTime = 1;
                             } else {
-                                sps.mMaxScreenLockTime = 60*Integer.parseInt(value);
+                                sps.mMaxScreenLockTime = 60 * Integer.parseInt(value);
                             }
                         }
                     } else if (name.equals("AEFrequencyType")) {
@@ -227,22 +227,22 @@ public class ProvisionParser extends Parser {
     }
 
     void parseRegistry(XmlPullParser parser, ShadowPolicySet sps)
-            throws XmlPullParserException, IOException {
-      while (true) {
-          int type = parser.nextTag();
-          if (type == XmlPullParser.END_TAG && parser.getName().equals("characteristic")) {
-              break;
-          } else if (type == XmlPullParser.START_TAG) {
-              String name = parser.getName();
-              if (name.equals("characteristic")) {
-                  parseCharacteristic(parser, sps);
-              }
-          }
-      }
+    throws XmlPullParserException, IOException {
+        while (true) {
+            int type = parser.nextTag();
+            if (type == XmlPullParser.END_TAG && parser.getName().equals("characteristic")) {
+                break;
+            } else if (type == XmlPullParser.START_TAG) {
+                String name = parser.getName();
+                if (name.equals("characteristic")) {
+                    parseCharacteristic(parser, sps);
+                }
+            }
+        }
     }
 
     void parseWapProvisioningDoc(XmlPullParser parser, ShadowPolicySet sps)
-            throws XmlPullParserException, IOException {
+    throws XmlPullParserException, IOException {
         while (true) {
             int type = parser.nextTag();
             if (type == XmlPullParser.END_TAG && parser.getName().equals("wap-provisioningdoc")) {
@@ -279,27 +279,27 @@ public class ProvisionParser extends Parser {
         String policyType = null;
         while (nextTag(Tags.PROVISION_POLICY) != END) {
             switch (tag) {
-                case Tags.PROVISION_POLICY_TYPE:
-                    policyType = getValue();
-                    Log.i(K9.LOG_TAG, "Policy type: " + policyType);
-                    break;
-                case Tags.PROVISION_POLICY_KEY:
-                    mPolicyKey = getValue();
-                    break;
-                case Tags.PROVISION_STATUS:
-                	Log.i(K9.LOG_TAG, "Policy status: " + getValue());
-                    break;
-                case Tags.PROVISION_DATA:
-                    if (policyType.equalsIgnoreCase(EasStore.EAS_2_POLICY_TYPE)) {
-                        // Parse the old style XML document
-                        parseProvisionDocXml(getValue());
-                    } else {
-                        // Parse the newer WBXML data
-                        parseProvisionData();
-                    }
-                    break;
-                default:
-                    skipTag();
+            case Tags.PROVISION_POLICY_TYPE:
+                policyType = getValue();
+                Log.i(K9.LOG_TAG, "Policy type: " + policyType);
+                break;
+            case Tags.PROVISION_POLICY_KEY:
+                mPolicyKey = getValue();
+                break;
+            case Tags.PROVISION_STATUS:
+                Log.i(K9.LOG_TAG, "Policy status: " + getValue());
+                break;
+            case Tags.PROVISION_DATA:
+                if (policyType.equalsIgnoreCase(EasStore.EAS_2_POLICY_TYPE)) {
+                    // Parse the old style XML document
+                    parseProvisionDocXml(getValue());
+                } else {
+                    // Parse the newer WBXML data
+                    parseProvisionData();
+                }
+                break;
+            default:
+                skipTag();
             }
         }
     }
@@ -322,57 +322,62 @@ public class ProvisionParser extends Parser {
         }
         while (nextTag(START_DOCUMENT) != END_DOCUMENT) {
             switch (tag) {
-                case Tags.PROVISION_STATUS:
-                    int status = getValueInt();
-                    Log.i(K9.LOG_TAG, "Provision status: " + status);
-                    res = (status == 1);
-                    break;
-                case Tags.PROVISION_POLICIES:
-                    parsePolicies();
-                    break;
-                case Tags.PROVISION_REMOTE_WIPE:
-                    // Indicate remote wipe command received
-                    mRemoteWipe = true;
-                    break;
-                default:
-                    skipTag();
+            case Tags.PROVISION_STATUS:
+                int status = getValueInt();
+                Log.i(K9.LOG_TAG, "Provision status: " + status);
+                res = (status == 1);
+                break;
+            case Tags.PROVISION_POLICIES:
+                parsePolicies();
+                break;
+            case Tags.PROVISION_REMOTE_WIPE:
+                // Indicate remote wipe command received
+                mRemoteWipe = true;
+                break;
+            default:
+                skipTag();
             }
         }
         return res;
     }
-    
+
     /**
      * Class for tracking policies and reading/writing into accounts
      */
     public static class PolicySet {
 
         // Security (provisioning) flags
-            // bits 0..4: password length (0=no password required)
+        // bits 0..4: password length (0=no password required)
         private static final int PASSWORD_LENGTH_MASK = 31;
         private static final int PASSWORD_LENGTH_SHIFT = 0;
         public static final int PASSWORD_LENGTH_MAX = 30;
-            // bits 5..8: password mode
+        // bits 5..8: password mode
         private static final int PASSWORD_MODE_SHIFT = 5;
         private static final int PASSWORD_MODE_MASK = 15 << PASSWORD_MODE_SHIFT;
         public static final int PASSWORD_MODE_NONE = 0 << PASSWORD_MODE_SHIFT;
         public static final int PASSWORD_MODE_SIMPLE = 1 << PASSWORD_MODE_SHIFT;
         public static final int PASSWORD_MODE_STRONG = 2 << PASSWORD_MODE_SHIFT;
-            // bits 9..13: password failures -> wipe device (0=disabled)
+        // bits 9..13: password failures -> wipe device (0=disabled)
         private static final int PASSWORD_MAX_FAILS_SHIFT = 9;
         private static final int PASSWORD_MAX_FAILS_MASK = 31 << PASSWORD_MAX_FAILS_SHIFT;
         public static final int PASSWORD_MAX_FAILS_MAX = 31;
-            // bits 14..24: seconds to screen lock (0=not required)
+        // bits 14..24: seconds to screen lock (0=not required)
         private static final int SCREEN_LOCK_TIME_SHIFT = 14;
         private static final int SCREEN_LOCK_TIME_MASK = 2047 << SCREEN_LOCK_TIME_SHIFT;
         public static final int SCREEN_LOCK_TIME_MAX = 2047;
-            // bit 25: remote wipe capability required
+        // bit 25: remote wipe capability required
         private static final int REQUIRE_REMOTE_WIPE = 1 << 25;
 
-        /*package*/ final int mMinPasswordLength;
-        /*package*/ final int mPasswordMode;
-        /*package*/ final int mMaxPasswordFails;
-        /*package*/ final int mMaxScreenLockTime;
-        /*package*/ final boolean mRequireRemoteWipe;
+        /*package*/
+        final int mMinPasswordLength;
+        /*package*/
+        final int mPasswordMode;
+        /*package*/
+        final int mMaxPasswordFails;
+        /*package*/
+        final int mMaxScreenLockTime;
+        /*package*/
+        final boolean mRequireRemoteWipe;
 
         public int getMinPasswordLengthForTest() {
             return mMinPasswordLength;
@@ -404,7 +409,7 @@ public class ProvisionParser extends Parser {
          * @throws IllegalArgumentException for illegal arguments.
          */
         public PolicySet(int minPasswordLength, int passwordMode, int maxPasswordFails,
-                int maxScreenLockTime, boolean requireRemoteWipe) throws IllegalArgumentException {
+                         int maxScreenLockTime, boolean requireRemoteWipe) throws IllegalArgumentException {
             // If we're not enforcing passwords, make sure we clean up related values, since EAS
             // can send non-zero values for any or all of these
             if (passwordMode == PASSWORD_MODE_NONE) {
@@ -464,12 +469,12 @@ public class ProvisionParser extends Parser {
          */
         public int getDPManagerPasswordQuality() {
             switch (mPasswordMode) {
-                case PASSWORD_MODE_SIMPLE:
-                    return DevicePolicyManager.PASSWORD_QUALITY_NUMERIC;
-                case PASSWORD_MODE_STRONG:
-                    return DevicePolicyManager.PASSWORD_QUALITY_ALPHANUMERIC;
-                default:
-                    return DevicePolicyManager .PASSWORD_QUALITY_UNSPECIFIED;
+            case PASSWORD_MODE_SIMPLE:
+                return DevicePolicyManager.PASSWORD_QUALITY_NUMERIC;
+            case PASSWORD_MODE_STRONG:
+                return DevicePolicyManager.PASSWORD_QUALITY_ALPHANUMERIC;
+            default:
+                return DevicePolicyManager .PASSWORD_QUALITY_UNSPECIFIED;
             }
         }
 
@@ -509,10 +514,10 @@ public class ProvisionParser extends Parser {
             if (o instanceof PolicySet) {
                 PolicySet other = (PolicySet)o;
                 return (this.mMinPasswordLength == other.mMinPasswordLength)
-                        && (this.mPasswordMode == other.mPasswordMode)
-                        && (this.mMaxPasswordFails == other.mMaxPasswordFails)
-                        && (this.mMaxScreenLockTime == other.mMaxScreenLockTime)
-                        && (this.mRequireRemoteWipe == other.mRequireRemoteWipe);
+                       && (this.mPasswordMode == other.mPasswordMode)
+                       && (this.mMaxPasswordFails == other.mMaxPasswordFails)
+                       && (this.mMaxScreenLockTime == other.mMaxScreenLockTime)
+                       && (this.mRequireRemoteWipe == other.mRequireRemoteWipe);
             }
             return false;
         }
@@ -536,8 +541,8 @@ public class ProvisionParser extends Parser {
         @Override
         public String toString() {
             return "{ " + "pw-len-min=" + mMinPasswordLength + " pw-mode=" + mPasswordMode
-                    + " pw-fails-max=" + mMaxPasswordFails + " screenlock-max="
-                    + mMaxScreenLockTime + " remote-wipe-req=" + mRequireRemoteWipe + "}";
+                   + " pw-fails-max=" + mMaxPasswordFails + " screenlock-max="
+                   + mMaxScreenLockTime + " remote-wipe-req=" + mRequireRemoteWipe + "}";
         }
     }
 

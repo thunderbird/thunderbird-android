@@ -28,7 +28,7 @@ import android.os.AsyncTask;
  * @see #retain()
  */
 public abstract class ExtendedAsyncTask<Params, Progress, Result>
-        extends AsyncTask<Params, Progress, Result> implements NonConfigurationInstance {
+    extends AsyncTask<Params, Progress, Result> implements NonConfigurationInstance {
     protected Activity mActivity;
     protected Context mContext;
     protected ProgressDialog mProgressDialog;

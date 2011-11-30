@@ -31,7 +31,7 @@ public class Storage implements SharedPreferences {
     private String DB_NAME = "preferences_storage";
 
     private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentHashMap<String, String>>();
+        = new ThreadLocal<ConcurrentHashMap<String, String>>();
     private ThreadLocal<SQLiteDatabase> workingDB =
         new ThreadLocal<SQLiteDatabase>();
     private ThreadLocal<ArrayList<String>> workingChangedKeys = new ThreadLocal<ArrayList<String>>();

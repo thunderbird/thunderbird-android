@@ -103,8 +103,8 @@ public class LocalStore extends Store implements Serializable {
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, "
-    		+ "push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, "
-    		+ "display_class, remote_name";
+                                            + "push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, "
+                                            + "display_class, remote_name";
 
     protected static final int DB_VERSION = 44;
 
@@ -301,8 +301,7 @@ public class LocalStore extends Store implements Serializable {
                                     Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
                                 }
                             }
-                        }
-                        catch (SQLiteException e) {
+                        } catch (SQLiteException e) {
                             Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
 
                         } finally {
@@ -373,8 +372,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                     }
                 }
-            }
-            catch (SQLiteException e) {
+            } catch (SQLiteException e) {
                 Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
                 db.setVersion(0);
                 throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
@@ -644,10 +642,10 @@ public class LocalStore extends Store implements Serializable {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(14), cursor.getString(1), cursor.getInt(2), 
-                            		cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), 
-                            		cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), 
-                            		cursor.getString(12), cursor.getString(13));
+                            folder.open(cursor.getInt(0), cursor.getString(14), cursor.getString(1), cursor.getInt(2),
+                                        cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6),
+                                        cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11),
+                                        cursor.getString(12), cursor.getString(13));
                             folders.add(folder);
                         }
                         return folders;
@@ -1075,7 +1073,7 @@ public class LocalStore extends Store implements Serializable {
 
                         }
                         if (remoteName.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
-                        		remoteName.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
+                                remoteName.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
@@ -1084,7 +1082,7 @@ public class LocalStore extends Store implements Serializable {
                     folder.refresh(remoteName, prefHolder);   // Recover settings from Preferences
 
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, push_class, integrate, remote_name)"
-                    		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                               + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    folder.getName(),
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -1101,7 +1099,7 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public class LocalFolder extends Folder implements Serializable {
-        
+
         private static final long serialVersionUID = -1973296520918624767L;
         // mRemoteName uniquely identifies the folder in both the local and remote store.
         private String mRemoteName;
@@ -1123,7 +1121,7 @@ public class LocalStore extends Store implements Serializable {
 
         public LocalFolder(String remoteName) {
             super(LocalStore.this.mAccount);
-            
+
             mRemoteName = remoteName;
             mName = remoteName;
 
@@ -1133,10 +1131,10 @@ public class LocalStore extends Store implements Serializable {
                 mInTopGroup = true;
             }
         }
-        
+
         public LocalFolder(String remoteName, String name) {
             super(LocalStore.this.mAccount);
-            
+
             mRemoteName = remoteName;
             mName = name;
 
@@ -1178,9 +1176,9 @@ public class LocalStore extends Store implements Serializable {
                             if (cursor.moveToFirst()) {
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0) {
-                                    open(folderId, cursor.getString(14), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), 
-                                    		cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), 
-                                    		cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                                    open(folderId, cursor.getString(14), cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+                                         cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8),
+                                         cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
@@ -1200,9 +1198,9 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private void open(int id, String remoteName, String name, int unreadCount, int visibleLimit, long lastChecked, String status, 
-        		String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, 
-        		String pushClass, String displayClass) throws MessagingException {
+        private void open(int id, String remoteName, String name, int unreadCount, int visibleLimit, long lastChecked, String status,
+                          String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass,
+                          String pushClass, String displayClass) throws MessagingException {
             mFolderId = id;
             mRemoteName = remoteName;
             mName = name;
@@ -1232,10 +1230,10 @@ public class LocalStore extends Store implements Serializable {
         public OpenMode getMode() {
             return OpenMode.READ_WRITE;
         }
-        
+
         @Override
         public String getRemoteName() {
-        	return mRemoteName;
+            return mRemoteName;
         }
 
         @Override
@@ -1251,7 +1249,7 @@ public class LocalStore extends Store implements Serializable {
                     Cursor cursor = null;
                     try {
                         cursor = db.rawQuery("SELECT id FROM folders where folders.remote_name = ?",
-                                new String[] { LocalFolder.this.getRemoteName() });
+                                             new String[] { LocalFolder.this.getRemoteName() });
                         if (cursor.moveToFirst()) {
                             int folderId = cursor.getInt(0);
                             return (folderId > 0);
@@ -1396,7 +1394,7 @@ public class LocalStore extends Store implements Serializable {
         public void setStatus(final String status) throws MessagingException {
             updateFolderColumn("status", status);
         }
-        
+
         public void setPushState(final String pushState) throws MessagingException {
             mPushState = pushState;
             updateFolderColumn("push_state", pushState);
@@ -1464,7 +1462,7 @@ public class LocalStore extends Store implements Serializable {
             mSyncClass = syncClass;
             updateFolderColumn("poll_class", mSyncClass.name());
         }
-        
+
         public void setPushClass(FolderClass pushClass) throws MessagingException {
             mPushClass = pushClass;
             updateFolderColumn("push_class", mPushClass.name());
@@ -1473,7 +1471,7 @@ public class LocalStore extends Store implements Serializable {
         public boolean isIntegrate() {
             return mIntegrate;
         }
-        
+
         public void setIntegrate(boolean integrate) throws MessagingException {
             mIntegrate = integrate;
             updateFolderColumn("integrate", mIntegrate ? 1 : 0);
@@ -2399,7 +2397,9 @@ public class LocalStore extends Store implements Serializable {
                                     if (s != null) {
                                         try {
                                             size = Integer.parseInt(s);
-                                        } catch (NumberFormatException e) { /* Ignore */ }
+                                        } catch (NumberFormatException e) {
+                                            /* Ignore */
+                                        }
                                     }
                                 }
                             }
@@ -2829,7 +2829,7 @@ public class LocalStore extends Store implements Serializable {
             mLastUid = lastUid;
         }
 
-        public long getOldestMessageDate() throws MessagingException {
+        public Long getOldestMessageDate() throws MessagingException {
             return database.execute(false, new DbCallback<Long>() {
                 @Override
                 public Long doDbWork(final SQLiteDatabase db) {

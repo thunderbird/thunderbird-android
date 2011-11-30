@@ -526,13 +526,13 @@ public class MessageList
                 }
 
                 String dispString = mAdapter.mListener.formatHeader(MessageList.this,
-                		getString(R.string.message_list_title, mAccount.getDescription(), displayName), 
-                		mUnreadMessageCount, getTimeFormat());
+                                    getString(R.string.message_list_title, mAccount.getDescription(), displayName),
+                                    mUnreadMessageCount, getTimeFormat());
                 setTitle(dispString);
             } else if (mQueryString != null) {
                 if (mTitle != null) {
-                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, 
-                    		mUnreadMessageCount, getTimeFormat());
+                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle,
+                                        mUnreadMessageCount, getTimeFormat());
                     setTitle(dispString);
                 } else {
                     setTitle(getString(R.string.search_results) + ": " + mQueryString);
@@ -657,7 +657,7 @@ public class MessageList
         if (account != null && account.equals(mAccount) &&
                 folderName != null && folderName.equals(mFolderName) &&
                 ((queryString != null && queryString.equals(mQueryString)) ||
-                        (queryString == null && mQueryString == null))) {
+                 (queryString == null && mQueryString == null))) {
             // We're likely just returning from the MessageView activity with "Manage back button"
             // enabled. So just leave the activity in the state it was left in.
             return;

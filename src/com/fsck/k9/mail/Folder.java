@@ -123,7 +123,7 @@ public abstract class Folder {
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
     public void expunge() throws MessagingException
-        {}
+    {}
 
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;
@@ -138,7 +138,7 @@ public abstract class Folder {
     }
 
     public abstract void delete(boolean recurse) throws MessagingException;
-    
+
     public abstract String getRemoteName();
 
     public abstract String getName();
@@ -195,7 +195,7 @@ public abstract class Folder {
     public FolderClass getSyncClass() {
         return getDisplayClass();
     }
-    
+
     public FolderClass getPushClass() {
         return getSyncClass();
     }
@@ -220,7 +220,7 @@ public abstract class Folder {
         return mAccount;
     }
 
-	public boolean isSyncMode() {
-		return false;
-	}
+    public boolean isSyncMode() {
+        return false;
+    }
 }

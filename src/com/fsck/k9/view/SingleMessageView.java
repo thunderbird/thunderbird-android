@@ -319,12 +319,12 @@ public class SingleMessageView extends LinearLayout {
      * @param listeners Set of listeners.
      */
     public void setListeners(final Set<MessagingListener> listeners) {
-        if(!mScreenReaderEnabled) {
-            if(mMessageContentView != null) {
+        if (!mScreenReaderEnabled) {
+            if (mMessageContentView != null) {
                 mMessageContentView.setListeners(listeners);
             }
         } else {
-            if(mAccessibleMessageContentView != null) {
+            if (mAccessibleMessageContentView != null) {
                 mAccessibleMessageContentView.setListeners(listeners);
             }
         }

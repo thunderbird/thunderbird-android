@@ -96,7 +96,7 @@ public class Serializer {
         out.flush();
     }
 
-    public void startDocument() throws IOException{
+    public void startDocument() throws IOException {
         out.write(0x03); // version 1.3
         out.write(0x01); // unknown or missing public identifier
         out.write(106);
@@ -186,7 +186,7 @@ public class Serializer {
         int idx = 0;
 
         do {
-            buf[idx++] = (byte) (i & 0x7f);
+            buf[idx++] = (byte)(i & 0x7f);
             i = i >> 7;
         } while (i != 0);
 
@@ -205,7 +205,7 @@ public class Serializer {
         out.write(0);
     }
 
-    void writeStringValue (ContentValues cv, String key, int tag) throws IOException {
+    void writeStringValue(ContentValues cv, String key, int tag) throws IOException {
         String value = cv.getAsString(key);
         if (value != null && value.length() > 0) {
             data(tag, value);

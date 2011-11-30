@@ -233,6 +233,95 @@ public class Apg extends CryptoProvider {
     }
 
     /**
+     * Get public key ids based on a given email.
+     *
+     * @param context
+     * @param email The email in question.
+     * @return key ids
+     */
+    @Override
+    public long[] getPublicKeyIdsFromEmail(Context context, String email) {
+        long ids[] = null;
+        try {
+            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS, email);
+            Cursor c = context.getContentResolver().query(contentUri,
+                       new String[] { "master_key_id" }, null, null, null);
+            if (c != null && c.getCount() > 0) {
+                ids = new long[c.getCount()];
+                while (c.moveToNext()) {
+                    ids[c.getPosition()] = c.getLong(0);
+                }
+            }
+
+            if (c != null) {
+                c.close();
+            }
+        } catch (SecurityException e) {
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
+        }
+
+        return ids;
+    }
+
+    /**
+     * Find out if a given email has a secret key.
+     *
+     * @param context
+     * @param email The email in question.
+     * @return true if there is a secret key for this email.
+     */
+    @Override
+    public boolean hasSecretKeyForEmail(Context context, String email) {
+        try {
+            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS, email);
+            Cursor c = context.getContentResolver().query(contentUri,
+                       new String[] { "master_key_id" }, null, null, null);
+            if (c != null && c.getCount() > 0) {
+                c.close();
+                return true;
+            }
+            if (c != null) {
+                c.close();
+            }
+        } catch (SecurityException e) {
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
+    /**
+     * Find out if a given email has a public key.
+     *
+     * @param context
+     * @param email The email in question.
+     * @return true if there is a public key for this email.
+     */
+    @Override
+    public boolean hasPublicKeyForEmail(Context context, String email) {
+        try {
+            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS, email);
+            Cursor c = context.getContentResolver().query(contentUri,
+                       new String[] { "master_key_id" }, null, null, null);
+            if (c != null && c.getCount() > 0) {
+                c.close();
+                return true;
+            }
+            if (c != null) {
+                c.close();
+            }
+        } catch (SecurityException e) {
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
+    /**
      * Get the user id based on the key id.
      *
      * @param context

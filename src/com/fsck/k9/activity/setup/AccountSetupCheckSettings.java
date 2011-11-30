@@ -115,19 +115,19 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         } else {
                             setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                         }
-                        
+
                         store.checkSettings();
 
                         if (store instanceof WebDavStore || store instanceof EasStore) {
                             setMessage(R.string.account_setup_check_settings_fetch);
                         }
-                        
+
                         // We need to wait for the remote store to finish refreshing the folder list before we
                         // can call synchronizeMailbox, so that we can give it the proper Inbox folder name.
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, new MessagingListener() {
                             @Override
                             public void controllerCommandCompleted(boolean moreCommandsToRun) {
-                                MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, 
+                                MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount,
                                         mAccount.getInboxFolderName(), null, null);
                             }
                         });
@@ -170,8 +170,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             cve);
                     } else {
                         showErrorDialog(
-                                R.string.account_setup_failed_dlg_server_message_fmt,
-                                (cve.getMessage() == null ? "" : cve.getMessage()));
+                            R.string.account_setup_failed_dlg_server_message_fmt,
+                            (cve.getMessage() == null ? "" : cve.getMessage()));
                     }
                 } catch (final Throwable t) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);

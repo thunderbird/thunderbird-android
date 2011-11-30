@@ -136,28 +136,28 @@ public class Regex {
     // matching as foo.su
 
     public static final Pattern IP_ADDRESS_PATTERN
-    = Pattern.compile(
-          "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
-          + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
-          + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
-          + "|[1-9][0-9]|[0-9]))");
+        = Pattern.compile(
+              "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
+              + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
+              + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+              + "|[1-9][0-9]|[0-9]))");
 
     public static final Pattern DOMAIN_NAME_PATTERN
-    = Pattern.compile(
-          "(((([" + GOOD_IRI_CHAR + "][" + GOOD_IRI_CHAR + "\\-]*)*[" + GOOD_IRI_CHAR + "]\\.)+"
-          + TOP_LEVEL_DOMAIN_PATTERN + ")|"
-          + IP_ADDRESS_PATTERN + ")");
+        = Pattern.compile(
+              "(((([" + GOOD_IRI_CHAR + "][" + GOOD_IRI_CHAR + "\\-]*)*[" + GOOD_IRI_CHAR + "]\\.)+"
+              + TOP_LEVEL_DOMAIN_PATTERN + ")|"
+              + IP_ADDRESS_PATTERN + ")");
 
     public static final Pattern EMAIL_ADDRESS_PATTERN
-    = Pattern.compile(
-          "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-          "\\@" +
-          "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-          "(" +
-          "\\." +
-          "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-          ")+"
-      );
+        = Pattern.compile(
+              "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+              "\\@" +
+              "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+              "(" +
+              "\\." +
+              "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+              ")+"
+          );
 
     /**
      * This pattern is intended for searching for things that look like they
@@ -174,10 +174,10 @@ public class Regex {
      * </ul>
      */
     public static final Pattern PHONE_PATTERN
-    = Pattern.compile(                                  // sdd = space, dot, or dash
-          "(\\+[0-9]+[\\- \\.]*)?"                    // +<digits><sdd>*
-          + "(\\([0-9]+\\)[\\- \\.]*)?"               // (<digits>)<sdd>*
-          + "([0-9][0-9\\- \\.][0-9\\- \\.]+[0-9])"); // <digit><digit|sdd>+<digit>
+        = Pattern.compile(                                  // sdd = space, dot, or dash
+              "(\\+[0-9]+[\\- \\.]*)?"                    // +<digits><sdd>*
+              + "(\\([0-9]+\\)[\\- \\.]*)?"               // (<digits>)<sdd>*
+              + "([0-9][0-9\\- \\.][0-9\\- \\.]+[0-9])"); // <digit><digit|sdd>+<digit>
 
     /**
      *  Convenience method to take all of the non-null matching groups in a

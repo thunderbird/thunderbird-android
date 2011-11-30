@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fsck.k9.mail.store.exchange.adapter;
 
@@ -25,9 +25,9 @@ import com.fsck.k9.mail.store.exchange.Eas;
 public class EasEmailSyncParser extends AbstractSyncParser {
 
     /**
-	 * 
-	 */
-	ArrayList<EasMessage> newEmails = new ArrayList<EasMessage>();
+     *
+     */
+    ArrayList<EasMessage> newEmails = new ArrayList<EasMessage>();
     ArrayList<String> deletedEmails = new ArrayList<String>();
     ArrayList<ServerChange> changedEmails = new ArrayList<ServerChange>();
 
@@ -45,71 +45,71 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 //                    Message.MAILBOX_KEY + "=" + mMailbox.mId, null);
     }
 
-    public void addData (EasMessage msg) throws IOException, MessagingException {
+    public void addData(EasMessage msg) throws IOException, MessagingException {
 //            ArrayList<Attachment> atts = new ArrayList<Attachment>();
 
         while (nextTag(Tags.SYNC_APPLICATION_DATA) != END) {
             switch (tag) {
-                case Tags.EMAIL_ATTACHMENTS:
-                case Tags.BASE_ATTACHMENTS: // BASE_ATTACHMENTS is used in EAS 12.0 and up
-                    attachmentsParser(msg);
-                    break;
-                case Tags.EMAIL_TO:
-                    msg.setRecipients(RecipientType.TO, Address.parse(getValue()));
-                    break;
-                case Tags.EMAIL_FROM:
-                    Address[] froms = Address.parse(getValue());
-                    if (froms != null && froms.length > 0) {
+            case Tags.EMAIL_ATTACHMENTS:
+            case Tags.BASE_ATTACHMENTS: // BASE_ATTACHMENTS is used in EAS 12.0 and up
+                attachmentsParser(msg);
+                break;
+            case Tags.EMAIL_TO:
+                msg.setRecipients(RecipientType.TO, Address.parse(getValue()));
+                break;
+            case Tags.EMAIL_FROM:
+                Address[] froms = Address.parse(getValue());
+                if (froms != null && froms.length > 0) {
 //                          msg.mDisplayName = froms[0].toFriendly();
-                    	msg.setFrom(froms[0]);
-                    }
-                    break;
-                case Tags.EMAIL_CC:
-                    msg.setRecipients(RecipientType.CC, Address.parse(getValue()));
-                    break;
-                case Tags.EMAIL_REPLY_TO:
-                    msg.setReplyTo(Address.parse(getValue()));
-                    break;
-                case Tags.EMAIL_DATE_RECEIVED:
-                	getValue();
-//                    	Date receivedDate = Utility.parseEmailDateTimeToMillis(getValue());
+                    msg.setFrom(froms[0]);
+                }
+                break;
+            case Tags.EMAIL_CC:
+                msg.setRecipients(RecipientType.CC, Address.parse(getValue()));
+                break;
+            case Tags.EMAIL_REPLY_TO:
+                msg.setReplyTo(Address.parse(getValue()));
+                break;
+            case Tags.EMAIL_DATE_RECEIVED:
+                getValue();
+//                      Date receivedDate = Utility.parseEmailDateTimeToMillis(getValue());
 //                        msg.setInternalDate(receivedDate);
-                    break;
-                case Tags.EMAIL_SUBJECT:
-                    msg.setSubject(getValue());
-                    break;
-                case Tags.EMAIL_READ:
-                	msg.setFlagInternal(Flag.SEEN, getValueInt() == 1);
-                    break;
-                case Tags.BASE_BODY:
-                    bodyParser(msg);
-                    break;
-                case Tags.EMAIL_FLAG:
-                	msg.setFlagInternal(Flag.FLAGGED, flagParser());
-                    break;
-                case Tags.EMAIL_BODY:
-                    String body = getValue();
-                    InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+                break;
+            case Tags.EMAIL_SUBJECT:
+                msg.setSubject(getValue());
+                break;
+            case Tags.EMAIL_READ:
+                msg.setFlagInternal(Flag.SEEN, getValueInt() == 1);
+                break;
+            case Tags.BASE_BODY:
+                bodyParser(msg);
+                break;
+            case Tags.EMAIL_FLAG:
+                msg.setFlagInternal(Flag.FLAGGED, flagParser());
+                break;
+            case Tags.EMAIL_BODY:
+                String body = getValue();
+                InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
 
-        			try {
-        				msg.setBody(MimeUtility.decodeBody(bodyStream, null));
-        			} catch (MessagingException e) {
-        				throw new IOException(e);
-        			}
-                    break;
-                case Tags.EMAIL_MESSAGE_CLASS:
-                    String messageClass = getValue();
+                try {
+                    msg.setBody(MimeUtility.decodeBody(bodyStream, null));
+                } catch (MessagingException e) {
+                    throw new IOException(e);
+                }
+                break;
+            case Tags.EMAIL_MESSAGE_CLASS:
+                String messageClass = getValue();
 //                        if (messageClass.equals("IPM.Schedule.Meeting.Request")) {
 //                            msg.mFlags |= Message.FLAG_INCOMING_MEETING_INVITE;
 //                        } else if (messageClass.equals("IPM.Schedule.Meeting.Canceled")) {
 //                            msg.mFlags |= Message.FLAG_INCOMING_MEETING_CANCEL;
 //                        }
-                    break;
-                case Tags.EMAIL_MEETING_REQUEST:
-                    meetingRequestParser(msg);
-                    break;
-                default:
-                    skipTag();
+                break;
+            case Tags.EMAIL_MEETING_REQUEST:
+                meetingRequestParser(msg);
+                break;
+            default:
+                skipTag();
             }
         }
 
@@ -129,40 +129,40 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 //            PackedString.Builder packedString = new PackedString.Builder();
         while (nextTag(Tags.EMAIL_MEETING_REQUEST) != END) {
             String value;
-			switch (tag) {
-                case Tags.EMAIL_DTSTAMP:
-                    value = getValue();
+            switch (tag) {
+            case Tags.EMAIL_DTSTAMP:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_DTSTAMP, value);
-                    break;
-                case Tags.EMAIL_START_TIME:
-                    value = getValue();
+                break;
+            case Tags.EMAIL_START_TIME:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_DTSTART, value);
-                    break;
-                case Tags.EMAIL_END_TIME:
-                    value = getValue();
+                break;
+            case Tags.EMAIL_END_TIME:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_DTEND, value);
-                    break;
-                case Tags.EMAIL_ORGANIZER:
-                    value = getValue();
+                break;
+            case Tags.EMAIL_ORGANIZER:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_ORGANIZER_EMAIL, value);
-                    break;
-                case Tags.EMAIL_LOCATION:
-                    value = getValue();
+                break;
+            case Tags.EMAIL_LOCATION:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_LOCATION, value);
-                    break;
-                case Tags.EMAIL_GLOBAL_OBJID:
-                    value = getValue();
+                break;
+            case Tags.EMAIL_GLOBAL_OBJID:
+                value = getValue();
 //                        packedString.put(MeetingInfo.MEETING_UID,
 //                                CalendarUtilities.getUidFromGlobalObjId(value));
-                    break;
-                case Tags.EMAIL_CATEGORIES:
-                    nullParser();
-                    break;
-                case Tags.EMAIL_RECURRENCES:
-                    recurrencesParser();
-                    break;
-                default:
-                    skipTag();
+                break;
+            case Tags.EMAIL_CATEGORIES:
+                nullParser();
+                break;
+            case Tags.EMAIL_RECURRENCES:
+                recurrencesParser();
+                break;
+            default:
+                skipTag();
             }
         }
 //            if (msg.mSubject != null) {
@@ -180,54 +180,54 @@ public class EasEmailSyncParser extends AbstractSyncParser {
     private void recurrencesParser() throws IOException {
         while (nextTag(Tags.EMAIL_RECURRENCES) != END) {
             switch (tag) {
-                case Tags.EMAIL_RECURRENCE:
-                    nullParser();
-                    break;
-                default:
-                    skipTag();
+            case Tags.EMAIL_RECURRENCE:
+                nullParser();
+                break;
+            default:
+                skipTag();
             }
         }
     }
 
     private void addParser(ArrayList<EasMessage> emails) throws IOException, MessagingException {
-    	EasMessage msg = new EasMessage(null, mFolder);
+        EasMessage msg = new EasMessage(null, mFolder);
 //            msg.mAccountKey = mAccount.mId;
 //            msg.mMailboxKey = mMailbox.mId;
 //            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
 
         while (nextTag(Tags.SYNC_ADD) != END) {
             switch (tag) {
-                case Tags.SYNC_SERVER_ID:
-                	String serverId = getValue();
-                    msg.setUid(serverId);
-                    break;
-                case Tags.SYNC_APPLICATION_DATA:
-                    addData(msg);
-                    break;
-                default:
-                    skipTag();
+            case Tags.SYNC_SERVER_ID:
+                String serverId = getValue();
+                msg.setUid(serverId);
+                break;
+            case Tags.SYNC_APPLICATION_DATA:
+                addData(msg);
+                break;
+            default:
+                skipTag();
             }
         }
         emails.add(msg);
     }
 
     private void fetchParser(ArrayList<EasMessage> emails) throws IOException, MessagingException {
-    	EasMessage msg = new EasMessage(null, mFolder);
+        EasMessage msg = new EasMessage(null, mFolder);
 //            msg.mAccountKey = mAccount.mId;
 //            msg.mMailboxKey = mMailbox.mId;
 //            msg.mFlagLoaded = Message.FLAG_LOADED_COMPLETE;
 
         while (nextTag(Tags.SYNC_FETCH) != END) {
             switch (tag) {
-                case Tags.SYNC_SERVER_ID:
-                	String serverId = getValue();
-                    msg.setUid(serverId);
-                    break;
-                case Tags.SYNC_APPLICATION_DATA:
-                    addData(msg);
-                    break;
-                default:
-                    skipTag();
+            case Tags.SYNC_SERVER_ID:
+                String serverId = getValue();
+                msg.setUid(serverId);
+                break;
+            case Tags.SYNC_APPLICATION_DATA:
+                addData(msg);
+                break;
+            default:
+                skipTag();
             }
         }
         emails.add(msg);
@@ -238,11 +238,11 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         Boolean state = false;
         while (nextTag(Tags.EMAIL_FLAG) != END) {
             switch (tag) {
-                case Tags.EMAIL_FLAG_STATUS:
-                    state = getValueInt() == 2;
-                    break;
-                default:
-                    skipTag();
+            case Tags.EMAIL_FLAG_STATUS:
+                state = getValueInt() == 2;
+                break;
+            default:
+                skipTag();
             }
         }
         return state;
@@ -253,17 +253,17 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         String body = "";
         while (nextTag(Tags.EMAIL_BODY) != END) {
             switch (tag) {
-                case Tags.BASE_TYPE:
-                    bodyType = getValue();
-                    break;
-                case Tags.BASE_DATA:
-                    body = getValue();
-                    break;
-                default:
-                    skipTag();
+            case Tags.BASE_TYPE:
+                bodyType = getValue();
+                break;
+            case Tags.BASE_DATA:
+                body = getValue();
+                break;
+            default:
+                skipTag();
             }
         }
-        
+
         // We always ask for TEXT or HTML; there's no third option
 //            if (bodyType.equals(Eas.BODY_PREFERENCE_HTML)) {
 //                msg.mHtml = body;
@@ -271,27 +271,27 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 //                msg.mText = body;
 //            }
 
-		try {
-			InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
-			//String contentTransferEncoding;
-//				contentTransferEncoding = msg.getHeader(
-//				                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-//				msg.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
-			((EasMessage) msg).parse(bodyStream);
-		} catch (MessagingException e) {
-			throw new IOException(e);
-		}
+        try {
+            InputStream bodyStream = new ByteArrayInputStream(body.getBytes());
+            //String contentTransferEncoding;
+//              contentTransferEncoding = msg.getHeader(
+//                                                   MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+//              msg.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+            ((EasMessage) msg).parse(bodyStream);
+        } catch (MessagingException e) {
+            throw new IOException(e);
+        }
     }
 
     private void attachmentsParser(Message msg) throws IOException {
         while (nextTag(Tags.EMAIL_ATTACHMENTS) != END) {
             switch (tag) {
-                case Tags.EMAIL_ATTACHMENT:
-                case Tags.BASE_ATTACHMENT:  // BASE_ATTACHMENT is used in EAS 12.0 and up
-                    attachmentParser(msg);
-                    break;
-                default:
-                    skipTag();
+            case Tags.EMAIL_ATTACHMENT:
+            case Tags.BASE_ATTACHMENT:  // BASE_ATTACHMENT is used in EAS 12.0 and up
+                attachmentParser(msg);
+                break;
+            default:
+                skipTag();
             }
         }
     }
@@ -304,20 +304,20 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         while (nextTag(Tags.EMAIL_ATTACHMENT) != END) {
             switch (tag) {
                 // We handle both EAS 2.5 and 12.0+ attachments here
-                case Tags.EMAIL_DISPLAY_NAME:
-                case Tags.BASE_DISPLAY_NAME:
-                    fileName = getValue();
-                    break;
-                case Tags.EMAIL_ATT_NAME:
-                case Tags.BASE_FILE_REFERENCE:
-                    location = getValue();
-                    break;
-                case Tags.EMAIL_ATT_SIZE:
-                case Tags.BASE_ESTIMATED_DATA_SIZE:
-                    length = getValue();
-                    break;
-                default:
-                    skipTag();
+            case Tags.EMAIL_DISPLAY_NAME:
+            case Tags.BASE_DISPLAY_NAME:
+                fileName = getValue();
+                break;
+            case Tags.EMAIL_ATT_NAME:
+            case Tags.BASE_FILE_REFERENCE:
+                location = getValue();
+                break;
+            case Tags.EMAIL_ATT_SIZE:
+            case Tags.BASE_ESTIMATED_DATA_SIZE:
+                length = getValue();
+                break;
+            default:
+                skipTag();
             }
         }
 
@@ -371,18 +371,18 @@ public class EasEmailSyncParser extends AbstractSyncParser {
     /*package*/ void deleteParser(ArrayList<String> deletes, int entryTag) throws IOException {
         while (nextTag(entryTag) != END) {
             switch (tag) {
-                case Tags.SYNC_SERVER_ID:
-                    String serverId = getValue();
-                    deletes.add(serverId);
-                    break;
-                default:
-                    skipTag();
+            case Tags.SYNC_SERVER_ID:
+                String serverId = getValue();
+                deletes.add(serverId);
+                break;
+            default:
+                skipTag();
             }
         }
     }
 
     class ServerChange {
-    	String serverId;
+        String serverId;
         Boolean read;
         Boolean flag;
 
@@ -397,14 +397,14 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         String serverId = null;
         while (nextTag(Tags.SYNC_CHANGE) != END) {
             switch (tag) {
-                case Tags.SYNC_SERVER_ID:
-                    serverId = getValue();
-                    break;
-                case Tags.SYNC_APPLICATION_DATA:
-                    changeApplicationDataParser(changes, serverId);
-                    break;
-                default:
-                    skipTag();
+            case Tags.SYNC_SERVER_ID:
+                serverId = getValue();
+                break;
+            case Tags.SYNC_APPLICATION_DATA:
+                changeApplicationDataParser(changes, serverId);
+                break;
+            default:
+                skipTag();
             }
         }
     }
@@ -414,14 +414,14 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         Boolean flag = null;
         while (nextTag(Tags.SYNC_APPLICATION_DATA) != END) {
             switch (tag) {
-                case Tags.EMAIL_READ:
-                    read = getValueInt() == 1;
-                    break;
-                case Tags.EMAIL_FLAG:
-                    flag = flagParser();
-                    break;
-                default:
-                    skipTag();
+            case Tags.EMAIL_READ:
+                read = getValueInt() == 1;
+                break;
+            case Tags.EMAIL_FLAG:
+                flag = flagParser();
+                break;
+            default:
+                skipTag();
             }
         }
         changes.add(new ServerChange(serverId, read, flag));
@@ -535,32 +535,32 @@ public class EasEmailSyncParser extends AbstractSyncParser {
 //            }
     }
 
-	public List<EasMessage> getMessages() throws MessagingException {
-		List<EasMessage> messages = new ArrayList<EasMessage>();
-		
-		messages.addAll(newEmails);
-		
-		for (ServerChange srvChg : changedEmails) {
-			EasMessage msg = new EasMessage(srvChg.serverId, mFolder);
-			if (srvChg.read != null) {
-				msg.setFlag(Flag.SEEN, srvChg.read);
-			}
-			if (srvChg.flag != null) {
-				msg.setFlag(Flag.FLAGGED, srvChg.flag);
-			}
-			messages.add(msg);
-		}
-		
-		for (String serverId : deletedEmails) {
-			EasMessage msg = new EasMessage(serverId, mFolder);
-			msg.setFlag(Flag.DELETED, true);
-			messages.add(msg);
-		}
-		
-		return messages;
-	}
+    public List<EasMessage> getMessages() throws MessagingException {
+        List<EasMessage> messages = new ArrayList<EasMessage>();
 
-	public boolean hasMessages() {
-		return !newEmails.isEmpty() || !changedEmails.isEmpty() || !deletedEmails.isEmpty();
-	}
+        messages.addAll(newEmails);
+
+        for (ServerChange srvChg : changedEmails) {
+            EasMessage msg = new EasMessage(srvChg.serverId, mFolder);
+            if (srvChg.read != null) {
+                msg.setFlag(Flag.SEEN, srvChg.read);
+            }
+            if (srvChg.flag != null) {
+                msg.setFlag(Flag.FLAGGED, srvChg.flag);
+            }
+            messages.add(msg);
+        }
+
+        for (String serverId : deletedEmails) {
+            EasMessage msg = new EasMessage(serverId, mFolder);
+            msg.setFlag(Flag.DELETED, true);
+            messages.add(msg);
+        }
+
+        return messages;
+    }
+
+    public boolean hasMessages() {
+        return !newEmails.isEmpty() || !changedEmails.isEmpty() || !deletedEmails.isEmpty();
+    }
 }

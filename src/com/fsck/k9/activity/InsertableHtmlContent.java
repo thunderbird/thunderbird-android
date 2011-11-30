@@ -122,10 +122,10 @@ class InsertableHtmlContent implements Serializable {
         }
     }
 
-     /**
-     * Get the footer insertion point.
-     * @return Footer insertion point
-     */
+    /**
+    * Get the footer insertion point.
+    * @return Footer insertion point
+    */
     public int getFooterInsertionPoint() {
         return footerInsertionPoint;
     }

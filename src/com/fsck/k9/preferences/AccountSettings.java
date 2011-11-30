@@ -23,10 +23,11 @@ public class AccountSettings {
         s.put("archiveFolderName", new StringSetting("Archive"));
         s.put("autoExpandFolderName", new StringSetting("INBOX"));
         s.put("automaticCheckIntervalMinutes",
-                new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values));
+              new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values));
         s.put("chipColor", new ColorSetting(0xFF0000FF));
         s.put("cryptoApp", new StringSetting(Apg.NAME));
         s.put("cryptoAutoSignature", new BooleanSetting(false));
+        s.put("cryptoAutoEncrypt", new BooleanSetting(false)); // added to version 3
         s.put("defaultQuotedTextShown", new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN));
         s.put("deletePolicy", new DeletePolicySetting(Account.DELETE_POLICY_NEVER));
         s.put("displayCount", new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
@@ -54,7 +55,7 @@ public class AccountSettings {
         s.put("maximumPolledMessageAge", new IntegerResourceSetting(-1,
                 R.array.account_settings_message_age_values));
         s.put("messageFormat",
-                new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
+              new EnumSetting(Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT));
         s.put("messageFormatAuto", new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO)); // added to version 2
         s.put("messageReadReceipt", new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT));
         s.put("notificationUnreadCount", new BooleanSetting(true));
@@ -64,17 +65,17 @@ public class AccountSettings {
         s.put("pushPollOnConnect", new BooleanSetting(true));
         s.put("quotePrefix", new StringSetting(Account.DEFAULT_QUOTE_PREFIX));
         s.put("quoteStyle",
-                new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
+              new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE));
         s.put("replyAfterQuote", new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE));
         s.put("stripSignature", new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE)); // added to version 2
         s.put("ring", new BooleanSetting(true));
         s.put("ringtone", new RingtoneSetting("content://settings/system/notification_sound"));
         s.put("saveAllHeaders", new BooleanSetting(true));
         s.put("searchableFolders",
-                new EnumSetting(Account.Searchable.class, Account.Searchable.ALL));
+              new EnumSetting(Account.Searchable.class, Account.Searchable.ALL));
         s.put("sentFolderName", new StringSetting("Sent"));
         s.put("showPicturesEnum",
-                new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER));
+              new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER));
         s.put("signatureBeforeQuotedText", new BooleanSetting(false));
         s.put("spamFolderName", new StringSetting("Spam"));
         s.put("subscribedFoldersOnly", new BooleanSetting(false));
@@ -248,7 +249,9 @@ public class AccountSettings {
                 if (mMapping.containsKey(deletePolicy)) {
                     return deletePolicy;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

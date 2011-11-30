@@ -467,23 +467,23 @@ public class MessagingController implements Runnable {
                         localFolderNames.add(localFolder.getRemoteName());
                     }
                     for (Folder remoteFolder : remoteFolders) {
-                    	LocalFolder localFolder = null;
+                        LocalFolder localFolder = null;
                         if (localFolderNames.contains(remoteFolder.getRemoteName()) == false) {
                             localFolder = localStore.getFolder(remoteFolder.getRemoteName(),
-                            		remoteFolder.getName());
+                                                               remoteFolder.getName());
                             foldersToCreate.add(localFolder);
                         } else {
                             for (Folder folder : localFolders) {
-                            	if (folder.getRemoteName().equals(remoteFolder.getRemoteName())) {
-                            		localFolder = (LocalFolder)folder;
-                            		break;
-                            	}
+                                if (folder.getRemoteName().equals(remoteFolder.getRemoteName())) {
+                                    localFolder = (LocalFolder)folder;
+                                    break;
+                                }
                             }
                         }
                         remoteFolderNames.add(remoteFolder.getRemoteName());
-                        
+
                         if (remoteFolder instanceof EasFolder) {
-                        	((EasFolder)remoteFolder).setLocalFolder(localFolder, false);
+                            ((EasFolder)remoteFolder).setLocalFolder(localFolder, false);
                         }
                     }
                     localStore.createFolders(foldersToCreate, account.getDisplayCount());
@@ -494,8 +494,8 @@ public class MessagingController implements Runnable {
                      * Clear out any folders that are no longer on the remote store.
                      */
                     for (Folder localFolder : localFolders) {
-                        if (!account.isSpecialFolder(localFolder.getRemoteName()) && 
-                        		!remoteFolderNames.contains(localFolder.getRemoteName())) {
+                        if (!account.isSpecialFolder(localFolder.getRemoteName()) &&
+                        !remoteFolderNames.contains(localFolder.getRemoteName())) {
                             localFolder.delete(false);
                         }
                     }
@@ -903,7 +903,7 @@ public class MessagingController implements Runnable {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
                 remoteFolder = remoteStore.getFolder(folder);
-                
+
                 if (remoteFolder == null) {
                     throw new Exception("Store returned null remote folder for " + folder);
                 }
@@ -949,7 +949,7 @@ public class MessagingController implements Runnable {
              * Get the remote message count.
              */
             int remoteMessageCount = remoteFolder.getMessageCount();
-            
+
             boolean syncMode = remoteFolder.isSyncMode();
 
             int visibleLimit = localFolder.getVisibleLimit();
@@ -1019,18 +1019,18 @@ public class MessagingController implements Runnable {
             if (account.syncRemoteDeletions()) {
                 ArrayList<Message> destroyMessages = new ArrayList<Message>();
                 if (remoteFolder.isSyncMode()) {
-	                for (Message localMessage : localMessages) {
-	                    Message remoteMessage = remoteUidMap.get(localMessage.getUid());
-						if (remoteMessage != null && remoteMessage.isSet(Flag.DELETED)) {
-	                        destroyMessages.add(localMessage);
-	                    }
-	                }
+                    for (Message localMessage : localMessages) {
+                        Message remoteMessage = remoteUidMap.get(localMessage.getUid());
+                        if (remoteMessage != null && remoteMessage.isSet(Flag.DELETED)) {
+                            destroyMessages.add(localMessage);
+                        }
+                    }
                 } else {
-	                for (Message localMessage : localMessages) {
-	                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-	                        destroyMessages.add(localMessage);
-	                    }
-	                }
+                    for (Message localMessage : localMessages) {
+                        if (remoteUidMap.get(localMessage.getUid()) == null) {
+                            destroyMessages.add(localMessage);
+                        }
+                    }
                 }
 
 
@@ -4312,7 +4312,7 @@ public class MessagingController implements Runnable {
 
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("Push messageArrived of account " + account.getDescription()
-                + ", folder " + remoteFolder.getName(), null, new Runnable() {
+        + ", folder " + remoteFolder.getName(), null, new Runnable() {
             @Override
             public void run() {
                 LocalFolder localFolder = null;

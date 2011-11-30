@@ -117,7 +117,7 @@ public class SmtpTransport extends Transport {
         }
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
-                authenticationType, username, password);
+                                  authenticationType, username, password);
     }
 
     /**
@@ -136,32 +136,31 @@ public class SmtpTransport extends Transport {
         String passwordEnc;
         try {
             userEnc = (server.username != null) ?
-                    URLEncoder.encode(server.username, "UTF-8") : "";
+                      URLEncoder.encode(server.username, "UTF-8") : "";
             passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
+                          URLEncoder.encode(server.password, "UTF-8") : "";
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
         }
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "smtp+ssl";
-                break;
-            case SSL_TLS_REQUIRED:
-                scheme = "smtp+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "smtp+tls";
-                break;
-            case STARTTLS_REQUIRED:
-                scheme = "smtp+tls+";
-                break;
-            default:
-            case NONE:
-                scheme = "smtp";
-                break;
+        case SSL_TLS_OPTIONAL:
+            scheme = "smtp+ssl";
+            break;
+        case SSL_TLS_REQUIRED:
+            scheme = "smtp+ssl+";
+            break;
+        case STARTTLS_OPTIONAL:
+            scheme = "smtp+tls";
+            break;
+        case STARTTLS_REQUIRED:
+            scheme = "smtp+tls+";
+            break;
+        default:
+        case NONE:
+            scheme = "smtp";
+            break;
         }
 
         String authType = server.authenticationType;
@@ -175,7 +174,7 @@ public class SmtpTransport extends Transport {
         String userInfo = userEnc + ":" + passwordEnc + ":" + authType;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
-                    null).toString();
+                           null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create SmtpTransport URI", e);
         }

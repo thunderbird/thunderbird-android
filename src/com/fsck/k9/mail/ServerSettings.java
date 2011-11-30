@@ -82,8 +82,8 @@ public class ServerSettings {
      *         see {@link ServerSettings#password}
      */
     public ServerSettings(String type, String host, int port,
-            ConnectionSecurity connectionSecurity, String authenticationType, String username,
-            String password) {
+                          ConnectionSecurity connectionSecurity, String authenticationType, String username,
+                          String password) {
         this.type = type;
         this.host = host;
         this.port = port;
@@ -128,6 +128,6 @@ public class ServerSettings {
 
     public ServerSettings newPassword(String newPassword) {
         return new ServerSettings(type, host, port, connectionSecurity, authenticationType,
-                username, newPassword);
+                                  username, newPassword);
     }
 }

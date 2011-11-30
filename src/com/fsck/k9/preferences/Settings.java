@@ -32,7 +32,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
 
     public static Map<String, String> validate(Map<String, SettingsDescription> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
@@ -45,7 +45,7 @@ public class Settings {
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
                 Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
-                        ((useDefaultValues) ? " Using default value." : ""));
+                      ((useDefaultValues) ? " Using default value." : ""));
                 useDefaultValue = useDefaultValues;
             } else {
                 String prettyValue = importedSettings.get(key);
@@ -56,8 +56,8 @@ public class Settings {
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
                     Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
-                            "\" in imported file. " +
-                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                          "\" in imported file. " +
+                          ((useDefaultValues) ? "Using default value." : "Skipping."));
                     useDefaultValue = useDefaultValues;
                 }
             }
@@ -245,7 +245,9 @@ public class Settings {
                 if (value.length() == 7) {
                     return Integer.parseInt(value.substring(1), 16) | 0xFF000000;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -259,9 +261,9 @@ public class Settings {
      * </p>
      */
     public static class EnumSetting extends SettingsDescription {
-        private Class<? extends Enum<?>> mEnumClass;
+        private Class <? extends Enum<? >> mEnumClass;
 
-        public EnumSetting(Class<? extends Enum<?>> enumClass, Object defaultValue) {
+        public EnumSetting(Class <? extends Enum<? >> enumClass, Object defaultValue) {
             super(defaultValue);
             mEnumClass = enumClass;
         }
@@ -270,7 +272,7 @@ public class Settings {
         @Override
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
-                return Enum.valueOf((Class<? extends Enum>)mEnumClass, value);
+                return Enum.valueOf((Class <? extends Enum >)mEnumClass, value);
             } catch (Exception e) {
                 throw new InvalidSettingValueException();
             }
@@ -339,7 +341,9 @@ public class Settings {
                 if (mMapping.containsKey(fontSize)) {
                     return fontSize;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -375,7 +379,9 @@ public class Settings {
                 if (mMapping.containsKey(fontSize)) {
                     return fontSize;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -401,7 +407,9 @@ public class Settings {
                 if (mStart <= intValue && intValue <= mEnd) {
                     return intValue;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

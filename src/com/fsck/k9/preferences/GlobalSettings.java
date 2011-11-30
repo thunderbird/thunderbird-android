@@ -23,9 +23,9 @@ public class GlobalSettings {
 
         s.put("animations", new BooleanSetting(false));
         s.put("attachmentdefaultpath",
-                new DirectorySetting(Environment.getExternalStorageDirectory().toString()));
+              new DirectorySetting(Environment.getExternalStorageDirectory().toString()));
         s.put("backgroundOperations",
-                new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED));
+              new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED));
         s.put("changeRegisteredNameColor", new BooleanSetting(false));
         s.put("compactLayouts", new BooleanSetting(false));
         s.put("confirmDelete", new BooleanSetting(false));
@@ -186,7 +186,9 @@ public class GlobalSettings {
                 if (mMapping.containsKey(theme)) {
                     return theme;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -249,7 +251,9 @@ public class GlobalSettings {
                 if (new File(value).isDirectory()) {
                     return value;
                 }
-            } catch (Exception e) { /* do nothing */ }
+            } catch (Exception e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

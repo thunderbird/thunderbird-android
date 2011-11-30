@@ -91,7 +91,7 @@ public class Eas {
                 USER_LOG = true;
             }
             Log.d("Eas Debug", "Logging: " + (USER_LOG ? "User " : "") +
-                    (PARSER_LOG ? "Parser " : "") + (FILE_LOG ? "File" : ""));
+                  (PARSER_LOG ? "Parser " : "") + (FILE_LOG ? "File" : ""));
         }
-     }
+    }
 }
