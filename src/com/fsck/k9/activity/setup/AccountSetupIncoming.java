@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
@@ -68,6 +69,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private EditText mPortView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
+    private CheckBox mImapAutoDetectNamespaceView;
     private EditText mImapPathPrefixView;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
@@ -106,6 +108,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mPortView = (EditText)findViewById(R.id.account_port);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
+        mImapAutoDetectNamespaceView = (CheckBox)findViewById(R.id.imap_autodetect_namespace);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
@@ -117,6 +120,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
 
         mNextButton.setOnClickListener(this);
+
+        mImapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mImapPathPrefixView.setEnabled(!isChecked);
+                if (isChecked && mImapPathPrefixView.hasFocus()) {
+                    mImapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
+                } else if (!isChecked) {
+                    mImapPathPrefixView.requestFocus();
+                }
+            }
+        });
 
         SpinnerOption securityTypes[] = {
             new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
@@ -234,6 +249,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mAccountPorts = IMAP_PORTS;
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+
+                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
                 if (imapSettings.pathPrefix != null) {
                     mImapPathPrefixView.setText(imapSettings.pathPrefix);
                 }
@@ -382,12 +399,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             Map<String, String> extra = null;
             if (ImapStore.STORE_TYPE.equals(mStoreType)) {
                 extra = new HashMap<String, String>();
-                extra.put(ImapStoreSettings.PATH_PREFIX_KEY, mImapPathPrefixView.getText().toString());
+                extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
+                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
+                extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
+                        mImapPathPrefixView.getText().toString());
             } else if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
                 extra = new HashMap<String, String>();
-                extra.put(WebDavStoreSettings.PATH_KEY, mWebdavPathPrefixView.getText().toString());
-                extra.put(WebDavStoreSettings.AUTH_PATH_KEY, mWebdavAuthPathView.getText().toString());
-                extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY, mWebdavMailboxPathView.getText().toString());
+                extra.put(WebDavStoreSettings.PATH_KEY,
+                        mWebdavPathPrefixView.getText().toString());
+                extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
+                        mWebdavAuthPathView.getText().toString());
+                extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
+                        mWebdavMailboxPathView.getText().toString());
             }
 
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
