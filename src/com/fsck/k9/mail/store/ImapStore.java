@@ -226,8 +226,8 @@ public class ImapStore extends Store {
                     pathPrefix = cleanPath.substring(2);
                 }
             } else {
-                pathPrefix = cleanPath;
-                if (pathPrefix.length() > 0) {
+                if (cleanPath.length() > 0) {
+                    pathPrefix = cleanPath;
                     autoDetectNamespace = false;
                 }
             }
@@ -479,7 +479,8 @@ public class ImapStore extends Store {
         mUsername = settings.username;
         mPassword = settings.password;
 
-        mPathPrefix = settings.pathPrefix;
+        // Make extra sure mPathPrefix is null if "auto-detect namespace" is configured
+        mPathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
     }
