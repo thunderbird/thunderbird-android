@@ -430,8 +430,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
     <string name="account_setup_expunge_policy_manual">Pouze ručně</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Předpona cesty IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automaticky používat jmenný prostor, pokud je dostupný)</string>
 
     <string name="drafts_folder_label">Název složky Koncepty</string>
     <string name="sent_folder_label">Název složky Odeslaná</string>

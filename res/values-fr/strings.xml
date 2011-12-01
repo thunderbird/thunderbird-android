@@ -446,8 +446,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_expunge_policy_on_poll">Pendant chaque récupération</string>
     <string name="account_setup_expunge_policy_manual">Seulement manuellement</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Préfixe de chemin IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">Optionnel</string>
 
     <string name="drafts_folder_label">Nom du dossier des brouillons</string>
     <string name="sent_folder_label">Nom du dossier des envoyés</string>

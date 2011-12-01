@@ -347,8 +347,8 @@ Levelek letöltése…"</string>
     <string name="account_setup_expunge_policy_immediately">Azonnal</string>
     <string name="account_setup_expunge_policy_on_poll">Frissítés után</string>
     <string name="account_setup_expunge_policy_manual">Kézileg</string>
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP útvonal prefix</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(automatikusan használja a NAMESPACE ha lehetséges)</string>
     <string name="drafts_folder_label">Piszkozatok mappája</string>
     <string name="sent_folder_label">Elküldöttek mappája</string>
     <string name="trash_folder_label">Lomtár mappája</string>

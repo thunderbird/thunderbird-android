@@ -423,8 +423,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_setup_expunge_policy_on_poll">수신시(poll)</string>
     <string name="account_setup_expunge_policy_manual">항상 수동적으로</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(NAMESPACE가 이용가능할경우 자동으로 이용)</string>
 
     <string name="drafts_folder_label">임시보관함 폴더</string>
     <string name="sent_folder_label">보낸 편지함 폴더</string>

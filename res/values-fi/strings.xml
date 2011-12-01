@@ -420,8 +420,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_setup_expunge_policy_on_poll">Jokaisen tarkistuksen aikana</string>
     <string name="account_setup_expunge_policy_manual">Vain manuaalisesti</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP -polun etuliite</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automaattinen, käytä NIMITILAA jos on käytettävissä)</string>
 
     <string name="drafts_folder_label">Luonnokset-kansio</string>
     <string name="sent_folder_label">Lähetetyt-kansio</string>

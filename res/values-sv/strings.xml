@@ -424,8 +424,8 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_setup_expunge_policy_on_poll">Vid varje e-post-kontroll</string>
     <string name="account_setup_expunge_policy_manual">Endast manuellt</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Sökvägsprefix för IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automatiskt, använder NAMESPACE om tillgängligt)</string>
 
     <string name="drafts_folder_label">Namn på utkastmapp</string>
     <string name="sent_folder_label">Namn på skickatmapp</string>

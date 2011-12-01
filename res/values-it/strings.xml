@@ -424,8 +424,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
     <string name="account_setup_expunge_policy_manual">Solo manualmente</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automatico usando NAMESPACE se disponibile)</string>
 
     <string name="drafts_folder_label">Cartella Bozze</string>
     <string name="sent_folder_label">Cartella Posta inviata</string>
