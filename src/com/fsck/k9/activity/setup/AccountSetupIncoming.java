@@ -35,15 +35,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int popPorts[] = {
+    private static final int[] POP3_PORTS = {
         110, 995, 995, 110, 110
     };
 
-    private static final int imapPorts[] = {
+    private static final int[] IMAP_PORTS = {
         143, 993, 993, 143, 143
     };
 
-    private static final int webdavPorts[] = {
+    private static final int[] WEBDAV_PORTS = {
         80, 443, 443, 443, 443
     };
 
@@ -55,12 +55,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         ConnectionSecurity.STARTTLS_REQUIRED
     };
 
-    private static final String authTypes[] = {
+    private static final String[] AUTH_TYPES = {
         "PLAIN", "CRAM_MD5"
     };
 
 
-    private int mAccountPorts[];
+    private int[] mAccountPorts;
     private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -131,8 +131,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // This needs to be kept in sync with the list at the top of the file.
         // that makes me somewhat unhappy
         SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, "PLAIN"),
-            new SpinnerOption(1, "CRAM_MD5")
+            new SpinnerOption(0, AUTH_TYPES[0]),
+            new SpinnerOption(1, AUTH_TYPES[1])
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -154,8 +154,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 updatePortFromSecurityType();
             }
 
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
         });
 
         /*
@@ -168,9 +167,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* unused */
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* unused */
             }
         };
         mUsernameView.addTextChangedListener(validationTextWatcher);
@@ -208,8 +209,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (settings.authenticationType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(settings.authenticationType)) {
+                for (int i = 0; i < AUTH_TYPES.length; i++) {
+                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
                         SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
                     }
                 }
@@ -218,7 +219,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mStoreType = settings.type;
             if (Pop3Store.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mAccountPorts = popPorts;
+                mAccountPorts = POP3_PORTS;
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -230,7 +231,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mAccountPorts = imapPorts;
+                mAccountPorts = IMAP_PORTS;
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
                 if (imapSettings.pathPrefix != null) {
@@ -248,9 +249,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mAccountPorts = webdavPorts;
+                mAccountPorts = WEBDAV_PORTS;
 
-                /** Hide the unnecessary fields */
+                // Hide the unnecessary fields
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
