@@ -295,7 +295,8 @@ public class ImapStore extends Store {
             if (extra != null) {
                 boolean autoDetectNamespace = Boolean.TRUE.toString().equals(
                         extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
-                String pathPrefix = extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
+                String pathPrefix = (autoDetectNamespace) ?
+                        null : extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
                 path = "/" + (autoDetectNamespace ? "1" : "0") + "|" +
                     ((pathPrefix == null) ? "" : pathPrefix);
             } else {
