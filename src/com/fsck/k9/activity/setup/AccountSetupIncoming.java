@@ -15,11 +15,18 @@ import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.ImapStore;
+import com.fsck.k9.mail.store.Pop3Store;
+import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
+import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
@@ -43,6 +50,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     };
     private static final String webdavSchemes[] = {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
+    };
+
+    private static final ConnectionSecurity CONNECTION_SECURITY_TYPES[] = {
+        ConnectionSecurity.NONE,
+        ConnectionSecurity.SSL_TLS_OPTIONAL,
+        ConnectionSecurity.SSL_TLS_REQUIRED,
+        ConnectionSecurity.STARTTLS_OPTIONAL,
+        ConnectionSecurity.STARTTLS_REQUIRED
     };
 
     private static final String authTypes[] = {
@@ -187,45 +202,26 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
 
         try {
-            URI uri = new URI(mAccount.getStoreUri());
-            String username = null;
-            String password = null;
-            String authType = null;
+            ServerSettings settings = Store.decodeStoreUri(mAccount.getStoreUri());
 
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length == 3) {
-                    authType = userInfoParts[0];
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 1) {
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                }
+            if (settings.username != null) {
+                mUsernameView.setText(settings.username);
             }
 
-
-
-            if (username != null) {
-                mUsernameView.setText(username);
+            if (settings.password != null) {
+                mPasswordView.setText(settings.password);
             }
 
-            if (password != null) {
-                mPasswordView.setText(password);
-            }
-
-            if (authType != null) {
+            if (settings.authenticationType != null) {
                 for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
+                    if (authTypes[i].equals(settings.authenticationType)) {
                         SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
                     }
                 }
             }
 
 
-            if (uri.getScheme().startsWith("pop3")) {
+            if (Pop3Store.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
                 mAccountPorts = popPorts;
                 mAccountSchemes = popSchemes;
@@ -238,13 +234,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            } else if (uri.getScheme().startsWith("imap")) {
+            } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
                 mAccountSchemes = imapSchemes;
 
-                if (uri.getPath() != null && uri.getPath().length() > 0) {
-                    mImapPathPrefixView.setText(uri.getPath().substring(1));
+                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+                if (imapSettings.pathPrefix != null) {
+                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
                 }
 
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
@@ -256,7 +253,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            } else if (uri.getScheme().startsWith("webdav")) {
+            } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
                 mAccountSchemes = webdavSchemes;
@@ -268,48 +265,41 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                if (uri.getPath() != null && uri.getPath().length() > 0) {
-                    String[] pathParts = uri.getPath().split("\\|");
 
-                    for (int i = 0, count = pathParts.length; i < count; i++) {
-                        if (i == 0) {
-                            if (pathParts[0] != null &&
-                                    pathParts[0].length() > 1) {
-                                mWebdavPathPrefixView.setText(pathParts[0].substring(1));
-                            }
-                        } else if (i == 1) {
-                            if (pathParts[1] != null &&
-                                    pathParts[1].length() > 1) {
-                                mWebdavAuthPathView.setText(pathParts[1]);
-                            }
-                        } else if (i == 2) {
-                            if (pathParts[2] != null &&
-                                    pathParts[2].length() > 1) {
-                                mWebdavMailboxPathView.setText(pathParts[2]);
-                            }
-                        }
-                    }
+                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+
+                if (webDavSettings.path != null) {
+                    mWebdavPathPrefixView.setText(webDavSettings.path);
+                }
+
+                if (webDavSettings.authPath != null) {
+                    mWebdavAuthPathView.setText(webDavSettings.authPath);
+                }
+
+                if (webDavSettings.mailboxPath != null) {
+                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
-            for (int i = 0; i < mAccountSchemes.length; i++) {
-                if (mAccountSchemes[i].equals(uri.getScheme())) {
+            for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
+                if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
+
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
             mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
 
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
+            if (settings.host != null) {
+                mServerView.setText(settings.host);
             }
 
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
+            if (settings.port != -1) {
+                mPortView.setText(Integer.toString(settings.port));
             } else {
                 updatePortFromSecurityType();
             }

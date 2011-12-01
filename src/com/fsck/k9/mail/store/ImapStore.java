@@ -314,9 +314,9 @@ public class ImapStore extends Store {
      *
      * @see ImapStore#decodeUri(String)
      */
-    private static class ImapStoreSettings extends ServerSettings {
-        private static final String AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace";
-        private static final String PATH_PREFIX_KEY = "pathPrefix";
+    public static class ImapStoreSettings extends ServerSettings {
+        public static final String AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace";
+        public static final String PATH_PREFIX_KEY = "pathPrefix";
 
         public final boolean autoDetectNamespace;
         public final String pathPrefix;
