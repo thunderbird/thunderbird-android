@@ -83,28 +83,31 @@ public class EasStore extends Store {
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
+    // This key is sent the first time we sync the folder hierarchy, and also the first time
+    // we sync the items any "collection" (emails in a folder).
     private static final String INITIAL_SYNC_KEY = "0";
 
     static private final String PING_COMMAND = "Ping";
+    static private final String PROVISION_COMMAND = "Provision";
     // Command timeout is the the time allowed for reading data from an open connection before an
-    // IOException is thrown.  After a small added allowance, our watchdog alarm goes off (allowing
+    // IOException is thrown.  After a small added allowance, our watch dog alarm goes off (allowing
     // us to detect a silently dropped connection).  The allowance is defined below.
     static private final int COMMAND_TIMEOUT = 30 * 1000;
-    // Connection timeout is the time given to connect to the server before reporting an IOException
+    // Connection timeout is the time given to connect to the server before reporting an IOException.
     static private final int CONNECTION_TIMEOUT = 20 * 1000;
 
     // This needs to be long enough to send the longest reasonable message, without being so long
-    // as to effectively "hang" sending of mail.  The standard 30 second timeout isn't long enough
-    // for pictures and the like.  For now, we'll use 15 minutes, in the knowledge that any socket
-    // failure would probably generate an Exception before timing out anyway
+    // as to effectively "hang" sending of mail. The standard 30 second timeout isn't long enough
+    // for pictures and the like. For now, we'll use 15 minutes, in the knowledge that any socket
+    // failure would probably generate an Exception before timing out anyway.
     public static final int SEND_MAIL_TIMEOUT = 15 * 60 * 1000;
 
-    // MSFT's custom HTTP result code indicating the need to provision
+    // MSFT's custom HTTP result code indicating the need to provision.
     static private final int HTTP_NEED_PROVISIONING = 449;
 
-    // The EAS protocol Provision status for "we implement all of the policies"
+    // The EAS protocol Provision status for "we implement all of the policies".
     static private final String PROVISION_STATUS_OK = "1";
-    // The EAS protocol Provision status meaning "we partially implement the policies"
+    // The EAS protocol Provision status meaning "we partially implement the policies".
     static private final String PROVISION_STATUS_PARTIAL = "2";
 
     static public final String EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML";
@@ -114,8 +117,10 @@ public class EasStore extends Store {
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
     private static final int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
     private static final int NORMAL_DELAY_TIME = 5000;
+    
+    // The number of emails to fetch for each request to the server.
+    private static final int EMAIL_WINDOW_SIZE = 10;
 
-    // Reasonable default
     public String mProtocolVersion;
     public Double mProtocolVersionDouble;
     protected String mDeviceId = null;
@@ -138,8 +143,8 @@ public class EasStore extends Store {
      * eas://user:password@server:port CONNECTION_SECURITY_NONE
      * eas+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
      * eas+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * eas+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * eas+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * eas+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      */
     public EasStore(Account account) throws MessagingException {
         super(account);
@@ -312,7 +317,7 @@ public class EasStore extends Store {
     }
 
     private String getPolicyType() {
-        return (mProtocolVersionDouble >=
+        return (getProtocolVersion() >=
                 Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) ? EAS_12_POLICY_TYPE : EAS_2_POLICY_TYPE;
     }
 
@@ -327,8 +332,8 @@ public class EasStore extends Store {
         Serializer s = new Serializer();
         s.start(Tags.PROVISION_PROVISION).start(Tags.PROVISION_POLICIES);
         s.start(Tags.PROVISION_POLICY).data(Tags.PROVISION_POLICY_TYPE, getPolicyType())
-        .end().end().end().done();
-        HttpResponse resp = sendHttpClientPost("Provision", s.toByteArray());
+            .end().end().end().done();
+        HttpResponse resp = sendHttpClientPost(PROVISION_COMMAND, s.toByteArray());
         try {
             int code = resp.getStatusLine().getStatusCode();
             if (code == HttpStatus.SC_OK) {
@@ -346,7 +351,7 @@ public class EasStore extends Store {
                         // accommodate the required policies).  The server will agree to this if the
                         // "allow non-provisionable devices" setting is enabled on the server
                         String policyKey = acknowledgeProvision(pp.getPolicyKey(),
-                                                                PROVISION_STATUS_PARTIAL);
+                                PROVISION_STATUS_PARTIAL);
                         // Return either the parser (success) or null (failure)
                         return (policyKey != null) ? pp : null;
                     }
@@ -364,7 +369,7 @@ public class EasStore extends Store {
     }
 
     private String acknowledgeProvisionImpl(String tempKey, String status,
-                                            boolean remoteWipe) throws IOException, MessagingException {
+            boolean remoteWipe) throws IOException, MessagingException {
         Serializer s = new Serializer();
         s.start(Tags.PROVISION_PROVISION).start(Tags.PROVISION_POLICIES);
         s.start(Tags.PROVISION_POLICY);
@@ -381,7 +386,7 @@ public class EasStore extends Store {
             s.end();
         }
         s.end().done(); // PROVISION_PROVISION
-        HttpResponse resp = sendHttpClientPost("Provision", s.toByteArray());
+        HttpResponse resp = sendHttpClientPost(PROVISION_COMMAND, s.toByteArray());
         try {
             int code = resp.getStatusLine().getStatusCode();
             if (code == HttpStatus.SC_OK) {
@@ -442,61 +447,65 @@ public class EasStore extends Store {
             service.mProtocolVersionDouble = Double.parseDouble(ourVersion);
         }
     }
+    
+    private Double getProtocolVersion() {
+        synchronized (mProtocolVersionDouble) {
+            if (mProtocolVersionDouble == null) {
+                try {
+                    init();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            }
+            return mProtocolVersionDouble;
+        }
+    }
 
     protected HttpResponse sendHttpClientPost(String cmd, byte[] bytes) throws IOException, MessagingException {
         return sendHttpClientPost(cmd, new ByteArrayEntity(bytes), COMMAND_TIMEOUT);
     }
 
-    protected HttpResponse sendHttpClientPost(String cmd, HttpEntity entity) throws IOException, MessagingException {
-        return sendHttpClientPost(cmd, entity, COMMAND_TIMEOUT);
-    }
-
     /**
-     * Convenience method for executePostWithTimeout for use other than with the Ping command
-     */
-    protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout)
-    throws IOException {
-        return executePostWithTimeout(client, method, timeout, false);
-    }
-
-    /**
-     * Handle executing an HTTP POST command with proper timeout, watchdog, and ping behavior
+     * Handle executing an HTTP POST command with proper timeout and provisioning
      * @param client the HttpClient
      * @param method the HttpPost
      * @param timeout the timeout before failure, in ms
-     * @param isPingCommand whether the POST is for the Ping command (requires wakelock logic)
+     * @param noProvision prevents a provision request from being sent if determined to be necessary
      * @return the HttpResponse
      * @throws IOException
      */
-    protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout,
-            boolean isPingCommand) throws IOException {
+    protected HttpResponse executePostWithTimeout(HttpClient client, HttpPost method, int timeout, boolean noProvision)
+            throws IOException {
         HttpConnectionParams.setSoTimeout(method.getParams(), timeout);
-//        synchronized(getSynchronizer()) {
-//            mPendingPost = method;
-//            long alarmTime = timeout + WATCHDOG_TIMEOUT_ALLOWANCE;
-//            if (isPingCommand) {
-//                SyncManager.runAsleep(mMailboxId, alarmTime);
-//            } else {
-//                SyncManager.setWatchdogAlarm(mMailboxId, alarmTime);
-//            }
-//        }
-//        try {
-        return client.execute(method);
-//        } finally {
-//            synchronized(getSynchronizer()) {
-//                if (isPingCommand) {
-//                    SyncManager.runAwake(mMailboxId);
-//                } else {
-//                    SyncManager.clearWatchdogAlarm(mMailboxId);
-//                }
-//                mPendingPost = null;
-//            }
-//        }
+        HttpResponse response = client.execute(method);
+        // If the request resulted in a provision error from the Exchange server, try provisioning.
+        if (isProvisionError(response.getStatusLine().getStatusCode())
+                && !noProvision) {
+            // Make sure to return the connection to the pool first.
+            reclaimConnection(response);
+            try {
+                if (tryProvision()) {
+                    // We provisioned successfully, re-send the request.
+                    response = client.execute(method);
+                }
+            }
+            catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+        return response;
     }
 
     protected HttpResponse sendHttpClientPost(String cmd, HttpEntity entity, int timeout)
     throws IOException, MessagingException {
-        boolean isPingCommand = cmd.equals(PING_COMMAND);
+        init();
+
+        boolean isPingCmd = cmd.equals(PING_COMMAND);
+        boolean isProvisionCmd = isPingCmd ? false : cmd.equals(PROVISION_COMMAND);
 
         // Split the mail sending commands
         String extra = null;
@@ -519,10 +528,10 @@ public class EasStore extends Store {
         } else if (entity != null) {
             method.setHeader("Content-Type", "application/vnd.ms-sync.wbxml");
         }
-        setHeaders(method, !cmd.equals(PING_COMMAND));
+        setHeaders(method, !isPingCmd);
         method.setEntity(entity);
 
-        return executePostWithTimeout(mHttpClient, method, timeout, isPingCommand);
+        return executePostWithTimeout(mHttpClient, method, timeout, isProvisionCmd);
     }
 
     protected HttpResponse sendHttpClientOptions() throws IOException, MessagingException {
@@ -540,7 +549,7 @@ public class EasStore extends Store {
      * @param method the method we are going to send
      * @param usePolicyKey whether or not a policy key should be sent in the headers
      */
-    /*package*/ void setHeaders(HttpRequestBase method, boolean usePolicyKey) {
+    private void setHeaders(HttpRequestBase method, boolean usePolicyKey) {
         method.setHeader("Authorization", mAuthString);
         method.setHeader("MS-ASProtocolVersion", mProtocolVersion);
         method.setHeader("Connection", "keep-alive");
@@ -643,11 +652,11 @@ public class EasStore extends Store {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
 
         try {
-            init();
-
             Serializer s = new Serializer();
-            s.start(Tags.FOLDER_FOLDER_SYNC).start(Tags.FOLDER_SYNC_KEY)
-            .text(getStoreSyncKey()).end().end().done();
+            s.start(Tags.FOLDER_FOLDER_SYNC)
+                .start(Tags.FOLDER_SYNC_KEY)
+                .text(getStoreSyncKey())
+                .end().end().done();
             HttpResponse resp = sendHttpClientPost("FolderSync", s.toByteArray());
             try {
                 int code = resp.getStatusLine().getStatusCode();
@@ -1023,130 +1032,125 @@ public class EasStore extends Store {
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
             try {
-                EasEmailSyncParser syncParser = getMessagesInternal(null, null, null, start, end);
-
-                List<EasMessage> messages = syncParser.getMessages();
-
+                List<EasMessage> messages = getMessagesInternal(null, null, null, start, end);
                 return messages.toArray(EMPTY_MESSAGE_ARRAY);
             } catch (IOException e) {
                 throw new MessagingException("getMessages call failed", e);
             }
         }
 
-        private EasEmailSyncParser getMessagesInternal(Message[] messages, FetchProfile fp, MessageRetrievalListener listener,
+        private List<EasMessage> getMessagesInternal(Message[] messages, FetchProfile fp, MessageRetrievalListener listener,
                 int start, int end) throws IOException, MessagingException {
-            Serializer s = new Serializer();
-            EasEmailSyncParser syncParser = null;
-//          EmailSyncAdapter target = new EmailSyncAdapter(this, mAccount);
-
-            String className = "Email";
-            String syncKey = getSyncKey();
-//              userLog("sync, sending ", className, " syncKey: ", syncKey);
-            s.start(Tags.SYNC_SYNC)
-            .start(Tags.SYNC_COLLECTIONS)
-            .start(Tags.SYNC_COLLECTION)
-            .data(Tags.SYNC_CLASS, className)
-            .data(Tags.SYNC_SYNC_KEY, syncKey)
-            .data(Tags.SYNC_COLLECTION_ID, mServerId);
-
-            // Start with the default timeout
-            int timeout = COMMAND_TIMEOUT;
-
-            // EAS doesn't allow GetChanges in an initial sync; sending other options
-            // appears to cause the server to delay its response in some cases, and this delay
-            // can be long enough to result in an IOException and total failure to sync.
-            // Therefore, we don't send any options with the initial sync.
-            if (!syncKey.equals(INITIAL_SYNC_KEY)) {
-                boolean fetchBodySane = (fp != null) && fp.contains(FetchProfile.Item.BODY_SANE);
-                boolean fetchBody = (fp != null) && fp.contains(FetchProfile.Item.BODY);
-
-                s.tag(Tags.SYNC_DELETES_AS_MOVES);
-
-                if (messages == null) {
-                    s.tag(Tags.SYNC_GET_CHANGES);
-                    // EASTODO: s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(end - start + 1));
-                }
-                // Handle options
-                s.start(Tags.SYNC_OPTIONS);
-                if (messages == null) {
-                    // Set the lookback appropriately (EAS calls this a "filter") for all but Contacts
-                    s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
-                }
-                // Enable MimeSupport
-                s.data(Tags.SYNC_MIME_SUPPORT, "2");
-                // Set the truncation amount for all classes
-                if (mProtocolVersionDouble >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
-                    s.start(Tags.BASE_BODY_PREFERENCE)
-                    // HTML for email; plain text for everything else
-                    .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_MIME);
-
-                    if (!fetchBody) {
-                        String truncationSize = "0";
-                        if (fetchBodySane) {
-                            truncationSize = Eas.EAS12_TRUNCATION_SIZE;
-                        }
-                        s.data(Tags.BASE_TRUNCATION_SIZE, truncationSize);
+            List<EasMessage> easMessages = new ArrayList<EasMessage>();
+            Boolean moreAvailable = true;
+            while (moreAvailable && easMessages.isEmpty()) {
+                Serializer s = new Serializer();
+                String syncKey = getSyncKey();
+    
+                s.start(Tags.SYNC_SYNC)
+                    .start(Tags.SYNC_COLLECTIONS)
+                    .start(Tags.SYNC_COLLECTION)
+                    .data(Tags.SYNC_CLASS, "Email")
+                    .data(Tags.SYNC_SYNC_KEY, syncKey)
+                    .data(Tags.SYNC_COLLECTION_ID, mServerId);
+    
+                // Start with the default timeout
+                int timeout = COMMAND_TIMEOUT;
+    
+                // EAS doesn't allow GetChanges in an initial sync; sending other options
+                // appears to cause the server to delay its response in some cases, and this delay
+                // can be long enough to result in an IOException and total failure to sync.
+                // Therefore, we don't send any options with the initial sync.
+                if (!syncKey.equals(INITIAL_SYNC_KEY)) {
+                    boolean fetchBodySane = (fp != null) && fp.contains(FetchProfile.Item.BODY_SANE);
+                    boolean fetchBody = (fp != null) && fp.contains(FetchProfile.Item.BODY);
+    
+                    s.tag(Tags.SYNC_DELETES_AS_MOVES);
+    
+                    // If messages is null, we only want to sync changes.
+                    if (messages == null) {
+                        s.tag(Tags.SYNC_GET_CHANGES);
                     }
-
+                    
+                    // Only fetch 10 messages at a time.
+                    s.data(Tags.SYNC_WINDOW_SIZE, Integer.toString(EMAIL_WINDOW_SIZE));
+                    
+                    // Handle options
+                    s.start(Tags.SYNC_OPTIONS);
+                    if (messages == null) {
+                        // Set the time frame appropriately (EAS calls this a "filter") for all but Contacts.
+                        s.data(Tags.SYNC_FILTER_TYPE, getEmailFilter());
+                    }
+                    // Enable MimeSupport
+                    s.data(Tags.SYNC_MIME_SUPPORT, "2");
+                    // Set the truncation amount for all classes.
+                    if (getProtocolVersion() >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
+                        s.start(Tags.BASE_BODY_PREFERENCE)
+                            // HTML for email; plain text for everything else.
+                            .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_MIME);
+    
+                        if (!fetchBody) {
+                            String truncationSize = "0";
+                            if (fetchBodySane) {
+                                truncationSize = Eas.EAS12_TRUNCATION_SIZE;
+                            }
+                            s.data(Tags.BASE_TRUNCATION_SIZE, truncationSize);
+                        }
+    
+                        s.end();
+                    } else {
+                        String syncTruncation = "0";
+                        if (fetchBody) {
+                            syncTruncation = "8";
+                        } else if (fetchBodySane) {
+                            syncTruncation = "7";
+                        }
+                        s.data(Tags.SYNC_MIME_TRUNCATION, syncTruncation);
+                    }
                     s.end();
                 } else {
-                    String syncTruncation = "0";
-                    if (fetchBody) {
-                        syncTruncation = "8";
-                    } else if (fetchBodySane) {
-                        syncTruncation = "7";
-                    }
-                    s.data(Tags.SYNC_MIME_TRUNCATION, syncTruncation);
+                    // Use enormous timeout for initial sync, which empirically can take a while longer.
+                    timeout = 120 * 1000;
                 }
-                s.end();
-            } else {
-                // Use enormous timeout for initial sync, which empirically can take a while longer
-                timeout = 120 * 1000;
-            }
-
-            if (messages != null) {
-                s.start(Tags.SYNC_COMMANDS);
-                for (Message msg : messages) {
-                    String serverId = msg.getUid();
-                    s.start(Tags.SYNC_FETCH);
-                    s.data(Tags.SYNC_SERVER_ID, serverId);
+    
+                if (messages != null) {
+                    s.start(Tags.SYNC_COMMANDS);
+                    for (Message msg : messages) {
+                        s.start(Tags.SYNC_FETCH);
+                        s.data(Tags.SYNC_SERVER_ID, msg.getUid());
+                        s.end();
+                    }
                     s.end();
                 }
-                s.end();
-            }
-
-            s.end().end().end().done();
-
-            HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()), timeout);
-            try {
-                int code = resp.getStatusLine().getStatusCode();
-                if (code == HttpStatus.SC_OK) {
-                    InputStream is = resp.getEntity().getContent();
-                    if (is != null) {
-                        syncParser = new EasEmailSyncParser(is, this, mAccount);
-                        boolean moreAvailable = syncParser.parse();
-                        if (moreAvailable && !syncParser.hasMessages()) {
-                            // Make sure we free the connection to the pool before recursing. Otherwise
-                            // we'll dead lock.
-                            reclaimConnection(resp);
-                            return getMessagesInternal(messages, fp, listener, start, end);
+    
+                s.end().end().end().done();
+    
+                HttpResponse resp = sendHttpClientPost("Sync", new ByteArrayEntity(s.toByteArray()), timeout);
+                try {
+                    int code = resp.getStatusLine().getStatusCode();
+                    if (code == HttpStatus.SC_OK) {
+                        InputStream is = resp.getEntity().getContent();
+                        if (is != null) {
+                            EasEmailSyncParser parser = new EasEmailSyncParser(is, this, mAccount);
+                            moreAvailable = parser.parse();
+                            easMessages.addAll(parser.getMessages());
+                        } else {
+                            Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
                         }
                     } else {
-                        Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
+                        if (isProvisionError(code)) {
+                            throw new MessagingException("Provision error received while downloading messages");
+                        } else if (isAuthError(code)) {
+                            throw new MessagingException("Authentication error received while downloading messages");
+                        } else {
+                            throw new MessagingException("Unknown error received while downloading messages");
+                        }
                     }
-                } else {
-                    if (isProvisionError(code)) {
-                        throw new MessagingException("Provision error received while downloading messages");
-                    } else if (isAuthError(code)) {
-                        throw new MessagingException("Authentication error received while downloading messages");
-                    } else {
-                        throw new MessagingException("Unknown error received while downloading messages");
-                    }
+                } finally {
+                    reclaimConnection(resp);
                 }
-            } finally {
-                reclaimConnection(resp);
             }
-            return syncParser;
+            return easMessages;
         }
 
         private String getEmailFilter() {
@@ -1230,8 +1234,7 @@ public class EasStore extends Store {
             boolean fetchBody = fp.contains(FetchProfile.Item.BODY);
             if (fetchBodySane || fetchBody) {
                 try {
-                    EasEmailSyncParser syncParser = getMessagesInternal(messages, fp, listener, -1, -1);
-                    messages = syncParser.getMessages().toArray(EMPTY_MESSAGE_ARRAY);
+                    messages = getMessagesInternal(messages, fp, listener, -1, -1).toArray(EMPTY_MESSAGE_ARRAY);
                 } catch (IOException e) {
                     throw new MessagingException("IO exception while fetching messages", e);
                 }
@@ -1434,17 +1437,17 @@ public class EasStore extends Store {
 
                             int responseTimeout = getAccount().getIdleRefreshMinutes() * 60 + (IDLE_READ_TIMEOUT_INCREMENT / 1000);
                             s.start(Tags.PING_PING)
-                            .data(Tags.PING_HEARTBEAT_INTERVAL, String.valueOf(responseTimeout))
-                            .start(Tags.PING_FOLDERS);
+                                .data(Tags.PING_HEARTBEAT_INTERVAL, String.valueOf(responseTimeout))
+                                .start(Tags.PING_FOLDERS);
 
                             // Using getFolder here will ensure we have retrieved the folder list from the server.
                             for (String folderName : folderNames) {
                                 EasFolder folder = (EasFolder)mStore.getFolder(folderName);
                                 if (folder != null) {
                                     s.start(Tags.PING_FOLDER)
-                                    .data(Tags.PING_ID, folder.mServerId)
-                                    .data(Tags.PING_CLASS, "Email")
-                                    .end();
+                                        .data(Tags.PING_ID, folder.mServerId)
+                                        .data(Tags.PING_CLASS, "Email")
+                                        .end();
                                 }
                             }
 
