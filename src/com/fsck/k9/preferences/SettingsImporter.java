@@ -303,8 +303,14 @@ public class SettingsImporter {
     private static void importGlobalSettings(SharedPreferences storage,
             SharedPreferences.Editor editor, int contentVersion, ImportedSettings settings) {
 
+        // Validate global settings
         Map<String, String> validatedSettings = GlobalSettings.validate(contentVersion,
                 settings.settings);
+
+        // Upgrade global settings to current content version
+        if (contentVersion != Settings.VERSION) {
+            GlobalSettings.upgrade(contentVersion, validatedSettings);
+        }
 
         // Use current global settings as base and overwrite with validated settings read from the
         // import file.
@@ -396,6 +402,11 @@ public class SettingsImporter {
             AccountSettings.validate(contentVersion, account.settings.settings,
                     !mergeImportedAccount);
 
+        // Upgrade account settings to current content version
+        if (contentVersion != Settings.VERSION) {
+            AccountSettings.upgrade(contentVersion, validatedSettings);
+        }
+
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
@@ -447,6 +458,11 @@ public class SettingsImporter {
         // Validate folder settings
         Map<String, String> validatedSettings =
             FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
+
+        // Upgrade folder settings to current content version
+        if (contentVersion != Settings.VERSION) {
+            FolderSettings.upgrade(contentVersion, validatedSettings);
+        }
 
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
@@ -536,6 +552,11 @@ public class SettingsImporter {
                 // Validate identity settings
                 Map<String, String> validatedSettings = IdentitySettings.validate(
                         contentVersion, identity.settings.settings, !mergeSettings);
+
+                // Upgrade identity settings to current content version
+                if (contentVersion != Settings.VERSION) {
+                    IdentitySettings.upgrade(contentVersion, validatedSettings);
+                }
 
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;

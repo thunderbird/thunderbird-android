@@ -173,6 +173,11 @@ public class SettingsExporter {
             String key = versionedSetting.getKey();
             String valueString = (String) prefs.get(key);
             SettingsDescription setting = versionedSetting.getValue().lastEntry().getValue();
+            if (setting == null) {
+                // Setting was removed.
+                continue;
+            }
+
             if (valueString != null) {
                 try {
                     Object value = setting.fromString(valueString);
@@ -319,15 +324,17 @@ public class SettingsExporter {
             if (versionedSetting != null) {
                 SettingsDescription setting = versionedSetting.lastEntry().getValue();
 
-                // Only export account settings that can be found in AccountSettings.SETTINGS
-                try {
-                    Object value = setting.fromString(valueString);
-                    String pretty = setting.toPrettyString(value);
-                    writeKeyValue(serializer, keyPart, pretty);
-                } catch (InvalidSettingValueException e) {
-                    Log.w(K9.LOG_TAG, "Account setting \"" + keyPart  + "\" (" +
-                            account.getDescription() + ") has invalid value \"" + valueString +
-                            "\" in preference storage. This shouldn't happen!");
+                if (setting != null) {
+                    // Only export account settings that can be found in AccountSettings.SETTINGS
+                    try {
+                        Object value = setting.fromString(valueString);
+                        String pretty = setting.toPrettyString(value);
+                        writeKeyValue(serializer, keyPart, pretty);
+                    } catch (InvalidSettingValueException e) {
+                        Log.w(K9.LOG_TAG, "Account setting \"" + keyPart  + "\" (" +
+                                account.getDescription() + ") has invalid value \"" + valueString +
+                                "\" in preference storage. This shouldn't happen!");
+                    }
                 }
             }
         }
@@ -411,15 +418,17 @@ public class SettingsExporter {
             if (versionedSetting != null) {
                 SettingsDescription setting = versionedSetting.lastEntry().getValue();
 
-                // Only write settings that have an entry in IdentitySettings.SETTINGS
-                try {
-                    Object value = setting.fromString(valueString);
-                    String outputValue = setting.toPrettyString(value);
-                    writeKeyValue(serializer, identityKey, outputValue);
-                } catch (InvalidSettingValueException e) {
-                    Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
-                            "\" has invalid value \"" + valueString +
-                            "\" in preference storage. This shouldn't happen!");
+                if (setting != null) {
+                    // Only write settings that have an entry in IdentitySettings.SETTINGS
+                    try {
+                        Object value = setting.fromString(valueString);
+                        String outputValue = setting.toPrettyString(value);
+                        writeKeyValue(serializer, identityKey, outputValue);
+                    } catch (InvalidSettingValueException e) {
+                        Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
+                                "\" has invalid value \"" + valueString +
+                                "\" in preference storage. This shouldn't happen!");
+                    }
                 }
             }
         }
@@ -460,15 +469,17 @@ public class SettingsExporter {
             if (versionedSetting != null) {
                 SettingsDescription setting = versionedSetting.lastEntry().getValue();
 
-                // Only write settings that have an entry in FolderSettings.SETTINGS
-                try {
-                    Object value = setting.fromString(valueString);
-                    String outputValue = setting.toPrettyString(value);
-                    writeKeyValue(serializer, folderKey, outputValue);
-                } catch (InvalidSettingValueException e) {
-                    Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey +
-                            "\" has invalid value \"" + valueString +
-                            "\" in preference storage. This shouldn't happen!");
+                if (setting != null) {
+                    // Only write settings that have an entry in FolderSettings.SETTINGS
+                    try {
+                        Object value = setting.fromString(valueString);
+                        String outputValue = setting.toPrettyString(value);
+                        writeKeyValue(serializer, folderKey, outputValue);
+                    } catch (InvalidSettingValueException e) {
+                        Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey +
+                                "\" has invalid value \"" + valueString +
+                                "\" in preference storage. This shouldn't happen!");
+                    }
                 }
             }
         }

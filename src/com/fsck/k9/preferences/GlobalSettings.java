@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
     public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription>> s =
@@ -191,10 +193,17 @@ public class GlobalSettings {
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);
+
+        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        UPGRADERS = Collections.unmodifiableMap(u);
     }
 
     public static Map<String, String> validate(int version, Map<String, String> importedSettings) {
         return Settings.validate(version, SETTINGS, importedSettings, false);
+    }
+
+    public static Set<String> upgrade(int version, Map<String, String> validatedSettings) {
+        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> getGlobalSettings(SharedPreferences storage) {

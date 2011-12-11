@@ -2,7 +2,9 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -13,7 +15,6 @@ import com.fsck.k9.K9;
 
 /*
  * TODO:
- * - add support for different settings versions (validate old version and upgrade to new format)
  * - use the default values defined in GlobalSettings and AccountSettings when creating new
  *   accounts
  * - think of a better way to validate enums than to use the resource arrays (i.e. get rid of
@@ -81,6 +82,82 @@ public class Settings {
         }
 
         return validatedSettings;
+    }
+
+    /**
+     * Upgrade settings using the settings structure and/or special upgrade code.
+     *
+     * @param version
+     *         The content version of the settings in {@code validatedSettings}.
+     * @param upgraders
+     *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
+     * @param settings
+     *         The structure describing the different settings, possibly containing multiple
+     *         versions.
+     * @param validatedSettings
+     *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
+     *         This map is modified and contains the upgraded settings when this method returns.
+     *
+     * @return A set of setting names that were removed during the upgrade process or {@code null}
+     *         if none were removed.
+     */
+    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
+            Map<String, TreeMap<Integer, SettingsDescription>> settings,
+            Map<String, String> validatedSettings) {
+
+        Map<String, String> upgradedSettings = validatedSettings;
+        Set<String> deletedSettings = null;
+
+        for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
+
+            // Check if there's an SettingsUpgrader for that version
+            SettingsUpgrader upgrader = upgraders.get(toVersion);
+            if (upgrader != null) {
+                deletedSettings = upgrader.upgrade(upgradedSettings);
+            }
+
+            // Deal with settings that don't need special upgrade code
+            for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
+                settings.entrySet()) {
+
+                String settingName = versions.getKey();
+                TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
+
+                // Handle newly added settings
+                if (versionedSettings.firstKey().intValue() == toVersion) {
+
+                    // Check if it was already added to upgradedSettings by the SettingsUpgrader
+                    if (!upgradedSettings.containsKey(settingName)) {
+                        // Insert default value to upgradedSettings
+                        SettingsDescription setting = versionedSettings.firstEntry().getValue();
+                        Object defaultValue = setting.getDefaultValue();
+                        upgradedSettings.put(settingName, setting.toString(defaultValue));
+
+                        if (K9.DEBUG) {
+                            String prettyValue = setting.toPrettyString(defaultValue);
+                            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName +
+                                    "\" with default value \"" + prettyValue + "\"");
+                        }
+                    }
+                }
+
+                // Handle removed settings
+                Entry<Integer, SettingsDescription> lastEntry = versionedSettings.lastEntry();
+                if (lastEntry.getKey().intValue() == toVersion && lastEntry.getValue() == null) {
+                    upgradedSettings.remove(settingName);
+                    if (deletedSettings == null) {
+                        deletedSettings = new HashSet<String>();
+                    }
+                    deletedSettings.add(settingName);
+
+                    if (K9.DEBUG) {
+                        Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
+                    }
+                }
+            }
+        }
+
+        return deletedSettings;
     }
 
     /**
@@ -232,6 +309,25 @@ public class Settings {
             this.version = version;
             this.description = description;
         }
+    }
+
+    /**
+     * Used for a nontrivial settings upgrade.
+     *
+     * @see Settings#upgrade(int, Map, Map, Map)
+     */
+    public interface SettingsUpgrader {
+        /**
+         * Upgrade the provided settings.
+         *
+         * @param settings
+         *         The settings to upgrade.  This map is modified and contains the upgraded
+         *         settings when this method returns.
+         *
+         * @return A set of setting names that were removed during the upgrade process or
+         *         {@code null} if none were removed.
+         */
+        public Set<String> upgrade(Map<String, String> settings);
     }
 
 
