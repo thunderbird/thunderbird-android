@@ -84,6 +84,7 @@ Android Localizer (aiLocalizer)
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
     <string name="continue_action">Continuer</string>
+    <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
     <string name="remove_action">Supprimer</string>
     <string name="discard_action">Abandonner</string>
@@ -363,6 +364,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="global_settings_confirm_actions_summary">Demander une confirmation pour chacune des actions sélectionnées</string>
     <string name="global_settings_confirm_action_archive">Archiver</string>
     <string name="global_settings_confirm_action_delete">Supprimer (mode lecture)</string>
+    <string name="global_settings_confirm_action_delete_starred">Supprimer étoilé (mode lecture)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Marquer tout comme lu</string>
     <string name="global_settings_confirm_action_send">Envoyer</string>
@@ -385,7 +387,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_basics_default_label">Envoyer les messages de ce compte par défaut.</string>
     <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
 
-    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">Récupération des informations de compte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres de serveur entrant\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
@@ -446,7 +448,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_expunge_policy_on_poll">Pendant chaque récupération</string>
     <string name="account_setup_expunge_policy_manual">Seulement manuellement</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detection des espaces de noms IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Préfixe de chemin IMAP</string>
 
     <string name="drafts_folder_label">Nom du dossier des brouillons</string>
@@ -587,9 +589,13 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
     <string name="account_settings_reply_after_quote_summary">Faire précéder la réponse par le texte d\'origine</string>
 
+	<string name="account_settings_strip_signature_label">Retirer signature dans réponse citée</string>
+    <string name="account_settings_strip_signature_summary">Lorsque vous répondez à des messages, la signature du texte cité sera éffacée</string>
+
     <string name="account_settings_message_format_label">Format du message</string>
     <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_text">Text brut (formattage et images omis)</string>
+	<string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
 
     <string name="account_settings_message_read_receipt_label">Accusé de réception</string>
     <string name="account_settings_message_read_receipt_summary">Toujours demander un accusé de réception</string>
@@ -611,7 +617,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_crypto_app_not_available">Non disponible</string>
     <string name="account_settings_crypto_auto_signature">Signature automatique</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
-
+	<string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
+	<string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
+	
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
     <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
 
@@ -1037,6 +1045,12 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
+	<string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer des brouillons.</string>
+	<string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme crypté.</string>
+	
+	<string name="continue_without_public_key_dlg_title">Continuer sans clé publique?</string>
+	<string name="continue_without_public_key_instructions_fmt">Un ou plusieurs destinataires n\'ont pas de clé publique enregistrée. Continuer?</string>
+	
     <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
 
     <string name="select_text_now">Sélectionnez le texte à copier</string>
