@@ -3,6 +3,7 @@ package com.fsck.k9.preferences;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import android.util.Log;
@@ -34,12 +35,22 @@ public class Settings {
      */
     public static final int VERSION = 3;
 
-    public static Map<String, String> validate(Map<String, SettingsDescription> settings,
+    public static Map<String, String> validate(int version, Map<String,
+            TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
         Map<String, String> validatedSettings = new HashMap<String, String>();
-        for (Map.Entry<String, SettingsDescription> setting : settings.entrySet()) {
-            String key = setting.getKey();
+        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
+                settings.entrySet()) {
+
+            Entry<Integer, SettingsDescription> setting =
+                versionedSetting.getValue().floorEntry(version);
+
+            if (setting == null) {
+                continue;
+            }
+
+            String key = versionedSetting.getKey();
             SettingsDescription desc = setting.getValue();
 
             boolean useDefaultValue;
@@ -70,6 +81,31 @@ public class Settings {
         }
 
         return validatedSettings;
+    }
+
+    /**
+     * Creates a {@link TreeMap} linking version numbers to {@link SettingsDescription} instances.
+     *
+     * <p>
+     * This {@code TreeMap} is used to quickly find the {@code SettingsDescription} belonging to a
+     * content version as read by {@link SettingsImporter}. See e.g.
+     * {@link Settings#validate(int, Map, Map, boolean)}.
+     * </p>
+     *
+     * @param versionDescriptions
+     *         A list of descriptions for a specific setting mapped to version numbers. Never
+     *         {@code null}.
+     *
+     * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
+     *         as value.
+     */
+    public static TreeMap<Integer, SettingsDescription> versions(
+            V... versionDescriptions) {
+        TreeMap<Integer, SettingsDescription> map = new TreeMap<Integer, SettingsDescription>();
+        for (V v : versionDescriptions) {
+            map.put(v.version, v.description);
+        }
+        return map;
     }
 
 
@@ -182,6 +218,22 @@ public class Settings {
             return fromString(value);
         }
     }
+
+    /**
+     * Container to hold a {@link SettingsDescription} instance and a version number.
+     *
+     * @see Settings#versions(V...)
+     */
+    public static class V {
+        public final Integer version;
+        public final SettingsDescription description;
+
+        public V(Integer version, SettingsDescription description) {
+            this.version = version;
+            this.description = description;
+        }
+    }
+
 
     /**
      * A string setting.

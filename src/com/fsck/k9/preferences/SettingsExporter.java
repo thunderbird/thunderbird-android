@@ -167,11 +167,14 @@ public class SettingsExporter {
     private static void writeSettings(XmlSerializer serializer,
             Map<String, Object> prefs) throws IOException {
 
-        for (String key : GlobalSettings.SETTINGS.keySet()) {
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
+                GlobalSettings.SETTINGS.entrySet()) {
+
+            String key = versionedSetting.getKey();
             String valueString = (String) prefs.get(key);
+            SettingsDescription setting = versionedSetting.getValue().lastEntry().getValue();
             if (valueString != null) {
                 try {
-                    SettingsDescription setting = GlobalSettings.SETTINGS.get(key);
                     Object value = setting.fromString(valueString);
                     String outputValue = setting.toPrettyString(value);
                     writeKeyValue(serializer, key, outputValue);
@@ -185,7 +188,6 @@ public class SettingsExporter {
                             "Using default value.");
                 }
 
-                SettingsDescription setting = GlobalSettings.SETTINGS.get(key);
                 Object value = setting.getDefaultValue();
                 String outputValue = setting.toPrettyString(value);
                 writeKeyValue(serializer, key, outputValue);
@@ -311,8 +313,12 @@ public class SettingsExporter {
                 keyPart = secondPart;
             }
 
-            SettingsDescription setting = AccountSettings.SETTINGS.get(keyPart);
-            if (setting != null) {
+            TreeMap<Integer, SettingsDescription> versionedSetting =
+                AccountSettings.SETTINGS.get(keyPart);
+
+            if (versionedSetting != null) {
+                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+
                 // Only export account settings that can be found in AccountSettings.SETTINGS
                 try {
                     Object value = setting.fromString(valueString);
@@ -399,8 +405,12 @@ public class SettingsExporter {
                 continue;
             }
 
-            SettingsDescription setting = IdentitySettings.SETTINGS.get(identityKey);
-            if (setting != null) {
+            TreeMap<Integer, SettingsDescription> versionedSetting =
+                IdentitySettings.SETTINGS.get(identityKey);
+
+            if (versionedSetting != null) {
+                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+
                 // Only write settings that have an entry in IdentitySettings.SETTINGS
                 try {
                     Object value = setting.fromString(valueString);
@@ -444,8 +454,12 @@ public class SettingsExporter {
                 continue;
             }
 
-            SettingsDescription setting = FolderSettings.SETTINGS.get(folderKey);
-            if (setting != null) {
+            TreeMap<Integer, SettingsDescription> versionedSetting =
+                FolderSettings.SETTINGS.get(folderKey);
+
+            if (versionedSetting != null) {
+                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+
                 // Only write settings that have an entry in FolderSettings.SETTINGS
                 try {
                     Object value = setting.fromString(valueString);

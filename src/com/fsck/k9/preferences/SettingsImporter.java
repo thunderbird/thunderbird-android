@@ -191,7 +191,8 @@ public class SettingsImporter {
                 try {
                     SharedPreferences.Editor editor = storage.edit();
                     if (imported.globalSettings != null) {
-                        importGlobalSettings(storage, editor, imported.globalSettings);
+                        importGlobalSettings(storage, editor, imported.contentVersion,
+                                imported.globalSettings);
                     } else {
                         Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
                     }
@@ -222,7 +223,7 @@ public class SettingsImporter {
                                 SharedPreferences.Editor editor = storage.edit();
 
                                 AccountDescriptionPair importResult = importAccount(context,
-                                        editor, account, overwrite);
+                                        editor, imported.contentVersion, account, overwrite);
 
                                 String newUuid = importResult.imported.uuid;
                                 if (!importResult.overwritten) {
@@ -300,9 +301,10 @@ public class SettingsImporter {
     }
 
     private static void importGlobalSettings(SharedPreferences storage,
-            SharedPreferences.Editor editor, ImportedSettings settings) {
+            SharedPreferences.Editor editor, int contentVersion, ImportedSettings settings) {
 
-        Map<String, String> validatedSettings = GlobalSettings.validate(settings.settings);
+        Map<String, String> validatedSettings = GlobalSettings.validate(contentVersion,
+                settings.settings);
 
         // Use current global settings as base and overwrite with validated settings read from the
         // import file.
@@ -318,8 +320,8 @@ public class SettingsImporter {
     }
 
     private static AccountDescriptionPair importAccount(Context context,
-            SharedPreferences.Editor editor, ImportedAccount account, boolean overwrite)
-            throws InvalidSettingValueException {
+            SharedPreferences.Editor editor, int contentVersion, ImportedAccount account,
+            boolean overwrite) throws InvalidSettingValueException {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
@@ -391,7 +393,8 @@ public class SettingsImporter {
 
         // Validate account settings
         Map<String, String> validatedSettings =
-            AccountSettings.validate(account.settings.settings, !mergeImportedAccount);
+            AccountSettings.validate(contentVersion, account.settings.settings,
+                    !mergeImportedAccount);
 
         // Merge account settings if necessary
         Map<String, String> writeSettings;
@@ -418,7 +421,8 @@ public class SettingsImporter {
 
         // Write identities
         if (account.identities != null) {
-            importIdentities(editor, uuid, account, overwrite, existingAccount, prefs);
+            importIdentities(editor, contentVersion, uuid, account, overwrite, existingAccount,
+                    prefs);
         } else if (!mergeImportedAccount) {
             // Require accounts to at least have one identity
             throw new InvalidSettingValueException();
@@ -427,7 +431,7 @@ public class SettingsImporter {
         // Write folder settings
         if (account.folders != null) {
             for (ImportedFolder folder : account.folders) {
-                importFolder(editor, uuid, folder, mergeImportedAccount, prefs);
+                importFolder(editor, contentVersion, uuid, folder, mergeImportedAccount, prefs);
             }
         }
 
@@ -437,12 +441,12 @@ public class SettingsImporter {
         return new AccountDescriptionPair(original, imported, mergeImportedAccount);
     }
 
-    private static void importFolder(SharedPreferences.Editor editor, String uuid,
-            ImportedFolder folder, boolean overwrite, Preferences prefs) {
+    private static void importFolder(SharedPreferences.Editor editor, int contentVersion,
+            String uuid, ImportedFolder folder, boolean overwrite, Preferences prefs) {
 
         // Validate folder settings
         Map<String, String> validatedSettings =
-            FolderSettings.validate(folder.settings.settings, !overwrite);
+            FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
 
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
@@ -463,8 +467,8 @@ public class SettingsImporter {
         }
     }
 
-    private static void importIdentities(SharedPreferences.Editor editor, String uuid,
-            ImportedAccount account, boolean overwrite, Account existingAccount,
+    private static void importIdentities(SharedPreferences.Editor editor, int contentVersion,
+            String uuid, ImportedAccount account, boolean overwrite, Account existingAccount,
             Preferences prefs) throws InvalidSettingValueException {
 
         String accountKeyPrefix = uuid + ".";
@@ -531,7 +535,7 @@ public class SettingsImporter {
             if (identity.settings != null) {
                 // Validate identity settings
                 Map<String, String> validatedSettings = IdentitySettings.validate(
-                        identity.settings.settings, !mergeSettings);
+                        contentVersion, identity.settings.settings, !mergeSettings);
 
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
@@ -677,7 +681,7 @@ public class SettingsImporter {
 
         String contentVersionString = xpp.getAttributeValue(null,
                 SettingsExporter.VERSION_ATTRIBUTE);
-        validateContentVersion(contentVersionString);
+        result.contentVersion = validateContentVersion(contentVersionString);
 
         int eventType = xpp.next();
         while (!(eventType == XmlPullParser.END_TAG &&
@@ -756,7 +760,7 @@ public class SettingsImporter {
                     versionString);
         }
 
-        if (version != Settings.VERSION) {
+        if (version < 1 || version > Settings.VERSION) {
             throw new SettingsImportExportException("Unsupported content version: " +
                     versionString);
         }
@@ -1066,6 +1070,7 @@ public class SettingsImporter {
     }
 
     private static class Imported {
+        public int contentVersion;
         public ImportedSettings globalSettings;
         public Map<String, ImportedAccount> accounts;
     }

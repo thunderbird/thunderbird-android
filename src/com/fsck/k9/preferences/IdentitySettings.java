@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
+
 import android.content.SharedPreferences;
 
 import com.fsck.k9.EmailAddressValidator;
@@ -12,21 +14,28 @@ import com.fsck.k9.R;
 import com.fsck.k9.preferences.Settings.*;
 
 public class IdentitySettings {
-    public static final Map<String, SettingsDescription> SETTINGS;
+    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
 
     static {
-        Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s =
+            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
 
-        s.put("signature", new SignatureSetting());
-        s.put("signatureUse", new BooleanSetting(true));
-        s.put("replyTo", new OptionalEmailAddressSetting());
+        s.put("signature", Settings.versions(
+                new V(1, new SignatureSetting())
+            ));
+        s.put("signatureUse", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("replyTo", Settings.versions(
+                new V(1, new OptionalEmailAddressSetting())
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
     }
 
-    public static Map<String, String> validate(Map<String, String> importedSettings,
+    public static Map<String, String> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
-        return Settings.validate(SETTINGS, importedSettings, useDefaultValues);
+        return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
     public static Map<String, String> getIdentitySettings(SharedPreferences storage, String uuid,
