@@ -45,7 +45,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("confirmDeleteStarred", Settings.versions(
-                new V(2, new BooleanSetting(false)) // added to version 2
+                new V(2, new BooleanSetting(false))
             ));
         s.put("confirmMarkAllAsRead", Settings.versions(
                 new V(1, new BooleanSetting(false))

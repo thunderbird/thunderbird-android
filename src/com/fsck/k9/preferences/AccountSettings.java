@@ -41,11 +41,11 @@ public class AccountSettings {
         s.put("cryptoApp", Settings.versions(
                 new V(1, new StringSetting(Apg.NAME))
             ));
+        s.put("cryptoAutoEncrypt", Settings.versions(
+                new V(3, new BooleanSetting(false))
+            ));
         s.put("cryptoAutoSignature", Settings.versions(
                 new V(1, new BooleanSetting(false))
-            ));
-        s.put("cryptoAutoEncrypt", Settings.versions(
-                new V(3, new BooleanSetting(false)) // added to version 3
             ));
         s.put("defaultQuotedTextShown", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
@@ -119,7 +119,7 @@ public class AccountSettings {
                         Account.DEFAULT_MESSAGE_FORMAT))
             ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO)) // added to version 2
+                new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
             ));
         s.put("messageReadReceipt", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
@@ -148,9 +148,6 @@ public class AccountSettings {
         s.put("replyAfterQuote", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
             ));
-        s.put("stripSignature", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE)) // added to version 2
-            ));
         s.put("ring", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));
@@ -174,6 +171,9 @@ public class AccountSettings {
             ));
         s.put("spamFolderName", Settings.versions(
                 new V(1, new StringSetting("Spam"))
+            ));
+        s.put("stripSignature", Settings.versions(
+                new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
             ));
         s.put("subscribedFoldersOnly", Settings.versions(
                 new V(1, new BooleanSetting(false))
