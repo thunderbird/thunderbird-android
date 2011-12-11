@@ -36,11 +36,11 @@ public class Settings {
      */
     public static final int VERSION = 3;
 
-    public static Map<String, String> validate(int version, Map<String,
+    public static Map<String, Object> validate(int version, Map<String,
             TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
-        Map<String, String> validatedSettings = new HashMap<String, String>();
+        Map<String, Object> validatedSettings = new HashMap<String, Object>();
         for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
                 settings.entrySet()) {
 
@@ -63,8 +63,7 @@ public class Settings {
                 String prettyValue = importedSettings.get(key);
                 try {
                     Object internalValue = desc.fromPrettyString(prettyValue);
-                    String importedValue = desc.toString(internalValue);
-                    validatedSettings.put(key, importedValue);
+                    validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
                     Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
@@ -76,8 +75,7 @@ public class Settings {
 
             if (useDefaultValue) {
                 Object defaultValue = desc.getDefaultValue();
-                String value = (defaultValue != null) ? desc.toString(defaultValue) : null;
-                validatedSettings.put(key, value);
+                validatedSettings.put(key, defaultValue);
             }
         }
 
@@ -103,9 +101,9 @@ public class Settings {
      */
     public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
             Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, String> validatedSettings) {
+            Map<String, Object> validatedSettings) {
 
-        Map<String, String> upgradedSettings = validatedSettings;
+        Map<String, Object> upgradedSettings = validatedSettings;
         Set<String> deletedSettings = null;
 
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
@@ -131,7 +129,7 @@ public class Settings {
                         // Insert default value to upgradedSettings
                         SettingsDescription setting = versionedSettings.firstEntry().getValue();
                         Object defaultValue = setting.getDefaultValue();
-                        upgradedSettings.put(settingName, setting.toString(defaultValue));
+                        upgradedSettings.put(settingName, defaultValue);
 
                         if (K9.DEBUG) {
                             String prettyValue = setting.toPrettyString(defaultValue);
@@ -158,6 +156,45 @@ public class Settings {
         }
 
         return deletedSettings;
+    }
+
+    /**
+     * Convert settings from the internal representation to the string representation used in the
+     * preference storage.
+     *
+     * @param settings
+     *         The map of settings to convert.
+     * @param settingDescriptions
+     *         The structure containing the {@link SettingsDescription} objects that will be used
+     *         to convert the setting values.
+     *
+     * @return The settings converted to the string representation used in the preference storage.
+     */
+    public static Map<String, String> convert(Map<String, Object> settings,
+            Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
+
+        Map<String, String> serializedSettings = new HashMap<String, String>();
+
+        for (Entry<String, Object> setting : settings.entrySet()) {
+            String settingName = setting.getKey();
+            Object internalValue = setting.getValue();
+
+            SettingsDescription settingDesc =
+                settingDescriptions.get(settingName).lastEntry().getValue();
+
+            if (settingDesc != null) {
+                String stringValue = settingDesc.toString(internalValue);
+
+                serializedSettings.put(settingName, stringValue);
+            } else {
+                if (K9.DEBUG) {
+                    Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
+                            "have been removed: " + settingName);
+                }
+            }
+        }
+
+        return serializedSettings;
     }
 
     /**
@@ -327,7 +364,7 @@ public class Settings {
          * @return A set of setting names that were removed during the upgrade process or
          *         {@code null} if none were removed.
          */
-        public Set<String> upgrade(Map<String, String> settings);
+        public Set<String> upgrade(Map<String, Object> settings);
     }
 
 

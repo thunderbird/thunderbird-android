@@ -304,7 +304,7 @@ public class SettingsImporter {
             SharedPreferences.Editor editor, int contentVersion, ImportedSettings settings) {
 
         // Validate global settings
-        Map<String, String> validatedSettings = GlobalSettings.validate(contentVersion,
+        Map<String, Object> validatedSettings = GlobalSettings.validate(contentVersion,
                 settings.settings);
 
         // Upgrade global settings to current content version
@@ -312,11 +312,14 @@ public class SettingsImporter {
             GlobalSettings.upgrade(contentVersion, validatedSettings);
         }
 
+        // Convert global settings to the string representation used in preference storage
+        Map<String, String> stringSettings = GlobalSettings.convert(validatedSettings);
+
         // Use current global settings as base and overwrite with validated settings read from the
         // import file.
         Map<String, String> mergedSettings =
             new HashMap<String, String>(GlobalSettings.getGlobalSettings(storage));
-        mergedSettings.putAll(validatedSettings);
+        mergedSettings.putAll(stringSettings);
 
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
             String key = setting.getKey();
@@ -398,7 +401,7 @@ public class SettingsImporter {
         }
 
         // Validate account settings
-        Map<String, String> validatedSettings =
+        Map<String, Object> validatedSettings =
             AccountSettings.validate(contentVersion, account.settings.settings,
                     !mergeImportedAccount);
 
@@ -407,14 +410,17 @@ public class SettingsImporter {
             AccountSettings.upgrade(contentVersion, validatedSettings);
         }
 
+        // Convert account settings to the string representation used in preference storage
+        Map<String, String> stringSettings = AccountSettings.convert(validatedSettings);
+
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
             writeSettings = new HashMap<String, String>(
                     AccountSettings.getAccountSettings(prefs.getPreferences(), uuid));
-            writeSettings.putAll(validatedSettings);
+            writeSettings.putAll(stringSettings);
         } else {
-            writeSettings = validatedSettings;
+            writeSettings = stringSettings;
         }
 
         // Write account settings
@@ -456,7 +462,7 @@ public class SettingsImporter {
             String uuid, ImportedFolder folder, boolean overwrite, Preferences prefs) {
 
         // Validate folder settings
-        Map<String, String> validatedSettings =
+        Map<String, Object> validatedSettings =
             FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
 
         // Upgrade folder settings to current content version
@@ -464,14 +470,17 @@ public class SettingsImporter {
             FolderSettings.upgrade(contentVersion, validatedSettings);
         }
 
+        // Convert folder settings to the string representation used in preference storage
+        Map<String, String> stringSettings = FolderSettings.convert(validatedSettings);
+
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
         if (overwrite) {
             writeSettings = FolderSettings.getFolderSettings(prefs.getPreferences(),
                     uuid, folder.name);
-            writeSettings.putAll(validatedSettings);
+            writeSettings.putAll(stringSettings);
         } else {
-            writeSettings = validatedSettings;
+            writeSettings = stringSettings;
         }
 
         // Write folder settings
@@ -550,7 +559,7 @@ public class SettingsImporter {
 
             if (identity.settings != null) {
                 // Validate identity settings
-                Map<String, String> validatedSettings = IdentitySettings.validate(
+                Map<String, Object> validatedSettings = IdentitySettings.validate(
                         contentVersion, identity.settings.settings, !mergeSettings);
 
                 // Upgrade identity settings to current content version
@@ -558,14 +567,17 @@ public class SettingsImporter {
                     IdentitySettings.upgrade(contentVersion, validatedSettings);
                 }
 
+                // Convert identity settings to the representation used in preference storage
+                Map<String, String> stringSettings = IdentitySettings.convert(validatedSettings);
+
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
                 if (mergeSettings) {
                     writeSettings = new HashMap<String, String>(IdentitySettings.getIdentitySettings(
                             prefs.getPreferences(), uuid, writeIdentityIndex));
-                    writeSettings.putAll(validatedSettings);
+                    writeSettings.putAll(stringSettings);
                 } else {
-                    writeSettings = validatedSettings;
+                    writeSettings = stringSettings;
                 }
 
                 // Write identity settings

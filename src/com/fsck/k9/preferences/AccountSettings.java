@@ -211,13 +211,17 @@ public class AccountSettings {
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, String> validate(int version, Map<String, String> importedSettings,
+    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
-    public static Set<String> upgrade(int version, Map<String, String> validatedSettings) {
+    public static Set<String> upgrade(int version, Map<String, Object> validatedSettings) {
         return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+    }
+
+    public static Map<String, String> convert(Map<String, Object> settings) {
+        return Settings.convert(settings, SETTINGS);
     }
 
     public static Map<String, String> getAccountSettings(SharedPreferences storage, String uuid) {
