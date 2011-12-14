@@ -420,8 +420,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_setup_expunge_policy_on_poll">Quando verificado</string>
     <string name="account_setup_expunge_policy_manual">Apenas manualmente</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefixo do diretório IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Usar NAMESPACE automático se disponível)</string>
 
     <string name="drafts_folder_label">Pasta de rascunhos</string>
     <string name="sent_folder_label">Pasta de enviados</string>

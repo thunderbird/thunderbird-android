@@ -1,5 +1,7 @@
 package com.fsck.k9.mail;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import com.fsck.k9.Account;
 
@@ -62,6 +64,13 @@ public class ServerSettings {
      */
     public final String password;
 
+    /**
+     * Store- or transport-specific settings as key/value pair.
+     *
+     * {@code null} if not applicable for the store or transport.
+     */
+    private final Map<String, String> extra;
+
 
     /**
      * Creates a new {@code ServerSettings} object.
@@ -91,6 +100,41 @@ public class ServerSettings {
         this.authenticationType = authenticationType;
         this.username = username;
         this.password = password;
+        this.extra = null;
+    }
+
+    /**
+     * Creates a new {@code ServerSettings} object.
+     *
+     * @param type
+     *         see {@link ServerSettings#type}
+     * @param host
+     *         see {@link ServerSettings#host}
+     * @param port
+     *         see {@link ServerSettings#port}
+     * @param connectionSecurity
+     *         see {@link ServerSettings#connectionSecurity}
+     * @param authenticationType
+     *         see {@link ServerSettings#authenticationType}
+     * @param username
+     *         see {@link ServerSettings#username}
+     * @param password
+     *         see {@link ServerSettings#password}
+     * @param extra
+     *         see {@link ServerSettings#extra}
+     */
+    public ServerSettings(String type, String host, int port,
+            ConnectionSecurity connectionSecurity, String authenticationType, String username,
+            String password, Map<String, String> extra) {
+        this.type = type;
+        this.host = host;
+        this.port = port;
+        this.connectionSecurity = connectionSecurity;
+        this.authenticationType = authenticationType;
+        this.username = username;
+        this.password = password;
+        this.extra = (extra != null) ?
+                Collections.unmodifiableMap(new HashMap<String, String>(extra)) : null;
     }
 
     /**
@@ -109,15 +153,16 @@ public class ServerSettings {
         authenticationType = null;
         username = null;
         password = null;
+        extra = null;
     }
 
     /**
      * Returns store- or transport-specific settings as key/value pair.
      *
-     * <p>Classes that inherit from this one are expected to override this method.</p>
+     * @return additional set of settings as key/value pair.
      */
     public Map<String, String> getExtra() {
-        return null;
+        return extra;
     }
 
     protected void putIfNotNull(Map<String, String> map, String key, String value) {

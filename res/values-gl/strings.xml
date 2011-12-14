@@ -422,8 +422,8 @@ Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para An
     <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
     <string name="account_setup_expunge_policy_manual">Sólo manualmente</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefixo do enderezo IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Usar automáticamente NAMESPACE)</string>
 
     <string name="drafts_folder_label">Carpeta Borradores</string>
     <string name="sent_folder_label">Carpeta Enviados</string>

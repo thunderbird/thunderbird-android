@@ -424,8 +424,8 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="account_setup_expunge_policy_on_poll">Quan s’està comprovant</string>
     <string name="account_setup_expunge_policy_manual">Només manualment</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefix del camí IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Si és disponible, utilitza el NAMESPACE automàtic)</string>
 
     <string name="drafts_folder_label">Carpeta esborranys</string>
     <string name="sent_folder_label">Carpeta enviats</string>

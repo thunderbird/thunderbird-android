@@ -156,6 +156,7 @@ public class ImapStore extends Store {
         String username = null;
         String password = null;
         String pathPrefix = null;
+        boolean autoDetectNamespace = true;
 
         URI imapUri;
         try {
@@ -215,15 +216,25 @@ public class ImapStore extends Store {
         }
 
         String path = imapUri.getPath();
-        if (path != null && path.length() > 0) {
-            pathPrefix = path.substring(1);
-            if (pathPrefix != null && pathPrefix.trim().length() == 0) {
-                pathPrefix = null;
+        if (path != null && path.length() > 1) {
+            // Strip off the leading "/"
+            String cleanPath = path.substring(1);
+
+            if (cleanPath.length() >= 2 && cleanPath.charAt(1) == '|') {
+                autoDetectNamespace = cleanPath.charAt(0) == '1';
+                if (!autoDetectNamespace) {
+                    pathPrefix = cleanPath.substring(2);
+                }
+            } else {
+                if (cleanPath.length() > 0) {
+                    pathPrefix = cleanPath;
+                    autoDetectNamespace = false;
+                }
             }
         }
 
         return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
-                                     password, pathPrefix);
+                password, autoDetectNamespace, pathPrefix);
     }
 
     /**
@@ -279,7 +290,17 @@ public class ImapStore extends Store {
         String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
         try {
             Map<String, String> extra = server.getExtra();
-            String path = (extra != null) ? "/" + extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;
+            String path = null;
+            if (extra != null) {
+                boolean autoDetectNamespace = Boolean.TRUE.toString().equals(
+                        extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
+                String pathPrefix = (autoDetectNamespace) ?
+                        null : extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
+                path = "/" + (autoDetectNamespace ? "1" : "0") + "|" +
+                    ((pathPrefix == null) ? "" : pathPrefix);
+            } else {
+                path = "/1|";
+            }
             return new URI(scheme, userInfo, server.host, server.port,
                            path,
                            null, null).toString();
@@ -293,21 +314,26 @@ public class ImapStore extends Store {
      *
      * @see ImapStore#decodeUri(String)
      */
-    private static class ImapStoreSettings extends ServerSettings {
-        private static final String PATH_PREFIX_KEY = "pathPrefix";
+    public static class ImapStoreSettings extends ServerSettings {
+        public static final String AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace";
+        public static final String PATH_PREFIX_KEY = "pathPrefix";
 
+        public final boolean autoDetectNamespace;
         public final String pathPrefix;
 
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                                    String authenticationType, String username, String password, String pathPrefix) {
+                String authenticationType, String username, String password,
+                boolean autodetectNamespace, String pathPrefix) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
-                  password);
+                    password);
+            this.autoDetectNamespace = autodetectNamespace;
             this.pathPrefix = pathPrefix;
         }
 
         @Override
         public Map<String, String> getExtra() {
             Map<String, String> extra = new HashMap<String, String>();
+            extra.put(AUTODETECT_NAMESPACE_KEY, Boolean.valueOf(autoDetectNamespace).toString());
             putIfNotNull(extra, PATH_PREFIX_KEY, pathPrefix);
             return extra;
         }
@@ -315,7 +341,7 @@ public class ImapStore extends Store {
         @Override
         public ServerSettings newPassword(String newPassword) {
             return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,
-                                         username, newPassword, pathPrefix);
+                    username, newPassword, autoDetectNamespace, pathPrefix);
         }
     }
 
@@ -452,7 +478,8 @@ public class ImapStore extends Store {
         mUsername = settings.username;
         mPassword = settings.password;
 
-        mPathPrefix = settings.pathPrefix;
+        // Make extra sure mPathPrefix is null if "auto-detect namespace" is configured
+        mPathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
     }

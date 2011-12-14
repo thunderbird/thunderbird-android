@@ -411,8 +411,8 @@
     <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
     <string name="account_setup_expunge_policy_manual">手动</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP路径前缀</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">（如果可能则自动使用NAMESPACE）</string>
 
     <string name="drafts_folder_label">草稿箱名称</string>
     <string name="sent_folder_label">发件箱名称</string>

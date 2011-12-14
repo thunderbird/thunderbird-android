@@ -414,8 +414,8 @@
     <string name="account_setup_expunge_policy_on_poll">В ходе каждого запроса</string>
     <string name="account_setup_expunge_policy_manual">Только вручную</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Автоматически использовать NAMESPACE если доступно)</string>
 
     <string name="drafts_folder_label">Имя папки Черновиков</string>
     <string name="sent_folder_label">Имя папки Отправленныx</string>

@@ -1603,7 +1603,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
     private void onAddAttachment() {
-        mIgnoreOnStop = true;
         if (K9.isGalleryBuggy()) {
             if (K9.useGalleryBugWorkaround()) {
                 Toast.makeText(MessageCompose.this,
@@ -1629,6 +1628,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(mime_type);
+        mIgnoreOnStop = true;
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
@@ -1751,6 +1751,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     public void doLaunchContactPicker(int resultId) {
+        mIgnoreOnStop = true;
         startActivityForResult(mContacts.contactPickerIntent(), resultId);
     }
 
@@ -1945,6 +1946,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onChooseIdentity() {
         // keep things simple: trigger account choice only if there are more
         // than 1 account
+        mIgnoreOnStop = true;
         if (Preferences.getPreferences(this).getAvailableAccounts().size() > 1) {
             final Intent intent = new Intent(this, ChooseAccount.class);
             intent.putExtra(ChooseAccount.EXTRA_ACCOUNT, mAccount.getUuid());

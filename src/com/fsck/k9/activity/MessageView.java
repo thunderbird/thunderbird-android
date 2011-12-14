@@ -33,6 +33,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
+    private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
     private static final String EXTRA_SCROLL_PERCENTAGE = "com.fsck.k9.MessageView_scrollPercentage";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
@@ -76,6 +77,14 @@ public class MessageView extends K9Activity implements OnClickListener {
      * dialog is shown.
      */
     private String mDstFolder;
+
+    /**
+     * The extras used to create the {@link MessageList} instance that created this activity. May
+     * be {@code null}.
+     *
+     * @see MessageList#actionHandleFolder(Context, Bundle)
+     */
+    private Bundle mMessageListExtras;
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
@@ -250,8 +259,9 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public void onBackPressed() {
         if (K9.manageBack()) {
-            String folder = (mMessage != null) ? mMessage.getFolder().getRemoteName() : null;
-            MessageList.actionHandleFolder(this, mAccount, folder);
+            if (mMessageListExtras != null) {
+                MessageList.actionHandleFolder(this, mMessageListExtras);
+            }
             finish();
         } else {
             super.onBackPressed();
@@ -310,8 +320,9 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     public static void actionView(Context context, MessageReference messRef,
-                                  ArrayList<MessageReference> messReferences) {
+            ArrayList<MessageReference> messReferences, Bundle messageListExtras) {
         Intent i = new Intent(context, MessageView.class);
+        i.putExtra(EXTRA_MESSAGE_LIST_EXTRAS, messageListExtras);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -363,6 +374,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         setTitle("");
         final Intent intent = getIntent();
+
+        mMessageListExtras = intent.getParcelableExtra(EXTRA_MESSAGE_LIST_EXTRAS);
 
         Uri uri = intent.getData();
         if (icicle != null) {

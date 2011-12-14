@@ -2,7 +2,10 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import android.util.Log;
@@ -12,7 +15,6 @@ import com.fsck.k9.K9;
 
 /*
  * TODO:
- * - add support for different settings versions (validate old version and upgrade to new format)
  * - use the default values defined in GlobalSettings and AccountSettings when creating new
  *   accounts
  * - think of a better way to validate enums than to use the resource arrays (i.e. get rid of
@@ -34,12 +36,22 @@ public class Settings {
      */
     public static final int VERSION = 3;
 
-    public static Map<String, String> validate(Map<String, SettingsDescription> settings,
+    public static Map<String, Object> validate(int version, Map<String,
+            TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
-        Map<String, String> validatedSettings = new HashMap<String, String>();
-        for (Map.Entry<String, SettingsDescription> setting : settings.entrySet()) {
-            String key = setting.getKey();
+        Map<String, Object> validatedSettings = new HashMap<String, Object>();
+        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
+                settings.entrySet()) {
+
+            Entry<Integer, SettingsDescription> setting =
+                versionedSetting.getValue().floorEntry(version);
+
+            if (setting == null) {
+                continue;
+            }
+
+            String key = versionedSetting.getKey();
             SettingsDescription desc = setting.getValue();
 
             boolean useDefaultValue;
@@ -51,8 +63,7 @@ public class Settings {
                 String prettyValue = importedSettings.get(key);
                 try {
                     Object internalValue = desc.fromPrettyString(prettyValue);
-                    String importedValue = desc.toString(internalValue);
-                    validatedSettings.put(key, importedValue);
+                    validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
                     Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
@@ -64,12 +75,151 @@ public class Settings {
 
             if (useDefaultValue) {
                 Object defaultValue = desc.getDefaultValue();
-                String value = (defaultValue != null) ? desc.toString(defaultValue) : null;
-                validatedSettings.put(key, value);
+                validatedSettings.put(key, defaultValue);
             }
         }
 
         return validatedSettings;
+    }
+
+    /**
+     * Upgrade settings using the settings structure and/or special upgrade code.
+     *
+     * @param version
+     *         The content version of the settings in {@code validatedSettings}.
+     * @param upgraders
+     *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
+     * @param settings
+     *         The structure describing the different settings, possibly containing multiple
+     *         versions.
+     * @param validatedSettings
+     *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
+     *         This map is modified and contains the upgraded settings when this method returns.
+     *
+     * @return A set of setting names that were removed during the upgrade process or {@code null}
+     *         if none were removed.
+     */
+    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
+            Map<String, TreeMap<Integer, SettingsDescription>> settings,
+            Map<String, Object> validatedSettings) {
+
+        Map<String, Object> upgradedSettings = validatedSettings;
+        Set<String> deletedSettings = null;
+
+        for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
+
+            // Check if there's an SettingsUpgrader for that version
+            SettingsUpgrader upgrader = upgraders.get(toVersion);
+            if (upgrader != null) {
+                deletedSettings = upgrader.upgrade(upgradedSettings);
+            }
+
+            // Deal with settings that don't need special upgrade code
+            for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
+                settings.entrySet()) {
+
+                String settingName = versions.getKey();
+                TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
+
+                // Handle newly added settings
+                if (versionedSettings.firstKey().intValue() == toVersion) {
+
+                    // Check if it was already added to upgradedSettings by the SettingsUpgrader
+                    if (!upgradedSettings.containsKey(settingName)) {
+                        // Insert default value to upgradedSettings
+                        SettingsDescription setting = versionedSettings.firstEntry().getValue();
+                        Object defaultValue = setting.getDefaultValue();
+                        upgradedSettings.put(settingName, defaultValue);
+
+                        if (K9.DEBUG) {
+                            String prettyValue = setting.toPrettyString(defaultValue);
+                            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName +
+                                    "\" with default value \"" + prettyValue + "\"");
+                        }
+                    }
+                }
+
+                // Handle removed settings
+                Entry<Integer, SettingsDescription> lastEntry = versionedSettings.lastEntry();
+                if (lastEntry.getKey().intValue() == toVersion && lastEntry.getValue() == null) {
+                    upgradedSettings.remove(settingName);
+                    if (deletedSettings == null) {
+                        deletedSettings = new HashSet<String>();
+                    }
+                    deletedSettings.add(settingName);
+
+                    if (K9.DEBUG) {
+                        Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
+                    }
+                }
+            }
+        }
+
+        return deletedSettings;
+    }
+
+    /**
+     * Convert settings from the internal representation to the string representation used in the
+     * preference storage.
+     *
+     * @param settings
+     *         The map of settings to convert.
+     * @param settingDescriptions
+     *         The structure containing the {@link SettingsDescription} objects that will be used
+     *         to convert the setting values.
+     *
+     * @return The settings converted to the string representation used in the preference storage.
+     */
+    public static Map<String, String> convert(Map<String, Object> settings,
+            Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
+
+        Map<String, String> serializedSettings = new HashMap<String, String>();
+
+        for (Entry<String, Object> setting : settings.entrySet()) {
+            String settingName = setting.getKey();
+            Object internalValue = setting.getValue();
+
+            SettingsDescription settingDesc =
+                settingDescriptions.get(settingName).lastEntry().getValue();
+
+            if (settingDesc != null) {
+                String stringValue = settingDesc.toString(internalValue);
+
+                serializedSettings.put(settingName, stringValue);
+            } else {
+                if (K9.DEBUG) {
+                    Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
+                            "have been removed: " + settingName);
+                }
+            }
+        }
+
+        return serializedSettings;
+    }
+
+    /**
+     * Creates a {@link TreeMap} linking version numbers to {@link SettingsDescription} instances.
+     *
+     * <p>
+     * This {@code TreeMap} is used to quickly find the {@code SettingsDescription} belonging to a
+     * content version as read by {@link SettingsImporter}. See e.g.
+     * {@link Settings#validate(int, Map, Map, boolean)}.
+     * </p>
+     *
+     * @param versionDescriptions
+     *         A list of descriptions for a specific setting mapped to version numbers. Never
+     *         {@code null}.
+     *
+     * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
+     *         as value.
+     */
+    public static TreeMap<Integer, SettingsDescription> versions(
+            V... versionDescriptions) {
+        TreeMap<Integer, SettingsDescription> map = new TreeMap<Integer, SettingsDescription>();
+        for (V v : versionDescriptions) {
+            map.put(v.version, v.description);
+        }
+        return map;
     }
 
 
@@ -182,6 +332,41 @@ public class Settings {
             return fromString(value);
         }
     }
+
+    /**
+     * Container to hold a {@link SettingsDescription} instance and a version number.
+     *
+     * @see Settings#versions(V...)
+     */
+    public static class V {
+        public final Integer version;
+        public final SettingsDescription description;
+
+        public V(Integer version, SettingsDescription description) {
+            this.version = version;
+            this.description = description;
+        }
+    }
+
+    /**
+     * Used for a nontrivial settings upgrade.
+     *
+     * @see Settings#upgrade(int, Map, Map, Map)
+     */
+    public interface SettingsUpgrader {
+        /**
+         * Upgrade the provided settings.
+         *
+         * @param settings
+         *         The settings to upgrade.  This map is modified and contains the upgraded
+         *         settings when this method returns.
+         *
+         * @return A set of setting names that were removed during the upgrade process or
+         *         {@code null} if none were removed.
+         */
+        public Set<String> upgrade(Map<String, Object> settings);
+    }
+
 
     /**
      * A string setting.

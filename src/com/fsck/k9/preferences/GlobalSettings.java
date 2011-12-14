@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import android.content.SharedPreferences;
 import android.os.Environment;
 
@@ -16,74 +19,195 @@ import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
-    public static final Map<String, SettingsDescription> SETTINGS;
+    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s =
+            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
 
-        s.put("animations", new BooleanSetting(false));
-        s.put("attachmentdefaultpath",
-              new DirectorySetting(Environment.getExternalStorageDirectory().toString()));
-        s.put("backgroundOperations",
-              new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED));
-        s.put("changeRegisteredNameColor", new BooleanSetting(false));
-        s.put("compactLayouts", new BooleanSetting(false));
-        s.put("confirmDelete", new BooleanSetting(false));
-        s.put("confirmDeleteStarred", new BooleanSetting(false)); // added to version 2
-        s.put("confirmMarkAllAsRead", new BooleanSetting(false));
-        s.put("confirmSpam", new BooleanSetting(false));
-        s.put("countSearchMessages", new BooleanSetting(false));
-        s.put("dateFormat", new DateFormatSetting(DateFormatter.DEFAULT_FORMAT));
-        s.put("enableDebugLogging", new BooleanSetting(false));
-        s.put("enableSensitiveLogging", new BooleanSetting(false));
-        s.put("fontSizeAccountDescription", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeAccountName", new FontSizeSetting(FontSizes.MEDIUM));
-        s.put("fontSizeFolderName", new FontSizeSetting(FontSizes.LARGE));
-        s.put("fontSizeFolderStatus", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeMessageListDate", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeMessageListPreview", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeMessageListSender", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeMessageListSubject", new FontSizeSetting(FontSizes.FONT_16DIP));
-        s.put("fontSizeMessageViewAdditionalHeaders", new FontSizeSetting(FontSizes.FONT_12DIP));
-        s.put("fontSizeMessageViewCC", new FontSizeSetting(FontSizes.FONT_12DIP));
-        s.put("fontSizeMessageViewContent", new WebFontSizeSetting(3));
-        s.put("fontSizeMessageViewDate", new FontSizeSetting(FontSizes.FONT_10DIP));
-        s.put("fontSizeMessageViewSender", new FontSizeSetting(FontSizes.SMALL));
-        s.put("fontSizeMessageViewSubject", new FontSizeSetting(FontSizes.FONT_12DIP));
-        s.put("fontSizeMessageViewTime", new FontSizeSetting(FontSizes.FONT_10DIP));
-        s.put("fontSizeMessageViewTo", new FontSizeSetting(FontSizes.FONT_12DIP));
-        s.put("gesturesEnabled", new BooleanSetting(true));
-        s.put("hideSpecialAccounts", new BooleanSetting(false));
-        s.put("keyguardPrivacy", new BooleanSetting(false));
-        s.put("language", new LanguageSetting());
-        s.put("manageBack", new BooleanSetting(false));
-        s.put("measureAccounts", new BooleanSetting(true));
-        s.put("messageListCheckboxes", new BooleanSetting(false));
-        s.put("messageListPreviewLines", new IntegerRangeSetting(1, 100, 2));
-        s.put("messageListStars", new BooleanSetting(true));
-        s.put("messageListTouchable", new BooleanSetting(false));
-        s.put("messageViewFixedWidthFont", new BooleanSetting(false));
-        s.put("messageViewReturnToList", new BooleanSetting(false));
-        s.put("messageViewShowNext", new BooleanSetting(false));
-        s.put("mobileOptimizedLayout", new BooleanSetting(false));
-        s.put("quietTimeEnabled", new BooleanSetting(false));
-        s.put("quietTimeEnds", new TimeSetting("7:00"));
-        s.put("quietTimeStarts", new TimeSetting("21:00"));
-        s.put("registeredNameColor", new ColorSetting(0xFF00008F));
-        s.put("showContactName", new BooleanSetting(false));
-        s.put("showCorrespondentNames", new BooleanSetting(true));
-        s.put("startIntegratedInbox", new BooleanSetting(false));
-        s.put("theme", new ThemeSetting(android.R.style.Theme_Light));
-        s.put("useGalleryBugWorkaround", new GalleryBugWorkaroundSetting());
-        s.put("useVolumeKeysForListNavigation", new BooleanSetting(false));
-        s.put("useVolumeKeysForNavigation", new BooleanSetting(false));
-        s.put("zoomControlsEnabled", new BooleanSetting(false));
+        s.put("animations", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("attachmentdefaultpath", Settings.versions(
+                new V(1, new DirectorySetting(Environment.getExternalStorageDirectory().toString()))
+            ));
+        s.put("backgroundOperations", Settings.versions(
+                new V(1, new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
+            ));
+        s.put("changeRegisteredNameColor", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("compactLayouts", Settings.versions(
+                new V(1, new BooleanSetting(false))
+                ));
+        s.put("confirmDelete", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("confirmDeleteStarred", Settings.versions(
+                new V(2, new BooleanSetting(false))
+            ));
+        s.put("confirmMarkAllAsRead", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("confirmSpam", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("countSearchMessages", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("dateFormat", Settings.versions(
+                new V(1, new DateFormatSetting(DateFormatter.DEFAULT_FORMAT))
+            ));
+        s.put("enableDebugLogging", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("enableSensitiveLogging", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("fontSizeAccountDescription", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeAccountName", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.MEDIUM))
+            ));
+        s.put("fontSizeFolderName", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.LARGE))
+            ));
+        s.put("fontSizeFolderStatus", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeMessageListDate", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeMessageListPreview", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeMessageListSender", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeMessageListSubject", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_16DIP))
+            ));
+        s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+            ));
+        s.put("fontSizeMessageViewCC", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+            ));
+        s.put("fontSizeMessageViewContent", Settings.versions(
+                new V(1, new WebFontSizeSetting(3))
+            ));
+        s.put("fontSizeMessageViewDate", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_10DIP))
+            ));
+        s.put("fontSizeMessageViewSender", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.SMALL))
+            ));
+        s.put("fontSizeMessageViewSubject", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+            ));
+        s.put("fontSizeMessageViewTime", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_10DIP))
+            ));
+        s.put("fontSizeMessageViewTo", Settings.versions(
+                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+            ));
+        s.put("gesturesEnabled", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("hideSpecialAccounts", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("keyguardPrivacy", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("language", Settings.versions(
+                new V(1, new LanguageSetting())
+            ));
+        s.put("manageBack", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("measureAccounts", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("messageListCheckboxes", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("messageListPreviewLines", Settings.versions(
+                new V(1, new IntegerRangeSetting(1, 100, 2))
+            ));
+        s.put("messageListStars", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("messageListTouchable", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("messageViewFixedWidthFont", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("messageViewReturnToList", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("messageViewShowNext", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("mobileOptimizedLayout", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("quietTimeEnabled", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("quietTimeEnds", Settings.versions(
+                new V(1, new TimeSetting("7:00"))
+            ));
+        s.put("quietTimeStarts", Settings.versions(
+                new V(1, new TimeSetting("21:00"))
+            ));
+        s.put("registeredNameColor", Settings.versions(
+                new V(1, new ColorSetting(0xFF00008F))
+            ));
+        s.put("showContactName", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("showCorrespondentNames", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("startIntegratedInbox", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("theme", Settings.versions(
+                new V(1, new ThemeSetting(android.R.style.Theme_Light))
+            ));
+        s.put("useGalleryBugWorkaround", Settings.versions(
+                new V(1, new GalleryBugWorkaroundSetting())
+            ));
+        s.put("useVolumeKeysForListNavigation", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("useVolumeKeysForNavigation", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
+        s.put("zoomControlsEnabled", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
+
+        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, String> validate(Map<String, String> importedSettings) {
-        return Settings.validate(SETTINGS, importedSettings, false);
+    public static Map<String, Object> validate(int version, Map<String, String> importedSettings) {
+        return Settings.validate(version, SETTINGS, importedSettings, false);
+    }
+
+    public static Set<String> upgrade(int version, Map<String, Object> validatedSettings) {
+        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+    }
+
+    public static Map<String, String> convert(Map<String, Object> settings) {
+        return Settings.convert(settings, SETTINGS);
     }
 
     public static Map<String, String> getGlobalSettings(SharedPreferences storage) {

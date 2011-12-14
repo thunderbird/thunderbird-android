@@ -429,8 +429,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
     <string name="account_setup_expunge_policy_manual">Only manually</string>
 
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automatic using NAMESPACE if available)</string>
 
     <string name="drafts_folder_label">Drafts folder</string>
     <string name="sent_folder_label">Sent folder</string>

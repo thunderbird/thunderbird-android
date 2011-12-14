@@ -434,8 +434,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_expunge_policy_on_poll">Podczas każdego pobrania</string>
     <string name="account_setup_expunge_policy_manual">Tylko ręcznie</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefiks ścieżki IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(K-9 użyje NAMESPACE, jeśli funkcjonalność jest dostępna)</string>
 
     <string name="drafts_folder_label">Szkice</string>
     <string name="sent_folder_label">Wysłane</string>

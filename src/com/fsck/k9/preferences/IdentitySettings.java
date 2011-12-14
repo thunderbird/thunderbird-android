@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import android.content.SharedPreferences;
 
 import com.fsck.k9.EmailAddressValidator;
@@ -12,21 +15,40 @@ import com.fsck.k9.R;
 import com.fsck.k9.preferences.Settings.*;
 
 public class IdentitySettings {
-    public static final Map<String, SettingsDescription> SETTINGS;
+    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, SettingsDescription> s = new LinkedHashMap<String, SettingsDescription>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s =
+            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
 
-        s.put("signature", new SignatureSetting());
-        s.put("signatureUse", new BooleanSetting(true));
-        s.put("replyTo", new OptionalEmailAddressSetting());
+        s.put("signature", Settings.versions(
+                new V(1, new SignatureSetting())
+            ));
+        s.put("signatureUse", Settings.versions(
+                new V(1, new BooleanSetting(true))
+            ));
+        s.put("replyTo", Settings.versions(
+                new V(1, new OptionalEmailAddressSetting())
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
+
+        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, String> validate(Map<String, String> importedSettings,
+    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
-        return Settings.validate(SETTINGS, importedSettings, useDefaultValues);
+        return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
+    }
+
+    public static Set<String> upgrade(int version, Map<String, Object> validatedSettings) {
+        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+    }
+
+    public static Map<String, String> convert(Map<String, Object> settings) {
+        return Settings.convert(settings, SETTINGS);
     }
 
     public static Map<String, String> getIdentitySettings(SharedPreferences storage, String uuid,
@@ -84,6 +106,11 @@ public class IdentitySettings {
                 throw new InvalidSettingValueException();
             }
             return value;
+        }
+
+        @Override
+        public String toString(Object value) {
+            return (value != null) ? value.toString() : null;
         }
 
         @Override

@@ -426,8 +426,8 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
     <string name="account_setup_expunge_policy_manual">Kun manuelt</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP søge prefix</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Automatisk, anvender NAMESPACE hvis tilgængeligt)</string>
 
     <string name="drafts_folder_label">Navn på Kladde mappe</string>
     <string name="sent_folder_label">Navn på Sendt mappen</string>

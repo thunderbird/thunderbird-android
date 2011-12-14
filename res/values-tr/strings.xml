@@ -397,8 +397,8 @@
     <string name="account_setup_expunge_policy_on_poll">Seçim zamanı</string>
     <string name="account_setup_expunge_policy_manual">Sadece elle</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP yolu öneki</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Eğer varsa Otomatik  NAMESPACE kullanılır)</string>
 
     <string name="drafts_folder_label">Taslaklar klasörü</string>
     <string name="sent_folder_label">Giden Klasörü</string>

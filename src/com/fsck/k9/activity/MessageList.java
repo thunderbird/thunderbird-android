@@ -218,6 +218,7 @@ public class MessageList
     private static final String EXTRA_FOLDER_NAMES = "folderNames";
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_LIST_POSITION = "listPosition";
+    private static final String EXTRA_RETURN_FROM_MESSAGE_VIEW = "returnFromMessageView";
 
     /**
      * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
@@ -550,6 +551,36 @@ public class MessageList
         }
     }
 
+    /**
+     * Show the message list that was used to open the {@link MessageView} for a message.
+     *
+     * <p>
+     * <strong>Note:</strong>
+     * The {@link MessageList} instance should still be around and all we do is bring it back to
+     * the front (see the activity flags).<br>
+     * Out of sheer paranoia we also set the extras that were used to create the original
+     * {@code MessageList} instance. Using those, the activity can be recreated in the unlikely
+     * case of it having been killed by the OS.
+     * </p>
+     *
+     * @param context
+     *         The {@link Context} instance to invoke the {@link Context#startActivity(Intent)}
+     *         method on.
+     * @param extras
+     *         The extras used to create the original {@code MessageList} instance.
+     *
+     * @see MessageView#actionView(Context, MessageReference, ArrayList, Bundle)
+     */
+    public static void actionHandleFolder(Context context, Bundle extras) {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtras(extras);
+        intent.putExtra(EXTRA_RETURN_FROM_MESSAGE_VIEW, true);
+        context.startActivity(intent);
+    }
+
     public static void actionHandleFolder(Context context, Account account, String folder) {
         Intent intent = actionHandleFolderIntent(context, account, folder);
         context.startActivity(intent);
@@ -636,36 +667,37 @@ public class MessageList
         mTouchView = K9.messageListTouchable();
         mPreviewLines = K9.messageListPreviewLines();
 
-        onNewIntent(getIntent());
+        initializeMessageList(getIntent(), true);
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
+        initializeMessageList(intent, false);
+    }
+
+    private void initializeMessageList(Intent intent, boolean create) {
+        boolean returnFromMessageView = intent.getBooleanExtra(
+                EXTRA_RETURN_FROM_MESSAGE_VIEW, false);
+
+        if (!create && returnFromMessageView) {
+            // We're returning from the MessageView activity with "Manage back button" enabled.
+            // So just leave the activity in the state it was left in.
+            return;
+        }
+
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        Account account = Preferences.getPreferences(this).getAccount(accountUuid);
-        String folderName = intent.getStringExtra(EXTRA_FOLDER);
-        String queryString = intent.getStringExtra(EXTRA_QUERY);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        if (account != null && !account.isAvailable(this)) {
+        if (mAccount != null && !mAccount.isAvailable(this)) {
             Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
             onAccountUnavailable();
             return;
         }
 
-        if (account != null && account.equals(mAccount) &&
-                folderName != null && folderName.equals(mFolderName) &&
-                ((queryString != null && queryString.equals(mQueryString)) ||
-                 (queryString == null && mQueryString == null))) {
-            // We're likely just returning from the MessageView activity with "Manage back button"
-            // enabled. So just leave the activity in the state it was left in.
-            return;
-        }
-
-        mAccount = account;
-        mFolderName = folderName;
-        mQueryString = queryString;
+        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
+        mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null) {
@@ -1081,7 +1113,7 @@ public class MessageList
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
-            MessageView.actionView(this, ref, messageRefs);
+            MessageView.actionView(this, ref, messageRefs, getIntent().getExtras());
         }
 
         /*

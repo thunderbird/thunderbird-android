@@ -60,6 +60,7 @@
     <string name="forward_action">転送</string>
     <string name="move_action">移動</string>
     <string name="continue_action">継続</string>
+    <string name="back_action">戻る</string>
     <string name="done_action">完了</string>
     <string name="remove_action">取除く</string>
     <string name="discard_action">破棄</string>
@@ -424,8 +425,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>
     <string name="account_setup_expunge_policy_manual">手動のみ</string>
 
+    <string name="account_setup_incoming_autodetect_namespace_label">IMAP名前空間を自動検出</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP ルートフォルダパス</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(可能であれば名前空間を自動的に使用)</string>
 
     <string name="drafts_folder_label">下書きフォルダ名</string>
     <string name="sent_folder_label">送信済みフォルダ名</string>
@@ -593,6 +594,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_crypto_app_not_available">利用不可</string>
     <string name="account_settings_crypto_auto_signature">自動署名</string>
     <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する</string>
+    <string name="account_settings_crypto_auto_encrypt">自動暗号化</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">公開鍵が宛先と一致するなら自動的に暗号化する</string>
 
     <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
     <string name="account_settings_second_class_check_frequency_label">2nd クラス自動受信間隔</string>
@@ -1010,6 +1013,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
     <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
+
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">下書き保存の拒否</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">暗号化したメッセージは下書き保存できません</string>
+
+    <string name="continue_without_public_key_dlg_title">公開鍵なしでの続行</string>
+    <string name="continue_without_public_key_instructions_fmt">宛先の公開鍵を持っていませんが、続けますか？</string>
 
     <string name="charset_not_found">このメッセージに使われている文字セット \"<xliff:g id="charset">%s</xliff:g>\" は存在していません</string>
 
