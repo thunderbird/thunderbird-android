@@ -829,6 +829,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
       Q - Zurück zu den Konten\u000A
       S - Kontoeinstellungen bearbeiten</string>
 
+    <string name="folder_list_filter_hint">Ordnername enthält</string>
+
     <string name="folder_list_display_mode_label">Ordner</string>
     <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
     <string name="folder_list_display_mode_first_class">Nur Hauptordner anzeigen</string>
