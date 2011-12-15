@@ -833,6 +833,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     Q - Return to Accounts\u000A
     S - Edit Account Settings</string>
 
+    <string name="folder_list_filter_hint">folder name contains</string>
+
     <string name="folder_list_display_mode_label">Folders</string>
     <string name="folder_list_display_mode_all">Display all folders</string>
     <string name="folder_list_display_mode_first_class">Display only 1st Class folders</string>
