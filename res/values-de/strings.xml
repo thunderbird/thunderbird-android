@@ -71,6 +71,7 @@
     <string name="send_messages_action">Nachricht senden</string>
     <string name="list_folders_action">Ordnerliste</string>
     <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
+    <string name="filter_folders_action">Finde Ordner</string>
     <string name="mark_all_as_read_action">Alle als gelesen markieren</string>
     <string name="add_account_action">Konto hinzufügen</string>
     <string name="compose_action">Verfassen</string>
