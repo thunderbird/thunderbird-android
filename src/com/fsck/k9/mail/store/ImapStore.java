@@ -2130,39 +2130,44 @@ public class ImapStore extends Store {
                 Log.w(K9.LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
             }
 
-
-
             try {
-            	// -> try all IPv4 and IPv6 addresses of the host. 
-            	int mConnectionSecurity = mSettings.getConnectionSecurity();
-            	InetAddress[] addresses = InetAddress.getAllByName(mSettings.getHost());
+                int connectionSecurity = mSettings.getConnectionSecurity();
+
+                // Try all IPv4 and IPv6 addresses of the host
+                InetAddress[] addresses = InetAddress.getAllByName(mSettings.getHost());
                 for (int i = 0; i < addresses.length; i++) {
                     try {
-                    	if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
-                    		Log.d(K9.LOG_TAG, "connecting to " + mSettings.getHost() + " as " + addresses[i]);
-                    	}
-                        SocketAddress socketAddress = new InetSocketAddress(addresses[i], mSettings.getPort());
-                        if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                                mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
+                            Log.d(K9.LOG_TAG, "Connecting to " + mSettings.getHost() + " as " +
+                                    addresses[i]);
+                        }
+
+                        SocketAddress socketAddress = new InetSocketAddress(addresses[i],
+                                mSettings.getPort());
+
+                        if (connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
+                                connectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                             SSLContext sslContext = SSLContext.getInstance("TLS");
-                            boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                            boolean secure = connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
                             sslContext.init(null, new TrustManager[] {
                                                 TrustManagerFactory.get(mSettings.getHost(), secure)
                                             }, new SecureRandom());
                             mSocket = sslContext.getSocketFactory().createSocket();
-                            mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         } else {
                             mSocket = new Socket();
-                            mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         }
+
+                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+
+                        // Successfully connected to the server; don't try any other addresses
+                        break;
                     } catch (SocketException e) {
                         if (i < (addresses.length - 1)) {
-                            // there are still other addresses for that host to try
+                            // There are still other addresses for that host to try
                             continue;
                         }
                         throw new MessagingException("Cannot connect to host", e);
                     }
-                    break; // connection success
                 }
 
                 setReadTimeout(Store.SOCKET_READ_TIMEOUT);
