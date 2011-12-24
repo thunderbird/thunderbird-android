@@ -191,6 +191,24 @@ public class GlobalSettings {
         s.put("zoomControlsEnabled", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
+        s.put("batchButtonsMarkRead", Settings.versions(
+        		new V(1, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsDelete", Settings.versions(
+        		new V(1, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsArchive", Settings.versions(
+        		new V(1, new BooleanSetting(false))
+        	));
+        s.put("batchButtonsMove", Settings.versions(
+        		new V(1, new BooleanSetting(false))
+        	));
+        s.put("batchButtonsFlag", Settings.versions(
+        		new V(1, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsUnselect", Settings.versions(
+        		new V(1, new BooleanSetting(true))
+        	));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

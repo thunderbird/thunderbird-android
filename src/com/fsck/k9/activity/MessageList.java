@@ -292,6 +292,8 @@ public class MessageList
     private ImageButton mBatchReadButton;
     private ImageButton mBatchDeleteButton;
     private ImageButton mBatchFlagButton;
+    private ImageButton mBatchArchiveButton;
+    private ImageButton mBatchMoveButton;
     private ImageButton mBatchDoneButton;
 
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -867,9 +869,19 @@ public class MessageList
         mBatchDeleteButton.setOnClickListener(this);
         mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
         mBatchFlagButton.setOnClickListener(this);
+        mBatchArchiveButton = (ImageButton) findViewById(R.id.batch_archive_button);
+        mBatchArchiveButton.setOnClickListener(this);
+        mBatchMoveButton = (ImageButton) findViewById(R.id.batch_move_button);
+        mBatchMoveButton.setOnClickListener(this);
         mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-
         mBatchDoneButton.setOnClickListener(this);
+
+        mBatchReadButton.setVisibility(K9.batchButtonsMarkRead() ? View.VISIBLE : View.GONE);
+        mBatchDeleteButton.setVisibility(K9.batchButtonsDelete() ? View.VISIBLE : View.GONE);
+        mBatchArchiveButton.setVisibility(K9.batchButtonsArchive() ? View.VISIBLE : View.GONE);
+        mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
+        mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
+        mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
 
         // Gesture detection
         gestureDetector = new GestureDetector(new MyGestureDetector(true));
@@ -2476,8 +2488,6 @@ public class MessageList
 
             }
         });
-
-
     }
 
     static class FooterViewHolder {
@@ -2537,6 +2547,18 @@ public class MessageList
             newState = computeBatchDirection(false);
         }
 
+        if (v == mBatchArchiveButton) {
+            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+            onArchive(selection);
+            return;
+        }
+
+        if (v == mBatchMoveButton) {
+            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+            onMove(selection);
+            return;
+        }
+
         synchronized (mAdapter.messages) {
             for (MessageInfoHolder holder : mAdapter.messages) {
                 if (holder.selected) {
@@ -2546,6 +2568,8 @@ public class MessageList
                         holder.flagged = newState;
                     } else if (v == mBatchReadButton) {
                         holder.read = newState;
+                    } else if (v == mBatchArchiveButton) {
+                    	// TODO
                     }
                     messageList.add(holder.message);
                 }
