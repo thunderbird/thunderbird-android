@@ -698,11 +698,6 @@ public class AccountSettings extends K9PreferenceActivity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void saveSettings() {
         if (mAccountDefault.isChecked()) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);

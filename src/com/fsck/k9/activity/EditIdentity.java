@@ -90,11 +90,6 @@ public class EditIdentity extends K9Activity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void saveIdentity() {
 
         mIdentity.setDescription(mDescriptionView.getText().toString());
