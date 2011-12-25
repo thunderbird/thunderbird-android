@@ -2,7 +2,6 @@
 package com.fsck.k9.mail;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.store.ImapStore;
