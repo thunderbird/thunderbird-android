@@ -111,7 +111,6 @@ public class MessageHeader extends LinearLayout {
             @Override
             public void onClick(View v) {
                 onShowAdditionalHeaders();
-                return;
             }
         });
 
