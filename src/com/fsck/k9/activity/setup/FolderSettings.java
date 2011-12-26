@@ -123,11 +123,6 @@ public class FolderSettings extends K9PreferenceActivity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void saveSettings() throws MessagingException {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
