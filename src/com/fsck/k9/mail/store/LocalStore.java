@@ -22,7 +22,6 @@ import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
