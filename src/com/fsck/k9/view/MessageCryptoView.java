@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.*;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
