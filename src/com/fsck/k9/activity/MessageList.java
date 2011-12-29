@@ -2568,8 +2568,6 @@ public class MessageList
                         holder.flagged = newState;
                     } else if (v == mBatchReadButton) {
                         holder.read = newState;
-                    } else if (v == mBatchArchiveButton) {
-                    	// TODO
                     }
                     messageList.add(holder.message);
                 }
