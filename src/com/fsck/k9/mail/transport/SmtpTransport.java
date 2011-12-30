@@ -249,7 +249,7 @@ public class SmtpTransport extends Transport {
                         mSocket = new Socket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     }
-                } catch (ConnectException e) {
+                } catch (SocketException e) {
                     if (i < (addresses.length - 1)) {
                         // there are still other addresses for that host to try
                         continue;

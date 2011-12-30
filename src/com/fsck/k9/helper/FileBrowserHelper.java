@@ -92,7 +92,7 @@ public class FileBrowserHelper {
             } catch (ActivityNotFoundException e) {
                 // Try the next intent in the list
                 listIndex++;
-            };
+            }
         } while (!success && (listIndex < PICK_DIRECTORY_INTENTS.length));
 
         if (listIndex == PICK_DIRECTORY_INTENTS.length) {

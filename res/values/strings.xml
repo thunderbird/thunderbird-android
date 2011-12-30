@@ -72,6 +72,7 @@
     <string name="send_messages_action">Send messages</string>
     <string name="list_folders_action">Folder list</string>
     <string name="refresh_folders_action">Refresh folders</string>
+    <string name="filter_folders_action">Find folder</string>
     <string name="mark_all_as_read_action">Mark all messages as read</string>
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
@@ -833,6 +834,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     4 - Display all folders\u000A
     Q - Return to Accounts\u000A
     S - Edit Account Settings</string>
+
+    <string name="folder_list_filter_hint">folder name contains</string>
 
     <string name="folder_list_display_mode_label">Folders</string>
     <string name="folder_list_display_mode_all">Display all folders</string>

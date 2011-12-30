@@ -2235,7 +2235,6 @@ public class WebDavStore extends Store {
      */
     public class DataSet {
         private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
-        // private HashMap<String, String> mLostData = new HashMap<String, String>();
         private StringBuilder mUid = new StringBuilder();
         private HashMap<String, String> mTempData = new HashMap<String, String>();
 
@@ -2253,8 +2252,7 @@ public class WebDavStore extends Store {
 
         public void finish() {
             String uid = mUid.toString();
-            if (!uid.equals("") &&
-                    mTempData != null) {
+            if (uid != null && mTempData != null) {
                 mData.put(uid, mTempData);
             } else if (mTempData != null) {
                 /*

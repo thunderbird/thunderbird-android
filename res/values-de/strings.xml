@@ -60,6 +60,7 @@
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
     <string name="continue_action">Fortfahren</string>
+    <string name="back_action">Zurück</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
     <string name="remove_action">Entfernen</string>
     <string name="discard_action">Verwerfen</string>
@@ -70,6 +71,7 @@
     <string name="send_messages_action">Nachricht senden</string>
     <string name="list_folders_action">Ordnerliste</string>
     <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
+    <string name="filter_folders_action">Finde Ordner</string>
     <string name="mark_all_as_read_action">Alle als gelesen markieren</string>
     <string name="add_account_action">Konto hinzufügen</string>
     <string name="compose_action">Verfassen</string>
@@ -338,6 +340,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_confirm_actions_summary">Verlange Bestätigung bei gewissen Aktionen</string>
     <string name="global_settings_confirm_action_archive">Archivieren</string>
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
+    <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Alle als gelesen markieren</string>
     <string name="global_settings_confirm_action_send">Senden</string>
@@ -421,7 +424,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
     <string name="account_setup_expunge_policy_manual">Nur manuell</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">IMAP Namensraum automatisch ermitteln</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP-Verzeichnispräfix</string>
 
     <string name="drafts_folder_label">Ordner für Entwürfe</string>
@@ -561,11 +564,15 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_settings_reply_after_quote_label">Antwort unter Zitat</string>
     <string name="account_settings_reply_after_quote_summary">Die Antwort auf eine Nachricht unterhalb der Original-Nachricht platzieren.</string>
+	
+	<string name="account_settings_strip_signature_label">Unterschrift von zitierter Antwort entfernen</string>
+	<string name="account_settings_strip_signature_summary">Beim Antworten von Nachrichten wird die Unterschrift vom zitiertem Textabschnitt entfernt</string>
 
     <string name="account_settings_message_format_label">Formatierung</string>
     <string name="account_settings_message_format_text">Einfacher Text (Bilder und Formatierungen werden entfernt)</string>
     <string name="account_settings_message_format_html">HTML (Bilder und Formatierungen bleiben erhalten)</string>
-
+	<string name="account_settings_message_format_auto">Automatisch (Einfacher Text, es sei denn bei Antwort auf HTML)</string>
+	
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
 
@@ -587,9 +594,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_crypto_auto_signature">Auto-sign</string>
     <string name="account_settings_crypto_auto_signature_summary">Email Adresse des Kontos verwenden um Signaturschlüssel zu schätzen.</string>
 
+    <string name="account_settings_crypto_auto_encrypt">Automatische verschlüsselung</string>
+	<string name="account_settings_crypto_auto_encrypt_summary">Verschlüsselung aktivieren falls für den Empfänger ein öffentlichen Schlüssel abgespeichert ist.</string>
+    
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
-
+    
     <string name="account_settings_storage_title">Speicher</string>
 
     <string name="account_settings_color_label">Farbe des Kontos</string>
@@ -819,6 +829,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
       Q - Zurück zu den Konten\u000A
       S - Kontoeinstellungen bearbeiten</string>
 
+    <string name="folder_list_filter_hint">Ordnername enthält</string>
+
     <string name="folder_list_display_mode_label">Ordner</string>
     <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
     <string name="folder_list_display_mode_first_class">Nur Hauptordner anzeigen</string>
@@ -1010,6 +1022,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
+    
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
+    
+    <string name="continue_without_public_key_dlg_title">Ohne öffentlichen Schlüssel fortfahren?</string>
+    <string name="continue_without_public_key_instructions_fmt">Einer oder mehrere Empfänger besitzen keinen abgespeicherten öffentlichen Schlüssel. Fortfahren?</string>
 
     <string name="charset_not_found">Die Nachricht konnte nicht dargestellt werden, da das Charset \"<xliff:g id="charset">%s</xliff:g>\" nicht gefunden wurde.</string>
 
@@ -1035,47 +1053,47 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Verbindungsfehler.</string>
+    
+    <string name="import_export_action">Einstellungen Importieren &amp; Exportieren</string>
+    <string name="settings_export_account">Kontoeinstellungen exportieren</string>
+    <string name="settings_export_all">Einstellungen und Konten exportieren</string>
+    <string name="settings_import_dialog_title">Importieren</string>
+    <string name="settings_export_dialog_title">Export</string>
+    <string name="settings_import">Einstellungen importieren</string>
+    <string name="settings_import_selection">Auswahl importieren</string>
+    <string name="settings_import_global_settings">Globale Einstellungen</string>
+    <string name="settings_exporting">Einstellungen Exportieren...</string>
+    <string name="settings_importing">Einstellungen Importieren...</string>
+    <string name="settings_import_scanning_file">Datei lesen...</string>
+    <string name="settings_export_success">Exportiere Einstellungen erfolgreich in <xliff:g id="filename">%s</xliff:g> gespeichert</string>
+    <string name="settings_import_global_settings_success">Globale Einstellungen erfolgreich von <xliff:g id="filename">%s</xliff:g> importiert</string>
+    <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> erfolgreich von <xliff:g id="filename">%s</xliff:g> importiert</string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 Konto</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> Konten</item>
+    </plurals>
+    <string name="settings_export_failure">Exportieren der Einstellungen ist fehlgeschlagen</string>
+    <string name="settings_import_failure">Importieren der Einstellungen von <xliff:g id="filename">%s</xliff:g> sind fehlgeschlagen</string>
+    <string name="settings_export_success_header">Export erfolgreich</string>
+    <string name="settings_export_failed_header">Export fehlgeschlagen</string>
+    <string name="settings_import_success_header">Import erfolgreich</string>
+    <string name="settings_import_failed_header">Import fehlgeschlagen</string>
+    <string name="settings_import_activate_account_header">Konto aktivieren</string>
+    <string name="settings_import_activate_account_intro">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" zu benutzen müssen sie das <xliff:g id="server_passwords">%s</xliff:g> angeben.</string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">Server Passwort</item>
+        <item quantity="other">Server Passwörter</item>
+    </plurals>
+    <string name="settings_import_incoming_server">Posteingangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Postausgangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Passwort Setzen...</item>
+        <item quantity="other">Passwörter setzen...</item>
+    </plurals>
+    <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers benutzen</string>
+    <string name="activate_account_action">Aktivieren</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
-
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+    <string name="settings_unknown_version">Kann die Datei-Version <xliff:g id="version">%s</xliff:g> nicht verwenden</string>
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ist nicht verfügbar; Bitte SD-Karte prüfen.</string>
 
@@ -1085,6 +1103,6 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="manage_accounts_move_up_action">Nach oben verschieben</string>
     <string name="manage_accounts_move_down_action">Nach unten verschieben</string>
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
-
+    <string name="manage_accounts_moving_message">Konto verschieben...</string>
+    
 </resources>

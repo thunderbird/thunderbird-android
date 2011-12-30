@@ -99,12 +99,6 @@ public class AccountSetupComposition extends K9Activity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //mAccount.refresh(Preferences.getPreferences(this));
-    }
-
     private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
