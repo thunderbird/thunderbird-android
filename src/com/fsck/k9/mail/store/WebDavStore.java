@@ -310,7 +310,6 @@ public class WebDavStore extends Store {
     private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
-    private URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
 
     private boolean mSecure;
     private WebDavHttpClient mHttpClient = null;
