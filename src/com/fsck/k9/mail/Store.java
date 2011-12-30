@@ -99,6 +99,7 @@ public abstract class Store {
      * @see ImapStore#decodeUri(String)
      * @see Pop3Store#decodeUri(String)
      * @see WebDavStore#decodeUri(String)
+     * @see EasStore#decodeUri(String)
      */
     public static ServerSettings decodeStoreUri(String uri) {
         if (uri.startsWith("imap")) {
@@ -107,6 +108,8 @@ public abstract class Store {
             return Pop3Store.decodeUri(uri);
         } else if (uri.startsWith("webdav")) {
             return WebDavStore.decodeUri(uri);
+        } else if (uri.startsWith("eas")) {
+            return EasStore.decodeUri(uri);
         } else {
             throw new IllegalArgumentException("Not a valid store URI");
         }
@@ -123,6 +126,7 @@ public abstract class Store {
      * @see ImapStore#createUri(ServerSettings)
      * @see Pop3Store#createUri(ServerSettings)
      * @see WebDavStore#createUri(ServerSettings)
+     * @see EasStore#createUri(ServerSettings)
      */
     public static String createStoreUri(ServerSettings server) {
         if (ImapStore.STORE_TYPE.equals(server.type)) {
@@ -131,6 +135,8 @@ public abstract class Store {
             return Pop3Store.createUri(server);
         } else if (WebDavStore.STORE_TYPE.equals(server.type)) {
             return WebDavStore.createUri(server);
+        } else if (EasStore.STORE_TYPE.equals(server.type)) {
+            return EasStore.createUri(server);
         } else {
             throw new IllegalArgumentException("Not a valid store URI");
         }

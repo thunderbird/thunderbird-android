@@ -39,7 +39,6 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import android.content.Context;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -51,6 +50,7 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -58,6 +58,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -89,31 +90,32 @@ public class EasStore extends Store {
     // we sync the items any "collection" (emails in a folder).
     private static final String INITIAL_SYNC_KEY = "0";
 
-    static private final String PING_COMMAND = "Ping";
-    static private final String PROVISION_COMMAND = "Provision";
+    private static final String PING_COMMAND = "Ping";
+    private static final String PROVISION_COMMAND = "Provision";
+    
     // Command timeout is the the time allowed for reading data from an open connection before an
     // IOException is thrown.  After a small added allowance, our watch dog alarm goes off (allowing
     // us to detect a silently dropped connection).  The allowance is defined below.
-    static private final int COMMAND_TIMEOUT = 30 * 1000;
+    private static final int COMMAND_TIMEOUT = 30 * 1000;
     // Connection timeout is the time given to connect to the server before reporting an IOException.
-    static private final int CONNECTION_TIMEOUT = 20 * 1000;
+    private static final int CONNECTION_TIMEOUT = 20 * 1000;
 
     // This needs to be long enough to send the longest reasonable message, without being so long
     // as to effectively "hang" sending of mail. The standard 30 second timeout isn't long enough
     // for pictures and the like. For now, we'll use 15 minutes, in the knowledge that any socket
     // failure would probably generate an Exception before timing out anyway.
-    public static final int SEND_MAIL_TIMEOUT = 15 * 60 * 1000;
+    private static final int SEND_MAIL_TIMEOUT = 15 * 60 * 1000;
 
     // MSFT's custom HTTP result code indicating the need to provision.
-    static private final int HTTP_NEED_PROVISIONING = 449;
+    private static final int HTTP_NEED_PROVISIONING = 449;
 
     // The EAS protocol Provision status for "we implement all of the policies".
-    static private final String PROVISION_STATUS_OK = "1";
+    private static final String PROVISION_STATUS_OK = "1";
     // The EAS protocol Provision status meaning "we partially implement the policies".
-    static private final String PROVISION_STATUS_PARTIAL = "2";
+    private static final String PROVISION_STATUS_PARTIAL = "2";
 
-    static public final String EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML";
-    static public final String EAS_2_POLICY_TYPE = "MS-WAP-Provisioning-XML";
+    public static final String EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML";
+    public static final String EAS_2_POLICY_TYPE = "MS-WAP-Provisioning-XML";
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
@@ -122,77 +124,178 @@ public class EasStore extends Store {
     
     // The number of emails to fetch for each request to the server.
     private static final int EMAIL_WINDOW_SIZE = 10;
+    // The maximum length of the DeviceID parameter used by EAS is 32 characters.
+    private static final int MAX_DEVICE_ID_SIZE = 32;
 
-    public String mProtocolVersion;
-    public Double mProtocolVersionDouble;
-    protected String mDeviceId = null;
-    protected String mDeviceType = "Android";
-    private String mCmdString = null;
+    /**
+     * Decodes a EasStore URI.
+     *
+     * <p>Possible forms:</p>
+     * <pre>
+     * eas://user:password@server:port CONNECTION_SECURITY_NONE
+     * eas+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * eas+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * eas+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * eas+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * </pre>
+     */
+    public static ServerSettings decodeUri(String uri) {
+        String host;
+        int port;
+        ConnectionSecurity connectionSecurity;
+        String username = null;
+        String password = null;
 
-    private final URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
-    private String mHost; /* Stores the host name for the server */
-    private String mUsername; /* Stores the username for authentications */
-    private String mPassword; /* Stores the password for authentications */
+        URI easUri;
+        try {
+            easUri = new URI(uri);
+        } catch (URISyntaxException use) {
+            throw new IllegalArgumentException("Invalid EasStore URI", use);
+        }
 
+        String scheme = easUri.getScheme();
+        if (scheme.equals("eas")) {
+            connectionSecurity = ConnectionSecurity.NONE;
+        } else if (scheme.equals("eas+ssl")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
+        } else if (scheme.equals("eas+ssl+")) {
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
+        } else if (scheme.equals("eas+tls")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
+        } else if (scheme.equals("eas+tls+")) {
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
+        } else {
+            throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
+        }
+
+        host = easUri.getHost();
+        if (host.startsWith("http")) {
+            String[] hostParts = host.split("://", 2);
+            if (hostParts.length > 1) {
+                host = hostParts[1];
+            }
+        }
+        
+        port = easUri.getPort();
+
+        if (easUri.getUserInfo() != null) {
+            try {
+                String[] userInfoParts = easUri.getUserInfo().split(":");
+
+                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+
+                if (userInfoParts.length > 1) {
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+            } catch (UnsupportedEncodingException enc) {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            }
+        }
+
+        return new ServerSettings(STORE_TYPE, host, port, connectionSecurity, null, username, password);
+    }
+
+    /**
+     * Creates a EasStore URI with the supplied settings.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A EasStore URI that holds the same information as the {@code server} parameter.
+     *
+     * @see Account#getStoreUri()
+     * @see EasStore#decodeUri(String)
+     */
+    public static String createUri(ServerSettings server) {
+        String userEnc;
+        String passwordEnc;
+        try {
+            userEnc = URLEncoder.encode(server.username, "UTF-8");
+            passwordEnc = (server.password != null) ?
+                          URLEncoder.encode(server.password, "UTF-8") : "";
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Could not encode username or password", e);
+        }
+        String userInfo = userEnc + ":" + passwordEnc;
+
+        String scheme;
+        switch (server.connectionSecurity) {
+        case SSL_TLS_OPTIONAL:
+            scheme = "eas+ssl";
+            break;
+        case SSL_TLS_REQUIRED:
+            scheme = "eas+ssl+";
+            break;
+        case STARTTLS_OPTIONAL:
+            scheme = "eas+tls";
+            break;
+        case STARTTLS_REQUIRED:
+            scheme = "eas+tls+";
+            break;
+        default:
+        case NONE:
+            scheme = "eas";
+            break;
+        }
+
+        try {
+            return new URI(scheme, userInfo, server.host, server.port, null,
+                           null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create EasStore URI", e);
+        }
+    }
+
+    // The following members are set during the first contact with the Exchange server, before
+    // we provision or send any other requests. They are synchronized by mInitializationLock.
+    private String mProtocolVersion = null;
+    private Double mProtocolVersionDouble = null;
+    private String mDeviceId = null;
+    private Object mInitializationLock = new Object();
+    private final String mDeviceType = "Android";
+
+    private String mHost;
+    private String mUsername;
+    private String mPassword;
     private short mConnectionSecurity;
     private boolean mSecure;
     private HttpClient mHttpClient = null;
     private String mAuthString = null;
+    private String mCmdString = null;
 
     private HashMap<String, EasFolder> mFolderList = new HashMap<String, EasFolder>();
 
-    /**
-     * eas://user:password@server:port CONNECTION_SECURITY_NONE
-     * eas+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * eas+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * eas+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     * eas+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     */
     public EasStore(Account account) throws MessagingException {
         super(account);
 
+        ServerSettings settings;
         try {
-            mUri = new URI(mAccount.getStoreUri());
-        } catch (URISyntaxException use) {
-            throw new MessagingException("Invalid WebDavStore URI", use);
+            settings = decodeUri(mAccount.getStoreUri());
+        } catch (IllegalArgumentException e) {
+            throw new MessagingException("Error while decoding store URI", e);
         }
+        
+        mHost = settings.host;
+        mUsername = settings.username;
+        mPassword = settings.password;
 
-        String scheme = mUri.getScheme();
-        if (scheme.equals("eas")) {
+        switch (settings.connectionSecurity) {
+        case NONE:
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
-        } else if (scheme.equals("eas+ssl")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-        } else if (scheme.equals("eas+ssl+")) {
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-        } else if (scheme.equals("eas+tls")) {
+            break;
+        case STARTTLS_OPTIONAL:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-        } else if (scheme.equals("eas+tls+")) {
+            break;
+        case STARTTLS_REQUIRED:
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-        } else {
-            throw new MessagingException("Unsupported protocol");
-        }
-
-        mHost = mUri.getHost();
-        if (mHost.startsWith("http")) {
-            String[] hostParts = mHost.split("://", 2);
-            if (hostParts.length > 1) {
-                mHost = hostParts[1];
-            }
-        }
-
-        if (mUri.getUserInfo() != null) {
-            try {
-                String[] userInfoParts = mUri.getUserInfo().split(":");
-
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-
-                if (userInfoParts.length > 1) {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
-            }
+            break;
+        case SSL_TLS_OPTIONAL:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
+            break;
+        case SSL_TLS_REQUIRED:
+            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
+            break;
         }
 
         mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
@@ -218,37 +321,18 @@ public class EasStore extends Store {
 
     @Override
     public void checkSettings() throws MessagingException {
-        boolean ssl = true;
-
-        boolean trustCertificates = true;
-
-        validateAccount(
-            mHost,
-            mUsername,
-            mPassword,
-            mUri.getPort(),
-            ssl,
-            trustCertificates,
-            K9.app);
+        validateAccount();
     }
 
-    public void validateAccount(String hostAddress, String userName, String password, int port,
-                                boolean ssl, boolean trustCertificates, Context context) throws MessagingException {
+    public void validateAccount() throws MessagingException {
         try {
-            Log.i(K9.LOG_TAG, "Testing EAS: " + hostAddress + ", " + userName + ", ssl = " + (ssl ? "1" : "0"));
+            Log.i(K9.LOG_TAG, "Testing EAS: " + mHost + ", " + mUsername + ", ssl = " + (mSecure ? "1" : "0"));
 
-//          Account account = Preferences.getPreferences(context).newAccount();
-//            account.setName("%TestAccount%");
-//            account.setStoreUri(mUri.toString());
             EasStore svc = new EasStore(mAccount);
-            svc.mHost = hostAddress;
-            svc.mUsername = userName;
-            svc.mPassword = password;
-//            svc.mSsl = ssl;
-//            svc.mTrustSsl = trustCertificates;
-            // We mustn't use the "real" device id or we'll screw up current accounts
-            // Any string will do, but we'll go for "validate"
+            // We musn't use the "real" device id or we'll screw up current accounts.
+            // Any string will do, but we'll go for "validate".
             svc.mDeviceId = "validate";
+            
             HttpResponse resp = svc.sendHttpClientOptions();
             reclaimConnection(resp);
             int code = resp.getStatusLine().getStatusCode();
@@ -319,7 +403,7 @@ public class EasStore extends Store {
     }
 
     private String getPolicyType() {
-        return (getProtocolVersion() >=
+        return (getProtocolVersionDouble() >=
                 Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) ? EAS_12_POLICY_TYPE : EAS_2_POLICY_TYPE;
     }
 
@@ -424,7 +508,7 @@ public class EasStore extends Store {
         return (code == HTTP_NEED_PROVISIONING) || (code == HttpStatus.SC_FORBIDDEN);
     }
 
-    private void setupProtocolVersion(EasStore service, Header versionHeader)
+    private static void setupProtocolVersion(EasStore service, Header versionHeader)
     throws MessagingException {
         // The string is a comma separated list of EAS versions in ascending order
         // e.g. 1.0,2.0,2.5,12.0,12.1
@@ -445,13 +529,15 @@ public class EasStore extends Store {
             Log.w(K9.LOG_TAG, "No supported EAS versions: " + supportedVersions);
             throw new MessagingException("MessagingException.PROTOCOL_VERSION_UNSUPPORTED");
         } else {
-            service.mProtocolVersion = ourVersion;
-            service.mProtocolVersionDouble = Double.parseDouble(ourVersion);
+            synchronized (service.mInitializationLock) {
+                service.mProtocolVersion = ourVersion;
+                service.mProtocolVersionDouble = Double.parseDouble(ourVersion);
+            }
         }
     }
     
-    private Double getProtocolVersion() {
-        synchronized (mProtocolVersionDouble) {
+    private Double getProtocolVersionDouble() {
+        synchronized (mInitializationLock) {
             if (mProtocolVersionDouble == null) {
                 try {
                     init();
@@ -553,7 +639,9 @@ public class EasStore extends Store {
      */
     private void setHeaders(HttpRequestBase method, boolean usePolicyKey) {
         method.setHeader("Authorization", mAuthString);
-        method.setHeader("MS-ASProtocolVersion", mProtocolVersion);
+        synchronized (mInitializationLock) {
+            method.setHeader("MS-ASProtocolVersion", mProtocolVersion);
+        }
         method.setHeader("Connection", "keep-alive");
         method.setHeader("User-Agent", mDeviceType + '/' + Eas.VERSION);
         if (usePolicyKey) {
@@ -598,8 +686,11 @@ public class EasStore extends Store {
         String safeUserName = URLEncoder.encode(mUsername);
         String cs = mUsername + ':' + mPassword;
         mAuthString = "Basic " + Base64.encodeToString(cs.getBytes(), Base64.NO_WRAP);
-        mCmdString = "&User=" + safeUserName + "&DeviceId=" + mDeviceId +
-                     "&DeviceType=" + mDeviceType;
+        
+        synchronized (mInitializationLock) {
+            mCmdString = "&User=" + safeUserName + "&DeviceId=" + mDeviceId +
+                         "&DeviceType=" + mDeviceType;
+        }
     }
 
     @Override
@@ -622,30 +713,41 @@ public class EasStore extends Store {
     }
 
     private void init() throws IOException, MessagingException {
-        // Determine our protocol version, if we haven't already and save it in the Account
-        // Also re-check protocol version at least once a day (in case of upgrade)
-        boolean lastSyncTimeDayDue = false;
-        //lastSyncTimeDayDue = ((System.currentTimeMillis() - mMailbox.mSyncTime) > DAYS);
-        if (mProtocolVersion == null || lastSyncTimeDayDue) {
-            Log.d(K9.LOG_TAG, "Determine EAS protocol version");
-            HttpResponse resp = sendHttpClientOptions();
-            reclaimConnection(resp);
-            int code = resp.getStatusLine().getStatusCode();
-            Log.d(K9.LOG_TAG, "OPTIONS response: " + code);
-            if (code == HttpStatus.SC_OK) {
-                Header header = resp.getFirstHeader("MS-ASProtocolCommands");
-                Log.d(K9.LOG_TAG, header.getValue());
-                header = resp.getFirstHeader("ms-asprotocolversions");
-                try {
-                    setupProtocolVersion(this, header);
-                } catch (MessagingException e) {
-                    // Since we've already validated, this can't really happen
-                    // But if it does, we'll rethrow this...
+        synchronized (mInitializationLock) {
+            // Get a unique ID to identify the device and application.
+            if (mDeviceId == null) {
+                mDeviceId = K9.app.getDeviceId();
+                if (mDeviceId.length() > MAX_DEVICE_ID_SIZE) {
+                    // This should not happen, since getDeviceId returns a UUID string with the dashes
+                    // removed, which is always 32 characters. Best to be safe.
+                    mDeviceId = mDeviceId.substring(0, MAX_DEVICE_ID_SIZE);
+                }
+            }
+            // Determine our protocol version, if we haven't already and save it in the Account
+            // Also re-check protocol version at least once a day (in case of upgrade)
+            boolean lastSyncTimeDayDue = false;
+            //lastSyncTimeDayDue = ((System.currentTimeMillis() - mMailbox.mSyncTime) > DAYS);
+            if (mProtocolVersion == null || lastSyncTimeDayDue) {
+                Log.d(K9.LOG_TAG, "Determine EAS protocol version");
+                HttpResponse resp = sendHttpClientOptions();
+                reclaimConnection(resp);
+                int code = resp.getStatusLine().getStatusCode();
+                Log.d(K9.LOG_TAG, "OPTIONS response: " + code);
+                if (code == HttpStatus.SC_OK) {
+                    Header header = resp.getFirstHeader("MS-ASProtocolCommands");
+                    Log.d(K9.LOG_TAG, header.getValue());
+                    header = resp.getFirstHeader("ms-asprotocolversions");
+                    try {
+                        setupProtocolVersion(this, header);
+                    } catch (MessagingException e) {
+                        // Since we've already validated, this can't really happen
+                        // But if it does, we'll rethrow this...
+                        throw new IOException();
+                    }
+                } else {
+                    Log.e(K9.LOG_TAG, "OPTIONS command failed; throwing IOException");
                     throw new IOException();
                 }
-            } else {
-                Log.e(K9.LOG_TAG, "OPTIONS command failed; throwing IOException");
-                throw new IOException();
             }
         }
     }
@@ -1086,7 +1188,7 @@ public class EasStore extends Store {
                     // Enable MimeSupport
                     s.data(Tags.SYNC_MIME_SUPPORT, "2");
                     // Set the truncation amount for all classes.
-                    if (getProtocolVersion() >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
+                    if (getProtocolVersionDouble() >= Eas.SUPPORTED_PROTOCOL_EX2007_DOUBLE) {
                         s.start(Tags.BASE_BODY_PREFERENCE)
                             // HTML for email; plain text for everything else.
                             .data(Tags.BASE_TYPE, Eas.BODY_PREFERENCE_MIME);
