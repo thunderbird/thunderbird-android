@@ -2357,11 +2357,17 @@ public class LocalStore extends Store implements Serializable {
                                      * so we copy the data into a cached attachment file.
                                      */
                                     InputStream in = attachment.getBody().getInputStream();
-                                    tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
-                                    FileOutputStream out = new FileOutputStream(tempAttachmentFile);
-                                    size = IOUtils.copy(in, out);
-                                    in.close();
-                                    out.close();
+                                    try {
+                                        tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
+                                        FileOutputStream out = new FileOutputStream(tempAttachmentFile);
+                                        try {
+                                            size = IOUtils.copy(in, out);
+                                        } finally {
+                                            out.close();
+                                        }
+                                    } finally {
+                                        try { in.close(); } catch (Throwable ignore) {}
+                                    }
                                 }
                             }
 
@@ -3357,8 +3363,11 @@ public class LocalStore extends Store implements Serializable {
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
             Base64OutputStream base64Out = new Base64OutputStream(out);
-            IOUtils.copy(in, base64Out);
-            base64Out.close();
+            try {
+                IOUtils.copy(in, base64Out);
+            } finally {
+                base64Out.close();
+            }
         }
 
         public Uri getContentUri() {

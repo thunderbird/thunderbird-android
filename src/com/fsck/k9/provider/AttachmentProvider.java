@@ -180,11 +180,14 @@ public class AttachmentProvider extends ContentProvider {
                         if (thumbnail != null) {
                             thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
                             FileOutputStream out = new FileOutputStream(file);
-                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                            out.close();
+                            try {
+                                thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            } finally {
+                                out.close();
+                            }
                         }
                     } finally {
-                        in.close();
+                        try { in.close(); } catch (Throwable ignore) {}
                     }
                 } catch (IOException ioe) {
                     return null;
