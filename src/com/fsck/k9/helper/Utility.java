@@ -500,14 +500,20 @@ public class Utility {
 
         try {
             FileInputStream in = new FileInputStream(from);
-            FileOutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while ((count = in.read(buffer)) > 0) {
-                out.write(buffer, 0, count);
+            try {
+                FileOutputStream out = new FileOutputStream(to);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int count = -1;
+                    while ((count = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, count);
+                    }
+                } finally {
+                    out.close();
+                }
+            } finally {
+                try { in.close(); } catch (Throwable ignore) {}
             }
-            out.close();
-            in.close();
             from.delete();
             return true;
         } catch (Exception e) {
