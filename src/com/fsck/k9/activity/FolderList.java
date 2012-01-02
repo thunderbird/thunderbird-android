@@ -83,8 +83,6 @@ public class FolderList extends K9ListActivity {
                 public void run() {
                     String dispString = mAdapter.mListener.formatHeader(FolderList.this,
                                         getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
-
-
                     setTitle(dispString);
                 }
             });
@@ -116,7 +114,6 @@ public class FolderList extends K9ListActivity {
             runOnUiThread(new Runnable() {
                 public void run() {
                     String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
-
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -127,12 +124,9 @@ public class FolderList extends K9ListActivity {
             runOnUiThread(new Runnable() {
                 public void run() {
                     FolderInfoHolder folderHolder = mAdapter.getFolder(folder);
-
-
                     if (folderHolder != null) {
                         folderHolder.loading = loading;
                     }
-
                 }
             });
         }
@@ -253,7 +247,10 @@ public class FolderList extends K9ListActivity {
             }
         });
         registerForContextMenu(mListView);
-
+        
+        TextView progressMsg = (TextView)findViewById(R.id.message);
+        progressMsg.setText(getString(R.string.folder_list_loading_folders));
+        
         mListView.setSaveEnabled(true);
 
         mInflater = getLayoutInflater();

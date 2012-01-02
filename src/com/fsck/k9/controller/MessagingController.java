@@ -139,7 +139,9 @@ public class MessagingController implements Runnable {
 
     private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
-    ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
+    private ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
+    
+    private Set<Account> mCurrentlyRefreshing = Collections.synchronizedSet(new HashSet<Account>());
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
@@ -448,81 +450,93 @@ public class MessagingController implements Runnable {
     }
 
     private void doRefreshRemote(final Account account, MessagingListener listener) {
-        put("doRefreshRemote", listener, new Runnable() {
-            @Override
-            public void run() {
-                List <? extends Folder > localFolders = null;
-                try {
-                    Store store = account.getRemoteStore();
+        // It is possible that multiple threads may try to refresh the same account at the same time.
+        // Currently, this can happen immediately after the account is setup initially, and is
+        // generally a bad thing. Let's use a hack to prevent this from happening.
+        if (!mCurrentlyRefreshing.contains(account)) {
+            mCurrentlyRefreshing.add(account);
+            put("doRefreshRemote", listener, new Runnable() {
+                @Override
+                public void run() {
+                    doRefreshRemoteSynchronous(account);
+                    mCurrentlyRefreshing.remove(account);
+                }
+            });
+        }
+    }
+    
+    private void doRefreshRemoteSynchronous(final Account account) {
+        List<? extends Folder> localFolders = null;
+        try {
+            Store remoteStore = account.getRemoteStore();
+            List<? extends Folder> remoteFolders = remoteStore.getPersonalNamespaces(true);
 
-                    List <? extends Folder > remoteFolders = store.getPersonalNamespaces(true);
+            LocalStore localStore = account.getLocalStore();
+            localFolders = localStore.getPersonalNamespaces(false);
+           
+            syncLocalFoldersWithRemoteFolders(localFolders, remoteFolders, account);
 
-                    LocalStore localStore = account.getLocalStore();
-                    HashSet<String> remoteFolderNames = new HashSet<String>();
-                    List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
+            // Get the updated local folder list.
+            localFolders = localStore.getPersonalNamespaces(false);
+            Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
-                    localFolders = localStore.getPersonalNamespaces(false);
-                    HashSet<String> localFolderNames = new HashSet<String>();
-                    for (Folder localFolder : localFolders) {
-                        localFolderNames.add(localFolder.getRemoteName());
-                    }
-                    for (Folder remoteFolder : remoteFolders) {
-                        LocalFolder localFolder = null;
-                        if (localFolderNames.contains(remoteFolder.getRemoteName()) == false) {
-                            localFolder = localStore.getFolder(remoteFolder.getRemoteName(),
-                                                               remoteFolder.getName());
-                            foldersToCreate.add(localFolder);
-                        } else {
-                            for (Folder folder : localFolders) {
-                                if (folder.getRemoteName().equals(remoteFolder.getRemoteName())) {
-                                    localFolder = (LocalFolder)folder;
-                                    break;
-                                }
-                            }
-                        }
-                        remoteFolderNames.add(remoteFolder.getRemoteName());
-
-                        if (remoteFolder instanceof EasFolder) {
-                            ((EasFolder)remoteFolder).setLocalFolder(localFolder, false);
-                        }
-                    }
-                    localStore.createFolders(foldersToCreate, account.getDisplayCount());
-
-                    localFolders = localStore.getPersonalNamespaces(false);
-
-                    /*
-                     * Clear out any folders that are no longer on the remote store.
-                     */
-                    for (Folder localFolder : localFolders) {
-                        if (!account.isSpecialFolder(localFolder.getRemoteName()) &&
-                        !remoteFolderNames.contains(localFolder.getRemoteName())) {
-                            localFolder.delete(false);
-                        }
-                    }
-
-                    localFolders = localStore.getPersonalNamespaces(false);
-                    Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
-
-                    for (MessagingListener l : getListeners()) {
-                        l.listFolders(account, folderArray);
-                    }
-                    for (MessagingListener l : getListeners()) {
-                        l.listFoldersFinished(account);
-                    }
-                } catch (Exception e) {
-                    for (MessagingListener l : getListeners()) {
-                        l.listFoldersFailed(account, "");
-                    }
-                    addErrorMessage(account, null, e);
-                } finally {
-                    if (localFolders != null) {
-                        for (Folder localFolder : localFolders) {
-                            closeFolder(localFolder);
-                        }
-                    }
+            for (MessagingListener l : getListeners()) {
+                l.listFolders(account, folderArray);
+            }
+            for (MessagingListener l : getListeners()) {
+                l.listFoldersFinished(account);
+            }
+        } catch (Exception e) {
+            for (MessagingListener l : getListeners()) {
+                l.listFoldersFailed(account, "");
+            }
+            addErrorMessage(account, null, e);
+        } finally {
+            if (localFolders != null) {
+                for (Folder localFolder : localFolders) {
+                    closeFolder(localFolder);
                 }
             }
-        });
+        }
+    }
+    
+    private void syncLocalFoldersWithRemoteFolders(List<? extends Folder> localFolders,
+            List<? extends Folder> remoteFolders, final Account account) throws MessagingException {
+        HashSet<String> remoteFolderNames = new HashSet<String>();
+        HashMap<String, Folder> localFolderNames = new HashMap<String, Folder>();
+        
+        List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
+        LocalStore localStore = account.getLocalStore();
+        
+        for (Folder localFolder : localFolders) {
+            localFolderNames.put(localFolder.getRemoteName(), localFolder);
+        }
+        
+        // Add any new folders in the remote store to the local store.
+        for (Folder remoteFolder : remoteFolders) {
+            LocalFolder localFolder = (LocalFolder)localFolderNames.get(remoteFolder.getRemoteName());
+            if (localFolder == null) {
+                localFolder = localStore.getFolder(remoteFolder.getRemoteName(),
+                                                   remoteFolder.getName());
+                foldersToCreate.add(localFolder);
+            }
+            remoteFolderNames.add(remoteFolder.getRemoteName());
+
+            if (remoteFolder instanceof EasFolder) {
+                ((EasFolder)remoteFolder).setLocalFolder(localFolder, false);
+            }
+        }
+        
+        localStore.createFolders(foldersToCreate, account.getDisplayCount());
+        localFolders = localStore.getPersonalNamespaces(false);
+
+        // Delete any folders in the local store that are no longer in the remote store.
+        for (Folder localFolder : localFolders) {
+            if (!account.isSpecialFolder(localFolder.getRemoteName()) &&
+                    !remoteFolderNames.contains(localFolder.getRemoteName())) {
+                localFolder.delete(false);
+            }
+        }
     }
 
     /**
@@ -562,10 +576,6 @@ public class MessagingController implements Runnable {
         new MessageRetrievalListener() {
             List<Message> pendingMessages = new ArrayList<Message>();
 
-
-            int totalDone = 0;
-
-
             @Override
             public void messageStarted(String message, int number, int ofTotal) {}
             @Override
@@ -573,7 +583,6 @@ public class MessagingController implements Runnable {
 
                 if (!isMessageSuppressed(account, folder, message)) {
                     pendingMessages.add(message);
-                    totalDone++;
                     if (pendingMessages.size() > 10) {
                         addPendingMessages();
                     }
