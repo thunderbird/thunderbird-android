@@ -253,9 +253,10 @@ public class EasStore extends Store {
     private Double mProtocolVersionDouble = null;
     private String mDeviceId = null;
     private Object mInitializationLock = new Object();
-    private final String mDeviceType = "Android";
+    private final String mDeviceType = "K9Mail";
 
     private String mHost;
+    private int mPort;
     private String mUsername;
     private String mPassword;
     private short mConnectionSecurity;
@@ -277,6 +278,7 @@ public class EasStore extends Store {
         }
         
         mHost = settings.host;
+        mPort = settings.port;
         mUsername = settings.username;
         mPassword = settings.password;
 
@@ -667,7 +669,7 @@ public class EasStore extends Store {
         boolean mSsl = true;
         boolean mTrustSsl = false;
         String us = (mSsl ? (mTrustSsl ? "httpts" : "https") : "http") + "://" + mHost +
-                    "/Microsoft-Server-ActiveSync";
+                    ":" + Integer.toString(mPort) + "/Microsoft-Server-ActiveSync";
         if (cmd != null) {
             us += "?Cmd=" + cmd + mCmdString;
         }
