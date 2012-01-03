@@ -175,6 +175,10 @@ public abstract class Store {
     public boolean isExpungeCapable() {
         return false;
     }
+    
+    public boolean keepPushStateInSync() {
+        return false;
+    }
 
     public void sendMessages(Message[] messages) throws MessagingException {
     }

@@ -1419,9 +1419,11 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
+        @Override
         public String getPushState() {
             return mPushState;
         }
+        
         @Override
         public FolderClass getDisplayClass() {
             return mDisplayClass;

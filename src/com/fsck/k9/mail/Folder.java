@@ -223,4 +223,8 @@ public abstract class Folder {
     public boolean isSyncMode() {
         return false;
     }
+    
+    public String getPushState() {
+        return null;
+    }
 }
