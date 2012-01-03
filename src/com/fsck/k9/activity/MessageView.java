@@ -305,16 +305,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         public void fetchingAttachment() {
             showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
         }
-
-
-        public void setHeaders(final Message message, final Account account) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mMessageView.setHeaders(message, account);
-                }
-            });
-        }
-
     }
 
     public static void actionView(Context context, MessageReference messRef,
