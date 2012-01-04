@@ -15,7 +15,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.view.ToggleScrollView;
 
 
@@ -70,21 +69,14 @@ public class K9Activity extends Activity {
         setupFormats();
     }
 
-    private java.text.DateFormat mDateFormat;
     private java.text.DateFormat mTimeFormat;
 
     private void setupFormats() {
-
-        mDateFormat = DateFormatter.getDateFormat(this);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
     }
 
     public java.text.DateFormat getTimeFormat() {
         return mTimeFormat;
-    }
-
-    public java.text.DateFormat getDateFormat() {
-        return mDateFormat;
     }
 
     /**
