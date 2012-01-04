@@ -76,10 +76,10 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_BATCH_BUTTONS_MARK_READ = "batch_buttons_mark_read";
     private static final String PREFERENCE_BATCH_BUTTONS_DELETE = "batch_buttons_delete";
-	private static final String PREFERENCE_BATCH_BUTTONS_ARCHIVE = "batch_buttons_archive";
-	private static final String PREFERENCE_BATCH_BUTTONS_MOVE = "batch_buttons_move";
-	private static final String PREFERENCE_BATCH_BUTTONS_FLAG = "batch_buttons_flag";
-	private static final String PREFERENCE_BATCH_BUTTONS_UNSELECT = "batch_buttons_unselect";
+    private static final String PREFERENCE_BATCH_BUTTONS_ARCHIVE = "batch_buttons_archive";
+    private static final String PREFERENCE_BATCH_BUTTONS_MOVE = "batch_buttons_move";
+    private static final String PREFERENCE_BATCH_BUTTONS_FLAG = "batch_buttons_flag";
+    private static final String PREFERENCE_BATCH_BUTTONS_UNSELECT = "batch_buttons_unselect";
 
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
