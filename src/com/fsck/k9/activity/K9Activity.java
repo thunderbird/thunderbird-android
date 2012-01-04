@@ -180,7 +180,8 @@ public class K9Activity extends Activity {
                 final boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
                 if(K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Old swipe algorithm: movedAcross=" + movedAcross + " steadyHand=" + steadyHand + " result=" + (movedAcross && steadyHand));
-                    Log.d(K9.LOG_TAG, String.format("New swipe algorithm: deltaX=%.2f deltaY=%.2f velocity=%.2f (min=%d)", deltaX, deltaY, velocityX, minVelocity));
+                    final int oldMin = (int)Math.abs(deltaY * 4);
+                    Log.d(K9.LOG_TAG, String.format("New swipe algorithm: deltaX=%.2f deltaY=%.2f velocity=%.2f (min=%d, oldMin=%d)", deltaX, deltaY, velocityX, minVelocity, oldMin));
                 }
 
                 try {
