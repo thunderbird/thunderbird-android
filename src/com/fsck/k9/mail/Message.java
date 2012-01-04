@@ -224,4 +224,32 @@ public abstract class Message implements Part, Body {
         return 0;
     }
 
+    /**
+     * Copy the contents of this object into another {@code Message} object.
+     *
+     * @param destination
+     *         The {@code Message} object to receive the contents of this instance.
+     */
+    protected void copy(Message destination) {
+        destination.mUid = mUid;
+        destination.mInternalDate = mInternalDate;
+        destination.mFolder = mFolder;
+        destination.mReference = mReference;
+
+        // mFlags contents can change during the object lifetime, so copy the Set
+        destination.mFlags = new HashSet<Flag>(mFlags);
+    }
+
+    /**
+     * Creates a new {@code Message} object with the same content as this object.
+     *
+     * <p>
+     * <strong>Note:</strong>
+     * This method was introduced as a hack to prevent {@code ConcurrentModificationException}s. It
+     * shouldn't be used unless absolutely necessary. See the comment in
+     * {@link com.fsck.k9.activity.MessageView.Listener#loadMessageForViewHeadersAvailable(com.fsck.k9.Account, String, String, Message)}
+     * for more information.
+     * </p>
+     */
+    public abstract Message clone();
 }

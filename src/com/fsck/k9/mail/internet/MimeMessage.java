@@ -553,4 +553,38 @@ public class MimeMessage extends Message {
             throw new UnsupportedOperationException("Not supported");
         }
     }
+
+    /**
+     * Copy the contents of this object into another {@code MimeMessage} object.
+     *
+     * @param message
+     *         The {@code MimeMessage} object to receive the contents of this instance.
+     */
+    protected void copy(MimeMessage message) {
+        super.copy(message);
+
+        message.mHeader = mHeader.clone();
+
+        message.mBody = mBody;
+        message.mMessageId = mMessageId;
+        message.mSentDate = mSentDate;
+        message.mDateFormat = mDateFormat;
+        message.mSize = mSize;
+
+        // These arrays are not supposed to be modified, so it's okay to reuse the references
+        message.mFrom = mFrom;
+        message.mTo = mTo;
+        message.mCc = mCc;
+        message.mBcc = mBcc;
+        message.mReplyTo = mReplyTo;
+        message.mReferences = mReferences;
+        message.mInReplyTo = mInReplyTo;
+    }
+
+    @Override
+    public MimeMessage clone() {
+        MimeMessage message = new MimeMessage();
+        copy(message);
+        return message;
+    }
 }

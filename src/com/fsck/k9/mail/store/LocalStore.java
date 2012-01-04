@@ -3310,6 +3310,25 @@ public class LocalStore extends Store implements Serializable {
                 loadHeaders();
             return super.getHeaderNames();
         }
+
+        @Override
+        public LocalMessage clone() {
+            LocalMessage message = new LocalMessage();
+            super.copy(message);
+
+            message.mId = mId;
+            message.mAttachmentCount = mAttachmentCount;
+            message.mSubject = mSubject;
+            message.mPreview = mPreview;
+            message.mToMeCalculated = mToMeCalculated;
+            message.mCcMeCalculated = mCcMeCalculated;
+            message.mToMe = mToMe;
+            message.mCcMe = mCcMe;
+            message.mHeadersLoaded = mHeadersLoaded;
+            message.mMessageDirty = mMessageDirty;
+
+            return message;
+        }
     }
 
     public static class LocalAttachmentBodyPart extends MimeBodyPart {
