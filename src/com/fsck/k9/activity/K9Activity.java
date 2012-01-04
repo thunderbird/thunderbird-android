@@ -149,7 +149,6 @@ public class K9Activity extends Activity {
             this.gesturesEnabled = gesturesEnabled;
         }
 
-        private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
         private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
@@ -176,20 +175,21 @@ public class K9Activity extends Activity {
                 // Calculate the minimum distance required for this to count as a swipe.
                 // Convert the constant dips to pixels.
                 final float mGestureScale = getResources().getDisplayMetrics().density;
-                final int minDistance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
                 final int minVelocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
                 final int maxOffPath = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
                 
                 // Calculate how much was actually swiped.
                 final float deltaX = e2.getX() - e1.getX();
                 final float deltaY = e2.getY() - e1.getY();
+                
+                // Calculate the minimum distance required for this to be considered a swipe.
+                final int minDistance = (int)Math.abs(deltaY * 4);
 
-                final boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-                final boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
                 if(K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Old swipe algorithm: movedAcross=" + movedAcross + " steadyHand=" + steadyHand + " result=" + (movedAcross && steadyHand));
-                    final int oldMin = (int)Math.abs(deltaY * 4);
-                    Log.d(K9.LOG_TAG, String.format("New swipe algorithm: deltaX=%.2f deltaY=%.2f velocity=%.2f (min=%d, oldMin=%d)", deltaX, deltaY, velocityX, minVelocity, oldMin));
+                    final boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
+                    final boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
+                    Log.d(K9.LOG_TAG, String.format("Old swipe algorithm: movedAcross=%s steadyHand=%s result=%s", movedAcross, steadyHand, movedAcross && steadyHand));
+                    Log.d(K9.LOG_TAG, String.format("New swipe algorithm: deltaX=%.2f deltaY=%.2f minDistance=%d velocity=%.2f (min=%d)", deltaX, deltaY, minDistance, velocityX, minVelocity));
                 }
 
                 try {
@@ -204,7 +204,7 @@ public class K9Activity extends Activity {
                         return false;
                     }
                     // right to left swipe
-                    if (deltaX < minDistance) {
+                    if (deltaX < (minDistance * -1)) {
                         onSwipeRightToLeft(e1, e2);
                         if(K9.DEBUG)
                             Log.d(K9.LOG_TAG, "New swipe algorithm: Right to Left swipe OK.");
