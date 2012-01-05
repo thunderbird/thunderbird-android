@@ -46,6 +46,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -310,7 +311,7 @@ public class EasStore extends Store {
         // Set the default sync key if it has not yet been set.
         if (TextUtils.isEmpty(key)) {
             key = INITIAL_SYNC_KEY;
-            mAccount.setSyncKey(key);
+            setStoreSyncKey(key);
         }
 
         return key;
@@ -318,6 +319,7 @@ public class EasStore extends Store {
 
     public void setStoreSyncKey(String syncKey) {
         mAccount.setSyncKey(syncKey);
+        mAccount.saveSyncKey(Preferences.getPreferences(K9.app.getApplicationContext()));
     }
 
     @Override
@@ -814,23 +816,25 @@ public class EasStore extends Store {
             switch (type) {
             case FolderSyncParser.INBOX_TYPE:
                 String inboxFolderName = folder.getRemoteName();
-                this.mAccount.setAutoExpandFolderName(inboxFolderName);
-                this.mAccount.setInboxFolderName(inboxFolderName);
+                mAccount.setAutoExpandFolderName(inboxFolderName);
+                mAccount.setInboxFolderName(inboxFolderName);
                 break;
             case FolderSyncParser.DRAFTS_TYPE:
-                this.mAccount.setDraftsFolderName(folder.getRemoteName());
+                mAccount.setDraftsFolderName(folder.getRemoteName());
                 break;
             case FolderSyncParser.DELETED_TYPE:
-                this.mAccount.setTrashFolderName(folder.getRemoteName());
+                mAccount.setTrashFolderName(folder.getRemoteName());
                 break;
             case FolderSyncParser.SENT_TYPE:
-                this.mAccount.setSentFolderName(folder.getRemoteName());
+                mAccount.setSentFolderName(folder.getRemoteName());
                 break;
             case FolderSyncParser.OUTBOX_TYPE:
-                // outbox folder is not synced
+                // Outbox folder is not synced.
                 break;
             }
         }
+        
+        mAccount.saveFolderNames(Preferences.getPreferences(K9.app.getApplicationContext()));
 
         return folderList;
     }
@@ -842,6 +846,7 @@ public class EasStore extends Store {
         if (pp != null) {
             String policyKey = acknowledgeProvision(pp.getPolicyKey(), PROVISION_STATUS_OK);
             mAccount.setSecurityKey(policyKey);
+            mAccount.saveSyncKey(Preferences.getPreferences(K9.app.getApplicationContext()));
             return true;
         } else {
             return false;

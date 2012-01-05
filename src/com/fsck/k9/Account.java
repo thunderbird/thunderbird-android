@@ -676,7 +676,36 @@ public class Account implements BaseAccount {
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
-
+    }
+    
+    public synchronized void saveFolderNames(Preferences preferences) {
+        if (preferences.getPreferences().getString("accountUuids", "").contains(mUuid)) {
+            SharedPreferences.Editor editor = preferences.getPreferences().edit();
+            editor.putString(mUuid + ".inboxFolderName", mInboxFolderName);
+            editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
+            editor.putString(mUuid + ".sentFolderName", mSentFolderName);
+            editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
+            editor.putString(mUuid + ".archiveFolderName", mArchiveFolderName);
+            editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
+            editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
+            editor.commit();
+        }
+    }
+    
+    public synchronized void saveSyncKey(Preferences preferences) {
+        if (preferences.getPreferences().getString("accountUuids", "").contains(mUuid)) {
+            SharedPreferences.Editor editor = preferences.getPreferences().edit();
+            editor.putString(mUuid + ".syncKey", mSyncKey);
+            editor.commit();
+        }
+    }
+    
+    public synchronized void saveSecurityKey(Preferences preferences) {
+        if (preferences.getPreferences().getString("accountUuids", "").contains(mUuid)) {
+            SharedPreferences.Editor editor = preferences.getPreferences().edit();
+            editor.putString(mUuid + ".securityKey", mSecurityKey);
+            editor.commit();
+        }
     }
 
     public void resetVisibleLimits() {
