@@ -846,7 +846,7 @@ public class EasStore extends Store {
         if (pp != null) {
             String policyKey = acknowledgeProvision(pp.getPolicyKey(), PROVISION_STATUS_OK);
             mAccount.setSecurityKey(policyKey);
-            mAccount.saveSyncKey(Preferences.getPreferences(K9.app.getApplicationContext()));
+            mAccount.saveSecurityKey(Preferences.getPreferences(K9.app.getApplicationContext()));
             return true;
         } else {
             return false;
