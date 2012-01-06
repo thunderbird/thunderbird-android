@@ -186,6 +186,7 @@ public class Utility {
         }
     }
 
+    private static final long MILISECONDS_IN_18_HOURS = 18 * 60 * 60 * 1000;
     /**
      * Returns true if the specified date is within 18 hours of "now". Returns false otherwise.
      * @param date
@@ -193,7 +194,7 @@ public class Utility {
      */
     public static boolean isDateToday(Date date) {
         Date now = new Date();
-        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
+        if (now.getTime() - MILISECONDS_IN_18_HOURS > date.getTime() || now.getTime() + MILISECONDS_IN_18_HOURS < date.getTime()) {
             return false;
         } else {
             return true;
