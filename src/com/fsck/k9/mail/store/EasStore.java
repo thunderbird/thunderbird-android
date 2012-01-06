@@ -88,7 +88,7 @@ public class EasStore extends Store {
 
     // This key is sent the first time we sync the folder hierarchy, and also the first time
     // we sync the items any "collection" (emails in a folder).
-    private static final String INITIAL_SYNC_KEY = "0";
+    public static final String INITIAL_SYNC_KEY = "0";
 
     private static final String PING_COMMAND = "Ping";
     private static final String PROVISION_COMMAND = "Provision";
@@ -545,11 +545,8 @@ public class EasStore extends Store {
                 try {
                     init();
                 }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                catch (MessagingException e) {
-                    e.printStackTrace();
+                catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Exception encountered while initializing EasStore", e);
                 }
             }
             return mProtocolVersionDouble;
@@ -585,7 +582,7 @@ public class EasStore extends Store {
                 }
             }
             catch (MessagingException e) {
-                e.printStackTrace();
+                Log.e(K9.LOG_TAG, "Exception encountered while provisioning in EasStore", e);
             }
         }
         return response;
@@ -779,13 +776,9 @@ public class EasStore extends Store {
                     }
                 } else if (isProvisionError(code)) {
                     // If the sync error is a provisioning failure (perhaps the policies changed),
-                    // let's try the provisioning procedure
-                    // Provisioning must only be attempted for the account mailbox - trying to
-                    // provision any other mailbox may result in race conditions and the creation
-                    // of multiple policy keys.
+                    // let's try the provisioning procedure.
                     if (!tryProvision()) {
-                        // Set the appropriate failure status
-                        throw new RuntimeException();
+                        throw new MessagingException("Unable to provision while tring to fetch the folder list");
                     } else {
                         // If we succeeded, try again...
                         return getInitialFolderList();
@@ -829,11 +822,12 @@ public class EasStore extends Store {
                 mAccount.setSentFolderName(folder.getRemoteName());
                 break;
             case FolderSyncParser.OUTBOX_TYPE:
-                // Outbox folder is not synced.
+                // Outbox folder is not sync'd.
                 break;
             }
         }
         
+        // We updated the account setting above, now write the settings to the DB.
         mAccount.saveFolderNames(Preferences.getPreferences(K9.app.getApplicationContext()));
 
         return folderList;
@@ -878,7 +872,7 @@ public class EasStore extends Store {
                 }
             }
         } catch (MessagingException e) {
-            e.printStackTrace();
+            Log.e(K9.LOG_TAG, "Exception encountered while restoring folders from the local store", e);
         }
     }
 
@@ -888,7 +882,7 @@ public class EasStore extends Store {
             try {
                 getInitialFolderList();
             } catch (MessagingException e) {
-                e.printStackTrace();
+                Log.e(K9.LOG_TAG, "Exception encountered while fetching the initial folder list", e);
             }
         }
         synchronized (mFolderList) {
@@ -1236,6 +1230,12 @@ public class EasStore extends Store {
                             EasEmailSyncParser parser = new EasEmailSyncParser(is, this, mAccount);
                             moreAvailable = parser.parse();
                             easMessages.addAll(parser.getMessages());
+                            
+                            // If we got a new sync key from the server, make sure to update our member. 
+                            String newKey = parser.getNewSyncKey();
+                            if (newKey != null) {
+                                setSyncKey(newKey);
+                            }
                         } else {
                             Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
                         }
@@ -1669,7 +1669,13 @@ public class EasStore extends Store {
                         InputStream is = resp.getEntity().getContent();
                         if (is != null) {
                             EasEmailSyncParser syncParser = new EasEmailSyncParser(is, folder, folder.getAccount());
-                            parseResponse(syncParser, is);
+                            syncParser.parse();
+
+                            // If we got a new sync key from the server, make sure to update our member. 
+                            String newKey = syncParser.getNewSyncKey();
+                            if (newKey != null) {
+                                folder.setSyncKey(newKey);
+                            }
                         } else {
                             Log.d(K9.LOG_TAG, "Empty input stream in sync command response");
                         }
@@ -1705,9 +1711,5 @@ public class EasStore extends Store {
         }
 
         abstract void prepareCommand(Serializer s) throws IOException;
-
-        void parseResponse(EasEmailSyncParser syncParser, InputStream is) throws IOException, MessagingException {
-            syncParser.parse();
-        }
     }
 }
