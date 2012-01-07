@@ -784,7 +784,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
-        mAccount.save(Preferences.getPreferences(this));
        
 	    if (mIsPushCapable) {
 	        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
@@ -802,6 +801,7 @@ public class AccountSettings extends K9PreferenceActivity {
 	        }
 	    }
         // TODO: refresh folder list here
+        mAccount.save(Preferences.getPreferences(this));
     }
 
     @Override
