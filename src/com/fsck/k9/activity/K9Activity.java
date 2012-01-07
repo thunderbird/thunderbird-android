@@ -185,36 +185,19 @@ public class K9Activity extends Activity {
                 // Calculate the minimum distance required for this to be considered a swipe.
                 final int minDistance = (int)Math.abs(deltaY * 4);
 
-                if(K9.DEBUG) {
-                    final boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-                    final boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
-                    Log.d(K9.LOG_TAG, String.format("Old swipe algorithm: movedAcross=%s steadyHand=%s result=%s", movedAcross, steadyHand, movedAcross && steadyHand));
-                    Log.d(K9.LOG_TAG, String.format("New swipe algorithm: deltaX=%.2f deltaY=%.2f minDistance=%d velocity=%.2f (min=%d)", deltaX, deltaY, minDistance, velocityX, minVelocity));
-                }
-
                 try {
                     if (Math.abs(deltaY) > maxOffPath) {
-                        if(K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "New swipe algorithm: Swipe too far off horizontal path.");
                         return false;
                     }
                     if(Math.abs(velocityX) < minVelocity) {
-                        if(K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "New swipe algorithm: Swipe too slow.");
                         return false;
                     }
                     // right to left swipe
                     if (deltaX < (minDistance * -1)) {
                         onSwipeRightToLeft(e1, e2);
-                        if(K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "New swipe algorithm: Right to Left swipe OK.");
                     } else if (deltaX > minDistance) {
                         onSwipeLeftToRight(e1, e2);
-                        if(K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "New swipe algorithm: Left to Right swipe OK.");
                     } else {
-                        if(K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "New swipe algorithm: Swipe did not meet minimum distance requirements.");
                         return false;
                     }
                 } catch (Exception e) {
