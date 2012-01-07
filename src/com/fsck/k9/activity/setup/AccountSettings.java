@@ -817,9 +817,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onPause() {
         saveSettings();
-        super.onBackPressed();
+        super.onPause();
     }
 
     private void onCompositionSettings() {
