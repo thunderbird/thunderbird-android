@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -148,7 +149,6 @@ public class K9Activity extends Activity {
             this.gesturesEnabled = gesturesEnabled;
         }
 
-        private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
         private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
@@ -172,21 +172,33 @@ public class K9Activity extends Activity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             // Do fling-detection if gestures are force-enabled or we have system-wide gestures enabled.
             if (gesturesEnabled || K9.gesturesEnabled()) {
-                // Convert the dips to pixels
+                // Calculate the minimum distance required for this to count as a swipe.
+                // Convert the constant dips to pixels.
                 final float mGestureScale = getResources().getDisplayMetrics().density;
-                int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
-                int min_velocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
-                int max_off_path = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
-
+                final int minVelocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
+                final int maxOffPath = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
+                
+                // Calculate how much was actually swiped.
+                final float deltaX = e2.getX() - e1.getX();
+                final float deltaY = e2.getY() - e1.getY();
+                
+                // Calculate the minimum distance required for this to be considered a swipe.
+                final int minDistance = (int)Math.abs(deltaY * 4);
 
                 try {
-                    if (Math.abs(e1.getY() - e2.getY()) > max_off_path)
+                    if (Math.abs(deltaY) > maxOffPath) {
                         return false;
+                    }
+                    if(Math.abs(velocityX) < minVelocity) {
+                        return false;
+                    }
                     // right to left swipe
-                    if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
+                    if (deltaX < (minDistance * -1)) {
                         onSwipeRightToLeft(e1, e2);
-                    } else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
+                    } else if (deltaX > minDistance) {
                         onSwipeLeftToRight(e1, e2);
+                    } else {
+                        return false;
                     }
                 } catch (Exception e) {
                     // nothing
