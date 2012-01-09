@@ -19,12 +19,19 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.ImapStore;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.Pop3Store;
+import com.fsck.k9.mail.store.WebDavStore;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,7 +113,7 @@ public class ChooseFolder extends K9ListActivity {
 
 
         mMode = mAccount.getFolderTargetMode();
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
+        onRefresh(false);
 
 
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -204,13 +211,16 @@ public class ChooseFolder extends K9ListActivity {
 
         case R.id.list_folders: {
             onRefresh();
-
             return true;
         }
         case R.id.filter_folders: {
-        	onEnterFilter();
-        }
+            onEnterFilter();
             return true;
+        }
+        case R.id.create_folder: {
+            onCreateFolder();
+            return true;
+        }
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -219,7 +229,13 @@ public class ChooseFolder extends K9ListActivity {
 
     private void onRefresh() {
 
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, true, mListener);
+        onRefresh(true);
+
+    }
+
+    private void onRefresh(final boolean forceRemote) {
+
+        MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mListener);
 
     }
 
@@ -268,6 +284,51 @@ public class ChooseFolder extends K9ListActivity {
 
     }
 
+    /*
+     Show a dialog to create a new folder on the remote Store.
+     Currently only IMAP is supported.
+     Exactly the same as activity.FolderList.onCreateFolder().
+     */
+    private void onCreateFolder() {
+        final EditText input = new EditText(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.create_folder_action);
+        dialog.setView(input);
+        dialog.setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String folderName = input.getText().toString().trim();
+                try {
+                    Store store = mAccount.getRemoteStore();
+                    if (store instanceof ImapStore) {
+                        boolean result = ((ImapStore)store).createFolder(folderName);
+                        String toastText = "Creation of folder \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(result);
+                        onRefresh(false);	// NEW
+                    } else if (store instanceof WebDavStore) {
+                        String toastText = "Creating WebDav Folders not currently implemented.";
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                    } else if (store instanceof Pop3Store) {
+                        String toastText = "Creating Local Folders not currently implemented.";
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
+                    }
+                } catch (com.fsck.k9.mail.MessagingException me) {
+                    Log.e(K9.LOG_TAG, "MessagingException trying to create new folder \"" +
+                            folderName + "\": " + me);
+                }
+            }
+        });
+        dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                /* User clicked cancel so do some stuff */
+            }
+        });
+        dialog.show();
+    }
+
     private void setDisplayMode(FolderMode aMode) {
         mMode = aMode;
         // invalidate the current filter as it is working on an inval
@@ -275,8 +336,7 @@ public class ChooseFolder extends K9ListActivity {
             myFilter.invalidate();
         }
         //re-populate the list
-        MessagingController.getInstance(getApplication()).listFolders(mAccount,
-                false, mListener);
+        onRefresh(false);
     }
 
     private MessagingListener mListener = new MessagingListener() {

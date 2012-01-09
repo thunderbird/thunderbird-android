@@ -36,6 +36,10 @@
             android:title="@string/filter_folders_action"
             android:icon="@drawable/ic_menu_search"
          />
+           <item
+            android:id="@+id/create_folder"
+            android:title="@string/create_folder_action"
+         />
         
     <!--     </menu>
     </item>-->

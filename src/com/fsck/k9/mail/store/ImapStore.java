@@ -787,6 +787,11 @@ public class ImapStore extends Store {
         }
     }
 
+    public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
+        ImapFolder folder = new ImapFolder(this, name);
+        return folder.create(null);
+    }
+
     @Override
     public boolean isMoveCapable() {
         return true;
