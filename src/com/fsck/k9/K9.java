@@ -509,7 +509,7 @@ public class K9 extends Application {
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
-        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
         mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
         mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
         mManageBack = sprefs.getBoolean("manageBack", false);
@@ -522,7 +522,7 @@ public class K9 extends Application {
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", false);
+        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
         mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");

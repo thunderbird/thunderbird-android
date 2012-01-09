@@ -144,13 +144,13 @@ public class FolderSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onPause() {
         try {
             saveSettings();
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Saving folder settings failed", e);
         }
 
-        super.onBackPressed();
+        super.onPause();
     }
 }

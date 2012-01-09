@@ -307,16 +307,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         public void fetchingAttachment() {
             showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
         }
-
-
-        public void setHeaders(final Message message, final Account account) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mMessageView.setHeaders(message, account);
-                }
-            });
-        }
-
     }
 
     public static void actionView(Context context, MessageReference messRef,
@@ -1125,12 +1115,28 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return;
             }
             MessageView.this.mMessage = message;
+
+            /*
+             * Clone the message object because the original could be modified by
+             * MessagingController later. This could lead to a ConcurrentModificationException
+             * when that same object is accessed by the UI thread (below).
+             *
+             * See issue 3953
+             *
+             * This is just an ugly hack to get rid of the most pressing problem. A proper way to
+             * fix this is to make Message thread-safe. Or, even better, rewriting the UI code to
+             * access messages via a ContentProvider.
+             *
+             */
+            final Message clonedMessage = message.clone();
+
             runOnUiThread(new Runnable() {
                 public void run() {
-                    if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                    if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
+                            !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                         mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
                     }
-                    mMessageView.setHeaders(message, account);
+                    mMessageView.setHeaders(clonedMessage, account);
                     mMessageView.setOnFlagListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -1092,8 +1092,11 @@ public class MimeUtility {
 
         BinaryTempFileBody tempBody = new BinaryTempFileBody();
         OutputStream out = tempBody.getOutputStream();
-        IOUtils.copy(in, out);
-        out.close();
+        try {
+            IOUtils.copy(in, out);
+        } finally {
+            out.close();
+        }
         return tempBody;
     }
 

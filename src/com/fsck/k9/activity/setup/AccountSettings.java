@@ -784,24 +784,24 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
-        mAccount.save(Preferences.getPreferences(this));
-
-        if (mIsPushCapable) {
-            boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
-            if (mAccount.getFolderPushMode() != FolderMode.NONE) {
-                needsPushRestart |= displayModeChanged;
-                needsPushRestart |= mIncomingChanged;
-            }
-
-            if (needsRefresh && needsPushRestart) {
-                MailService.actionReset(this, null);
-            } else if (needsRefresh) {
-                MailService.actionReschedulePoll(this, null);
-            } else if (needsPushRestart) {
-                MailService.actionRestartPushers(this, null);
-            }
-        }
+       
+	    if (mIsPushCapable) {
+	        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+	        if (mAccount.getFolderPushMode() != FolderMode.NONE) {
+	            needsPushRestart |= displayModeChanged;
+	            needsPushRestart |= mIncomingChanged;
+	        }
+	
+	        if (needsRefresh && needsPushRestart) {
+	            MailService.actionReset(this, null);
+	        } else if (needsRefresh) {
+	            MailService.actionReschedulePoll(this, null);
+	        } else if (needsPushRestart) {
+	            MailService.actionRestartPushers(this, null);
+	        }
+	    }
         // TODO: refresh folder list here
+        mAccount.save(Preferences.getPreferences(this));
     }
 
     @Override
@@ -817,9 +817,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onPause() {
         saveSettings();
-        super.onBackPressed();
+        super.onPause();
     }
 
     private void onCompositionSettings() {

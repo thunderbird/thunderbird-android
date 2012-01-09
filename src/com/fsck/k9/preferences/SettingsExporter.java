@@ -171,7 +171,9 @@ public class SettingsExporter {
 
             String key = versionedSetting.getKey();
             String valueString = (String) prefs.get(key);
-            SettingsDescription setting = versionedSetting.getValue().lastEntry().getValue();
+            TreeMap<Integer, SettingsDescription> versions = versionedSetting.getValue();
+            Integer highestVersion = versions.lastKey();
+            SettingsDescription setting = versions.get(highestVersion);
             if (setting == null) {
                 // Setting was removed.
                 continue;
@@ -323,7 +325,8 @@ public class SettingsExporter {
                 AccountSettings.SETTINGS.get(keyPart);
 
             if (versionedSetting != null) {
-                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+                Integer highestVersion = versionedSetting.lastKey();
+                SettingsDescription setting = versionedSetting.get(highestVersion);
 
                 if (setting != null) {
                     // Only export account settings that can be found in AccountSettings.SETTINGS
@@ -417,7 +420,8 @@ public class SettingsExporter {
                 IdentitySettings.SETTINGS.get(identityKey);
 
             if (versionedSetting != null) {
-                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+                Integer highestVersion = versionedSetting.lastKey();
+                SettingsDescription setting = versionedSetting.get(highestVersion);
 
                 if (setting != null) {
                     // Only write settings that have an entry in IdentitySettings.SETTINGS
@@ -468,7 +472,8 @@ public class SettingsExporter {
                 FolderSettings.SETTINGS.get(folderKey);
 
             if (versionedSetting != null) {
-                SettingsDescription setting = versionedSetting.lastEntry().getValue();
+                Integer highestVersion = versionedSetting.lastKey();
+                SettingsDescription setting = versionedSetting.get(highestVersion);
 
                 if (setting != null) {
                     // Only write settings that have an entry in FolderSettings.SETTINGS

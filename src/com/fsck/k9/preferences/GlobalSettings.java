@@ -114,7 +114,8 @@ public class GlobalSettings {
                 new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
             ));
         s.put("gesturesEnabled", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(true)),
+                new V(4, new BooleanSetting(false))
             ));
         s.put("hideSpecialAccounts", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -189,7 +190,8 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("zoomControlsEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(4, new BooleanSetting(true))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -34,7 +35,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
 
     public static Map<String, Object> validate(int version, Map<String,
             TreeMap<Integer, SettingsDescription>> settings,
@@ -44,15 +45,25 @@ public class Settings {
         for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
                 settings.entrySet()) {
 
-            Entry<Integer, SettingsDescription> setting =
-                versionedSetting.getValue().floorEntry(version);
+            // Get the setting description with the highest version lower than or equal to the
+            // supplied content version.
+            TreeMap<Integer, SettingsDescription> versions = versionedSetting.getValue();
+            SortedMap<Integer, SettingsDescription> headMap = versions.headMap(version + 1);
 
-            if (setting == null) {
+            // Skip this setting if it was introduced after 'version'
+            if (headMap.size() == 0) {
+                continue;
+            }
+
+            Integer settingVersion = headMap.lastKey();
+            SettingsDescription desc = versions.get(settingVersion);
+
+            // Skip this setting if it is no longer used in 'version'
+            if (desc == null) {
                 continue;
             }
 
             String key = versionedSetting.getKey();
-            SettingsDescription desc = setting.getValue();
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
@@ -127,7 +138,7 @@ public class Settings {
                     // Check if it was already added to upgradedSettings by the SettingsUpgrader
                     if (!upgradedSettings.containsKey(settingName)) {
                         // Insert default value to upgradedSettings
-                        SettingsDescription setting = versionedSettings.firstEntry().getValue();
+                        SettingsDescription setting = versionedSettings.get(toVersion);
                         Object defaultValue = setting.getDefaultValue();
                         upgradedSettings.put(settingName, defaultValue);
 
@@ -140,8 +151,9 @@ public class Settings {
                 }
 
                 // Handle removed settings
-                Entry<Integer, SettingsDescription> lastEntry = versionedSettings.lastEntry();
-                if (lastEntry.getKey().intValue() == toVersion && lastEntry.getValue() == null) {
+                Integer highestVersion = versionedSettings.lastKey();
+                if (highestVersion.intValue() == toVersion &&
+                        versionedSettings.get(highestVersion) == null) {
                     upgradedSettings.remove(settingName);
                     if (deletedSettings == null) {
                         deletedSettings = new HashSet<String>();
@@ -179,8 +191,10 @@ public class Settings {
             String settingName = setting.getKey();
             Object internalValue = setting.getValue();
 
-            SettingsDescription settingDesc =
-                settingDescriptions.get(settingName).lastEntry().getValue();
+            TreeMap<Integer, SettingsDescription> versionedSetting =
+                settingDescriptions.get(settingName);
+            Integer highestVersion = versionedSetting.lastKey();
+            SettingsDescription settingDesc = versionedSetting.get(highestVersion);
 
             if (settingDesc != null) {
                 String stringValue = settingDesc.toString(internalValue);

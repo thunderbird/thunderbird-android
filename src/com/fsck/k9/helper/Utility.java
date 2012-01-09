@@ -186,6 +186,7 @@ public class Utility {
         }
     }
 
+    private static final long MILISECONDS_IN_18_HOURS = 18 * 60 * 60 * 1000;
     /**
      * Returns true if the specified date is within 18 hours of "now". Returns false otherwise.
      * @param date
@@ -193,7 +194,7 @@ public class Utility {
      */
     public static boolean isDateToday(Date date) {
         Date now = new Date();
-        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
+        if (now.getTime() - MILISECONDS_IN_18_HOURS > date.getTime() || now.getTime() + MILISECONDS_IN_18_HOURS < date.getTime()) {
             return false;
         } else {
             return true;
@@ -500,14 +501,20 @@ public class Utility {
 
         try {
             FileInputStream in = new FileInputStream(from);
-            FileOutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while ((count = in.read(buffer)) > 0) {
-                out.write(buffer, 0, count);
+            try {
+                FileOutputStream out = new FileOutputStream(to);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int count = -1;
+                    while ((count = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, count);
+                    }
+                } finally {
+                    out.close();
+                }
+            } finally {
+                try { in.close(); } catch (Throwable ignore) {}
             }
-            out.close();
-            in.close();
             from.delete();
             return true;
         } catch (Exception e) {

@@ -403,9 +403,13 @@ public class Prefs extends K9PreferenceActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onPause() {
         saveSettings();
+        super.onPause();
+    }
 
+    @Override
+    public void onBackPressed() {
         if (K9.manageBack()) {
             Accounts.listAccounts(this);
             finish();

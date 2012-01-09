@@ -287,20 +287,11 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            List<String> results = executeSimpleCommand("EHLO " + localHost);
+            List<String> results = sendHello(localHost);
 
             m8bitEncodingAllowed = results.contains("8BITMIME");
 
 
-
-            /*
-             * TODO may need to add code to fall back to HELO I switched it from
-             * using HELO on non STARTTLS connections because of AOL's mail
-             * server. It won't let you use AUTH without EHLO.
-             * We should really be paying more attention to the capabilities
-             * and only attempting auth if it's available, and warning the user
-             * if not.
-             */
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                     || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                 if (results.contains("STARTTLS")) {
@@ -321,7 +312,7 @@ public class SmtpTransport extends Transport {
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
-                    results = executeSimpleCommand("EHLO " + localHost);
+                    results = sendHello(localHost);
                 } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
@@ -405,6 +396,46 @@ public class SmtpTransport extends Transport {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
+    }
+
+    /**
+     * Send the client "identity" using the EHLO or HELO command.
+     *
+     * <p>
+     * We first try the EHLO command. If the server sends a negative response, it probably doesn't
+     * support the EHLO command. So we try the older HELO command that all servers need to support.
+     * And if that fails, too, we pretend everything is fine and continue unimpressed.
+     * </p>
+     *
+     * @param host
+     *         The EHLO/HELO parameter as defined by the RFC.
+     *
+     * @return The list of capabilities as returned by the EHLO command or an empty list.
+     *
+     * @throws IOException
+     *          In case of a network error.
+     * @throws MessagingException
+     *          In case of a malformed response.
+     */
+    private List<String> sendHello(String host) throws IOException, MessagingException {
+        try {
+            //TODO: We currently assume the extension keywords returned by the server are always
+            //      uppercased. But the RFC allows mixed-case keywords!
+
+            return executeSimpleCommand("EHLO " + host);
+        } catch (NegativeSmtpReplyException e) {
+            if (K9.DEBUG) {
+                Log.v(K9.LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
+            }
+
+            try {
+                executeSimpleCommand("HELO " + host);
+            } catch (NegativeSmtpReplyException e2) {
+                Log.w(K9.LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
+            }
+        }
+
+        return new ArrayList<String>(0);
     }
 
     @Override
@@ -569,12 +600,28 @@ public class SmtpTransport extends Transport {
     }
 
     private void checkLine(String line) throws MessagingException {
-        if (line.length() < 1) {
+        int length = line.length();
+        if (length < 1) {
             throw new MessagingException("SMTP response is 0 length");
         }
+
         char c = line.charAt(0);
         if ((c == '4') || (c == '5')) {
-            throw new MessagingException(line);
+            int replyCode = -1;
+            String message = line;
+            if (length >= 3) {
+                try {
+                    replyCode = Integer.parseInt(line.substring(0, 3));
+                } catch (NumberFormatException e) { /* ignore */ }
+
+                if (length > 4) {
+                    message = line.substring(4);
+                } else {
+                    message = "";
+                }
+            }
+
+            throw new NegativeSmtpReplyException(replyCode, message);
         }
     }
 
@@ -677,6 +724,30 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(b64CRAMString, true);
         } catch (MessagingException me) {
             throw new AuthenticationFailedException("Unable to negotiate MD5 CRAM");
+        }
+    }
+
+    /**
+     * Exception that is thrown when the server sends a negative reply (reply codes 4xx or 5xx).
+     */
+    static class NegativeSmtpReplyException extends MessagingException {
+        private static final long serialVersionUID = 8696043577357897135L;
+
+        private final int mReplyCode;
+        private final String mReplyText;
+
+        public NegativeSmtpReplyException(int replyCode, String replyText) {
+            super("Negative SMTP reply: " + replyCode + " " + replyText);
+            mReplyCode = replyCode;
+            mReplyText = replyText;
+        }
+
+        public int getReplyCode() {
+            return mReplyCode;
+        }
+
+        public String getReplyText() {
+            return mReplyText;
         }
     }
 }

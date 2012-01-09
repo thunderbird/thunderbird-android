@@ -733,6 +733,9 @@ public class MessageList
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
+        // Hide "Load up to x more" footer for search views
+        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
+
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
     }
@@ -2386,9 +2389,6 @@ public class MessageList
     private View getFooterView(ViewGroup parent) {
         if (mFooterView == null) {
             mFooterView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-            if (mQueryString != null) {
-                mFooterView.setVisibility(View.GONE);
-            }
             mFooterView.setId(R.layout.message_list_item_footer);
             FooterViewHolder holder = new FooterViewHolder();
             holder.progress = (ProgressBar) mFooterView.findViewById(R.id.message_list_progress);
