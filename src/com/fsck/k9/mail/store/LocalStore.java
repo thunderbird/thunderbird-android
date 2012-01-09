@@ -1045,6 +1045,11 @@ public class LocalStore extends Store implements Serializable {
         public String type;
     }
 
+    public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
+        LocalFolder folder = new LocalFolder(name);
+        return folder.create(null);
+    }
+
     public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {
         database.execute(true, new DbCallback<Void>() {
             @Override

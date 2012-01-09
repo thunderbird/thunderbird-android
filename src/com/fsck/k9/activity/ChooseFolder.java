@@ -310,8 +310,11 @@ public class ChooseFolder extends K9ListActivity {
                         String toastText = "Creating WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
-                        String toastText = "Creating Local Folders not currently implemented.";
+                        boolean result = mAccount.getLocalStore().createFolder(folderName);
+                        String toastText = "Creation of folder \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
                     } else {
                         Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
                     }

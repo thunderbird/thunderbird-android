@@ -64,7 +64,7 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
-
+import com.fsck.k9.mail.store.Pop3Store;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -3168,7 +3168,13 @@ public class MessagingController implements Runnable {
 
 
     public boolean isMoveCapable(Message message) {
-        return !message.getUid().startsWith(K9.LOCAL_UID_PREFIX);
+        boolean isPop3Store = false;
+        try {
+            isPop3Store = message.getFolder().getAccount().getRemoteStore() instanceof Pop3Store;
+        } catch (com.fsck.k9.mail.MessagingException me) {
+            Log.e(K9.LOG_TAG, "MessagingException trying to get remote store of message: " + me);
+        }
+        return (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX) || isPop3Store);
     }
     public boolean isCopyCapable(Message message) {
         return isMoveCapable(message);
@@ -3229,6 +3235,7 @@ public class MessagingController implements Runnable {
 
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
             final String destFolder, final boolean isCopy, MessagingListener listener) {
+
         try {
             Store localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
@@ -3245,7 +3252,7 @@ public class MessagingController implements Runnable {
             List<String> uids = new LinkedList<String>();
             for (Message message : inMessages) {
                 String uid = message.getUid();
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX) || remoteStore instanceof Pop3Store) {
                     uids.add(uid);
                 }
             }
@@ -3280,7 +3287,10 @@ public class MessagingController implements Runnable {
                     }
                 }
 
-                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
+                if (!(remoteStore instanceof Pop3Store)) { // don't sync pop3
+                    queueMoveOrCopy(account, srcFolder, destFolder, isCopy,
+                            origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
+                }
             }
 
             processPendingCommands(account);
