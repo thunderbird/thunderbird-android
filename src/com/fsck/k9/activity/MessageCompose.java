@@ -1008,14 +1008,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         int composedMessageOffset;
 
         /*
-         * Find out if there is some text to quote.
+         * Find out if we need to include the original message as quoted text.
          *
          * We include the quoted text in the body if the user didn't choose to hide it. We always
          * include the quoted text when we're saving a draft. That's so the user is able to
          * "un-hide" the quoted text if (s)he opens a saved draft.
          */
-        boolean includeQuotedText = (mQuotedHtmlContent != null &&
-                (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft));
+        boolean includeQuotedText = (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft);
 
         // Reply after quote makes no sense for HEADER style replies
         boolean replyAfterQuote = (mQuoteStyle == QuoteStyle.HEADER) ?
@@ -1030,7 +1029,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (messageFormat == MessageFormat.HTML) {
 
             // Do we have to modify an existing message to include our reply?
-            if (includeQuotedText) {
+            if (includeQuotedText && mQuotedHtmlContent != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
                 }
