@@ -983,125 +983,153 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return buildText(isDraft, mMessageFormat);
     }
 
-    /*
-     * Build the Body that will contain the text of the message. We'll decide where to
-     * include it later. Draft messages are treated somewhat differently in that signatures are not
-     * appended and HTML separators between composed text and quoted text are not added.
-     * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
-     * @param messageFormat Set MessageFormat to build.
+    /**
+     * Build the {@link Body} that will contain the text of the message.
+     *
+     * <p>
+     * Draft messages are treated somewhat differently in that signatures are not appended and HTML
+     * separators between composed text and quoted text are not added.
+     * </p>
+     *
+     * @param isDraft
+     *         If {@code true} we build a message that will be saved as a draft (as opposed to
+     *         sent).
+     * @param messageFormat
+     *         Specifies what type of message to build ({@code text/plain} vs. {@code text/html}).
+     *
+     * @return {@link TextBody} instance that contains the entered text and possibly the quoted
+     *         original message.
      */
     private TextBody buildText(boolean isDraft, MessageFormat messageFormat) {
-        boolean replyAfterQuote = false;
-        String action = getIntent().getAction();
-        if (mAccount.isReplyAfterQuote() &&
-                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
-                        ACTION_EDIT_DRAFT.equals(action))) {
-            replyAfterQuote = true;
-        }
+        // The length of the formatted version of the user-supplied text/reply
+        int composedMessageLength;
 
+        // The offset of the user-supplied text/reply in the final text body
+        int composedMessageOffset;
+
+        /*
+         * Find out if there is some text to quote.
+         *
+         * We include the quoted text in the body if the user didn't choose to hide it. We always
+         * include the quoted text when we're saving a draft. That's so the user is able to
+         * "un-hide" the quoted text if (s)he opens a saved draft.
+         */
+        boolean includeQuotedText = (mQuotedHtmlContent != null &&
+                (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft));
+
+        // Reply after quote makes no sense for HEADER style replies
+        boolean replyAfterQuote = (mQuoteStyle == QuoteStyle.HEADER) ?
+                false : mAccount.isReplyAfterQuote();
+
+        boolean signatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+
+        // Get the user-supplied text
         String text = mMessageContentView.getText().toString();
 
-        boolean saveQuotedText = false;
-        if (isDraft || mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
-            saveQuotedText = true;
-        }
-
-
-        // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
-        // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
-        // mode.
+        // Handle HTML separate from the rest of the text content
         if (messageFormat == MessageFormat.HTML) {
-            // Place the signature immediately after the reply.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.HEADER || replyAfterQuote || mAccount.isSignatureBeforeQuotedText()) {
-                    text = appendSignature(text);
-                }
-            }
-            text = HtmlConverter.textToHtmlFragment(text);
-            // Insert it into the existing content object.
-            if (K9.DEBUG && mQuotedHtmlContent != null)
-                Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
-            if (mQuotedHtmlContent != null && saveQuotedText) {
 
-                // Set the insertion location based upon our reply after quote setting. Reply after
-                // quote makes no sense for HEADER style replies. In addition, add some extra
-                // separators between the composed message and quoted message depending on the quote
-                // location. We only add the extra separators when we're sending, that way when we
-                // load a draft, we don't have to know the length of the separators to remove them
-                // before editing.
-                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
-                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+            // Do we have to modify an existing message to include our reply?
+            if (includeQuotedText) {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
+                }
+
+                if (!isDraft) {
+                    // Append signature to the reply
+                    if (replyAfterQuote || signatureBeforeQuotedText) {
+                        text = appendSignature(text);
+                    }
+                }
+
+                // Convert the text to HTML
+                text = HtmlConverter.textToHtmlFragment(text);
+
+                /*
+                 * Set the insertion location based upon our reply after quote setting.
+                 * Additionally, add some extra separators between the composed message and quoted
+                 * message depending on the quote location. We only add the extra separators when
+                 * we're sending, that way when we load a draft, we don't have to know the length
+                 * of the separators to remove them before editing.
+                 */
+                if (replyAfterQuote) {
+                    mQuotedHtmlContent.setInsertionLocation(
+                            InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                     if (!isDraft) {
                         text = "<br clear=\"all\">" + text;
                     }
                 } else {
-                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                    mQuotedHtmlContent.setInsertionLocation(
+                            InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                     if (!isDraft) {
                         text += "<br><br>";
                     }
                 }
 
-                // Place signature immediately after quote.
                 if (!isDraft) {
-                    if (mQuoteStyle == QuoteStyle.PREFIX && !replyAfterQuote && !mAccount.isSignatureBeforeQuotedText()) {
+                    // Place signature immediately after the quoted text
+                    if (!(replyAfterQuote || signatureBeforeQuotedText)) {
                         mQuotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
                     }
                 }
 
                 mQuotedHtmlContent.setUserContent(text);
 
-                // All done.  Build the body.
-                TextBody body = new TextBody(mQuotedHtmlContent.toString());
                 // Save length of the body and its offset.  This is used when thawing drafts.
-                body.setComposedMessageLength(text.length());
-                body.setComposedMessageOffset(mQuotedHtmlContent.getInsertionPoint());
-                return body;
+                composedMessageLength = text.length();
+                composedMessageOffset = mQuotedHtmlContent.getInsertionPoint();
+                text = mQuotedHtmlContent.toString();
+
             } else {
-                TextBody body = new TextBody(text);
-                body.setComposedMessageLength(text.length());
-                // Not in reply to anything so the message starts at the beginning (0).
-                body.setComposedMessageOffset(0);
-                return body;
-            }
-        } else if (messageFormat == MessageFormat.TEXT) {
-            // Capture composed message length before we start attaching quoted parts and signatures.
-            Integer composedMessageLength = text.length();
-            Integer composedMessageOffset = 0;
-
-            // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.HEADER ||
-                        (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText())) {
+                // There is no text to quote so simply append the signature if available
+                if (!isDraft) {
                     text = appendSignature(text);
                 }
+
+                // Convert the text to HTML
+                text = HtmlConverter.textToHtmlFragment(text);
+
+                //TODO: Wrap this in proper HTML tags
+
+                composedMessageLength = text.length();
+                composedMessageOffset = 0;
             }
 
-            if (saveQuotedText) {
-                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
-                    composedMessageOffset = mQuotedText.getText().toString().length() + "\n".length();
-                    text = mQuotedText.getText().toString() + "\n" + text;
-                } else {
-                    text += "\n\n" + mQuotedText.getText().toString();
-                }
-            }
-
-            // Note: If user has selected reply after quote AND signature before quote, ignore the
-            // latter setting and append the signature at the end.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.PREFIX &&
-                        (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText())) {
-                    text = appendSignature(text);
-                }
-            }
-            // Build the body.
-            TextBody body = new TextBody(text);
-            body.setComposedMessageLength(composedMessageLength);
-            body.setComposedMessageOffset(composedMessageOffset);
-            return body;
         } else {
-            // Shouldn't happen.
-            return new TextBody("");
+            // Capture composed message length before we start attaching quoted parts and signatures.
+            composedMessageLength = text.length();
+            composedMessageOffset = 0;
+
+            if (!isDraft) {
+                // Append signature to the text/reply
+                if (replyAfterQuote || signatureBeforeQuotedText) {
+                    text = appendSignature(text);
+                }
+            }
+
+            if (includeQuotedText) {
+                String quotedText = mQuotedText.getText().toString();
+                if (replyAfterQuote) {
+                    composedMessageOffset = quotedText.length() + "\n".length();
+                    text = quotedText + "\n" + text;
+                } else {
+                    text += "\n\n" + quotedText.toString();
+                }
+            }
+
+            if (!isDraft) {
+                // Place signature immediately after the quoted text
+                if (!(replyAfterQuote || signatureBeforeQuotedText)) {
+                    text = appendSignature(text);
+                }
+            }
         }
+
+        TextBody body = new TextBody(text);
+        body.setComposedMessageLength(composedMessageLength);
+        body.setComposedMessageOffset(composedMessageOffset);
+
+        return body;
     }
 
     /**
@@ -1142,7 +1170,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         // Build the body.
-        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in 
+        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
         if (mPgpData.getEncryptedData() != null) {
@@ -2492,7 +2520,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         end.add(blockquoteEnd.start());
                     }
                     if (start.size() != end.size()) {
-                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " + 
+                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
                                 end.size() + " </blockquote> tags. Refusing to strip.");
                     } else if (start.size() > 0) {
                         // Ignore quoted signatures in blockquotes.
@@ -2525,7 +2553,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
 
-                // Fix the stripping off of closing tags if a signature was stripped, 
+                // Fix the stripping off of closing tags if a signature was stripped,
                 // as well as clean up the HTML of the quoted message.
                 HtmlCleaner cleaner = new HtmlCleaner();
                 CleanerProperties properties = cleaner.getProperties();
