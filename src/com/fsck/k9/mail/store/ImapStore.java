@@ -280,7 +280,8 @@ public class ImapStore extends Store {
         String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
         try {
             Map<String, String> extra = server.getExtra();
-            String path = (extra != null) ? "/" + extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;
+            String prefix = (extra != null) ? extra.get(ImapStoreSettings.PATH_PREFIX_KEY) : null;
+            String path = (prefix != null) ? "/" + prefix : null;
             return new URI(scheme, userInfo, server.host, server.port,
                 path,
                 null, null).toString();
