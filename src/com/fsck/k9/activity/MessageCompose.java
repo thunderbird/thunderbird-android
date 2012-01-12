@@ -30,6 +30,7 @@ import android.os.Parcelable;
 import android.provider.OpenableColumns;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.FontSizes;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -272,6 +274,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private Listener mListener = new Listener();
     private EmailAddressAdapter mAddressAdapter;
     private Validator mAddressValidator;
+
+    private FontSizes mFontSizes = K9.getFontSizes();
 
 
     static class Attachment implements Serializable {
@@ -690,6 +694,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mDraftNeedsSaving = false;
+
+        // Set font size of input controls
+        int fontSize = mFontSizes.getMessageComposeInput();
+        mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mBccView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mMessageContentView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mQuotedText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        mSignatureView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
     }
 
     /**

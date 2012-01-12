@@ -27,6 +27,7 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_TIME = "fontSizeMessageViewTime";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
     private static final String MESSAGE_VIEW_CONTENT = "fontSizeMessageViewContent";
+    private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
 
     /*
      * Values for the font sizes in DIP (device independent pixel)
@@ -123,6 +124,12 @@ public class FontSizes {
     private TextSize messageViewContent = TextSize.NORMAL;
 
     /**
+     * Font size for the input fields in the message compose activity.
+     */
+    private int messageComposeInput;
+
+
+    /**
      * Create a <code>FontSizes</code> object with default values.
      */
     public FontSizes() {
@@ -144,6 +151,8 @@ public class FontSizes {
         messageViewSubject = FONT_12DIP;
         messageViewTime = FONT_10DIP;
         messageViewDate = FONT_10DIP;
+
+        messageComposeInput = MEDIUM;
     }
 
     /**
@@ -171,6 +180,8 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_TIME, messageViewTime);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
+
+        editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
 
     /**
@@ -198,6 +209,8 @@ public class FontSizes {
         messageViewTime = prefs.getInt(MESSAGE_VIEW_TIME, messageViewTime);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
+
+        messageComposeInput = prefs.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
 
     public int getAccountName() {
@@ -358,5 +371,13 @@ public class FontSizes {
             messageViewContent = TextSize.LARGEST;
             break;
         }
+    }
+
+    public int getMessageComposeInput() {
+        return messageComposeInput;
+    }
+
+    public void setMessageComposeInput(int messageComposeInput) {
+        this.messageComposeInput = messageComposeInput;
     }
 }

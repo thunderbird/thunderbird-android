@@ -77,6 +77,9 @@ public class GlobalSettings {
         s.put("fontSizeFolderStatus", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.SMALL))
             ));
+        s.put("fontSizeMessageComposeInput", Settings.versions(
+                new V(5, new FontSizeSetting(FontSizes.MEDIUM))
+            ));
         s.put("fontSizeMessageListDate", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.SMALL))
             ));

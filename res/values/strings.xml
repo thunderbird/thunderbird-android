@@ -986,6 +986,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="font_size_message_view_date">Date</string>
     <string name="font_size_message_view_content">Message body</string>
 
+    <string name="font_size_message_compose">Message composition</string>
+    <string name="font_size_message_compose_input">Text input fields</string>
+
     <string name="font_size_tiniest">Tiniest</string>
     <string name="font_size_tiny">Tiny</string>
     <string name="font_size_smaller">Smaller</string>
