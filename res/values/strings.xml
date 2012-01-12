@@ -74,6 +74,8 @@
     <string name="refresh_folders_action">Refresh folders</string>
     <string name="filter_folders_action">Find folder</string>
     <string name="create_folder_action">Create folder</string>
+    <string name="rename_folder_action">Rename folder</string>
+    <string name="delete_folder_action">Delete folder</string>
     <string name="mark_all_as_read_action">Mark all messages as read</string>
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>

@@ -423,8 +423,15 @@ public class FolderList extends K9ListActivity {
     }
 
 
-    private void onRefresh(final boolean forceRemote) {
-
+    private void onRefresh(boolean forceRemote) {
+        // Pop3 does not have remote folders, so if this is true the local folders will be deleted!
+        try {
+            if (mAccount.getRemoteStore() instanceof Pop3Store) {
+                forceRemote = false;
+            }
+        } catch (com.fsck.k9.mail.MessagingException me) {
+            Log.e(K9.LOG_TAG, "Error getting the remote store: " + me);
+        }
         MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
 
     }
@@ -475,8 +482,9 @@ public class FolderList extends K9ListActivity {
     }
 
     /*
-     Show a dialog to create a new folder on the remote Store.
-     Currently only IMAP is supported.
+     Show a dialog to create a new folder.
+     Currently only IMAP and Pop3 supported.
+     IMAP folders are both remote and local. Pop3 folders are only local.
      Exactly the same as activity.ChooseFolder.onCreateFolder().
      */
     private void onCreateFolder() {
@@ -687,30 +695,34 @@ public class FolderList extends K9ListActivity {
 
         case R.id.send_messages:
             sendMail(mAccount);
-
             break;
 
         case R.id.check_mail:
             checkMail(folder);
-
             break;
 
         case R.id.folder_settings:
             onEditFolder(mAccount, folder.name);
-
             break;
 
         case R.id.empty_trash:
             onEmptyTrash(mAccount);
-
             break;
+
         case R.id.expunge:
             onExpunge(mAccount, folder.name);
-
             break;
 
         case R.id.clear_local_folder:
             onClearFolder(mAccount, folder.name);
+            break;
+
+        case R.id.rename_folder:
+            onRenameFolder(folder);
+            break;
+
+        case R.id.delete_folder:
+            onDeleteFolder(folder);
             break;
         }
 
@@ -719,6 +731,114 @@ public class FolderList extends K9ListActivity {
 
     private FolderInfoHolder mSelectedContextFolder = null;
 
+    /*
+     Show a dialog to rename the selected folder.
+     Currently only IMAP and Pop3 are supported.
+     */
+    private void onRenameFolder(final FolderInfoHolder folder) {
+        // ASH rename local folder, then rename remote.
+        // on success, refresh list.
+        // on fail, rename local back.
+
+        // or if rename remote succeeds, then rename local and last refresh list.
+
+        final EditText input = new EditText(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.rename_folder_action);
+        dialog.setView(input);
+        dialog.setMessage("Enter the new name you want for folder \"" + folder.name + "\":");
+        dialog.setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String folderName = input.getText().toString().trim();
+                try {
+                    Store store = mAccount.getRemoteStore();
+                    if (store instanceof ImapStore) {
+                        boolean result = false;
+                        if (((ImapStore)store).renameFolder(folder.name, folderName)) {
+                            result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
+                            if (!result) {
+                                Log.e(K9.LOG_TAG, "Remote folder successfully renamed but failed renaming the local folder!");
+                            }
+                        }
+                        String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(result);
+                    } else if (store instanceof WebDavStore) {
+                        String toastText = "Deleting WebDav Folders not currently implemented.";
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                    } else if (store instanceof Pop3Store) {
+                        boolean result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
+                        String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else {
+                        Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
+                    }
+                } catch (com.fsck.k9.mail.MessagingException me) {
+                    Log.e(K9.LOG_TAG, "MessagingException trying to deletefolder \"" +
+                            folder.name + "\": " + me);
+                }
+            }
+        });
+        dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                /* User clicked cancel so do some stuff */
+            }
+        });
+        dialog.show();
+
+
+    }
+
+    /*
+     Show a dialog to delete the selected folder and all its messages (both local and remote if applicable).
+     Currently only IMAP and Pop3 are supported.
+     */
+    private void onDeleteFolder(final FolderInfoHolder folder) {
+        //final EditText input = new EditText(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.delete_folder_action);
+        //dialog.setView(input);
+        dialog.setMessage("Warning: Deleting this folder (" + folder.name +
+                ") will delete all messages inside it, including on the server (if applicable)!");
+        dialog.setPositiveButton(R.string.delete_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //String folderName = input.getText().toString().trim();
+                try {
+                    Store store = mAccount.getRemoteStore();
+                    if (store instanceof ImapStore) {
+                        boolean result = ((ImapStore)store).deleteFolder(folder.name);
+                        String toastText = "Deletion of folder \"" + folder.name +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(result);
+                    } else if (store instanceof WebDavStore) {
+                        String toastText = "Deleting WebDav Folders not currently implemented.";
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                    } else if (store instanceof Pop3Store) {
+                        boolean result = mAccount.getLocalStore().deleteFolder(folder.folder);
+                        String toastText = "Deletion of folder \"" + folder.name +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else {
+                        Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
+                    }
+                } catch (com.fsck.k9.mail.MessagingException me) {
+                    Log.e(K9.LOG_TAG, "MessagingException trying to deletefolder \"" +
+                            folder.name + "\": " + me);
+                }
+            }
+        });
+        dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                /* User clicked cancel so do some stuff */
+            }
+        });
+        dialog.show();
+    }
 
     private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextFolder = mAdapter.getFolder(folder);

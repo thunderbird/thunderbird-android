@@ -792,6 +792,20 @@ public class ImapStore extends Store {
         return folder.create(null);
     }
 
+    public boolean renameFolder(String oldFolderName, String newFolderName) throws com.fsck.k9.mail.MessagingException {
+        ImapFolder oldFolder = new ImapFolder(this, oldFolderName);
+        ImapFolder newFolder = new ImapFolder(this, newFolderName);
+        if (oldFolder.exists() && !newFolder.exists()) {
+            return oldFolder.rename(newFolderName);
+        }
+        return false;
+    }
+
+    public boolean deleteFolder(String name) throws com.fsck.k9.mail.MessagingException {
+        ImapFolder folder = new ImapFolder(this, name);
+        return ((ImapFolder)folder).deleteFolder();
+    }
+
     @Override
     public boolean isMoveCapable() {
         return true;
@@ -1050,7 +1064,66 @@ public class ImapStore extends Store {
             }
             try {
                 connection.executeSimpleCommand(String.format("CREATE %s",
-                                                encodeString(encodeFolderName(getPrefixedName()))));
+                        encodeString(encodeFolderName(getPrefixedName()))));
+                return true;
+            } catch (MessagingException me) {
+                return false;
+            } catch (IOException ioe) {
+                throw ioExceptionHandler(mConnection, ioe);
+            } finally {
+                if (mConnection == null) {
+                    releaseConnection(connection);
+                }
+            }
+        }
+
+        public boolean rename(String newFolder) throws MessagingException {
+            /*
+             * This method needs to operate in the unselected mode as well as the selected mode
+             * so we must get the connection ourselves if it's not there. We are specifically
+             * not calling checkOpen() since we don't care if the folder is open.
+             */
+            ImapConnection connection = null;
+            synchronized (this) {
+                if (mConnection == null) {
+                    connection = getConnection();
+                } else {
+                    connection = mConnection;
+                }
+            }
+            try {
+                connection.executeSimpleCommand(String.format("RENAME %s %s",
+                        encodeString(encodeFolderName(getPrefixedName())),
+                        encodeString(encodeFolderName(newFolder))));
+                return true;
+            } catch (MessagingException me) {
+                return false;
+            } catch (IOException ioe) {
+                throw ioExceptionHandler(mConnection, ioe);
+            } finally {
+                if (mConnection == null) {
+                    releaseConnection(connection);
+                }
+            }
+        }
+
+        public boolean deleteFolder() throws MessagingException {
+            /*
+             * This method needs to operate in the unselected mode as well as the selected mode
+             * so we must get the connection ourselves if it's not there. We are specifically
+             * not calling checkOpen() since we don't care if the folder is open.
+             */
+            ImapConnection connection = null;
+            synchronized (this) {
+                if (mConnection == null) {
+                    connection = getConnection();
+                } else {
+                    connection = mConnection;
+                }
+            }
+            try {
+                connection.executeSimpleCommand(String.format("DELETE %s",
+                        encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
             } catch (MessagingException me) {
                 return false;

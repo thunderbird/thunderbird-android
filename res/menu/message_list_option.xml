@@ -157,4 +157,12 @@
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
     />
+    <item
+        android:id="@+id/rename_folder"
+        android:title="@string/rename_folder_action"
+    />
+    <item
+        android:id="@+id/delete_folder"
+        android:title="@string/delete_folder_action"
+    />
 </menu>

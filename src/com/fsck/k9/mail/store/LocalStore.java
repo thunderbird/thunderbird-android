@@ -1050,6 +1050,35 @@ public class LocalStore extends Store implements Serializable {
         return folder.create(null);
     }
 
+    public boolean renameFolder(final String oldFolderName, String newFolderName)
+            throws com.fsck.k9.mail.MessagingException {
+        LocalFolder oldFolder = new LocalFolder(oldFolderName);
+        LocalFolder newFolder = new LocalFolder(newFolderName);
+        if (oldFolder.exists() && !newFolder.exists()) {
+            final ContentValues cv = new ContentValues();
+            cv.put("name", newFolderName);
+            database.execute(false, new DbCallback<Void>() {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    db.update("folders", cv, "name = ?", new String[] { oldFolderName });
+                    return null;
+                }
+            });
+            Log.i(K9.LOG_TAG, "Renamed folder " + oldFolderName + " to " + newFolderName);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFolder(Folder folder) throws com.fsck.k9.mail.MessagingException {
+        if (folder instanceof LocalFolder) {		// ASH do i need instanceof?
+            ((LocalFolder)folder).delete(false);	// delete the folder
+            ((LocalFolder)folder).delete();		// delete its preferences
+            return !folder.exists();
+        }
+        return false;
+    }
+
     public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {
         database.execute(true, new DbCallback<Void>() {
             @Override
