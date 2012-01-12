@@ -516,12 +516,12 @@ public class Settings {
             super(defaultValue);
 
             Map<Integer, String> mapping = new HashMap<Integer, String>();
-            mapping.put(FontSizes.FONT_10DIP, "tiniest");
-            mapping.put(FontSizes.FONT_12DIP, "tiny");
+            mapping.put(FontSizes.FONT_10SP, "tiniest");
+            mapping.put(FontSizes.FONT_12SP, "tiny");
             mapping.put(FontSizes.SMALL, "smaller");
-            mapping.put(FontSizes.FONT_16DIP, "small");
+            mapping.put(FontSizes.FONT_16SP, "small");
             mapping.put(FontSizes.MEDIUM, "medium");
-            mapping.put(FontSizes.FONT_20DIP, "large");
+            mapping.put(FontSizes.FONT_20SP, "large");
             mapping.put(FontSizes.LARGE, "larger");
             mMapping = Collections.unmodifiableMap(mapping);
         }

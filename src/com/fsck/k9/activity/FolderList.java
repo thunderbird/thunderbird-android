@@ -1147,8 +1147,8 @@ public class FolderList extends K9ListActivity {
             holder.chip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
-            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderName());
-            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderStatus());
+            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderName());
+            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
 
 
             return view;

@@ -90,31 +90,31 @@ public class GlobalSettings {
                 new V(1, new FontSizeSetting(FontSizes.SMALL))
             ));
         s.put("fontSizeMessageListSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_16DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_16SP))
             ));
         s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
             ));
         s.put("fontSizeMessageViewCC", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
             ));
         s.put("fontSizeMessageViewContent", Settings.versions(
                 new V(1, new WebFontSizeSetting(3))
             ));
         s.put("fontSizeMessageViewDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
             ));
         s.put("fontSizeMessageViewSender", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.SMALL))
             ));
         s.put("fontSizeMessageViewSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
             ));
         s.put("fontSizeMessageViewTime", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
             ));
         s.put("fontSizeMessageViewTo", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12DIP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
             ));
         s.put("gesturesEnabled", Settings.versions(
                 new V(1, new BooleanSetting(true)),
