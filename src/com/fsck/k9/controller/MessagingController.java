@@ -45,7 +45,6 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Message;
@@ -1110,7 +1109,7 @@ public class MessagingController implements Runnable {
                 folder.equals(account.getSentFolderName()) ||
                 folder.equals(account.getDraftsFolderName())) {
             if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
+                if (!remoteFolder.create()) {
                     for (MessagingListener l : getListeners(listener)) {
                         l.synchronizeMailboxFinished(account, folder, 0, 0);
                     }
@@ -1975,7 +1974,7 @@ public class MessagingController implements Runnable {
             Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
+                if (!remoteFolder.create()) {
                     return;
                 }
             }
@@ -3375,7 +3374,7 @@ public class MessagingController implements Runnable {
             } else {
                 localTrashFolder = localStore.getFolder(account.getTrashFolderName());
                 if (!localTrashFolder.exists()) {
-                    localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
+                    localTrashFolder.create();
                 }
                 if (localTrashFolder.exists()) {
                     if (K9.DEBUG)

@@ -23,10 +23,6 @@ public abstract class Folder {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
     }
 
-    public enum FolderType {
-        HOLDS_FOLDERS, HOLDS_MESSAGES,
-    }
-
     protected Folder(Account account) {
         mAccount = account;
     }
@@ -58,14 +54,14 @@ public abstract class Folder {
      */
     public abstract OpenMode getMode();
 
-    public abstract boolean create(FolderType type) throws MessagingException;
+    public abstract boolean create() throws MessagingException;
 
     /**
      * Create a new folder with a specified display limit.  Not abstract to allow
      * remote folders to not override or worry about this call if they don't care to.
      */
-    public boolean create(FolderType type, int displayLimit) throws MessagingException {
-        return create(type);
+    public boolean create(int displayLimit) throws MessagingException {
+        return create();
     }
 
     public abstract boolean exists() throws MessagingException;

@@ -477,7 +477,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public boolean create(FolderType type) throws MessagingException {
+        public boolean create() throws MessagingException {
             return false;
         }
 

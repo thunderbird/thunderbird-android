@@ -789,7 +789,7 @@ public class ImapStore extends Store {
 
     public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
         ImapFolder folder = new ImapFolder(this, name);
-        return folder.create(null);
+        return folder.create();
     }
 
     public boolean renameFolder(String oldFolderName, String newFolderName) throws com.fsck.k9.mail.MessagingException {
@@ -1048,7 +1048,7 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public boolean create(FolderType type) throws MessagingException {
+        public boolean create() throws MessagingException {
             /*
              * This method needs to operate in the unselected mode as well as the selected mode
              * so we must get the connection ourselves if it's not there. We are specifically
@@ -1160,7 +1160,7 @@ public class ImapStore extends Store {
                      */
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "IMAPMessage.copyMessages: attempting to create remote '" + remoteDestName + "' folder for " + getLogId());
-                    iFolder.create(FolderType.HOLDS_MESSAGES);
+                    iFolder.create();
                 }
 
                 if (exists(remoteDestName)) {
@@ -1202,7 +1202,7 @@ public class ImapStore extends Store {
                      */
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder for " + getLogId());
-                    remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
+                    remoteTrashFolder.create();
                 }
 
                 if (exists(remoteTrashName)) {

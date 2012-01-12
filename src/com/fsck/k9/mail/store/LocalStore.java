@@ -1047,7 +1047,7 @@ public class LocalStore extends Store implements Serializable {
 
     public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
         LocalFolder folder = new LocalFolder(name);
-        return folder.create(null);
+        return folder.create();
     }
 
     public boolean renameFolder(final String oldFolderName, String newFolderName)
@@ -1195,7 +1195,7 @@ public class LocalStore extends Store implements Serializable {
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
-                                create(FolderType.HOLDS_MESSAGES);
+                                create();
                                 open(mode);
                             }
                         } catch (MessagingException e) {
@@ -1272,12 +1272,12 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public boolean create(FolderType type) throws MessagingException {
-            return create(type, mAccount.getDisplayCount());
+        public boolean create() throws MessagingException {
+            return create(mAccount.getDisplayCount());
         }
 
         @Override
-        public boolean create(FolderType type, final int visibleLimit) throws MessagingException {
+        public boolean create(final int visibleLimit) throws MessagingException {
             if (exists()) {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
