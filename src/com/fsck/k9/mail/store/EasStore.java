@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,6 +30,9 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRoute;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -796,11 +800,20 @@ public class EasStore extends Store {
             throw new MessagingException("io", e);
         }
 
-        // EASTODO: This needs to preserve the sync key for each folder.
         synchronized (mFolderList) {
+            // We must preserve the sync key of each folder in the folder list when refreshing.
+            HashMap<String, String> syncKeys = new HashMap<String, String>();
+            
+            for (Entry<String, EasFolder> entry : mFolderList.entrySet()) {
+                syncKeys.put(entry.getKey(), entry.getValue().mSyncKey);
+            }
+
             mFolderList.clear();
+
             for (Folder folder : folderList) {
-                mFolderList.put(folder.getRemoteName(), (EasFolder)folder);
+                EasFolder easFolder = (EasFolder)folder;
+                mFolderList.put(easFolder.getRemoteName(), easFolder);
+                easFolder.setSyncKey(syncKeys.get(easFolder.getRemoteName()));
             }
         }
 
@@ -963,6 +976,14 @@ public class EasStore extends Store {
 
             HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
             HttpConnectionParams.setSocketBufferSize(params, 8192);
+            
+            ConnManagerParams.setMaxConnectionsPerRoute(params, new ConnPerRoute() {
+                @Override
+                public int getMaxForRoute(HttpRoute route) {
+                    // We will allow up to 4 connections to the Exchange server.
+                    return 4;
+                }
+            });
 
             SchemeRegistry reg = new SchemeRegistry();
             try {
@@ -1275,11 +1296,11 @@ public class EasStore extends Store {
 //                    break;
 //                }
 //                case com.android.email.Account.SYNC_WINDOW_1_MONTH: {
-//                    filter = Eas.FILTER_1_MONTH;
+                    filter = Eas.FILTER_1_MONTH;
 //                    break;
 //                }
 //                case com.android.email.Account.SYNC_WINDOW_ALL: {
-            filter = Eas.FILTER_ALL;
+//                    filter = Eas.FILTER_ALL;
 //                    break;
 //                }
 //            }
@@ -1489,8 +1510,15 @@ public class EasStore extends Store {
 
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
+            setFlag(flag, set, true);
+        }
+        
+        public void setFlag(Flag flag, boolean set, boolean updateFolder) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            
+            if (updateFolder) {
+                mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            }
         }
     }
 
@@ -1530,7 +1558,7 @@ public class EasStore extends Store {
         }
 
         public void start(final List<String> folderNames) {
-            stop();
+            stop.set(false);
 
             Runnable runner = new Runnable() {
                 public void run() {
@@ -1570,6 +1598,9 @@ public class EasStore extends Store {
                                     if (is != null) {
                                         PingParser pingParser = new PingParser(is);
                                         if (!pingParser.parse()) {
+                                            // We are finished with the connection. Go ahead an release it before syncing.
+                                            reclaimConnection(resp);
+                                            
                                             for (String folderServerId : pingParser.getFolderList()) {
                                                 Folder folder = mStore.getFolder(folderServerId);
                                                 if (folder != null) {
@@ -1639,6 +1670,7 @@ public class EasStore extends Store {
         public void stop() {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Requested stop of EAS pusher");
+            stop.set(true);
         }
 
         public int getRefreshInterval() {

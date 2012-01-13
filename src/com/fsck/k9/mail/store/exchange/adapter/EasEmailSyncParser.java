@@ -543,10 +543,10 @@ public class EasEmailSyncParser extends AbstractSyncParser {
         for (ServerChange srvChg : changedEmails) {
             EasMessage msg = new EasMessage(srvChg.serverId, mFolder);
             if (srvChg.read != null) {
-                msg.setFlag(Flag.SEEN, srvChg.read);
+                msg.setFlag(Flag.SEEN, srvChg.read, false);
             }
             if (srvChg.flag != null) {
-                msg.setFlag(Flag.FLAGGED, srvChg.flag);
+                msg.setFlag(Flag.FLAGGED, srvChg.flag, false);
             }
             messages.add(msg);
         }
