@@ -1651,8 +1651,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
 
 
-            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
-            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
+            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
+            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
 
             if (K9.useCompactLayouts()) {
                 holder.accountsItemLayout.setMinimumHeight(0);

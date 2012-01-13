@@ -113,8 +113,8 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             holder.chip.setBackgroundColor(account.getChipColor());
             holder.chip.getBackground().setAlpha(255);
 
-            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
-            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
+            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
+            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
 
             return view;
         }

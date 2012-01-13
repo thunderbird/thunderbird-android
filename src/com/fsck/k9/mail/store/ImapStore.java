@@ -1453,8 +1453,6 @@ public class ImapStore extends Store {
                             handleUntaggedResponse(response);
                         }
 
-                        while (response.more());
-
                     } while (response.mTag == null);
                 } catch (IOException ioe) {
                     throw ioExceptionHandler(mConnection, ioe);
@@ -1537,8 +1535,6 @@ public class ImapStore extends Store {
                     } else {
                         handleUntaggedResponse(response);
                     }
-
-                    while (response.more());
 
                 } while (response.mTag == null);
             } catch (IOException ioe) {
@@ -1880,7 +1876,6 @@ public class ImapStore extends Store {
                             eolOut.write('\n');
                             eolOut.flush();
                         }
-                        while (response.more());
                     } while (response.mTag == null);
 
                     String newUid = getUidFromMessageId(message);
