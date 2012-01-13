@@ -732,16 +732,34 @@ public class FolderList extends K9ListActivity {
     private FolderInfoHolder mSelectedContextFolder = null;
 
     /*
+     Change special folder settings (when a folder is renamed or deleted).
+     */
+    private void resetSpecialFolders(String oldFolderName, String newFolderName) {
+        if (oldFolderName.equals(mAccount.getTrashFolderName())) {
+            mAccount.setTrashFolderName(newFolderName);
+        }
+        if (oldFolderName.equals(mAccount.getDraftsFolderName())) {
+            mAccount.setDraftsFolderName(newFolderName);
+        }
+        if (oldFolderName.equals(mAccount.getArchiveFolderName())) {
+            mAccount.setArchiveFolderName(newFolderName);
+        }
+        if (oldFolderName.equals(mAccount.getSpamFolderName())) {
+            mAccount.setSpamFolderName(newFolderName);
+        }
+        if (oldFolderName.equals(mAccount.getSentFolderName())) {
+            mAccount.setSentFolderName(newFolderName);
+        }
+        if (oldFolderName.equals(mAccount.getAutoExpandFolderName())) {
+            mAccount.setAutoExpandFolderName(newFolderName);
+        }
+    }
+
+    /*
      Show a dialog to rename the selected folder.
      Currently only IMAP and Pop3 are supported.
      */
     private void onRenameFolder(final FolderInfoHolder folder) {
-        // ASH rename local folder, then rename remote.
-        // on success, refresh list.
-        // on fail, rename local back.
-
-        // or if rename remote succeeds, then rename local and last refresh list.
-
         final EditText input = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.rename_folder_action);
@@ -757,7 +775,12 @@ public class FolderList extends K9ListActivity {
                         if (((ImapStore)store).renameFolder(folder.name, folderName)) {
                             result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
                             if (!result) {
-                                Log.e(K9.LOG_TAG, "Remote folder successfully renamed but failed renaming the local folder!");
+                                Log.e(K9.LOG_TAG, "Remote folder successfully renamed but failed renaming the local folder -- undoing.");
+                                if(!((ImapStore)store).renameFolder(folderName, folder.name)) {
+                                    Log.e(K9.LOG_TAG, "Failed to undo folder rename.");
+                                }
+                            } else if (mAccount.isSpecialFolder(folder.name)) {
+                                resetSpecialFolders(folder.name, folderName);
                             }
                         }
                         String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
@@ -769,6 +792,9 @@ public class FolderList extends K9ListActivity {
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
                         boolean result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
+                        if (result && mAccount.isSpecialFolder(folder.name)) {
+                            resetSpecialFolders(folder.name, folderName);
+                        }
                         String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
                                 ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
@@ -789,7 +815,6 @@ public class FolderList extends K9ListActivity {
         });
         dialog.show();
 
-
     }
 
     /*
@@ -797,19 +822,22 @@ public class FolderList extends K9ListActivity {
      Currently only IMAP and Pop3 are supported.
      */
     private void onDeleteFolder(final FolderInfoHolder folder) {
-        //final EditText input = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.delete_folder_action);
-        //dialog.setView(input);
         dialog.setMessage("Warning: Deleting this folder (" + folder.name +
                 ") will delete all messages inside it, including on the server (if applicable)!");
         dialog.setPositiveButton(R.string.delete_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //String folderName = input.getText().toString().trim();
                 try {
                     Store store = mAccount.getRemoteStore();
                     if (store instanceof ImapStore) {
                         boolean result = ((ImapStore)store).deleteFolder(folder.name);
+                        if (result) {
+                            mAccount.getLocalStore().deleteFolder(folder.folder);
+                            if (mAccount.isSpecialFolder(folder.name)) {
+                                resetSpecialFolders(folder.name, K9.FOLDER_NONE);
+                            }
+                        }
                         String toastText = "Deletion of folder \"" + folder.name +
                                 ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
@@ -819,6 +847,9 @@ public class FolderList extends K9ListActivity {
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
                         boolean result = mAccount.getLocalStore().deleteFolder(folder.folder);
+                        if (result && mAccount.isSpecialFolder(folder.name)) {
+                            resetSpecialFolders(folder.name, K9.FOLDER_NONE);
+                        }
                         String toastText = "Deletion of folder \"" + folder.name +
                                 ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
@@ -914,6 +945,17 @@ public class FolderList extends K9ListActivity {
         }
         if (K9.ERROR_FOLDER_NAME.equals(folder.name)) {
             menu.findItem(R.id.expunge).setVisible(false);
+        }
+
+        if (folder.name.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
+                folder.name.equals(mAccount.getOutboxFolderName()) ||
+                folder.name.equals(mAccount.getErrorFolderName())) {
+            // Renaming an IMAP inbox is allowed, which makes that folder no longer the inbox and
+            // creates a new empty inbox, but this is likely confusing to many users and would
+            // rarely be wanted by others, so it is disabled. For POP3 folders the inbox could be
+            // named anything, but this likewise seems confusing and odd.
+            menu.findItem(R.id.rename_folder).setVisible(false);
+            menu.findItem(R.id.delete_folder).setVisible(false);
         }
 
         menu.setHeaderTitle(folder.displayName);
