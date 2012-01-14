@@ -176,7 +176,7 @@ public abstract class Store {
         return false;
     }
     
-    public boolean keepPushStateInSync() {
+    public boolean syncByDeltas() {
         return false;
     }
 

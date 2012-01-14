@@ -54,4 +54,10 @@ public enum Flag {
      * the server (if the message is still there).
      */
     X_GOT_ALL_HEADERS,
+    
+    /**
+     * Indicates that a message contains only delta information, and is not
+     * a full representation of the message.
+     */
+    X_DELTA_ONLY
 }

@@ -201,7 +201,6 @@ public abstract class Folder {
     }
 
     public void refresh(Preferences preferences) throws MessagingException {
-
     }
 
     public boolean isInTopGroup() {
@@ -226,5 +225,8 @@ public abstract class Folder {
     
     public String getPushState() {
         return null;
+    }
+    
+    public void setPushState(String state) throws MessagingException {
     }
 }

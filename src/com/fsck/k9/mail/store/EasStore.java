@@ -812,8 +812,12 @@ public class EasStore extends Store {
 
             for (Folder folder : folderList) {
                 EasFolder easFolder = (EasFolder)folder;
-                mFolderList.put(easFolder.getRemoteName(), easFolder);
-                easFolder.setSyncKey(syncKeys.get(easFolder.getRemoteName()));
+                // K-9 has its own special Outbox folder that works similar to the one on the
+                // Exchange server. Adding this one will cause 2 Outbox folders in our list.
+                if (easFolder.mType != FolderSyncParser.OUTBOX_TYPE) {
+                    mFolderList.put(easFolder.getRemoteName(), easFolder);
+                    easFolder.setSyncKey(syncKeys.get(easFolder.getRemoteName()));
+                }
             }
         }
 
@@ -922,7 +926,7 @@ public class EasStore extends Store {
     }
     
     @Override
-    public boolean keepPushStateInSync() {
+    public boolean syncByDeltas() {
         return true;
     }
 
@@ -932,18 +936,13 @@ public class EasStore extends Store {
             Message message = messages[i];
 
             try {
-                ByteArrayOutputStream out;
+                ByteArrayOutputStream out = new ByteArrayOutputStream(message.getSize());
 
-                out = new ByteArrayOutputStream(message.getSize());
-
-                EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new BufferedOutputStream(out, 1024));
+                EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(new BufferedOutputStream(out, 1024));
                 message.writeTo(msgOut);
                 msgOut.flush();
 
                 StringEntity bodyEntity = new StringEntity(out.toString(), "UTF-8");
-//                bodyEntity.setContentType("message/rfc822");
-
 
                 // Create the appropriate command and POST it to the server
                 String cmd = "SendMail&SaveInSent=T";
@@ -1470,6 +1469,11 @@ public class EasStore extends Store {
         @Override 
         public String getPushState() {
             return mSyncKey;
+        }
+        
+        @Override
+        public void setPushState(String state) {
+            mSyncKey = state;
         }
 
         @Override

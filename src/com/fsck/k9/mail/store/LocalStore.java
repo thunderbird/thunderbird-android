@@ -1395,6 +1395,7 @@ public class LocalStore extends Store implements Serializable {
             updateFolderColumn("status", status);
         }
 
+        @Override
         public void setPushState(final String pushState) throws MessagingException {
             mPushState = pushState;
             updateFolderColumn("push_state", pushState);
