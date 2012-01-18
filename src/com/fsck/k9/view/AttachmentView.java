@@ -34,6 +34,7 @@ import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
@@ -101,7 +102,28 @@ public class AttachmentView extends FrameLayout {
          */
         public void showFileBrowser(AttachmentView caller);
     }
-    public boolean populateFromPart(Part inputPart, Message message, Account account, MessagingController controller, MessagingListener listener) {
+
+    /**
+     * Populates this view with information about the attachment.
+     *
+     * <p>
+     * This method also decides which attachments are displayed when the "show attachments" button
+     * is pressed, and which attachments are only displayed after the "show more attachments"
+     * button was pressed.<br>
+     * Inline attachments with content ID and unnamed attachments fall into the second category.
+     * </p>
+     *
+     * @param inputPart
+     * @param message
+     * @param account
+     * @param controller
+     * @param listener
+     *
+     * @return {@code true} for a regular attachment. {@code false}, otherwise.
+     */
+    public boolean populateFromPart(Part inputPart, Message message, Account account,
+            MessagingController controller, MessagingListener listener) {
+        boolean firstClassAttachment = true;
         try {
             part = (LocalAttachmentBodyPart) inputPart;
 
@@ -112,8 +134,20 @@ public class AttachmentView extends FrameLayout {
             if (name == null) {
                 name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
             }
+
             if (name == null) {
-                return false;
+                firstClassAttachment = false;
+                String extension = MimeUtility.getExtensionByMimeType(contentType);
+                name = "noname" + ((extension != null) ? "." + extension : "");
+            }
+
+            // Inline parts with a content-id are almost certainly components of an HTML message
+            // not attachments. Only show them if the user pressed the button to show more
+            // attachments.
+            if (contentDisposition != null &&
+                    MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
+                    && part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
+                firstClassAttachment = false;
             }
 
             mAccount = account;
@@ -180,7 +214,7 @@ public class AttachmentView extends FrameLayout {
             Log.e(K9.LOG_TAG, "error ", e);
         }
 
-        return true;
+        return firstClassAttachment;
     }
 
     private Bitmap getPreviewIcon() {
