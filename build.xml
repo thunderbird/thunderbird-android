@@ -130,7 +130,7 @@
          <arg line="push"/>
      </exec>
      <exec executable="git" failonerror="true">
-         <arg line="push tag ${version-name}"/>
+         <arg line="push origin tag ${version-name}"/>
      </exec>
      </target>
 
