@@ -804,16 +804,16 @@ public class MessageList
         Account[] accountsWithNotification = null;
 
         if (mAccount != null) {
-        	accountsWithNotification = new Account[1];
-        	accountsWithNotification[0] = mAccount;
+        	  accountsWithNotification = new Account[1];
+        	  accountsWithNotification[0] = mAccount;
         } else {
-        	Preferences preferences = Preferences.getPreferences(this);
-        	accountsWithNotification = preferences.getAccounts();
+        	  Preferences preferences = Preferences.getPreferences(this);
+        	  accountsWithNotification = preferences.getAccounts();
         }
 
         for (Account accountWithNotification : accountsWithNotification) {
-        	mController.notifyAccountCancel(this, accountWithNotification);
-        	MessagingController.getInstance(getApplication()).notifyAccountCancel(this, accountWithNotification);
+        	  mController.notifyAccountCancel(this, accountWithNotification);
+        	  MessagingController.getInstance(getApplication()).notifyAccountCancel(this, accountWithNotification);
         }
 
         if (mAdapter.messages.isEmpty()) {
