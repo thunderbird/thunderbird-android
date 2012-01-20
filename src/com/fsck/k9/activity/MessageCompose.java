@@ -1530,7 +1530,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mDraftNeedsSaving = false;
-        saveMessage();
+
+        if (!draftsDisabled()) {
+            saveMessage();
+        }
     }
 
     public void onEncryptionKeySelectionDone() {
@@ -2009,6 +2012,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
+        // Disable the 'Save' menu option if folder is set to NONE
+        if (draftsDisabled()) {
+            menu.findItem(R.id.save).setEnabled(false);
+        }
+
         /*
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
          * if the work-around for the Gallery bug is enabled (see Issue 1186).
@@ -2034,12 +2042,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public void onBackPressed() {
         if (mEncryptCheckbox.isChecked()) {
             showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-        }
-        else if (mDraftNeedsSaving) {
-            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-        } else {
+        } else if (!mDraftNeedsSaving || draftsDisabled()) {
+            Toast.makeText(MessageCompose.this, getString(R.string.message_discarded_toast), Toast.LENGTH_LONG).show();
             super.onBackPressed();
-        }
+        } else
+            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+    }
+
+    private boolean draftsDisabled() {
+        if (mAccount.getDraftsFolderName().equals(K9.FOLDER_NONE))
+            return true;
+        else
+            return false;
     }
 
     @Override
