@@ -801,11 +801,9 @@ public class MessageList
 
         mController.addListener(mAdapter.mListener);
 
-        Account[] accountsWithNotification = null;
-
+        Account[] accountsWithNotification;
         if (mAccount != null) {
-            accountsWithNotification = new Account[1];
-            accountsWithNotification[0] = mAccount;
+            accountsWithNotification = new Account[] { mAccount };
         } else {
             Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
