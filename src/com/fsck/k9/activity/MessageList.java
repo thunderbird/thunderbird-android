@@ -800,9 +800,20 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
+
+        Account[] accountsWithNotification = null;
+
         if (mAccount != null) {
-            mController.notifyAccountCancel(this, mAccount);
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+            accountsWithNotification = new Account[1];
+            accountsWithNotification[0] = mAccount;
+        } else {
+            Preferences preferences = Preferences.getPreferences(this);
+            accountsWithNotification = preferences.getAccounts();
+        }
+
+        for (Account accountWithNotification : accountsWithNotification) {
+            mController.notifyAccountCancel(this, accountWithNotification);
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, accountWithNotification);
         }
 
         if (mAdapter.messages.isEmpty()) {
