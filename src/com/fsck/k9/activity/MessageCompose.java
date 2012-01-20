@@ -1525,15 +1525,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded() {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
-                mEncryptCheckbox.isChecked()) {
+                mEncryptCheckbox.isChecked() || isDraftsFolderDisabled()) {
             return;
         }
 
         mDraftNeedsSaving = false;
-
-        if (!draftsDisabled()) {
-            saveMessage();
-        }
+        saveMessage();
     }
 
     public void onEncryptionKeySelectionDone() {
@@ -2012,8 +2009,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
-        // Disable the 'Save' menu option if folder is set to NONE
-        if (draftsDisabled()) {
+        // Disable the 'Save' menu option if Drafts folder is set to -NONE-
+        if (isDraftsFolderDisabled()) {
             menu.findItem(R.id.save).setEnabled(false);
         }
 
@@ -2042,18 +2039,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public void onBackPressed() {
         if (mEncryptCheckbox.isChecked()) {
             showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-        } else if (!mDraftNeedsSaving || draftsDisabled()) {
+        } else if (!mDraftNeedsSaving || isDraftsFolderDisabled()) {
             Toast.makeText(MessageCompose.this, getString(R.string.message_discarded_toast), Toast.LENGTH_LONG).show();
             super.onBackPressed();
-        } else
+        } else {
             showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+        }
     }
 
-    private boolean draftsDisabled() {
-        if (mAccount.getDraftsFolderName().equals(K9.FOLDER_NONE))
-            return true;
-        else
-            return false;
+    private boolean isDraftsFolderDisabled() {
+        return mAccount.getDraftsFolderName().equals(K9.FOLDER_NONE);
     }
 
     @Override
