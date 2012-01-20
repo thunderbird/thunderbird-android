@@ -811,7 +811,6 @@ public class MessageList
 
         for (Account accountWithNotification : accountsWithNotification) {
             mController.notifyAccountCancel(this, accountWithNotification);
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, accountWithNotification);
         }
 
         if (mAdapter.messages.isEmpty()) {
