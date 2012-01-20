@@ -989,7 +989,8 @@ public class ImapStore extends Store {
                 return true;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             }
         }
@@ -1017,7 +1018,8 @@ public class ImapStore extends Store {
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(connection, ioe);
@@ -1047,7 +1049,8 @@ public class ImapStore extends Store {
                 connection.executeSimpleCommand(String.format("CREATE %s",
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
