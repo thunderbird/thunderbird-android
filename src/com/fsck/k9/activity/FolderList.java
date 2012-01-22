@@ -52,6 +52,7 @@ import java.util.List;
 public class FolderList extends K9ListActivity {
 
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
+    private static final int DIALOG_EMPTY_TRASH = 2;
 
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -413,11 +414,8 @@ public class FolderList extends K9ListActivity {
         onRefresh(false);
     }
 
-
     private void onRefresh(final boolean forceRemote) {
-
         MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
-
     }
 
     /**
@@ -480,17 +478,19 @@ public class FolderList extends K9ListActivity {
         Accounts.listAccounts(this);
         finish();
     }
+    
+    private void onEmptyTrash() {
+        showDialog(DIALOG_EMPTY_TRASH);
+    }
 
-    private void onEmptyTrash(final Account account) {
+    private void emptyTrash() {
         mHandler.dataChanged();
-
-        MessagingController.getInstance(getApplication()).emptyTrash(account, null);
+        MessagingController.getInstance(getApplication()).emptyTrash(mAccount, null);
     }
 
     private void onExpunge(final Account account, String folderName) {
         MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
     }
-
 
     private void onClearFolder(Account account, String folderName) {
         // There has to be a cheaper way to get at the localFolder object than this
@@ -514,10 +514,6 @@ public class FolderList extends K9ListActivity {
         onRefresh(!REFRESH_REMOTE);
     }
 
-
-
-
-
     private void sendMail(Account account) {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
     }
@@ -526,50 +522,42 @@ public class FolderList extends K9ListActivity {
         switch (item.getItemId()) {
         case R.id.compose:
             MessageCompose.actionCompose(this, mAccount);
-
             return true;
 
         case R.id.check_mail:
             MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
-
             return true;
 
         case R.id.send_messages:
             MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
             return true;
+            
         case R.id.accounts:
             onAccounts();
-
             return true;
 
         case R.id.list_folders:
             onRefresh(REFRESH_REMOTE);
-
             return true;
 
         case R.id.filter_folders:
             onEnterFilter();
-
             return true;
 
         case R.id.account_settings:
             onEditAccount();
-
             return true;
 
         case R.id.app_settings:
             onEditPrefs();
-
             return true;
 
         case R.id.empty_trash:
-            onEmptyTrash(mAccount);
-
+            onEmptyTrash();
             return true;
 
         case R.id.compact:
             onCompact(mAccount);
-
             return true;
 
         case R.id.display_1st_class: {
@@ -621,31 +609,27 @@ public class FolderList extends K9ListActivity {
             break;
 
         case R.id.mark_all_as_read:
-            onMarkAllAsRead(mAccount, folder.name);
+            onMarkAllAsRead(folder.name);
             break;
 
         case R.id.send_messages:
             sendMail(mAccount);
-
             break;
 
         case R.id.check_mail:
             checkMail(folder);
-
             break;
 
         case R.id.folder_settings:
             onEditFolder(mAccount, folder.name);
-
             break;
 
         case R.id.empty_trash:
-            onEmptyTrash(mAccount);
-
+            onEmptyTrash();
             break;
+            
         case R.id.expunge:
             onExpunge(mAccount, folder.name);
-
             break;
 
         case R.id.clear_local_folder:
@@ -659,7 +643,7 @@ public class FolderList extends K9ListActivity {
     private FolderInfoHolder mSelectedContextFolder = null;
 
 
-    private void onMarkAllAsRead(final Account account, final String folder) {
+    private void onMarkAllAsRead(final String folder) {
         mSelectedContextFolder = mAdapter.getFolder(folder);
         if (K9.confirmMarkAllAsRead()) {
             showDialog(DIALOG_MARK_ALL_AS_READ);
@@ -670,8 +654,7 @@ public class FolderList extends K9ListActivity {
 
     private void markAllAsRead() {
         try {
-            MessagingController.getInstance(getApplication())
-            .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
+            MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mSelectedContextFolder.name);
             mSelectedContextFolder.unreadMessageCount = 0;
             mHandler.dataChanged();
         } catch (Exception e) {
@@ -683,18 +666,32 @@ public class FolderList extends K9ListActivity {
     public Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
-            return ConfirmationDialog.create(this, id,
-                                             R.string.mark_all_as_read_dlg_title,
-                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                                     mSelectedContextFolder.displayName),
-                                             R.string.okay_action,
-                                             R.string.cancel_action,
-            new Runnable() {
-                @Override
-                public void run() {
-                    markAllAsRead();
-                }
-            });
+            return ConfirmationDialog.create(this,
+                    id,
+                    R.string.mark_all_as_read_dlg_title,
+                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                            mSelectedContextFolder.displayName),
+                    R.string.okay_action,
+                    R.string.cancel_action,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            markAllAsRead();
+                        }
+                    });
+        case DIALOG_EMPTY_TRASH:
+            return ConfirmationDialog.create(this,
+                    id,
+                    R.string.empty_trash_dlg_title,
+                    R.string.empty_trash_dlg_instructions,
+                    R.string.okay_action,
+                    R.string.cancel_action,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            emptyTrash();
+                        }
+                    });
         }
 
         return super.onCreateDialog(id);
@@ -705,10 +702,11 @@ public class FolderList extends K9ListActivity {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                             mSelectedContextFolder.displayName));
-
+                    mSelectedContextFolder.displayName));
             break;
-
+        case DIALOG_EMPTY_TRASH:
+            ((AlertDialog)dialog).setMessage(getString(R.string.empty_trash_dlg_instructions));
+            break;
         default:
             super.onPrepareDialog(id, dialog);
         }

@@ -95,8 +95,11 @@
     <string name="send_alternate_chooser_title">Choose sender</string>
 
     <string name="mark_all_as_read_dlg_title">Mark all messages as read</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in \'<xliff:g id="folder">%s</xliff:g>\' as read?  (including
-    messages in the folder that are not displayed in K-9)</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in \'<xliff:g id="folder">%s</xliff:g>\' as read (including
+    messages in the folder that are not displayed in K-9)?</string>
+    
+    <string name="empty_trash_dlg_title">Empty trash</string>
+    <string name="empty_trash_dlg_instructions">Caution: this will delete all messages in the trash folder on the server, including messages that are not displayed in K-9.</string>
 
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
