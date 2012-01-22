@@ -1163,7 +1163,7 @@ public class MessagingController implements Runnable {
             }
 
             HashSet<String> deletedMessages = new HashSet<String>();
-            HashSet<String> outOfOrderMessages = new HashSet<String>();
+            HashMap<String, Message> newMessages = new HashMap<String, Message>();
             
             final Date earliestDate = account.getEarliestPollDate();
 
@@ -1178,22 +1178,27 @@ public class MessagingController implements Runnable {
                 Message localMessage = localUidMap.get(remoteMessage.getUid());
                 if (localMessage == null && !remoteMessage.isSet(Flag.DELETED)) {
                     if (remoteMessage.isSet(Flag.X_DELTA_ONLY)) {
-                        // We got a message delta for a message we don't have in our local store?
-                        // Perhaps the messages list is out of order?
-                        outOfOrderMessages.add(remoteMessage.getUid());
-                        if (K9.DEBUG) {
-                            Log.v(K9.LOG_TAG, "Received a message delta for a message not currently in the local store, discarded");
+                        Message message = newMessages.get(remoteMessage.getUid());
+                        if (message != null) {
+                            message.setFlags(remoteMessage.getFlags(), true);
+                        } else if (K9.DEBUG) {
+                            Log.v(K9.LOG_TAG, "Received a message delta for an unknown message, discarded");
                         }
                     } else {
                         // We don't have the message locally, add it to the store.
                         remoteMessages.add(remoteMessage);
-                        if (K9.DEBUG && outOfOrderMessages.contains(remoteMessage.getUid())) {
-                            Log.v(K9.LOG_TAG, "Processed a full remote message after processing a delta for the same message");
-                        }
+                        // Also add it to a hash map for quick retrieval.
+                        newMessages.put(remoteMessage.getUid(), remoteMessage);
                     }
                 } else if (remoteMessage.isSet(Flag.DELETED)) {
-                    // The remote message was deleted, mark it to be deleted locally.
-                    deletedMessages.add(remoteMessage.getUid());
+                    Message message = newMessages.get(remoteMessage.getUid());
+                    if (message != null) {
+                        // The message is both new and deleted, just remove it from the remote messages list.
+                        remoteMessages.remove(message);
+                    } else {
+                        // The remote message was deleted, mark it to be deleted locally.
+                        deletedMessages.add(remoteMessage.getUid());
+                    }
                 } else {
                     // We already have the message locally, just add any new flags that have been set.
                     localMessage.setFlags(remoteMessage.getFlags(), true);
