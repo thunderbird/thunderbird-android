@@ -890,12 +890,6 @@ public class MessagingController implements Runnable {
             localFolder = localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.updateLastUid();
-            
-            Message[] localMessages = localFolder.getMessages(null);
-            HashMap<String, Message> localUidMap = new HashMap<String, Message>();
-            for (Message message : localMessages) {
-                localUidMap.put(message.getUid(), message);
-            }
 
             remoteStore = account.getRemoteStore();
 
