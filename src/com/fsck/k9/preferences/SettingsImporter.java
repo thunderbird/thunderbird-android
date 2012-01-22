@@ -214,7 +214,6 @@ public class SettingsImporter {
 
             if (accountUuids != null && accountUuids.size() > 0) {
                 if (imported.accounts != null) {
-                    List<String> newUuids = new ArrayList<String>();
                     for (String accountUuid : accountUuids) {
                         if (imported.accounts.containsKey(accountUuid)) {
                             ImportedAccount account = imported.accounts.get(accountUuid);
@@ -224,16 +223,33 @@ public class SettingsImporter {
                                 AccountDescriptionPair importResult = importAccount(context,
                                         editor, imported.contentVersion, account, overwrite);
 
-                                String newUuid = importResult.imported.uuid;
-                                if (!importResult.overwritten) {
-                                    newUuids.add(newUuid);
-                                }
                                 if (editor.commit()) {
                                     if (K9.DEBUG) {
                                         Log.v(K9.LOG_TAG, "Committed settings for account \"" +
                                               importResult.imported.name +
                                               "\" to the settings database.");
                                     }
+
+                                    // Add UUID of the account we just imported to the list of
+                                    // account UUIDs
+                                    if (!importResult.overwritten) {
+                                        editor = storage.edit();
+
+                                        String newUuid = importResult.imported.uuid;
+                                        String oldAccountUuids = storage.getString("accountUuids", "");
+                                        String newAccountUuids = (oldAccountUuids.length() > 0) ?
+                                                oldAccountUuids + "," + newUuid : newUuid;
+
+                                        putString(editor, "accountUuids", newAccountUuids);
+
+                                        if (!editor.commit()) {
+                                            throw new SettingsImportExportException("Failed to set account UUID list");
+                                        }
+                                    }
+
+                                    // Reload accounts
+                                    preferences.loadAccounts();
+
                                     importedAccounts.add(importResult);
                                 } else {
                                     if (K9.DEBUG) {
@@ -261,16 +277,6 @@ public class SettingsImporter {
                     }
 
                     SharedPreferences.Editor editor = storage.edit();
-
-                    if (newUuids.size() > 0) {
-                        String oldAccountUuids = storage.getString("accountUuids", "");
-                        String appendUuids = Utility.combine(newUuids.toArray(new String[0]), ',');
-                        String prefix = "";
-                        if (oldAccountUuids.length() > 0) {
-                            prefix = oldAccountUuids + ",";
-                        }
-                        putString(editor, "accountUuids", prefix + appendUuids);
-                    }
 
                     String defaultAccountUuid = storage.getString("defaultAccountUuid", null);
                     if (defaultAccountUuid == null) {

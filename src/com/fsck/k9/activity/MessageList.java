@@ -804,9 +804,17 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
+
+        Account[] accountsWithNotification;
         if (mAccount != null) {
-            mController.notifyAccountCancel(this, mAccount);
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+            accountsWithNotification = new Account[] { mAccount };
+        } else {
+            Preferences preferences = Preferences.getPreferences(this);
+            accountsWithNotification = preferences.getAccounts();
+        }
+
+        for (Account accountWithNotification : accountsWithNotification) {
+            mController.notifyAccountCancel(this, accountWithNotification);
         }
 
         if (mAdapter.messages.isEmpty()) {

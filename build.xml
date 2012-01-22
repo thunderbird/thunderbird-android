@@ -130,7 +130,7 @@
          <arg line="push"/>
      </exec>
      <exec executable="git" failonerror="true">
-         <arg line="push tag ${version-name}"/>
+         <arg line="push origin tag ${version-name}"/>
      </exec>
      </target>
 
@@ -142,7 +142,7 @@
     <target name="upload" depends="clean,get-version,release">
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="mv" failonerror="true">
-            <arg value="${out.release.file}" />
+            <arg value="${out.final.file}" />
             <arg value="bin/k9-${version-name}-release.apk" />
         </exec>
         <exec executable="googlecode_upload.pl" failonerror="true">
