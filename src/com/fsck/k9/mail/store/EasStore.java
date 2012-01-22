@@ -91,8 +91,9 @@ public class EasStore extends Store {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
     // This key is sent the first time we sync the folder hierarchy, and also the first time
-    // we sync the items any "collection" (emails in a folder).
+    // we sync the items any "collection" (i.e., emails in a folder).
     public static final String INITIAL_SYNC_KEY = "0";
+    private static final String NO_PARENT_ID = "0";
 
     private static final String PING_COMMAND = "Ping";
     private static final String PROVISION_COMMAND = "Provision";
@@ -812,13 +813,12 @@ public class EasStore extends Store {
 
             for (Folder folder : folderList) {
                 EasFolder easFolder = (EasFolder)folder;
-                // K-9 has its own special Outbox folder that works similar to the one on the
-                // Exchange server. Adding this one will cause 2 Outbox folders in our list.
-                if (easFolder.mType != FolderSyncParser.OUTBOX_TYPE) {
-                    mFolderList.put(easFolder.getRemoteName(), easFolder);
-                    easFolder.setSyncKey(syncKeys.get(easFolder.getRemoteName()));
-                }
+                mFolderList.put(easFolder.getRemoteName(), easFolder);
+                easFolder.setSyncKey(syncKeys.get(easFolder.getRemoteName()));
             }
+            
+            // We need to update all folder display names based on parenting.
+            resolveFolderDisplayNames(mFolderList);
         }
 
         for (Folder folder : folderList) {
@@ -890,6 +890,32 @@ public class EasStore extends Store {
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Exception encountered while restoring folders from the local store", e);
+        }
+    }
+    
+    private void resolveFolderDisplayNames(HashMap<String, EasFolder> folderMap) {
+        for (Entry<String, EasFolder> entry : folderMap.entrySet()) {
+            String parentId = entry.getValue().getParentId(); 
+            if (parentId != null && !parentId.equals(NO_PARENT_ID)) {
+                resolveOneFolderDisplayName(entry.getValue(), folderMap);
+            }
+        }
+    }
+    
+    private void resolveOneFolderDisplayName(EasFolder folder, HashMap<String, EasFolder> folderMap) {
+        EasFolder parentFolder = folderMap.get(folder.getParentId());
+        if (parentFolder != null) {
+            String parentId = parentFolder.getParentId(); 
+            if (parentId != null && !parentId.equals(NO_PARENT_ID)) {
+                // Recurse to ensure the folder's name is complete before continuing.
+                resolveOneFolderDisplayName(parentFolder, folderMap);
+            }
+            
+            String name = parentFolder.getName();
+            folder.mName = name + "/" + folder.mName;
+            // We only need to update the name once, reset the parent Id so we don't waste
+            // cycles doing it again.
+            folder.setParentId(null);
         }
     }
 
@@ -1021,6 +1047,7 @@ public class EasStore extends Store {
         private String mName;
         private String mServerId;
         private int mType;
+        private String mParentId = null;
         private boolean mIsOpen = false;
         private String mSyncKey = null;
 
@@ -1034,6 +1061,14 @@ public class EasStore extends Store {
             mServerId = serverId;
             mType = type;
         }
+        
+        public String getParentId() {
+            return mParentId;
+        }
+        
+        public void setParentId(String parentId) {
+            mParentId = parentId;
+        }
 
         public String getSyncKey() throws MessagingException {
             if (mSyncKey == null) {
@@ -1045,11 +1080,6 @@ public class EasStore extends Store {
 
         public void setSyncKey(String key) throws MessagingException {
             mSyncKey = key;
-        }
-
-        @Override
-        public boolean isSyncMode() {
-            return true;
         }
 
         @Override

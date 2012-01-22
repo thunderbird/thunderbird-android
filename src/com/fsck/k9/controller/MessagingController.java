@@ -503,19 +503,22 @@ public class MessagingController implements Runnable {
     private void syncLocalFoldersWithRemoteFolders(List<? extends Folder> localFolders,
             List<? extends Folder> remoteFolders, final Account account) throws MessagingException {
         HashSet<String> remoteFolderNames = new HashSet<String>();
-        HashSet<String> localFolderNames = new HashSet<String>();
+        HashMap<String, Folder> localFolderMap = new HashMap<String, Folder>();
         
         List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
         LocalStore localStore = account.getLocalStore();
         
         for (Folder localFolder : localFolders) {
-            localFolderNames.add(localFolder.getRemoteName());
+            localFolderMap.put(localFolder.getRemoteName(), localFolder);
         }
         
         // Add any new folders in the remote store to the local store.
         for (Folder remoteFolder : remoteFolders) {
-            if (!localFolderNames.contains(remoteFolder.getRemoteName())) {
+            Folder localFolder = localFolderMap.get(remoteFolder.getRemoteName());
+            if (localFolder == null) {
                 foldersToCreate.add(localStore.getFolder(remoteFolder.getRemoteName(), remoteFolder.getName()));
+            } else {
+                ((LocalFolder)localFolder).setName(remoteFolder.getName());
             }
             remoteFolderNames.add(remoteFolder.getRemoteName());
         }
