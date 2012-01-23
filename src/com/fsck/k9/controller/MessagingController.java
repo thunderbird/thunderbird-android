@@ -449,7 +449,7 @@ public class MessagingController implements Runnable {
         put("doRefreshRemote", listener, new Runnable() {
             @Override
             public void run() {
-                List <? extends Folder > localFolders = null;
+                List <? extends LocalFolder > localFolders = null;
                 try {
                     Store store = account.getRemoteStore();
 
@@ -476,12 +476,21 @@ public class MessagingController implements Runnable {
                     localFolders = localStore.getPersonalNamespaces(false);
 
                     /*
-                     * Clear out any folders that are no longer on the remote store.
+                     * Clear out any folders that are no longer on the remote store,
+                     * unless they are tagged as local-only or are special folders.
                      */
-                    for (Folder localFolder : localFolders) {
+                    // ASH todo: also don't clear out folders with K9.LOCAL_UID_PREFIX
+                    for (LocalFolder localFolder : localFolders) {
                         String localFolderName = localFolder.getName();
-                        if (!account.isSpecialFolder(localFolderName) && !remoteFolderNames.contains(localFolderName)) {
+                        if (!account.isSpecialFolder(localFolderName) &&
+                                !remoteFolderNames.contains(localFolderName) &&
+                                !localFolder.isLocalOnly()) {
                             localFolder.delete(false);
+                        }
+                        if (remoteFolderNames.contains(localFolderName)) {
+                            if (localFolder.isLocalOnly()) localFolder.setLocalOnly(false);
+                        } else if (localFolder.exists()) {
+                            if (!localFolder.isLocalOnly()) localFolder.setLocalOnly(true);
                         }
                     }
 
@@ -620,8 +629,9 @@ public class MessagingController implements Runnable {
      * Find all messages in any local account which match the query 'query'
      * @throws MessagingException
      */
-    public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate,
-                                    final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+    public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final
+            Message[] messages, final String query, final boolean integrate, final Flag[]
+            requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "searchLocalMessages ("
                   + "accountUuids=" + Utility.combine(accountUuids, ',')
@@ -637,11 +647,15 @@ public class MessagingController implements Runnable {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                searchLocalMessagesSynchronous(accountUuids, folderNames, messages,  query, integrate, requiredFlags, forbiddenFlags, listener);
+                searchLocalMessagesSynchronous(accountUuids, folderNames, messages, query,
+                integrate, requiredFlags, forbiddenFlags, listener);
             }
         });
     }
-    public void searchLocalMessagesSynchronous(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+    public void searchLocalMessagesSynchronous(final String[] accountUuids, final String[]
+            folderNames, final Message[] messages, final String query, final boolean integrate,
+            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener
+            listener) {
 
         final AccountStats stats = new AccountStats();
         final Set<String> accountUuidsSet = new HashSet<String>();
@@ -1939,12 +1953,9 @@ public class MessagingController implements Runnable {
     }
 
     /**
-     * Process a pending append message command. This command uploads a local message to the
-     * server, first checking to be sure that the server message is not newer than
-     * the local message. Once the local message is successfully processed it is deleted so
-     * that the server message will be synchronized down without an additional copy being
-     * created.
-     * TODO update the local message UID instead of deleteing it
+     * Process a pending append message command. This command uploads a local message to the server,
+     * first checking to be sure that the server message is not newer than the local message. Once
+     * the local message is successfully processed its UID is updated to reflect the remote UID.
      *
      * @param command arguments = (String folder, String uid)
      * @param account
@@ -2090,7 +2101,7 @@ public class MessagingController implements Runnable {
         queuePendingCommand(account, command);
     }
     /**
-     * Process a pending trash message command.
+     * Process a pending move or copy message command.
      *
      * @param command arguments = (String folder, String uid)
      * @param account
@@ -2144,6 +2155,9 @@ public class MessagingController implements Runnable {
                     destFolderName = null;
                 }
                 remoteSrcFolder.delete(messages.toArray(EMPTY_MESSAGE_ARRAY), destFolderName);
+                if (destFolderName != null) {
+                    updateUids(account, destFolderName);
+                }
             } else {
                 remoteDestFolder = remoteStore.getFolder(destFolder);
 
@@ -2152,7 +2166,9 @@ public class MessagingController implements Runnable {
                 } else {
                     remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 }
+                updateUids(account, destFolder);
             }
+
             if (!isCopy && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
@@ -2166,6 +2182,84 @@ public class MessagingController implements Runnable {
 
 
     }
+
+    /**
+     * Update all messages in a folder with UIDs starting with K9.LOCAL_UID_PREFIX to their remote
+     * UIDs, or APPEND the messages if not found on server.
+     *
+     * @param account Account we are saving for.
+     * @param folder Folder to update.
+     * @throws MessagingException
+     */
+    private void updateUids(Account account, final String folder) throws MessagingException {
+        Folder remoteFolder = null;
+        LocalStore localStore = account.getLocalStore();
+        LocalFolder localFolder = localStore.getFolder(folder);
+        localFolder.open(OpenMode.READ_WRITE);
+        String[] queryFields = { "uid" };
+        String queryString = K9.LOCAL_UID_PREFIX;
+        List<LocalFolder> folders = Arrays.asList(new LocalFolder[] { localFolder });
+        Message[] localMessages = localStore.searchForMessages(null, new String[] { "uid" }, queryString, folders, null, null, null);
+
+        try {
+            if (localMessages.length == 0) {
+                Log.w(K9.LOG_TAG, "No messages in local folder " + folder + " found with uid starting with " + K9.LOCAL_UID_PREFIX);
+                return;
+            }
+            Store remoteStore = account.getRemoteStore();
+            remoteFolder = remoteStore.getFolder(folder);
+            if (!remoteFolder.exists()) {
+                if (!remoteFolder.create()) {
+                    // ASH log something?
+                    return;
+                }
+            }
+            remoteFolder.open(OpenMode.READ_WRITE);
+            if (remoteFolder.getMode() != OpenMode.READ_WRITE) {
+                // ASH log something?
+                return;
+            }
+
+            for (Message message : localMessages) {
+                LocalMessage localMessage = (LocalMessage)message;
+
+                Log.w(K9.LOG_TAG, "Checking for remote message with same message id as local message with uid "
+                        + localMessage.getUid());
+                String rUid = remoteFolder.getUidFromMessageId(localMessage);
+                if (rUid != null) {
+                    Log.w(K9.LOG_TAG, "Found a remote message with uid " + rUid);
+
+                    String oldUid = localMessage.getUid();
+                    localMessage.setUid(rUid);
+                    localFolder.changeUid(localMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                    }
+                } else {
+                    Log.w(K9.LOG_TAG, "No remote message with message-id found, appending instead.");
+                    /*
+                     * If the message does not exist remotely we just upload it and then
+                     * update our local copy with the new uid.
+                     */
+                    FetchProfile fp = new FetchProfile();
+                    fp.add(FetchProfile.Item.BODY);
+                    localFolder.fetch(new Message[] { localMessage } , fp, null);
+                    String oldUid = localMessage.getUid();
+                    localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
+                    remoteFolder.appendMessages(new Message[] { localMessage });
+
+                    localFolder.changeUid(localMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                    }
+                }
+            }
+        } finally {
+            closeFolder(localFolder);
+            closeFolder(remoteFolder);
+        }
+    }
+
 
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids) {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable() {
@@ -3164,42 +3258,6 @@ public class MessagingController implements Runnable {
         put("getFolderUnread:" + account.getDescription() + ":" + folderName, l, unreadRunnable);
     }
 
-
-
-    public boolean isMoveCapable(Message message) {
-        boolean isPop3Store = false;
-        try {
-            isPop3Store = message.getFolder().getAccount().getRemoteStore() instanceof Pop3Store;
-        } catch (com.fsck.k9.mail.MessagingException me) {
-            Log.e(K9.LOG_TAG, "MessagingException trying to get remote store of message: " + me);
-        }
-        return (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX) || isPop3Store);
-    }
-    public boolean isCopyCapable(Message message) {
-        return isMoveCapable(message);
-    }
-
-    public boolean isMoveCapable(final Account account) {
-        try {
-            Store localStore = account.getLocalStore();
-            Store remoteStore = account.getRemoteStore();
-            return localStore.isMoveCapable() && remoteStore.isMoveCapable();
-        } catch (MessagingException me) {
-
-            Log.e(K9.LOG_TAG, "Exception while ascertaining move capability", me);
-            return false;
-        }
-    }
-    public boolean isCopyCapable(final Account account) {
-        try {
-            Store localStore = account.getLocalStore();
-            Store remoteStore = account.getRemoteStore();
-            return localStore.isCopyCapable() && remoteStore.isCopyCapable();
-        } catch (MessagingException me) {
-            Log.e(K9.LOG_TAG, "Exception while ascertaining copy capability", me);
-            return false;
-        }
-    }
     public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
                              final MessagingListener listener) {
         for (Message message : messages) {
@@ -3234,25 +3292,21 @@ public class MessagingController implements Runnable {
 
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
             final String destFolder, final boolean isCopy, MessagingListener listener) {
-
         try {
-            Store localStore = account.getLocalStore();
+            LocalStore localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
-                return;
-            }
-            if (isCopy && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
-                return;
-            }
-
-            Folder localSrcFolder = localStore.getFolder(srcFolder);
-            Folder localDestFolder = localStore.getFolder(destFolder);
+            LocalFolder localSrcFolder = localStore.getFolder(srcFolder);
+            LocalFolder localDestFolder = localStore.getFolder(destFolder);
 
             List<String> uids = new LinkedList<String>();
+            List<String> localUids = new LinkedList<String>();
             for (Message message : inMessages) {
                 String uid = message.getUid();
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX) || remoteStore instanceof Pop3Store) {
+                // ASH fixme: add all messages, and later handle local ones separately?
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     uids.add(uid);
+                } else {
+                    localUids.add(uid);
                 }
             }
 
@@ -3264,9 +3318,11 @@ public class MessagingController implements Runnable {
                     origUidMap.put(message.getUid(), message);
                 }
 
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
-                          + ", " + messages.length + " messages, " + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+                            + ", " + messages.length + " messages, " + ", destination folder = " +
+                            destFolder + ", isCopy = " + isCopy);
+                }
 
                 if (isCopy) {
                     FetchProfile fp = new FetchProfile();
@@ -3286,9 +3342,59 @@ public class MessagingController implements Runnable {
                     }
                 }
 
-                if (!(remoteStore instanceof Pop3Store)) { // don't sync pop3
+                if (!localDestFolder.isLocalOnly() && ((!isCopy && remoteStore.isMoveCapable()) ||
+                        (isCopy && remoteStore.isCopyCapable()))) {
                     queueMoveOrCopy(account, srcFolder, destFolder, isCopy,
                             origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
+                } else if (!isCopy && !localSrcFolder.isLocalOnly()) {
+                    queueSetFlag(account, srcFolder, Boolean.toString(true),
+                            Flag.DELETED.toString(),
+                            origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
+                    if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                        queueExpunge(account, srcFolder);
+                    }
+                }
+            }
+
+            // K9.LOCAL_UID_PREFIX messages:
+            Message[] localMessages = localSrcFolder.getMessages(localUids.toArray(EMPTY_STRING_ARRAY), null);
+            if (localMessages.length > 0) {
+                Map<String, Message> origUidMap = new HashMap<String, Message>();
+
+                for (Message message : localMessages) {
+                    origUidMap.put(message.getUid(), message);
+                }
+
+                if (K9.DEBUG) {
+                    Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder +
+                            ", " + localMessages.length + " messages, " + ", destination folder = "
+                            + destFolder + ", isCopy = " + isCopy);
+                }
+
+                if (!isCopy) {
+                    localSrcFolder.moveMessages(localMessages, localDestFolder);
+                    for (Map.Entry<String, Message> entry : origUidMap.entrySet()) {
+                        String origUid = entry.getKey();
+                        Message message = entry.getValue();
+                        for (MessagingListener l : getListeners()) {
+                            l.messageUidChanged(account, srcFolder, origUid, message.getUid());
+                        }
+                        unsuppressMessage(account, srcFolder, origUid);
+                    }
+                }
+
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.ENVELOPE);
+                fp.add(FetchProfile.Item.BODY);
+                localSrcFolder.fetch(localMessages, fp, null);
+
+                if ((!localDestFolder.isLocalOnly()) && ((!isCopy && (remoteStore.isMoveCapable()))
+                        || (isCopy && (remoteStore.isCopyCapable())))) {
+                    for (Message message : localMessages) {
+                        saveMessage(account, message, destFolder);
+                    }
+                } else if (isCopy) {
+                    localSrcFolder.copyMessages(localMessages, localDestFolder);
                 }
             }
 
@@ -4069,10 +4175,22 @@ public class MessagingController implements Runnable {
      * @return Message representing the entry in the local store.
      */
     public Message saveDraft(final Account account, final Message message) {
+        return saveMessage(account, message, account.getDraftsFolderName());
+    }
+
+    /**
+     * Save a message.
+     * @param account Account we are saving for.
+     * @param message Message to save.
+     * @param folderName String to save to.
+     * @return Message representing the entry in the local store.
+     */
+    public Message saveMessage(final Account account, final Message message, final String
+            folderName) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
-            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderName());
+            LocalFolder localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
             // Save the message to the store.
             localFolder.appendMessages(new Message[] {
@@ -4092,7 +4210,7 @@ public class MessagingController implements Runnable {
             processPendingCommands(account);
 
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to save message as draft.", e);
+            Log.e(K9.LOG_TAG, "Unable to save message to " + folderName + ".", e);
             addErrorMessage(account, null, e);
         }
         return localMessage;

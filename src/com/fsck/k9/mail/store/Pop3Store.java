@@ -288,17 +288,6 @@ public class Pop3Store extends Store {
         folder.close();
     }
 
-    @Override
-    public boolean isMoveCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCopyCapable() {
-        return true;
-    }
-
-
     class Pop3Folder extends Folder {
         private Socket mSocket;
         private InputStream mIn;

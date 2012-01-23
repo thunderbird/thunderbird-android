@@ -787,12 +787,13 @@ public class ImapStore extends Store {
         }
     }
 
-    public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
-        ImapFolder folder = new ImapFolder(this, name);
+    public boolean createFolder(final String folderName) throws com.fsck.k9.mail.MessagingException {
+        ImapFolder folder = new ImapFolder(this, folderName);
         return folder.create();
     }
 
-    public boolean renameFolder(String oldFolderName, String newFolderName) throws com.fsck.k9.mail.MessagingException {
+    public boolean renameFolder(final String oldFolderName, final String newFolderName)
+            throws com.fsck.k9.mail.MessagingException {
         ImapFolder oldFolder = new ImapFolder(this, oldFolderName);
         ImapFolder newFolder = new ImapFolder(this, newFolderName);
         if (oldFolder.exists() && !newFolder.exists()) {
@@ -801,8 +802,8 @@ public class ImapStore extends Store {
         return false;
     }
 
-    public boolean deleteFolder(String name) throws com.fsck.k9.mail.MessagingException {
-        ImapFolder folder = new ImapFolder(this, name);
+    public boolean deleteFolder(final String folderName) throws com.fsck.k9.mail.MessagingException {
+        ImapFolder folder = new ImapFolder(this, folderName);
         return ((ImapFolder)folder).deleteFolder();
     }
 
@@ -815,10 +816,12 @@ public class ImapStore extends Store {
     public boolean isCopyCapable() {
         return true;
     }
+
     @Override
     public boolean isPushCapable() {
         return true;
     }
+
     @Override
     public boolean isExpungeCapable() {
         return true;
@@ -1077,7 +1080,7 @@ public class ImapStore extends Store {
             }
         }
 
-        public boolean rename(String newFolder) throws MessagingException {
+        public boolean rename(final String newFolder) throws MessagingException {
             /*
              * This method needs to operate in the unselected mode as well as the selected mode
              * so we must get the connection ourselves if it's not there. We are specifically
@@ -1156,7 +1159,7 @@ public class ImapStore extends Store {
 
                 if (!exists(remoteDestName)) {
                     /*
-                     * If the remote trash folder doesn't exist we try to create it.
+                     * If the remote folder doesn't exist we try to create it.
                      */
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "IMAPMessage.copyMessages: attempting to create remote '" + remoteDestName + "' folder for " + getLogId());

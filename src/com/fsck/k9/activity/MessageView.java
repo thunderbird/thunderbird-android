@@ -518,18 +518,13 @@ public class MessageView extends K9Activity implements OnClickListener {
         mDelete.setEnabled(true);
         mNext.setEnabled(mNextMessage != null);
         mPrevious.setEnabled(mPreviousMessage != null);
-        // If moving isn't support at all, then all of them must be disabled anyway.
-        if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if the Archive folder is not the current folder and not NONE.
-            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
-            // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
-            mMove.setEnabled(true);
-        } else {
-            disableMoveButtons();
-        }
+        // Only enable the button if the Archive folder is not the current folder and not NONE.
+        mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+        // Only enable the button if the Spam folder is not the current folder and not NONE.
+        mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+        mMove.setEnabled(true);
     }
     private void staticButtons() {
         View buttons = findViewById(R.id.scrolling_buttons);
@@ -650,15 +645,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     private void onRefile(String dstFolder) {
-        if (!mController.isMoveCapable(mAccount)) {
-            return;
-        }
-        if (!mController.isMoveCapable(mMessage)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
-
         if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
             return;
         }
@@ -738,30 +724,16 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     private void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
-                || (mMessage == null)) {
+        if (mMessage == null) {
             return;
         }
-        if (!mController.isMoveCapable(mMessage)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
-
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
     private void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
-                || (mMessage == null)) {
+        if (mMessage == null) {
             return;
         }
-        if (!mController.isCopyCapable(mMessage)) {
-            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
-
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
@@ -1005,14 +977,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
-        if (!mController.isCopyCapable(mAccount)) {
-            menu.findItem(R.id.copy).setVisible(false);
-        }
-        if (!mController.isMoveCapable(mAccount)) {
-            menu.findItem(R.id.move).setVisible(false);
-            menu.findItem(R.id.archive).setVisible(false);
-            menu.findItem(R.id.spam).setVisible(false);
-        }
         if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
             menu.findItem(R.id.archive).setVisible(false);
         }

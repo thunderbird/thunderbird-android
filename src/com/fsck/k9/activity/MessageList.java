@@ -1760,15 +1760,6 @@ public class MessageList
         }
 
         Account account = message.message.getFolder().getAccount();
-        if (!mController.isCopyCapable(account)) {
-            menu.findItem(R.id.copy).setVisible(false);
-        }
-
-        if (!mController.isMoveCapable(account)) {
-            menu.findItem(R.id.move).setVisible(false);
-            menu.findItem(R.id.archive).setVisible(false);
-            menu.findItem(R.id.spam).setVisible(false);
-        }
 
         if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName())) {
             menu.findItem(R.id.archive).setVisible(false);
@@ -2640,7 +2631,7 @@ public class MessageList
      *            Never {@code null}.
      */
     private void onMove(final List<MessageInfoHolder> holders) {
-        if (!checkCopyOrMovePossible(holders, FolderOperation.MOVE)) {
+        if (holders.isEmpty()) {
             return;
         }
 
@@ -2655,7 +2646,7 @@ public class MessageList
      *            Never {@code null}.
      */
     private void onCopy(final List<MessageInfoHolder> holders) {
-        if (!checkCopyOrMovePossible(holders, FolderOperation.COPY)) {
+        if (holders.isEmpty()) {
             return;
         }
 
@@ -2736,42 +2727,6 @@ public class MessageList
     }
 
     /**
-     * Display an Toast message if any message isn't synchronized
-     *
-     * @param holders
-     *            Never <code>null</code>.
-     * @param operation
-     *            Never {@code null}.
-     *
-     * @return <code>true</code> if operation is possible
-     */
-    private boolean checkCopyOrMovePossible(final List<MessageInfoHolder> holders, final FolderOperation operation) {
-        if (holders.isEmpty()) {
-            return false;
-        }
-        boolean first = true;
-        for (final MessageInfoHolder holder : holders) {
-            final Message message = holder.message;
-            if (first) {
-                first = false;
-                // account check
-                final Account account = message.getFolder().getAccount();
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
-                    return false;
-                }
-            }
-            // message check
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
-                                                   Toast.LENGTH_LONG);
-                toast.show();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Helper method to get a List of message ready to be processed. This implementation will return a list containing the sole argument.
      *
      * @param holder Never {@code null}.
@@ -2848,23 +2803,9 @@ public class MessageList
                 first = false;
                 folderName = message.getFolder().getName();
                 account = message.getFolder().getAccount();
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
-                    // account is not copy/move capable
-                    return;
-                }
             } else if (!account.equals(message.getFolder().getAccount())
                        || !folderName.equals(message.getFolder().getName())) {
                 // make sure all messages come from the same account/folder?
-                return;
-            }
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
-                                                   Toast.LENGTH_LONG);
-                toast.show();
-
-                // XXX return meaningful error value?
-
-                // message isn't synchronized
                 return;
             }
             messages.add(message);

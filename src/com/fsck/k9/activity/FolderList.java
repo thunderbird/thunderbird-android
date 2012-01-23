@@ -37,7 +37,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
@@ -422,18 +421,8 @@ public class FolderList extends K9ListActivity {
         onRefresh(false);
     }
 
-
     private void onRefresh(boolean forceRemote) {
-        // Pop3 does not have remote folders, so if this is true the local folders will be deleted!
-        try {
-            if (mAccount.getRemoteStore() instanceof Pop3Store) {
-                forceRemote = false;
-            }
-        } catch (com.fsck.k9.mail.MessagingException me) {
-            Log.e(K9.LOG_TAG, "Error getting the remote store: " + me);
-        }
         MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
-
     }
 
     /**
@@ -507,7 +496,7 @@ public class FolderList extends K9ListActivity {
                         String toastText = "Creating WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().createFolder(folderName);
+                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
                         String toastText = "Creation of folder \"" + folderName +
                                 ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
@@ -734,7 +723,7 @@ public class FolderList extends K9ListActivity {
     /*
      Change special folder settings (when a folder is renamed or deleted).
      */
-    private void resetSpecialFolders(String oldFolderName, String newFolderName) {
+    private void resetSpecialFolders(final String oldFolderName, final String newFolderName) {
         if (oldFolderName.equals(mAccount.getTrashFolderName())) {
             mAccount.setTrashFolderName(newFolderName);
         }

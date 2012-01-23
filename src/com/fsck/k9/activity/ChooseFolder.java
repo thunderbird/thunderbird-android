@@ -28,8 +28,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
 import java.util.ArrayList;
@@ -310,7 +308,7 @@ public class ChooseFolder extends K9ListActivity {
                         String toastText = "Creating WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().createFolder(folderName);
+                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
                         String toastText = "Creation of folder \"" + folderName +
                                 ((result) ? "\" succeeded." : "\" failed.");
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();

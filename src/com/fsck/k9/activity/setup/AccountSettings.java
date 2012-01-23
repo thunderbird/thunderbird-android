@@ -110,7 +110,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
 
     private Account mAccount;
-    private boolean mIsMoveCapable = false;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
 
@@ -188,7 +187,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
         try {
             final Store store = mAccount.getRemoteStore();
-            mIsMoveCapable = store.isMoveCapable();
             mIsPushCapable = store.isPushCapable();
             mIsExpungeCapable = store.isExpungeCapable();
         } catch (Exception e) {
@@ -442,11 +440,9 @@ public class AccountSettings extends K9PreferenceActivity {
         });
 
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
-        mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
 
         mAccountScrollMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
-        mAccountScrollMoveButtons.setEnabled(mIsMoveCapable);
         mAccountScrollMoveButtons.setValue("" + mAccount.getScrollMessageViewMoveButtons());
         mAccountScrollMoveButtons.setSummary(mAccountScrollMoveButtons.getEntry());
         mAccountScrollMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -758,13 +754,8 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
         }
 
-        if (!mIsMoveCapable) {
-            mAccount.setEnableMoveButtons(false);
-            mAccount.setScrollMessageViewMoveButtons(ScrollButtons.NEVER);
-        } else {
-            mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
-            mAccount.setScrollMessageViewMoveButtons(Account.ScrollButtons.valueOf(mAccountScrollMoveButtons.getValue()));
-        }
+        mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
+        mAccount.setScrollMessageViewMoveButtons(Account.ScrollButtons.valueOf(mAccountScrollMoveButtons.getValue()));
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

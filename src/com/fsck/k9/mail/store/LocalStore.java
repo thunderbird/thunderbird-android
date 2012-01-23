@@ -103,10 +103,10 @@ public class LocalStore extends Store implements Serializable {
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
 
-    static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
+    static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class, local_only";
 
 
-    protected static final int DB_VERSION = 43;
+    protected static final int DB_VERSION = 44;
 
     protected String uUid = null;
 
@@ -163,8 +163,8 @@ public class LocalStore extends Store implements Serializable {
                     db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                                + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
                                + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
-                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
-                               + ")");
+                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT, "
+                               + "local_only INTEGER default 0)");
 
                     db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                     db.execSQL("DROP TABLE IF EXISTS messages");
@@ -364,6 +364,38 @@ public class LocalStore extends Store implements Serializable {
                             }
                         } catch (Exception e) {
                             Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+                        }
+                    }
+                    if (db.getVersion() < 44) {
+Log.d("ASH", "updatedb " + mAccount.getDescription());
+                        try {
+                            db.execSQL("ALTER TABLE folders ADD local_only INTEGER default 0");
+
+                            List <? extends Folder > remoteFolders =
+                                    mAccount.getRemoteStore().getPersonalNamespaces(false);
+                            HashSet<String> remoteFolderNames = new HashSet<String>();
+                            for (Folder remoteFolder : remoteFolders) {
+                                remoteFolderNames.add(remoteFolder.getName());
+                            }
+                            // ASH verify that this works properly -- still untested!
+                            List <? extends LocalFolder > localFolders = getPersonalNamespaces(true);
+                            for (LocalFolder localFolder : localFolders) {
+                                if (remoteFolderNames.contains(localFolder.getName()) == false) {
+                                    db.execSQL("UPDATE messages SET local_only = 1 WHERE name = " +
+                                            localFolder.getName());
+                                    localFolder.setLocalOnly(true);
+                                    Log.w(K9.LOG_TAG, "Setting folder " + localFolder.getName() +
+                                            " to local-only folder.");
+                                }
+                            }
+
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name: local_only")) {
+                                throw e;
+                            }
+                        } catch (MessagingException e) {
+                            Log.e(K9.LOG_TAG, "MessagingException trying to update folders for local-only setting: "
+                                    + e);
                         }
                     }
                 }
@@ -626,7 +658,7 @@ public class LocalStore extends Store implements Serializable {
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List <? extends LocalFolder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<LocalFolder>();
         try {
             database.execute(false, new DbCallback < List <? extends Folder >> () {
@@ -638,7 +670,7 @@ public class LocalStore extends Store implements Serializable {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13), cursor.getInt(14));
 
                             folders.add(folder);
                         }
@@ -856,8 +888,9 @@ public class LocalStore extends Store implements Serializable {
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener listener, String[] queryFields, String queryString,
-                                       List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
+    public Message[] searchForMessages(MessageRetrievalListener listener, String[] queryFields,
+            String queryString, List<LocalFolder> folders, Message[] messages, final Flag[]
+            requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
         List<String> args = new LinkedList<String>();
 
         StringBuilder whereClause = new StringBuilder();
@@ -1045,12 +1078,16 @@ public class LocalStore extends Store implements Serializable {
         public String type;
     }
 
-    public boolean createFolder(String name) throws com.fsck.k9.mail.MessagingException {
-        LocalFolder folder = new LocalFolder(name);
-        return folder.create();
+    public boolean createFolder(final String folderName, final boolean localOnly)
+            throws com.fsck.k9.mail.MessagingException {
+        LocalFolder folder = new LocalFolder(folderName);
+        if (folder.exists()) {
+            return false;
+        }
+        return folder.create(localOnly);
     }
 
-    public boolean renameFolder(final String oldFolderName, String newFolderName)
+    public boolean renameFolder(final String oldFolderName, final String newFolderName)
             throws com.fsck.k9.mail.MessagingException {
         LocalFolder oldFolder = new LocalFolder(oldFolderName);
         LocalFolder newFolder = new LocalFolder(newFolderName);
@@ -1079,7 +1116,13 @@ public class LocalStore extends Store implements Serializable {
         return false;
     }
 
-    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {
+    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit)
+            throws UnavailableStorageException {
+        createFolders(foldersToCreate, visibleLimit, false);
+    }
+
+    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit,
+            final boolean localOnly) throws UnavailableStorageException {
         database.execute(true, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -1119,6 +1162,13 @@ public class LocalStore extends Store implements Serializable {
                                    prefHolder.integrate ? 1 : 0,
                                });
 
+                    try {
+                        folder.setLocalOnly(localOnly);
+                    } catch (MessagingException me) {
+                        Log.e(K9.LOG_TAG, "Exception trying to set local-only status of folder " +
+                                name + " to " + localOnly);
+                    }
+
                 }
                 return null;
             }
@@ -1142,6 +1192,7 @@ public class LocalStore extends Store implements Serializable {
         private boolean mInTopGroup = false;
         private String mPushState = null;
         private boolean mIntegrate = false;
+        private boolean mLocalOnly = false;
         // mLastUid is used during syncs. It holds the highest UID within the local folder so we
         // know whether or not an unread message added to the local folder is actually "new" or not.
         private Integer mLastUid = null;
@@ -1191,11 +1242,11 @@ public class LocalStore extends Store implements Serializable {
                             if (cursor.moveToFirst()) {
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0) {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13), cursor.getInt(14));
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
-                                create();
+                                create(true); // ASH should this always be true?
                                 open(mode);
                             }
                         } catch (MessagingException e) {
@@ -1211,7 +1262,7 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException {
+        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass, int localOnly) throws MessagingException {
             mFolderId = id;
             mName = name;
             mUnreadMessageCount = unreadCount;
@@ -1229,7 +1280,8 @@ public class LocalStore extends Store implements Serializable {
             mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
             mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
             mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
-
+            mLocalOnly = localOnly == 1 ? true : false;
+Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ? "local-only." : "remote."));
         }
 
         @Override
@@ -1278,13 +1330,21 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public boolean create(final int visibleLimit) throws MessagingException {
+            return create(visibleLimit, false);
+        }
+
+        public boolean create(final boolean localOnly) throws MessagingException {
+            return create(mAccount.getDisplayCount(), localOnly);
+        }
+
+        public boolean create(final int visibleLimit, final boolean localOnly)
+                throws MessagingException {
             if (exists()) {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             List<LocalFolder> foldersToCreate = new ArrayList<LocalFolder>(1);
             foldersToCreate.add(this);
-            LocalStore.this.createFolders(foldersToCreate, visibleLimit);
-
+            LocalStore.this.createFolders(foldersToCreate, visibleLimit, localOnly);
             return true;
         }
 
@@ -1485,6 +1545,16 @@ public class LocalStore extends Store implements Serializable {
         public void setIntegrate(boolean integrate) throws MessagingException {
             mIntegrate = integrate;
             updateFolderColumn("integrate", mIntegrate ? 1 : 0);
+        }
+
+        public void setLocalOnly(boolean localOnly) throws MessagingException {
+            mLocalOnly = localOnly;
+Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
+            updateFolderColumn("local_only", localOnly == true ? "1" : "0");
+        }
+
+        public boolean isLocalOnly() {
+            return mLocalOnly;
         }
 
         private String getPrefId(String name) {
