@@ -176,7 +176,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
             final TextView description = (TextView) v.findViewById(R.id.description);
             final Account account = getAccounts()[groupPosition];
             description.setText(account.getDescription());
-            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountName());
 
             // display unavailable accounts translucent
             /*
@@ -214,8 +214,8 @@ public class ChooseAccount extends K9ExpandableListActivity {
 
             final TextView name = (TextView) v.findViewById(R.id.name);
             final TextView description = (TextView) v.findViewById(R.id.description);
-            name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
-            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountDescription());
+            name.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountDescription());
 
             name.setText(identity.getDescription());
             description.setText(String.format("%s <%s>", identity.getName(), identity.getEmail()));

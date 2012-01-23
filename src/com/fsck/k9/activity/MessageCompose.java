@@ -30,6 +30,7 @@ import android.os.Parcelable;
 import android.provider.OpenableColumns;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.FontSizes;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -82,6 +84,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
 
+    private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
+
     private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
@@ -102,8 +106,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
         "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
-    private static final String STATE_KEY_DRAFT_UID =
-        "com.fsck.k9.activity.MessageCompose.draftUid";
+    private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
     private static final String STATE_KEY_HTML_QUOTE = "com.fsck.k9.activity.MessageCompose.HTMLQuote";
     private static final String STATE_IDENTITY_CHANGED =
         "com.fsck.k9.activity.MessageCompose.identityChanged";
@@ -137,7 +140,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Currently:
      * - "Aw:" (german: abbreviation for "Antwort")
      */
-    private static final Pattern prefix = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PREFIX = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
 
     /**
      * The account used for message composition.
@@ -223,13 +226,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private boolean mDraftNeedsSaving = false;
     private boolean mPreventDraftSaving = false;
 
-    private boolean mIgnoreOnStop = false;
+    /**
+     * If this is {@code true} we don't save the message as a draft in {@link #onPause()}.
+     */
+    private boolean mIgnoreOnPause = false;
 
     /**
-     * The draft uid of this message. This is used when saving drafts so that the same draft is
-     * overwritten instead of being created anew. This property is null until the first save.
+     * The database ID of this message's draft. This is used when saving drafts so the message in
+     * the database is updated instead of being created anew. This property is INVALID_DRAFT_ID
+     * until the first save.
      */
-    private String mDraftUid;
+    private long mDraftId = INVALID_DRAFT_ID;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -273,6 +280,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private EmailAddressAdapter mAddressAdapter;
     private Validator mAddressValidator;
 
+    private FontSizes mFontSizes = K9.getFontSizes();
+
 
     static class Attachment implements Serializable {
         private static final long serialVersionUID = 3642382876618963734L;
@@ -289,11 +298,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param account
      */
     public static void actionCompose(Context context, Account account) {
-        if (account == null) {
-            account = Preferences.getPreferences(context).getDefaultAccount();
-        }
+        String accountUuid = (account == null) ?
+                Preferences.getPreferences(context).getDefaultAccount().getUuid() :
+                account.getUuid();
+
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_ACCOUNT, accountUuid);
         i.setAction(ACTION_COMPOSE);
         context.startActivity(i);
     }
@@ -437,26 +447,34 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         });
 
         TextWatcher watcher = new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start,
-            int before, int after) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
+                /* do nothing */
+            }
 
-            public void onTextChanged(CharSequence s, int start,
-            int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
             }
 
-            public void afterTextChanged(android.text.Editable s) { }
+            @Override
+            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
         // For watching changes to the To:, Cc:, and Bcc: fields for auto-encryption on a matching
         // address.
         TextWatcher recipientWatcher = new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
+                /* do nothing */
+            }
 
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
             }
 
+            @Override
             public void afterTextChanged(android.text.Editable s) {
                 final CryptoProvider crypto = mAccount.getCryptoProvider();
                 if (mAutoEncrypt && crypto.isAvailable(getApplicationContext())) {
@@ -473,16 +491,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         };
 
         TextWatcher sigwatcher = new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start,
-            int before, int after) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
+                /* do nothing */
+            }
 
-            public void onTextChanged(CharSequence s, int start,
-            int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
                 mSignatureChanged = true;
             }
 
-            public void afterTextChanged(android.text.Editable s) { }
+            @Override
+            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
         mToView.addTextChangedListener(recipientWatcher);
@@ -690,6 +711,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mDraftNeedsSaving = false;
+
+        // Set font size of input controls
+        int fontSize = mFontSizes.getMessageComposeInput();
+        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mBccView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mMessageContentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mQuotedText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mSignatureView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 
     /**
@@ -838,7 +869,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public void onResume() {
         super.onResume();
-        mIgnoreOnStop = false;
+        mIgnoreOnPause = false;
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
@@ -848,12 +879,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         // Save email as draft when activity is changed (go to home screen, call received) or screen locked
         // don't do this if only changing orientations
-        if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
-            // don't do this if selecting signature or if "Encrypt" is checked or if adding an attachment
-            if (!mPreventDraftSaving && !mEncryptCheckbox.isChecked() && !mIgnoreOnStop){
-                saveIfNeeded();
-                finish();
-            }
+        if (!mIgnoreOnPause && (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
+            saveIfNeeded();
         }
     }
 
@@ -879,7 +906,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, mQuotedTextMode);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
-        outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
+        outState.putLong(STATE_KEY_DRAFT_ID, mDraftId);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
@@ -916,7 +943,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
             }
         }
-        mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
+        mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
@@ -939,6 +966,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public void onFocusChange(View view, boolean focused) {
         if (!focused) {
             updateTitle();
@@ -983,125 +1011,152 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return buildText(isDraft, mMessageFormat);
     }
 
-    /*
-     * Build the Body that will contain the text of the message. We'll decide where to
-     * include it later. Draft messages are treated somewhat differently in that signatures are not
-     * appended and HTML separators between composed text and quoted text are not added.
-     * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
-     * @param messageFormat Set MessageFormat to build.
+    /**
+     * Build the {@link Body} that will contain the text of the message.
+     *
+     * <p>
+     * Draft messages are treated somewhat differently in that signatures are not appended and HTML
+     * separators between composed text and quoted text are not added.
+     * </p>
+     *
+     * @param isDraft
+     *         If {@code true} we build a message that will be saved as a draft (as opposed to
+     *         sent).
+     * @param messageFormat
+     *         Specifies what type of message to build ({@code text/plain} vs. {@code text/html}).
+     *
+     * @return {@link TextBody} instance that contains the entered text and possibly the quoted
+     *         original message.
      */
     private TextBody buildText(boolean isDraft, MessageFormat messageFormat) {
-        boolean replyAfterQuote = false;
-        String action = getIntent().getAction();
-        if (mAccount.isReplyAfterQuote() &&
-                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
-                        ACTION_EDIT_DRAFT.equals(action))) {
-            replyAfterQuote = true;
-        }
+        // The length of the formatted version of the user-supplied text/reply
+        int composedMessageLength;
 
+        // The offset of the user-supplied text/reply in the final text body
+        int composedMessageOffset;
+
+        /*
+         * Find out if we need to include the original message as quoted text.
+         *
+         * We include the quoted text in the body if the user didn't choose to hide it. We always
+         * include the quoted text when we're saving a draft. That's so the user is able to
+         * "un-hide" the quoted text if (s)he opens a saved draft.
+         */
+        boolean includeQuotedText = (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft);
+
+        // Reply after quote makes no sense for HEADER style replies
+        boolean replyAfterQuote = (mQuoteStyle == QuoteStyle.HEADER) ?
+                false : mAccount.isReplyAfterQuote();
+
+        boolean signatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+
+        // Get the user-supplied text
         String text = mMessageContentView.getText().toString();
 
-        boolean saveQuotedText = false;
-        if (isDraft || mQuotedTextMode.equals(QuotedTextMode.SHOW)) {
-            saveQuotedText = true;
-        }
-
-
-        // Handle HTML separate from the rest of the text content. HTML mode doesn't allow signature after the quoted
-        // text, nor does it allow reply after quote. Users who want that functionality will need to stick with text
-        // mode.
+        // Handle HTML separate from the rest of the text content
         if (messageFormat == MessageFormat.HTML) {
-            // Place the signature immediately after the reply.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.HEADER || replyAfterQuote || mAccount.isSignatureBeforeQuotedText()) {
-                    text = appendSignature(text);
-                }
-            }
-            text = HtmlConverter.textToHtmlFragment(text);
-            // Insert it into the existing content object.
-            if (K9.DEBUG && mQuotedHtmlContent != null)
-                Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
-            if (mQuotedHtmlContent != null && saveQuotedText) {
 
-                // Set the insertion location based upon our reply after quote setting. Reply after
-                // quote makes no sense for HEADER style replies. In addition, add some extra
-                // separators between the composed message and quoted message depending on the quote
-                // location. We only add the extra separators when we're sending, that way when we
-                // load a draft, we don't have to know the length of the separators to remove them
-                // before editing.
-                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
-                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+            // Do we have to modify an existing message to include our reply?
+            if (includeQuotedText && mQuotedHtmlContent != null) {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
+                }
+
+                if (!isDraft) {
+                    // Append signature to the reply
+                    if (replyAfterQuote || signatureBeforeQuotedText) {
+                        text = appendSignature(text);
+                    }
+                }
+
+                // Convert the text to HTML
+                text = HtmlConverter.textToHtmlFragment(text);
+
+                /*
+                 * Set the insertion location based upon our reply after quote setting.
+                 * Additionally, add some extra separators between the composed message and quoted
+                 * message depending on the quote location. We only add the extra separators when
+                 * we're sending, that way when we load a draft, we don't have to know the length
+                 * of the separators to remove them before editing.
+                 */
+                if (replyAfterQuote) {
+                    mQuotedHtmlContent.setInsertionLocation(
+                            InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                     if (!isDraft) {
                         text = "<br clear=\"all\">" + text;
                     }
                 } else {
-                    mQuotedHtmlContent.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                    mQuotedHtmlContent.setInsertionLocation(
+                            InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                     if (!isDraft) {
                         text += "<br><br>";
                     }
                 }
 
-                // Place signature immediately after quote.
                 if (!isDraft) {
-                    if (mQuoteStyle == QuoteStyle.PREFIX && !replyAfterQuote && !mAccount.isSignatureBeforeQuotedText()) {
+                    // Place signature immediately after the quoted text
+                    if (!(replyAfterQuote || signatureBeforeQuotedText)) {
                         mQuotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
                     }
                 }
 
                 mQuotedHtmlContent.setUserContent(text);
 
-                // All done.  Build the body.
-                TextBody body = new TextBody(mQuotedHtmlContent.toString());
                 // Save length of the body and its offset.  This is used when thawing drafts.
-                body.setComposedMessageLength(text.length());
-                body.setComposedMessageOffset(mQuotedHtmlContent.getInsertionPoint());
-                return body;
+                composedMessageLength = text.length();
+                composedMessageOffset = mQuotedHtmlContent.getInsertionPoint();
+                text = mQuotedHtmlContent.toString();
+
             } else {
-                TextBody body = new TextBody(text);
-                body.setComposedMessageLength(text.length());
-                // Not in reply to anything so the message starts at the beginning (0).
-                body.setComposedMessageOffset(0);
-                return body;
-            }
-        } else if (messageFormat == MessageFormat.TEXT) {
-            // Capture composed message length before we start attaching quoted parts and signatures.
-            Integer composedMessageLength = text.length();
-            Integer composedMessageOffset = 0;
-
-            // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.HEADER ||
-                        (!replyAfterQuote && mAccount.isSignatureBeforeQuotedText())) {
+                // There is no text to quote so simply append the signature if available
+                if (!isDraft) {
                     text = appendSignature(text);
                 }
+
+                // Convert the text to HTML
+                text = HtmlConverter.textToHtmlFragment(text);
+
+                //TODO: Wrap this in proper HTML tags
+
+                composedMessageLength = text.length();
+                composedMessageOffset = 0;
             }
 
-            if (saveQuotedText) {
-                if (mQuoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
-                    composedMessageOffset = mQuotedText.getText().toString().length() + "\n".length();
-                    text = mQuotedText.getText().toString() + "\n" + text;
-                } else {
-                    text += "\n\n" + mQuotedText.getText().toString();
-                }
-            }
-
-            // Note: If user has selected reply after quote AND signature before quote, ignore the
-            // latter setting and append the signature at the end.
-            if (!isDraft) {
-                if (mQuoteStyle == QuoteStyle.PREFIX &&
-                        (replyAfterQuote || !mAccount.isSignatureBeforeQuotedText())) {
-                    text = appendSignature(text);
-                }
-            }
-            // Build the body.
-            TextBody body = new TextBody(text);
-            body.setComposedMessageLength(composedMessageLength);
-            body.setComposedMessageOffset(composedMessageOffset);
-            return body;
         } else {
-            // Shouldn't happen.
-            return new TextBody("");
+            // Capture composed message length before we start attaching quoted parts and signatures.
+            composedMessageLength = text.length();
+            composedMessageOffset = 0;
+
+            if (!isDraft) {
+                // Append signature to the text/reply
+                if (replyAfterQuote || signatureBeforeQuotedText) {
+                    text = appendSignature(text);
+                }
+            }
+
+            if (includeQuotedText) {
+                String quotedText = mQuotedText.getText().toString();
+                if (replyAfterQuote) {
+                    composedMessageOffset = quotedText.length() + "\n".length();
+                    text = quotedText + "\n" + text;
+                } else {
+                    text += "\n\n" + quotedText.toString();
+                }
+            }
+
+            if (!isDraft) {
+                // Place signature immediately after the quoted text
+                if (!(replyAfterQuote || signatureBeforeQuotedText)) {
+                    text = appendSignature(text);
+                }
+            }
         }
+
+        TextBody body = new TextBody(text);
+        body.setComposedMessageLength(composedMessageLength);
+        body.setComposedMessageOffset(composedMessageOffset);
+
+        return body;
     }
 
     /**
@@ -1142,7 +1197,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         // Build the body.
-        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in 
+        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
         if (mPgpData.getEncryptedData() != null) {
@@ -1279,9 +1334,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         /**
-         * Get the list of IdentityFields that should be integer values. These values are sanity
-         * checked for integer-ness during decoding.
-         * @return
+         * Get the list of IdentityFields that should be integer values.
+         *
+         * <p>
+         * These values are sanity checked for integer-ness during decoding.
+         * </p>
+         *
+         * @return The list of integer {@link IdentityField}s.
          */
         public static IdentityField[] getIntegerFields() {
             return new IdentityField[] { LENGTH, OFFSET, FOOTER_OFFSET, PLAIN_LENGTH, PLAIN_OFFSET };
@@ -1291,19 +1350,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     // Version identifier for "new style" identity. ! is an impossible value in base64 encoding, so we
     // use that to determine which version we're in.
     private static final String IDENTITY_VERSION_1 = "!";
-
-    /**
-     * Build the identity header string. This string contains metadata about a draft message to be
-     * used upon loading a draft for composition. This should be generated at the time of saving a
-     * draft.<br>
-     * <br>
-     * This is a URL-encoded key/value pair string.  The list of possible values are in {@link IdentityField}.
-     * @param body {@link TextBody} to analyze for body length and offset.
-     * @return Identity string.
-     */
-    private String buildIdentityHeader(final TextBody body) {
-        return buildIdentityHeader(body, null);
-    }
 
     /**
      * Build the identity header string. This string contains metadata about a draft message to be
@@ -1376,8 +1422,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     /**
      * Parse an identity string.  Handles both legacy and new (!) style identities.
+     *
      * @param identityString
-     * @return
+     *         The encoded identity string that was saved in a drafts header.
+     *
+     * @return A map containing the value for each {@link IdentityField} in the identity string.
      */
     private Map<IdentityField, String> parseIdentityHeader(final String identityString) {
         Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
@@ -1448,7 +1497,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
 
-    private String appendSignature(String text) {
+    private String appendSignature(String originalText) {
+        String text = originalText;
         if (mIdentity.getSignatureUse()) {
             String signature = mSignatureView.getText().toString();
 
@@ -1484,7 +1534,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded() {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
-                mEncryptCheckbox.isChecked()) {
+                mEncryptCheckbox.isChecked() || isDraftsFolderDisabled()) {
             return;
         }
 
@@ -1568,9 +1618,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void onDiscard() {
-        if (mDraftUid != null) {
-            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
-            mDraftUid = null;
+        if (mDraftId != INVALID_DRAFT_ID) {
+            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftId);
+            mDraftId = INVALID_DRAFT_ID;
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
@@ -1621,6 +1671,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     /**
      * Kick off a picker for the specified MIME type and let Android take over.
+     *
+     * @param mime_type
+     *         The MIME type we want our attachment to have.
      */
     private void onAddAttachment2(final String mime_type) {
         if (mAccount.getCryptoProvider().isAvailable(this)) {
@@ -1629,7 +1682,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(mime_type);
-        mIgnoreOnStop = true;
+        mIgnoreOnPause = true;
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
@@ -1665,11 +1718,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             name = uri.getLastPathSegment();
         }
 
-        if ((contentType == null) || (contentType.indexOf('*') != -1)) {
-            contentType = contentResolver.getType(uri);
+        String usableContentType = contentType;
+        if ((usableContentType == null) || (usableContentType.indexOf('*') != -1)) {
+            usableContentType = contentResolver.getType(uri);
         }
-        if (contentType == null) {
-            contentType = MimeUtility.getMimeTypeByExtension(name);
+        if (usableContentType == null) {
+            usableContentType = MimeUtility.getMimeTypeByExtension(name);
         }
 
         if (size <= 0) {
@@ -1688,7 +1742,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         Attachment attachment = new Attachment();
         attachment.uri = uri;
-        attachment.contentType = contentType;
+        attachment.contentType = usableContentType;
         attachment.name = name;
         attachment.size = size;
 
@@ -1752,7 +1806,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     public void doLaunchContactPicker(int resultId) {
-        mIgnoreOnStop = true;
+        mIgnoreOnPause = true;
         startActivityForResult(mContacts.contactPickerIntent(), resultId);
     }
 
@@ -1776,12 +1830,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             // test whether there is something to save
-            if (mDraftNeedsSaving || (mDraftUid != null)) {
-                final String previousDraftUid = mDraftUid;
+            if (mDraftNeedsSaving || (mDraftId != INVALID_DRAFT_ID)) {
+                final long previousDraftId = mDraftId;
                 final Account previousAccount = mAccount;
 
                 // make current message appear as new
-                mDraftUid = null;
+                mDraftId = INVALID_DRAFT_ID;
 
                 // actual account switch
                 mAccount = account;
@@ -1791,13 +1845,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
                 saveMessage();
 
-                if (previousDraftUid != null) {
+                if (previousDraftId != INVALID_DRAFT_ID) {
                     if (K9.DEBUG) {
                         Log.v(K9.LOG_TAG, "Account switch, deleting draft from previous account: "
-                              + previousDraftUid);
+                              + previousDraftId);
                     }
                     MessagingController.getInstance(getApplication()).deleteDraft(previousAccount,
-                            previousDraftUid);
+                            previousDraftId);
                 }
             } else {
                 mAccount = account;
@@ -1837,6 +1891,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
         case R.id.attachment_delete:
@@ -1947,7 +2002,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onChooseIdentity() {
         // keep things simple: trigger account choice only if there are more
         // than 1 account
-        mIgnoreOnStop = true;
+        mIgnoreOnPause = true;
         if (Preferences.getPreferences(this).getAvailableAccounts().size() > 1) {
             final Intent intent = new Intent(this, ChooseAccount.class);
             intent.putExtra(ChooseAccount.EXTRA_ACCOUNT, mAccount.getUuid());
@@ -1967,6 +2022,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        // Disable the 'Save' menu option if Drafts folder is set to -NONE-
+        if (isDraftsFolderDisabled()) {
+            menu.findItem(R.id.save).setEnabled(false);
+        }
 
         /*
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
@@ -1993,12 +2053,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public void onBackPressed() {
         if (mEncryptCheckbox.isChecked()) {
             showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-        }
-        else if (mDraftNeedsSaving) {
-            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-        } else {
+        } else if (!mDraftNeedsSaving || isDraftsFolderDisabled()) {
+            Toast.makeText(MessageCompose.this, getString(R.string.message_discarded_toast), Toast.LENGTH_LONG).show();
             super.onBackPressed();
+        } else {
+            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         }
+    }
+
+    private boolean isDraftsFolderDisabled() {
+        return mAccount.getDraftsFolderName().equals(K9.FOLDER_NONE);
     }
 
     @Override
@@ -2009,12 +2073,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                    .setTitle(R.string.save_or_discard_draft_message_dlg_title)
                    .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
             .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
                     onSave();
                 }
             })
             .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
                     onDiscard();
@@ -2026,6 +2092,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                    .setTitle(R.string.refuse_to_save_draft_marked_encrypted_dlg_title)
                    .setMessage(R.string.refuse_to_save_draft_marked_encrypted_instructions_fmt)
             .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
                 }
@@ -2036,6 +2103,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                    .setTitle(R.string.continue_without_public_key_dlg_title)
                    .setMessage(R.string.continue_without_public_key_instructions_fmt)
             .setPositiveButton(R.string.continue_action, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
                     mContinueWithoutPublicKey = true;
@@ -2043,6 +2111,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             })
             .setNegativeButton(R.string.back_action, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
                     mContinueWithoutPublicKey = false;
@@ -2054,7 +2123,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     /**
-     * Returns true if all attachments were able to be attached, otherwise returns false.
+     * Add all attachments of an existing message as if they were added by hand.
+     *
+     * @param part
+     *         The message part to check for being an attachment. This method will recurse if it's
+     *         a multipart part.
+     * @param depth
+     *         The recursion depth. Currently unused.
+     *
+     * @return {@code true} if all attachments were able to be attached, {@code false} otherwise.
+     *
+     * @throws MessagingException
+     *          In case of an error
      */
     private boolean loadAttachments(Part part, int depth) throws MessagingException {
         if (part.getBody() instanceof Multipart) {
@@ -2066,24 +2146,25 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
             return ret;
-        } else {
-            String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
-            String name = MimeUtility.getHeaderParameter(contentType, "name");
-            if (name != null) {
-                Body body = part.getBody();
-                if (body != null && body instanceof LocalAttachmentBody) {
-                    final Uri uri = ((LocalAttachmentBody) body).getContentUri();
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            addAttachment(uri);
-                        }
-                    });
-                } else {
-                    return false;
-                }
-            }
-            return true;
         }
+
+        String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        String name = MimeUtility.getHeaderParameter(contentType, "name");
+        if (name != null) {
+            Body body = part.getBody();
+            if (body != null && body instanceof LocalAttachmentBody) {
+                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        addAttachment(uri);
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -2096,7 +2177,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         try {
             if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
                 if (message.getSubject() != null) {
-                    final String subject = prefix.matcher(message.getSubject()).replaceFirst("");
+                    final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
 
                     if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
                         mSubjectView.setText("Re: " + subject);
@@ -2214,7 +2295,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             } else if (ACTION_EDIT_DRAFT.equals(action)) {
                 String showQuotedTextMode = "NONE";
 
-                mDraftUid = message.getUid();
+                mDraftId = MessagingController.getInstance(getApplication()).getId(message);
                 mSubjectView.setText(message.getSubject());
                 addAddresses(mToView, message.getRecipients(RecipientType.TO));
                 if (message.getRecipients(RecipientType.CC).length > 0) {
@@ -2457,9 +2538,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     /**
      * Build and populate the UI with the quoted message.
+     *
+     * @param showQuotedText
+     *         {@code true} if the quoted text should be shown, {@code false} otherwise.
+     *
      * @throws MessagingException
      */
-    private void populateUIWithQuotedMessage(boolean shown) throws MessagingException {
+    private void populateUIWithQuotedMessage(boolean showQuotedText) throws MessagingException {
         if (mMessageFormat == MessageFormat.AUTO) {
             mMessageFormat = MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/html") == null
                     ? MessageFormat.TEXT
@@ -2492,7 +2577,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         end.add(blockquoteEnd.start());
                     }
                     if (start.size() != end.size()) {
-                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " + 
+                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
                                 end.size() + " </blockquote> tags. Refusing to strip.");
                     } else if (start.size() > 0) {
                         // Ignore quoted signatures in blockquotes.
@@ -2525,7 +2610,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
 
-                // Fix the stripping off of closing tags if a signature was stripped, 
+                // Fix the stripping off of closing tags if a signature was stripped,
                 // as well as clean up the HTML of the quoted message.
                 HtmlCleaner cleaner = new HtmlCleaner();
                 CleanerProperties properties = cleaner.getProperties();
@@ -2564,7 +2649,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mQuoteStyle));
         }
 
-        if (shown) {
+        if (showQuotedText) {
             showOrHideQuotedText(QuotedTextMode.SHOW);
         } else {
             showOrHideQuotedText(QuotedTextMode.HIDE);
@@ -2772,6 +2857,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             mSourceMessage = message;
             runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     // We check to see if we've previously processed the source message since this
                     // could be called when switching from HTML to text replies. If that happens, we
@@ -2804,14 +2890,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         @Override
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
-            //TODO: is this really necessary here? mDraftUid is update after the call to MessagingController.saveDraft()
-            // Track UID changes of the draft message
-            if (account.equals(mAccount) &&
-                    folder.equals(mAccount.getDraftsFolderName()) &&
-                    oldUid.equals(mDraftUid)) {
-                mDraftUid = newUid;
-            }
-
             // Track UID changes of the source message
             if (mMessageReference != null) {
                 final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.accountUuid);
@@ -2833,6 +2911,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
+     *
+     * @param mailtoUri
+     *         The mailto: URI we use to initialize the message fields.
      */
     private void initializeFromMailto(Uri mailtoUri) {
         String schemaSpecific = mailtoUri.getSchemeSpecificPart();
@@ -2907,9 +2988,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
-            if (mDraftUid != null) {
-                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
-                mDraftUid = null;
+            if (mDraftId != INVALID_DRAFT_ID) {
+                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftId);
+                mDraftId = INVALID_DRAFT_ID;
             }
 
             return null;
@@ -2933,9 +3014,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             /*
              * Save a draft
              */
-            if (mDraftUid != null) {
-                message.setUid(mDraftUid);
-            } else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())) {
+            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())) {
                 /*
                  * We're saving a previously saved draft, so update the new message's uid
                  * to the old message's uid.
@@ -2946,8 +3025,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             final MessagingController messagingController = MessagingController.getInstance(getApplication());
-            Message draftMessage = messagingController.saveDraft(mAccount, message);
-            mDraftUid = draftMessage.getUid();
+            Message draftMessage = messagingController.saveDraft(mAccount, message, mDraftId);
+            mDraftId = messagingController.getId(draftMessage);
 
             mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
             return null;

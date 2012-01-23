@@ -78,6 +78,7 @@ import com.fsck.k9.mail.store.Pop3Store;
  * removed from the queue once the activity is no longer active.
  */
 public class MessagingController implements Runnable {
+    public static final long INVALID_MESSAGE_ID = -1;
 
     /**
      * Immutable empty {@link String} array
@@ -3418,12 +3419,13 @@ public class MessagingController implements Runnable {
         });
     }
 
-    public void deleteDraft(final Account account, String uid) {
+    public void deleteDraft(final Account account, long id) {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
+            String uid = localFolder.getMessageUidById(id);
             Message message = localFolder.getMessage(uid);
             if (message != null) {
                 deleteMessages(new Message[] { message }, null);
@@ -4172,10 +4174,11 @@ public class MessagingController implements Runnable {
      * Save a draft message.
      * @param account Account we are saving for.
      * @param message Message to save.
+     * @param existingDraftId
      * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message) {
-        return saveMessage(account, message, account.getDraftsFolderName());
+    public Message saveDraft(final Account account, final Message message, long existingDraftId) {
+        return saveMessage(account, message, account.getDraftsFolderName(), existingDraftId, true);
     }
 
     /**
@@ -4187,11 +4190,31 @@ public class MessagingController implements Runnable {
      */
     public Message saveMessage(final Account account, final Message message, final String
             folderName) {
+        return saveMessage(account, message, folderName, INVALID_MESSAGE_ID, false);
+    }
+
+    /**
+     * Save a message.
+     * @param account Account we are saving for.
+     * @param message Message to save.
+     * @param folderName String to save to.
+     * @param existingDraftId
+     * @param isDraft
+     * @return Message representing the entry in the local store.
+     */
+    public Message saveMessage(final Account account, final Message message, final String
+            folderName, final long existingDraftId, final boolean isDraft) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
+
+            if (isDraft && existingDraftId != INVALID_MESSAGE_ID) {
+                String uid = localFolder.getMessageUidById(existingDraftId);
+                message.setUid(uid);
+            }
+
             // Save the message to the store.
             localFolder.appendMessages(new Message[] {
                                            message
@@ -4214,6 +4237,18 @@ public class MessagingController implements Runnable {
             addErrorMessage(account, null, e);
         }
         return localMessage;
+    }
+
+    public long getId(Message message) {
+        long id;
+        if (message instanceof LocalMessage) {
+            id = ((LocalMessage) message).getId();
+        } else {
+            Log.w(K9.LOG_TAG, "MessagingController.getId() called without a LocalMessage");
+            id = INVALID_MESSAGE_ID;
+        }
+
+        return id;
     }
 
     public boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {

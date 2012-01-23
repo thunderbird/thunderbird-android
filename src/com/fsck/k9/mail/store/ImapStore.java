@@ -1011,7 +1011,8 @@ public class ImapStore extends Store {
                 return true;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             }
         }
@@ -1039,7 +1040,8 @@ public class ImapStore extends Store {
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(connection, ioe);
@@ -1128,7 +1130,8 @@ public class ImapStore extends Store {
                 connection.executeSimpleCommand(String.format("DELETE %s",
                         encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
-            } catch (MessagingException me) {
+            } catch (ImapException ie) {
+                // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
@@ -1441,8 +1444,8 @@ public class ImapStore extends Store {
             if (fp.contains(FetchProfile.Item.ENVELOPE)) {
                 fetchFields.add("INTERNALDATE");
                 fetchFields.add("RFC822.SIZE");
-                fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc reply-to "
-                                + K9.IDENTITY_HEADER + ")]");
+                fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc " +
+                        "reply-to message-id " + K9.IDENTITY_HEADER + ")]");
             }
             if (fp.contains(FetchProfile.Item.STRUCTURE)) {
                 fetchFields.add("BODYSTRUCTURE");
@@ -1531,8 +1534,6 @@ public class ImapStore extends Store {
                             handleUntaggedResponse(response);
                         }
 
-                        while (response.more());
-
                     } while (response.mTag == null);
                 } catch (IOException ioe) {
                     throw ioExceptionHandler(mConnection, ioe);
@@ -1615,8 +1616,6 @@ public class ImapStore extends Store {
                     } else {
                         handleUntaggedResponse(response);
                     }
-
-                    while (response.more());
 
                 } while (response.mTag == null);
             } catch (IOException ioe) {
@@ -1958,7 +1957,6 @@ public class ImapStore extends Store {
                             eolOut.write('\n');
                             eolOut.flush();
                         }
-                        while (response.more());
                     } while (response.mTag == null);
 
                     String newUid = getUidFromMessageId(message);

@@ -27,16 +27,17 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_TIME = "fontSizeMessageViewTime";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
     private static final String MESSAGE_VIEW_CONTENT = "fontSizeMessageViewContent";
+    private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
 
     /*
-     * Values for the font sizes in DIP (device independent pixel)
+     * Values for the font sizes in SP (Scale-independent Pixels)
      */
-    public static final int FONT_10DIP = 10;
-    public static final int FONT_12DIP = 12;
+    public static final int FONT_10SP = 10;
+    public static final int FONT_12SP = 12;
     public static final int SMALL = 14;         // ?android:attr/textAppearanceSmall
-    public static final int FONT_16DIP = 16;
+    public static final int FONT_16SP = 16;
     public static final int MEDIUM = 18;        // ?android:attr/textAppearanceMedium
-    public static final int FONT_20DIP = 20;
+    public static final int FONT_20SP = 20;
     public static final int LARGE = 22;         // ?android:attr/textAppearanceLarge
 
 
@@ -123,6 +124,12 @@ public class FontSizes {
     private TextSize messageViewContent = TextSize.NORMAL;
 
     /**
+     * Font size for the input fields in the message compose activity.
+     */
+    private int messageComposeInput;
+
+
+    /**
      * Create a <code>FontSizes</code> object with default values.
      */
     public FontSizes() {
@@ -132,18 +139,20 @@ public class FontSizes {
         folderName = LARGE;
         folderStatus = SMALL;
 
-        messageListSubject = FONT_16DIP;
+        messageListSubject = FONT_16SP;
         messageListSender = SMALL;
         messageListDate = SMALL;
         messageListPreview = SMALL;
 
         messageViewSender = SMALL;
-        messageViewTo = FONT_12DIP;
-        messageViewCC = FONT_12DIP;
-        messageViewAdditionalHeaders = FONT_12DIP;
-        messageViewSubject = FONT_12DIP;
-        messageViewTime = FONT_10DIP;
-        messageViewDate = FONT_10DIP;
+        messageViewTo = FONT_12SP;
+        messageViewCC = FONT_12SP;
+        messageViewAdditionalHeaders = FONT_12SP;
+        messageViewSubject = FONT_12SP;
+        messageViewTime = FONT_10SP;
+        messageViewDate = FONT_10SP;
+
+        messageComposeInput = MEDIUM;
     }
 
     /**
@@ -171,6 +180,8 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_TIME, messageViewTime);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
+
+        editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
 
     /**
@@ -198,6 +209,8 @@ public class FontSizes {
         messageViewTime = prefs.getInt(MESSAGE_VIEW_TIME, messageViewTime);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
+
+        messageComposeInput = prefs.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
 
     public int getAccountName() {
@@ -358,5 +371,13 @@ public class FontSizes {
             messageViewContent = TextSize.LARGEST;
             break;
         }
+    }
+
+    public int getMessageComposeInput() {
+        return messageComposeInput;
+    }
+
+    public void setMessageComposeInput(int messageComposeInput) {
+        this.messageComposeInput = messageComposeInput;
     }
 }

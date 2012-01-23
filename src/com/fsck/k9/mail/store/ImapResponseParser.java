@@ -79,7 +79,6 @@ public class ImapResponseParser {
                 }
             }
         }
-        response.mCompleted = true;
     }
 
     /**
@@ -480,32 +479,22 @@ public class ImapResponseParser {
     }
 
     /**
-     * Represents a single response from the IMAP server. Tagged responses will
-     * have a non-null tag. Untagged responses will have a null tag. The object
-     * will contain all of the available tokens at the time the response is
-     * received. In general, it will either contain all of the tokens of the
-     * response or all of the tokens up until the first LITERAL. If the object
-     * does not contain the entire response the caller must call more() to
-     * continue reading the response until more returns false.
+     * Represents a single response from the IMAP server.
+     *
+     * <p>
+     * Tagged responses will have a non-null tag. Untagged responses will have a null tag. The
+     * object will contain all of the available tokens at the time the response is received.
+     * </p>
      */
     public class ImapResponse extends ImapList {
         /**
          *
          */
         private static final long serialVersionUID = 6886458551615975669L;
-        private boolean mCompleted;
         private IImapResponseCallback mCallback;
 
         boolean mCommandContinuationRequested;
         String mTag;
-
-        public boolean more() throws IOException {
-            if (mCompleted) {
-                return false;
-            }
-            readTokens(this);
-            return true;
-        }
 
         public String getAlertText() {
             if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1))) {

@@ -160,4 +160,18 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:title="@string/font_size_message_compose"
+        android:key="message_compose_fonts">
+
+        <ListPreference
+            android:persistent="false"
+            android:key="message_compose_input_font"
+            android:title="@string/font_size_message_compose_input"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_compose_input" />
+
+    </PreferenceScreen>
+
 </PreferenceScreen>

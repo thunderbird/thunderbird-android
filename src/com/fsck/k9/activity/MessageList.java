@@ -800,9 +800,17 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
+
+        Account[] accountsWithNotification;
         if (mAccount != null) {
-            mController.notifyAccountCancel(this, mAccount);
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+            accountsWithNotification = new Account[] { mAccount };
+        } else {
+            Preferences preferences = Preferences.getPreferences(this);
+            accountsWithNotification = preferences.getAccounts();
+        }
+
+        for (Account accountWithNotification : accountsWithNotification) {
+            mController.notifyAccountCancel(this, accountWithNotification);
         }
 
         if (mAdapter.messages.isEmpty()) {
@@ -2160,15 +2168,15 @@ public class MessageList
                 if (holder.selected != null) {
                     holder.selected.setOnCheckedChangeListener(holder);
                 }
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
                 if (mTouchView) {
                     holder.preview.setLines(mPreviewLines);
-                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListPreview());
+                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
 
                 } else {
-                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
                 }
 
                 view.setTag(holder);
