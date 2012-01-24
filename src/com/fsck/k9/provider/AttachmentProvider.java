@@ -157,24 +157,24 @@ public class AttachmentProvider extends ContentProvider {
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        File file;
+
         List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0); // "/sdcard/..." is URL-encoded and makes up only 1 segment
-        String id = segments.get(1);
+        String accountUuid = segments.get(0);
+        String attachmentId = segments.get(1);
         String format = segments.get(2);
+
         if (FORMAT_THUMBNAIL.equals(format)) {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
-            String filename = "thmb_" + dbName + "_" + id + ".tmp";
-            int index = dbName.lastIndexOf('/');
-            if (index >= 0) {
-                filename = /*dbName.substring(0, index + 1) + */"thmb_" + dbName.substring(index + 1) + "_" + id + ".tmp";
-            }
+
+            String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
             File dir = getContext().getCacheDir();
-            File file = new File(dir, filename);
+            file = new File(dir, filename);
             if (!file.exists()) {
-                String type = getType(dbName, id, FORMAT_VIEW);
+                String type = getType(accountUuid, attachmentId, FORMAT_VIEW);
                 try {
-                    FileInputStream in = new FileInputStream(getFile(dbName, id));
+                    FileInputStream in = new FileInputStream(getFile(accountUuid, attachmentId));
                     try {
                         Bitmap thumbnail = createThumbnail(type, in);
                         if (thumbnail != null) {
@@ -187,18 +187,17 @@ public class AttachmentProvider extends ContentProvider {
                             }
                         }
                     } finally {
-                        try { in.close(); } catch (Throwable ignore) {}
+                        try { in.close(); } catch (Throwable ignore) { /* ignore */ }
                     }
                 } catch (IOException ioe) {
                     return null;
                 }
             }
-            return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
         } else {
-            return ParcelFileDescriptor.open(
-                       getFile(dbName, id),
-                       ParcelFileDescriptor.MODE_READ_ONLY);
+            file = getFile(accountUuid, attachmentId);
         }
+
+        return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
     }
 
     @Override
