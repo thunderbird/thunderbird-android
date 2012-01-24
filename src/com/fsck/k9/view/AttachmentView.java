@@ -58,6 +58,11 @@ public class AttachmentView extends FrameLayout {
      */
     private String[] specialCharacters = {"\\*", "\\?", "\\/", "\\\\"};
 
+    /**
+     * Special characters that are not allowed in file names.
+     */
+    private String[] specialCharacters = {"\\*", "\\?", "\\/", "\\\\"};
+
     private AttachmentFileDownloadCallback callback;
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
@@ -201,7 +206,8 @@ public class AttachmentView extends FrameLayout {
      */
     public void writeFile(File directory) {
         try {
-        	String filename = removeSpecialCharacters(name);
+       	    String filename = removeSpecialCharacters(name);
+
             File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
@@ -225,7 +231,6 @@ public class AttachmentView extends FrameLayout {
     	}
 
     	regex.deleteCharAt(regex.length()-1);
-
     	regex.append(")");
 
     	return string.replaceAll(regex.toString(), "");

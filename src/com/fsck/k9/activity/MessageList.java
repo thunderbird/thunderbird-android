@@ -801,6 +801,7 @@ public class MessageList
 
         mController.addListener(mAdapter.mListener);
 
+<<<<<<< HEAD
         Account[] accountsWithNotification;
         if (mAccount != null) {
             accountsWithNotification = new Account[] { mAccount };
@@ -811,6 +812,21 @@ public class MessageList
 
         for (Account accountWithNotification : accountsWithNotification) {
             mController.notifyAccountCancel(this, accountWithNotification);
+=======
+        Account[] accountsWithNotification = null;
+
+        if (mAccount != null) {
+        	  accountsWithNotification = new Account[1];
+        	  accountsWithNotification[0] = mAccount;
+        } else {
+        	  Preferences preferences = Preferences.getPreferences(this);
+        	  accountsWithNotification = preferences.getAccounts();
+        }
+
+        for (Account accountWithNotification : accountsWithNotification) {
+        	  mController.notifyAccountCancel(this, accountWithNotification);
+        	  MessagingController.getInstance(getApplication()).notifyAccountCancel(this, accountWithNotification);
+>>>>>>> fe6962c00969e218cd6f853f50d9ebef01b57310
         }
 
         if (mAdapter.messages.isEmpty()) {
