@@ -278,20 +278,17 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     private File getFile(String dbName, String id) throws FileNotFoundException {
-        try {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-            final File attachmentsDir;
-            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
-                             account.getLocalStorageProviderId());
-            final File file = new File(attachmentsDir, id);
-            if (!file.exists()) {
-                throw new FileNotFoundException(file.getAbsolutePath());
-            }
-            return file;
-        } catch (IOException e) {
-            Log.w(K9.LOG_TAG, null, e);
-            throw new FileNotFoundException(e.getMessage());
+        Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+
+        File attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
+                account.getLocalStorageProviderId());
+
+        File file = new File(attachmentsDir, id);
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getAbsolutePath());
         }
+
+        return file;
     }
 
     private Bitmap createThumbnail(String type, InputStream data) {
