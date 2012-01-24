@@ -227,10 +227,10 @@ public class AttachmentView extends FrameLayout {
     	StringBuilder regex = new StringBuilder("(");
 
     	for (String specialCharacter : specialCharacters) {
-    		regex.append(specialCharacter + "|");
+	    regex.append(specialCharacter + "|");
     	}
 
-    	regex.deleteCharAt(regex.length()-1); 
+    	regex.deleteCharAt(regex.length()-1);
     	regex.append(")");
 
     	return string.replaceAll(regex.toString(), "");
