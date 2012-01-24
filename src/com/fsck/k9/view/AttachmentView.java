@@ -52,6 +52,11 @@ public class AttachmentView extends FrameLayout {
     public String contentType;
     public long size;
     public ImageView iconView;
+    
+    /**
+     * Special characters that are not allowed in file names.
+     */
+    private String[] specialCharacters = {"\\*", "\\?", "\\/", "\\\\"};
 
     private AttachmentFileDownloadCallback callback;
 
@@ -196,7 +201,8 @@ public class AttachmentView extends FrameLayout {
      */
     public void writeFile(File directory) {
         try {
-            File file = Utility.createUniqueFile(directory, name);
+        	String filename = removeSpecialCharacters(name);
+            File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);
@@ -204,12 +210,27 @@ public class AttachmentView extends FrameLayout {
             out.flush();
             out.close();
             in.close();
-            attachmentSaved(file.toString());
+            attachmentSaved(filename.toString());
             new MediaScannerNotifier(mContext, file);
         } catch (IOException ioe) {
             attachmentNotSaved();
         }
     }
+
+    private String removeSpecialCharacters(String string) {
+    	StringBuilder regex = new StringBuilder("(");
+
+    	for (String specialCharacter : specialCharacters) {
+    		regex.append(specialCharacter + "|");
+    	}
+
+    	regex.deleteCharAt(regex.length()-1);
+
+    	regex.append(")");
+
+    	return string.replaceAll(regex.toString(), "");
+    }
+
     /**
      * saves the file to the defaultpath setting in the config, or if the config
      * is not set => to the Environment
@@ -302,3 +323,4 @@ public class AttachmentView extends FrameLayout {
     }
 
 }
+
