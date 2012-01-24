@@ -23,8 +23,12 @@ import java.io.*;
 import java.util.List;
 
 /**
- * A simple ContentProvider that allows file access to Email's attachments.<br/>
- * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an {@link Account} here.
+ * A simple ContentProvider that allows file access to attachments.
+ *
+ * <p>
+ * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an
+ * {@link Account} here.
+ * </p>
  */
 public class AttachmentProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
@@ -33,12 +37,18 @@ public class AttachmentProvider extends ContentProvider {
     private static final String FORMAT_VIEW = "VIEW";
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";
 
+    private static final String[] DEFAULT_PROJECTION = new String[] {
+        AttachmentProviderColumns._ID,
+        AttachmentProviderColumns.DATA,
+    };
+
     public static class AttachmentProviderColumns {
         public static final String _ID = "_id";
         public static final String DATA = "_data";
         public static final String DISPLAY_NAME = "_display_name";
         public static final String SIZE = "_size";
     }
+
 
     public static Uri getAttachmentUri(Account account, long id) {
         return getAttachmentUri(account.getUuid(), id, true);
@@ -66,6 +76,23 @@ public class AttachmentProvider extends ContentProvider {
                .build();
     }
 
+    public static void clear(Context context) {
+        /*
+         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
+         * on startup we'll clean up any .tmp files from the last run.
+         */
+        File[] files = context.getCacheDir().listFiles();
+        for (File file : files) {
+            try {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
+                }
+            } catch (IOException ioe) { /* No need to log failure to log */ }
+            file.delete();
+        }
+    }
+
+
     @Override
     public boolean onCreate() {
         /*
@@ -89,21 +116,6 @@ public class AttachmentProvider extends ContentProvider {
         return true;
     }
 
-    public static void clear(Context lContext) {
-        /*
-         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
-         * on startup we'll clean up any .tmp files from the last run.
-         */
-        File[] files = lContext.getCacheDir().listFiles();
-        for (File file : files) {
-            try {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
-            } catch (IOException ioe) {} // No need to log failure to log
-            file.delete();
-        }
-    }
-
     @Override
     public String getType(Uri uri) {
         List<String> segments = uri.getPathSegments();
@@ -112,47 +124,6 @@ public class AttachmentProvider extends ContentProvider {
         String format = segments.get(2);
 
         return getType(dbName, id, format);
-    }
-
-    private String getType(String dbName, String id, String format) {
-        if (FORMAT_THUMBNAIL.equals(format)) {
-            return "image/png";
-        } else {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-
-            try {
-                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
-
-                AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
-                if (FORMAT_VIEW.equals(format)) {
-                    return MimeUtility.getMimeTypeForViewing(attachmentInfo.type, attachmentInfo.name);
-                } else {
-                    // When accessing the "raw" message we deliver the original MIME type.
-                    return attachmentInfo.type;
-                }
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
-                return null;
-            }
-        }
-    }
-
-    private File getFile(String dbName, String id)
-    throws FileNotFoundException {
-        try {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-            final File attachmentsDir;
-            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
-                             account.getLocalStorageProviderId());
-            final File file = new File(attachmentsDir, id);
-            if (!file.exists()) {
-                throw new FileNotFoundException(file.getAbsolutePath());
-            }
-            return file;
-        } catch (IOException e) {
-            Log.w(K9.LOG_TAG, null, e);
-            throw new FileNotFoundException(e.getMessage());
-        }
     }
 
     @Override
@@ -201,25 +172,10 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String arg1, String[] arg2) {
-        return 0;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        return null;
-    }
-
-    @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        if (projection == null) {
-            projection =
-                new String[] {
-                AttachmentProviderColumns._ID,
-                AttachmentProviderColumns.DATA,
-            };
-        }
+
+        String[] columnNames = (projection == null) ? DEFAULT_PROJECTION : projection;
 
         List<String> segments = uri.getPathSegments();
         String dbName = segments.get(0);
@@ -231,7 +187,6 @@ public class AttachmentProvider extends ContentProvider {
             dbName = dbName.substring(0, dbName.length() - 3);
         }
 
-        //String format = segments.get(2);
         final AttachmentInfo attachmentInfo;
         try {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
@@ -241,10 +196,10 @@ public class AttachmentProvider extends ContentProvider {
             return null;
         }
 
-        MatrixCursor ret = new MatrixCursor(projection);
-        Object[] values = new Object[projection.length];
-        for (int i = 0, count = projection.length; i < count; i++) {
-            String column = projection[i];
+        MatrixCursor ret = new MatrixCursor(columnNames);
+        Object[] values = new Object[columnNames.length];
+        for (int i = 0, count = columnNames.length; i < count; i++) {
+            String column = columnNames[i];
             if (AttachmentProviderColumns._ID.equals(column)) {
                 values[i] = id;
             } else if (AttachmentProviderColumns.DATA.equals(column)) {
@@ -262,6 +217,59 @@ public class AttachmentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    @Override
+    public int delete(Uri uri, String arg1, String[] arg2) {
+        return 0;
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        return null;
+    }
+
+    private String getType(String dbName, String id, String format) {
+        String type;
+        if (FORMAT_THUMBNAIL.equals(format)) {
+            type = "image/png";
+        } else {
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+
+            try {
+                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+
+                AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
+                if (FORMAT_VIEW.equals(format)) {
+                    type = MimeUtility.getMimeTypeForViewing(attachmentInfo.type, attachmentInfo.name);
+                } else {
+                    // When accessing the "raw" message we deliver the original MIME type.
+                    type = attachmentInfo.type;
+                }
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
+                type = null;
+            }
+        }
+
+        return type;
+    }
+
+    private File getFile(String dbName, String id) throws FileNotFoundException {
+        try {
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final File attachmentsDir;
+            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
+                             account.getLocalStorageProviderId());
+            final File file = new File(attachmentsDir, id);
+            if (!file.exists()) {
+                throw new FileNotFoundException(file.getAbsolutePath());
+            }
+            return file;
+        } catch (IOException e) {
+            Log.w(K9.LOG_TAG, null, e);
+            throw new FileNotFoundException(e.getMessage());
+        }
     }
 
     private Bitmap createThumbnail(String type, InputStream data) {
