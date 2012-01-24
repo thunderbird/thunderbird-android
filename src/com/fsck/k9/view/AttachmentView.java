@@ -58,11 +58,6 @@ public class AttachmentView extends FrameLayout {
      */
     private String[] specialCharacters = {"\\*", "\\?", "\\/", "\\\\"};
 
-    /**
-     * Special characters that are not allowed in file names.
-     */
-    private String[] specialCharacters = {"\\*", "\\?", "\\/", "\\\\"};
-
     private AttachmentFileDownloadCallback callback;
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
