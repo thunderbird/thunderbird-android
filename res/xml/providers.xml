@@ -170,6 +170,10 @@
         <incoming uri="pop3://incoming.verizon.net" username="$user" />
         <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
     </provider>
+    <provider id="montclair.edu" label="MSU" domain="montclair.edu">
+        <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.montclair.edu" username="$user" />
+    </provider>
 
     <!-- Yahoo! Mail Variants -->
     <provider id="yahoo" label="Yahoo" domain="yahoo.com">
