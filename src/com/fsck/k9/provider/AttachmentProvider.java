@@ -92,6 +92,30 @@ public class AttachmentProvider extends ContentProvider {
         }
     }
 
+    /**
+     * Delete the thumbnail of an attachment.
+     *
+     * @param context
+     *         The application context.
+     * @param accountUuid
+     *         The UUID of the account the attachment belongs to.
+     * @param attachmentId
+     *         The ID of the attachment the thumbnail was created for.
+     */
+    public static void deleteThumbnail(Context context, String accountUuid, String attachmentId) {
+        File file = getThumbnailFile(context, accountUuid, attachmentId);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    private static File getThumbnailFile(Context context, String accountUuid,
+            String attachmentId) {
+        String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
+        File dir = context.getCacheDir();
+        return new File(dir, filename);
+    }
+
 
     @Override
     public boolean onCreate() {
@@ -139,9 +163,7 @@ public class AttachmentProvider extends ContentProvider {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
 
-            String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
-            File dir = getContext().getCacheDir();
-            file = new File(dir, filename);
+            file = getThumbnailFile(getContext(), accountUuid, attachmentId);
             if (!file.exists()) {
                 String type = getType(accountUuid, attachmentId, FORMAT_VIEW);
                 try {
