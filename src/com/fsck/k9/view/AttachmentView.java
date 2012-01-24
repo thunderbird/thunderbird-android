@@ -201,7 +201,7 @@ public class AttachmentView extends FrameLayout {
      */
     public void writeFile(File directory) {
         try {
-	     String filename = removeSpecialCharacters(name);
+		String filename = removeSpecialCharacters(name);
             File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
@@ -221,7 +221,7 @@ public class AttachmentView extends FrameLayout {
     	StringBuilder regex = new StringBuilder("(");
 
     	for (String specialCharacter : specialCharacters) {
-	    regex.append(specialCharacter + "|");
+		regex.append(specialCharacter + "|");
     	}
 
     	regex.deleteCharAt(regex.length()-1);
