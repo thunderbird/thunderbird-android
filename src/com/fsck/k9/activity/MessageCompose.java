@@ -2988,9 +2988,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
-            if (mDraftId != INVALID_DRAFT_ID) {
-                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftId);
+            long draftId = mDraftId;
+            if (draftId != INVALID_DRAFT_ID) {
                 mDraftId = INVALID_DRAFT_ID;
+                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, draftId);
             }
 
             return null;

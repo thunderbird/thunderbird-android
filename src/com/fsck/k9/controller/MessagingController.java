@@ -3311,9 +3311,11 @@ public class MessagingController implements Runnable {
             localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
             String uid = localFolder.getMessageUidById(id);
-            Message message = localFolder.getMessage(uid);
-            if (message != null) {
-                deleteMessages(new Message[] { message }, null);
+            if (uid != null) {
+                Message message = localFolder.getMessage(uid);
+                if (message != null) {
+                    deleteMessages(new Message[] { message }, null);
+                }
             }
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
