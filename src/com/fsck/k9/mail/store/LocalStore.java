@@ -2692,22 +2692,34 @@ public class LocalStore extends Store implements Serializable {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     Cursor attachmentsCursor = null;
                     try {
-                        attachmentsCursor = db.query("attachments", new String[]
-                                                     { "id" }, "message_id = ?", new String[]
-                                                     { Long.toString(messageId) }, null, null, null);
+                        String accountUuid = mAccount.getUuid();
+                        Context context = mApplication;
+
+                        // Get attachment IDs
+                        String[] whereArgs = new String[] { Long.toString(messageId) };
+                        attachmentsCursor = db.query("attachments", new String[] { "id" },
+                                "message_id = ?", whereArgs, null, null, null);
+
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
-                                                         .getAttachmentDirectory(uUid, database.getStorageProviderId());
+                                .getAttachmentDirectory(uUid, database.getStorageProviderId());
+
                         while (attachmentsCursor.moveToNext()) {
-                            long attachmentId = attachmentsCursor.getLong(0);
+                            String attachmentId = Long.toString(attachmentsCursor.getLong(0));
                             try {
-                                File file = new File(attachmentDirectory, Long.toString(attachmentId));
+                                // Delete stored attachment
+                                File file = new File(attachmentDirectory, attachmentId);
                                 if (file.exists()) {
                                     file.delete();
                                 }
-                            } catch (Exception e) {
 
-                            }
+                                // Delete thumbnail file
+                                AttachmentProvider.deleteThumbnail(context, accountUuid,
+                                        attachmentId);
+                            } catch (Exception e) { /* ignore */ }
                         }
+
+                        // Delete attachment metadata from the database
+                        db.delete("attachments", "message_id = ?", whereArgs);
                     } finally {
                         Utility.closeQuietly(attachmentsCursor);
                     }
