@@ -212,7 +212,7 @@ public class AttachmentView extends FrameLayout {
             out.flush();
             out.close();
             in.close();
-            attachmentSaved(filename.toString());
+            attachmentSaved(file.toString());
             new MediaScannerNotifier(mContext, file);
         } catch (IOException ioe) {
             attachmentNotSaved();
