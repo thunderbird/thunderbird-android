@@ -3470,12 +3470,13 @@ public class MessagingController implements Runnable {
         putBackground("emptyTrash", listener, new Runnable() {
             @Override
             public void run() {
-                Folder localFolder = null;
+                LocalFolder localFolder = null;
                 try {
                     Store localStore = account.getLocalStore();
-                    localFolder = localStore.getFolder(account.getTrashFolderName());
+                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
+                    localFolder.resetUnreadAndFlaggedCounts();
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);
