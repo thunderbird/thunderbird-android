@@ -39,6 +39,18 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout {
+    /**
+     * Regular expression that represents characters that aren't allowed
+     * to be used in file names saved using K-9
+     */
+    private static final String INVALID_CHARACTERS = "[^\\d\\s\\w!" +
+            "#\\$%&'\\(\\)\\-@\\^_`\\{\\}~.,]+";
+
+    /**
+     * Invalid characters in a file name are replaced by this character.
+     */
+    private static final String REPLACEMENT_CHARACTER = "_";
+
 
     private Context mContext;
     public Button viewButton;
@@ -52,13 +64,6 @@ public class AttachmentView extends FrameLayout {
     public String contentType;
     public long size;
     public ImageView iconView;
-
-    /**
-     * Regular expression that represents characters that aren't allowed
-     * to be used in file names saved using K-9
-     */
-    private static final String specialCharacters = new String("[^\\d\\s\\w!" +
-            "#\\$%&'\\(\\)\\-@\\^_`\\{\\}~.,]");
 
     private AttachmentFileDownloadCallback callback;
 
@@ -203,7 +208,7 @@ public class AttachmentView extends FrameLayout {
      */
     public void writeFile(File directory) {
         try {
-            String filename = removeSpecialCharacters(name);
+            String filename = sanitizeFilename(name);
             File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
@@ -220,14 +225,15 @@ public class AttachmentView extends FrameLayout {
     }
 
     /**
-     * Removes characters that aren't allowed to be used in file names saved
-     * in K-9 application.
+     * Replace characters we don't allow in file names with a replacement character.
      *
-     * @param filename The original file name.
-     * @return A file name with only legal characters.
+     * @param filename
+     *         The original file name.
+     *
+     * @return The sanitized file name containing only allowed characters.
      */
-    private String removeSpecialCharacters(String filename) {
-        return filename.replaceAll(specialCharacters, "");
+    private String sanitizeFilename(String filename) {
+        return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
     }
 
     /**
