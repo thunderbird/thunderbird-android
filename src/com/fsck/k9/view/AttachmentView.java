@@ -40,11 +40,19 @@ import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout {
     /**
-     * Regular expression that represents characters that aren't allowed
-     * to be used in file names saved using K-9
+     * Regular expression that represents characters we won't allow in file names.
+     *
+     * <p>
+     * Allowed are:
+     * <ul>
+     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
+     *   <li>spaces: {@code " "}</li>
+     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
+     *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
+     *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
+     * </ul></p>
      */
-    private static final String INVALID_CHARACTERS = "[^\\d\\s\\w!" +
-            "#\\$%&'\\(\\)\\-@\\^_`\\{\\}~.,]+";
+    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]+";
 
     /**
      * Invalid characters in a file name are replaced by this character.
