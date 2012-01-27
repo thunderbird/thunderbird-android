@@ -52,13 +52,13 @@ public class AttachmentView extends FrameLayout {
     public String contentType;
     public long size;
     public ImageView iconView;
-    
+
     /**
      * Regular expression that represents characters that aren't allowed
      * to be used in file names saved using K-9
      */
     private static final String specialCharacters = new String("[^\\d\\s\\w!" +
-    		"#\\$%&'\\(\\)\\-@\\^_`\\{\\}~.,]");
+            "#\\$%&'\\(\\)\\-@\\^_`\\{\\}~.,]");
 
     private AttachmentFileDownloadCallback callback;
 
@@ -222,12 +222,12 @@ public class AttachmentView extends FrameLayout {
     /**
      * Removes characters that aren't allowed to be used in file names saved
      * in K-9 application.
-     * 
+     *
      * @param filename The original file name.
      * @return A file name with only legal characters.
      */
     private String removeSpecialCharacters(String filename) {
-    	return filename.replaceAll(specialCharacters, "");
+        return filename.replaceAll(specialCharacters, "");
     }
 
     /**
