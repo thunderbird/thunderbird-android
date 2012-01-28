@@ -133,7 +133,7 @@ public abstract class Folder {
             Log.d(K9.LOG_TAG, "fetchPart() not implemented.");
     }
 
-    public abstract void delete(boolean recurse) throws MessagingException;
+    public abstract boolean delete(boolean recurse) throws MessagingException;
 
     public abstract String getName();
 

@@ -788,23 +788,29 @@ public class ImapStore extends Store {
     }
 
     public boolean createFolder(final String folderName) throws com.fsck.k9.mail.MessagingException {
-        ImapFolder folder = new ImapFolder(this, folderName);
+        //ImapFolder folder = new ImapFolder(this, folderName);
+        ImapFolder folder = (ImapFolder)getFolder(folderName);
         return folder.create();
     }
 
     public boolean renameFolder(final String oldFolderName, final String newFolderName)
             throws com.fsck.k9.mail.MessagingException {
-        ImapFolder oldFolder = new ImapFolder(this, oldFolderName);
-        ImapFolder newFolder = new ImapFolder(this, newFolderName);
+        //ImapFolder oldFolder = new ImapFolder(this, oldFolderName);
+        ImapFolder oldFolder = (ImapFolder)getFolder(oldFolderName);
+        //ImapFolder newFolder = new ImapFolder(this, newFolderName);
+        ImapFolder newFolder = (ImapFolder)getFolder(newFolderName);
         if (oldFolder.exists() && !newFolder.exists()) {
+            mFolderCache.remove(oldFolderName);
             return oldFolder.rename(newFolderName);
         }
         return false;
     }
 
-    public boolean deleteFolder(final String folderName) throws com.fsck.k9.mail.MessagingException {
-        ImapFolder folder = new ImapFolder(this, folderName);
-        return ((ImapFolder)folder).deleteFolder();
+    public boolean delete(final String folderName) throws com.fsck.k9.mail.MessagingException {
+        //ImapFolder folder = new ImapFolder(this, folderName);
+        ImapFolder folder = (ImapFolder)getFolder(folderName);
+        mFolderCache.remove(folderName);
+        return folder.delete(false);
     }
 
     @Override
@@ -1112,7 +1118,8 @@ public class ImapStore extends Store {
             }
         }
 
-        public boolean deleteFolder() throws MessagingException {
+        @Override
+        public boolean delete(boolean recurse) throws MessagingException {
             /*
              * This method needs to operate in the unselected mode as well as the selected mode
              * so we must get the connection ourselves if it's not there. We are specifically
@@ -1276,11 +1283,6 @@ public class ImapStore extends Store {
             }
             return -1;
 
-        }
-
-        @Override
-        public void delete(boolean recurse) throws MessagingException {
-            throw new Error("ImapStore.delete() not yet implemented");
         }
 
         @Override

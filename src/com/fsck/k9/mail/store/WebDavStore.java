@@ -1456,7 +1456,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void delete(boolean recursive) throws MessagingException {
+        public boolean delete(boolean recursive) throws MessagingException {
             throw new Error("WebDavFolder.delete() not implemeneted");
         }
 

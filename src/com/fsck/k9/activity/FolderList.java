@@ -820,9 +820,9 @@ public class FolderList extends K9ListActivity {
                 try {
                     Store store = mAccount.getRemoteStore();
                     if (store instanceof ImapStore) {
-                        boolean result = ((ImapStore)store).deleteFolder(folder.name);
+                        boolean result = ((ImapStore)store).delete(folder.name);
                         if (result) {
-                            mAccount.getLocalStore().deleteFolder(folder.folder);
+                            mAccount.getLocalStore().delete(folder.name);
                             if (mAccount.isSpecialFolder(folder.name)) {
                                 resetSpecialFolders(folder.name, K9.FOLDER_NONE);
                             }
@@ -835,7 +835,7 @@ public class FolderList extends K9ListActivity {
                         String toastText = "Deleting WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
                     } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().deleteFolder(folder.folder);
+                        boolean result = mAccount.getLocalStore().delete(folder.name);
                         if (result && mAccount.isSpecialFolder(folder.name)) {
                             resetSpecialFolders(folder.name, K9.FOLDER_NONE);
                         }

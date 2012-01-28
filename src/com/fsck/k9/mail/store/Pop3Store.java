@@ -893,7 +893,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void delete(boolean recurse) throws MessagingException {
+        public boolean delete(boolean recurse) throws MessagingException {
+            throw new Error("Pop3Folder.delete(boolean recurse): Sole POP3 folder is not deletable");
         }
 
         @Override

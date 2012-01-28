@@ -203,7 +203,11 @@
         <echo>   astyle:     Make K-9's source look like it's supposed to</echo>
         <echo>   eclipse:    Apply template Eclipse settings</echo>
      </target>
-
+    <target name="javadoc" description="Build Javadoc from Java source files">
+        <javadoc destdir="javadoc/" access="private">
+            <fileset includes="**/*.java" dir="src"/>
+        </javadoc>
+    </target>
     <target name="eclipse" description="Apply template Eclipse settings">
         <copy todir=".settings">
             <fileset dir="tools/eclipse-settings"/>

@@ -1107,11 +1107,13 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
         return false;
     }
 
-    public boolean deleteFolder(Folder folder) throws com.fsck.k9.mail.MessagingException {
-        if (folder instanceof LocalFolder) {		// ASH do i need instanceof?
-            ((LocalFolder)folder).delete(false);	// delete the folder
-            ((LocalFolder)folder).delete();		// delete its preferences
-            return !folder.exists();
+    public boolean delete(final String folderName) throws com.fsck.k9.mail.MessagingException {
+        LocalFolder folder = new LocalFolder(folderName);
+        if (folder.exists()) {
+            if (folder.delete(false)) { // deletes folder
+                folder.delete();        // deletes folder preferences
+                return true;
+            }
         }
         return false;
     }
@@ -2745,7 +2747,7 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
 
 
         @Override
-        public void delete(final boolean recurse) throws MessagingException {
+        public boolean delete(final boolean recurse) throws MessagingException {
             try {
                 database.execute(false, new DbCallback<Void>() {
                     @Override
@@ -2765,6 +2767,7 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
                         return null;
                     }
                 });
+                return true;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
