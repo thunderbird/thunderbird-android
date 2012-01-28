@@ -105,10 +105,9 @@ public abstract class Folder {
     public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {}
 
     public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
-        for (Message message : msgs) {
-            Message myMessage = getMessage(message.getUid());
-            myMessage.delete(trashFolderName);
-        }
+// ASH remove these two lines but keep the empty method
+Log.e("ASH", "and i didn't think that Folder.delete(msgs, trashFolderName) ever got called: " + msgs[0].getClass());
+throw new MessagingException("ASH : and i didn't think that Folder.delete(msgs, trashFolderName) ever got called: " + msgs[0].getClass());
     }
 
     public abstract void setFlags(Message[] messages, Flag[] flags, boolean value)

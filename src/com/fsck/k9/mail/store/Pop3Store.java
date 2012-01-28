@@ -1091,19 +1091,6 @@ public class Pop3Store extends Store {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
-
-        @Override
-        public void delete(String trashFolderName) throws MessagingException {
-            //  try
-            //  {
-            //  Poor POP3 users, we can't copy the message to the Trash folder, but they still want a delete
-            setFlag(Flag.DELETED, true);
-            //   }
-//         catch (MessagingException me)
-//         {
-//          Log.w(K9.LOG_TAG, "Could not delete non-existent message", me);
-//         }
-        }
     }
 
     static class Pop3Capabilities {

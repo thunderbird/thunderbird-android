@@ -2673,11 +2673,6 @@ public class ImapStore extends Store {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
-
-        @Override
-        public void delete(String trashFolderName) throws MessagingException {
-            getFolder().delete(new Message[] { this }, trashFolderName);
-        }
     }
 
     static class ImapBodyPart extends MimeBodyPart {

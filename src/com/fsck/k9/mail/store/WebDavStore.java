@@ -2101,13 +2101,6 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void delete(String trashFolderName) throws MessagingException {
-            WebDavFolder wdFolder = (WebDavFolder) getFolder();
-            Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
-            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
-        }
-
-        @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
