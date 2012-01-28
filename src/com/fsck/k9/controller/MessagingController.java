@@ -1011,22 +1011,36 @@ public class MessagingController implements Runnable {
             }
 
             /*
-             * Remove any messages that are in the local store but no longer on the remote store or are too old
+             * Remove any messages that are in the local store but no longer on the remote store
              */
-            if (account.syncRemoteDeletions()) {
-                ArrayList<Message> destroyMessages = new ArrayList<Message>();
-                for (Message localMessage : localMessages) {
-                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        destroyMessages.add(localMessage);
-                    }
+            ArrayList<Message> missingMessages = new ArrayList<Message>();
+            for (Message localMessage : localMessages) {
+                String uid = localMessage.getUid();
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX) && !remoteUidMap.containsKey(uid)) {
+                    // This message used to be on the server
+                    missingMessages.add(localMessage);
                 }
+            }
 
+            if (account.syncRemoteDeletions()) {
+                // Delete the messages that were deleted from the server from our local store
+                localFolder.destroyMessages(missingMessages.toArray(EMPTY_MESSAGE_ARRAY));
 
-                localFolder.destroyMessages(destroyMessages.toArray(EMPTY_MESSAGE_ARRAY));
-
-                for (Message destroyMessage : destroyMessages) {
+                for (Message destroyMessage : missingMessages) {
                     for (MessagingListener l : getListeners(listener)) {
                         l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
+                    }
+                }
+            } else {
+                // We do not sync remote deletions, so these messages are now only present in our
+                // local store. To mark them as local-only messages we give them local UIDs.
+                for (Message message : missingMessages) {
+                    String oldUid = message.getUid();
+                    String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                    message.setUid(newUid);
+
+                    for (MessagingListener l : getListeners(listener)) {
+                        l.messageUidChanged(account, folder, oldUid, newUid);
                     }
                 }
             }
