@@ -585,9 +585,6 @@ public class MessageList
         context.startActivity(intent);
     }
 
-    /**
-     * Creates and returns an intent that opens Unified Box or All Messages screen.
-     */
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -618,6 +615,9 @@ public class MessageList
         context.startActivity(intent);
     }
     
+    /**
+     * Creates and returns an intent that opens Unified Box or All Messages screen.
+     */
     public static Intent actionHandleAccountIntent(Context context, String title, SearchSpecification searchSpecification) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
