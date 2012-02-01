@@ -208,6 +208,10 @@
             android:launchMode="singleTask"
             android:configChanges="locale"
             >
+            <intent-filter>
+                <!-- This action is only to allow an entry point for launcher shortcuts -->
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.fsck.k9.activity.MessageView"

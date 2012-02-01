@@ -52,10 +52,12 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.SearchAccount;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -583,6 +585,9 @@ public class MessageList
         context.startActivity(intent);
     }
 
+    /**
+     * Creates and returns an intent that opens Unified Box or All Messages screen.
+     */
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -612,8 +617,8 @@ public class MessageList
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
-
-    public static void actionHandle(Context context, String title, SearchSpecification searchSpecification) {
+    
+    public static Intent actionHandleAccountIntent(Context context, String title, SearchSpecification searchSpecification) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
         if (searchSpecification.getRequiredFlags() != null) {
@@ -629,6 +634,12 @@ public class MessageList
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        return intent;
+    }
+
+    public static void actionHandle(Context context, String title, SearchSpecification searchSpecification) {
+        Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
         context.startActivity(intent);
     }
 
