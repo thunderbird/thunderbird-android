@@ -2124,22 +2124,24 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                    .create();
         case DIALOG_CONFIRM_DISCARD_ON_BACK:
             return new AlertDialog.Builder(this)
-            .setTitle(R.string.confirm_discard_draft_message_title)
-            .setMessage(R.string.confirm_discard_draft_message)
-     .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-         @Override
-         public void onClick(DialogInterface dialog, int whichButton) {
-             dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-         }
-     })
-     .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-         @Override
-         public void onClick(DialogInterface dialog, int whichButton) {
-             dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-             Toast.makeText(MessageCompose.this, getString(R.string.message_discarded_toast), Toast.LENGTH_LONG).show();
-             onDiscard();
-         }
-     })
+                   .setTitle(R.string.confirm_discard_draft_message_title)
+                   .setMessage(R.string.confirm_discard_draft_message)
+            .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                }
+            })
+            .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                    Toast.makeText(MessageCompose.this,
+                                   getString(R.string.message_discarded_toast),
+                                   Toast.LENGTH_LONG).show();
+                    onDiscard();
+                }
+            })
             .create();
         }
         return super.onCreateDialog(id);
