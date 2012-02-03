@@ -228,6 +228,9 @@ public class AttachmentView extends FrameLayout {
             attachmentSaved(file.toString());
             new MediaScannerNotifier(mContext, file);
         } catch (IOException ioe) {
+            if (K9.DEBUG) {
+                Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
+            }
             attachmentNotSaved();
         }
     }
