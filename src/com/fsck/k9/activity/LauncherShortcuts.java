@@ -59,8 +59,8 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         allAccounts[0] = integratedInboxAccount;
         allAccounts[1] = unreadAccount;
         
-        for (int i=0; i<accounts.length; i++) {
-            allAccounts[i+2] = accounts[i];
+        for (int i = 0; i < accounts.length; i++) {
+            allAccounts[i + 2] = accounts[i];
         }
 
         mAdapter = new AccountsAdapter(allAccounts);
@@ -71,7 +71,8 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         Intent shortcutIntent = null;
 
         if (account instanceof SearchSpecification) {
-            shortcutIntent = MessageList.actionHandleAccountIntent(this, account.getDescription(), (SearchSpecification) account);
+            shortcutIntent = MessageList.actionHandleAccountIntent(
+                    this, account.getDescription(), (SearchSpecification) account);
         } else {
             shortcutIntent = FolderList.actionHandleAccountIntent(this, (Account) account, null, true);	
         }
