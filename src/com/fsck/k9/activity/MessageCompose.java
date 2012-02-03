@@ -2061,7 +2061,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
             }
         } else {
-            onDiscard();
+            // Check if editing an existing draft.
+            if (mDraftId == INVALID_DRAFT_ID) {
+                onDiscard();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
