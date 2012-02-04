@@ -70,6 +70,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 
 
@@ -1384,13 +1385,21 @@ public class MessageList
     }
 
     private void onToggleRead(MessageInfoHolder holder) {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
+        LocalMessage message = holder.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+        LocalMessage message = holder.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }

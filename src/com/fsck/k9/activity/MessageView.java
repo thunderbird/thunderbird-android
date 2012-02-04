@@ -20,7 +20,6 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.ToggleScrollView;
@@ -729,17 +728,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new String[] {mMessage.getUid()}, Flag.FLAGGED, newState);
-            try {
-                // FIXME: This is a hack to change the flagged state of our message object. We
-                // can't call Message.setFlag() because that would "adjust" the flagged count
-                // another time (first time by MessagingController.setFlag(...)).
-                ((LocalMessage)mMessage).setFlagInternal(Flag.FLAGGED, newState);
-
-                mMessageView.setHeaders(mMessage, mAccount);
-            } catch (MessagingException me) {
-                Log.e(K9.LOG_TAG, "Could not set flag on local message", me);
-            }
+                    new Message[] { mMessage }, Flag.FLAGGED, newState);
+            mMessageView.setHeaders(mMessage, mAccount);
         }
     }
 
@@ -883,18 +873,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     private void onMarkAsUnread() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new String[] { mMessage.getUid() }, Flag.SEEN, false);
-            try {
-                // FIXME: This is a hack to mark our message object as unread. We can't call
-                // Message.setFlag() because that would "adjust" the unread count twice.
-                ((LocalMessage)mMessage).setFlagInternal(Flag.SEEN, false);
-
-                mMessageView.setHeaders(mMessage, mAccount);
-                String subject = mMessage.getSubject();
-                setTitle(subject);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
-            }
+                    new Message[] { mMessage }, Flag.SEEN, false);
+            mMessageView.setHeaders(mMessage, mAccount);
+            String subject = mMessage.getSubject();
+            setTitle(subject);
         }
     }
 

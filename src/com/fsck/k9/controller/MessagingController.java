@@ -2519,65 +2519,118 @@ public class MessagingController implements Runnable {
             @Override
             public void act(final Account account, final Folder folder,
             final List<Message> messages) {
-                String[] uids = new String[messages.size()];
-                for (int i = 0; i < messages.size(); i++) {
-                    uids[i] = messages.get(i).getUid();
-                }
-                setFlag(account, folder.getName(), uids, flag, newState);
+                setFlag(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), flag,
+                        newState);
             }
 
         });
 
     }
 
-    public void setFlag(
-        final Account account,
-        final String folderName,
-        final String[] uids,
-        final Flag flag,
-        final boolean newState) {
-        // TODO: put this into the background, but right now that causes odd behavior
-        // because the FolderMessageList doesn't have its own cache of the flag states
+    /**
+     * Set or remove a flag for a set of messages in a specific folder.
+     *
+     * <p>
+     * The {@link Message} objects passed in are updated to reflect the new flag state.
+     * </p>
+     *
+     * @param account
+     *         The account the folder containing the messages belongs to.
+     * @param folderName
+     *         The name of the folder.
+     * @param messages
+     *         The messages to change the flag for.
+     * @param flag
+     *         The flag to change.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
+     */
+    public void setFlag(Account account, String folderName, Message[] messages, Flag flag,
+            boolean newState) {
+        // TODO: Put this into the background, but right now some callers depend on the message
+        //       objects being modified right after this method returns.
         Folder localFolder = null;
         try {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
-            ArrayList<Message> messages = new ArrayList<Message>();
-            for (String uid : uids) {
-                // Allows for re-allowing sending of messages that could not be sent
-                if (flag == Flag.FLAGGED && !newState
-                        && uid != null
-                        && account.getOutboxFolderName().equals(folderName)) {
-                    sendCount.remove(uid);
-                }
-                Message msg = localFolder.getMessage(uid);
-                if (msg != null) {
-                    messages.add(msg);
+
+            // Allows for re-allowing sending of messages that could not be sent
+            if (flag == Flag.FLAGGED && !newState &&
+                    account.getOutboxFolderName().equals(folderName)) {
+                for (Message message : messages) {
+                    String uid = message.getUid();
+                    if (uid != null) {
+                        sendCount.remove(uid);
+                    }
                 }
             }
 
-            localFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] {flag}, newState);
-
+            // Update the messages in the local store
+            localFolder.setFlags(messages, new Flag[] {flag}, newState);
 
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
             }
 
+
+            /*
+             * Handle the remote side
+             */
+
+            // The error folder is always a local folder
+            // TODO: Skip the remote part for all local-only folders
             if (account.getErrorFolderName().equals(folderName)) {
                 return;
+            }
+
+            String[] uids = new String[messages.length];
+            for (int i = 0, end = uids.length; i < end; i++) {
+                uids[i] = messages[i].getUid();
             }
 
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
-
             throw new RuntimeException(me);
         } finally {
             closeFolder(localFolder);
         }
-    }//setMesssageFlag
+    }
+
+    /**
+     * Set or remove a flag for a message referenced by message UID.
+     *
+     * @param account
+     *         The account the folder containing the message belongs to.
+     * @param folderName
+     *         The name of the folder.
+     * @param message
+     *         The message to change the flag for.
+     * @param flag
+     *         The flag to change.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
+     */
+    public void setFlag(Account account, String folderName, String uid, Flag flag,
+            boolean newState) {
+        Folder localFolder = null;
+        try {
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folderName);
+            localFolder.open(OpenMode.READ_WRITE);
+
+            Message message = localFolder.getMessage(uid);
+            setFlag(account, folderName, new Message[] { message }, flag, newState);
+
+        } catch (MessagingException me) {
+            addErrorMessage(account, null, me);
+            throw new RuntimeException(me);
+        } finally {
+            closeFolder(localFolder);
+        }
+    }
 
     public void clearAllPending(final Account account) {
         try {

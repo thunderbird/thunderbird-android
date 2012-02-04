@@ -1611,7 +1611,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
             final String folderName = mMessageReference.folderName;
             final String sourceMessageUid = mMessageReference.uid;
-            MessagingController.getInstance(getApplication()).setFlag(account, folderName, new String[] {sourceMessageUid}, mMessageReference.flag, true);
+            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid, mMessageReference.flag, true);
         }
 
         mDraftNeedsSaving = false;
