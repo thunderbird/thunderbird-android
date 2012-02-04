@@ -3371,9 +3371,11 @@ public class MessagingController implements Runnable {
             localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
             String uid = localFolder.getMessageUidById(id);
-            Message message = localFolder.getMessage(uid);
-            if (message != null) {
-                deleteMessages(new Message[] { message }, null);
+            if (uid != null) {
+                Message message = localFolder.getMessage(uid);
+                if (message != null) {
+                    deleteMessages(new Message[] { message }, null);
+                }
             }
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
@@ -3528,12 +3530,13 @@ public class MessagingController implements Runnable {
         putBackground("emptyTrash", listener, new Runnable() {
             @Override
             public void run() {
-                Folder localFolder = null;
+                LocalFolder localFolder = null;
                 try {
                     Store localStore = account.getLocalStore();
-                    localFolder = localStore.getFolder(account.getTrashFolderName());
+                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
+                    localFolder.resetUnreadAndFlaggedCounts();
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);

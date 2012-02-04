@@ -39,6 +39,26 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout {
+    /**
+     * Regular expression that represents characters we won't allow in file names.
+     *
+     * <p>
+     * Allowed are:
+     * <ul>
+     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
+     *   <li>spaces: {@code " "}</li>
+     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
+     *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
+     *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
+     * </ul></p>
+     */
+    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]+";
+
+    /**
+     * Invalid characters in a file name are replaced by this character.
+     */
+    private static final String REPLACEMENT_CHARACTER = "_";
+
 
     private Context mContext;
     public Button viewButton;
@@ -196,7 +216,8 @@ public class AttachmentView extends FrameLayout {
      */
     public void writeFile(File directory) {
         try {
-            File file = Utility.createUniqueFile(directory, name);
+            String filename = sanitizeFilename(name);
+            File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);
@@ -207,9 +228,25 @@ public class AttachmentView extends FrameLayout {
             attachmentSaved(file.toString());
             new MediaScannerNotifier(mContext, file);
         } catch (IOException ioe) {
+            if (K9.DEBUG) {
+                Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
+            }
             attachmentNotSaved();
         }
     }
+
+    /**
+     * Replace characters we don't allow in file names with a replacement character.
+     *
+     * @param filename
+     *         The original file name.
+     *
+     * @return The sanitized file name containing only allowed characters.
+     */
+    private String sanitizeFilename(String filename) {
+        return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
+    }
+
     /**
      * saves the file to the defaultpath setting in the config, or if the config
      * is not set => to the Environment
