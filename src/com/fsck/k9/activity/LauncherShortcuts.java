@@ -75,7 +75,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
                     this, account.getDescription(), (SearchSpecification) account);
         } else {
             shortcutIntent = FolderList.actionHandleAccountIntent(this, 
-            		(Account) account, null, true);	
+                    (Account) account, null, true);	
         }
 
         Intent intent = new Intent();
