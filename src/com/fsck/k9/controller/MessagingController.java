@@ -3529,7 +3529,8 @@ public class MessagingController implements Runnable {
                     localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
-                    localFolder.resetUnreadAndFlaggedCounts();
+                    localFolder.setUnreadMessageCount(0);
+                    localFolder.setFlaggedMessageCount(0);
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);
