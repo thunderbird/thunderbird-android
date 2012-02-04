@@ -139,7 +139,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             holder.description.setText(description);
 
             if (account instanceof Account) {
-            	holder.chip.setBackgroundColor(((Account) account).getChipColor());
+                holder.chip.setBackgroundColor(((Account) account).getChipColor());
             }
 
             holder.chip.getBackground().setAlpha(255);
