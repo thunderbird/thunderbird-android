@@ -639,7 +639,8 @@ public class MessageList
         return intent;
     }
 
-    public static void actionHandle(Context context, String title, SearchSpecification searchSpecification) {
+    public static void actionHandle(Context context, String title, 
+            SearchSpecification searchSpecification) {
         Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
         context.startActivity(intent);
     }
