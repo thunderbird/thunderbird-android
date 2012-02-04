@@ -618,7 +618,8 @@ public class MessageList
     /**
      * Creates and returns an intent that opens Unified Box or All Messages screen.
      */
-    public static Intent actionHandleAccountIntent(Context context, String title, SearchSpecification searchSpecification) {
+    public static Intent actionHandleAccountIntent(Context context, String title, 
+            SearchSpecification searchSpecification) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
         if (searchSpecification.getRequiredFlags() != null) {
