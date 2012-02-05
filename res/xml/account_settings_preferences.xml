@@ -179,6 +179,12 @@
             android:key="account_save_all_headers"
             android:summary="@string/account_setup_incoming_save_all_headers_label" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:title="@string/account_setup_auto_upload_on_move_title"
+            android:key="account_auto_upload_on_move"
+            android:summary="@string/account_setup_auto_upload_on_move_label" />
+
         <PreferenceScreen
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"

@@ -833,6 +833,10 @@ public class ImapStore extends Store {
         return true;
     }
 
+    @Override
+    public boolean isAppendCapable() {
+        return true;
+    }
 
     class ImapFolder extends Folder {
         private String mName;

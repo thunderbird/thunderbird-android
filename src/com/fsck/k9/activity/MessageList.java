@@ -245,11 +245,11 @@ public class MessageList
     private boolean mTouchView = true;
     private int mPreviewLines = 0;
 
-
     private MessageListAdapter mAdapter;
     private View mFooterView;
 
     private FolderInfoHolder mCurrentFolder;
+    private boolean mLocalOnly = false;
 
     private LayoutInflater mInflater;
 
@@ -729,8 +729,26 @@ public class MessageList
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
-        // Hide "Load up to x more" footer for search views
-        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
+        // ASH this seems wrong, but it works for now.
+        if (mCurrentFolder != null) {
+            LocalFolder folder = (LocalFolder)mCurrentFolder.folder;
+            if (folder != null) {
+                try {
+                    folder.open(Folder.OpenMode.READ_ONLY);
+                    mLocalOnly = folder.isLocalOnly();
+                } catch(com.fsck.k9.mail.MessagingException e) {
+                    Log.e("ASH", "ack! " + e);
+                }
+            }
+            Log.d("ASH", "mLocalOnly = " + mLocalOnly + " for " + mCurrentFolder.name);
+        } else {
+            // should mLocalOnly be true or false or ???
+            // if true, it hides "Load up to x more", but this should be hidden anyway.
+            // it also hides R.id.check_mail and R.id.expunge
+        }
+
+        // Hide "Load up to x more" footer for search views and local-only folders
+        mFooterView.setVisibility((mQueryString != null || mLocalOnly) ? View.GONE : View.VISIBLE);
 
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
@@ -1527,6 +1545,10 @@ public class MessageList
             onMove(selection);
             return true;
         }
+        case R.id.batch_upload_op: {
+            onUpload(selection);
+            return true;
+        }
         case R.id.expunge: {
             if (mCurrentFolder != null) {
                 onExpunge(mAccount, mCurrentFolder.name);
@@ -1569,18 +1591,28 @@ public class MessageList
             menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
             menu.findItem(R.id.batch_copy_op).setVisible(false);
+            menu.findItem(R.id.batch_upload_op).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.send_messages).setVisible(false);
             menu.findItem(R.id.folder_settings).setVisible(false);
             menu.findItem(R.id.account_settings).setVisible(false);
         } else {
+            boolean isExpungeCapable = false;
+            try {
+                isExpungeCapable = mAccount.getRemoteStore().isExpungeCapable();
+            } catch (com.fsck.k9.mail.MessagingException e) {
+                Log.e(K9.LOG_TAG, "MessagingException trying to get remote store " + e);
+            }
             if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
                 menu.findItem(R.id.check_mail).setVisible(false);
             } else {
                 menu.findItem(R.id.send_messages).setVisible(false);
             }
-
-            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
+            if (mLocalOnly) {
+                menu.findItem(R.id.check_mail).setEnabled(false);
+            }
+            if ((mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) ||
+                    mLocalOnly || !isExpungeCapable) {
                 menu.findItem(R.id.expunge).setVisible(false);
             }
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
@@ -1588,6 +1620,14 @@ public class MessageList
             }
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
                 menu.findItem(R.id.batch_spam_op).setVisible(false);
+            }
+            try {
+                if (((com.fsck.k9.mail.store.LocalStore.LocalFolder)mCurrentFolder.folder).isLocalOnly() ||
+                        !mAccount.getRemoteStore().isAppendCapable()) {
+                        menu.findItem(R.id.batch_upload_op).setVisible(false);
+                }
+            } catch (com.fsck.k9.mail.MessagingException e) {
+                Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
             }
         }
 
@@ -1675,6 +1715,10 @@ public class MessageList
         }
         case R.id.copy: {
             onCopy(selection);
+            break;
+        }
+        case R.id.upload: {
+            onUpload(selection);
             break;
         }
         case R.id.send_alternate: {
@@ -1774,6 +1818,16 @@ public class MessageList
         }
         if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName())) {
             menu.findItem(R.id.spam).setVisible(false);
+        }
+
+        try {
+            if (!message.uid.startsWith(K9.LOCAL_UID_PREFIX) || mQueryString != null ||
+                    ((com.fsck.k9.mail.store.LocalStore.LocalFolder)message.message.getFolder()).isLocalOnly() ||
+                    !account.getRemoteStore().isAppendCapable()) {
+                menu.findItem(R.id.upload).setVisible(false);
+            }
+        } catch (com.fsck.k9.mail.MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
         }
 
         if (message.selected) {
@@ -2262,6 +2316,10 @@ public class MessageList
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+            if (message.uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                view.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
+                view.getBackground().setAlpha(31);
+            }
 
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
                 holder.subject.setText(getText(R.string.general_no_subject));
@@ -2660,6 +2718,31 @@ public class MessageList
 
         final Folder folder = holders.size() == 1 ? holders.get(0).message.getFolder() : mCurrentFolder.folder;
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder, holders);
+    }
+
+    /**
+     * Append messages to server.
+     *
+     * @param holders
+     *            Never {@code null}.
+     */
+    private void onUpload(final List<MessageInfoHolder> holders) {
+        if (holders.isEmpty()) {
+            return;
+        }
+        boolean isAppendCapable = false;
+        try {
+            isAppendCapable = mAccount.getRemoteStore().isAppendCapable();
+        } catch (com.fsck.k9.mail.MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
+        }
+        for (MessageInfoHolder holder : holders) {
+            if (holder.uid.startsWith(K9.LOCAL_UID_PREFIX) && !((LocalFolder)holder.folder.folder).isLocalOnly() && isAppendCapable) {
+                mController.saveMessage(mAccount, holder.message, holder.folder.name);
+            } else {
+                Log.d("ASH", "cannot sync " + holder.folder.name + " " + holder.uid + " " + holder.message.getSubject());
+            }
+        }
     }
 
     /**

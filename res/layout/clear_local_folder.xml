@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
+    <TextView
+        android:id="@+id/clear_local_folder_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@+string/clear_local_folder_text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+    <TextView
+        android:id="@+id/clear_local_only_folder_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@+string/clear_local_only_folder_text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+    <CheckBox
+        android:id="@+id/clear_local_folder_all"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="@string/clear_local_folder_all"
+        android:textColor="#FFF"
+        android:checked="false" />
+</LinearLayout>

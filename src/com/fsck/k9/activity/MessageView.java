@@ -752,6 +752,19 @@ public class MessageView extends K9Activity implements OnClickListener {
         startActivityForResult(intent, activity);
     }
 
+    private void onUpload() {
+        boolean isAppendCapable = false;
+        try {
+            isAppendCapable = mAccount.getRemoteStore().isAppendCapable();
+        } catch (com.fsck.k9.mail.MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
+        }
+        if (mMessageReference.uid.startsWith(K9.LOCAL_UID_PREFIX) && !((com.fsck.k9.mail.store.LocalStore.LocalFolder)mMessage.getFolder()).isLocalOnly() && isAppendCapable) {
+            mController.saveMessage(mAccount, mMessage, mMessageReference.folderName);
+        } else {
+            Log.d("ASH", "cannot sync " + mMessageReference.folderName + " " + mMessageReference.uid + " " + mMessage.getSubject());
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -965,6 +978,9 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.copy:
             onCopy();
             break;
+        case R.id.upload:
+            onUpload();
+            break;
         case R.id.show_full_header:
             runOnUiThread(new Runnable() {
                 @Override
@@ -992,6 +1008,15 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
         if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
             menu.findItem(R.id.spam).setVisible(false);
+        }
+        try {
+            if (!mMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX) ||
+                    ((com.fsck.k9.mail.store.LocalStore.LocalFolder)mMessage.getFolder()).isLocalOnly() ||
+                    !mAccount.getRemoteStore().isAppendCapable()) {
+                menu.findItem(R.id.upload).setVisible(false);
+            }
+        } catch (com.fsck.k9.mail.MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
         }
         return true;
     }
@@ -1057,6 +1082,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     public void displayMessageBody(final Account account, final String folder, final String uid, final Message message) {
+Log.d("ASH", MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL) + " " + MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_FULL));
+Log.d("ASH", message.isSet(Flag.X_DOWNLOADED_PARTIAL)  + " " + message.isSet(Flag.X_DOWNLOADED_FULL));
         runOnUiThread(new Runnable() {
             public void run() {
                 mTopView.scrollTo(0, 0);

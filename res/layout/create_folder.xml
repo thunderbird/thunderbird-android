@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
+    <EditText
+        android:id="@+id/create_folder_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:hint="@string/create_folder_hint" />
+    <CheckBox
+        android:id="@+id/create_folder_local"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="@string/create_folder_local"
+        android:textColor="#FFF"
+        android:checked="false" />
+</LinearLayout>

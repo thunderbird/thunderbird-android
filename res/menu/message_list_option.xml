@@ -94,6 +94,10 @@
                 android:title="@string/batch_copy_op"
             />
             <item
+                android:id="@+id/batch_upload_op"
+                android:title="@string/batch_upload_op"
+            />
+            <item
                 android:id="@+id/batch_select_all"
                 android:title="@string/batch_select_all"
             />

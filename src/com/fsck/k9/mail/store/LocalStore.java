@@ -888,6 +888,11 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
         return true;
     }
 
+    @Override
+    public boolean isAppendCapable() {
+        return true;
+    }
+
     public Message[] searchForMessages(MessageRetrievalListener listener, String[] queryFields,
             String queryString, List<LocalFolder> folders, Message[] messages, final Flag[]
             requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
@@ -1248,7 +1253,8 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
-                                create(true); // ASH should this always be true?
+                                create(!LocalStore.this.mAccount.getRemoteStore().isAppendCapable() &&
+                                        !LocalStore.this.mAccount.getInboxFolderName().equals(getName()));
                                 open(mode);
                             }
                         } catch (MessagingException e) {
@@ -2135,6 +2141,17 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
             appendMessages(messages, false);
         }
 
+        public void expunge() throws MessagingException {
+            List<Message> deletedMessages = new ArrayList<Message>();
+            for (Message message : getMessages(null)) {
+                if (message.isSet(Flag.DELETED)) {
+                    deletedMessages.add(message);
+                    Log.d("ASH", "about to destroy " + message.getUid());
+                }
+            }
+            destroyMessages(deletedMessages.toArray(EMPTY_MESSAGE_ARRAY));
+        }
+
         public void destroyMessages(final Message[] messages) throws MessagingException {
             try {
                 database.execute(true, new DbCallback<Void>() {
@@ -2709,14 +2726,14 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
             clearMessagesWhere(where, params);
         }
 
-
-
         public void clearAllMessages() throws MessagingException {
-            final String where = "folder_id = ?";
-            final String[] params = new String[] {
-                Long.toString(mFolderId)
-            };
+            clearAllMessages(true);
+        }
 
+        public void clearAllMessages(boolean includeLocalOnly) throws MessagingException {
+            final String where = "folder_id = ?" + (includeLocalOnly ? "" :
+                    " AND uid NOT LIKE '" + K9.LOCAL_UID_PREFIX + "%'");
+            final String[] params = new String[] { Long.toString(mFolderId) };
 
             clearMessagesWhere(where, params);
             setPushState(null);

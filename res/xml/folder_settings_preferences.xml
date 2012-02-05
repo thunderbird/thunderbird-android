@@ -61,6 +61,12 @@
             android:title="@string/folder_settings_include_in_integrated_inbox_label"
             android:summary="@string/folder_settings_include_in_integrated_inbox_summary" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="folder_settings_local_only"
+            android:title="@string/folder_settings_local_only_label"
+            android:summary="@string/folder_settings_local_only_summary" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

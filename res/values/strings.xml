@@ -76,6 +76,8 @@
     <string name="create_folder_action">Create folder</string>
     <string name="rename_folder_action">Rename folder</string>
     <string name="delete_folder_action">Delete folder</string>
+    <string name="create_folder_hint">New folder name</string>
+    <string name="create_folder_local">Local-only</string>
     <string name="mark_all_as_read_action">Mark all messages as read</string>
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
@@ -124,6 +126,9 @@
     <string name="empty_trash_action">Empty Trash</string>
     <string name="expunge_action">Expunge</string>
     <string name="clear_local_folder_action">Clear local messages</string>
+    <string name="clear_local_folder_text">Clear local copies of remote messages?</string>
+    <string name="clear_local_only_folder_text">Clear local-only messages? These will be permanently lost!</string>
+    <string name="clear_local_folder_all">Include local-only messages? These will be permanently lost!</string>
     <string name="set_sort_action">Choose sort</string>
     <string name="reverse_sort_action">Reverse sort</string>
     <string name="about_action">About</string>
@@ -310,6 +315,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">More from this sender</string>
+    <string name="upload">Upload</string>
 
     <string name="message_copied_toast">Message copied</string>
     <string name="message_moved_toast">Message moved</string>
@@ -420,6 +426,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_setup_incoming_save_all_headers_title">Download headers</string>
     <string name="account_setup_incoming_save_all_headers_label">Save all message headers locally</string>
+
+    <string name="account_setup_auto_upload_on_move_title">Upload on move or copy</string>
+    <string name="account_setup_auto_upload_on_move_label">Automatically upload local-only message when moved/copied to a syncable folder</string>
 
     <string name="local_storage_provider_external_label">External storage (SD card)</string>
     <string name="local_storage_provider_internal_label">Regular internal storage</string>
@@ -681,6 +690,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="folder_settings_in_top_group_label">Show in top group</string>
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
+    <string name="folder_settings_local_only_label">Local-only folder</string>
+    <string name="folder_settings_local_only_summary">Set to local-only folder (never synced with server)</string>
+
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
     <string name="folder_settings_folder_display_mode_normal">None</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
@@ -896,6 +908,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_spam_op">Move selected to Spam</string>
     <string name="batch_move_op">Move selected</string>
     <string name="batch_copy_op">Copy selected</string>
+    <string name="batch_upload_op">Upload selected</string>
     <string name="batch_flag_mode">Star mode</string>
     <string name="batch_select_mode">Select mode</string>
     <string name="batch_plain_mode">Plain mode</string>
@@ -918,6 +931,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="compact_layouts_title">Compact layouts</string>
     <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
+
+    <string name="show_advanced_options_title">Advanced options</string>
+    <string name="show_advanced_options_summary">Show advanced options</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
     <string name="volume_navigation_summary">Flip through items using the volume controls</string>

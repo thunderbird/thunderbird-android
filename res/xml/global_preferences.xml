@@ -73,6 +73,11 @@
                 android:title="@string/compact_layouts_title"
                 android:summary="@string/compact_layouts_summary" />
                 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="show_advanced_options"
+                android:title="@string/show_advanced_options_title"
+                android:summary="@string/show_advanced_options_summary" />
 
         </PreferenceCategory>
 

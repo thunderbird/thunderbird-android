@@ -68,6 +68,7 @@ public class Account implements BaseAccount {
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
+    public static final boolean DEFAULT_SHOW_ADVANCED_OPTIONS = false;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
@@ -119,6 +120,7 @@ public class Account implements BaseAccount {
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
     private boolean mSaveAllHeaders;
+    private boolean mAutoUploadOnMove;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private ScrollButtons mScrollMessageViewButtons;
@@ -206,6 +208,7 @@ public class Account implements BaseAccount {
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = true;
+        mAutoUploadOnMove = true;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
@@ -284,6 +287,7 @@ public class Account implements BaseAccount {
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
         mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
+        mAutoUploadOnMove = prefs.getBoolean(mUuid + ".autoUploadOnMove", true);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0) {
@@ -445,6 +449,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".pushPollOnConnect");
         editor.remove(mUuid + ".saveAllHeaders");
+        editor.remove(mUuid + ".autoUploadOnMove");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".latestOldMessageSeenTime");
@@ -601,6 +606,7 @@ public class Account implements BaseAccount {
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
         editor.putBoolean(mUuid + ".saveAllHeaders", mSaveAllHeaders);
+        editor.putBoolean(mUuid + ".autoUploadOnMove", mAutoUploadOnMove);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
@@ -1303,6 +1309,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setSaveAllHeaders(boolean saveAllHeaders) {
         mSaveAllHeaders = saveAllHeaders;
+    }
+
+    public synchronized boolean isAutoUploadOnMove() {
+        return mAutoUploadOnMove;
+    }
+
+    public synchronized void setAutoUploadOnMove(boolean autoUploadOnMove) {
+        mAutoUploadOnMove = autoUploadOnMove;
     }
 
     /**

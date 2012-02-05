@@ -45,7 +45,6 @@ public class MessageHeader extends LinearLayout {
 
     private View mChip;
     private CheckBox mFlagged;
-    private int defaultSubjectColor;
     private LinearLayout mToContainerView;
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
@@ -93,7 +92,6 @@ public class MessageHeader extends LinearLayout {
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
-        defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
@@ -212,7 +210,11 @@ public class MessageHeader extends LinearLayout {
         } else {
             mSubjectView.setText(subject);
         }
-        mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
+        if (message.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+            mSubjectView.setTextColor(mAccount.getChipColor());
+        } else {
+            mSubjectView.setTextColor(0xff000000);
+        }
 
         mFromView.setText(from);
 

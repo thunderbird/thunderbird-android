@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.util.Log;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.service.MailService;
 
 public class FolderSettings extends K9PreferenceActivity {
@@ -29,11 +33,14 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
     private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
+    private static final String PREFERENCE_LOCAL_ONLY = "folder_settings_local_only";
 
+    private Account mAccount;
     private LocalFolder mFolder;
 
     private CheckBoxPreference mInTopGroup;
     private CheckBoxPreference mIntegrate;
+    private CheckBoxPreference mLocalOnly;
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
@@ -51,7 +58,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
             LocalStore localStore = mAccount.getLocalStore();
@@ -73,7 +80,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
-        Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
+        PreferenceCategory category = (PreferenceCategory)findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(folderName);
 
 
@@ -81,6 +88,8 @@ public class FolderSettings extends K9PreferenceActivity {
         mInTopGroup.setChecked(mFolder.isInTopGroup());
         mIntegrate = (CheckBoxPreference)findPreference(PREFERENCE_INTEGRATE);
         mIntegrate.setChecked(mFolder.isIntegrate());
+        mLocalOnly = (CheckBoxPreference)findPreference(PREFERENCE_LOCAL_ONLY);
+        mLocalOnly.setChecked(mFolder.isLocalOnly());
 
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
@@ -96,6 +105,7 @@ public class FolderSettings extends K9PreferenceActivity {
         });
 
         mSyncClass = (ListPreference) findPreference(PREFERENCE_SYNC_CLASS);
+        mSyncClass.setEnabled(!mLocalOnly.isChecked());
         mSyncClass.setValue(mFolder.getRawSyncClass().name());
         mSyncClass.setSummary(mSyncClass.getEntry());
         mSyncClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -107,9 +117,12 @@ public class FolderSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+        if (store instanceof Pop3Store) {
+            category.removePreference(mSyncClass);
+        }
 
         mPushClass = (ListPreference) findPreference(PREFERENCE_PUSH_CLASS);
-        mPushClass.setEnabled(isPushCapable);
+        mPushClass.setEnabled(isPushCapable && !mLocalOnly.isChecked());
         mPushClass.setValue(mFolder.getRawPushClass().name());
         mPushClass.setSummary(mPushClass.getEntry());
         mPushClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -121,19 +134,54 @@ public class FolderSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+        if (store instanceof Pop3Store) {
+            category.removePreference(mPushClass);
+        }
+
+        mLocalOnly = (CheckBoxPreference)findPreference(PREFERENCE_LOCAL_ONLY);
+        mLocalOnly.setChecked(mFolder.isLocalOnly());
+        if (store instanceof Pop3Store || mAccount.getInboxFolderName().equals(folderName) ||
+                mAccount.getOutboxFolderName().equals(folderName)) {
+            mLocalOnly.setEnabled(false);
+        }
+        if (!K9.isShowAdvancedOptions()) {// ASH disabled for testing: || store instanceof Pop3Store) {
+            category.removePreference(mLocalOnly);
+        }
+
     }
 
     private void saveSettings() throws MessagingException {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
+        boolean oldIsLocalOnly = mFolder.isLocalOnly();
+        mFolder.setLocalOnly(mLocalOnly.isChecked());
         // We call getPushClass() because display class changes can affect push class when push class is set to inherit
         FolderClass oldPushClass = mFolder.getPushClass();
         FolderClass oldDisplayClass = mFolder.getDisplayClass();
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
-        mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
-        mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+        if (mLocalOnly.isChecked()) {
+            mFolder.setSyncClass(FolderClass.NO_CLASS);
+            mFolder.setPushClass(FolderClass.NO_CLASS);
+        } else {
+            mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
+            mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+        }
 
         mFolder.save();
+
+        if (!oldIsLocalOnly && mFolder.isLocalOnly()) {
+            Log.w(K9.LOG_TAG, "Changing UIDs of messages in folder " + mFolder.getName() +
+                    " to local UIDs.");
+            MessagingController.getInstance(getApplication()).localizeUids(mFolder);
+        } else if (oldIsLocalOnly && !mFolder.isLocalOnly()) {
+            // create folder if it does not exist.
+            Folder folder = mAccount.getRemoteStore().getFolder(mFolder.getName());
+            folder.close();
+            if (!folder.exists()) {
+                Log.w(K9.LOG_TAG, "creating remote folder " + mFolder.getName());
+                folder.create();
+            }
+        }
 
         FolderClass newPushClass = mFolder.getPushClass();
         FolderClass newDisplayClass = mFolder.getDisplayClass();

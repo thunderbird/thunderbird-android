@@ -86,6 +86,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
+    private static final String PREFERENCE_AUTO_UPLOAD_ON_MOVE = "account_auto_upload_on_move";
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
     private static final String PREFERENCE_MESSAGE_READ_RECEIPT = "message_read_receipt";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
@@ -112,6 +113,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private Account mAccount;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
+    private boolean mIsAppendCapable = false;
 
     private PreferenceScreen mComposingScreen;
 
@@ -155,6 +157,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mStripSignature;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
+    private CheckBoxPreference mAutoUploadOnMove;
     private CheckBoxPreference mPushPollOnConnect;
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
@@ -189,6 +192,7 @@ public class AccountSettings extends K9PreferenceActivity {
             final Store store = mAccount.getRemoteStore();
             mIsPushCapable = store.isPushCapable();
             mIsExpungeCapable = store.isExpungeCapable();
+            mIsAppendCapable = store.isAppendCapable();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not get remote store", e);
         }
@@ -361,6 +365,13 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mSaveAllHeaders = (CheckBoxPreference) findPreference(PREFERENCE_SAVE_ALL_HEADERS);
         mSaveAllHeaders.setChecked(mAccount.saveAllHeaders());
+
+        mAutoUploadOnMove = (CheckBoxPreference) findPreference(PREFERENCE_AUTO_UPLOAD_ON_MOVE);
+        mAutoUploadOnMove.setChecked(mAccount.isAutoUploadOnMove() && mIsAppendCapable);
+        if (!mIsAppendCapable || !K9.isShowAdvancedOptions()) {
+            ((PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING)).
+                    removePreference(mAutoUploadOnMove);
+        }
 
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
@@ -721,6 +732,7 @@ public class AccountSettings extends K9PreferenceActivity {
         }
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
+        mAccount.setAutoUploadOnMove(mAutoUploadOnMove.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());

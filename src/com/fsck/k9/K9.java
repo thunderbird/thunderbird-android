@@ -179,7 +179,7 @@ public class K9 extends Application {
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
     private static String mAttachmentDefaultPath = "";
-
+    private static boolean mShowAdvancedOptions;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -445,6 +445,7 @@ public class K9 extends Application {
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
+        editor.putBoolean("showAdvancedOptions", mShowAdvancedOptions);
         fontSizes.save(editor);
     }
 
@@ -575,6 +576,7 @@ public class K9 extends Application {
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        mShowAdvancedOptions = sprefs.getBoolean("showAdvancedOptions", false);
         fontSizes.load(sprefs);
 
         try {
@@ -1016,4 +1018,14 @@ public class K9 extends Application {
     public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
         K9.mAttachmentDefaultPath = attachmentDefaultPath;
     }
+
+    public static boolean isShowAdvancedOptions() {
+        return mShowAdvancedOptions;
+    }
+
+    public static void setShowAdvancedOptions(boolean showAdvancedOptions) {
+        mShowAdvancedOptions = showAdvancedOptions;
+    }
+
+
 }

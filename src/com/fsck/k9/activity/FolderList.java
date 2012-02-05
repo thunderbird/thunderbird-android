@@ -45,8 +45,10 @@ import com.fsck.k9.service.MailService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -477,16 +479,31 @@ public class FolderList extends K9ListActivity {
      Exactly the same as activity.ChooseFolder.onCreateFolder().
      */
     private void onCreateFolder() {
-        final EditText input = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.create_folder_action);
-        dialog.setView(input);
+        View view = mInflater.inflate(R.layout.create_folder, null);
+        final EditText input = (EditText) view.findViewById(R.id.create_folder_text);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.create_folder_local);
+        if (mAccount.getStoreUri().startsWith("pop3") || !K9.isShowAdvancedOptions()) {
+            checkBox.setVisibility(View.GONE);
+        }
+        dialog.setView(view);
         dialog.setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String folderName = input.getText().toString().trim();
+                if (folderName.matches("")) {
+                    Toast.makeText(getApplication(), "Folder name not given!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 try {
                     Store store = mAccount.getRemoteStore();
-                    if (store instanceof ImapStore) {
+                    if (store instanceof Pop3Store || checkBox.isChecked()) {
+                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
+                        String toastText = "Creation of folder \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else if (store instanceof ImapStore) {
                         boolean result = ((ImapStore)store).createFolder(folderName);
                         String toastText = "Creation of folder \"" + folderName +
                                 ((result) ? "\" succeeded." : "\" failed.");
@@ -495,12 +512,6 @@ public class FolderList extends K9ListActivity {
                     } else if (store instanceof WebDavStore) {
                         String toastText = "Creating WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                    } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
-                        String toastText = "Creation of folder \"" + folderName +
-                                ((result) ? "\" succeeded." : "\" failed.");
-                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                        onRefresh(false);
                     } else {
                         Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
                     }
@@ -511,9 +522,7 @@ public class FolderList extends K9ListActivity {
             }
         });
         dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                /* User clicked cancel so do some stuff */
-            }
+            public void onClick(DialogInterface dialog, int whichButton) {}
         });
         dialog.show();
     }
@@ -544,32 +553,64 @@ public class FolderList extends K9ListActivity {
         MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
     }
 
-
     private void onClearFolder(Account account, String folderName) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(false);
+        dialog.setTitle(R.string.clear_local_folder_action);
+        View view = mInflater.inflate(R.layout.clear_local_folder, null);
+        final TextView text = (TextView) view.findViewById(R.id.clear_local_folder_text);
+        final TextView textLocal = (TextView) view.findViewById(R.id.clear_local_only_folder_text);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.clear_local_folder_all);
+
         // There has to be a cheaper way to get at the localFolder object than this
         LocalFolder localFolder = null;
         try {
             if (account == null || folderName == null || !account.isAvailable(FolderList.this)) {
-                Log.i(K9.LOG_TAG, "not clear folder of unavailable account");
+                Log.i(K9.LOG_TAG, "Not clearing folder of unavailable account");
                 return;
             }
             localFolder = account.getLocalStore().getFolder(folderName);
             localFolder.open(Folder.OpenMode.READ_WRITE);
-            localFolder.clearAllMessages();
+            if (localFolder.isLocalOnly()) {
+                checkBox.setChecked(true);
+                checkBox.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+            } else {
+                textLocal.setVisibility(View.GONE);
+            }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception while clearing folder", e);
-        } finally {
             if (localFolder != null) {
                 localFolder.close();
             }
+            return;
         }
+        final LocalFolder localFolderFinal = localFolder;
 
-        onRefresh(!REFRESH_REMOTE);
+        dialog.setView(view);
+        dialog.setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                try {
+                    localFolderFinal.clearAllMessages(checkBox.isChecked());
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Exception while clearing folder", e);
+                } finally {
+                    if (localFolderFinal != null) {
+                        localFolderFinal.close();
+                    }
+                    onRefresh(!REFRESH_REMOTE);
+                }
+            }
+        });
+        dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if (localFolderFinal != null) {
+                    localFolderFinal.close();
+                }
+            }
+        });
+        dialog.show();
     }
-
-
-
-
 
     private void sendMail(Account account) {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
@@ -759,7 +800,17 @@ public class FolderList extends K9ListActivity {
                 String folderName = input.getText().toString().trim();
                 try {
                     Store store = mAccount.getRemoteStore();
-                    if (store instanceof ImapStore) {
+                    boolean isLocalOnly = ((LocalFolder)folder.folder).isLocalOnly();
+                    if (store instanceof Pop3Store || isLocalOnly) {
+                        boolean result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
+                        if (result && mAccount.isSpecialFolder(folder.name)) {
+                            resetSpecialFolders(folder.name, folderName);
+                        }
+                        String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else if (store instanceof ImapStore) {
                         boolean result = false;
                         if (((ImapStore)store).renameFolder(folder.name, folderName)) {
                             result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
@@ -779,28 +830,17 @@ public class FolderList extends K9ListActivity {
                     } else if (store instanceof WebDavStore) {
                         String toastText = "Deleting WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                    } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().renameFolder(folder.name, folderName);
-                        if (result && mAccount.isSpecialFolder(folder.name)) {
-                            resetSpecialFolders(folder.name, folderName);
-                        }
-                        String toastText = "Renaming folder \"" + folder.name + "\" to \"" + folderName +
-                                ((result) ? "\" succeeded." : "\" failed.");
-                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                        onRefresh(false);
                     } else {
                         Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
                     }
                 } catch (com.fsck.k9.mail.MessagingException me) {
-                    Log.e(K9.LOG_TAG, "MessagingException trying to deletefolder \"" +
+                    Log.e(K9.LOG_TAG, "MessagingException trying to rename folder \"" +
                             folder.name + "\": " + me);
                 }
             }
         });
         dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                /* User clicked cancel so do some stuff */
-            }
+            public void onClick(DialogInterface dialog, int whichButton) {}
         });
         dialog.show();
 
@@ -819,7 +859,17 @@ public class FolderList extends K9ListActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
                     Store store = mAccount.getRemoteStore();
-                    if (store instanceof ImapStore) {
+                    boolean isLocalOnly = ((LocalFolder)folder.folder).isLocalOnly();
+                    if (store instanceof Pop3Store || isLocalOnly) {
+                        boolean result = mAccount.getLocalStore().delete(folder.name);
+                        if (result && mAccount.isSpecialFolder(folder.name)) {
+                            resetSpecialFolders(folder.name, K9.FOLDER_NONE);
+                        }
+                        String toastText = "Deletion of folder \"" + folder.name +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else if (store instanceof ImapStore) {
                         boolean result = ((ImapStore)store).delete(folder.name);
                         if (result) {
                             mAccount.getLocalStore().delete(folder.name);
@@ -834,28 +884,17 @@ public class FolderList extends K9ListActivity {
                     } else if (store instanceof WebDavStore) {
                         String toastText = "Deleting WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                    } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().delete(folder.name);
-                        if (result && mAccount.isSpecialFolder(folder.name)) {
-                            resetSpecialFolders(folder.name, K9.FOLDER_NONE);
-                        }
-                        String toastText = "Deletion of folder \"" + folder.name +
-                                ((result) ? "\" succeeded." : "\" failed.");
-                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                        onRefresh(false);
                     } else {
                         Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
                     }
                 } catch (com.fsck.k9.mail.MessagingException me) {
-                    Log.e(K9.LOG_TAG, "MessagingException trying to deletefolder \"" +
+                    Log.e(K9.LOG_TAG, "MessagingException trying to delete folder \"" +
                             folder.name + "\": " + me);
                 }
             }
         });
         dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                /* User clicked cancel so do some stuff */
-            }
+            public void onClick(DialogInterface dialog, int whichButton) {}
         });
         dialog.show();
     }
@@ -921,18 +960,28 @@ public class FolderList extends K9ListActivity {
         getMenuInflater().inflate(R.menu.folder_context, menu);
 
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
+        boolean isLocalOnly = ((LocalFolder)folder.folder).isLocalOnly();
+        boolean isExpungeCapable = false;
+        try {
+            isExpungeCapable = mAccount.getRemoteStore().isExpungeCapable();
+        } catch (com.fsck.k9.mail.MessagingException e) {
+            Log.e(K9.LOG_TAG, "MessagingException trying to get remote store " + e);
+        }
 
         menu.setHeaderTitle(folder.displayName);
 
-        if (!folder.name.equals(mAccount.getTrashFolderName()))
+        if (!folder.name.equals(mAccount.getTrashFolderName())) {
             menu.findItem(R.id.empty_trash).setVisible(false);
-
+        }
         if (folder.name.equals(mAccount.getOutboxFolderName())) {
             menu.findItem(R.id.check_mail).setVisible(false);
         } else {
             menu.findItem(R.id.send_messages).setVisible(false);
         }
-        if (K9.ERROR_FOLDER_NAME.equals(folder.name)) {
+        if (isLocalOnly) {
+            menu.findItem(R.id.check_mail).setVisible(false);
+        }
+        if (K9.ERROR_FOLDER_NAME.equals(folder.name) || isLocalOnly || !isExpungeCapable) {
             menu.findItem(R.id.expunge).setVisible(false);
         }
 
@@ -943,6 +992,11 @@ public class FolderList extends K9ListActivity {
             // creates a new empty inbox, but this is likely confusing to many users and would
             // rarely be wanted by others, so it is disabled. For POP3 folders the inbox could be
             // named anything, but this likewise seems confusing and odd.
+            menu.findItem(R.id.rename_folder).setVisible(false);
+            menu.findItem(R.id.delete_folder).setVisible(false);
+        }
+        if (mAccount.getStoreUri().startsWith("webdav")) {
+            menu.findItem(R.id.create_folder).setVisible(false);
             menu.findItem(R.id.rename_folder).setVisible(false);
             menu.findItem(R.id.delete_folder).setVisible(false);
         }

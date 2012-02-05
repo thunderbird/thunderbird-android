@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
@@ -33,6 +34,8 @@ import com.fsck.k9.mail.store.WebDavStore;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChooseFolder extends K9ListActivity {
     String mFolder;
@@ -183,6 +186,9 @@ public class ChooseFolder extends K9ListActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_select_option, menu);
+        if (mAccount.getStoreUri().startsWith("webdav")) {
+            menu.findItem(R.id.create_folder).setVisible(false);
+        }
         return true;
     }
 
@@ -283,21 +289,37 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     /*
-     Show a dialog to create a new folder on the remote Store.
-     Currently only IMAP is supported.
-     Exactly the same as activity.FolderList.onCreateFolder().
+     Show a dialog to create a new folder.
+     Currently only IMAP and Pop3 supported.
+     IMAP folders are both remote and local. Pop3 folders are only local.
+     Exactly the same as activity.FolderList.onCreateFolder(), plus one line, plus s/mInflater/getLayoutInflater()/;
      */
     private void onCreateFolder() {
-        final EditText input = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.create_folder_action);
-        dialog.setView(input);
+        View view = getLayoutInflater().inflate(R.layout.create_folder, null);
+        final EditText input = (EditText) view.findViewById(R.id.create_folder_text);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.create_folder_local);
+        if (mAccount.getStoreUri().startsWith("pop3") || !K9.isShowAdvancedOptions()) {
+            checkBox.setVisibility(View.GONE);
+        }
+        dialog.setView(view);
         dialog.setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String folderName = input.getText().toString().trim();
+                if (folderName.matches("")) {
+                    Toast.makeText(getApplication(), "Folder name not given!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 try {
                     Store store = mAccount.getRemoteStore();
-                    if (store instanceof ImapStore) {
+                    if (store instanceof Pop3Store || checkBox.isChecked()) {
+                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
+                        String toastText = "Creation of folder \"" + folderName +
+                                ((result) ? "\" succeeded." : "\" failed.");
+                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
+                        onRefresh(false);
+                    } else if (store instanceof ImapStore) {
                         boolean result = ((ImapStore)store).createFolder(folderName);
                         String toastText = "Creation of folder \"" + folderName +
                                 ((result) ? "\" succeeded." : "\" failed.");
@@ -307,12 +329,6 @@ public class ChooseFolder extends K9ListActivity {
                     } else if (store instanceof WebDavStore) {
                         String toastText = "Creating WebDav Folders not currently implemented.";
                         Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                    } else if (store instanceof Pop3Store) {
-                        boolean result = mAccount.getLocalStore().createFolder(folderName, true);
-                        String toastText = "Creation of folder \"" + folderName +
-                                ((result) ? "\" succeeded." : "\" failed.");
-                        Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG).show();
-                        onRefresh(false);
                     } else {
                         Log.d(K9.LOG_TAG, "Unhandled store type " + store.getClass());
                     }
@@ -323,9 +339,7 @@ public class ChooseFolder extends K9ListActivity {
             }
         });
         dialog.setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                /* User clicked cancel so do some stuff */
-            }
+            public void onClick(DialogInterface dialog, int whichButton) {}
         });
         dialog.show();
     }

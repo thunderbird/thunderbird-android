@@ -67,6 +67,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
     private static final String PREFERENCE_COMPACT_LAYOUTS = "compact_layouts";
+    private static final String PREFERENCE_SHOW_ADVANCED_OPTIONS = "show_advanced_options";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
@@ -115,6 +116,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference compactLayouts;
+    private CheckBoxPreference showAdvancedOptions;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
@@ -178,6 +180,9 @@ public class Prefs extends K9PreferenceActivity {
 
         compactLayouts = (CheckBoxPreference)findPreference(PREFERENCE_COMPACT_LAYOUTS);
         compactLayouts.setChecked(K9.useCompactLayouts());
+
+        showAdvancedOptions = (CheckBoxPreference)findPreference(PREFERENCE_SHOW_ADVANCED_OPTIONS);
+        showAdvancedOptions.setChecked(K9.isShowAdvancedOptions());
 
         mVolumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
         mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
@@ -352,6 +357,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
         K9.setCompactLayouts(compactLayouts.isChecked());
+        K9.setShowAdvancedOptions(showAdvancedOptions.isChecked());
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
         K9.setManageBack(mManageBack.isChecked());

@@ -570,6 +570,11 @@ public class WebDavStore extends Store {
         return true;
     }
 
+    @Override
+    public boolean isAppendCapable() {
+        return true;
+    }
+
     private String getSpecialFoldersList() {
         StringBuilder buffer = new StringBuilder(200);
         buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
