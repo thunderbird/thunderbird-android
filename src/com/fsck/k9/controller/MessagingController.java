@@ -118,7 +118,6 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_EMPTY_TRASH = "com.fsck.k9.MessagingController.emptyTrash";
     private static final String PENDING_COMMAND_SET_FLAG_BULK = "com.fsck.k9.MessagingController.setFlagBulk";
-    private static final String PENDING_COMMAND_SET_FLAG = "com.fsck.k9.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
@@ -1933,8 +1932,6 @@ public class MessagingController implements Runnable {
                         processPendingAppend(command, account);
                     } else if (PENDING_COMMAND_SET_FLAG_BULK.equals(command.command)) {
                         processPendingSetFlag(command, account);
-                    } else if (PENDING_COMMAND_SET_FLAG.equals(command.command)) {
-                        processPendingSetFlagOld(command, account);
                     } else if (PENDING_COMMAND_MARK_ALL_AS_READ.equals(command.command)) {
                         processPendingMarkAllAsRead(command, account);
                     } else if (PENDING_COMMAND_MOVE_OR_COPY_BULK.equals(command.command)) {
@@ -2224,7 +2221,7 @@ public class MessagingController implements Runnable {
 
     /**
      * Update all messages in a folder with UIDs starting with K9.LOCAL_UID_PREFIX to their remote
-     * UIDs, or APPEND the messages if not found on server.
+     * UIDs//, or APPEND the messages if not found on server.
      *
      * @param account Account we are saving for.
      * @param folder Folder to update.
@@ -2386,46 +2383,6 @@ public class MessagingController implements Runnable {
                 return;
             }
             remoteFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] { flag }, newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
-    }
-
-    // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
-    // Eventually, it should be removed
-    private void processPendingSetFlagOld(PendingCommand command, Account account)
-    throws MessagingException {
-        String folder = command.arguments[0];
-        String uid = command.arguments[1];
-
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folder + ", uid = " + uid);
-
-        boolean newState = Boolean.parseBoolean(command.arguments[2]);
-
-        Flag flag = Flag.valueOf(command.arguments[3]);
-        Folder remoteFolder = null;
-        try {
-            Store remoteStore = account.getRemoteStore();
-            remoteFolder = remoteStore.getFolder(folder);
-            if (!remoteFolder.exists()) {
-                return;
-            }
-            remoteFolder.open(OpenMode.READ_WRITE);
-            if (remoteFolder.getMode() != OpenMode.READ_WRITE) {
-                return;
-            }
-            Message remoteMessage = null;
-            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(uid);
-            }
-            if (remoteMessage == null) {
-                return;
-            }
-            remoteMessage.setFlag(flag, newState);
         } finally {
             closeFolder(remoteFolder);
         }
