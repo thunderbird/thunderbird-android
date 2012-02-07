@@ -121,8 +121,6 @@ public class MessagingListener {
 
     public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {}
 
-    public void folderStatusChanged(Account account, String folderName) {}
-
 
     public void systemStatusChanged() {}
 
