@@ -48,7 +48,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
     }
 
     private void setupShortcut(Account account) {
-        final Intent shortcutIntent = FolderList.actionHandleAccountIntent(this, account, null, true);
+        final Intent shortcutIntent = FolderList.actionHandleAccountIntent(this, account, null, true, false);
 
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);

@@ -107,6 +107,16 @@ public class Preferences {
         return account;
     }
 
+    public synchronized Account getAccountByName(String name) {
+        for (Account account : getAccounts()) {
+            if (account.getDescription().equalsIgnoreCase(name)) {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
     public synchronized Account newAccount() {
         newAccount = new Account(K9.app);
         accounts.put(newAccount.getUuid(), newAccount);

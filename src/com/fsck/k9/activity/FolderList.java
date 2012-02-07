@@ -54,10 +54,12 @@ public class FolderList extends K9ListActivity {
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_ACCOUNT_NAME = "accountName";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
     private static final String EXTRA_FROM_NOTIFICATION = "fromNotification";
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
+    private static final String EXTRA_CHECK_MAIL = "checkMail";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -189,14 +191,14 @@ public class FolderList extends K9ListActivity {
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account) {
-        return actionHandleAccountIntent(context, account, null, false);
+        return actionHandleAccountIntent(context, account, null, false, false);
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
-        return actionHandleAccountIntent(context, account, initialFolder, false);
+        return actionHandleAccountIntent(context, account, initialFolder, false, false);
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut) {
+    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut, boolean checkMail) {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
@@ -206,6 +208,10 @@ public class FolderList extends K9ListActivity {
 
         if (fromShortcut) {
             intent.putExtra(EXTRA_FROM_SHORTCUT, true);
+        }
+
+        if (checkMail) {
+            intent.putExtra(EXTRA_CHECK_MAIL, true);
         }
 
         return intent;
@@ -271,7 +277,14 @@ public class FolderList extends K9ListActivity {
 
         mUnreadMessageCount = 0;
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        String accountName = intent.getStringExtra(EXTRA_ACCOUNT_NAME);
+
+        if (accountUuid != null) {
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        }
+        else if (accountName != null) {
+            mAccount = Preferences.getPreferences(this).getAccountByName(accountName);
+        }
 
         if (mAccount == null) {
             // This shouldn't normally happen. But apparently it does. See issue 2261.
@@ -293,8 +306,10 @@ public class FolderList extends K9ListActivity {
             onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();
         } else {
-
             initializeActivityView();
+            if (intent.getBooleanExtra(EXTRA_CHECK_MAIL, false)) {
+                checkMail(mAccount);
+            }
         }
     }
 
@@ -337,7 +352,7 @@ public class FolderList extends K9ListActivity {
     @Override public void onResume() {
         super.onResume();
 
-        if (!mAccount.isAvailable(this)) {
+        if (mAccount == null || !mAccount.isAvailable(this)) {
             Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
             startActivity(new Intent(this, Accounts.class));
             finish();
@@ -521,6 +536,9 @@ public class FolderList extends K9ListActivity {
 
 
 
+    private void checkMail(Account account) {
+        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
+    }
 
     private void sendMail(Account account) {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
@@ -534,7 +552,7 @@ public class FolderList extends K9ListActivity {
             return true;
 
         case R.id.check_mail:
-            MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
+            checkMail(mAccount);
 
             return true;
 
