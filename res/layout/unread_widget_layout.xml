@@ -13,13 +13,14 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:scaleType="fitCenter"
             android:src="@drawable/icon" />
 
         <TextView
             android:id="@+id/unread_count"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
@@ -34,9 +35,8 @@
 
     <TextView
         android:id="@+id/account_name"
-        android:ellipsize="none"
-        android:textSize="11sp"
-        android:shadowColor="#000000"
+        android:ellipsize="marquee"
+        android:textSize="12dp"
         android:singleLine="true"
         android:paddingTop="1dp"
         android:paddingBottom="1dp"
@@ -45,8 +45,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/rounded_corners"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:shadowColor="#000000"
+        android:shadowRadius="2.0"/>
 
 </LinearLayout>
