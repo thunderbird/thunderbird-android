@@ -1126,4 +1126,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="manage_accounts_move_down_action">Move down</string>
     <string name="manage_accounts_moving_message">Moving account...</string>
 
+    <string name="unread_widget_label">Unread count</string>
+    <string name="unread_widget_select_account">Show unread count for…</string>
 </resources>

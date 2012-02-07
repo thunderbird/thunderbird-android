@@ -40,7 +40,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             return;
         }
 
-        setContentView(R.layout.launcher_shortcuts);
+        setContentView(R.layout.account_list);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
         listView.setItemsCanFocus(false);
