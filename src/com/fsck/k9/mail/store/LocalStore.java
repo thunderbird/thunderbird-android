@@ -60,7 +60,6 @@ import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
-import com.fsck.k9.provider.UnreadWidgetProvider;
 
 /**
  * <pre>
@@ -500,9 +499,6 @@ public class LocalStore extends Store implements Serializable {
             public Void doDbWork(final SQLiteDatabase db) {
                 db.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
                 db.execSQL("update folders set flagged_count = 0, unread_count = 0");
-
-                // FIXME: hack to update unread count widget
-                UnreadWidgetProvider.updateUnreadCount(K9.app);
                 return null;
             }
         });
@@ -1315,9 +1311,6 @@ public class LocalStore extends Store implements Serializable {
         public void setUnreadMessageCount(final int unreadMessageCount) throws MessagingException {
             mUnreadMessageCount = Math.max(0, unreadMessageCount);
             updateFolderColumn("unread_count", mUnreadMessageCount);
-
-            // FIXME: hack to update unread count widget
-            UnreadWidgetProvider.updateUnreadCount(K9.app);
         }
 
         public void setFlaggedMessageCount(final int flaggedMessageCount) throws MessagingException {
