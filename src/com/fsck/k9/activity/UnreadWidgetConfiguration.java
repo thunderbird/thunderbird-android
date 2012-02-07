@@ -8,6 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.R;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 
@@ -55,7 +56,19 @@ public class UnreadWidgetConfiguration extends AccountList {
     }
 
     @Override
-    protected void onAccountSelected(Account account) {
+    protected boolean displaySpecialAccounts() {
+        return false;
+    }
+
+    @Override
+    protected void onAccountSelected(BaseAccount baseAccount) {
+        if (!(baseAccount instanceof Account)) {
+            finish();
+            return;
+        }
+
+        Account account = (Account) baseAccount;
+
         // Save widget configuration
         String accountUuid = account.getUuid();
         saveAccountUuid(this, mAppWidgetId, accountUuid);

@@ -1,5 +1,9 @@
 package com.fsck.k9.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -12,17 +16,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.SearchAccount;
 
 
 /**
  * Activity displaying the list of accounts.
  *
  * <p>
- * Classes extending this abstract class have to provide an {@link #onAccountSelected(Account)}
+ * Classes extending this abstract class have to provide an {@link #onAccountSelected(BaseAccount)}
  * method to perform an action when an account is selected.
  * </p>
  */
@@ -51,18 +57,35 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         new LoadAccounts().execute();
     }
 
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Account account = (Account) parent.getItemAtPosition(position);
+        BaseAccount account = (BaseAccount) parent.getItemAtPosition(position);
         onAccountSelected(account);
     }
 
     /**
      * Create a new {@link AccountsAdapter} instance and assign it to the {@link ListView}.
      *
-     * @param accounts
+     * @param realAccounts
      *         An array of accounts to display.
      */
-    public void populateListView(Account[] accounts) {
+    public void populateListView(Account[] realAccounts) {
+        List<BaseAccount> accounts = new ArrayList<BaseAccount>();
+
+        if (displaySpecialAccounts() && !K9.isHideSpecialAccounts()) {
+            BaseAccount integratedInboxAccount = new SearchAccount(this, true, null,  null);
+            integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+            integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+
+            BaseAccount unreadAccount = new SearchAccount(this, false, null, null);
+            unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+            unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+
+            accounts.add(integratedInboxAccount);
+            accounts.add(unreadAccount);
+        }
+
+        accounts.addAll(Arrays.asList(realAccounts));
         AccountsAdapter adapter = new AccountsAdapter(accounts);
         ListView listView = getListView();
         listView.setAdapter(adapter);
@@ -70,28 +93,28 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     }
 
     /**
+     * Implementing decide whether or not to display special accounts in the list.
+     *
+     * @return {@code true}, if special accounts should be listed. {@code false}, otherwise.
+     */
+    protected abstract boolean displaySpecialAccounts();
+
+    /**
      * This method will be called when an account was selected.
      *
      * @param account
      *         The account the user selected.
      */
-    protected abstract void onAccountSelected(Account account);
+    protected abstract void onAccountSelected(BaseAccount account);
 
-    class AccountsAdapter extends ArrayAdapter<Account> {
-        private Account[] mAccounts;
-
-        public AccountsAdapter(Account[] accounts) {
+    class AccountsAdapter extends ArrayAdapter<BaseAccount> {
+        public AccountsAdapter(List<BaseAccount> accounts) {
             super(AccountList.this, 0, accounts);
-            mAccounts = accounts;
-        }
-
-        public Account[] getAccounts() {
-            return mAccounts;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final Account account = getItem(position);
+            final BaseAccount account = getItem(position);
 
             final View view;
             if (convertView != null) {
@@ -127,7 +150,13 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
 
             holder.description.setText(description);
 
-            holder.chip.setBackgroundColor(account.getChipColor());
+            if (account instanceof Account) {
+                Account realAccount = (Account) account;
+                holder.chip.setBackgroundColor(realAccount.getChipColor());
+            } else {
+                holder.chip.setBackgroundColor(0xff999999);
+            }
+
             holder.chip.getBackground().setAlpha(255);
 
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP,
