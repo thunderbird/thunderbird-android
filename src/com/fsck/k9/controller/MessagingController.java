@@ -3297,11 +3297,16 @@ public class MessagingController implements Runnable {
             Folder localSrcFolder = localStore.getFolder(srcFolder);
             Folder localDestFolder = localStore.getFolder(destFolder);
 
+            boolean unreadCountAffected = false;
             List<String> uids = new LinkedList<String>();
             for (Message message : inMessages) {
                 String uid = message.getUid();
                 if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     uids.add(uid);
+                }
+
+                if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
+                    unreadCountAffected = true;
                 }
             }
 
@@ -3323,6 +3328,15 @@ public class MessagingController implements Runnable {
                     fp.add(FetchProfile.Item.BODY);
                     localSrcFolder.fetch(messages, fp, null);
                     localSrcFolder.copyMessages(messages, localDestFolder);
+
+                    if (unreadCountAffected) {
+                        // If this copy operation changes the unread count in the destination
+                        // folder, notify the listeners.
+                        int unreadMessageCount = localDestFolder.getUnreadMessageCount();
+                        for (MessagingListener l : getListeners()) {
+                            l.folderStatusChanged(account, destFolder, unreadMessageCount);
+                        }
+                    }
                 } else {
                     localSrcFolder.moveMessages(messages, localDestFolder);
                     for (Map.Entry<String, Message> entry : origUidMap.entrySet()) {
@@ -3332,6 +3346,17 @@ public class MessagingController implements Runnable {
                             l.messageUidChanged(account, srcFolder, origUid, message.getUid());
                         }
                         unsuppressMessage(account, srcFolder, origUid);
+                    }
+
+                    if (unreadCountAffected) {
+                        // If this move operation changes the unread count, notify the listeners
+                        // that the unread count changed in both the source and destination folder.
+                        int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
+                        int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
+                        for (MessagingListener l : getListeners()) {
+                            l.folderStatusChanged(account, srcFolder, unreadMessageCountSrc);
+                            l.folderStatusChanged(account, destFolder, unreadMessageCountDest);
+                        }
                     }
                 }
 
