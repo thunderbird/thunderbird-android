@@ -1,5 +1,8 @@
 package com.fsck.k9.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -46,21 +49,29 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
 
     private void refresh() {
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
-        BaseAccount[] allAccounts = new BaseAccount[accounts.length + 2];
+        List<BaseAccount> allAccounts = new ArrayList<BaseAccount>();
 
-        BaseAccount integratedInboxAccount = new SearchAccount(this, true, null,  null);
-        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+        if (!K9.isHideSpecialAccounts()) {
+            BaseAccount integratedInboxAccount = new SearchAccount(this, 
+            		true, null,  null);
+            integratedInboxAccount.setDescription(
+            		getString(R.string.integrated_inbox_title));
+            integratedInboxAccount.setEmail(
+            		getString(R.string.integrated_inbox_detail));
 
-        BaseAccount unreadAccount = new SearchAccount(this, false, null, null);
-        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+            BaseAccount unreadAccount = new SearchAccount(this, 
+            		false, null, null);
+            unreadAccount.setDescription(
+            		getString(R.string.search_all_messages_title));
+            unreadAccount.setEmail(
+            		getString(R.string.search_all_messages_detail));
 
-        allAccounts[0] = integratedInboxAccount;
-        allAccounts[1] = unreadAccount;
-        
+            allAccounts.add(integratedInboxAccount);
+            allAccounts.add(unreadAccount);
+        }
+
         for (int i = 0; i < accounts.length; i++) {
-            allAccounts[i + 2] = accounts[i];
+            allAccounts.add(accounts[i]);
         }
 
         mAdapter = new AccountsAdapter(allAccounts);
@@ -98,7 +109,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
     }
 
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
-        public AccountsAdapter(BaseAccount[] accounts) {
+        public AccountsAdapter(List<BaseAccount> accounts) {
             super(LauncherShortcuts.this, 0, accounts);
         }
 
