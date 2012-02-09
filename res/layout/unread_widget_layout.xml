@@ -6,6 +6,9 @@
     android:layout_height="wrap_content"
     android:padding="2dp"
     android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/unread_widget_background"
     android:gravity="bottom|center_horizontal">
 
     <FrameLayout
@@ -20,6 +23,7 @@
 
         <TextView
             android:id="@+id/unread_count"
+            android:visibility="gone"
             android:textSize="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,6 +39,7 @@
 
     <TextView
         android:id="@+id/account_name"
+        android:text="@string/app_name"
         android:ellipsize="marquee"
         android:textSize="12dp"
         android:singleLine="true"

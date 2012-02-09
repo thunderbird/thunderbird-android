@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 public class UnreadWidgetProvider extends AppWidgetProvider {
+    private static final int MAX_COUNT = 9999;
 
     /**
      * Trigger update for all of our unread widgets.
@@ -71,11 +72,15 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
             }
         }
 
-        if (unreadCount == 0) {
+        if (unreadCount <= 0) {
             // Hide TextView for unread count if there are no unread messages.
             remoteViews.setViewVisibility(R.id.unread_count, View.GONE);
         } else {
-            remoteViews.setTextViewText(R.id.unread_count, String.valueOf(unreadCount));
+            remoteViews.setViewVisibility(R.id.unread_count, View.VISIBLE);
+
+            String displayCount = (unreadCount <= MAX_COUNT) ?
+                    String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
+            remoteViews.setTextViewText(R.id.unread_count, displayCount);
         }
 
         remoteViews.setTextViewText(R.id.account_name, accountName);
@@ -95,7 +100,6 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-
     }
 
 
