@@ -53,18 +53,18 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
 
         if (!K9.isHideSpecialAccounts()) {
             BaseAccount integratedInboxAccount = new SearchAccount(this, 
-            		true, null,  null);
+                    true, null,  null);
             integratedInboxAccount.setDescription(
-            		getString(R.string.integrated_inbox_title));
+                    getString(R.string.integrated_inbox_title));
             integratedInboxAccount.setEmail(
-            		getString(R.string.integrated_inbox_detail));
+                    getString(R.string.integrated_inbox_detail));
 
             BaseAccount unreadAccount = new SearchAccount(this, 
-            		false, null, null);
+                    false, null, null);
             unreadAccount.setDescription(
-            		getString(R.string.search_all_messages_title));
+                    getString(R.string.search_all_messages_title));
             unreadAccount.setEmail(
-            		getString(R.string.search_all_messages_detail));
+                    getString(R.string.search_all_messages_detail));
 
             allAccounts.add(integratedInboxAccount);
             allAccounts.add(unreadAccount);
