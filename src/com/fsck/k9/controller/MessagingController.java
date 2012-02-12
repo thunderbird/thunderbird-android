@@ -2622,8 +2622,9 @@ public class MessagingController implements Runnable {
             localFolder.open(OpenMode.READ_WRITE);
 
             Message message = localFolder.getMessage(uid);
-            setFlag(account, folderName, new Message[] { message }, flag, newState);
-
+            if (message != null) {
+                setFlag(account, folderName, new Message[] { message }, flag, newState);
+            }
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
             throw new RuntimeException(me);
