@@ -106,6 +106,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
      */
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
+    /**
+     * Number of special accounts ('Unified Inbox' and 'All Messages')
+     */
+    private static final int SPECIAL_ACCOUNTS_COUNT = 2;
+
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
@@ -325,13 +330,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onCreate(icicle);
 
         if (!K9.isHideSpecialAccounts()) {
-            unreadAccount = new SearchAccount(this, false, null, null);
-            unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-            unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
-
-            integratedInboxAccount = new SearchAccount(this, true, null,  null);
-            integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-            integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+            createSpecialAccounts();
         }
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
@@ -372,6 +371,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (mNonConfigurationInstance != null) {
             mNonConfigurationInstance.restore(this);
         }
+    }
+
+    /**
+     * Creates and initializes the special accounts ('Integrated Inbox' and 'All Messages')
+     */
+    private void createSpecialAccounts() {
+        unreadAccount = new SearchAccount(this, false, null, null);
+        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+
+        integratedInboxAccount = new SearchAccount(this, true, null, null);
+        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
     }
 
     @SuppressWarnings("unchecked")
@@ -458,9 +470,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         accounts = Preferences.getPreferences(this).getAccounts();
 
         List<BaseAccount> newAccounts;
-        if (!K9.isHideSpecialAccounts()
-                && accounts.length > 0) {
-            newAccounts = new ArrayList<BaseAccount>(accounts.length + 2);
+        if (!K9.isHideSpecialAccounts() && accounts.length > 0) {
+            if (integratedInboxAccount == null || unreadAccount == null) {
+                createSpecialAccounts();
+            }
+
+            newAccounts = new ArrayList<BaseAccount>(accounts.length +
+                    SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(integratedInboxAccount);
             newAccounts.add(unreadAccount);
         } else {
