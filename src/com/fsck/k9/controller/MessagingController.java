@@ -2606,8 +2606,8 @@ public class MessagingController implements Runnable {
      *         The account the folder containing the message belongs to.
      * @param folderName
      *         The name of the folder.
-     * @param message
-     *         The message to change the flag for.
+     * @param uid
+     *         The UID of the message to change the flag for.
      * @param flag
      *         The flag to change.
      * @param newState
