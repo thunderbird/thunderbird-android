@@ -1691,9 +1691,7 @@ public class MessagingController implements Runnable {
                  * right now, attachments will be left for later.
                  */
 
-                ArrayList<Part> viewables = new ArrayList<Part>();
-                ArrayList<Part> attachments = new ArrayList<Part>();
-                MimeUtility.collectParts(message, viewables, attachments);
+                Set<Part> viewables = MimeUtility.collectTextParts(message);
 
                 /*
                  * Now download the parts we're interested in storing.
@@ -2816,9 +2814,7 @@ public class MessagingController implements Runnable {
                 try {
                     LocalStore localStore = account.getLocalStore();
 
-                    ArrayList<Part> viewables = new ArrayList<Part>();
-                    ArrayList<Part> attachments = new ArrayList<Part>();
-                    MimeUtility.collectParts(message, viewables, attachments);
+                    List<Part> attachments = MimeUtility.collectAttachments(message);
                     for (Part attachment : attachments) {
                         attachment.setBody(null);
                     }

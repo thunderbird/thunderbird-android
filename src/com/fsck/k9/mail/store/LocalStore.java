@@ -55,6 +55,7 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
@@ -2099,45 +2100,14 @@ public class LocalStore extends Store implements Serializable {
                                     deleteAttachments(message.getUid());
                                 }
 
-                                ArrayList<Part> viewables = new ArrayList<Part>();
-                                ArrayList<Part> attachments = new ArrayList<Part>();
-                                MimeUtility.collectParts(message, viewables, attachments);
+                                ViewableContainer container =
+                                        MimeUtility.extractTextAndAttachments(mApplication, message);
 
-                                StringBuilder sbHtml = new StringBuilder();
-                                StringBuilder sbText = new StringBuilder();
-                                for (Part viewable : viewables) {
-                                    try {
-                                        String text = MimeUtility.getTextFromPart(viewable);
+                                List<Part> attachments = container.attachments;
+                                String text = container.text;
+                                String html = container.html;
 
-                                        /*
-                                         * Small hack to make sure the string "null" doesn't end up
-                                         * in one of the StringBuilders.
-                                         */
-                                        if (text == null) {
-                                            text = "";
-                                        }
-
-                                        /*
-                                         * Anything with MIME type text/html will be stored as such. Anything
-                                         * else will be stored as text/plain.
-                                         */
-                                        if (viewable.getMimeType().equalsIgnoreCase("text/html")) {
-                                            sbHtml.append(text);
-                                        } else {
-                                            sbText.append(text);
-                                        }
-                                    } catch (Exception e) {
-                                        throw new MessagingException("Unable to get text for message part", e);
-                                    }
-                                }
-
-                                String text = sbText.toString();
-                                String html = markupContent(text, sbHtml.toString());
                                 String preview = calculateContentPreview(text);
-                                // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
-                                if (preview == null || preview.length() == 0) {
-                                    preview = calculateContentPreview(HtmlConverter.htmlToText(html));
-                                }
 
                                 try {
                                     ContentValues cv = new ContentValues();
@@ -2215,49 +2185,17 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
-                            ArrayList<Part> viewables = new ArrayList<Part>();
-                            ArrayList<Part> attachments = new ArrayList<Part>();
-
                             message.buildMimeRepresentation();
 
-                            MimeUtility.collectParts(message, viewables, attachments);
+                            ViewableContainer container =
+                                    MimeUtility.extractTextAndAttachments(mApplication, message);
 
-                            StringBuilder sbHtml = new StringBuilder();
-                            StringBuilder sbText = new StringBuilder();
-                            for (int i = 0, count = viewables.size(); i < count; i++) {
-                                Part viewable = viewables.get(i);
-                                try {
-                                    String text = MimeUtility.getTextFromPart(viewable);
+                            List<Part> attachments = container.attachments;
+                            String text = container.text;
+                            String html = container.html;
 
-                                    /*
-                                     * Small hack to make sure the string "null" doesn't end up
-                                     * in one of the StringBuilders.
-                                     */
-                                    if (text == null) {
-                                        text = "";
-                                    }
-
-                                    /*
-                                     * Anything with MIME type text/html will be stored as such. Anything
-                                     * else will be stored as text/plain.
-                                     */
-                                    if (viewable.getMimeType().equalsIgnoreCase("text/html")) {
-                                        sbHtml.append(text);
-                                    } else {
-                                        sbText.append(text);
-                                    }
-                                } catch (Exception e) {
-                                    throw new MessagingException("Unable to get text for message part", e);
-                                }
-                            }
-
-                            String text = sbText.toString();
-                            String html = markupContent(text, sbHtml.toString());
                             String preview = calculateContentPreview(text);
-                            // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
-                            if (preview == null || preview.length() == 0) {
-                                preview = calculateContentPreview(HtmlConverter.htmlToText(html));
-                            }
+
                             try {
                                 db.execSQL("UPDATE messages SET "
                                            + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
@@ -2391,6 +2329,18 @@ public class LocalStore extends Store implements Serializable {
                                 Body body = attachment.getBody();
                                 if (body instanceof LocalAttachmentBody) {
                                     contentUri = ((LocalAttachmentBody) body).getContentUri();
+                                } else if (body instanceof Message) {
+                                    // It's a message, so use Message.writeTo() to output the
+                                    // message including all children.
+                                    Message message = (Message) body;
+                                    tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
+                                    FileOutputStream out = new FileOutputStream(tempAttachmentFile);
+                                    try {
+                                        message.writeTo(out);
+                                    } finally {
+                                        out.close();
+                                    }
+                                    size = (int) (tempAttachmentFile.length() & 0x7FFFFFFFL);
                                 } else {
                                     /*
                                      * If the attachment has a body we're expected to save it into the local store
