@@ -43,13 +43,13 @@
     <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
     <permission android:name="com.fsck.k9.permission.READ_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
-                android:protectionLevel="normal"
+                android:protectionLevel="dangerous"
                 android:label="@string/read_messages_label"
                 android:description="@string/read_messages_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
     <permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"
                 android:permissionGroup="android.permission-group.MESSAGES"
-                android:protectionLevel="normal"
+                android:protectionLevel="dangerous"
                 android:label="@string/delete_messages_label"
                 android:description="@string/read_messages_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
