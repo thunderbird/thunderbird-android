@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,6 +106,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
      * Immutable empty {@link Flag} array
      */
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
+
+    /**
+     * URL used to open Android Market application
+     */
+    private static final String ANDROID_MARKET_URL = "http://market.android.com/";
 
     /**
      * Number of special accounts ('Unified Inbox' and 'All Messages')
@@ -1256,7 +1262,33 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
-        startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
+
+        if (infos.size() > 0) {
+            startActivityForResult(Intent.createChooser(i, null),
+                    ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+        } else {
+            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int button) {
+                    if (button == DialogInterface.BUTTON_POSITIVE) {
+                        Uri uri = Uri.parse(ANDROID_MARKET_URL);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    } else if (button == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.dismiss();
+                    }
+                }
+            };
+
+            new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.import_dialog_error_title))
+                .setMessage(getString(R.string.import_dialog_error_message))
+                .setPositiveButton(getString(R.string.open_market), listener)
+                .setNegativeButton(getString(R.string.close), listener)
+                .show();
+        }
     }
 
     @Override
