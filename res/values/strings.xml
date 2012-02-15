@@ -1128,4 +1128,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="unread_widget_label">K-9 Unread</string>
     <string name="unread_widget_select_account">Show unread count for…</string>
+
+    <string name="import_dialog_error_title">Missing File Manager Application</string>
+    <string name="import_dialog_error_message">There is no suitable application to handle
+the import operation. Please install a file manager application from Android Market</string>
+    <string name="open_market">Open Market</string>
+    <string name="close">Close</string>
 </resources>
