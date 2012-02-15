@@ -110,7 +110,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     /**
      * URL used to open Android Market application
      */
-    private static final String ANDROID_MARKET_URL = "http://market.android.com/";
+    private static final String ANDROID_MARKET_URL = "https://market.android.com/search?q=oi+file+manager&c=apps";
 
     /**
      * Number of special accounts ('Unified Inbox' and 'All Messages')
