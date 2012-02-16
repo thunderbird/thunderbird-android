@@ -1963,7 +1963,10 @@ public class LocalStore extends Store implements Serializable {
                                     Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
                                           + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
 
-                                message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
+                                String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                                message.setUid(newUid);
+
+                                uidMap.put(oldUID, newUid);
 
                                 db.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
                                                lDestFolder.getId(),
@@ -1971,10 +1974,15 @@ public class LocalStore extends Store implements Serializable {
                                                lMessage.getId()
                                            });
 
+                                /*
+                                 * Add a placeholder message so we won't download the original
+                                 * message again if we synchronize before the remote move is
+                                 * complete.
+                                 */
                                 LocalMessage placeHolder = new LocalMessage(oldUID, LocalFolder.this);
                                 placeHolder.setFlagInternal(Flag.DELETED, true);
                                 placeHolder.setFlagInternal(Flag.SEEN, true);
-                                uidMap.putAll(appendMessages(new Message[] { placeHolder }));
+                                appendMessages(new Message[] { placeHolder });
                             }
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
