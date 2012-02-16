@@ -1062,36 +1062,54 @@ public class ImapStore extends Store {
             }
         }
 
+        /**
+         * Copies the given messages to the specified folder.
+         *
+         * <p>
+         * <strong>Note:</strong>
+         * Only the UIDs of the given {@link Message} instances are used. It is assumed that all
+         * UIDs represent valid messages in this folder.
+         * </p>
+         *
+         * @param messages
+         *         The messages to copy to the specfied folder.
+         * @param folder
+         *         The name of the target folder.
+         *
+         * @return The mapping of original message UIDs to the new server UIDs.
+         */
         @Override
-        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] messages, Folder folder)
+                throws MessagingException {
             if (!(folder instanceof ImapFolder)) {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
-            if (messages.length == 0)
+            if (messages.length == 0) {
                 return null;
+            }
 
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
 
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
-
-                // Not bothering to sort the UIDs in ascending order while sending the command for convenience, and because it does not make a difference.
                 uids[i] = messages[i].getUid();
             }
+
             try {
                 String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
                 if (!exists(remoteDestName)) {
-                    /*
-                     * If the remote trash folder doesn't exist we try to create it.
-                     */
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "IMAPMessage.copyMessages: attempting to create remote '" + remoteDestName + "' folder for " + getLogId());
+                    // If the remote trash folder doesn't exist we try to create it.
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "Attempting to create remote folder '" + remoteDestName +
+                                "' for " + getLogId());
+                    }
                     iFolder.create(FolderType.HOLDS_MESSAGES);
                 }
 
+                //TODO: Split this into multiple commands if the command exceeds a certain length.
                 mConnection.sendCommand(String.format("UID COPY %s %s",
                                                       Utility.combine(uids, ','),
                                                       remoteDestName), false);
@@ -1101,45 +1119,55 @@ public class ImapStore extends Store {
                     handleUntaggedResponse(response);
                 } while (response.mTag == null);
 
-                /*
-                 * If the server supports UIDPLUS, then along with the COPY response it will return an COPYUID response code.
-                 * e.g. 24 OK [COPYUID 38505 304,319:320 3956:3958] Success
-                 *
-                 * COPYUID is followed by UIDVALIDITY, set of UIDs of copied messages from the source folder and set of corresponding UIDs assigned to them in the destination folder.
-                 *
-                 * We can use the new UIDs included in this response to update our records.
-                 */
-
-                Object responseList = response.get(1);
-
                 Map<String, String> uidMap = null;
+                if (response.size() > 1) {
+                    /*
+                     * If the server supports UIDPLUS, then along with the COPY response it will
+                     * return an COPYUID response code, e.g.
+                     *
+                     * 24 OK [COPYUID 38505 304,319:320 3956:3958] Success
+                     *
+                     * COPYUID is followed by UIDVALIDITY, the set of UIDs of copied messages from
+                     * the source folder and the set of corresponding UIDs assigned to them in the
+                     * destination folder.
+                     *
+                     * We can use the new UIDs included in this response to update our records.
+                     */
+                    Object responseList = response.get(1);
 
-                if (responseList instanceof ImapList) {
-                    final ImapList copyList = (ImapList) responseList;
-                    if ((copyList.size() >= 4) && copyList.getString(0).equals("COPYUID")) {
-                        List<String> srcUids = parseSequenceSet(copyList.getString(2));
-                        List<String> destUids = parseSequenceSet(copyList.getString(3));
-                        if (srcUids != null && destUids != null) {
-                            if (srcUids.size() == destUids.size()) {
-                                Iterator<String>  srcUidsIterator = srcUids.iterator();
-                                Iterator<String>  destUidsIterator = destUids.iterator();
-                                uidMap = new HashMap<String, String>();
-                                while (srcUidsIterator.hasNext() && destUidsIterator.hasNext()) {
-                                    uidMap.put(srcUidsIterator.next(), destUidsIterator.next());
+                    if (responseList instanceof ImapList) {
+                        final ImapList copyList = (ImapList) responseList;
+                        if (copyList.size() >= 4 && copyList.getString(0).equals("COPYUID")) {
+                            List<String> srcUids = parseSequenceSet(copyList.getString(2));
+                            List<String> destUids = parseSequenceSet(copyList.getString(3));
+
+                            if (srcUids != null && destUids != null) {
+                                if (srcUids.size() == destUids.size()) {
+                                    Iterator<String> srcUidsIterator = srcUids.iterator();
+                                    Iterator<String> destUidsIterator = destUids.iterator();
+                                    uidMap = new HashMap<String, String>();
+                                    while (srcUidsIterator.hasNext() &&
+                                            destUidsIterator.hasNext()) {
+                                        String srcUid = srcUidsIterator.next();
+                                        String destUid = destUidsIterator.next();
+                                        uidMap.put(srcUid, destUid);
+                                    }
+                                } else {
+                                    if (K9.DEBUG) {
+                                        Log.v(K9.LOG_TAG, "Parse error: size of source UIDs " +
+                                                "list is not the same as size of destination " +
+                                                "UIDs list.");
+                                    }
                                 }
                             } else {
-                                if(K9.DEBUG)
-                                    Log.v(K9.LOG_TAG, "Parse error: size of source UIDs list is not the same as size of destination UIDs list.");
+                                if (K9.DEBUG) {
+                                    Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
+                                }
                             }
-                        } else {
-                            if(K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
                         }
                     }
-                } else {
-                    if(K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "Expected COPYUID response was not found.");
                 }
+
                 return uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
