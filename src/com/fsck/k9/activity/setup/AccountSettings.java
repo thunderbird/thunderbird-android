@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -46,6 +45,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
 
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
+    private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
+    private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
@@ -86,13 +87,16 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
+    private static final String PREFERENCE_MESSAGE_READ_RECEIPT = "message_read_receipt";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_QUOTE_STYLE = "quote_style";
     private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
+    private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
+    private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
 
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
 
@@ -144,10 +148,12 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mNotificationOpensUnread;
     private CheckBoxPreference mNotificationUnreadCount;
     private ListPreference mMessageFormat;
+    private CheckBoxPreference mMessageReadReceipt;
     private ListPreference mQuoteStyle;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
+    private CheckBoxPreference mStripSignature;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
     private CheckBoxPreference mPushPollOnConnect;
@@ -155,6 +161,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
+    private CheckBoxPreference mCryptoAutoEncrypt;
 
     private ListPreference mLocalStorageProvider;
 
@@ -215,6 +222,9 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
+        mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
+
         mAccountQuotePrefix = (EditTextPreference) findPreference(PREFERENCE_QUOTE_PREFIX);
         mAccountQuotePrefix.setSummary(mAccount.getQuotePrefix());
         mAccountQuotePrefix.setText(mAccount.getQuotePrefix());
@@ -233,6 +243,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
         mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
+
+        mStripSignature = (CheckBoxPreference) findPreference(PREFERENCE_STRIP_SIGNATURE);
+        mStripSignature.setChecked(mAccount.isStripSignature());
 
         mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
 
@@ -299,19 +312,6 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
-        mPushMode.setEnabled(mIsPushCapable);
-        mPushMode.setValue(mAccount.getFolderPushMode().name());
-        mPushMode.setSummary(mPushMode.getEntry());
-        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mPushMode.findIndexOfValue(summary);
-                mPushMode.setSummary(mPushMode.getEntries()[index]);
-                mPushMode.setValue(summary);
-                return false;
-            }
-        });
 
         mTargetMode = (ListPreference) findPreference(PREFERENCE_TARGET_MODE);
         mTargetMode.setValue(mAccount.getFolderTargetMode().name());
@@ -339,19 +339,24 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
-        mExpungePolicy.setEnabled(mIsExpungeCapable);
-        mExpungePolicy.setValue(mAccount.getExpungePolicy());
-        mExpungePolicy.setSummary(mExpungePolicy.getEntry());
-        mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mExpungePolicy.findIndexOfValue(summary);
-                mExpungePolicy.setSummary(mExpungePolicy.getEntries()[index]);
-                mExpungePolicy.setValue(summary);
-                return false;
-            }
-        });
+        if (mIsExpungeCapable) {
+	        mExpungePolicy.setValue(mAccount.getExpungePolicy());
+	        mExpungePolicy.setSummary(mExpungePolicy.getEntry());
+	        mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mExpungePolicy.findIndexOfValue(summary);
+	                mExpungePolicy.setSummary(mExpungePolicy.getEntries()[index]);
+	                mExpungePolicy.setValue(summary);
+	                return false;
+	            }
+	        });
+        } else {
+            ((PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING)).removePreference(mExpungePolicy);
+        }
+
 
         mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
         mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
@@ -385,18 +390,26 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+    
+
         mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
-        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
-        mMessageAge.setSummary(mMessageAge.getEntry());
-        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mMessageAge.findIndexOfValue(summary);
-                mMessageAge.setSummary(mMessageAge.getEntries()[index]);
-                mMessageAge.setValue(summary);
-                return false;
-            }
-        });
+
+        if (!mAccount.isSearchByDateCapable()) {
+            ((PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING)).removePreference(mMessageAge);
+       } else {
+	        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
+	        mMessageAge.setSummary(mMessageAge.getEntry());
+	        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mMessageAge.findIndexOfValue(summary);
+	                mMessageAge.setSummary(mMessageAge.getEntries()[index]);
+	                mMessageAge.setValue(summary);
+	                return false;
+	            }
+	        });
+	
+        }
 
         mMessageSize = (ListPreference) findPreference(PREFERENCE_MESSAGE_SIZE);
         mMessageSize.setValue(String.valueOf(mAccount.getMaximumAutoDownloadMessageSize()));
@@ -515,10 +528,22 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
+	        mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
+	        mPushMode.setValue(mAccount.getFolderPushMode().name());
+	        mPushMode.setSummary(mPushMode.getEntry());
+	        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+	            public boolean onPreferenceChange(Preference preference, Object newValue) {
+	                final String summary = newValue.toString();
+	                int index = mPushMode.findIndexOfValue(summary);
+	                mPushMode.setSummary(mPushMode.getEntries()[index]);
+	                mPushMode.setValue(summary);
+	                return false;
+	            }
+	        });
         } else {
-            mPushPollOnConnect.setEnabled(false);
-            mMaxPushFolders.setEnabled(false);
-            mIdleRefreshPeriod.setEnabled(false);
+            PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
+            incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
+            incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -657,20 +682,20 @@ public class AccountSettings extends K9PreferenceActivity {
         mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
         mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
 
+        mCryptoAutoEncrypt = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_ENCRYPT);
+        mCryptoAutoEncrypt.setChecked(mAccount.isCryptoAutoEncrypt());
+
         handleCryptoAppDependencies();
     }
 
     private void handleCryptoAppDependencies() {
         if ("".equals(mCryptoApp.getValue())) {
             mCryptoAutoSignature.setEnabled(false);
+            mCryptoAutoEncrypt.setEnabled(false);
         } else {
             mCryptoAutoSignature.setEnabled(true);
+            mCryptoAutoEncrypt.setEnabled(true);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void saveSettings() {
@@ -683,8 +708,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
-        mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
+        if (mAccount.isSearchByDateCapable()) {
+            mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
+        }
         mAccount.getNotificationSetting().setVibrate(mAccountVibrate.isChecked());
         mAccount.getNotificationSetting().setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
@@ -693,17 +720,22 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
-        mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        if (mIsExpungeCapable) {
+            mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        }
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
+        mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
+        mAccount.setCryptoAutoEncrypt(mCryptoAutoEncrypt.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
         // In webdav account we use the exact folder name also for inbox,
@@ -737,13 +769,7 @@ public class AccountSettings extends K9PreferenceActivity {
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
 
-        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
-
-        if (mAccount.getFolderPushMode() != FolderMode.NONE) {
-            needsPushRestart |= displayModeChanged;
-            needsPushRestart |= mIncomingChanged;
-        }
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
@@ -758,16 +784,24 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setScrollMessageViewButtons(Account.ScrollButtons.valueOf(mAccountScrollButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
-        mAccount.save(Preferences.getPreferences(this));
-
-        if (needsRefresh && needsPushRestart) {
-            MailService.actionReset(this, null);
-        } else if (needsRefresh) {
-            MailService.actionReschedulePoll(this, null);
-        } else if (needsPushRestart) {
-            MailService.actionRestartPushers(this, null);
-        }
+       
+	    if (mIsPushCapable) {
+	        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+	        if (mAccount.getFolderPushMode() != FolderMode.NONE) {
+	            needsPushRestart |= displayModeChanged;
+	            needsPushRestart |= mIncomingChanged;
+	        }
+	
+	        if (needsRefresh && needsPushRestart) {
+	            MailService.actionReset(this, null);
+	        } else if (needsRefresh) {
+	            MailService.actionReschedulePoll(this, null);
+	        } else if (needsPushRestart) {
+	            MailService.actionRestartPushers(this, null);
+	        }
+	    }
         // TODO: refresh folder list here
+        mAccount.save(Preferences.getPreferences(this));
     }
 
     @Override
@@ -783,11 +817,9 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    protected void onPause() {
+        saveSettings();
+        super.onPause();
     }
 
     private void onCompositionSettings() {

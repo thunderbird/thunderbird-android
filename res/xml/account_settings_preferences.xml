@@ -232,6 +232,12 @@
             android:entries="@array/account_settings_message_format_entries"
             android:entryValues="@array/account_settings_message_format_values" />
 
+        <CheckBoxPreference
+	    android:persistent="false"
+	    android:key="message_read_receipt"
+	    android:title="@string/account_settings_message_read_receipt_label"
+	    android:summary="@string/account_settings_message_read_receipt_summary" />
+
         <ListPreference
             android:persistent="false"
             android:key="quote_style"
@@ -252,6 +258,13 @@
             android:title="@string/account_settings_reply_after_quote_label"
             android:defaultValue="false"
             android:summary="@string/account_settings_reply_after_quote_summary" />
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="strip_signature"
+            android:title="@string/account_settings_strip_signature_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_strip_signature_summary" />
 
         <EditTextPreference
             android:persistent="false"
@@ -459,6 +472,13 @@
             android:key="crypto_auto_signature"
             android:title="@string/account_settings_crypto_auto_signature"
             android:summary="@string/account_settings_crypto_auto_signature_summary"
+            android:dependency="crypto_app"/>
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="crypto_auto_encrypt"
+            android:title="@string/account_settings_crypto_auto_encrypt"
+            android:summary="@string/account_settings_crypto_auto_encrypt_summary"
             android:dependency="crypto_app"/>
 
     </PreferenceScreen>

@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.*;
-import android.view.KeyEvent;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
 
@@ -37,6 +36,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_VIEW_TIME_FONT = "message_view_time_font";
     private static final String PREFERENCE_MESSAGE_VIEW_DATE_FONT = "message_view_date_font";
     private static final String PREFERENCE_MESSAGE_VIEW_CONTENT_FONT = "message_view_content_font";
+    private static final String PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT = "message_compose_input_font";
 
     private ListPreference mAccountName;
     private ListPreference mAccountDescription;
@@ -54,6 +54,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private ListPreference mMessageViewTime;
     private ListPreference mMessageViewDate;
     private ListPreference mMessageViewContent;
+    private ListPreference mMessageComposeInput;
 
 
     /**
@@ -124,6 +125,10 @@ public class FontSizeSettings extends K9PreferenceActivity {
         mMessageViewContent = setupListPreference(
                                   PREFERENCE_MESSAGE_VIEW_CONTENT_FONT,
                                   Integer.toString(fontSizes.getMessageViewContentAsInt()));
+
+        mMessageComposeInput = setupListPreference(
+                PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT,
+                Integer.toString(fontSizes.getMessageComposeInput()));
     }
 
     /**
@@ -153,6 +158,8 @@ public class FontSizeSettings extends K9PreferenceActivity {
         fontSizes.setMessageViewDate(Integer.parseInt(mMessageViewDate.getValue()));
         fontSizes.setMessageViewContent(Integer.parseInt(mMessageViewContent.getValue()));
 
+        fontSizes.setMessageComposeInput(Integer.parseInt(mMessageComposeInput.getValue()));
+
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
         Editor editor = preferences.edit();
         fontSizes.save(editor);
@@ -160,10 +167,8 @@ public class FontSizeSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveSettings();
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveSettings();
+        super.onBackPressed();
     }
 }

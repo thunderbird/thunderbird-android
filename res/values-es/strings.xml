@@ -6,9 +6,7 @@
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Liceciado bajo Licencia Apache, Versión 2.0.</string>
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Información de la revisión <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
     <string name="app_libraries">Estamos usando las siguientes librerías de terceros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Iconos de Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -85,8 +83,6 @@
     <string name="remove_account_action">Eliminar cuenta</string>
     <string name="clear_pending_action">Limipar acciones pendientes (peligroso!)</string>
 
-
-
     <string name="accounts_action">Cuentas</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -111,6 +107,9 @@
     <string name="view_hide_details_action">Ver/Ocultar detalles</string>
     <string name="add_cc_bcc_action">Añadir Cc/Bcc</string>
     <string name="edit_subject_action">Editar Asunto</string>
+    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Añadir adjunto</string>
     <string name="add_attachment_action_image">Añadir adjunto (Imagen)</string>
     <string name="add_attachment_action_video">Añadir adjunto (Vídeo)</string>
@@ -268,8 +267,7 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
     <string name="message_compose_downloading_attachments_toast">Algunos adjuntos no se han descargado. Serán descargados automáticamente antes de que se envíe el mensaje</string>
     <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no han sido descargados.</string>
-
-
+    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
 
     <string name="message_view_from_format">Desde: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
@@ -288,7 +286,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="message_view_show_pictures_action">Mostrar imagen</string>
     <string name="message_view_fetching_attachment_toast">Obteniendo adjuntos.</string>
     <string name="message_view_no_viewer">Imposible encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
-
 
     <string name="message_view_download_remainder">Descargar mensaje completo</string>
 
@@ -316,7 +313,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="about_header">Sobre <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Versión: <xliff:g id="version">%s</xliff:g></string>
 
-
     <string name="global_settings_flag_label">Ver estrellas</string>
     <string name="global_settings_flag_summary">Las estrellas indican un mensaje destacado</string>
     <string name="global_settings_checkbox_label">Selección múltiple</string>
@@ -336,6 +332,8 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="global_settings_messageview_fixedwidth_summary">Utilizar tamaño fijo de fuente cuando se muestre mensajes en texto plano</string>
     <string name="global_settings_messageview_return_to_list_label">Volver a la lista después de borrar</string>
     <string name="global_settings_messageview_return_to_list_summary">Volver a la lista después de la acción de borrado</string>
+    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
+    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
 
     <string name="global_settings_confirm_actions_title">Confirmar acción</string>
     <string name="global_settings_confirm_actions_summary">Mostrar un diálogo cuando se realice una de estas acciones</string>
@@ -348,12 +346,10 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="global_settings_privacy_mode_title">Bloquear notificaciones</string>
     <string name="global_settings_privacy_mode_summary">No mostrar asunto del mensaje en la barra de notificaciones cuando el sistema está bloqueado.</string>
 
-
     <string name="quiet_time">Tiempo de Silencio</string>
     <string name="quiet_time_description">Desactivar sonidos, alertas y luces por la noche</string>
     <string name="quiet_time_starts">Silencio comienza</string>
     <string name="quiet_time_ends">Silencio termina</string>
-
 
     <string name="account_setup_basics_title">Configurar nueva cuenta</string>
     <string name="account_setup_basics_instructions">Introduzca dirección de correo</string>
@@ -426,8 +422,8 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
     <string name="account_setup_expunge_policy_manual">Sólo manualmente</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">Prefijo de la Dirección IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_hint">(Usar automáticamente NAMESPACE)</string>
 
     <string name="drafts_folder_label">Carpeta Borradores</string>
     <string name="sent_folder_label">Carpeta Enviados</string>
@@ -518,7 +514,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_setup_options_mail_display_count_1000">1000 mensajes</string>
     <string name="account_setup_options_mail_display_count_all">Todos los mensajes</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">No se puede copiar/mover un mensaje que no ha sido sincronizado con el servidor</string>
 
     <string name="account_setup_failed_dlg_title">No se ha podido finalizar la Configuración</string>
@@ -562,12 +557,18 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
 
     <string name="account_settings_composition">Configuración Saliente</string>
 
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+
     <string name="account_settings_reply_after_quote_label">Respuesta tras cita</string>
     <string name="account_settings_reply_after_quote_summary">Cuando se responda a un correo, el texto original estará por encima de su respuesta</string>
 
     <string name="account_settings_message_format_label">Formato del mensaje</string>
     <string name="account_settings_message_format_text">Texto plano (se quitan las imágenes y el formato)</string>
     <string name="account_settings_message_format_html">HTML (se mantienen las imágenes y el formato)</string>
+
+    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
+    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
     <string name="account_settings_quote_style_label">Estilo de cita al responder</string>
     <string name="account_settings_quote_style_prefix">Prefijo (como Gmail, Pine)</string>
@@ -592,7 +593,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
 
     <string name="account_settings_storage_title">Almacenamiento</string>
 
-
     <string name="account_settings_color_label">Color de la cuenta</string>
     <string name="account_settings_color_summary">Seleccione el color a utilizar en la carpeta y en la cuenta</string>
 
@@ -614,6 +614,8 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
     <string name="account_settings_autodownload_message_size_any">cualquier tamaño (sin límite)</string>
 
     <string name="account_settings_message_age_label">Sincronizar desde</string>
@@ -629,7 +631,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_settings_message_age_3_months">los últimos 3 meses</string>
     <string name="account_settings_message_age_6_months">los últimos 6 meses</string>
     <string name="account_settings_message_age_1_year">el último año</string>
-
 
     <string name="account_settings_folder_display_mode_label">Carpetas a mostrar</string>
     <string name="account_settings_folder_display_mode_all">Todas</string>
@@ -705,7 +706,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_settings_led_label">Parpadeo LED</string>
     <string name="account_settings_led_summary">Parpadear el LED cuando llega nuevo correo</string>
 
-
     <string name="account_settings_servers">Configurar Servidor</string>
 
     <string name="account_settings_composition_title">Opciones de edición de mensaje</string>
@@ -753,7 +753,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="choose_account_title">Seleccionar cuenta/identidad</string>
     <string name="send_as">Enviar como</string>
 
-
     <string name="no_identities">Ir a Configuración cuentas -&gt; y a identidad para crear una nueva identidad</string>
     <string name="no_removable_identity">No puedes eliminar tu única identidad</string>
     <string name="identity_has_no_email">No puedes utilizar una identidad sin dirección de correo</string>
@@ -793,8 +792,11 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="provider_note_live">Sólo algunas cuentas \"Plus\" pueden utilizar acceso POP
         Si no puede acceder con su contraseña y usuario y no tiene una cuenta de pago.
         Es posible que pueda acceder sólo via web.</string>
-
     <string name="provider_note_yahoojp">Si quiere utilizar el correo POP3 para este proveedor debe activar este acceso en la Configuración de yahoo.</string>
+    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
@@ -823,8 +825,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1a y 2a Clase</string>
     <string name="folder_list_display_mode_not_second_class">Ver todas excepto las de 2a Clase</string>
 
-
-
     <string name="account_settings_signature__location_label">Posición de la Frima</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes del texto citado</string>
     <string name="account_settings_signature__location_after_quoted_text">Después del texto citado</string>
@@ -846,8 +846,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="settings_messageview_mobile_layout_summary">Reformatea mensajes HTML para pantallas pequeñas</string>
     <string name="settings_messageview_zoom_controls_label">Controles del Zoom por sistema</string>
     <string name="settings_messageview_zoom_controls_summary">Permitir opciones de zoom que soporta el propio dispositivo</string>
-
-
 
     <string name="setting_language_system">Configurado en el sistema</string>
 
@@ -1023,7 +1021,20 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="dialog_confirm_delete_cancel_button">No borrar</string>
 
     <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_message">Do you really want to move this message to the spam folder?</string>-->
+    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Do you really want to move this message to the spam folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    </plurals>-->
     <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
     <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
 
@@ -1035,9 +1046,55 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Imposible conectar.</string>
 
+    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
+    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
+    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
+    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
+    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
+    <!-- NEW: <string name="settings_import">Import settings</string>-->
+    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
+    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
+    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
+    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
+    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
+    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_success">
+        <item quantity="one">1 account</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
+    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
+    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
+    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
+    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
+    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
+    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
+    <!-- NEW: <plurals name="settings_import_server_passwords">
+        <item quantity="one">server password</item>
+        <item quantity="other">server passwords</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <!-- NEW: <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Setting password...</item>
+        <item quantity="other">Setting passwords...</item>
+    </plurals>-->
+    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
+    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+
+    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+
     <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
 
     <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
     <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
     <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+
+    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
+    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
+    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
+
 </resources>

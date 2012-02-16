@@ -41,4 +41,10 @@
     <string name="account_settings_enable_move_buttons_summary">Montrer les boutons Archiver, Déplacer ou Pourriel</string>
     <string name="batch_spam_op">Déplacer vers Pourriels</string>
     <string name="account_setup_push_limit_label">Maximum de dossiers poussés à vérifier</string>
+    <string name="error_contact_address_not_found">Aucune adresse courriel trouvée</string>
+    <string name="global_settings_show_correspondent_names_summary">Afficher le nom des correspondants plutôt que leurs adresses courriel</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à pourriels\u00A0?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à pourriels\u00A0?</item>
+    </plurals>
 </resources>

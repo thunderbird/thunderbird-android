@@ -11,53 +11,65 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.ImapStore;
+import com.fsck.k9.mail.store.Pop3Store;
+import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
+import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int popPorts[] = {
+    private static final int[] POP3_PORTS = {
         110, 995, 995, 110, 110
     };
-    private static final String popSchemes[] = {
-        "pop3", "pop3+ssl", "pop3+ssl+", "pop3+tls", "pop3+tls+"
-    };
-    private static final int imapPorts[] = {
+
+    private static final int[] IMAP_PORTS = {
         143, 993, 993, 143, 143
     };
-    private static final String imapSchemes[] = {
-        "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
-    };
-    private static final int webdavPorts[] = {
+
+    private static final int[] WEBDAV_PORTS = {
         80, 443, 443, 443, 443
     };
-    private static final String webdavSchemes[] = {
-        "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
+
+    private static final ConnectionSecurity[] CONNECTION_SECURITY_TYPES = {
+        ConnectionSecurity.NONE,
+        ConnectionSecurity.SSL_TLS_OPTIONAL,
+        ConnectionSecurity.SSL_TLS_REQUIRED,
+        ConnectionSecurity.STARTTLS_OPTIONAL,
+        ConnectionSecurity.STARTTLS_REQUIRED
     };
 
-    private static final String authTypes[] = {
+    private static final String[] AUTH_TYPES = {
         "PLAIN", "CRAM_MD5"
     };
 
 
-    private int mAccountPorts[];
-    private String mAccountSchemes[];
+    private int[] mAccountPorts;
+    private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
     private EditText mPortView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
+    private CheckBox mImapAutoDetectNamespaceView;
     private EditText mImapPathPrefixView;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
@@ -96,6 +108,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mPortView = (EditText)findViewById(R.id.account_port);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
+        mImapAutoDetectNamespaceView = (CheckBox)findViewById(R.id.imap_autodetect_namespace);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
@@ -107,6 +120,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
 
         mNextButton.setOnClickListener(this);
+
+        mImapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mImapPathPrefixView.setEnabled(!isChecked);
+                if (isChecked && mImapPathPrefixView.hasFocus()) {
+                    mImapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
+                } else if (!isChecked) {
+                    mImapPathPrefixView.requestFocus();
+                }
+            }
+        });
 
         SpinnerOption securityTypes[] = {
             new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
@@ -121,8 +146,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // This needs to be kept in sync with the list at the top of the file.
         // that makes me somewhat unhappy
         SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, "PLAIN"),
-            new SpinnerOption(1, "CRAM_MD5")
+            new SpinnerOption(0, AUTH_TYPES[0]),
+            new SpinnerOption(1, AUTH_TYPES[1])
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -144,8 +169,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 updatePortFromSecurityType();
             }
 
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
         });
 
         /*
@@ -158,9 +182,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* unused */
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* unused */
             }
         };
         mUsernameView.addTextChangedListener(validationTextWatcher);
@@ -187,48 +213,28 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
 
         try {
-            URI uri = new URI(mAccount.getStoreUri());
-            String username = null;
-            String password = null;
-            String authType = null;
+            ServerSettings settings = Store.decodeStoreUri(mAccount.getStoreUri());
 
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-                if (userInfoParts.length == 3) {
-                    authType = userInfoParts[0];
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 1) {
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                }
+            if (settings.username != null) {
+                mUsernameView.setText(settings.username);
             }
 
-
-
-            if (username != null) {
-                mUsernameView.setText(username);
+            if (settings.password != null) {
+                mPasswordView.setText(settings.password);
             }
 
-            if (password != null) {
-                mPasswordView.setText(password);
-            }
-
-            if (authType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
+            if (settings.authenticationType != null) {
+                for (int i = 0; i < AUTH_TYPES.length; i++) {
+                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
                         SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
                     }
                 }
             }
 
-
-            if (uri.getScheme().startsWith("pop3")) {
+            mStoreType = settings.type;
+            if (Pop3Store.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mAccountPorts = popPorts;
-                mAccountSchemes = popSchemes;
+                mAccountPorts = POP3_PORTS;
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -238,13 +244,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            } else if (uri.getScheme().startsWith("imap")) {
+            } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mAccountPorts = imapPorts;
-                mAccountSchemes = imapSchemes;
+                mAccountPorts = IMAP_PORTS;
 
-                if (uri.getPath() != null && uri.getPath().length() > 0) {
-                    mImapPathPrefixView.setText(uri.getPath().substring(1));
+                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+
+                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
+                if (imapSettings.pathPrefix != null) {
+                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
                 }
 
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
@@ -256,60 +264,52 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            } else if (uri.getScheme().startsWith("webdav")) {
+            } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mAccountPorts = webdavPorts;
-                mAccountSchemes = webdavSchemes;
+                mAccountPorts = WEBDAV_PORTS;
 
-                /** Hide the unnecessary fields */
+                // Hide the unnecessary fields
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                if (uri.getPath() != null && uri.getPath().length() > 0) {
-                    String[] pathParts = uri.getPath().split("\\|");
 
-                    for (int i = 0, count = pathParts.length; i < count; i++) {
-                        if (i == 0) {
-                            if (pathParts[0] != null &&
-                                    pathParts[0].length() > 1) {
-                                mWebdavPathPrefixView.setText(pathParts[0].substring(1));
-                            }
-                        } else if (i == 1) {
-                            if (pathParts[1] != null &&
-                                    pathParts[1].length() > 1) {
-                                mWebdavAuthPathView.setText(pathParts[1]);
-                            }
-                        } else if (i == 2) {
-                            if (pathParts[2] != null &&
-                                    pathParts[2].length() > 1) {
-                                mWebdavMailboxPathView.setText(pathParts[2]);
-                            }
-                        }
-                    }
+                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+
+                if (webDavSettings.path != null) {
+                    mWebdavPathPrefixView.setText(webDavSettings.path);
+                }
+
+                if (webDavSettings.authPath != null) {
+                    mWebdavAuthPathView.setText(webDavSettings.authPath);
+                }
+
+                if (webDavSettings.mailboxPath != null) {
+                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
-            for (int i = 0; i < mAccountSchemes.length; i++) {
-                if (mAccountSchemes[i].equals(uri.getScheme())) {
+            for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
+                if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
+
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
             mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
 
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
+            if (settings.host != null) {
+                mServerView.setText(settings.host);
             }
 
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
+            if (settings.port != -1) {
+                mPortView.setText(Integer.toString(settings.port));
             } else {
                 updatePortFromSecurityType();
             }
@@ -385,46 +385,38 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
     }
 
-    @Override
     protected void onNext() {
         try {
-            int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-            String path = null;
-            if (mAccountSchemes[securityType].startsWith("imap")) {
-                path = "/" + mImapPathPrefixView.getText();
-            } else if (mAccountSchemes[securityType].startsWith("webdav")) {
-                path = "/" + mWebdavPathPrefixView.getText();
-                path = path + "|" + mWebdavAuthPathView.getText();
-                path = path + "|" + mWebdavMailboxPathView.getText();
-            }
+            ConnectionSecurity connectionSecurity = CONNECTION_SECURITY_TYPES[
+                    (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value];
 
-            final String userInfo;
-            String user = mUsernameView.getText().toString();
+            String username = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
-            String userEnc = URLEncoder.encode(user, "UTF-8");
-            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+            String host = mServerView.getText().toString();
+            int port = Integer.parseInt(mPortView.getText().toString());
 
-            if (mAccountSchemes[securityType].startsWith("imap")) {
-                String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-                userInfo = authType + ":" + userEnc + ":" + passwordEnc;
-            } else {
-                String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-                if (!authType.equalsIgnoreCase("plain")) {
-                    userInfo = authType + ":" + userEnc + ":" + passwordEnc;
-                } else {
-                    userInfo = userEnc + ":" + passwordEnc;
-                }
+            Map<String, String> extra = null;
+            if (ImapStore.STORE_TYPE.equals(mStoreType)) {
+                extra = new HashMap<String, String>();
+                extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
+                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
+                extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
+                        mImapPathPrefixView.getText().toString());
+            } else if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
+                extra = new HashMap<String, String>();
+                extra.put(WebDavStoreSettings.PATH_KEY,
+                        mWebdavPathPrefixView.getText().toString());
+                extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
+                        mWebdavAuthPathView.getText().toString());
+                extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
+                        mWebdavMailboxPathView.getText().toString());
             }
-            URI uri = new URI(
-                mAccountSchemes[securityType],
-                userInfo,
-                mServerView.getText().toString(),
-                Integer.parseInt(mPortView.getText().toString()),
-                path, // path
-                null, // query
-                null);
-            mAccount.setStoreUri(uri.toString());
 
+            ServerSettings settings = new ServerSettings(mStoreType, host, port,
+                    connectionSecurity, authType, username, password, extra);
+
+            mAccount.setStoreUri(Store.createStoreUri(settings));
 
             mAccount.setCompression(Account.TYPE_MOBILE, mCompressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());

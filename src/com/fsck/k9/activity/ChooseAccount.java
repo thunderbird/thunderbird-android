@@ -28,6 +28,7 @@ import java.util.List;
  * @see K9ExpandableListActivity
  */
 public class ChooseAccount extends K9ExpandableListActivity {
+    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
     /**
      * {@link Intent} extended data name for storing {@link Account#getUuid()
@@ -50,7 +51,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
         final ExpandableListView expandableListView = getExpandableListView();
         expandableListView.setItemsCanFocus(false);
 
-        final ExpandableListAdapter adapter = createAdapter();
+        final IdentitiesAdapter adapter = createAdapter();
         setListAdapter(adapter);
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -77,7 +78,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
         final Bundle extras = getIntent().getExtras();
         final String uuid = extras.getString(EXTRA_ACCOUNT);
         if (uuid != null) {
-            final Account[] accounts = Preferences.getPreferences(this).getAccounts();
+            final Account[] accounts = adapter.getAccounts();
             final int length = accounts.length;
             for (int i = 0; i < length; i++) {
                 final Account account = accounts[i];
@@ -106,7 +107,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
         }
     }
 
-    private ExpandableListAdapter createAdapter() {
+    private IdentitiesAdapter createAdapter() {
         return new IdentitiesAdapter(this, getLayoutInflater());
     }
 
@@ -123,10 +124,13 @@ public class ChooseAccount extends K9ExpandableListActivity {
 
         private Context mContext;
         private LayoutInflater mLayoutInflater;
+        private Account[] mAccounts;
 
         public IdentitiesAdapter(final Context context, final LayoutInflater layoutInflater) {
             mContext = context;
             mLayoutInflater = layoutInflater;
+            Preferences prefs = Preferences.getPreferences(mContext);
+            mAccounts = prefs.getAvailableAccounts().toArray(EMPTY_ACCOUNT_ARRAY);
         }
 
         @Override
@@ -172,7 +176,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
             final TextView description = (TextView) v.findViewById(R.id.description);
             final Account account = getAccounts()[groupPosition];
             description.setText(account.getDescription());
-            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountName());
 
             // display unavailable accounts translucent
             /*
@@ -210,8 +214,8 @@ public class ChooseAccount extends K9ExpandableListActivity {
 
             final TextView name = (TextView) v.findViewById(R.id.name);
             final TextView description = (TextView) v.findViewById(R.id.description);
-            name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
-            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountDescription());
+            name.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_SP, K9.getFontSizes().getAccountDescription());
 
             name.setText(identity.getDescription());
             description.setText(String.format("%s <%s>", identity.getName(), identity.getEmail()));
@@ -233,7 +237,7 @@ public class ChooseAccount extends K9ExpandableListActivity {
         }
 
         private Account[] getAccounts() {
-            return Preferences.getPreferences(mContext).getAccounts();
+            return mAccounts;
         }
     }
 }

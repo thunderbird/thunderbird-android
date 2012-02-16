@@ -8,7 +8,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.util.Log;
-import android.view.KeyEvent;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.mail.Folder.FolderClass;
@@ -124,11 +123,6 @@ public class FolderSettings extends K9PreferenceActivity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void saveSettings() throws MessagingException {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
@@ -151,16 +145,13 @@ public class FolderSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            try {
-                saveSettings();
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Saving folder settings failed " + e);
-            }
+    public void onPause() {
+        try {
+            saveSettings();
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Saving folder settings failed", e);
         }
-        return super.onKeyDown(keyCode, event);
+
+        super.onPause();
     }
-
-
 }

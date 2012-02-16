@@ -1,6 +1,7 @@
 
 package com.fsck.k9.helper;
 
+import android.database.Cursor;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
@@ -12,9 +13,6 @@ import com.fsck.k9.mail.filter.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -35,17 +33,6 @@ public class Utility {
      */
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
-
-    public static String readInputStream(InputStream in, String encoding) throws IOException {
-        InputStreamReader reader = new InputStreamReader(in, encoding);
-        StringBuffer sb = new StringBuffer();
-        int count;
-        char[] buf = new char[512];
-        while ((count = reader.read(buf)) != -1) {
-            sb.append(buf, 0, count);
-        }
-        return sb.toString();
-    }
 
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
@@ -70,6 +57,8 @@ public class Utility {
             return null;
         } else if (parts.length == 0) {
             return "";
+        } else if (parts.length == 1) {
+            return parts[0].toString();
         }
         StringBuilder sb = new StringBuilder();
         sb.append(parts[0]);
@@ -108,13 +97,11 @@ public class Utility {
     public static boolean domainFieldValid(EditText view) {
         if (view.getText() != null) {
             String s = view.getText().toString();
-            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$")) {
+            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
+                s.length() <= 253) {
                 return true;
             }
             if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
-                return true;
-            }
-            if ((s.equalsIgnoreCase("localhost")) || (s.equalsIgnoreCase("localhost.localdomain"))) {
                 return true;
             }
         }
@@ -199,6 +186,7 @@ public class Utility {
         }
     }
 
+    private static final long MILISECONDS_IN_18_HOURS = 18 * 60 * 60 * 1000;
     /**
      * Returns true if the specified date is within 18 hours of "now". Returns false otherwise.
      * @param date
@@ -206,7 +194,7 @@ public class Utility {
      */
     public static boolean isDateToday(Date date) {
         Date now = new Date();
-        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
+        if (now.getTime() - MILISECONDS_IN_18_HOURS > date.getTime() || now.getTime() + MILISECONDS_IN_18_HOURS < date.getTime()) {
             return false;
         } else {
             return true;
@@ -513,14 +501,20 @@ public class Utility {
 
         try {
             FileInputStream in = new FileInputStream(from);
-            FileOutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while ((count = in.read(buffer)) > 0) {
-                out.write(buffer, 0, count);
+            try {
+                FileOutputStream out = new FileOutputStream(to);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int count = -1;
+                    while ((count = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, count);
+                    }
+                } finally {
+                    out.close();
+                }
+            } finally {
+                try { in.close(); } catch (Throwable ignore) {}
             }
-            out.close();
-            in.close();
             from.delete();
             return true;
         } catch (Exception e) {
@@ -598,5 +592,17 @@ public class Utility {
             Log.d(K9.LOG_TAG, "No external images.");
         }
         return false;
+    }
+
+    /**
+     * Unconditionally close a Cursor.  Equivalent to {@link Cursor#close()},
+     * if cursor is non-null.  This is typically used in finally blocks.
+     *
+     * @param cursor cursor to close
+     */
+    public static void closeQuietly(final Cursor cursor) {
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 }

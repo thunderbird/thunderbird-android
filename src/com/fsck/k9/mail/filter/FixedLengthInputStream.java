@@ -10,9 +10,9 @@ import java.io.InputStream;
  * past where the protocol handler intended the client to read.
  */
 public class FixedLengthInputStream extends InputStream {
-    private InputStream mIn;
-    private int mLength;
-    private int mCount;
+    private final InputStream mIn;
+    private final int mLength;
+    private int mCount = 0;
 
     public FixedLengthInputStream(InputStream in, int length) {
         this.mIn = in;
@@ -26,32 +26,42 @@ public class FixedLengthInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        if (mCount < mLength) {
-            mCount++;
-            return mIn.read();
-        } else {
+        if (mCount >= mLength) {
             return -1;
         }
+
+        int d = mIn.read();
+        if (d != -1) {
+            mCount++;
+        }
+        return d;
     }
 
     @Override
     public int read(byte[] b, int offset, int length) throws IOException {
-        if (mCount < mLength) {
-            int d = mIn.read(b, offset, Math.min(mLength - mCount, length));
-            if (d == -1) {
-                return -1;
-            } else {
-                mCount += d;
-                return d;
-            }
-        } else {
+        if (mCount >= mLength) {
             return -1;
         }
+
+        int d = mIn.read(b, offset, Math.min(mLength - mCount, length));
+        if (d != -1) {
+            mCount += d;
+        }
+        return d;
     }
 
     @Override
     public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
+    }
+
+    @Override
+    public long skip(long n) throws IOException {
+        long d = mIn.skip(Math.min(n, available()));
+        if (d > 0) {
+            mCount += d;
+        }
+        return d;
     }
 
     @Override

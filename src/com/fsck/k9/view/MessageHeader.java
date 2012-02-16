@@ -26,7 +26,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -94,24 +94,23 @@ public class MessageHeader extends LinearLayout {
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
-        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
-        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
-        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
+        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
+        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
+        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
+        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
         mAdditionalHeadersView.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
         mAnsweredIcon.setVisibility(View.GONE);
-        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
-        ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
-        ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
+        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
+        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
+        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
+        ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
+        ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onShowAdditionalHeaders();
-                return;
             }
         });
 
@@ -256,7 +255,7 @@ public class MessageHeader extends LinearLayout {
         * message view header. But do show "From", "To", and "Cc" again.
         * This time including the email addresses. See issue 1805.
         */
-        Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
+        Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());
         headerNames.remove("Subject");
         for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);

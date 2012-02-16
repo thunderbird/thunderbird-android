@@ -18,8 +18,8 @@ import com.fsck.k9.mail.Address;
  * A class that uses the latest contacts API available on the device will be
  * loaded at runtime.
  *
- * @see ContactsSdk3_4
  * @see ContactsSdk5
+ * @see ContactsSdk5p
  */
 public abstract class Contacts {
     /**
@@ -40,12 +40,8 @@ public abstract class Contacts {
              * Check the version of the SDK we are running on. Choose an
              * implementation class designed for that version of the SDK.
              */
-            int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-
             String className = null;
-            if (sdkVersion <= Build.VERSION_CODES.DONUT) {
-                className = "com.fsck.k9.helper.ContactsSdk3_4";
-            } else if (sdkVersion <= Build.VERSION_CODES.ECLAIR_MR1) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ECLAIR_MR1) {
                 /*
                  * The new API was introduced with SDK 5. But Android versions < 2.2
                  * need some additional code to be able to search for phonetic names.
@@ -187,8 +183,8 @@ public abstract class Contacts {
      */
     public boolean hasContactPicker() {
         if (mHasContactPicker == null) {
-            mHasContactPicker = (mContext.getPackageManager().
-                                 queryIntentActivities(contactPickerIntent(), 0).size() > 0);
+            mHasContactPicker = !(mContext.getPackageManager().
+                                  queryIntentActivities(contactPickerIntent(), 0).isEmpty());
         }
         return mHasContactPicker;
     }

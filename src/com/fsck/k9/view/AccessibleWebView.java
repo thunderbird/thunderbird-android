@@ -26,11 +26,15 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.fsck.k9.activity.AccessibleEmailContentActivity;
+import com.fsck.k9.controller.MessagingListener;
+
+import java.util.Set;
 
 public class AccessibleWebView extends TextView {
     private Context mContext;
     private String mHtmlSource;
     private WebView mDummyWebView;
+    private Set<MessagingListener> mListeners = null;
 
     public AccessibleWebView(Context context) {
         super(context);
@@ -68,6 +72,13 @@ public class AccessibleWebView extends TextView {
                                     String historyUrl) {
         mHtmlSource = data;
         this.setText(Html.fromHtml(mHtmlSource, null, null));
+
+        // Let everyone know that loading has finished.
+        if (mListeners != null) {
+            for (MessagingListener l : mListeners) {
+                l.messageViewFinished();
+            }
+        }
     }
 
     public boolean zoomIn() {
@@ -91,5 +102,9 @@ public class AccessibleWebView extends TextView {
         i.setClass(mContext, AccessibleEmailContentActivity.class);
         i.putExtra("content", mHtmlSource);
         mContext.startActivity(i);
+    }
+
+    public void setListeners(final Set<MessagingListener> listeners) {
+        this.mListeners = listeners;
     }
 }

@@ -2,7 +2,6 @@
 package com.fsck.k9;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 
 import com.fsck.k9.activity.MessageCompose;
@@ -33,6 +31,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -67,11 +66,6 @@ public class K9 extends Application {
      * @see ApplicationAware
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
-
-    /**
-     * @see K9#createAbsoluteSizeSpan(int)
-     */
-    private static Constructor<AbsoluteSizeSpan> sAbsoluteSizeSpanConstructor;
 
     public enum BACKGROUND_OPS {
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -153,6 +147,7 @@ public class K9 extends Application {
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
+    private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
     private static boolean mKeyguardPrivacy = false;
@@ -168,6 +163,7 @@ public class K9 extends Application {
     private static int mContactNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
+    private static boolean mMessageViewShowNext = false;
 
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
@@ -258,7 +254,7 @@ public class K9 extends Application {
 
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
 
-    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
+    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000;
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
@@ -435,12 +431,14 @@ public class K9 extends Application {
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
+        editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
 
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
+        editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
 
@@ -461,58 +459,7 @@ public class K9 extends Application {
         galleryBuggy = checkForBuggyGallery();
 
         Preferences prefs = Preferences.getPreferences(this);
-        SharedPreferences sprefs = prefs.getPreferences();
-        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
-        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-        mAnimations = sprefs.getBoolean("animations", true);
-        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
-        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
-        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mManageBack = sprefs.getBoolean("manageBack", false);
-        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
-        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
-        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
-        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
-        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
-
-        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", false);
-
-        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
-        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
-        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
-
-        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
-        mShowContactName = sprefs.getBoolean("showContactName", false);
-        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
-        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
-        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
-
-        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
-
-        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
-        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
-
-
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
-
-        compactLayouts = sprefs.getBoolean("compactLayouts", false);
-        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
-        fontSizes.load(sprefs);
-
-        try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
-        } catch (Exception e) {
-            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
-        }
-
-        K9.setK9Language(sprefs.getString("language", ""));
-        K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
+        loadPrefs(prefs);
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
@@ -558,30 +505,106 @@ public class K9 extends Application {
                 }
             }
 
+            private void updateUnreadWidget() {
+                try {
+                    UnreadWidgetProvider.updateUnreadCount(K9.this);
+                } catch (Exception e) {
+                    if (K9.DEBUG) {
+                        Log.e(LOG_TAG, "Error while updating unread widget(s)", e);
+                    }
+                }
+            }
+
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+                updateUnreadWidget();
             }
 
             @Override
             public void messageDeleted(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+                updateUnreadWidget();
             }
 
             @Override
             public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
+                updateUnreadWidget();
+            }
+
+            @Override
+            public void folderStatusChanged(Account account, String folderName,
+                    int unreadMessageCount) {
+                updateUnreadWidget();
             }
 
             @Override
             public void searchStats(final AccountStats stats) {
-                // let observers know a fetch occured
+                // let observers know a fetch occurred
                 K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
             }
 
         });
 
         notifyObservers();
+    }
+
+    public static void loadPrefs(Preferences prefs) {
+        SharedPreferences sprefs = prefs.getPreferences();
+        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
+        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
+        mAnimations = sprefs.getBoolean("animations", true);
+        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
+        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
+        mManageBack = sprefs.getBoolean("manageBack", false);
+        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
+        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
+        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
+        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
+        mMessageListStars = sprefs.getBoolean("messageListStars", true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
+        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
+
+        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
+
+        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
+        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
+        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
+
+        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
+        mShowContactName = sprefs.getBoolean("showContactName", false);
+        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
+        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
+        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
+
+        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
+
+        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
+        mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
+        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
+        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
+
+
+        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+
+        compactLayouts = sprefs.getBoolean("compactLayouts", false);
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        fontSizes.load(sprefs);
+
+        try {
+            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
+        } catch (Exception e) {
+            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
+        }
+
+        K9.setK9Language(sprefs.getString("language", ""));
+        K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
     }
 
     private void maybeSetupStrictMode() {
@@ -596,7 +619,7 @@ public class K9 extends Application {
 
         catch (Exception e) {
             // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode " + e);
+            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
         }
 
     }
@@ -875,6 +898,14 @@ public class K9 extends Application {
         mMessageViewReturnToList = messageViewReturnToList;
     }
 
+    public static boolean messageViewShowNext() {
+        return mMessageViewShowNext;
+    }
+
+    public static void setMessageViewShowNext(boolean messageViewShowNext) {
+        mMessageViewShowNext = messageViewShowNext;
+    }
+
     public static Method getMethod(Class<?> classObject, String methodName) {
         try {
             return classObject.getMethod(methodName, boolean.class);
@@ -934,6 +965,14 @@ public class K9 extends Application {
 
     public static void setConfirmDelete(final boolean confirm) {
         mConfirmDelete = confirm;
+    }
+
+    public static boolean confirmDeleteStarred() {
+        return mConfirmDeleteStarred;
+    }
+
+    public static void setConfirmDeleteStarred(final boolean confirm) {
+        mConfirmDeleteStarred = confirm;
     }
 
     public static boolean confirmSpam() {
@@ -996,49 +1035,5 @@ public class K9 extends Application {
 
     public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
         K9.mAttachmentDefaultPath = attachmentDefaultPath;
-    }
-
-    /**
-     * Creates an {@link AbsoluteSizeSpan} object.
-     *
-     * <p>
-     * Android versions prior to 2.0 don't support the constructor with two parameters
-     * ({@link AbsoluteSizeSpan#AbsoluteSizeSpan(int, boolean)}). So we have to perform some
-     * reflection magic to dynamically load the new constructor on devices that support it.
-     * For devices with old Android versions we just use the size as pixels (instead of dip).
-     * </p>
-     *
-     * @param size This is used as the {@code size} parameter for the AbsoluteSizeSpan constructor.
-     * @return a AbsoluteSizeSpan object with the specified text size.
-     */
-    public static AbsoluteSizeSpan createAbsoluteSizeSpan(int size) {
-        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5) {
-            // For Android 1.5/1.6 simply use the constructor with only the size parameter.
-            // Yes, that will most likely look wrong!
-            return new AbsoluteSizeSpan(size);
-        }
-
-        if (sAbsoluteSizeSpanConstructor == null) {
-            try {
-                sAbsoluteSizeSpanConstructor = AbsoluteSizeSpan.class.getConstructor(int.class, boolean.class);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Couldn't get the AbsoluteSizeSpan(int, boolean) constructor", e);
-
-                // Fallback
-                return new AbsoluteSizeSpan(size);
-            }
-        }
-
-        AbsoluteSizeSpan result;
-        try {
-            result = sAbsoluteSizeSpanConstructor.newInstance(size, true);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Couldn't call the AbsoluteSizeSpan(int, boolean) constructor", e);
-
-            // Fallback
-            result = new AbsoluteSizeSpan(size);
-        }
-
-        return result;
     }
 }

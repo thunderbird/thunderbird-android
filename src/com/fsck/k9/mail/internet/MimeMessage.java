@@ -77,6 +77,7 @@ public class MimeMessage extends Message {
         parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
         parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
         // REALLY long References: headers
+        parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
         parser.setContentHandler(new MimeMessageBuilder());
         try {
@@ -130,20 +131,11 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType == null) {
-            return "text/plain";
-        } else {
-            return contentType.toLowerCase();
-        }
+        return (contentType == null) ? "text/plain" : contentType.toLowerCase(Locale.US);
     }
 
     public String getDisposition() throws MessagingException {
-        String contentDisposition = getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        if (contentDisposition == null) {
-            return null;
-        } else {
-            return contentDisposition;
-        }
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
     public String getContentId() throws MessagingException {
         return null;
@@ -430,7 +422,7 @@ public class MimeMessage extends Message {
     }
 
     class MimeMessageBuilder implements ContentHandler {
-        private Stack<Object> stack = new Stack<Object>();
+        private final LinkedList<Object> stack = new LinkedList<Object>();
 
         public MimeMessageBuilder() {
         }
@@ -444,13 +436,13 @@ public class MimeMessage extends Message {
 
         public void startMessage() {
             if (stack.isEmpty()) {
-                stack.push(MimeMessage.this);
+                stack.addFirst(MimeMessage.this);
             } else {
                 expect(Part.class);
                 try {
                     MimeMessage m = new MimeMessage();
                     ((Part)stack.peek()).setBody(m);
-                    stack.push(m);
+                    stack.addFirst(m);
                 } catch (MessagingException me) {
                     throw new Error(me);
                 }
@@ -459,7 +451,7 @@ public class MimeMessage extends Message {
 
         public void endMessage() {
             expect(MimeMessage.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startHeader() {
@@ -499,7 +491,7 @@ public class MimeMessage extends Message {
             try {
                 MimeMultipart multiPart = new MimeMultipart(e.getContentType());
                 e.setBody(multiPart);
-                stack.push(multiPart);
+                stack.addFirst(multiPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -516,7 +508,7 @@ public class MimeMessage extends Message {
         }
 
         public void endMultipart() {
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void startBodyPart() {
@@ -525,7 +517,7 @@ public class MimeMessage extends Message {
             try {
                 MimeBodyPart bodyPart = new MimeBodyPart();
                 ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
-                stack.push(bodyPart);
+                stack.addFirst(bodyPart);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -533,12 +525,12 @@ public class MimeMessage extends Message {
 
         public void endBodyPart() {
             expect(BodyPart.class);
-            stack.pop();
+            stack.removeFirst();
         }
 
         public void epilogue(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
@@ -548,7 +540,7 @@ public class MimeMessage extends Message {
 
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int b;
             while ((b = is.read()) != -1) {
                 sb.append((char)b);
@@ -560,5 +552,39 @@ public class MimeMessage extends Message {
         public void raw(InputStream is) throws IOException {
             throw new UnsupportedOperationException("Not supported");
         }
+    }
+
+    /**
+     * Copy the contents of this object into another {@code MimeMessage} object.
+     *
+     * @param message
+     *         The {@code MimeMessage} object to receive the contents of this instance.
+     */
+    protected void copy(MimeMessage message) {
+        super.copy(message);
+
+        message.mHeader = mHeader.clone();
+
+        message.mBody = mBody;
+        message.mMessageId = mMessageId;
+        message.mSentDate = mSentDate;
+        message.mDateFormat = mDateFormat;
+        message.mSize = mSize;
+
+        // These arrays are not supposed to be modified, so it's okay to reuse the references
+        message.mFrom = mFrom;
+        message.mTo = mTo;
+        message.mCc = mCc;
+        message.mBcc = mBcc;
+        message.mReplyTo = mReplyTo;
+        message.mReferences = mReferences;
+        message.mInReplyTo = mInReplyTo;
+    }
+
+    @Override
+    public MimeMessage clone() {
+        MimeMessage message = new MimeMessage();
+        copy(message);
+        return message;
     }
 }

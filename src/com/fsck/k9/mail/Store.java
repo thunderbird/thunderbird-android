@@ -29,17 +29,13 @@ public abstract class Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static HashMap<String, Store> mStores = new HashMap<String, Store>();
+    private static HashMap<String, Store> sStores = new HashMap<String, Store>();
+
     /**
      * Local stores indexed by UUid because the Uri may change due to migration to/from SD-card.
      */
-    private static HashMap<String, Store> mLocalStores = new HashMap<String, Store>();
+    private static HashMap<String, Store> sLocalStores = new HashMap<String, Store>();
 
-    protected final Account mAccount;
-
-    protected Store(Account account) {
-        mAccount = account;
-    }
 
     /**
      * Get an instance of a remote mail store.
@@ -51,7 +47,7 @@ public abstract class Store {
             throw new RuntimeException("Asked to get non-local Store object but given LocalStore URI");
         }
 
-        Store store = mStores.get(uri);
+        Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
                 store = new ImapStore(account);
@@ -62,7 +58,7 @@ public abstract class Store {
             }
 
             if (store != null) {
-                mStores.put(uri, store);
+                sStores.put(uri, store);
             }
         }
 
@@ -78,13 +74,70 @@ public abstract class Store {
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException {
-        Store store = mLocalStores.get(account.getUuid());
+        Store store = sLocalStores.get(account.getUuid());
         if (store == null) {
             store = new LocalStore(account, application);
-            mLocalStores.put(account.getUuid(), store);
+            sLocalStores.put(account.getUuid(), store);
         }
 
         return (LocalStore) store;
+    }
+
+    /**
+     * Decodes the contents of store-specific URIs and puts them into a {@link ServerSettings}
+     * object.
+     *
+     * @param uri
+     *         the store-specific URI to decode
+     *
+     * @return A {@link ServerSettings} object holding the settings contained in the URI.
+     *
+     * @see ImapStore#decodeUri(String)
+     * @see Pop3Store#decodeUri(String)
+     * @see WebDavStore#decodeUri(String)
+     */
+    public static ServerSettings decodeStoreUri(String uri) {
+        if (uri.startsWith("imap")) {
+            return ImapStore.decodeUri(uri);
+        } else if (uri.startsWith("pop3")) {
+            return Pop3Store.decodeUri(uri);
+        } else if (uri.startsWith("webdav")) {
+            return WebDavStore.decodeUri(uri);
+        } else {
+            throw new IllegalArgumentException("Not a valid store URI");
+        }
+    }
+
+    /**
+     * Creates a store URI from the information supplied in the {@link ServerSettings} object.
+     *
+     * @param server
+     *         The {@link ServerSettings} object that holds the server settings.
+     *
+     * @return A store URI that holds the same information as the {@code server} parameter.
+     *
+     * @see ImapStore#createUri(ServerSettings)
+     * @see Pop3Store#createUri(ServerSettings)
+     * @see WebDavStore#createUri(ServerSettings)
+     */
+    public static String createStoreUri(ServerSettings server) {
+        if (ImapStore.STORE_TYPE.equals(server.type)) {
+            return ImapStore.createUri(server);
+        } else if (Pop3Store.STORE_TYPE.equals(server.type)) {
+            return Pop3Store.createUri(server);
+        } else if (WebDavStore.STORE_TYPE.equals(server.type)) {
+            return WebDavStore.createUri(server);
+        } else {
+            throw new IllegalArgumentException("Not a valid store URI");
+        }
+    }
+
+
+    protected final Account mAccount;
+
+
+    protected Store(Account account) {
+        mAccount = account;
     }
 
     public abstract Folder getFolder(String name);
@@ -96,19 +149,22 @@ public abstract class Store {
     public boolean isCopyCapable() {
         return false;
     }
+
     public boolean isMoveCapable() {
         return false;
     }
+
     public boolean isPushCapable() {
         return false;
     }
+
     public boolean isSendCapable() {
         return false;
     }
+
     public boolean isExpungeCapable() {
         return false;
     }
-
 
     public void sendMessages(Message[] messages) throws MessagingException {
     }

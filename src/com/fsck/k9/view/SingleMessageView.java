@@ -24,10 +24,12 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -38,7 +40,7 @@ public class SingleMessageView extends LinearLayout {
     private MessageWebView mMessageContentView;
     private AccessibleWebView mAccessibleMessageContentView;
     private MessageHeader mHeaderContainer;
-    private LinearLayout        mAttachments;
+    private LinearLayout mAttachments;
     private View mShowPicturesSection;
     private boolean mShowPictures;
     private Button mDownloadRemainder;
@@ -100,26 +102,29 @@ public class SingleMessageView extends LinearLayout {
             // content://<nameofpackage>.providers.StatusProvider
             cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
                                         + ".providers.StatusProvider"), null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                // These content providers use a special cursor that only has
-                // one element,
-                // an integer that is 1 if the screen reader is running.
-                status = cursor.getInt(0);
-                cursor.close();
-                if (status == 1) {
-                    return true;
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    // These content providers use a special cursor that only has
+                    // one element,
+                    // an integer that is 1 if the screen reader is running.
+                    status = cursor.getInt(0);
+                    if (status == 1) {
+                        return true;
+                    }
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
         }
         return false;
     }
 
-
-
     public boolean showPictures() {
         return mShowPictures;
     }
+
     public void setShowPictures(Boolean show) {
         mShowPictures = show;
     }
@@ -197,9 +202,12 @@ public class SingleMessageView extends LinearLayout {
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
             if (Utility.hasExternalImages(text) && !showPictures()) {
+                Address[] from = message.getFrom();
                 if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                         ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
-                         mContacts.isInContacts(message.getFrom()[0].getAddress()))) {
+                         // Make sure we have at least one from address
+                         (from != null && from.length > 0) &&
+                         mContacts.isInContacts(from[0].getAddress()))) {
                     setLoadPictures(true);
                 } else {
                     showShowPicturesSection(true);
@@ -246,9 +254,8 @@ public class SingleMessageView extends LinearLayout {
         }
     }
 
-    public void renderAttachments(Part part, int depth,
-
-                                  Message message, Account account, MessagingController controller, MessagingListener listener) throws MessagingException {
+    public void renderAttachments(Part part, int depth, Message message, Account account,
+                                  MessagingController controller, MessagingListener listener) throws MessagingException {
 
         if (part.getBody() instanceof Multipart) {
             Multipart mp = (Multipart) part.getBody();
@@ -261,7 +268,7 @@ public class SingleMessageView extends LinearLayout {
             // not attachments. Don't show attachment download buttons for them.
             if (contentDisposition != null &&
                     MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
-                    && part.getHeader("Content-ID") != null) {
+                    && part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
                 return;
             }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
@@ -272,11 +279,11 @@ public class SingleMessageView extends LinearLayout {
         }
     }
 
-
     public void addAttachment(View attachmentView) {
         mAttachments.addView(attachmentView);
         mAttachments.setVisibility(View.VISIBLE);
     }
+
     public void zoom(KeyEvent event) {
         if (mScreenReaderEnabled) {
             mAccessibleMessageContentView.zoomIn();
@@ -288,10 +295,10 @@ public class SingleMessageView extends LinearLayout {
             }
         }
     }
+
     public void beginSelectingText() {
         mMessageContentView.emulateShiftHeld();
     }
-
 
     public void resetView() {
         setLoadPictures(false);
@@ -310,4 +317,20 @@ public class SingleMessageView extends LinearLayout {
         this.attachmentCallback = attachmentCallback;
     }
 
+    /**
+     * Save a copy of the {@link com.fsck.k9.controller.MessagingController#getListeners()}.  This method will also
+     * pass along these listeners to the underlying views.
+     * @param listeners Set of listeners.
+     */
+    public void setListeners(final Set<MessagingListener> listeners) {
+        if(!mScreenReaderEnabled) {
+            if(mMessageContentView != null) {
+                mMessageContentView.setListeners(listeners);
+            }
+        } else {
+            if(mAccessibleMessageContentView != null) {
+                mAccessibleMessageContentView.setListeners(listeners);
+            }
+        }
+    }
 }

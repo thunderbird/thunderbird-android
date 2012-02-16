@@ -43,6 +43,10 @@ public class DateFormatter {
         }
     };
 
+    public static void clearChosenFormat() {
+        sChosenFormat = null;
+    }
+
     public static DateFormat getDateFormat(Context context, String formatString) {
         java.text.DateFormat dateFormat;
 

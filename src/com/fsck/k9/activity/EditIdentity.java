@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -91,11 +90,6 @@ public class EditIdentity extends K9Activity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void saveIdentity() {
 
         mIdentity.setDescription(mDescriptionView.getText().toString());
@@ -125,12 +119,9 @@ public class EditIdentity extends K9Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveIdentity();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        saveIdentity();
+        super.onBackPressed();
     }
 
     @Override

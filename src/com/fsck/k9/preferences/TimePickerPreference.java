@@ -20,7 +20,7 @@ public class TimePickerPreference extends DialogPreference implements
     /**
      * The validation expression for this preference
      */
-    private static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
+    public static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
 
     /**
      * The default value for this preference
