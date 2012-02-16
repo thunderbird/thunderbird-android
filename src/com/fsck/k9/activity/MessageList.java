@@ -729,22 +729,12 @@ public class MessageList
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
-        // ASH this seems wrong, but it works for now.
         if (mCurrentFolder != null) {
             LocalFolder folder = (LocalFolder)mCurrentFolder.folder;
             if (folder != null) {
-                try {
-                    folder.open(Folder.OpenMode.READ_ONLY);
-                    mLocalOnly = folder.isLocalOnly();
-                } catch(com.fsck.k9.mail.MessagingException e) {
-                    Log.e("ASH", "ack! " + e);
-                }
+                mLocalOnly = folder.isLocalOnly();
             }
             Log.d("ASH", "mLocalOnly = " + mLocalOnly + " for " + mCurrentFolder.name);
-        } else {
-            // should mLocalOnly be true or false or ???
-            // if true, it hides "Load up to x more", but this should be hidden anyway.
-            // it also hides R.id.check_mail and R.id.expunge
         }
 
         // Hide "Load up to x more" footer for search views and local-only folders
@@ -2316,6 +2306,7 @@ public class MessageList
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+            // ASH funky bug is here?
             if (message.uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                 view.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
                 view.getBackground().setAlpha(31);
@@ -2730,19 +2721,7 @@ public class MessageList
         if (holders.isEmpty()) {
             return;
         }
-        boolean isAppendCapable = false;
-        try {
-            isAppendCapable = mAccount.getRemoteStore().isAppendCapable();
-        } catch (com.fsck.k9.mail.MessagingException e) {
-            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
-        }
-        for (MessageInfoHolder holder : holders) {
-            if (holder.uid.startsWith(K9.LOCAL_UID_PREFIX) && !((LocalFolder)holder.folder.folder).isLocalOnly() && isAppendCapable) {
-                mController.saveMessage(mAccount, holder.message, holder.folder.name);
-            } else {
-                Log.d("ASH", "cannot sync " + holder.folder.name + " " + holder.uid + " " + holder.message.getSubject());
-            }
-        }
+        mController.appendMessages(mAccount, holders);
     }
 
     /**

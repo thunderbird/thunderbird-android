@@ -141,20 +141,24 @@ public class FolderSettings extends K9PreferenceActivity {
         mLocalOnly = (CheckBoxPreference)findPreference(PREFERENCE_LOCAL_ONLY);
         mLocalOnly.setChecked(mFolder.isLocalOnly());
         if (store instanceof Pop3Store || mAccount.getInboxFolderName().equals(folderName) ||
-                mAccount.getOutboxFolderName().equals(folderName)) {
+                mAccount.getOutboxFolderName().equals(folderName) ||
+                mAccount.getTrashFolderName().equals(folderName)) {
             mLocalOnly.setEnabled(false);
         }
-        if (!K9.isShowAdvancedOptions()) {// ASH disabled for testing: || store instanceof Pop3Store) {
+        if (!K9.isShowAdvancedOptions() || store instanceof Pop3Store) {
             category.removePreference(mLocalOnly);
         }
 
     }
 
     private void saveSettings() throws MessagingException {
+        if (!mFolder.setLocalOnly(mLocalOnly.isChecked())) {
+            Log.e(K9.LOG_TAG, "Setting local-only status of folder failed. Ignoring all changes.");
+            // ASH make toast
+            return;
+        }
         mFolder.setInTopGroup(mInTopGroup.isChecked());
         mFolder.setIntegrate(mIntegrate.isChecked());
-        boolean oldIsLocalOnly = mFolder.isLocalOnly();
-        mFolder.setLocalOnly(mLocalOnly.isChecked());
         // We call getPushClass() because display class changes can affect push class when push class is set to inherit
         FolderClass oldPushClass = mFolder.getPushClass();
         FolderClass oldDisplayClass = mFolder.getDisplayClass();
@@ -168,20 +172,6 @@ public class FolderSettings extends K9PreferenceActivity {
         }
 
         mFolder.save();
-
-        if (!oldIsLocalOnly && mFolder.isLocalOnly()) {
-            Log.w(K9.LOG_TAG, "Changing UIDs of messages in folder " + mFolder.getName() +
-                    " to local UIDs.");
-            MessagingController.getInstance(getApplication()).localizeUids(mFolder);
-        } else if (oldIsLocalOnly && !mFolder.isLocalOnly()) {
-            // create folder if it does not exist.
-            Folder folder = mAccount.getRemoteStore().getFolder(mFolder.getName());
-            folder.close();
-            if (!folder.exists()) {
-                Log.w(K9.LOG_TAG, "creating remote folder " + mFolder.getName());
-                folder.create();
-            }
-        }
 
         FolderClass newPushClass = mFolder.getPushClass();
         FolderClass newDisplayClass = mFolder.getDisplayClass();

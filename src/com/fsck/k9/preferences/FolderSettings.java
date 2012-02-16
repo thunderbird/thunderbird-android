@@ -35,6 +35,9 @@ public class FolderSettings {
         s.put("integrate", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
+        s.put("isLocalOnly", Settings.versions(
+                new V(1, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

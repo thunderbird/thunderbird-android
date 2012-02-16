@@ -494,6 +494,9 @@ public class FolderList extends K9ListActivity {
                 if (folderName.matches("")) {
                     Toast.makeText(getApplication(), "Folder name not given!", Toast.LENGTH_LONG).show();
                     return;
+                } else if (folderName.toUpperCase().matches(Account.INBOX)) {
+                    Toast.makeText(getApplication(), "Refuse to create a folder named INBOX!", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 try {
                     Store store = mAccount.getRemoteStore();

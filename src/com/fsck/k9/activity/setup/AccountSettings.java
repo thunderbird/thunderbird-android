@@ -726,7 +726,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
+Log.d("ASH", "Setting delete policy to " + mDeletePolicy.getValue());
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
+Log.d("ASH", "Have set delete policy to " + mAccount.getDeletePolicy());
         if (mIsExpungeCapable) {
             mAccount.setExpungePolicy(mExpungePolicy.getValue());
         }

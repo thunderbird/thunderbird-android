@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -92,7 +94,7 @@ import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
 import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
-
+import com.fsck.k9.preferences.Storage;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
 
@@ -109,6 +111,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
+    private static final String TRUE = "true";
     private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
     private ConcurrentHashMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
@@ -864,8 +867,31 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 // Start services if necessary
                 K9.setServicesEnabled(mContext);
 
+                // Create local-only folders.
+                // ASH TODO reject certain names for IMAP
+                // ASH test on importanting an acct with about 200 remote folders. what situations execute this code? change of password?
+                Map<String, String> storageMap = Storage.getStorage(mContext).getAll();
+                Pattern pattern = Pattern.compile(mAccount.getUuid() + "\\..+\\.isLocalOnly");
+                int substringStart = mAccount.getUuid().length() + 1;
+                for (String key : storageMap.keySet()) {
+                    Matcher matcher = pattern.matcher(key);
+                    if (matcher.find() && TRUE.equals(storageMap.get(key))) {
+                        String folderName = key.substring(substringStart, key.length() - 12);
+                        if (folderName.toUpperCase().matches(Account.INBOX)) {
+                            Log.w(K9.LOG_TAG, "Skipping import of local-only INBOX. It should always be remote.");
+                            continue;
+                        }
+                        if (mAccount.getLocalStore().createFolder(folderName, true)) {
+                            Log.i(K9.LOG_TAG, "Created local-only folder '" + folderName + "'");
+                        } else {
+                            Log.w(K9.LOG_TAG, "Failed to create local-only folder '" + folderName + "'");
+                        }
+                    }
+                }
+
                 // Get list of folders from remote server
                 MessagingController.getInstance(mApplication).listFolders(mAccount, true, null);
+
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Something went while setting account passwords", e);
             }

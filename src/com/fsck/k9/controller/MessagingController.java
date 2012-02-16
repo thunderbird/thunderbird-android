@@ -38,6 +38,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
+import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -1976,7 +1977,7 @@ public class MessagingController implements Runnable {
      * first checking to be sure that the server message is not newer than the local message. Once
      * the local message is successfully processed its UID is updated to reflect the remote UID.
      *
-     * @param command arguments = (String folder, String uid)
+     * @param command arguments = (String folder, String uid, [String uid, ...])
      * @param account
      * @throws MessagingException
      */
@@ -1987,7 +1988,8 @@ public class MessagingController implements Runnable {
         try {
 
             String folder = command.arguments[0];
-            String uid = command.arguments[1];
+            List<String> uids = new ArrayList<String>(Arrays.asList(command.arguments));
+            uids.remove(0);
 
             if (account.getErrorFolderName().equals(folder)) {
                 return;
@@ -1995,15 +1997,8 @@ public class MessagingController implements Runnable {
 
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
-            localFolder.open(OpenMode.READ_WRITE);
 
             if (localFolder.isLocalOnly()) {
-                return;
-            }
-
-            LocalMessage localMessage = (LocalMessage) localFolder.getMessage(uid);
-
-            if (localMessage == null) {
                 return;
             }
 
@@ -2019,88 +2014,103 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            Message remoteMessage = null;
-            if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(localMessage.getUid());
-            }
+            for (String uid : uids) {
+                LocalMessage localMessage = (LocalMessage) localFolder.getMessage(uid);
 
-            if (remoteMessage == null) {
-                if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
-                    Log.w(K9.LOG_TAG, "Local message with uid " + localMessage.getUid() +
-                          " has flag " + Flag.X_REMOTE_COPY_STARTED + " already set, checking for remote message with " +
-                          " same message id");
-                    String rUid = remoteFolder.getUidFromMessageId(localMessage);
-                    if (rUid != null) {
-                        Log.w(K9.LOG_TAG, "Local message has flag " + Flag.X_REMOTE_COPY_STARTED + " already set, and there is a remote message with " +
-                              " uid " + rUid + ", assuming message was already copied and aborting this copy");
+                if (localMessage == null) {
+                    continue;
+                }
 
+                Message remoteMessage = null;
+                if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+                    remoteMessage = remoteFolder.getMessage(localMessage.getUid());
+                }
+
+                if (remoteMessage == null) {
+                    if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
+                        Log.w(K9.LOG_TAG, "Local message with uid " + localMessage.getUid() +
+                                " has flag " + Flag.X_REMOTE_COPY_STARTED +
+                                " already set, checking for remote message with " +
+                                " same message id");
+                        String rUid = remoteFolder.getUidFromMessageId(localMessage);
+                        if (rUid != null) {
+                            Log.w(K9.LOG_TAG, "Local message has flag " + Flag.X_REMOTE_COPY_STARTED
+                                    + " already set, and there is a remote message with " + " uid "
+                                    + rUid +
+                                    ", assuming message was already copied and aborting this copy");
+
+                            String oldUid = localMessage.getUid();
+                            localMessage.setUid(rUid);
+                            localFolder.changeUid(localMessage);
+                            for (MessagingListener l : getListeners()) {
+                                l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                                // ASH or should below be: l.listLocalMessagesUpdateMessage(account, folder, localMessage);
+                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                            }
+                            continue;
+                        } else {
+                            Log.w(K9.LOG_TAG, "No remote message with message-id found, proceeding with append");
+                        }
+                    }
+
+                    /*
+                     * If the message does not exist remotely we just upload it and then
+                     * update our local copy with the new uid.
+                     */
+                    FetchProfile fp = new FetchProfile();
+                    fp.add(FetchProfile.Item.BODY);
+                    localFolder.fetch(new Message[] { localMessage } , fp, null);
+                    String oldUid = localMessage.getUid();
+                    localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
+                    remoteFolder.appendMessages(new Message[] { localMessage });
+
+                    localFolder.changeUid(localMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                        // ASH or should below be: l.listLocalMessagesUpdateMessage(account, folder, localMessage);
+                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                    }
+                } else {
+                    /*
+                     * If the remote message exists we need to determine which copy to keep.
+                     */
+                    /*
+                     * See if the remote message is newer than ours.
+                     */
+                    FetchProfile fp = new FetchProfile();
+                    fp.add(FetchProfile.Item.ENVELOPE);
+                    remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
+                    Date localDate = localMessage.getInternalDate();
+                    Date remoteDate = remoteMessage.getInternalDate();
+                    if (remoteDate != null && remoteDate.compareTo(localDate) > 0) {
+                        /*
+                         * If the remote message is newer than ours we'll just
+                         * delete ours and move on. A sync will get the server message
+                         * if we need to be able to see it.
+                         */
+                        localMessage.destroy();
+                    } else {
+                        /*
+                         * Otherwise we'll upload our message and then delete the remote message.
+                         */
+                        fp.clear();
+                        fp = new FetchProfile();
+                        fp.add(FetchProfile.Item.BODY);
+                        localFolder.fetch(new Message[] { localMessage }, fp, null);
                         String oldUid = localMessage.getUid();
-                        localMessage.setUid(rUid);
+
+                        localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
+
+                        remoteFolder.appendMessages(new Message[] { localMessage });
                         localFolder.changeUid(localMessage);
                         for (MessagingListener l : getListeners()) {
                             l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                         }
-                        return;
-                    } else {
-                        Log.w(K9.LOG_TAG, "No remote message with message-id found, proceeding with append");
-                    }
-                }
-
-                /*
-                 * If the message does not exist remotely we just upload it and then
-                 * update our local copy with the new uid.
-                 */
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(new Message[] { localMessage } , fp, null);
-                String oldUid = localMessage.getUid();
-                localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
-                remoteFolder.appendMessages(new Message[] { localMessage });
-
-                localFolder.changeUid(localMessage);
-                for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
-                }
-            } else {
-                /*
-                 * If the remote message exists we need to determine which copy to keep.
-                 */
-                /*
-                 * See if the remote message is newer than ours.
-                 */
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.ENVELOPE);
-                remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
-                Date localDate = localMessage.getInternalDate();
-                Date remoteDate = remoteMessage.getInternalDate();
-                if (remoteDate != null && remoteDate.compareTo(localDate) > 0) {
-                    /*
-                     * If the remote message is newer than ours we'll just
-                     * delete ours and move on. A sync will get the server message
-                     * if we need to be able to see it.
-                     */
-                    localMessage.destroy();
-                } else {
-                    /*
-                     * Otherwise we'll upload our message and then delete the remote message.
-                     */
-                    fp.clear();
-                    fp = new FetchProfile();
-                    fp.add(FetchProfile.Item.BODY);
-                    localFolder.fetch(new Message[] { localMessage }, fp, null);
-                    String oldUid = localMessage.getUid();
-
-                    localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
-
-                    remoteFolder.appendMessages(new Message[] { localMessage });
-                    localFolder.changeUid(localMessage);
-                    for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
-                    }
-                    if (remoteDate != null) {
-                        remoteMessage.setFlag(Flag.DELETED, true);
-                        if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
-                            remoteFolder.expunge();
+                        if (remoteDate != null) {
+                            remoteMessage.setFlag(Flag.DELETED, true);
+                            if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                                remoteFolder.expunge();
+                            }
                         }
                     }
                 }
@@ -2231,7 +2241,7 @@ public class MessagingController implements Runnable {
         Folder remoteFolder = null;
         LocalStore localStore = account.getLocalStore();
         LocalFolder localFolder = localStore.getFolder(folder);
-        localFolder.open(OpenMode.READ_WRITE);
+        localFolder.open(OpenMode.READ_WRITE); // ASH is this needed?
         String[] queryFields = { "uid" };
         String queryString = K9.LOCAL_UID_PREFIX;
         List<LocalFolder> folders = Arrays.asList(new LocalFolder[] { localFolder });
@@ -2296,22 +2306,58 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void localizeUids(LocalFolder folder) throws MessagingException {
-            Message[] messages = folder.getMessages(null);
-            for (Message message : messages) {
-                String oldUid = message.getUid();
-                Log.d("ASH", "old UID = " + oldUid);
-                if (!oldUid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    String newUid = K9.LOCAL_UID_PREFIX + java.util.UUID.randomUUID().toString();
-                    Log.d("ASH", "new UID = " + newUid);
-                    message.setUid(newUid);
-                    folder.changeUid((LocalMessage)message);
+    /*
+     * Changes all non-local UIDs to local UIDs in a folder. If a non-local message is not fully
+     * downloaded, an attempt will be made to do so before changing the UID.
+     *
+     * @param folder the folder to localize
+     * @param download whether to attempt download of partially downloaded messages or not.
+     * @return the status if all messages in folder have local UIDs.
+     */
+    public boolean localizeUids(LocalFolder folder, boolean download) throws MessagingException {
+        String folderName = folder.getName();
+        Message[] messages = folder.getMessages(null);
+        if (messages.length == 0) {
+            return true;
+        }
+        Log.i(K9.LOG_TAG, "Changing UIDs of messages in folder " + folderName + " to local UIDs.");
+        boolean completed = true;
+        for (Message message : messages) {
+            String oldUid = message.getUid();
+            Log.d("ASH", "old UID = " + oldUid);
+            if (!oldUid.startsWith(K9.LOCAL_UID_PREFIX)) {
 
-                    for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(folder.getAccount(), folder.getName(), oldUid, newUid);
+                if (download && message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                    // fully download message first
+                    Log.d("ASH", "downloading message...");
+                    if (loadMessageForViewRemoteSynchronous(folder.getAccount(), folderName,
+                            message.getUid(), null, true)) {
+                        Log.d("ASH", "downloaded message");
+                        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                        message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
+                    } else {
+                        completed = false;
+                        Log.e(K9.LOG_TAG, "Cannot download message " + message.getUid() +
+                                " in folder " + folderName);
+                        Toast.makeText(mApplication, "Cannot download message " +
+                                message.getSubject() + " in folder " + folderName,
+                                Toast.LENGTH_LONG).show();
+                        continue;
                     }
                 }
+
+
+                String newUid = K9.LOCAL_UID_PREFIX + java.util.UUID.randomUUID().toString();
+                Log.d("ASH", "new UID = " + newUid);
+                message.setUid(newUid);
+                folder.changeUid((LocalMessage)message);
+
+                for (MessagingListener l : getListeners()) {
+                    l.messageUidChanged(folder.getAccount(), folder.getName(), oldUid, newUid);
+                }
             }
+        }
+        return completed;
     }
 
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids) {
@@ -2656,13 +2702,13 @@ public class MessagingController implements Runnable {
         put("loadMessageForViewRemote", listener, new Runnable() {
             @Override
             public void run() {
-                loadMessageForViewRemoteSynchronous(account, folder, uid, listener);
+                loadMessageForViewRemoteSynchronous(account, folder, uid, listener, false);
             }
         });
     }
 
     public boolean loadMessageForViewRemoteSynchronous(final Account account, final String folder,
-            final String uid, final MessagingListener listener) {
+            final String uid, final MessagingListener listener, final boolean force) {
         Folder remoteFolder = null;
         LocalFolder localFolder = null;
         try {
@@ -2678,7 +2724,7 @@ public class MessagingController implements Runnable {
                         Toast.LENGTH_LONG).show();
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            } else if (localFolder.isLocalOnly()) {
+            } else if (localFolder.isLocalOnly() && !force) {
                 Log.w(K9.LOG_TAG, "Message in local-only folder so cannot download fully.");
                 Toast.makeText(mApplication, "Message in local-only folder so cannot download fully",
                         Toast.LENGTH_LONG).show();
@@ -3291,9 +3337,7 @@ public class MessagingController implements Runnable {
             List<String> uids = new LinkedList<String>();
             List<String> localUids = new LinkedList<String>();
 
-            localSrcFolder.open(OpenMode.READ_WRITE);
             boolean needToLocalizeSourceFolder = false;
-
             for (Message message : inMessages) {
                 String uid = message.getUid();
                 // ASH instead, add all messages, and later handle local ones separately?
@@ -3302,14 +3346,31 @@ public class MessagingController implements Runnable {
                 } else {
                     localUids.add(uid);
                     if (isCopy && !uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                        // somehow a non local-only UID exists in a local-only folder
                         needToLocalizeSourceFolder = true;
                     }
                 }
             }
 
+            // make sure the remote folder actually gets created even though it won't be used yet.
+            // useful for the first time moving to archive/spam.
+            // ASH is this still needed since setLocalOnly(false) will create it?
+            // ASH how does this work on pop?
+            /*if (!account.isAutoUploadOnMove() && localUids.size() > 0 &&
+                    !localDestFolder.exists()) {
+                if (!localDestFolder.isLocalOnly()) {
+                    Folder remoteDestFolder = remoteStore.getFolder(destFolder);
+                    if (!remoteDestFolder.exists()) {
+                        if (!remoteDestFolder.create()) {
+                            localDestFolder.setLocalOnly(true);
+                            // ASH warn
+                        }
+                    }
+                }
+            }*/
+
             Message[] messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
             if (messages.length > 0) {
-                localDestFolder.open(OpenMode.READ_WRITE);
                 boolean checkForPartialDownload = (!localSrcFolder.isLocalOnly() &&
                         localDestFolder.isLocalOnly()) ? true : false;
 
@@ -3317,15 +3378,18 @@ public class MessagingController implements Runnable {
 
                 for (Message message : messages) {
                     if (checkForPartialDownload && message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        // fully download message if it's moved/coied to a local-only folder
+                        // fully download message if it's moved/copied to a local-only folder
                         Log.d("ASH", "downloading message...");
                         if (loadMessageForViewRemoteSynchronous(account, srcFolder,
-                                message.getUid(), listener)) {
+                                message.getUid(), listener, false)) {
                             Log.d("ASH", "downloaded message");
                             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                             message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
                             origUidMap.put(message.getUid(), message);
                         } else {
+                            if (!isCopy) {
+                                unsuppressMessage(account, srcFolder, message.getUid());
+                            }
                             Log.e(K9.LOG_TAG, "Cannot download message " + message.getUid() +
                                     " in folder " + srcFolder + " -- skipping it for move/copy.");
                             Toast.makeText(mApplication, "Cannot download message " +
@@ -3426,9 +3490,7 @@ public class MessagingController implements Runnable {
                 if (account.isAutoUploadOnMove() && !localDestFolder.isLocalOnly() &&
                         (isCopy ? remoteStore.isCopyCapable() : remoteStore.isMoveCapable())) {
                     // local message copy/move to remote folder
-                    for (Message message : localMessages) {
-                        saveMessage(account, message, destFolder);
-                    }
+                    appendMessages(account, localMessages, destFolder);
                 } else if (isCopy) {
                     // local message copy to local folder
                     localSrcFolder.copyMessages(localMessages, localDestFolder);
@@ -3437,7 +3499,7 @@ public class MessagingController implements Runnable {
 
             processPendingCommands(account);
             if (needToLocalizeSourceFolder) {
-                localizeUids(localSrcFolder);
+                localizeUids(localSrcFolder, false);
             }
         } catch (UnavailableStorageException e) {
             Log.i(K9.LOG_TAG, "Failed to move/copy message because storage is not available - trying again later.");
@@ -3523,8 +3585,28 @@ public class MessagingController implements Runnable {
             } else {
                 localTrashFolder = localStore.getFolder(account.getTrashFolderName());
                 if (!localTrashFolder.exists()) {
-                    if (account.getRemoteStore().isMoveCapable()) {
-                        localTrashFolder.create();
+                    if (account.getRemoteStore().isMoveCapable() &&
+                            account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
+                        localTrashFolder.create(false);
+                        // make sure the remote folder actually gets created even though it won't be used yet.
+                        // ASH is this still needed since setLocalOnly(false) will create it?
+                        /*boolean hasRemoteMessages = false;
+                        for (String uid : uids) {
+                            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                                hasRemoteMessages = true;
+                                break;
+                            }
+                        }
+                        if (!hasRemoteMessages) {
+                            Folder remoteTrashFolder = account.getRemoteStore()
+                                    .getFolder(account.getTrashFolderName());
+                            if (!remoteTrashFolder.exists()) {
+                                if (!remoteTrashFolder.create()) {
+                                    localTrashFolder.setLocalOnly(true);
+                                    // ASH warn
+                                }
+                            }
+                        }*/
                     } else {
                         localTrashFolder.create(true);
                     }
@@ -3533,24 +3615,22 @@ public class MessagingController implements Runnable {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Deleting messages in normal folder, moving");
 
-                    localTrashFolder.open(OpenMode.READ_WRITE);
                     // download messages first if trash folder is local-only,
                     // otherwise it's not undoable.
                     if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE &&
                             localTrashFolder.isLocalOnly() && !localFolder.isLocalOnly()) {
                         Map<String, Message> origUidMap = new HashMap<String, Message>();
-                        Map<String, Message> skipUidMap = new HashMap<String, Message>();
                         for (Message message : messages) {
                             if (message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                                 Log.d("ASH", "downloading message...");
                                 if (loadMessageForViewRemoteSynchronous(account, folder,
-                                        message.getUid(), listener)) {
+                                        message.getUid(), listener, false)) {
                                     Log.d("ASH", "downloaded message");
                                     message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                                     message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
                                     origUidMap.put(message.getUid(), message);
                                 } else {
-                                    skipUidMap.put(message.getUid(), message);
+                                    unsuppressMessage(account, folder, message.getUid());
                                     Log.e(K9.LOG_TAG, "Cannot download message -- skipping it for move to trash.");
                                     Toast.makeText(mApplication, "Cannot download message " +
                                             message.getSubject() + " in folder " + folder +
@@ -3563,9 +3643,6 @@ public class MessagingController implements Runnable {
                         }
                         messages = origUidMap.values().toArray(EMPTY_MESSAGE_ARRAY);
                         uids = origUidMap.keySet().toArray(EMPTY_STRING_ARRAY);
-                        for (String uid : skipUidMap.keySet()) {
-                            unsuppressMessage(account, folder, uid);
-                        }
                         if (messages.length == 0) {
                             Log.w(K9.LOG_TAG, "Not deleting any messages.");
                             return;
@@ -3588,7 +3665,6 @@ public class MessagingController implements Runnable {
 
             if (folder.equals(account.getOutboxFolderName())) {
                 localTrashFolder = (LocalFolder)localStore.getFolder(account.getTrashFolderName());
-                localTrashFolder.open(OpenMode.READ_WRITE);
                 if (!localTrashFolder.isLocalOnly()) {
                     for (Message message : messages) {
                         // If the message was in the Outbox, then it has been copied to local Trash, and has
@@ -3603,7 +3679,6 @@ public class MessagingController implements Runnable {
                 }
             } else if (!localFolder.isLocalOnly()) {
                 localTrashFolder = (LocalFolder)localStore.getFolder(account.getTrashFolderName());
-                localTrashFolder.open(OpenMode.READ_WRITE);
                 if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
                     if (folder.equals(account.getTrashFolderName()) || localTrashFolder.isLocalOnly()) {
                         queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
@@ -4270,43 +4345,16 @@ public class MessagingController implements Runnable {
      * Save a draft message.
      * @param account Account we are saving for.
      * @param message Message to save.
-     * @param existingDraftId
      * @return Message representing the entry in the local store.
      */
     public Message saveDraft(final Account account, final Message message, long existingDraftId) {
-        return saveMessage(account, message, account.getDraftsFolderName(), existingDraftId, true);
-    }
-
-    /**
-     * Save a message.
-     * @param account Account we are saving for.
-     * @param message Message to save.
-     * @param folderName String to save to.
-     * @return Message representing the entry in the local store.
-     */
-    public Message saveMessage(final Account account, final Message message, final String
-            folderName) {
-        return saveMessage(account, message, folderName, INVALID_MESSAGE_ID, false);
-    }
-
-    /**
-     * Save a message.
-     * @param account Account we are saving for.
-     * @param message Message to save.
-     * @param folderName String to save to.
-     * @param existingDraftId
-     * @param isDraft
-     * @return Message representing the entry in the local store.
-     */
-    public Message saveMessage(final Account account, final Message message, final String
-            folderName, final long existingDraftId, final boolean isDraft) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
-            LocalFolder localFolder = localStore.getFolder(folderName);
+            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
 
-            if (isDraft && existingDraftId != INVALID_MESSAGE_ID) {
+            if (existingDraftId != INVALID_MESSAGE_ID) {
                 String uid = localFolder.getMessageUidById(existingDraftId);
                 message.setUid(uid);
             }
@@ -4319,19 +4367,75 @@ public class MessagingController implements Runnable {
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
 
-            if (!localFolder.isLocalOnly()) {
-                PendingCommand command = new PendingCommand();
-                command.command = PENDING_COMMAND_APPEND;
-                command.arguments = new String[] { localFolder.getName(), localMessage.getUid() };
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
+            PendingCommand command = new PendingCommand();
+            command.command = PENDING_COMMAND_APPEND;
+            command.arguments = new String[] {
+                localFolder.getName(),
+                localMessage.getUid()
+            };
+            queuePendingCommand(account, command);
+            processPendingCommands(account);
 
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to save message to " + folderName + ".", e);
+            Log.e(K9.LOG_TAG, "Unable to save message as draft.", e);
             addErrorMessage(account, null, e);
         }
         return localMessage;
+    }
+
+    /**
+     * Append messages to remote store.
+     * @param account Account we are saving for.
+     * @param holders MessageInfoHolders with messages to save.
+     */
+    public void appendMessages(final Account account, List<MessageInfoHolder> holders) {
+        List<Message> messages = new ArrayList<Message>(holders.size());
+        for (MessageInfoHolder holder : holders) {
+            messages.add(holder.message);
+        }
+        appendMessages(account, messages.toArray(EMPTY_MESSAGE_ARRAY), holders.get(0).folder.name);
+    }
+    /**
+     * Append messages to remote store.
+     * @param account Account we are saving for.
+     * @param messages Messages to save.
+     * @param folderName Folder name to save to.
+     */
+    public void appendMessages(final Account account, final Message[] messages, final String
+            folderName) {
+        try {
+            LocalFolder localFolder = account.getLocalStore().getFolder(folderName);
+// ASH            localFolder.open(OpenMode.READ_WRITE);
+            List<String> commandArguments = new ArrayList<String>();
+            commandArguments.add(folderName);
+
+            if (!localFolder.isLocalOnly() && account.getRemoteStore().isAppendCapable()) {
+                for (Message message : messages) {
+                    if (message.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+                        commandArguments.add(message.getUid());
+                    }
+                }
+                if (commandArguments.size() < 2) {
+                    Log.w(K9.LOG_TAG, "No messages to append.");
+                    return;
+                }
+            } else {
+                Log.w(K9.LOG_TAG, "Unable to upload messages to " + folderName + " because " +
+                        (localFolder.isLocalOnly() ? "folder" : "remote") + " is not " +
+                        (localFolder.isLocalOnly() ? "syncable" : "appendable"));
+                return;
+            }
+
+            PendingCommand command = new PendingCommand();
+            command.command = PENDING_COMMAND_APPEND;
+            command.arguments = commandArguments.toArray(EMPTY_STRING_ARRAY);
+            queuePendingCommand(account, command);
+            processPendingCommands(account);
+
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Unable to upload messages to " + folderName + ".", e);
+            addErrorMessage(account, null, e);
+        }
     }
 
     public long getId(Message message) {

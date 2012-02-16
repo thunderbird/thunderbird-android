@@ -753,17 +753,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     private void onUpload() {
-        boolean isAppendCapable = false;
-        try {
-            isAppendCapable = mAccount.getRemoteStore().isAppendCapable();
-        } catch (com.fsck.k9.mail.MessagingException e) {
-            Log.e(K9.LOG_TAG, "Error trying to get remote store: " + e);
-        }
-        if (mMessageReference.uid.startsWith(K9.LOCAL_UID_PREFIX) && !((com.fsck.k9.mail.store.LocalStore.LocalFolder)mMessage.getFolder()).isLocalOnly() && isAppendCapable) {
-            mController.saveMessage(mAccount, mMessage, mMessageReference.folderName);
-        } else {
-            Log.d("ASH", "cannot sync " + mMessageReference.folderName + " " + mMessageReference.uid + " " + mMessage.getSubject());
-        }
+        mController.appendMessages(mAccount, new Message[] { mMessage }, mMessageReference.folderName);
     }
 
     @Override

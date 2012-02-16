@@ -14,6 +14,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
@@ -51,7 +52,7 @@ public class Account implements BaseAccount {
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
 
     public static final int DELETE_POLICY_NEVER = 0;
-    public static final int DELETE_POLICY_7DAYS = 1;
+    //public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
     public static final int DELETE_POLICY_MARK_AS_READ = 3;
 
@@ -82,7 +83,7 @@ public class Account implements BaseAccount {
     /**
      * <pre>
      * 0 - Never (DELETE_POLICY_NEVER)
-     * 1 - After 7 days (DELETE_POLICY_7DAYS)
+     * 1 - After 7 days (DELETE_POLICY_7DAYS) -- unused and commented out.
      * 2 - When I delete from inbox (DELETE_POLICY_ON_DELETE)
      * 3 - Mark as read (DELETE_POLICY_MARK_AS_READ)
      * </pre>
@@ -902,7 +903,29 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void setDeletePolicy(int deletePolicy) {
-        this.mDeletePolicy = deletePolicy;
+        try {
+            if (deletePolicy != mDeletePolicy && !K9.FOLDER_NONE.equals(mTrashFolderName) &&
+                    mTrashFolderName != null && getRemoteStore().isMoveCapable()) {
+                LocalFolder folder = getLocalStore().getFolder(mTrashFolderName);
+                if (folder.exists()) {
+                    Log.d("ASH", "setDeletePolicy() 3");
+                    if (!folder.setLocalOnly(deletePolicy != DELETE_POLICY_ON_DELETE)) {
+                        Log.d("ASH", "Cannot currently change delete policy.");
+                        return;
+                    }
+                }
+            }
+            this.mDeletePolicy = deletePolicy;
+        } catch (MessagingException e) {
+            if (e.getCause() instanceof java.net.UnknownHostException) {
+                Log.e(K9.LOG_TAG, "Cannot currently change delete policy due to unknown host: " +
+                        e.getCause().getMessage());
+                // ASH make toast
+            } else {
+                Log.e(K9.LOG_TAG, "Cannot currently change delete policy for unknown reason.", e);
+                // ASH make toast
+            }
+        }
     }
 
 
@@ -949,7 +972,27 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void setTrashFolderName(String trashFolderName) {
-        mTrashFolderName = trashFolderName;
+Log.d("ASH", "Attempting to set trash folder name to " + trashFolderName);
+        if (trashFolderName == null || mStoreUri.startsWith("placeholder")) {
+Log.d("ASH", "No change to trash folder name.");
+            return;
+        } else if (trashFolderName.equals(mTrashFolderName)) {
+Log.d("ASH", "No change to trash folder name");
+            return;
+        }
+        try {
+            if (!K9.FOLDER_NONE.equals(trashFolderName) && getRemoteStore().isMoveCapable()) {
+                LocalFolder folder = getLocalStore().getFolder(trashFolderName);
+Log.d("ASH", "got local trash folder");
+                if (folder.exists()) {
+Log.d("ASH", "setTrashFolderName() attempting change of folder.setLocalOnly()");
+                    folder.setLocalOnly(mDeletePolicy != DELETE_POLICY_ON_DELETE);
+                }
+            }
+            mTrashFolderName = trashFolderName;
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Cannot access store: ", e);
+        }
     }
 
     public synchronized String getArchiveFolderName() {

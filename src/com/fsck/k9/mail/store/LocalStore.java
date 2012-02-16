@@ -37,6 +37,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -371,13 +372,14 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                         try {
                             db.execSQL("ALTER TABLE folders ADD local_only INTEGER default 0");
 
+                            // ASH this might fuck things up if remoteStore is unavailable. queue it all somehow.
                             List <? extends Folder > remoteFolders =
                                     mAccount.getRemoteStore().getPersonalNamespaces(false);
                             HashSet<String> remoteFolderNames = new HashSet<String>();
                             for (Folder remoteFolder : remoteFolders) {
                                 remoteFolderNames.add(remoteFolder.getName());
                             }
-                            // ASH verify that this works properly -- still untested!
+                            // ASH verify that this works properly -- still untested! maybe need localFolder.save() somewhere?
                             List <? extends LocalFolder > localFolders = getPersonalNamespaces(true);
                             for (LocalFolder localFolder : localFolders) {
                                 if (remoteFolderNames.contains(localFolder.getName()) == false) {
@@ -386,9 +388,17 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                                     localFolder.setLocalOnly(true);
                                     Log.w(K9.LOG_TAG, "Setting folder " + localFolder.getName() +
                                             " to local-only folder.");
+                                } else if (localFolder.getName().equals(mAccount.getTrashFolderName())
+                                        && mAccount.getDeletePolicy() !=
+                                        Account.DELETE_POLICY_ON_DELETE) {
+                                    // trash folder is local-only depending on delete policy
+                                    db.execSQL("UPDATE messages SET local_only = 1 WHERE name = " +
+                                            localFolder.getName());
+                                    localFolder.setLocalOnly(true);
+                                    Log.w(K9.LOG_TAG, "Setting folder " + localFolder.getName() +
+                                            " to local-only folder due to delete policy.");
                                 }
                             }
-
                         } catch (SQLiteException e) {
                             if (! e.getMessage().startsWith("duplicate column name: local_only")) {
                                 throw e;
@@ -435,6 +445,7 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
             Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
             boolean inTopGroup = false;
             boolean integrate = false;
+            boolean isLocalOnly = false;
             if (mAccount.getInboxFolderName().equals(name)) {
                 displayClass = Folder.FolderClass.FIRST_CLASS;
                 syncClass =  Folder.FolderClass.FIRST_CLASS;
@@ -449,6 +460,7 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                 pushClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "." + name + ".pushMode", pushClass.name()));
                 inTopGroup = prefs.getBoolean(uUid + "." + name + ".inTopGroup", inTopGroup);
                 integrate = prefs.getBoolean(uUid + "." + name + ".integrate", integrate);
+                isLocalOnly =  prefs.getBoolean(uUid + "." + name + ".isLocalOnly", isLocalOnly);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, " Throwing away an error while trying to upgrade folder metadata", e);
             }
@@ -463,8 +475,8 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                 pushClass = Folder.FolderClass.INHERITED;
             }
 
-            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
-                       new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, id });
+            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ?, local_only = ? WHERE id = ?",
+                       new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, isLocalOnly, id });
 
         }
     }
@@ -1107,6 +1119,11 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
                 }
             });
             Log.i(K9.LOG_TAG, "Renamed folder " + oldFolderName + " to " + newFolderName);
+Log.d("ASH", "OldFolder.delete() pre");
+            oldFolder.delete();
+Log.d("ASH", "newFolder.save() pre");
+            newFolder.save();
+Log.d("ASH", "newFolder.save() post");
             return true;
         }
         return false;
@@ -1171,11 +1188,13 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
 
                     try {
                         folder.setLocalOnly(localOnly);
+Log.d("ASH", "folder.save() pre");
+                        folder.save();
+Log.d("ASH", "folder.save() post");
                     } catch (MessagingException me) {
                         Log.e(K9.LOG_TAG, "Exception trying to set local-only status of folder " +
                                 name + " to " + localOnly);
                     }
-
                 }
                 return null;
             }
@@ -1199,7 +1218,7 @@ Log.d("ASH", "updatedb " + mAccount.getDescription());
         private boolean mInTopGroup = false;
         private String mPushState = null;
         private boolean mIntegrate = false;
-        private boolean mLocalOnly = false;
+        private Boolean mLocalOnly;
         // mLastUid is used during syncs. It holds the highest UID within the local folder so we
         // know whether or not an unread message added to the local folder is actually "new" or not.
         private Integer mLastUid = null;
@@ -1452,7 +1471,7 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
                 return ;
             }
             open(OpenMode.READ_WRITE);
-            Message[] messages = getMessages(null, false);
+            Message[] messages = getMessages(null, false, false);
             for (int i = mVisibleLimit; i < messages.length; i++) {
                 if (listener != null) {
                     listener.messageRemoved(messages[i]);
@@ -1555,13 +1574,57 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
             updateFolderColumn("integrate", mIntegrate ? 1 : 0);
         }
 
-        public void setLocalOnly(boolean localOnly) throws MessagingException {
-            mLocalOnly = localOnly;
-Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
-            updateFolderColumn("local_only", localOnly == true ? "1" : "0");
+        public boolean setLocalOnly(boolean localOnly) throws MessagingException {
+            // ASH was this here for a good reason?
+            /*if (isLocalOnly() != null && mLocalOnly == localOnly) {
+                Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly + " UNNECESSARY");
+                return true;
+            }*/
+            Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
+
+            if (localOnly) {
+                if (!MessagingController.getInstance(K9.app).localizeUids(this, true)) {
+                    // could not download all messages for some reason
+                    //if (mAccount.getRemoteStore().getFolder(mName).exists()) {
+                        Log.e(K9.LOG_TAG, "Unable to localize folder " + mName + " at this time");
+                        // ASH make toast? no, this should not be done in LocalFolder but in an activity. 
+                        return false;
+                    //}
+                }
+                mLocalOnly = true;
+                updateFolderColumn("local_only", "1");
+            } else {
+                // ASH can maybe delete logic in onCreateFolder() and elsewhere.
+                Store store = mAccount.getRemoteStore();
+                if (store.isMoveCapable()) {
+                    Folder folder = store.getFolder(mName);
+                    if (!folder.exists()) {
+                        Log.i(K9.LOG_TAG, "Creating remote folder " + mName);
+                        if (!folder.create()) {
+                            Log.e(K9.LOG_TAG, "Unable to create remote folder " + mName);
+                            // ASH make toast? no, this should not be done in LocalFolder but in an activity.
+                            return false;
+                        }
+                    }
+                }
+                mLocalOnly = false;
+                updateFolderColumn("local_only", "0");
+            }
+            return true;
         }
 
-        public boolean isLocalOnly() {
+        public Boolean isLocalOnly() {
+            Log.v("ASH", "### " + mName + " : " + mLocalOnly);
+            if (mLocalOnly == null) {
+                try {
+                    open(OpenMode.READ_ONLY);
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Exception opening folder " + mName);
+                } finally {
+                    close();
+                }
+            }
+            Log.v("ASH", "#!# " + mName + " : " + mLocalOnly);
             return mLocalOnly;
         }
 
@@ -1589,6 +1652,7 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
             editor.remove(id + ".pushMode");
             editor.remove(id + ".inTopGroup");
             editor.remove(id + ".integrate");
+            editor.remove(id + ".isLocalOnly");
 
             editor.commit();
         }
@@ -1623,7 +1687,7 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
             editor.putBoolean(id + ".inTopGroup", mInTopGroup);
 
             editor.putBoolean(id + ".integrate", mIntegrate);
-
+            editor.putBoolean(id + ".isLocalOnly", mLocalOnly);
         }
 
         public void refresh(String name, PreferencesHolder prefHolder) {
@@ -1987,18 +2051,25 @@ Log.d("ASH", "setting folder " + mName + " to localOnly = " + localOnly);
 
         @Override
         public Message[] getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
+            return getMessages(listener, includeDeleted, true);
+        }
+
+        public Message[] getMessages(final MessageRetrievalListener listener, final boolean
+                includeDeleted, final boolean includeLocal) throws MessagingException {
             try {
                 return database.execute(false, new DbCallback<Message[]>() {
                     @Override
                     public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
                             open(OpenMode.READ_WRITE);
+                            String excludeLocal =  "uid NOT LIKE '" + K9.LOCAL_UID_PREFIX + "%' AND ";
                             return LocalStore.this.getMessages(
                                        listener,
                                        LocalFolder.this,
                                        "SELECT " + GET_MESSAGES_COLS
                                        + "FROM messages WHERE "
                                        + (includeDeleted ? "" : "deleted = 0 AND ")
+                                       + (includeLocal ? "" : excludeLocal)
                                        + " folder_id = ? ORDER BY date DESC"
                                        , new String[] {
                                            Long.toString(mFolderId)
