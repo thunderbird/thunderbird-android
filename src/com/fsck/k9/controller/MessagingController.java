@@ -3515,6 +3515,7 @@ public class MessagingController implements Runnable {
             }
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
+            Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolderName()) || K9.FOLDER_NONE.equals(account.getTrashFolderName())) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
@@ -3529,7 +3530,7 @@ public class MessagingController implements Runnable {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Deleting messages in normal folder, moving");
 
-                    localFolder.moveMessages(messages, localTrashFolder);
+                    uidMap = localFolder.moveMessages(messages, localTrashFolder);
 
                 }
             }
@@ -3562,7 +3563,7 @@ public class MessagingController implements Runnable {
                 if (folder.equals(account.getTrashFolderName())) {
                     queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
                 } else {
-                    queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
+                    queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids, uidMap);
                 }
                 processPendingCommands(account);
             } else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ) {
