@@ -102,15 +102,19 @@ public class SingleMessageView extends LinearLayout {
             // content://<nameofpackage>.providers.StatusProvider
             cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
                                         + ".providers.StatusProvider"), null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                // These content providers use a special cursor that only has
-                // one element,
-                // an integer that is 1 if the screen reader is running.
-                status = cursor.getInt(0);
-                cursor.close();
-                if (status == 1) {
-                    return true;
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    // These content providers use a special cursor that only has
+                    // one element,
+                    // an integer that is 1 if the screen reader is running.
+                    status = cursor.getInt(0);
+                    if (status == 1) {
+                        return true;
+                    }
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
         }
