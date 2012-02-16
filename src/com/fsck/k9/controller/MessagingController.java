@@ -2189,7 +2189,7 @@ public class MessagingController implements Runnable {
                 Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
                       + ", " + messages.size() + " messages, destination folder = " + destFolder + ", isCopy = " + isCopy);
 
-            Map <String, String> remoteUidMap = new HashMap<String, String>();
+            Map <String, String> remoteUidMap = null;
 
             if (!isCopy && destFolder.equals(account.getTrashFolderName())) {
                 if (K9.DEBUG)
@@ -2220,7 +2220,7 @@ public class MessagingController implements Runnable {
              * This next part is used to bring the local UIDs of the local destination folder
              * upto speed with the remote UIDs of remote destionation folder.
              */
-            if (!localUidMap.isEmpty() && !remoteUidMap.isEmpty()) {
+            if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
                 Set<String> remoteSrcUids = remoteUidMap.keySet();
                 Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
 
