@@ -2622,51 +2622,67 @@ public class MessagingController implements Runnable {
             @Override
             public void act(final Account account, final Folder folder,
             final List<Message> messages) {
-                String[] uids = new String[messages.size()];
-                for (int i = 0; i < messages.size(); i++) {
-                    uids[i] = messages.get(i).getUid();
-                }
-                setFlag(account, folder.getName(), uids, flag, newState);
+                setFlag(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), flag,
+                        newState);
             }
 
         });
 
     }
 
-    public void setFlag(
-        final Account account,
-        final String folderName,
-        final String[] uids,
-        final Flag flag,
-        final boolean newState) {
-        // TODO: put this into the background, but right now that causes odd behavior
-        // because the FolderMessageList doesn't have its own cache of the flag states
+    /**
+     * Set or remove a flag for a set of messages in a specific folder.
+     *
+     * <p>
+     * The {@link Message} objects passed in are updated to reflect the new flag state.
+     * </p>
+     *
+     * @param account
+     *         The account the folder containing the messages belongs to.
+     * @param folderName
+     *         The name of the folder.
+     * @param messages
+     *         The messages to change the flag for.
+     * @param flag
+     *         The flag to change.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
+     */
+    public void setFlag(Account account, String folderName, Message[] messages, Flag flag,
+            boolean newState) {
+        // TODO: Put this into the background, but right now some callers depend on the message
+        //       objects being modified right after this method returns.
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
-            ArrayList<Message> messages = new ArrayList<Message>();
-            for (String uid : uids) {
-                // Allows for re-allowing sending of messages that could not be sent
-                if (flag == Flag.FLAGGED && !newState
-                        && uid != null
-                        && account.getOutboxFolderName().equals(folderName)) {
-                    sendCount.remove(uid);
-                }
-                Message msg = localFolder.getMessage(uid);
-                if (msg != null) {
-                    messages.add(msg);
+
+            // Allows for re-allowing sending of messages that could not be sent
+            if (flag == Flag.FLAGGED && !newState &&
+                    account.getOutboxFolderName().equals(folderName)) {
+                for (Message message : messages) {
+                    String uid = message.getUid();
+                    if (uid != null) {
+                        sendCount.remove(uid);
+                    }
                 }
             }
 
-            localFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] {flag}, newState);
-
+            // Update the messages in the local store
+            localFolder.setFlags(messages, new Flag[] {flag}, newState);
 
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
             }
 
+
+            /*
+             * Handle the remote side
+             */
+
+            // The error folder is always a local folder
+            // TODO: Skip the remote part for all local-only folders
             if (account.getErrorFolderName().equals(folderName)) {
                 return;
             }
@@ -2675,16 +2691,54 @@ public class MessagingController implements Runnable {
                 return;
             }
 
+            String[] uids = new String[messages.length];
+            for (int i = 0, end = uids.length; i < end; i++) {
+                uids[i] = messages[i].getUid();
+            }
+
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
-
             throw new RuntimeException(me);
         } finally {
             closeFolder(localFolder);
         }
-    }//setMesssageFlag
+    }
+
+    /**
+     * Set or remove a flag for a message referenced by message UID.
+     *
+     * @param account
+     *         The account the folder containing the message belongs to.
+     * @param folderName
+     *         The name of the folder.
+     * @param uid
+     *         The UID of the message to change the flag for.
+     * @param flag
+     *         The flag to change.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
+     */
+    public void setFlag(Account account, String folderName, String uid, Flag flag,
+            boolean newState) {
+        Folder localFolder = null;
+        try {
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folderName);
+            localFolder.open(OpenMode.READ_WRITE);
+
+            Message message = localFolder.getMessage(uid);
+            if (message != null) {
+                setFlag(account, folderName, new Message[] { message }, flag, newState);
+            }
+        } catch (MessagingException me) {
+            addErrorMessage(account, null, me);
+            throw new RuntimeException(me);
+        } finally {
+            closeFolder(localFolder);
+        }
+    }
 
     public void clearAllPending(final Account account) {
         try {
@@ -3334,6 +3388,8 @@ public class MessagingController implements Runnable {
             Store remoteStore = account.getRemoteStore();
             LocalFolder localSrcFolder = localStore.getFolder(srcFolder);
             LocalFolder localDestFolder = localStore.getFolder(destFolder);
+
+            boolean unreadCountAffected = false;
             List<String> uids = new LinkedList<String>();
             List<String> localUids = new LinkedList<String>();
 
@@ -3349,6 +3405,10 @@ public class MessagingController implements Runnable {
                         // somehow a non local-only UID exists in a local-only folder
                         needToLocalizeSourceFolder = true;
                     }
+                }
+
+                if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
+                    unreadCountAffected = true;
                 }
             }
 
@@ -3417,6 +3477,15 @@ public class MessagingController implements Runnable {
                         fp.add(FetchProfile.Item.BODY);
                         localSrcFolder.fetch(messages, fp, null);
                         localSrcFolder.copyMessages(messages, localDestFolder);
+
+                        if (unreadCountAffected) {
+                            // If this copy operation changes the unread count in the destination
+                            // folder, notify the listeners.
+                            int unreadMessageCount = localDestFolder.getUnreadMessageCount();
+                            for (MessagingListener l : getListeners()) {
+                                l.folderStatusChanged(account, destFolder, unreadMessageCount);
+                            }
+                        }
                     } else {
                         localSrcFolder.moveMessages(messages, localDestFolder);
                         for (Map.Entry<String, Message> entry : origUidMap.entrySet()) {
@@ -3426,6 +3495,16 @@ public class MessagingController implements Runnable {
                                 l.messageUidChanged(account, srcFolder, origUid, message.getUid());
                             }
                             unsuppressMessage(account, srcFolder, origUid);
+                        }
+                        if (unreadCountAffected) {
+                            // If this move operation changes the unread count, notify the listeners
+                            // that the unread count changed in both the source and destination folder.
+                            int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
+                            int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
+                            for (MessagingListener l : getListeners()) {
+                                l.folderStatusChanged(account, srcFolder, unreadMessageCountSrc);
+                                l.folderStatusChanged(account, destFolder, unreadMessageCountDest);
+                            }
                         }
                     }
 
@@ -3480,6 +3559,17 @@ public class MessagingController implements Runnable {
                         }
                         unsuppressMessage(account, srcFolder, origUid);
                     }
+
+                    if (unreadCountAffected) {
+                        // If this move operation changes the unread count, notify the listeners
+                        // that the unread count changed in both the source and destination folder.
+                        int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
+                        int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
+                        for (MessagingListener l : getListeners()) {
+                            l.folderStatusChanged(account, srcFolder, unreadMessageCountSrc);
+                            l.folderStatusChanged(account, destFolder, unreadMessageCountDest);
+                        }
+                    }
                 }
 
                 FetchProfile fp = new FetchProfile();
@@ -3494,6 +3584,16 @@ public class MessagingController implements Runnable {
                 } else if (isCopy) {
                     // local message copy to local folder
                     localSrcFolder.copyMessages(localMessages, localDestFolder);
+                }
+
+                if (isCopy && unreadCountAffected) {
+                    // ASH this did happen right after removed "localSrcFolder.copyMessages(messages, localDestFolder);"
+                    // If this copy operation changes the unread count in the destination
+                    // folder, notify the listeners.
+                    int unreadMessageCount = localDestFolder.getUnreadMessageCount();
+                    for (MessagingListener l : getListeners()) {
+                        l.folderStatusChanged(account, destFolder, unreadMessageCount);
+                    }
                 }
             }
 
@@ -3752,7 +3852,8 @@ public class MessagingController implements Runnable {
                     localFolder = localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
-                    localFolder.resetUnreadAndFlaggedCounts();
+                    localFolder.setUnreadMessageCount(0);
+                    localFolder.setFlaggedMessageCount(0);
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);

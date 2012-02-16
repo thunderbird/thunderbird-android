@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -108,10 +109,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
      */
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
+    /**
+     * URL used to open Android Market application
+     */
+    private static final String ANDROID_MARKET_URL = "https://market.android.com/search?q=oi+file+manager&c=apps";
+
+    /**
+     * Number of special accounts ('Unified Inbox' and 'All Messages')
+     */
+    private static final int SPECIAL_ACCOUNTS_COUNT = 2;
+
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
+    private static final int DIALOG_NO_FILE_MANAGER = 4;
     private static final String TRUE = "true";
+
     private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
     private ConcurrentHashMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
@@ -328,13 +341,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onCreate(icicle);
 
         if (!K9.isHideSpecialAccounts()) {
-            unreadAccount = new SearchAccount(this, false, null, null);
-            unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-            unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
-
-            integratedInboxAccount = new SearchAccount(this, true, null,  null);
-            integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-            integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+            createSpecialAccounts();
         }
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
@@ -375,6 +382,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (mNonConfigurationInstance != null) {
             mNonConfigurationInstance.restore(this);
         }
+    }
+
+    /**
+     * Creates and initializes the special accounts ('Integrated Inbox' and 'All Messages')
+     */
+    private void createSpecialAccounts() {
+        unreadAccount = new SearchAccount(this, false, null, null);
+        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
+
+        integratedInboxAccount = new SearchAccount(this, true, null, null);
+        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
     }
 
     @SuppressWarnings("unchecked")
@@ -461,9 +481,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         accounts = Preferences.getPreferences(this).getAccounts();
 
         List<BaseAccount> newAccounts;
-        if (!K9.isHideSpecialAccounts()
-                && accounts.length > 0) {
-            newAccounts = new ArrayList<BaseAccount>(accounts.length + 2);
+        if (!K9.isHideSpecialAccounts() && accounts.length > 0) {
+            if (integratedInboxAccount == null || unreadAccount == null) {
+                createSpecialAccounts();
+            }
+
+            newAccounts = new ArrayList<BaseAccount>(accounts.length +
+                    SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(integratedInboxAccount);
             newAccounts.add(unreadAccount);
         } else {
@@ -990,6 +1014,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     }
                 }
             });
+        case DIALOG_NO_FILE_MANAGER:
+            return ConfirmationDialog.create(this, id,
+                    R.string.import_dialog_error_title,
+                    getString(R.string.import_dialog_error_message),
+                    R.string.open_market,
+                    R.string.close,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Uri uri = Uri.parse(ANDROID_MARKET_URL);
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                        }
+                    });
         }
         return super.onCreateDialog(id);
     }
@@ -1010,6 +1048,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         case DIALOG_RECREATE_ACCOUNT:
             alert.setMessage(getString(R.string.account_recreate_dlg_instructions_fmt,
                                        mSelectedContextAccount.getDescription()));
+            break;
+        case DIALOG_NO_FILE_MANAGER:
+            alert.setMessage(getString(R.string.import_dialog_error_message));
             break;
         }
 
@@ -1266,7 +1307,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
-        startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
+
+        if (infos.size() > 0) {
+            startActivityForResult(Intent.createChooser(i, null),
+                    ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+        } else {
+            showDialog(DIALOG_NO_FILE_MANAGER);
+        }
     }
 
     @Override
