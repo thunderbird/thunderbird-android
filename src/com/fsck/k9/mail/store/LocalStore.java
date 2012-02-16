@@ -2090,16 +2090,27 @@ public class LocalStore extends Store implements Serializable {
 
                                 long oldMessageId = -1;
                                 String uid = message.getUid();
-                                if (uid == null && !copy) {
-                                    uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                                    message.setUid(uid);
-                                } else if (copy) {
-                                    String randomLocalUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                                    if (uid != null) {
+                                if (uid == null || copy) {
+                                    /*
+                                     * Create a new message in the database
+                                     */
+                                    String randomLocalUid = K9.LOCAL_UID_PREFIX +
+                                            UUID.randomUUID().toString();
+
+                                    if (copy) {
+                                        // Save mapping: source UID -> target UID
                                         uidMap.put(uid, randomLocalUid);
+                                    } else {
+                                        // Modify the Message instance to reference the new UID
+                                        message.setUid(randomLocalUid);
                                     }
+
+                                    // The message will be saved with the newly generated UID
                                     uid = randomLocalUid;
                                 } else {
+                                    /*
+                                     * Replace an existing message in the database
+                                     */
                                     LocalMessage oldMessage = (LocalMessage) getMessage(uid);
 
                                     if (oldMessage != null) {
