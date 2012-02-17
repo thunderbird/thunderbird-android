@@ -1853,9 +1853,9 @@ public class MimeUtility {
                 }
                 text.append(FILENAME_PREFIX);
                 text.append(filename);
+                text.append(FILENAME_SUFFIX);
                 text.append(TEXT_DIVIDER.substring(0, TEXT_DIVIDER_LENGTH -
                         FILENAME_PREFIX_LENGTH - filename.length() - FILENAME_SUFFIX_LENGTH));
-                text.append(' ');
             } else {
                 text.append(TEXT_DIVIDER);
             }
