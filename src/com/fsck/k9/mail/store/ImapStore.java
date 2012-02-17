@@ -90,6 +90,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
+import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -1138,8 +1139,10 @@ public class ImapStore extends Store {
                     if (responseList instanceof ImapList) {
                         final ImapList copyList = (ImapList) responseList;
                         if (copyList.size() >= 4 && copyList.getString(0).equals("COPYUID")) {
-                            List<String> srcUids = parseSequenceSet(copyList.getString(2));
-                            List<String> destUids = parseSequenceSet(copyList.getString(3));
+                            List<String> srcUids = ImapUtility.getImapSequenceValues(
+                                    copyList.getString(2));
+                            List<String> destUids = ImapUtility.getImapSequenceValues(
+                                    copyList.getString(3));
 
                             if (srcUids != null && destUids != null) {
                                 if (srcUids.size() == destUids.size()) {
@@ -1172,62 +1175,6 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-        }
-
-        /**
-         * Can be used to parse sequence sets or UID sets appearing is responses such as COPYUID.
-         * e.g. [COPYUID 38505 304,319:320 3956:3958]
-         *
-         * @param set
-         * @return List<String> sequenceSet
-         */
-        private List<String> parseSequenceSet(String set) {
-            if (set == null) {
-                return null;
-            }
-            int index = 0;
-            List<String> sequenceList = new ArrayList<String>();
-            String element = "";
-
-            while (index < set.length()) {
-                if (set.charAt(index) == ':') {
-                    String upperBound = "";
-                    index++;
-                    while (index < set.length()) {
-                        if (!(set.charAt(index) == ',')) {
-                            upperBound += set.charAt(index);
-                            index++;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    int lower = Integer.parseInt(element);
-                    int upper = Integer.parseInt(upperBound);
-
-                    if (lower < upper) {
-                        for (int i = lower; i <= upper; i++) {
-                            sequenceList.add(String.valueOf(i));
-                        }
-                    } else {
-                        for (int i = upper; i <= lower; i++) {
-                            sequenceList.add(String.valueOf(i));
-                        }
-                    }
-
-                    element = "";
-                } else if (set.charAt(index) == ',') {
-                    sequenceList.add(element);
-                    element = "";
-                } else {
-                    element += set.charAt(index);
-                }
-                index++;
-            }
-            if (!element.equals("")) {
-                sequenceList.add(element);
-            }
-            return sequenceList;
         }
 
         @Override
