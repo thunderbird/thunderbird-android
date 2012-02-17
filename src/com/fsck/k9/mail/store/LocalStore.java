@@ -2105,7 +2105,7 @@ public class LocalStore extends Store implements Serializable {
 
                                 List<Part> attachments = container.attachments;
                                 String text = container.text;
-                                String html = container.html;
+                                String html = HtmlConverter.convertEmoji2Img(container.html);
 
                                 String preview = calculateContentPreview(text);
 
@@ -2753,17 +2753,6 @@ public class LocalStore extends Store implements Serializable {
             }
 
         }
-
-        public String markupContent(String text, String html) {
-            if (text.length() > 0 && html.length() == 0) {
-                html = HtmlConverter.textToHtml(text);
-            }
-
-            html = HtmlConverter.convertEmoji2Img(html);
-
-            return html;
-        }
-
 
         @Override
         public boolean isInTopGroup() {

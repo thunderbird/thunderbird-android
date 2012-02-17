@@ -1112,7 +1112,7 @@ public class MimeUtility {
         return tempBody;
     }
 
-    
+
     /**
      * Empty base class for the class hierarchy used by
      * {@link MimeUtility#extractTextAndAttachments(Context, Message)}.
@@ -1320,6 +1320,8 @@ public class MimeUtility {
 
             StringBuilder text = new StringBuilder();
             StringBuilder html = new StringBuilder();
+            html.append(HtmlConverter.getHtmlHeader());
+
             for (Viewable viewable : viewables) {
                 if (viewable instanceof Textual) {
                     // This is either a text/plain or text/html part. Fill the variables 'text' and
@@ -1369,6 +1371,8 @@ public class MimeUtility {
                     hideDivider = false;
                 }
             }
+
+            html.append(HtmlConverter.getHtmlFooter());
 
             return new ViewableContainer(text.toString(), html.toString(), attachments);
         } catch (Exception e) {
@@ -1863,8 +1867,8 @@ public class MimeUtility {
      * Use the contents of a {@link Viewable} to create the HTML to be displayed.
      *
      * <p>
-     * This will use {@link HtmlConverter#textToHtml(String)} to convert plain text parts to HTML
-     * if necessary.
+     * This will use {@link HtmlConverter#textToHtml(String, boolean)} to convert plain text parts
+     * to HTML if necessary.
      * </p>
      *
      * @param viewable
@@ -1886,7 +1890,7 @@ public class MimeUtility {
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Text) {
-                t = HtmlConverter.textToHtml(t);
+                t = HtmlConverter.textToHtml(t, false);
             }
             html.append(t);
         } else if (viewable instanceof Alternative) {
