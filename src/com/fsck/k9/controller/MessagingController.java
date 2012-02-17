@@ -117,6 +117,7 @@ public class MessagingController implements Runnable {
 
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = "com.fsck.k9.MessagingController.moveOrCopyBulkNew";
     private static final String PENDING_COMMAND_EMPTY_TRASH = "com.fsck.k9.MessagingController.emptyTrash";
     private static final String PENDING_COMMAND_SET_FLAG_BULK = "com.fsck.k9.MessagingController.setFlagBulk";
     private static final String PENDING_COMMAND_SET_FLAG = "com.fsck.k9.MessagingController.setFlag";
@@ -1902,6 +1903,8 @@ public class MessagingController implements Runnable {
                     } else if (PENDING_COMMAND_MARK_ALL_AS_READ.equals(command.command)) {
                         processPendingMarkAllAsRead(command, account);
                     } else if (PENDING_COMMAND_MOVE_OR_COPY_BULK.equals(command.command)) {
+                        processPendingMoveOrCopyOld2(command, account);
+                    } else if (PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW.equals(command.command)) {
                         processPendingMoveOrCopy(command, account);
                     } else if (PENDING_COMMAND_MOVE_OR_COPY.equals(command.command)) {
                         processPendingMoveOrCopyOld(command, account);
@@ -2081,7 +2084,7 @@ public class MessagingController implements Runnable {
             return;
         }
         PendingCommand command = new PendingCommand();
-        command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
+        command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
 
         int length = 3 + uids.length;
         command.arguments = new String[length];
@@ -2101,7 +2104,7 @@ public class MessagingController implements Runnable {
                 return;
             }
             PendingCommand command = new PendingCommand();
-            command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
+            command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
 
             int length = 4 + uidMap.keySet().size() + uidMap.values().size();
             command.arguments = new String[length];
@@ -2114,6 +2117,39 @@ public class MessagingController implements Runnable {
             queuePendingCommand(account, command);
         }
     }
+
+    /**
+     * Convert pending command to new format and call
+     * {@link #processPendingMoveOrCopy(PendingCommand, Account)}.
+     *
+     * <p>
+     * TODO: This method is obsolete and is only for transition from K-9 4.0 to K-9 4.2
+     * Eventually, it should be removed.
+     * </p>
+     *
+     * @param command
+     *         Pending move/copy command in old format.
+     * @param account
+     *         The account the pending command belongs to.
+     *
+     * @throws MessagingException
+     *         In case of an error.
+     */
+    private void processPendingMoveOrCopyOld2(PendingCommand command, Account account)
+            throws MessagingException {
+        PendingCommand newCommand = new PendingCommand();
+        int len = command.arguments.length;
+        newCommand.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
+        newCommand.arguments = new String[len + 1];
+        newCommand.arguments[0] = command.arguments[0];
+        newCommand.arguments[1] = command.arguments[1];
+        newCommand.arguments[2] = command.arguments[2];
+        newCommand.arguments[3] = Boolean.toString(false);
+        System.arraycopy(command.arguments, 3, newCommand.arguments, 4, len - 3);
+
+        processPendingMoveOrCopy(newCommand, account);
+    }
+
     /**
      * Process a pending trash message command.
      *
