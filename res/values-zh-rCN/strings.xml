@@ -530,14 +530,8 @@
     <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
     <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
 
-    <string name="account_settings_hide_buttons_label">滚动导航按钮</string>
-    <string name="account_settings_hide_buttons_never">从不</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">使用键盘时</string>
-    <string name="account_settings_hide_buttons_always">总是</string>
-
     <string name="account_settings_enable_move_buttons_label">启用整理按钮</string>
     <string name="account_settings_enable_move_buttons_summary">显示归档、移动和标记为垃圾按钮</string>
-    <string name="account_settings_hide_move_buttons_label">滚动整理按钮</string>
 
     <string name="account_settings_show_pictures_label">显示图片</string>
     <string name="account_settings_show_pictures_never">从不</string>

@@ -545,14 +545,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_notification_unread_count_label">未読件数の表示</string>
     <string name="account_settings_notification_unread_count_summary">通知バーに未読メッセージの件数を表示する</string>
 
-    <string name="account_settings_hide_buttons_label">ナビゲーションボタンのスクロール</string>
-    <string name="account_settings_hide_buttons_never">しない</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">キーボード利用時</string>
-    <string name="account_settings_hide_buttons_always">常に</string>
-
     <string name="account_settings_enable_move_buttons_label">メール整理ボタンを有効にする</string>
     <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
-    <string name="account_settings_hide_move_buttons_label">メール整理ボタンをスクロール</string>
 
     <string name="account_settings_show_pictures_label">画像を自動で表示</string>
     <string name="account_settings_show_pictures_never">しない</string>

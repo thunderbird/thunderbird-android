@@ -542,14 +542,8 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="account_settings_notification_unread_count_label">Mostra correu no llegit</string>
     <string name="account_settings_notification_unread_count_summary">Mostra el nombre de missatges no llegits a la barra de notificació.</string>
 
-    <string name="account_settings_hide_buttons_label">Botons de desplaçament</string>
-    <string name="account_settings_hide_buttons_never">Mai</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Quan el teclat estigui disponible</string>
-    <string name="account_settings_hide_buttons_always">Sempre</string>
-
     <string name="account_settings_enable_move_buttons_label">Habilita botons emplenat</string>
     <string name="account_settings_enable_move_buttons_summary">Mostra els botons d’Arxiu, Mou, i Brossa.</string>
-    <string name="account_settings_hide_move_buttons_label">Navega botons emplenament</string>
 
     <string name="account_settings_show_pictures_label">Sempre mostra imatges</string>
     <string name="account_settings_show_pictures_never">No</string>

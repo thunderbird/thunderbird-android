@@ -539,14 +539,8 @@
     <string name="account_settings_notification_unread_count_label">顯示未讀郵件數</string>
     <string name="account_settings_notification_unread_count_summary">在通知欄上顯示未讀郵件數</string>
 
-    <string name="account_settings_hide_buttons_label">滾動導航按鈕</string>
-    <string name="account_settings_hide_buttons_never">從不</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">使用鍵盤時</string>
-    <string name="account_settings_hide_buttons_always">總是</string>
-
     <string name="account_settings_enable_move_buttons_label">啟用整理按鈕</string>
     <string name="account_settings_enable_move_buttons_summary">顯示歸檔、移動和標記為垃圾按鈕</string>
-    <string name="account_settings_hide_move_buttons_label">滾動整理按鈕</string>
 
     <string name="account_settings_show_pictures_label">顯示圖片</string>
     <string name="account_settings_show_pictures_never">從不</string>
@@ -799,7 +793,7 @@
     <string name="provider_note_hanmail">要使用此提供者的IMAP或POP3，請先至Hanmail(Daum)郵箱設置頁設定允許使用IMAP或POP3。</string>
     <string name="provider_note_paran">要使用此提供者的IMAP或POP3，請先至Paran郵箱設置頁設定允許使用IMAP或POP3。</string>
     <string name="provider_note_nate">要使用此提供者的IMAP或POP3，請先至Nate郵箱設置頁設定允許使用IMAP或POP3。</string>
-    
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">無法識別的證書訊息</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密鑰</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒絕密鑰</string>
@@ -1060,5 +1054,5 @@
 
     <string name="manage_accounts_move_up_action">上移</string>
     <string name="manage_accounts_move_down_action">下移</string>
-    
+
 </resources>
