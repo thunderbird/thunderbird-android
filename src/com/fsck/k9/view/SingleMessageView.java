@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import com.fsck.k9.Account;
@@ -29,7 +30,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import java.util.List;
 
 
-public class SingleMessageView extends LinearLayout {
+public class SingleMessageView extends LinearLayout implements OnClickListener {
     private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
     private MessageWebView mMessageContentView;
@@ -65,39 +66,13 @@ public class SingleMessageView extends LinearLayout {
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
-        mShowHiddenAttachments.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                mShowHiddenAttachments.setVisibility(View.GONE);
-                mHiddenAttachments.setVisibility(View.VISIBLE);
-            }
-        });
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
         mCryptoView.setActivity(activity);
         mCryptoView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
         mShowMessageAction = findViewById(R.id.show_message);
-        mShowMessageAction.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showShowMessageAction(false);
-                showAttachments(false);
-                showMessageWebView(true);
-                showShowAttachmentsAction(true);
-            }
-        });
 
         mShowAttachmentsAction = findViewById(R.id.show_attachments);
-        mShowAttachmentsAction.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMessageWebView(false);
-                showShowAttachmentsAction(false);
-                showShowMessageAction(true);
-                showAttachments(true);
-            }
-        });
 
         mShowPictures = false;
 
@@ -126,6 +101,46 @@ public class SingleMessageView extends LinearLayout {
             mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
         }
 
+        mShowHiddenAttachments.setOnClickListener(this);
+        mShowMessageAction.setOnClickListener(this);
+        mShowAttachmentsAction.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.show_hidden_attachments: {
+                onShowHiddenAttachments();
+                break;
+            }
+            case R.id.show_message: {
+                onShowMessage();
+                break;
+            }
+            case R.id.show_attachments: {
+                onShowAttachments();
+                break;
+            }
+        }
+    }
+
+    private void onShowHiddenAttachments() {
+        mShowHiddenAttachments.setVisibility(View.GONE);
+        mHiddenAttachments.setVisibility(View.VISIBLE);
+    }
+
+    private void onShowMessage() {
+        showShowMessageAction(false);
+        showAttachments(false);
+        showMessageWebView(true);
+        showShowAttachmentsAction(true);
+    }
+
+    private void onShowAttachments() {
+        showMessageWebView(false);
+        showShowAttachmentsAction(false);
+        showShowMessageAction(true);
+        showAttachments(true);
     }
 
     public SingleMessageView(Context context, AttributeSet attrs) {

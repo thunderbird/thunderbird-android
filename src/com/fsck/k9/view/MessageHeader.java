@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 import java.text.DateFormat;
 
-public class MessageHeader extends ScrollView {
+public class MessageHeader extends ScrollView implements OnClickListener {
     private Context mContext;
     private TextView mFromView;
     private TextView mDateView;
@@ -54,7 +55,6 @@ public class MessageHeader extends ScrollView {
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
-    private View mAdditionalHeadersArea;
     private ImageView mShowAdditionalHeadersIcon;
 
     /**
@@ -91,7 +91,6 @@ public class MessageHeader extends ScrollView {
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
-        mAdditionalHeadersArea = findViewById(R.id.show_additional_headers_area);
         mShowAdditionalHeadersIcon = (ImageView) findViewById(R.id.show_additional_headers_icon);
 
 
@@ -109,26 +108,33 @@ public class MessageHeader extends ScrollView {
         ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
-        mAdditionalHeadersArea.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onShowAdditionalHeaders();
-            }
-        });
+        findViewById(R.id.show_additional_headers_area).setOnClickListener(this);
+        mFromView.setOnClickListener(this);
+    }
 
-        mFromView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMessage != null) {
-                    try {
-                        final Address senderEmail = mMessage.getFrom()[0];
-                        mContacts.createContact(senderEmail);
-                    } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Couldn't create contact", e);
-                    }
-                }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.show_additional_headers_area: {
+                onShowAdditionalHeaders();
+                break;
             }
-        });
+            case R.id.from: {
+                onAddSenderToContacts();
+                break;
+            }
+        }
+    }
+
+    private void onAddSenderToContacts() {
+        if (mMessage != null) {
+            try {
+                final Address senderEmail = mMessage.getFrom()[0];
+                mContacts.createContact(senderEmail);
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Couldn't create contact", e);
+            }
+        }
     }
 
     public void setOnFlagListener(OnClickListener listener) {
