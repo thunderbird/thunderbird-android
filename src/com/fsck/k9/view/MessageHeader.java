@@ -45,6 +45,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private DateFormat mDateFormat;
     private DateFormat mTimeFormat;
 
+    private View mChip;
+    private View mChip2;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private LinearLayout mToContainerView;
@@ -88,6 +90,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mCcContainerView = (LinearLayout) findViewById(R.id.cc_container);
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
+        mChip = findViewById(R.id.chip);
+        mChip2 = findViewById(R.id.chip2);
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
@@ -240,6 +244,14 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mCcView.setText(cc);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+
+        int chipColor = mAccount.getChipColor();
+        int chipColorAlpha = (!message.isSet(Flag.SEEN)) ? 255 : 127;
+        mChip.setBackgroundColor(chipColor);
+        mChip.getBackground().setAlpha(chipColorAlpha);
+        mChip2.setBackgroundColor(chipColor);
+        mChip2.getBackground().setAlpha(chipColorAlpha);
+
         setVisibility(View.VISIBLE);
         if (mAdditionalHeadersView.getVisibility() == View.VISIBLE) {
             showAdditionalHeaders();
