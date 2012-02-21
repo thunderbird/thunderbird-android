@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="message_list_item_background">#ffffff</color>
+    <color name="message_list_item_background">#ffffff</color>
     <color name="message_list_item_footer_background">#eeeeee</color>
+    <color name="message_view_header_background">#1a080808</color>
 </resources>

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -24,16 +25,10 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
-
 import java.util.List;
-import java.util.Set;
 
 
-/**
- */
 public class SingleMessageView extends LinearLayout {
     private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
@@ -41,32 +36,77 @@ public class SingleMessageView extends LinearLayout {
     private AccessibleWebView mAccessibleMessageContentView;
     private MessageHeader mHeaderContainer;
     private LinearLayout mAttachments;
-    private View mShowPicturesSection;
+    private Button mShowHiddenAttachments;
+    private LinearLayout mHiddenAttachments;
+    private View mShowPicturesAction;
+    private View mShowMessageAction;
+    private View mShowAttachmentsAction;
     private boolean mShowPictures;
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
     private AttachmentView.AttachmentFileDownloadCallback attachmentCallback;
+    private LinearLayout mHeaderPlaceHolder;
+    private LinearLayout mTitleBarHeaderContainer;
+    private View mAttachmentsContainer;
 
     public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
-        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        mMessageContentView.configure();
+
+        mHeaderPlaceHolder = (LinearLayout) findViewById(R.id.message_view_header_container);
+
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
+
+        mAttachmentsContainer = findViewById(R.id.attachments_container);
+        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        mHiddenAttachments = (LinearLayout) findViewById(R.id.hidden_attachments);
+        mHiddenAttachments.setVisibility(View.GONE);
+        mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
+        mShowHiddenAttachments.setVisibility(View.GONE);
+        mShowHiddenAttachments.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                mShowHiddenAttachments.setVisibility(View.GONE);
+                mHiddenAttachments.setVisibility(View.VISIBLE);
+            }
+        });
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
         mCryptoView.setActivity(activity);
         mCryptoView.setupChildViews();
-        mShowPicturesSection = findViewById(R.id.show_pictures_section);
+        mShowPicturesAction = findViewById(R.id.show_pictures);
+        mShowMessageAction = findViewById(R.id.show_message);
+        mShowMessageAction.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShowMessageAction(false);
+                showAttachments(false);
+                showMessageWebView(true);
+                showShowAttachmentsAction(true);
+            }
+        });
+
+        mShowAttachmentsAction = findViewById(R.id.show_attachments);
+        mShowAttachmentsAction.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessageWebView(false);
+                showShowAttachmentsAction(false);
+                showShowMessageAction(true);
+                showAttachments(true);
+            }
+        });
+
         mShowPictures = false;
 
         mContacts = Contacts.getInstance(activity);
 
         mInflater = activity.getLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
-        mMessageContentView.configure();
-
-
-        mAttachments.setVisibility(View.GONE);
+        mDownloadRemainder.setVisibility(View.GONE);
+        mAttachmentsContainer.setVisibility(View.GONE);
         if (isScreenReaderActive(activity)) {
             mAccessibleMessageContentView.setVisibility(View.VISIBLE);
             mMessageContentView.setVisibility(View.GONE);
@@ -75,6 +115,15 @@ public class SingleMessageView extends LinearLayout {
             mAccessibleMessageContentView.setVisibility(View.GONE);
             mMessageContentView.setVisibility(View.VISIBLE);
             mScreenReaderEnabled = false;
+
+            mHeaderPlaceHolder.removeView(mHeaderContainer);
+            // the HTC version of WebView tries to force the background of the
+            // titlebar, which is really unfair.
+            mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
+
+            mTitleBarHeaderContainer = new LinearLayout(activity);
+            mTitleBarHeaderContainer.addView(mHeaderContainer);
+            mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
         }
 
     }
@@ -139,20 +188,27 @@ public class SingleMessageView extends LinearLayout {
     public void setLoadPictures(boolean enable) {
         mMessageContentView.blockNetworkData(!enable);
         setShowPictures(enable);
-        showShowPicturesSection(false);
+        showShowPicturesAction(false);
     }
 
     public Button downloadRemainderButton() {
         return  mDownloadRemainder;
     }
 
-    public void showShowPicturesSection(boolean show) {
-        mShowPicturesSection.setVisibility(show ? View.VISIBLE : View.GONE);
+    public void showShowPicturesAction(boolean show) {
+        mShowPicturesAction.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    public void showShowMessageAction(boolean show) {
+        mShowMessageAction.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    public void showShowAttachmentsAction(boolean show) {
+        mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void setHeaders(final Message message, Account account) {
         try {
             mHeaderContainer.populate(message, account);
+            mHeaderContainer.setVisibility(View.VISIBLE);
 
 
         } catch (Exception me) {
@@ -181,9 +237,9 @@ public class SingleMessageView extends LinearLayout {
         return mHeaderContainer.additionalHeadersVisible();
     }
 
-    public void displayMessageBody(Account account, String folder, String uid, Message message, PgpData pgpData) throws MessagingException {
-        // TODO - really this code  path? this is an odd place to put it
-        removeAllAttachments();
+    public void displayMessageBody(Account account, Message message, PgpData pgpData)
+            throws MessagingException {
+        resetView();
 
         String type;
         String text = pgpData.getDecryptedData();
@@ -197,7 +253,8 @@ public class SingleMessageView extends LinearLayout {
         if (text != null) {
             final String emailText = text;
             final String contentType = type;
-            loadBodyFromText(account.getCryptoProvider(), pgpData, message, emailText, contentType);
+            loadBodyFromText(message, emailText, contentType);
+            updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
             // If the message contains external pictures and the "Show pictures"
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
@@ -210,7 +267,7 @@ public class SingleMessageView extends LinearLayout {
                          mContacts.isInContacts(from[0].getAddress()))) {
                     setLoadPictures(true);
                 } else {
-                    showShowPicturesSection(true);
+                    showShowPicturesAction(true);
                 }
             }
         } else {
@@ -224,19 +281,35 @@ public class SingleMessageView extends LinearLayout {
 
     }
 
-    public void loadBodyFromText(CryptoProvider cryptoProvider, PgpData pgpData, Message message, String emailText, String contentType) {
+    public void loadBodyFromText(Message message, String emailText, String contentType) {
         if (mScreenReaderEnabled) {
             mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
         } else {
             mMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
             mMessageContentView.scrollTo(0, 0);
         }
-        updateCryptoLayout(cryptoProvider, pgpData, message);
 
     }
 
     public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
         mCryptoView.updateLayout(cp, pgpData, message);
+    }
+
+    public void showAttachments(boolean show) {
+        mAttachmentsContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        boolean showHidden = (show && mHiddenAttachments.getChildCount() > 0);
+        mShowHiddenAttachments.setVisibility(showHidden ? View.VISIBLE : View.GONE);
+
+        if (show) {
+            moveHeaderToLayout();
+        } else {
+            moveHeaderToWebViewTitleBar();
+            mHiddenAttachments.setVisibility(View.GONE);
+        }
+    }
+
+    public void showMessageWebView(boolean show) {
+        mMessageContentView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void setAttachmentsEnabled(boolean enabled) {
@@ -246,7 +319,6 @@ public class SingleMessageView extends LinearLayout {
             attachment.downloadButton.setEnabled(enabled);
         }
     }
-
 
     public void removeAllAttachments() {
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
@@ -263,25 +335,23 @@ public class SingleMessageView extends LinearLayout {
                 renderAttachments(mp.getBodyPart(i), depth + 1, message, account, controller, listener);
             }
         } else if (part instanceof LocalStore.LocalAttachmentBodyPart) {
-            String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
-            // Inline parts with a content-id are almost certainly components of an HTML message
-            // not attachments. Don't show attachment download buttons for them.
-            if (contentDisposition != null &&
-                    MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
-                    && part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
-                return;
-            }
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
+
             if (view.populateFromPart(part, message, account, controller, listener)) {
                 addAttachment(view);
+            } else {
+                addHiddenAttachment(view);
             }
         }
     }
 
     public void addAttachment(View attachmentView) {
         mAttachments.addView(attachmentView);
-        mAttachments.setVisibility(View.VISIBLE);
+    }
+
+    public void addHiddenAttachment(View attachmentView) {
+        mHiddenAttachments.addView(attachmentView);
     }
 
     public void zoom(KeyEvent event) {
@@ -303,9 +373,13 @@ public class SingleMessageView extends LinearLayout {
     public void resetView() {
         setLoadPictures(false);
         mMessageContentView.scrollTo(0, 0);
-        mHeaderContainer.setVisibility(View.GONE);
         mMessageContentView.clearView();
         mAttachments.removeAllViews();
+        mHiddenAttachments.removeAllViews();
+    }
+
+    public void resetHeaderView() {
+        mHeaderContainer.setVisibility(View.GONE);
     }
 
     public AttachmentView.AttachmentFileDownloadCallback getAttachmentCallback() {
@@ -317,20 +391,17 @@ public class SingleMessageView extends LinearLayout {
         this.attachmentCallback = attachmentCallback;
     }
 
-    /**
-     * Save a copy of the {@link com.fsck.k9.controller.MessagingController#getListeners()}.  This method will also
-     * pass along these listeners to the underlying views.
-     * @param listeners Set of listeners.
-     */
-    public void setListeners(final Set<MessagingListener> listeners) {
-        if(!mScreenReaderEnabled) {
-            if(mMessageContentView != null) {
-                mMessageContentView.setListeners(listeners);
-            }
-        } else {
-            if(mAccessibleMessageContentView != null) {
-                mAccessibleMessageContentView.setListeners(listeners);
-            }
+    private void moveHeaderToLayout() {
+        if (mTitleBarHeaderContainer != null && mTitleBarHeaderContainer.getChildCount() != 0) {
+            mTitleBarHeaderContainer.removeView(mHeaderContainer);
+            mHeaderPlaceHolder.addView(mHeaderContainer);
+        }
+    }
+
+    private void moveHeaderToWebViewTitleBar() {
+        if (mTitleBarHeaderContainer != null && mTitleBarHeaderContainer.getChildCount() == 0) {
+            mHeaderPlaceHolder.removeView(mHeaderContainer);
+            mTitleBarHeaderContainer.addView(mHeaderContainer);
         }
     }
 }

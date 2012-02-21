@@ -1,25 +1,20 @@
 package com.fsck.k9.view;
 
 import android.content.Context;
-import android.graphics.Picture;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessagingListener;
-
 import java.lang.reflect.Method;
-import java.util.Set;
 
 public class MessageWebView extends WebView {
-    // Store a reference to the listeners in MessagingController.  We can't fetch it directly since
-    // we don't know the application name.
-    private Set<MessagingListener> mListeners = null;
+
 
     /**
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
@@ -75,7 +70,7 @@ public class MessageWebView extends WebView {
         this.setVerticalScrollBarEnabled(true);
         this.setVerticalScrollbarOverlay(true);
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
-
+        this.setLongClickable(true);
 
         final WebSettings webSettings = this.getSettings();
 
@@ -97,22 +92,16 @@ public class MessageWebView extends WebView {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
+        if (Integer.parseInt(Build.VERSION.SDK) >= 9 ) {
+            setOverScrollMode(OVER_SCROLL_NEVER);
+        }
+
+
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
         // Disable network images by default.  This is overridden by preferences.
         blockNetworkData(true);
 
-        // Listen for when the screen has finished drawing.
-        setPictureListener(new PictureListener() {
-            @Override
-            public void onNewPicture(WebView webView, Picture picture) {
-                if (mListeners != null) {
-                    for (MessagingListener l : mListeners) {
-                        l.messageViewFinished();
-                    }
-                }
-            }
-        });
     }
 
     /*
@@ -132,7 +121,15 @@ public class MessageWebView extends WebView {
         }
     }
 
-    public void setListeners(final Set<MessagingListener> listeners) {
-        this.mListeners = listeners;
+    public void wrapSetTitleBar(final View title) {
+        try {
+            Class<?> webViewClass = Class.forName("android.webkit.WebView");
+            Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
+            setEmbeddedTitleBar.invoke(this, title);
+        }
+
+        catch (Exception e) {
+            Log.v(K9.LOG_TAG, "failed to find the  setEmbeddedTitleBar method",e);
+        }
     }
 }

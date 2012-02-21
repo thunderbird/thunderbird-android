@@ -20,9 +20,9 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
-import com.fsck.k9.view.ToggleScrollView;
 import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 
@@ -34,7 +34,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
     private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
-    private static final String EXTRA_SCROLL_PERCENTAGE = "com.fsck.k9.MessageView_scrollPercentage";
     private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -104,24 +103,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         public void onMount(String providerId) { /* no-op */ }
     }
 
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
-            // Text selection is finished. Allow scrolling again.
-            mTopView.setScrolling(true);
-        } else if (K9.zoomControlsEnabled()) {
-            // If we have system zoom controls enabled, disable scrolling so the screen isn't wiggling around while
-            // trying to zoom.
-            if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
-                mTopView.setScrolling(false);
-            } else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_UP) {
-                mTopView.setScrolling(true);
-            }
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean ret = false;
@@ -163,15 +144,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                 onPrevious();
                 return true;
             }
-            break;
-        }
-        case KeyEvent.KEYCODE_SHIFT_LEFT:
-        case KeyEvent.KEYCODE_SHIFT_RIGHT: {
-            /*
-             * Selecting text started via shift key. Disable scrolling as
-             * this causes problems when selecting text.
-             */
-            mTopView.setScrolling(false);
             break;
         }
         case KeyEvent.KEYCODE_DEL: {
@@ -324,7 +296,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_view);
 
-        mTopView = (ToggleScrollView) findViewById(R.id.top_view);
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
         //set a callback for the attachment view. With this callback the attachmentview
@@ -355,10 +326,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         });
 
         mMessageView.initialize(this);
-
-        // Register the ScrollView's listener to handle scrolling to last known location on resume.
-        mController.addListener(mTopView.getListener());
-        mMessageView.setListeners(mController.getListeners());
 
         setTitle("");
         final Intent intent = getIntent();
@@ -481,7 +448,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
-        outState.putDouble(EXTRA_SCROLL_PERCENTAGE, mTopView.getScrollPercentage());
     }
 
     @Override
@@ -490,7 +456,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
         mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
-        mTopView.setScrollPercentage(savedInstanceState.getDouble(EXTRA_SCROLL_PERCENTAGE));
     }
 
     private void displayMessage(MessageReference ref) {
@@ -498,20 +463,12 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-        clearMessageDisplay();
         findSurroundingMessagesUid();
         // start with fresh, empty PGP data
         mPgpData = new PgpData();
-        mTopView.setVisibility(View.VISIBLE);
+        mMessageView.showMessageWebView(true);
         mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
         setupDisplayMessageButtons();
-    }
-
-    private void clearMessageDisplay() {
-        mTopView.setVisibility(View.GONE);
-        mTopView.scrollTo(0, 0);
-        mMessageView.resetView();
-
     }
 
     private void setupDisplayMessageButtons() {
@@ -610,13 +567,11 @@ public class MessageView extends K9Activity implements OnClickListener {
             onAccountUnavailable();
             return;
         }
-        mController.addListener(mTopView.getListener());
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
     }
 
     @Override
     protected void onPause() {
-        mController.removeListener(mTopView.getListener());
         StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
         super.onPause();
     }
@@ -840,32 +795,34 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     protected void onNext() {
         // Reset scroll percentage when we change messages
-        mTopView.setScrollPercentage(0);
         if (mNextMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
         }
         mLastDirection = NEXT;
         disableButtons();
+        /*
         if (K9.showAnimations()) {
             mTopView.startAnimation(outToLeftAnimation());
         }
+        */
         displayMessage(mNextMessage);
         mNext.requestFocus();
     }
 
     protected void onPrevious() {
         // Reset scroll percentage when we change messages
-        mTopView.setScrollPercentage(0);
         if (mPreviousMessage == null) {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
         }
         mLastDirection = PREVIOUS;
         disableButtons();
+        /*
         if (K9.showAnimations()) {
             mTopView.startAnimation(inFromRightAnimation());
         }
+        */
         displayMessage(mPreviousMessage);
         mPrevious.requestFocus();
     }
@@ -984,7 +941,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             });
             break;
         case R.id.select_text:
-            mTopView.setScrolling(false);
             mMessageView.beginSelectingText();
             break;
         default:
@@ -1077,16 +1033,37 @@ public class MessageView extends K9Activity implements OnClickListener {
     public void displayMessageBody(final Account account, final String folder, final String uid, final Message message) {
         runOnUiThread(new Runnable() {
             public void run() {
-                mTopView.scrollTo(0, 0);
                 try {
-                    if (MessageView.this.mMessage != null
-                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                        && message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                    boolean resetMessageViewState = true;
+
+                    // Did we just completely download a previously incomplete message?
+                    if (mMessage != null && mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL) &&
+                            message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                        // Update the headers
                         mMessageView.setHeaders(message, account);
+
+                        // Keep the current view state (i.e. if the attachment view was visible,
+                        // keep it that way)
+                        resetMessageViewState = false;
                     }
-                    MessageView.this.mMessage = message;
-                    mMessageView.displayMessageBody(account, folder, uid, message, mPgpData);
-                    mMessageView.renderAttachments(mMessage, 0, mMessage, mAccount, mController, mListener);
+
+                    mMessage = message;
+
+                    mMessageView.displayMessageBody(account, message, mPgpData);
+
+                    boolean hasAttachments = ((LocalStore.LocalMessage) message).hasAttachments();
+
+                    if (hasAttachments) {
+                        mMessageView.renderAttachments(mMessage, 0, mMessage, mAccount, mController, mListener);
+                    }
+
+                    if (resetMessageViewState) {
+                        mMessageView.showMessageWebView(true);
+                        mMessageView.showAttachments(false);
+                        mMessageView.showShowAttachmentsAction(hasAttachments);
+                        mMessageView.showShowMessageAction(false);
+                    }
+
                 } catch (MessagingException e) {
                     if (Config.LOGV) {
                         Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
@@ -1253,8 +1230,12 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     // This REALLY should be in MessageCryptoView
     public void onDecryptDone(PgpData pgpData) {
-        // TODO: this might not be enough if the orientation was changed while in APG,
-        // sometimes shows the original encrypted content
-        mMessageView.loadBodyFromText(mAccount.getCryptoProvider(), mPgpData, mMessage, mPgpData.getDecryptedData(), "text/plain");
+        Account account = mAccount;
+        Message message = mMessage;
+        try {
+            mMessageView.displayMessageBody(account, message, pgpData);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
+        }
     }
 }
