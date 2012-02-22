@@ -295,6 +295,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         } else {
             loadBodyFromUrl("file:///android_asset/empty.html");
         }
+
+        onShowMessage();
     }
 
     public void loadBodyFromUrl(String url) {
