@@ -393,7 +393,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     }
 
     public void resetView() {
-        setLoadPictures(false);
         mMessageContentView.scrollTo(0, 0);
         mMessageContentView.clearView();
         mAttachments.removeAllViews();
