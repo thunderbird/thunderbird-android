@@ -104,6 +104,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         mShowHiddenAttachments.setOnClickListener(this);
         mShowMessageAction.setOnClickListener(this);
         mShowAttachmentsAction.setOnClickListener(this);
+        mShowPicturesAction.setOnClickListener(this);
     }
 
     @Override
@@ -119,6 +120,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
             }
             case R.id.show_attachments: {
                 onShowAttachments();
+                break;
+            }
+            case R.id.show_pictures: {
+                setLoadPictures(true);
                 break;
             }
         }

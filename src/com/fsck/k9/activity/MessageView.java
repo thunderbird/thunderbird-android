@@ -398,9 +398,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         setOnClickListener(R.id.archive);
         setOnClickListener(R.id.move);
         setOnClickListener(R.id.spam);
-        // To show full header
-        setOnClickListener(R.id.header_container);
-        setOnClickListener(R.id.show_pictures);
         setOnClickListener(R.id.download_remainder);
 
 
@@ -811,9 +808,6 @@ public class MessageView extends K9Activity implements OnClickListener {
             break;
         case R.id.download:
             ((AttachmentView)view).saveFile();
-            break;
-        case R.id.show_pictures:
-            mMessageView.setLoadPictures(true);
             break;
         case R.id.download_remainder:
             onDownloadRemainder();
