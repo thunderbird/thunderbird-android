@@ -997,7 +997,6 @@ public class MessageView extends K9Activity implements OnClickListener {
                     || !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
             }
-            MessageView.this.mMessage = message;
 
             /*
              * Clone the message object because the original could be modified by
