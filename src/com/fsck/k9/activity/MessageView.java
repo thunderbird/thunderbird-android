@@ -977,10 +977,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
 
                     if (resetMessageViewState) {
-                        mMessageView.showMessageWebView(true);
-                        mMessageView.showAttachments(false);
-                        mMessageView.showShowAttachmentsAction(hasAttachments);
-                        mMessageView.showShowMessageAction(false);
+                        mMessageView.onShowMessage();
                     }
 
                 } catch (MessagingException e) {

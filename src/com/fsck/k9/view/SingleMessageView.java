@@ -43,6 +43,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     private View mShowMessageAction;
     private View mShowAttachmentsAction;
     private boolean mShowPictures;
+    private boolean mHasAttachments;
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
@@ -134,14 +135,14 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         mHiddenAttachments.setVisibility(View.VISIBLE);
     }
 
-    private void onShowMessage() {
+    public void onShowMessage() {
         showShowMessageAction(false);
         showAttachments(false);
+        showShowAttachmentsAction(mHasAttachments);
         showMessageWebView(true);
-        showShowAttachmentsAction(true);
     }
 
-    private void onShowAttachments() {
+    public void onShowAttachments() {
         showMessageWebView(false);
         showShowAttachmentsAction(false);
         showShowMessageAction(true);
@@ -290,6 +291,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
                     showShowPicturesAction(true);
                 }
             }
+            mHasAttachments = ((LocalStore.LocalMessage) message).hasAttachments();
         } else {
             loadBodyFromUrl("file:///android_asset/empty.html");
         }
