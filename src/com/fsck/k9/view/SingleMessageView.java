@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,6 +29,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import java.util.List;
 
 
@@ -51,6 +54,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     private LinearLayout mHeaderPlaceHolder;
     private LinearLayout mTitleBarHeaderContainer;
     private View mAttachmentsContainer;
+    private SavedState mSavedState;
 
     public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -258,8 +262,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         return mHeaderContainer.additionalHeadersVisible();
     }
 
-    public void displayMessageBody(Account account, Message message, PgpData pgpData)
-            throws MessagingException {
+    public void setMessage(Account account, LocalMessage message, PgpData pgpData,
+            MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
 
         String type;
@@ -268,14 +272,49 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
             type = "text/plain";
         } else {
             // getTextForDisplay() always returns HTML-ified content.
-            text = ((LocalStore.LocalMessage) message).getTextForDisplay();
+            text = message.getTextForDisplay();
             type = "text/html";
         }
         if (text != null) {
             final String emailText = text;
             final String contentType = type;
-            loadBodyFromText(message, emailText, contentType);
+            loadBodyFromText(emailText, contentType);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
+        } else {
+            loadBodyFromUrl("file:///android_asset/empty.html");
+        }
+
+        mHasAttachments = message.hasAttachments();
+
+        if (mHasAttachments) {
+            renderAttachments(message, 0, message, account, controller, listener);
+        }
+
+        mHiddenAttachments.setVisibility(View.GONE);
+
+        boolean lookForImages = true;
+        if (mSavedState != null) {
+            if (mSavedState.showPictures) {
+                setLoadPictures(true);
+                lookForImages = false;
+            }
+
+            if (mSavedState.attachmentViewVisible) {
+                onShowAttachments();
+            } else {
+                onShowMessage();
+            }
+
+            if (mSavedState.hiddenAttachmentsVisible) {
+                onShowHiddenAttachments();
+            }
+
+            mSavedState = null;
+        } else {
+            onShowMessage();
+        }
+
+        if (text != null && lookForImages) {
             // If the message contains external pictures and the "Show pictures"
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
@@ -291,12 +330,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
                     showShowPicturesAction(true);
                 }
             }
-            mHasAttachments = ((LocalStore.LocalMessage) message).hasAttachments();
-        } else {
-            loadBodyFromUrl("file:///android_asset/empty.html");
         }
-
-        onShowMessage();
     }
 
     public void loadBodyFromUrl(String url) {
@@ -305,7 +339,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
 
     }
 
-    public void loadBodyFromText(Message message, String emailText, String contentType) {
+    private void loadBodyFromText(String emailText, String contentType) {
         if (mScreenReaderEnabled) {
             mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
         } else {
@@ -321,14 +355,14 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
 
     public void showAttachments(boolean show) {
         mAttachmentsContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        boolean showHidden = (show && mHiddenAttachments.getChildCount() > 0);
+        boolean showHidden = (show && mHiddenAttachments.getVisibility() == View.GONE &&
+                mHiddenAttachments.getChildCount() > 0);
         mShowHiddenAttachments.setVisibility(showHidden ? View.VISIBLE : View.GONE);
 
         if (show) {
             moveHeaderToLayout();
         } else {
             moveHeaderToWebViewTitleBar();
-            mHiddenAttachments.setVisibility(View.GONE);
         }
     }
 
@@ -395,10 +429,22 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     }
 
     public void resetView() {
-        mMessageContentView.scrollTo(0, 0);
-        mMessageContentView.clearView();
+        mDownloadRemainder.setVisibility(View.GONE);
+        setLoadPictures(false);
+        showShowAttachmentsAction(false);
+        showShowMessageAction(false);
+        showShowPicturesAction(false);
         mAttachments.removeAllViews();
         mHiddenAttachments.removeAllViews();
+
+        /*
+         * Clear the WebView content
+         *
+         * For some reason WebView.clearView() doesn't clear the contents when the WebView changes
+         * its size because the button to download the complete message was previously shown and
+         * is now hidden.
+         */
+        loadBodyFromText("", "text/plain");
     }
 
     public void resetHeaderView() {
@@ -425,6 +471,74 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         if (mTitleBarHeaderContainer != null && mTitleBarHeaderContainer.getChildCount() == 0) {
             mHeaderPlaceHolder.removeView(mHeaderContainer);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
+        }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        SavedState savedState = new SavedState(superState);
+
+        savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
+                mAttachmentsContainer.getVisibility() == View.VISIBLE);
+        savedState.hiddenAttachmentsVisible = (mHiddenAttachments != null &&
+                mHiddenAttachments.getVisibility() == View.VISIBLE);
+        savedState.showPictures = mShowPictures;
+
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if(!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState)state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        mSavedState = savedState;
+    }
+
+    static class SavedState extends BaseSavedState {
+        boolean attachmentViewVisible;
+        boolean hiddenAttachmentsVisible;
+        boolean showPictures;
+
+        @SuppressWarnings("hiding")
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.attachmentViewVisible = (in.readInt() != 0);
+            this.hiddenAttachmentsVisible = (in.readInt() != 0);
+            this.showPictures = (in.readInt() != 0);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt((this.attachmentViewVisible) ? 1 : 0);
+            out.writeInt((this.hiddenAttachmentsVisible) ? 1 : 0);
+            out.writeInt((this.showPictures) ? 1 : 0);
         }
     }
 }

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Config;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -19,7 +18,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.SingleMessageView;
@@ -33,7 +32,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
     private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
-    private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -417,10 +415,10 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putParcelableArrayList(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
-        outState.putBoolean(SHOW_PICTURES, mMessageView.showPictures());
     }
 
     @Override
@@ -428,7 +426,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         super.onRestoreInstanceState(savedInstanceState);
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
-        mMessageView.setLoadPictures(savedInstanceState.getBoolean(SHOW_PICTURES));
     }
 
     private void displayMessage(MessageReference ref) {
@@ -439,7 +436,11 @@ public class MessageView extends K9Activity implements OnClickListener {
         findSurroundingMessagesUid();
         // start with fresh, empty PGP data
         mPgpData = new PgpData();
-        mMessageView.showMessageWebView(true);
+
+        // Clear previous message
+        mMessageView.resetView();
+        mMessageView.resetHeaderView();
+
         mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
         setupDisplayMessageButtons();
     }
@@ -949,46 +950,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void displayMessageBody(final Account account, final String folder, final String uid, final Message message) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    boolean resetMessageViewState = true;
-
-                    // Did we just completely download a previously incomplete message?
-                    if (mMessage != null && mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL) &&
-                            message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                        // Update the headers
-                        mMessageView.setHeaders(message, account);
-
-                        // Keep the current view state (i.e. if the attachment view was visible,
-                        // keep it that way)
-                        resetMessageViewState = false;
-                    }
-
-                    mMessage = message;
-
-                    mMessageView.displayMessageBody(account, message, mPgpData);
-
-                    boolean hasAttachments = ((LocalStore.LocalMessage) message).hasAttachments();
-
-                    if (hasAttachments) {
-                        mMessageView.renderAttachments(mMessage, 0, mMessage, mAccount, mController, mListener);
-                    }
-
-                    if (resetMessageViewState) {
-                        mMessageView.onShowMessage();
-                    }
-
-                } catch (MessagingException e) {
-                    if (Config.LOGV) {
-                        Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
-                    }
-                }
-            }
-        });
-    }
-
     class Listener extends MessagingListener {
         @Override
         public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
@@ -1030,17 +991,28 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
+        public void loadMessageForViewBodyAvailable(final Account account, String folder,
+                String uid, final Message message) {
+            if (!mMessageReference.uid.equals(uid) ||
+                    !mMessageReference.folderName.equals(folder) ||
+                    !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
             }
 
-            displayMessageBody(account, folder, uid, message);
-        }//loadMessageForViewBodyAvailable
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mMessage = message;
+                        mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
+                                mController, mListener);
 
-
+                    } catch (MessagingException e) {
+                        Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    }
+                }
+            });
+        }
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
@@ -1146,9 +1118,11 @@ public class MessageView extends K9Activity implements OnClickListener {
     // This REALLY should be in MessageCryptoView
     public void onDecryptDone(PgpData pgpData) {
         Account account = mAccount;
-        Message message = mMessage;
+        LocalMessage message = (LocalMessage) mMessage;
+        MessagingController controller = mController;
+        Listener listener = mListener;
         try {
-            mMessageView.displayMessageBody(account, message, pgpData);
+            mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
