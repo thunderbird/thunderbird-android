@@ -2,6 +2,8 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -28,6 +30,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +61,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private ImageView mShowAdditionalHeadersIcon;
+    private SavedState mSavedState;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -149,11 +153,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
 
     public boolean additionalHeadersVisible() {
-        if (mAdditionalHeadersView != null && mAdditionalHeadersView.getVisibility() == View.VISIBLE) {
-            return true;
-        } else {
-            return false;
-        }
+        return (mAdditionalHeadersView != null &&
+                mAdditionalHeadersView.getVisibility() == View.VISIBLE);
     }
 
     /**
@@ -253,8 +254,14 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mChip2.getBackground().setAlpha(chipColorAlpha);
 
         setVisibility(View.VISIBLE);
-        if (mAdditionalHeadersView.getVisibility() == View.VISIBLE) {
-            showAdditionalHeaders();
+
+        if (mSavedState != null) {
+            if (mSavedState.additionalHeadersVisible) {
+                showAdditionalHeaders();
+            }
+            mSavedState = null;
+        } else {
+            hideAdditionalHeaders();
         }
     }
 
@@ -314,4 +321,61 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAdditionalHeadersView.setText(sb);
     }
 
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        SavedState savedState = new SavedState(superState);
+
+        savedState.additionalHeadersVisible = additionalHeadersVisible();
+
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if(!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState)state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        mSavedState = savedState;
+    }
+
+    static class SavedState extends BaseSavedState {
+        boolean additionalHeadersVisible;
+
+        @SuppressWarnings("hiding")
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.additionalHeadersVisible = (in.readInt() != 0);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
+        }
+    }
 }
