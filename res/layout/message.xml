@@ -37,6 +37,7 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:id="@+id/inside_attachments_container"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">

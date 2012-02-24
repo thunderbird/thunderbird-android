@@ -54,6 +54,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     private LinearLayout mHeaderPlaceHolder;
     private LinearLayout mTitleBarHeaderContainer;
     private View mAttachmentsContainer;
+    private LinearLayout mInsideAttachmentsContainer;
     private SavedState mSavedState;
 
     public void initialize(Activity activity) {
@@ -66,6 +67,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
+        mInsideAttachmentsContainer = (LinearLayout) findViewById(R.id.inside_attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
         mHiddenAttachments = (LinearLayout) findViewById(R.id.hidden_attachments);
         mHiddenAttachments.setVisibility(View.GONE);
@@ -463,13 +465,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
     private void moveHeaderToLayout() {
         if (mTitleBarHeaderContainer != null && mTitleBarHeaderContainer.getChildCount() != 0) {
             mTitleBarHeaderContainer.removeView(mHeaderContainer);
-            mHeaderPlaceHolder.addView(mHeaderContainer);
+            mInsideAttachmentsContainer.addView(mHeaderContainer, 0);
         }
     }
 
     private void moveHeaderToWebViewTitleBar() {
         if (mTitleBarHeaderContainer != null && mTitleBarHeaderContainer.getChildCount() == 0) {
-            mHeaderPlaceHolder.removeView(mHeaderContainer);
+            mInsideAttachmentsContainer.removeView(mHeaderContainer);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
         }
     }
