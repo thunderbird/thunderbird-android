@@ -37,7 +37,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
-    private View mTopView;
     private SingleMessageView mMessageView;
 
     private PgpData mPgpData;
@@ -293,7 +292,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_view);
 
-        mTopView = findViewById(R.id.message_view_wrapper);
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
         //set a callback for the attachment view. With this callback the attachmentview
@@ -737,7 +735,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mLastDirection = NEXT;
         disableButtons();
         if (K9.showAnimations()) {
-            mTopView.startAnimation(outToLeftAnimation());
+            mMessageView.startAnimation(outToLeftAnimation());
         }
         displayMessage(mNextMessage);
         mNext.requestFocus();
@@ -752,7 +750,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mLastDirection = PREVIOUS;
         disableButtons();
         if (K9.showAnimations()) {
-            mTopView.startAnimation(inFromRightAnimation());
+            mMessageView.startAnimation(inFromRightAnimation());
         }
         displayMessage(mPreviousMessage);
         mPrevious.requestFocus();
