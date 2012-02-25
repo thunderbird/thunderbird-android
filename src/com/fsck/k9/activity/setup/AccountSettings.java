@@ -97,7 +97,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
 
-
+    private static final String PREFERENCE_CATEGORY_FOLDERS = "folders";
     private static final String PREFERENCE_ARCHIVE_FOLDER = "archive_folder";
     private static final String PREFERENCE_DRAFTS_FOLDER = "drafts_folder";
     private static final String PREFERENCE_SENT_FOLDER = "sent_folder";
@@ -713,11 +713,13 @@ public class AccountSettings extends K9PreferenceActivity {
         else
             mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
 
-        mAccount.setArchiveFolderName(mArchiveFolder.getValue());
-        mAccount.setDraftsFolderName(mDraftsFolder.getValue());
-        mAccount.setSentFolderName(mSentFolder.getValue());
-        mAccount.setSpamFolderName(mSpamFolder.getValue());
-        mAccount.setTrashFolderName(mTrashFolder.getValue());
+        if (mIsMoveCapable) {
+            mAccount.setArchiveFolderName(mArchiveFolder.getValue());
+            mAccount.setDraftsFolderName(mDraftsFolder.getValue());
+            mAccount.setSentFolderName(mSentFolder.getValue());
+            mAccount.setSpamFolderName(mSpamFolder.getValue());
+            mAccount.setTrashFolderName(mTrashFolder.getValue());
+        }
 
 
         if (mIsPushCapable) {
@@ -911,22 +913,33 @@ public class AccountSettings extends K9PreferenceActivity {
             mTrashFolder = (ListPreference)findPreference(PREFERENCE_TRASH_FOLDER);
             mTrashFolder.setEnabled(false);
 
+            if (!mIsMoveCapable) {
+                PreferenceScreen foldersCategory =
+                        (PreferenceScreen) findPreference(PREFERENCE_CATEGORY_FOLDERS);
+                foldersCategory.removePreference(mArchiveFolder);
+                foldersCategory.removePreference(mSpamFolder);
+                foldersCategory.removePreference(mDraftsFolder);
+                foldersCategory.removePreference(mSentFolder);
+                foldersCategory.removePreference(mTrashFolder);
+            }
         }
 
         @Override
         protected void onPostExecute(Void res) {
             initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels, allFolderValues);
-            initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels, allFolderValues);
             mAutoExpandFolder.setEnabled(true);
-            mArchiveFolder.setEnabled(true);
-            mDraftsFolder.setEnabled(true);
-            mSentFolder.setEnabled(true);
-            mSpamFolder.setEnabled(true);
-            mTrashFolder.setEnabled(true);
+            if (mIsMoveCapable) {
+                initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels, allFolderValues);
+                mArchiveFolder.setEnabled(true);
+                mSpamFolder.setEnabled(true);
+                mDraftsFolder.setEnabled(true);
+                mSentFolder.setEnabled(true);
+                mTrashFolder.setEnabled(true);
+            }
         }
     }
 }
