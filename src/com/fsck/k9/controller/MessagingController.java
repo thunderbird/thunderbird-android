@@ -173,7 +173,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
+    private SORT_TYPE sortType = Account.DEFAULT_SORT_TYPE;
 
     private MessagingListener checkMailListener = null;
 

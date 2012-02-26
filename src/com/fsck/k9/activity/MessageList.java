@@ -809,8 +809,10 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        sortType = mController.getSortType();
-        sortAscending = mController.isSortAscending(sortType);
+        sortType = mAccount.getSortType();
+        mController.setSortType(sortType);
+        sortAscending = mAccount.isSortAscending();
+        mController.setSortAscending(sortType, sortAscending);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);

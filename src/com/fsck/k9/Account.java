@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -77,6 +78,9 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
+    public static final SORT_TYPE DEFAULT_SORT_TYPE = SORT_TYPE.SORT_DATE;
+    public static final boolean DEFAULT_SORT_ASCENDING = false;
+
 
     /**
      * <pre>
@@ -121,6 +125,8 @@ public class Account implements BaseAccount {
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
+    private SORT_TYPE mSortType;
+    private boolean mSortAscending;
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -210,6 +216,8 @@ public class Account implements BaseAccount {
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
+        mSortType = DEFAULT_SORT_TYPE;
+        mSortAscending = DEFAULT_SORT_ASCENDING;
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -330,6 +338,15 @@ public class Account implements BaseAccount {
                                   (random.nextInt(0x70) * 0xff) +
                                   (random.nextInt(0x70) * 0xffff) +
                                   0xff000000);
+
+        try {
+            mSortType = SORT_TYPE.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
+                                                 SORT_TYPE.SORT_DATE.name()));
+        } catch (Exception e) {
+            mSortType = SORT_TYPE.SORT_DATE;
+        }
+
+        mSortAscending = prefs.getBoolean(mUuid + ".sortAscending", false);
 
         try {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
@@ -463,6 +480,8 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".messageFormatAuto");
         editor.remove(mUuid + ".quoteStyle");
         editor.remove(mUuid + ".quotePrefix");
+        editor.remove(mUuid + ".sortTypeEnum");
+        editor.remove(mUuid + ".sortAscending");
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
         editor.remove(mUuid + ".stripSignature");
@@ -595,6 +614,8 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
+        editor.putString(mUuid + ".sortTypeEnum", mSortType.name());
+        editor.putBoolean(mUuid + ".sortAscending", mSortAscending);
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -998,6 +1019,22 @@ public class Account implements BaseAccount {
 
     public synchronized void setShowOngoing(boolean showOngoing) {
         this.mNotifySync = showOngoing;
+    }
+
+    public synchronized SORT_TYPE getSortType() {
+        return mSortType;
+    }
+
+    public synchronized void setSortType(SORT_TYPE sortType) {
+        mSortType = sortType;
+    }
+
+    public synchronized boolean isSortAscending() {
+        return mSortAscending;
+    }
+
+    public synchronized void setSortAscending(boolean sortAscending) {
+        mSortAscending = sortAscending;
     }
 
     public synchronized ShowPictures getShowPictures() {
