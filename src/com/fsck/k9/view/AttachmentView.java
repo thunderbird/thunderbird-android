@@ -155,7 +155,13 @@ public class AttachmentView extends FrameLayout {
             mController = controller;
             mListener = listener;
 
-            size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
+            String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
+            if (sizeParam != null) {
+                try {
+                    size = Integer.parseInt(sizeParam);
+                } catch (NumberFormatException e) { /* ignore */ }
+            }
+
             contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
             TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
             TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
