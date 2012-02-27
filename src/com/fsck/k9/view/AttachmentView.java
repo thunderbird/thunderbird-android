@@ -33,6 +33,7 @@ import com.fsck.k9.helper.MediaScannerNotifier;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -120,104 +121,101 @@ public class AttachmentView extends FrameLayout {
      * @param listener
      *
      * @return {@code true} for a regular attachment. {@code false}, otherwise.
+     *
+     * @throws MessagingException
+     *          In case of an error
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
-            MessagingController controller, MessagingListener listener) {
+            MessagingController controller, MessagingListener listener) throws MessagingException {
         boolean firstClassAttachment = true;
-        try {
-            part = (LocalAttachmentBodyPart) inputPart;
+        part = (LocalAttachmentBodyPart) inputPart;
 
-            contentType = MimeUtility.unfoldAndDecode(part.getContentType());
-            String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+        contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
 
-            name = MimeUtility.getHeaderParameter(contentType, "name");
-            if (name == null) {
-                name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-            }
-
-            if (name == null) {
-                firstClassAttachment = false;
-                String extension = MimeUtility.getExtensionByMimeType(contentType);
-                name = "noname" + ((extension != null) ? "." + extension : "");
-            }
-
-            // Inline parts with a content-id are almost certainly components of an HTML message
-            // not attachments. Only show them if the user pressed the button to show more
-            // attachments.
-            if (contentDisposition != null &&
-                    MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
-                    && part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
-                firstClassAttachment = false;
-            }
-
-            mAccount = account;
-            mMessage = message;
-            mController = controller;
-            mListener = listener;
-
-            String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
-            if (sizeParam != null) {
-                try {
-                    size = Integer.parseInt(sizeParam);
-                } catch (NumberFormatException e) { /* ignore */ }
-            }
-
-            contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
-            TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
-            TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
-            ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
-            viewButton = (Button) findViewById(R.id.view);
-            downloadButton = (Button) findViewById(R.id.download);
-            if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
-                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
-                viewButton.setVisibility(View.GONE);
-            }
-            if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
-                    || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
-                downloadButton.setVisibility(View.GONE);
-            }
-            if (size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
-                viewButton.setVisibility(View.GONE);
-                downloadButton.setVisibility(View.GONE);
-            }
-
-            viewButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onViewButtonClicked();
-                    return;
-                }
-            });
-
-
-            downloadButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onSaveButtonClicked();
-                    return;
-                }
-            });
-            downloadButton.setOnLongClickListener(new OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View v) {
-                    callback.showFileBrowser(AttachmentView.this);
-                    return true;
-                }
-            });
-
-            attachmentName.setText(name);
-            attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
-            Bitmap previewIcon = getPreviewIcon();
-            if (previewIcon != null) {
-                attachmentIcon.setImageBitmap(previewIcon);
-            } else {
-                attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-            }
+        name = MimeUtility.getHeaderParameter(contentType, "name");
+        if (name == null) {
+            name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
         }
 
-        catch (Exception e) {
-            Log.e(K9.LOG_TAG, "error ", e);
+        if (name == null) {
+            firstClassAttachment = false;
+            String extension = MimeUtility.getExtensionByMimeType(contentType);
+            name = "noname" + ((extension != null) ? "." + extension : "");
+        }
+
+        // Inline parts with a content-id are almost certainly components of an HTML message
+        // not attachments. Only show them if the user pressed the button to show more
+        // attachments.
+        if (contentDisposition != null &&
+                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
+                && part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
+            firstClassAttachment = false;
+        }
+
+        mAccount = account;
+        mMessage = message;
+        mController = controller;
+        mListener = listener;
+
+        String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
+        if (sizeParam != null) {
+            try {
+                size = Integer.parseInt(sizeParam);
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
+        TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
+        TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
+        ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
+        viewButton = (Button) findViewById(R.id.view);
+        downloadButton = (Button) findViewById(R.id.download);
+        if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
+                || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
+            viewButton.setVisibility(View.GONE);
+        }
+        if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
+                || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
+            downloadButton.setVisibility(View.GONE);
+        }
+        if (size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
+            viewButton.setVisibility(View.GONE);
+            downloadButton.setVisibility(View.GONE);
+        }
+
+        viewButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onViewButtonClicked();
+                return;
+            }
+        });
+
+
+        downloadButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveButtonClicked();
+                return;
+            }
+        });
+        downloadButton.setOnLongClickListener(new OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                callback.showFileBrowser(AttachmentView.this);
+                return true;
+            }
+        });
+
+        attachmentName.setText(name);
+        attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
+        Bitmap previewIcon = getPreviewIcon();
+        if (previewIcon != null) {
+            attachmentIcon.setImageBitmap(previewIcon);
+        } else {
+            attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
         }
 
         return firstClassAttachment;
