@@ -18,6 +18,8 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -40,7 +42,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
-public class AttachmentView extends FrameLayout {
+public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     /**
      * Regular expression that represents characters we won't allow in file names.
      *
@@ -184,30 +186,9 @@ public class AttachmentView extends FrameLayout {
             downloadButton.setVisibility(View.GONE);
         }
 
-        viewButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onViewButtonClicked();
-                return;
-            }
-        });
-
-
-        downloadButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSaveButtonClicked();
-                return;
-            }
-        });
-        downloadButton.setOnLongClickListener(new OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                callback.showFileBrowser(AttachmentView.this);
-                return true;
-            }
-        });
+        viewButton.setOnClickListener(this);
+        downloadButton.setOnClickListener(this);
+        downloadButton.setOnLongClickListener(this);
 
         attachmentName.setText(name);
         attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
@@ -219,6 +200,30 @@ public class AttachmentView extends FrameLayout {
         }
 
         return firstClassAttachment;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view: {
+                onViewButtonClicked();
+                break;
+            }
+            case R.id.download: {
+                onSaveButtonClicked();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if (view.getId() == R.id.download) {
+            callback.showFileBrowser(this);
+            return true;
+        }
+
+        return false;
     }
 
     private Bitmap getPreviewIcon() {
