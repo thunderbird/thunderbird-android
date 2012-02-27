@@ -1692,6 +1692,12 @@ public class LocalStore extends Store implements Serializable {
                                                                            contentDisposition,
                                                                            name, // TODO: Should use encoded word defined in RFC 2231.
                                                                            size));
+                                            } else {
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                                        String.format("%s;\n size=%d",
+                                                                      contentDisposition,
+                                                                      size));
                                             }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
