@@ -61,6 +61,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -89,6 +90,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
+import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -1061,53 +1063,127 @@ public class ImapStore extends Store {
             }
         }
 
+        /**
+         * Copies the given messages to the specified folder.
+         *
+         * <p>
+         * <strong>Note:</strong>
+         * Only the UIDs of the given {@link Message} instances are used. It is assumed that all
+         * UIDs represent valid messages in this folder.
+         * </p>
+         *
+         * @param messages
+         *         The messages to copy to the specfied folder.
+         * @param folder
+         *         The name of the target folder.
+         *
+         * @return The mapping of original message UIDs to the new server UIDs.
+         */
         @Override
-        public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] messages, Folder folder)
+                throws MessagingException {
             if (!(folder instanceof ImapFolder)) {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
-            if (messages.length == 0)
-                return;
+            if (messages.length == 0) {
+                return null;
+            }
 
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
+
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
             }
+
             try {
                 String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
                 if (!exists(remoteDestName)) {
-                    /*
-                     * If the remote trash folder doesn't exist we try to create it.
-                     */
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "IMAPMessage.copyMessages: attempting to create remote '" + remoteDestName + "' folder for " + getLogId());
+                    // If the remote trash folder doesn't exist we try to create it.
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "Attempting to create remote folder '" + remoteDestName +
+                                "' for " + getLogId());
+                    }
                     iFolder.create(FolderType.HOLDS_MESSAGES);
                 }
 
-                if (exists(remoteDestName)) {
-                    executeSimpleCommand(String.format("UID COPY %s %s",
-                                                       Utility.combine(uids, ','),
-                                                       remoteDestName));
-                } else {
-                    throw new MessagingException("IMAPMessage.copyMessages: remote destination folder " + folder.getName()
-                                                 + " does not exist and could not be created for " + getLogId()
-                                                 , true);
+                //TODO: Split this into multiple commands if the command exceeds a certain length.
+                mConnection.sendCommand(String.format("UID COPY %s %s",
+                                                      Utility.combine(uids, ','),
+                                                      remoteDestName), false);
+                ImapResponse response;
+                do {
+                    response = mConnection.readResponse();
+                    handleUntaggedResponse(response);
+                } while (response.mTag == null);
+
+                Map<String, String> uidMap = null;
+                if (response.size() > 1) {
+                    /*
+                     * If the server supports UIDPLUS, then along with the COPY response it will
+                     * return an COPYUID response code, e.g.
+                     *
+                     * 24 OK [COPYUID 38505 304,319:320 3956:3958] Success
+                     *
+                     * COPYUID is followed by UIDVALIDITY, the set of UIDs of copied messages from
+                     * the source folder and the set of corresponding UIDs assigned to them in the
+                     * destination folder.
+                     *
+                     * We can use the new UIDs included in this response to update our records.
+                     */
+                    Object responseList = response.get(1);
+
+                    if (responseList instanceof ImapList) {
+                        final ImapList copyList = (ImapList) responseList;
+                        if (copyList.size() >= 4 && copyList.getString(0).equals("COPYUID")) {
+                            List<String> srcUids = ImapUtility.getImapSequenceValues(
+                                    copyList.getString(2));
+                            List<String> destUids = ImapUtility.getImapSequenceValues(
+                                    copyList.getString(3));
+
+                            if (srcUids != null && destUids != null) {
+                                if (srcUids.size() == destUids.size()) {
+                                    Iterator<String> srcUidsIterator = srcUids.iterator();
+                                    Iterator<String> destUidsIterator = destUids.iterator();
+                                    uidMap = new HashMap<String, String>();
+                                    while (srcUidsIterator.hasNext() &&
+                                            destUidsIterator.hasNext()) {
+                                        String srcUid = srcUidsIterator.next();
+                                        String destUid = destUidsIterator.next();
+                                        uidMap.put(srcUid, destUid);
+                                    }
+                                } else {
+                                    if (K9.DEBUG) {
+                                        Log.v(K9.LOG_TAG, "Parse error: size of source UIDs " +
+                                                "list is not the same as size of destination " +
+                                                "UIDs list.");
+                                    }
+                                }
+                            } else {
+                                if (K9.DEBUG) {
+                                    Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
+                                }
+                            }
+                        }
+                    }
                 }
+
+                return uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
 
         @Override
-        public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
             if (messages.length == 0)
-                return;
-            copyMessages(messages, folder);
+                return null;
+            Map<String, String> uidMap = copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
+            return uidMap;
         }
 
         @Override
@@ -1851,20 +1927,30 @@ public class ImapStore extends Store {
         }
 
         /**
-         * Appends the given messages to the selected folder. This implementation also determines
-         * the new UID of the given message on the IMAP server and sets the Message's UID to the
-         * new server UID.
+         * Appends the given messages to the selected folder.
+         *
+         * <p>
+         * This implementation also determines the new UIDs of the given messages on the IMAP
+         * server and changes the messages' UIDs to the new server UIDs.
+         * </p>
+         *
+         * @param messages
+         *         The messages to append to the folder.
+         *
+         * @return The mapping of original message UIDs to the new server UIDs.
          */
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
             checkOpen();
             try {
+                Map<String, String> uidMap = new HashMap<String, String>();
                 for (Message message : messages) {
                     mConnection.sendCommand(
                         String.format("APPEND %s (%s) {%d}",
                                       encodeString(encodeFolderName(getPrefixedName())),
                                       combineFlags(message.getFlags()),
                                       message.calculateSize()), false);
+
                     ImapResponse response;
                     do {
                         response = mConnection.readResponse();
@@ -1878,16 +1964,54 @@ public class ImapStore extends Store {
                         }
                     } while (response.mTag == null);
 
-                    String newUid = getUidFromMessageId(message);
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
+                    if (response.size() > 1) {
+                        /*
+                         * If the server supports UIDPLUS, then along with the APPEND response it
+                         * will return an APPENDUID response code, e.g.
+                         *
+                         * 11 OK [APPENDUID 2 238268] APPEND completed
+                         *
+                         * We can use the UID included in this response to update our records.
+                         */
+                        Object responseList = response.get(1);
 
-                    if (newUid != null) {
-                        message.setUid(newUid);
+                        if (responseList instanceof ImapList) {
+                            ImapList appendList = (ImapList) responseList;
+                            if (appendList.size() >= 3 &&
+                                    appendList.getString(0).equals("APPENDUID")) {
+
+                                String newUid = appendList.getString(2);
+
+                                if (!StringUtils.isNullOrEmpty(newUid)) {
+                                    message.setUid(newUid);
+                                    uidMap.put(message.getUid(), newUid);
+                                    continue;
+                                }
+                            }
+                        }
                     }
 
+                    /*
+                     * This part is executed in case the server does not support UIDPLUS or does
+                     * not implement the APPENDUID response code.
+                     */
+                    String newUid = getUidFromMessageId(message);
+                    if (K9.DEBUG) {
+                        Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
+                    }
 
+                    if (!StringUtils.isNullOrEmpty(newUid)) {
+                        uidMap.put(message.getUid(), newUid);
+                        message.setUid(newUid);
+                    }
                 }
+
+                /*
+                 * We need uidMap to be null if new UIDs are not available to maintain consistency
+                 * with the behavior of other similar methods (copyMessages, moveMessages) which
+                 * return null.
+                 */
+                return (uidMap.size() == 0) ? null : uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }

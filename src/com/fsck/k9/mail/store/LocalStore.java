@@ -1928,20 +1928,22 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] msgs, Folder folder) throws MessagingException {
             if (!(folder instanceof LocalFolder)) {
                 throw new MessagingException("copyMessages called with incorrect Folder");
             }
-            ((LocalFolder) folder).appendMessages(msgs, true);
+            return ((LocalFolder) folder).appendMessages(msgs, true);
         }
 
         @Override
-        public void moveMessages(final Message[] msgs, final Folder destFolder) throws MessagingException {
+        public Map<String, String> moveMessages(final Message[] msgs, final Folder destFolder) throws MessagingException {
             if (!(destFolder instanceof LocalFolder)) {
                 throw new MessagingException("moveMessages called with non-LocalFolder");
             }
 
             final LocalFolder lDestFolder = (LocalFolder)destFolder;
+
+            final Map<String, String> uidMap = new HashMap<String, String>();
 
             try {
                 database.execute(false, new DbCallback<Void>() {
@@ -1968,7 +1970,10 @@ public class LocalStore extends Store implements Serializable {
                                     Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
                                           + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
 
-                                message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
+                                String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                                message.setUid(newUid);
+
+                                uidMap.put(oldUID, newUid);
 
                                 db.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
                                                lDestFolder.getId(),
@@ -1976,6 +1981,11 @@ public class LocalStore extends Store implements Serializable {
                                                lMessage.getId()
                                            });
 
+                                /*
+                                 * Add a placeholder message so we won't download the original
+                                 * message again if we synchronize before the remote move is
+                                 * complete.
+                                 */
                                 LocalMessage placeHolder = new LocalMessage(oldUID, LocalFolder.this);
                                 placeHolder.setFlagInternal(Flag.DELETED, true);
                                 placeHolder.setFlagInternal(Flag.SEEN, true);
@@ -1987,6 +1997,7 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+                return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
@@ -2032,8 +2043,8 @@ public class LocalStore extends Store implements Serializable {
          * message, retrieve the appropriate local message instance first (if it already exists).
          */
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
-            appendMessages(messages, false);
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+            return appendMessages(messages, false);
         }
 
         public void destroyMessages(final Message[] messages) throws MessagingException {
@@ -2069,10 +2080,12 @@ public class LocalStore extends Store implements Serializable {
          * message, retrieve the appropriate local message instance first (if it already exists).
          * @param messages
          * @param copy
+         * @return Map<String, String> uidMap of srcUids -> destUids
          */
-        private void appendMessages(final Message[] messages, final boolean copy) throws MessagingException {
+        private Map<String, String> appendMessages(final Message[] messages, final boolean copy) throws MessagingException {
             open(OpenMode.READ_WRITE);
             try {
+                final Map<String, String> uidMap = new HashMap<String, String>();
                 database.execute(true, new DbCallback<Void>() {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
@@ -2085,11 +2098,26 @@ public class LocalStore extends Store implements Serializable {
                                 long oldMessageId = -1;
                                 String uid = message.getUid();
                                 if (uid == null || copy) {
-                                    uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                                    if (!copy) {
-                                        message.setUid(uid);
+                                    /*
+                                     * Create a new message in the database
+                                     */
+                                    String randomLocalUid = K9.LOCAL_UID_PREFIX +
+                                            UUID.randomUUID().toString();
+
+                                    if (copy) {
+                                        // Save mapping: source UID -> target UID
+                                        uidMap.put(uid, randomLocalUid);
+                                    } else {
+                                        // Modify the Message instance to reference the new UID
+                                        message.setUid(randomLocalUid);
                                     }
+
+                                    // The message will be saved with the newly generated UID
+                                    uid = randomLocalUid;
                                 } else {
+                                    /*
+                                     * Replace an existing message in the database
+                                     */
                                     LocalMessage oldMessage = (LocalMessage) getMessage(uid);
 
                                     if (oldMessage != null) {
@@ -2169,6 +2197,7 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+                return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
