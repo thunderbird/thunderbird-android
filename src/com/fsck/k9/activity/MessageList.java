@@ -10,7 +10,9 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -52,12 +54,10 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchAccount;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -72,7 +72,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 
 
@@ -171,7 +170,13 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
+        	if(object1.compareCounterparty == null){
+        		return (object2.compareCounterparty == null ? 0 : 1);
+        	}else if (object2.compareCounterparty == null){
+        		return -1;
+        	}else{
+        		return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
+        	}
         }
 
     }
@@ -180,7 +185,13 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return object1.compareDate.compareTo(object2.compareDate);
+        	if(object1.compareDate == null){
+        		return (object2.compareDate == null ? 0 : 1);
+        	}else if(object2.compareDate == null){
+        		return -1;
+        	}else{
+        		return object1.compareDate.compareTo(object2.compareDate);
+        	}
         }
 
     }
@@ -213,7 +224,9 @@ public class MessageList
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER  = "folder";
-    private static final String EXTRA_QUERY = "query";
+    private static final String EXTRA_REMOTE_SEARCH = "com.fsck.k9.remote_search";
+    private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
+    private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
     private static final String EXTRA_QUERY_FLAGS = "queryFlags";
     private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
     private static final String EXTRA_INTEGRATE = "integrate";
@@ -227,7 +240,6 @@ public class MessageList
      * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
      */
     private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
-
     static {
         // fill the mapping at class time loading
 
@@ -243,6 +255,7 @@ public class MessageList
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
 
+    
     private ListView mListView;
 
     private boolean mTouchView = true;
@@ -275,6 +288,9 @@ public class MessageList
     private String mQueryString;
     private Flag[] mQueryFlags = null;
     private Flag[] mForbiddenFlags = null;
+    private boolean mRemoteSearch = false;
+    private String mSearchAccount = null;
+    private String mSearchFolder = null;
     private boolean mIntegrate = false;
     private String[] mAccountUuids = null;
     private String[] mFolderNames = null;
@@ -395,7 +411,7 @@ public class MessageList
                         }
                     }
 
-                    if (wasEmpty) {
+                    if (wasEmpty & !mAdapter.messages.isEmpty()) {
                         mListView.setSelection(0);
                     }
                     resetUnreadCountOnThread();
@@ -470,10 +486,7 @@ public class MessageList
                 }
             }
 
-            // build the comparator chain
-            final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
-
-            return chainComparator;
+            return new ComparatorChain<MessageInfoHolder>(chain);
         }
 
         public void folderLoading(String folder, boolean loading) {
@@ -539,6 +552,7 @@ public class MessageList
                     setTitle(getString(R.string.search_results) + ": " + mQueryString);
                 }
             }
+            //TODO: Update for ImapSearch
         }
 
         public void progress(final boolean progress) {
@@ -601,7 +615,7 @@ public class MessageList
 
     public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(EXTRA_QUERY, queryString);
+        intent.putExtra(SearchManager.QUERY, queryString);
         if (flags != null) {
             intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(flags, ','));
         }
@@ -622,7 +636,7 @@ public class MessageList
     public static Intent actionHandleAccountIntent(Context context, String title,
             SearchSpecification searchSpecification) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
+        intent.putExtra(SearchManager.QUERY, searchSpecification.getQuery());
         if (searchSpecification.getRequiredFlags() != null) {
             intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(searchSpecification.getRequiredFlags(), ','));
         }
@@ -697,7 +711,32 @@ public class MessageList
             return;
         }
 
+        
+        mQueryString = intent.getStringExtra(SearchManager.QUERY);
+        mFolderName = null;
+        mRemoteSearch = false;
+        mSearchAccount = null;
+        mSearchFolder = null;
+        if(mQueryString != null){
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                //Query was received from Search Dialog
+                Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+                if(appData != null){
+                    mSearchAccount = appData.getString(EXTRA_SEARCH_ACCOUNT);
+                    mSearchFolder = appData.getString(EXTRA_SEARCH_FOLDER);
+                    mRemoteSearch = appData.getBoolean(EXTRA_REMOTE_SEARCH);
+                }
+            }
+            else{
+                mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
+                mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
+                
+            }
+        }
+
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
+        
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mAccount != null && !mAccount.isAvailable(this)) {
@@ -706,8 +745,8 @@ public class MessageList
             return;
         }
 
-        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
-        mQueryString = intent.getStringExtra(EXTRA_QUERY);
+
+
 
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null) {
@@ -815,6 +854,7 @@ public class MessageList
 
         mController.addListener(mAdapter.mListener);
 
+        //Cancel pending new mail notifications when we open an account
         Account[] accountsWithNotification;
         if (mAccount != null) {
             accountsWithNotification = new Account[] { mAccount };
@@ -822,18 +862,21 @@ public class MessageList
             Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
         }
-
         for (Account accountWithNotification : accountsWithNotification) {
             mController.notifyAccountCancel(this, accountWithNotification);
         }
 
+        
         if (mAdapter.messages.isEmpty()) {
-            if (mFolderName != null) {
+        	if (mRemoteSearch){
+        		//TODO: Support flag based search
+        		mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
+        	}
+        	else if (mFolderName != null) {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             } else if (mQueryString != null) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
             }
-
         } else {
             // reread the selected date format preference in case it has changed
             mMessageHelper.refresh();
@@ -843,7 +886,9 @@ public class MessageList
                 public void run() {
                     mAdapter.markAllMessagesAsDirty();
 
-                    if (mFolderName != null) {
+                    if (mRemoteSearch){
+                		mController.searchRemoteMessagesSynchronous(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
+                	} else if (mFolderName != null) {
                         mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
                     } else if (mQueryString != null) {
                         mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
@@ -1037,6 +1082,7 @@ public class MessageList
         }
         }
 
+        //Shortcuts that only work when a message is selected
         boolean retval = true;
         int position = mListView.getSelectedItemPosition();
         try {
@@ -1178,6 +1224,44 @@ public class MessageList
     private void onEditAccount() {
         AccountSettings.actionSettings(this, mAccount);
     }
+    
+    
+    @Override
+    public boolean onSearchRequested() {
+         
+         if(mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()){
+        	 //if in a SSSable folder, ask user what they want.
+        	 //TODO: Add ability to remember selection?
+        	 final CharSequence[] items = new CharSequence[2];
+        	 items[0] = getString(R.string.search_mode_local_all);
+        	 items[1] = getString(R.string.search_mode_remote);
+
+        	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	 builder.setTitle(getString(R.string.search_mode_title));
+        	 builder.setItems(items, new DialogInterface.OnClickListener() {
+        	     public void onClick(DialogInterface dialog, int item) {
+        	    	 
+        	         Bundle appData = null;
+        	         if(item == 1){
+        	        	 appData = new Bundle();
+        	        	 appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+                    	 appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
+                    	 appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
+        	         }
+        	         //else do regular search, which doesn't require any special parameter setup
+                	 
+                	 startSearch(null, false, appData, false);
+        	     }
+        	 });
+        	 AlertDialog alert = builder.create();
+        	 alert.show();
+        	 
+        	 return true;
+         }
+         
+         startSearch(null, false, null, false);
+         return true;
+     }
 
     private void changeSort(SORT_TYPE newSortType) {
         if (sortType == newSortType) {
@@ -1398,7 +1482,7 @@ public class MessageList
     }
 
     private void onToggleRead(MessageInfoHolder holder) {
-        LocalMessage message = holder.message;
+        Message message = holder.message;
         Folder folder = message.getFolder();
         Account account = folder.getAccount();
         String folderName = folder.getName();
@@ -1408,7 +1492,7 @@ public class MessageList
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
-        LocalMessage message = holder.message;
+        Message message = holder.message;
         Folder folder = message.getFolder();
         Account account = folder.getAccount();
         String folderName = folder.getName();
@@ -1583,7 +1667,7 @@ public class MessageList
 
         setOpsState(menu, true, anySelected);
 
-        if (mQueryString != null) {
+        if (mQueryString != null || mIntegrate) {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
@@ -1975,9 +2059,7 @@ public class MessageList
         }
         public void pruneDirtyMessages() {
             synchronized (mAdapter.messages) {
-                Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
-                while (iter.hasNext()) {
-                    MessageInfoHolder holder = iter.next();
+                for(MessageInfoHolder holder : mAdapter.messages){
                     if (holder.dirty) {
                         if (holder.selected) {
                             mSelectedCount--;

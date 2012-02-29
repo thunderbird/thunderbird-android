@@ -46,7 +46,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
-
+    private static final String PREFERENCE_SCREEN_REMOTE_SEARCH = "remote_search";
+    
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
@@ -94,6 +95,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
     private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
+    private static final String PREFERENCE_ALLOW_REMOTE_SEARCH = "account_allow_remote_search";
+    private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
+    private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
 
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
 
@@ -157,6 +161,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
     private CheckBoxPreference mCryptoAutoEncrypt;
+    private CheckBoxPreference mAllowRemoteSearch;
+    private ListPreference mRemoteSearchNumResults;
+    private CheckBoxPreference mRemoteSearchFullText;
 
     private ListPreference mLocalStorageProvider;
 
@@ -423,6 +430,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
+        
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
@@ -465,14 +473,22 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         }
+        
+        
         // IMAP-specific preferences
-
+        mAllowRemoteSearch = (CheckBoxPreference) findPreference(PREFERENCE_ALLOW_REMOTE_SEARCH);
+        mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
+        mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
         mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
         if (mIsPushCapable) {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
 
+            mAllowRemoteSearch.setChecked(mAccount.allowRemoteSearch());
+            mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
+            mRemoteSearchFullText.setChecked(mAccount.getRemoteSearchFullText());
+            
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
             mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -484,7 +500,7 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
-
+ 
             mMaxPushFolders.setValue(String.valueOf(mAccount.getMaxPushFolders()));
             mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
             mMaxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -509,9 +525,12 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         } else {
-            PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
+            final PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
             incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
             incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
+            
+            ((PreferenceScreen) findPreference("main")).removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_REMOTE_SEARCH));
+            
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -719,11 +738,14 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setSpamFolderName(mSpamFolder.getValue());
         mAccount.setTrashFolderName(mTrashFolder.getValue());
 
-
+        //IMAP stuff
         if (mIsPushCapable) {
             mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
             mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
             mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
+            mAccount.setAllowRemoteSearch(mAllowRemoteSearch.isChecked());
+            mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
+            mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
         if (!mIsMoveCapable) {
@@ -750,6 +772,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
 
+        //IMAP specific stuff
         if (mIsPushCapable) {
             boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
             if (mAccount.getFolderPushMode() != FolderMode.NONE) {

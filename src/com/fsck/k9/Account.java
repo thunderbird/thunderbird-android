@@ -1,6 +1,18 @@
 
 package com.fsck.k9;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -17,19 +29,6 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -68,6 +67,7 @@ public class Account implements BaseAccount {
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
+    public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
@@ -149,7 +149,10 @@ public class Account implements BaseAccount {
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
-
+    private boolean mAllowRemoteSearch;
+    private boolean mRemoteSearchFullText;
+    private int mRemoteSearchNumResults;
+    
     private CryptoProvider mCryptoProvider = null;
 
     /**
@@ -235,6 +238,9 @@ public class Account implements BaseAccount {
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
+        mAllowRemoteSearch = false;
+        mRemoteSearchFullText = false;
+        mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
         mEnabled = true;
 
         searchableFolders = Searchable.ALL;
@@ -390,6 +396,10 @@ public class Account implements BaseAccount {
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
+        mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
+        mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
+        
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
     }
 
@@ -631,6 +641,9 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
         editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
+        editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
+        editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
+        editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
@@ -1445,7 +1458,23 @@ public class Account implements BaseAccount {
     public void setCryptoAutoEncrypt(boolean cryptoAutoEncrypt) {
         mCryptoAutoEncrypt = cryptoAutoEncrypt;
     }
+    
+	public boolean allowRemoteSearch() {
+		return mAllowRemoteSearch;
+	}
+	
+	public void setAllowRemoteSearch(boolean val){
+		mAllowRemoteSearch = val;
+	}
 
+	public int getRemoteSearchNumResults(){
+		return mRemoteSearchNumResults;
+	}
+	
+	public void setRemoteSearchNumResults(int val){
+		mRemoteSearchNumResults = (val >= 0 ? val : 0);
+	}
+	
     public String getInboxFolderName() {
         return mInboxFolderName;
     }
@@ -1500,4 +1529,15 @@ public class Account implements BaseAccount {
     public synchronized void setEnabled(boolean enabled) {
         mEnabled = enabled;
     }
+
+	public boolean getRemoteSearchFullText() {
+		
+		return mRemoteSearchFullText;
+	}
+
+	public void setRemoteSearchFullText(boolean val) {
+		mRemoteSearchFullText = val;
+	}
+
+
 }

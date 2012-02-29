@@ -45,10 +45,14 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
+import org.apache.commons.io.IOUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -72,13 +76,14 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -89,12 +94,10 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  * <pre>
@@ -1168,6 +1171,83 @@ public class ImapStore extends Store {
 
 
         }
+        
+        public void doRemoteSearch(final String queryString, final Flag[] requiredFlags, final Flag [] forbiddenFlags, final MessageRetrievalListener listener) 
+        		throws MessagingException{
+        	ImapSearcher searcher = new ImapSearcher(){
+        		public List<ImapResponse> search() throws IOException, MessagingException {
+        			String imapQuery = "SEARCH ";
+        			if(requiredFlags != null){
+	        			for(Flag f : requiredFlags){
+	        				switch(f){
+	        				case DELETED:
+	        					imapQuery += "DELETED ";
+	        					break;
+	        					
+	        				case SEEN:
+	        					imapQuery +=  "SEEN ";
+	        					break;
+	        					
+	        				case ANSWERED:
+	        					imapQuery += "ANSWERED ";
+	        					break;
+	        					
+	        				case FLAGGED:
+	        					imapQuery += "FLAGGED ";
+	        					break;
+	        					
+	        				case DRAFT:
+	        					imapQuery += "DRAFT ";
+	        					break;
+	        					
+	        				case RECENT:
+	        					imapQuery += "RECENT ";
+	        					break;
+	        				}
+	        			}
+        			}
+        			if(forbiddenFlags != null){
+	        			for(Flag f : forbiddenFlags){
+	        				switch(f){
+	        				case DELETED:
+	        					imapQuery += "UNDELETED ";
+	        					break;
+	        					
+	        				case SEEN:
+	        					imapQuery +=  "UNSEEN ";
+	        					break;
+	        					
+	        				case ANSWERED:
+	        					imapQuery += "UNANSWERED ";
+	        					break;
+	        					
+	        				case FLAGGED:
+	        					imapQuery += "UNFLAGGED ";
+	        					break;
+	        					
+	        				case DRAFT:
+	        					imapQuery += "UNDRAFT ";
+	        					break;
+	        					
+	        				case RECENT:
+	        					imapQuery += "UNRECENT ";
+	        					break;
+	        				}
+	        			}
+        			}
+        			String encodedQry = encodeString(queryString);
+        			if(mAccount.getRemoteSearchFullText()){
+        				imapQuery += "TEXT " + encodedQry;
+        			}
+        			else{
+        				imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
+        			}
+        			return executeSimpleCommand(imapQuery);
+        		}
+        	};
+        	
+        	search(searcher, listener, (mAccount != null ? mAccount.getRemoteSearchNumResults() : 0), true);
+        }
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
@@ -1259,6 +1339,10 @@ public class ImapStore extends Store {
         }
 
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
+        	return search(searcher, listener, 0, false);
+        }
+        
+        private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener, int limit, boolean getHeaders) throws MessagingException {
 
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
@@ -1275,13 +1359,34 @@ public class ImapStore extends Store {
                     }
                 }
 
-                // Sort the uids in numerically ascending order
-                Collections.sort(uids);
-                for (int i = 0, count = uids.size(); i < count; i++) {
+                // Sort the uids in numerically decreasing order 
+                // By doing it in decreasing order, we ensure newest messages are dealt with first
+                // This makes the most sense when a limit is imposed, and also prevents UI from going
+                // crazy adding stuff at the top.
+                Collections.sort(uids, Collections.reverseOrder());
+                
+                FetchProfile fp = new FetchProfile(); 
+                if(getHeaders){
+                	fp.add(FetchProfile.Item.ENVELOPE);
+                	fp.add(FetchProfile.Item.FLAGS);
+                	fp.add(FetchProfile.Item.STRUCTURE);
+                }
+                
+                if(K9.DEBUG){
+                	Log.i("IMAP search", "Search results: " + uids.size() + ", limit: " + limit);
+                }
+                
+                for (int i = 0, count = (limit==0 ? uids.size() : Math.min(uids.size(), limit)); i < count; i++) {
                     if (listener != null) {
                         listener.messageStarted("" + uids.get(i), i, count);
                     }
                     ImapMessage message = new ImapMessage("" + uids.get(i), this);
+
+                    if(getHeaders){
+                    	Message [] msgArray = {message};
+                    	fetch(msgArray, fp, null); //don't pass the listener since we're already updating it
+                    }
+                    
                     messages.add(message);
                     if (listener != null) {
                         listener.messageFinished(message, i, count);
@@ -1290,7 +1395,17 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            
+            Message [] msgArray = messages.toArray(EMPTY_MESSAGE_ARRAY);
+            
+            /*
+             * Doing this here makes it one batch, but the UI spends a long time with (no subject) stuff, etc.
+             * Therefore, at least for now, should fetch headers individually as we fetch the messages.
+             * 
+            if(getHeaders){
+            	fetch(msgArray, fp, listener);
+            }*/
+            return msgArray;
         }
 
 
@@ -3271,5 +3386,33 @@ public class ImapStore extends Store {
             return null;
         }
     }
+	
+    @Override
+	public void searchRemoteMessages(final MessageRetrievalListener listener, final String[] queryFields, final String queryString,
+            final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
+		
+		if(!mAccount.allowRemoteSearch()){
+			throw new MessagingException("Your settings do not allow remote searching of this account");
+		}
+		
+		final ImapFolder folder = (ImapFolder) getFolder(folderName);
+		if(folder == null){
+			throw new MessagingException("Invalid folder specified");
+		}
+		
+		try{
+			folder.open(OpenMode.READ_ONLY);
+			folder.checkOpen();
+			
+			folder.doRemoteSearch(queryString, requiredFlags, forbiddenFlags, listener);
+			
+		}
+		catch(Exception e){
+			throw new MessagingException("Error during search: " + e.toString());
+		}
+		
+	}
+    
+    
 
 }

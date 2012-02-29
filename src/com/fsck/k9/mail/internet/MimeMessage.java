@@ -587,4 +587,28 @@ public class MimeMessage extends Message {
         copy(message);
         return message;
     }
+    
+    public boolean toMe(){
+    	return false;
+    }
+    
+    public boolean ccMe(){
+    	return false;
+    }
+    
+    public boolean bccMe(){
+    	return false;
+    }
+    
+    public long getId(){
+    	return Long.parseLong(mUid); //or maybe .mMessageId?
+    }
+    
+    public String getPreview(){
+    	return "my_preview";
+    }
+    
+    public boolean hasAttachments(){
+    	return false;
+    }
 }

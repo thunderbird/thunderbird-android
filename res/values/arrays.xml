@@ -46,6 +46,7 @@
         <item>1440</item>
     </string-array>
 
+    
     <string-array name="account_settings_display_count_entries">
         <item>@string/account_setup_options_mail_display_count_10</item>
         <item>@string/account_setup_options_mail_display_count_25</item>
@@ -56,7 +57,7 @@
         <item>@string/account_setup_options_mail_display_count_1000</item>
         <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
-
+    
     <string-array name="account_settings_display_count_values">
         <item>10</item>
         <item>25</item>
@@ -661,6 +662,26 @@
         <item>TEXT</item>
         <item>HTML</item>
         <item>AUTO</item>
+    </string-array>
+    <string-array name="account_settings_remote_search_num_results_entries">
+        <item >@string/account_settings_remote_search_num_results_entries_10</item>
+        <item >@string/account_settings_remote_search_num_results_entries_25</item>
+        <item >@string/account_settings_remote_search_num_results_entries_50</item>
+        <item >@string/account_settings_remote_search_num_results_entries_100</item>
+        <item >@string/account_settings_remote_search_num_results_entries_250</item>
+        <item >@string/account_settings_remote_search_num_results_entries_500</item>
+        <item >@string/account_settings_remote_search_num_results_entries_1000</item>
+        <item >@string/account_settings_remote_search_num_results_entries_all</item>
+    </string-array>
+    <string-array name="account_settings_remote_search_num_results_values">
+        <item >10</item>
+        <item >25</item>
+        <item >50</item>
+        <item >100</item>
+        <item >250</item>
+        <item >500</item>
+        <item >1000</item>
+        <item >0</item>
     </string-array>
 
 </resources>
