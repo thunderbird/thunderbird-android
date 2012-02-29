@@ -1148,4 +1148,9 @@ the import operation. Please install a file manager application from Android Mar
     <string name="account_settings_remote_search">Remote Folder Searching</string>
     <string name="account_settings_remote_search_full_text_summary">Can be slow</string>
     <string name="account_settings_remote_search_full_text">Include Body Text</string>
+    <string name="account_settings_allow_remote_search_help">
+        To perform a remote search, press your device\'s Search button while viewing a folder from this account.
+        \n\nNote: Remote search is NOT available from the Unified Inbox or from a list of folders.
+    </string>
+    <string name="no_show_again">Don\'t Show Again</string>
 </resources>
