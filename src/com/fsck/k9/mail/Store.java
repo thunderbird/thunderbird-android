@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
@@ -175,5 +176,10 @@ public abstract class Store {
 
     public Account getAccount() {
         return mAccount;
+    }
+    
+    public void searchRemoteMessages(MessageRetrievalListener listener, String[] queryFields, String queryString,
+            String folder,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
+    	throw new MessagingException("K-9 does not support remote searchign on this account type");
     }
 }

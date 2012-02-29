@@ -3,7 +3,18 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -784,6 +795,84 @@ public class MessagingController implements Runnable {
             listener.searchStats(stats);
         }
     }
+
+
+
+    public void searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener){
+        if (K9.DEBUG) {
+            String msg = "searchRemoteMessages ("
+                    + "acct=" + acctUuid
+                    + ", folderName = " + folderName
+                    + ", query = " + query
+                    + ")";
+            Log.i(K9.LOG_TAG, msg);
+        }
+
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                searchRemoteMessagesSynchronous(acctUuid, folderName, query, requiredFlags, forbiddenFlags, listener);
+            }
+        });
+    }
+    public void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query, 
+            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener){
+        final Account acct = Preferences.getPreferences(mApplication.getApplicationContext()).getAccount(acctUuid);
+        final AccountStats stats = new AccountStats();
+
+        if (listener != null) {
+            listener.listLocalMessagesStarted(acct, null);
+        }
+
+        MessageRetrievalListener retrievalListener = new MessageRetrievalListener() {
+            @Override
+            public void messageStarted(String message, int number, int ofTotal) {}
+            @Override
+            public void messageFinished(Message message, int number, int ofTotal) {
+                if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
+                    List<Message> messages = new ArrayList<Message>();
+
+                    messages.add(message);
+                    stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
+                    stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
+                    if (listener != null) {
+                        listener.listLocalMessagesAddMessages(acct, null, messages);
+
+                    }
+                }
+
+            }
+            @Override
+            public void messagesFinished(int number) {
+
+            }
+        };
+
+        try {
+            String[] queryFields = {"html_content", "subject", "sender_list"};
+            Store acctStore = acct.getRemoteStore();
+
+            //TODO: make queryFields actually do something
+            acctStore.searchRemoteMessages(retrievalListener, queryFields, query, folderName, requiredFlags, forbiddenFlags);
+
+        } catch (Exception e) {
+            if (listener != null) {
+                listener.listLocalMessagesFailed(acct, null, e.getMessage());
+            }
+            addErrorMessage(acct, null, e);
+        } finally {
+            if (listener != null) {
+                listener.listLocalMessagesFinished(acct, null);
+            }
+        }
+
+        if (listener != null) {
+            listener.searchStats(stats);
+        }
+
+    }
+
+
     public void loadMoreMessages(Account account, String folder, MessagingListener listener) {
         try {
             LocalStore localStore = account.getLocalStore();
