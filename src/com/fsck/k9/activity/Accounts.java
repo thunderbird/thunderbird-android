@@ -382,16 +382,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     /**
-     * Creates and initializes the special accounts ('Integrated Inbox' and 'All Messages')
+     * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        unreadAccount = new SearchAccount(this, false, null, null);
-        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
-        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
-
-        integratedInboxAccount = new SearchAccount(this, true, null, null);
-        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
-        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+        integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
+        unreadAccount = SearchAccount.createAllMessagesAccount(this);
     }
 
     @SuppressWarnings("unchecked")
