@@ -42,11 +42,11 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.Intents;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Utility;
@@ -58,8 +58,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
@@ -69,12 +69,12 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.store.UnavailableAccountException;
 import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
+import com.fsck.k9.mail.store.UnavailableAccountException;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 /**
@@ -835,14 +835,10 @@ public class MessagingController implements Runnable {
                 
                 
                 if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
-                    List<Message> messages = new ArrayList<Message>();
-
-                    messages.add(message);
                     stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
                     stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                     if (listener != null) {
-                        listener.listLocalMessagesAddMessages(acct, null, messages);
-                        listener.synchronizeMailboxProgress(acct, null, number, ofTotal);
+                        listener.remoteSearchAddMessage(acct, folderName, message, number, ofTotal);
                     }
                 }
 
@@ -852,15 +848,32 @@ public class MessagingController implements Runnable {
 
             }
         };
+        
+        SearchListener searchListener = new SearchListener(){
+
+            @Override
+            public void searchStarted() {
+                listener.remoteSearchStarted(acct, folderName);
+            }
+
+            @Override
+            public void searchFinished(int numResults) {
+                listener.remoteSearchServerQueryComplete(acct, folderName, numResults);
+            }
+        };
 
         try {
             Store acctStore = acct.getRemoteStore();
-
-            acctStore.searchRemoteMessages(retrievalListener, query, folderName, requiredFlags, forbiddenFlags);
+            if(acctStore != null){
+                acctStore.searchRemoteMessages(retrievalListener, searchListener, query, folderName, requiredFlags, forbiddenFlags);
+            }
+            else{
+                throw new MessagingException("Account has no remote store");
+            }
 
         } catch (Exception e) {
             if (listener != null) {
-                listener.listLocalMessagesFailed(acct, null, e.getMessage());
+                listener.remoteSearchFailed(acct, null, e.getMessage());
             }
             addErrorMessage(acct, null, e);
         } finally {
@@ -2809,10 +2822,10 @@ public class MessagingController implements Runnable {
         });
     }
 
-    public void loadMessageForView(final Account account, final String folder, final String uid,
+    public void loadMessageForView(final Account account, final String folderName, final String uid,
                                    final MessagingListener listener) {
         for (MessagingListener l : getListeners(listener)) {
-            l.loadMessageForViewStarted(account, folder, uid);
+            l.loadMessageForViewStarted(account, folderName, uid);
         }
         threadPool.execute(new Runnable() {
             @Override
@@ -2820,13 +2833,13 @@ public class MessagingController implements Runnable {
 
                 try {
                     LocalStore localStore = account.getLocalStore();
-                    LocalFolder localFolder = localStore.getFolder(folder);
+                    LocalFolder localFolder = localStore.getFolder(folderName);
                     localFolder.open(OpenMode.READ_WRITE);
 
                     LocalMessage message = (LocalMessage)localFolder.getMessage(uid);
                     if (message == null
                     || message.getId() == 0) {
-                        throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
+                        throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
                     }
                     if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
@@ -2834,7 +2847,7 @@ public class MessagingController implements Runnable {
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+                        l.loadMessageForViewHeadersAvailable(account, folderName, uid, message);
                     }
 
                     FetchProfile fp = new FetchProfile();
@@ -2846,16 +2859,16 @@ public class MessagingController implements Runnable {
                     localFolder.close();
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+                        l.loadMessageForViewBodyAvailable(account, folderName, uid, message);
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFinished(account, folder, uid, message);
+                        l.loadMessageForViewFinished(account, folderName, uid, message);
                     }
 
                 } catch (Exception e) {
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFailed(account, folder, uid, e);
+                        l.loadMessageForViewFailed(account, folderName, uid, e);
                     }
                     addErrorMessage(account, null, e);
 

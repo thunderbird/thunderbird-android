@@ -65,7 +65,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SearchListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -1172,11 +1172,11 @@ public class ImapStore extends Store {
 
         }
         
-        public void doRemoteSearch(final String queryString, final Flag[] requiredFlags, final Flag [] forbiddenFlags, final MessageRetrievalListener listener) 
+        public void doRemoteSearch(final String queryString, final Flag[] requiredFlags, final Flag [] forbiddenFlags, final MessageRetrievalListener msgListener, final SearchListener searchListener) 
         		throws MessagingException{
         	ImapSearcher searcher = new ImapSearcher(){
         		public List<ImapResponse> search() throws IOException, MessagingException {
-        			String imapQuery = "SEARCH ";
+        			String imapQuery = "UID SEARCH ";
         			if(requiredFlags != null){
 	        			for(Flag f : requiredFlags){
 	        				switch(f){
@@ -1246,7 +1246,7 @@ public class ImapStore extends Store {
         		}
         	};
         	
-        	search(searcher, listener, (mAccount != null ? mAccount.getRemoteSearchNumResults() : 0), true);
+        	search(searcher, msgListener, searchListener, (mAccount != null ? mAccount.getRemoteSearchNumResults() : 0), true);
         }
 
         @Override
@@ -1339,16 +1339,22 @@ public class ImapStore extends Store {
         }
 
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
-        	return search(searcher, listener, 0, false);
+        	return search(searcher, listener, null, 0, false);
         }
         
-        private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener, int limit, boolean getHeaders) throws MessagingException {
+        private Message[] search(ImapSearcher searcher, MessageRetrievalListener msgListener, SearchListener searchListener, int limit, boolean getHeaders) throws MessagingException {
 
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 ArrayList<Integer> uids = new ArrayList<Integer>();
-                List<ImapResponse> responses = searcher.search(); //
+                
+                if(searchListener != null){
+                    searchListener.searchStarted();
+                }
+                
+                List<ImapResponse> responses = searcher.search(); 
+
                 for (ImapResponse response : responses) {
                     if (response.mTag == null) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
@@ -1357,6 +1363,10 @@ public class ImapStore extends Store {
                             }
                         }
                     }
+                }
+                
+                if(searchListener != null){
+                    searchListener.searchFinished(uids.size());
                 }
 
                 // Sort the uids in numerically decreasing order 
@@ -1374,22 +1384,26 @@ public class ImapStore extends Store {
                 
                 if(K9.DEBUG){
                 	Log.i("IMAP search", "Search results: " + uids.size() + ", limit: " + limit);
+                	Log.i("IMAP search", "Uids: " + Arrays.toString(uids.toArray()));
                 }
                 
                 for (int i = 0, count = (limit==0 ? uids.size() : Math.min(uids.size(), limit)); i < count; i++) {
-                    if (listener != null) {
-                        listener.messageStarted("" + uids.get(i), i, count);
+                    if (msgListener != null) {
+                        msgListener.messageStarted("" + uids.get(i), i, count);
                     }
                     ImapMessage message = new ImapMessage("" + uids.get(i), this);
-
+                    
                     if(getHeaders){
                     	Message [] msgArray = {message};
+                    	if(K9.DEBUG){
+                    	    Log.i("IMAP search", "Fetching header: " + message.getUid());
+                    	}
                     	fetch(msgArray, fp, null); //don't pass the listener since we're already updating it
                     }
                     
                     messages.add(message);
-                    if (listener != null) {
-                        listener.messageFinished(message, i, count);
+                    if (msgListener != null) {
+                        msgListener.messageFinished(message, i, count);
                     }
                 }
             } catch (IOException ioe) {
@@ -3388,7 +3402,7 @@ public class ImapStore extends Store {
     }
 	
     @Override
-	public void searchRemoteMessages(final MessageRetrievalListener listener, final String queryString,
+	public void searchRemoteMessages(final MessageRetrievalListener msgListener, final SearchListener searchListener, final String queryString,
             final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
 		
 		if(!mAccount.allowRemoteSearch()){
@@ -3405,10 +3419,11 @@ public class ImapStore extends Store {
 			folder.checkOpen();
 			
 			
-			folder.doRemoteSearch(queryString, requiredFlags, forbiddenFlags, listener);
+			folder.doRemoteSearch(queryString, requiredFlags, forbiddenFlags, msgListener, searchListener);
 			
 		}
 		catch(Exception e){
+		    e.printStackTrace();
 			throw new MessagingException("Error during search: " + e.toString());
 		}
 		

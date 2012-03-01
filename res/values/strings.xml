@@ -1152,5 +1152,8 @@ the import operation. Please install a file manager application from Android Mar
         To perform a remote search, press your device\'s Search button while viewing a folder from this account.
         \n\nNote: Remote search is NOT available from the Unified Inbox or from a list of folders.
     </string>
+    <string name="remote_search_sending_query">Sending query to server</string>
     <string name="no_show_again">Don\'t Show Again</string>
+    <string name="remote_search_downloading">Fetching %d results</string>
+    <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
 </resources>

@@ -151,10 +151,51 @@ public class MessagingListener {
 
     public void pendingCommandsFinished(Account account) {}
 
+    
+    /**
+     * Called when a remote search is started
+     * 
+     * @param acct
+     * @param folder
+     */
     public void remoteSearchStarted(Account acct, String folder){}
     
+    
+    /**
+     * Called when server has responded to our query.  Messages have not yet been downloaded.
+     * 
+     * @param numResults
+     */
+    public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){ }
+    
+    
+    /**
+     * Called when a new result message is available for a remote search
+     * Can assume headers have been downloaded, but potentially not body.
+     * @param account 
+     * @param folder 
+     * @param message
+     */
+    public void remoteSearchAddMessage(Account account, String folder, Message message, int numDone, int numTotal){ }
+    
+    /**
+     * Called when Remote Search is fully complete
+     * 
+     * @param acct
+     * @param folder
+     * @param numResults
+     */
     public void remoteSearchFinished(Account acct, String folder, int numResults) {}
 
+    /**
+     * Called when there was a problem with a remote search operation.
+     * 
+     * @param acct
+     * @param folder
+     * @param err
+     */
+    public void remoteSearchFailed(Account acct, String folder, String err){ }
+    
     /**
      * General notification messages subclasses can override to be notified that the controller
      * has completed a command. This is useful for turning off progress indicators that may have
@@ -165,4 +206,6 @@ public class MessagingListener {
      *         {@code false} otherwise.
      */
     public void controllerCommandCompleted(boolean moreCommandsToRun) {}
+
+
 }
