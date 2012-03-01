@@ -151,6 +151,9 @@ public class MessagingListener {
 
     public void pendingCommandsFinished(Account account) {}
 
+    public void remoteSearchStarted(Account acct, String folder){}
+    
+    public void remoteSearchFinished(Account acct, String folder, int numResults) {}
 
     /**
      * General notification messages subclasses can override to be notified that the controller

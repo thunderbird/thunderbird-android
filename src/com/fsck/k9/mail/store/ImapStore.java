@@ -65,6 +65,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -94,7 +95,6 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -3388,7 +3388,7 @@ public class ImapStore extends Store {
     }
 	
     @Override
-	public void searchRemoteMessages(final MessageRetrievalListener listener, final String[] queryFields, final String queryString,
+	public void searchRemoteMessages(final MessageRetrievalListener listener, final String queryString,
             final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
 		
 		if(!mAccount.allowRemoteSearch()){
@@ -3403,6 +3403,7 @@ public class ImapStore extends Store {
 		try{
 			folder.open(OpenMode.READ_ONLY);
 			folder.checkOpen();
+			
 			
 			folder.doRemoteSearch(queryString, requiredFlags, forbiddenFlags, listener);
 			
