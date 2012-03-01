@@ -821,14 +821,19 @@ public class MessagingController implements Runnable {
         final AccountStats stats = new AccountStats();
 
         if (listener != null) {
-            listener.listLocalMessagesStarted(acct, null);
+            listener.remoteSearchStarted(acct, folderName);
         }
 
+        
         MessageRetrievalListener retrievalListener = new MessageRetrievalListener() {
             @Override
-            public void messageStarted(String message, int number, int ofTotal) {}
+            public void messageStarted(String message, int number, int ofTotal) {
+                
+            }
             @Override
-            public void messageFinished(Message message, int number, int ofTotal) {
+            public void messageFinished(Message message, int number, int ofTotal){
+                
+                
                 if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
                     List<Message> messages = new ArrayList<Message>();
 
@@ -837,7 +842,7 @@ public class MessagingController implements Runnable {
                     stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                     if (listener != null) {
                         listener.listLocalMessagesAddMessages(acct, null, messages);
-
+                        listener.synchronizeMailboxProgress(acct, null, number, ofTotal);
                     }
                 }
 
@@ -849,11 +854,9 @@ public class MessagingController implements Runnable {
         };
 
         try {
-            String[] queryFields = {"html_content", "subject", "sender_list"};
             Store acctStore = acct.getRemoteStore();
 
-            //TODO: make queryFields actually do something
-            acctStore.searchRemoteMessages(retrievalListener, queryFields, query, folderName, requiredFlags, forbiddenFlags);
+            acctStore.searchRemoteMessages(retrievalListener, query, folderName, requiredFlags, forbiddenFlags);
 
         } catch (Exception e) {
             if (listener != null) {
@@ -863,6 +866,7 @@ public class MessagingController implements Runnable {
         } finally {
             if (listener != null) {
                 listener.listLocalMessagesFinished(acct, null);
+                listener.remoteSearchFinished(acct, folderName, 0);
             }
         }
 

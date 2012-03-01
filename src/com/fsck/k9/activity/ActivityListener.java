@@ -76,6 +76,7 @@ public class ActivityListener extends MessagingListener {
     public void informUserOfStatus() {
     }
 
+
     @Override
     public void synchronizeMailboxFinished(
         Account account,

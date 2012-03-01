@@ -1906,6 +1906,21 @@ public class MessageList
         private final ActivityListener mListener = new ActivityListener() {
 
             @Override
+            public void remoteSearchStarted(Account acct, String folder){
+                //TODO: Update UI behavior for Remote Searching
+                //for now, just use existing UI behavior
+                synchronizeMailboxStarted(acct, folder); 
+            }
+            
+            @Override
+            public void remoteSearchFinished(Account acct, String folder, int numResults){
+                //TODO: Update UI behavior for Remote Searching
+                //TODO: Show number of results
+                //for now, just use existing UI behavior
+                synchronizeMailboxFinished(acct, folder, 0, 0);
+            }
+            
+            @Override
             public void informUserOfStatus() {
                 mHandler.refreshTitle();
             }
@@ -2037,11 +2052,7 @@ public class MessageList
         };
 
         private boolean updateForMe(Account account, String folder) {
-            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
-                return true;
-            } else {
-                return false;
-            }
+            return account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName);
         }
 
         private Drawable mAttachmentIcon;

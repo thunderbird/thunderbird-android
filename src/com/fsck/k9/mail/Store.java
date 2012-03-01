@@ -1,6 +1,9 @@
 
 package com.fsck.k9.mail;
 
+import java.util.HashMap;
+import java.util.List;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -9,11 +12,9 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
-import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
-
-import java.util.HashMap;
-import java.util.List;
+import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.mail.store.WebDavStore;
 
 /**
  * Store is the access point for an email message store. It's location can be
@@ -178,7 +179,7 @@ public abstract class Store {
         return mAccount;
     }
     
-    public void searchRemoteMessages(MessageRetrievalListener listener, String[] queryFields, String queryString,
+    public void searchRemoteMessages(MessageRetrievalListener listener, String queryString,
             String folder,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
     	throw new MessagingException("K-9 does not support remote searchign on this account type");
     }
