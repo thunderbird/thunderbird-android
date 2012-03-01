@@ -70,6 +70,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
@@ -421,6 +422,25 @@ public class MessageList
             });
         }
 
+        
+        public void updateFooter(final String text, final boolean progressVisible){
+            runOnUiThread(new Runnable(){
+                public void run(){
+                    FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
+                    holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.INVISIBLE);
+                    if(text!= null){
+                        holder.main.setText(text);
+                    }
+                }
+            });
+        }
+        
+        public void setWindowProgress(final int amt){
+            runOnUiThread(new Runnable(){public void run(){
+                getWindow().setFeatureInt(Window.FEATURE_PROGRESS, amt);
+            }});
+        }
+        
         private void resetUnreadCount() {
             runOnUiThread(new Runnable() {
                 @Override
@@ -493,11 +513,24 @@ public class MessageList
             if (mCurrentFolder != null && mCurrentFolder.name.equals(folder)) {
                 mCurrentFolder.loading = loading;
             }
-            runOnUiThread(new Runnable() {
-                @Override public void run() {
-                    updateFooterView();
+
+            if (mCurrentFolder != null && mAccount != null) {
+                if (mCurrentFolder.loading) {
+                    updateFooter(getString(R.string.status_loading_more), true);
+                } else {
+                    if (!mCurrentFolder.lastCheckFailed) {
+                        if (mAccount.getDisplayCount() == 0) {
+                            updateFooter(getString(R.string.message_list_load_more_messages_action), false);
+                        } else {
+                            updateFooter(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()), false);
+                        }
+                    } else {
+                        updateFooter(getString(R.string.status_loading_more_failed), false);
+                    }
                 }
-            });
+            } else {
+                updateFooter(null, false);
+            }
         }
 
         private void refreshTitle() {
@@ -511,7 +544,9 @@ public class MessageList
 
         private void refreshTitleOnThread() {
             setWindowTitle();
-            setWindowProgress();
+            if(!mRemoteSearch){
+                setWindowProgress();
+            }
         }
 
         private void setWindowProgress() {
@@ -663,7 +698,7 @@ public class MessageList
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (view == mFooterView) {
-            if (mCurrentFolder != null) {
+            if (mCurrentFolder != null && !mRemoteSearch) {
                 mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             }
             return;
@@ -782,8 +817,8 @@ public class MessageList
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
-        // Hide "Load up to x more" footer for search views
-        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
+        // Hide "Load up to x more" footer for local search views
+        mFooterView.setVisibility((mQueryString != null && !mRemoteSearch) ? View.GONE : View.VISIBLE);
 
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
@@ -884,32 +919,34 @@ public class MessageList
             new Thread() {
                 @Override
                 public void run() {
-                    mAdapter.markAllMessagesAsDirty();
+                    
 
-                    if (mRemoteSearch){
-                		mController.searchRemoteMessagesSynchronous(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
-                	} else if (mFolderName != null) {
-                        mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
-                    } else if (mQueryString != null) {
-                        mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                    if (!mRemoteSearch){
+                        mAdapter.markAllMessagesAsDirty();
+                        if (mFolderName != null) {
+                            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+                        } else if (mQueryString != null) {
+                            mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                        }
+                        mAdapter.pruneDirtyMessages();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.notifyDataSetChanged();
+                                restoreListState();
+                            }
+                        });
                     }
 
 
-                    mAdapter.pruneDirtyMessages();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.notifyDataSetChanged();
-                            restoreListState();
-                        }
-                    });
+                    
                 }
 
             }
             .start();
         }
 
-        if (mAccount != null && mFolderName != null) {
+        if (mAccount != null && mFolderName != null && !mRemoteSearch) {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
         mHandler.refreshTitle();
@@ -1905,20 +1942,74 @@ public class MessageList
 
         private final ActivityListener mListener = new ActivityListener() {
 
+            
+            @Override
+            public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
+                
+                if(numTotal > 0){
+                    mHandler.setWindowProgress(Window.PROGRESS_END/numTotal * numDone);
+                }
+                else{
+                    mHandler.setWindowProgress(Window.PROGRESS_END);
+                }
+                
+                //MessageView expects messages to be in the LocalStore, so add them
+                try{
+                    LocalFolder localFolder = account.getLocalStore().getFolder(folderName);
+                    if(localFolder != null){
+                        if(localFolder.getMessage(message.getUid()) == null){
+                            Message [] messages = {message};
+                            localFolder.appendMessages(messages);
+                        }//else: the message is already in the local store so don't worry about it
+                    }//else: should never really happen
+                    
+                }
+                catch(MessagingException e){
+                    //FIXME: Do something useful here...
+                    if(K9.DEBUG){
+                        Log.d("IMAP search", "remoteSearchAddMessage caught error: " + e.toString());
+                    }
+                }
+                
+                addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
+            }
+
+            @Override
+            public void remoteSearchFailed(Account acct, String folder,
+                    final String err) {
+                //TODO: Better error handling
+                runOnUiThread(new Runnable(){public void run(){
+                    Toast.makeText(getApplication(),  err, Toast.LENGTH_LONG).show();
+                }});
+            }
+
             @Override
             public void remoteSearchStarted(Account acct, String folder){
-                //TODO: Update UI behavior for Remote Searching
-                //for now, just use existing UI behavior
-                synchronizeMailboxStarted(acct, folder); 
+                mHandler.progress(true);
+                mHandler.updateFooter(getString(R.string.remote_search_sending_query), true);
+            }
+            
+
+            @Override
+            public void remoteSearchFinished(Account acct, String folder, int numResults){
+                mHandler.progress(false);
+                mHandler.updateFooter("", false);
+                mHandler.setWindowProgress(Window.PROGRESS_END);
             }
             
             @Override
-            public void remoteSearchFinished(Account acct, String folder, int numResults){
-                //TODO: Update UI behavior for Remote Searching
-                //TODO: Show number of results
-                //for now, just use existing UI behavior
-                synchronizeMailboxFinished(acct, folder, 0, 0);
+            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){ 
+                mHandler.progress(true);
+                if(account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()){
+                    mHandler.updateFooter(getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
+                }
+                else{
+                    mHandler.updateFooter(getString(R.string.remote_search_downloading, numResults), true);
+                }
+                mHandler.setWindowProgress(Window.PROGRESS_START);
             }
+            
+            
             
             @Override
             public void informUserOfStatus() {
@@ -2519,29 +2610,6 @@ public class MessageList
         return mFooterView;
     }
 
-    private void updateFooterView() {
-        FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
-
-        if (mCurrentFolder != null && mAccount != null) {
-            if (mCurrentFolder.loading) {
-                holder.main.setText(getString(R.string.status_loading_more));
-                holder.progress.setVisibility(ProgressBar.VISIBLE);
-            } else {
-                if (!mCurrentFolder.lastCheckFailed) {
-                    if (mAccount.getDisplayCount() == 0) {
-                        holder.main.setText(getString(R.string.message_list_load_more_messages_action));
-                    } else {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
-                    }
-                } else {
-                    holder.main.setText(getString(R.string.status_loading_more_failed));
-                }
-                holder.progress.setVisibility(ProgressBar.INVISIBLE);
-            }
-        } else {
-            holder.progress.setVisibility(ProgressBar.INVISIBLE);
-        }
-    }
 
     private void hideBatchButtons() {
         if (mBatchButtonArea.getVisibility() != View.GONE) {
