@@ -63,6 +63,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private ImageView mShowAdditionalHeadersIcon;
     private SavedState mSavedState;
 
+    private OnLayoutChangedListener mOnLayoutChangedListener;
+
     /**
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
@@ -272,6 +274,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         } else {
             showAdditionalHeaders();
         }
+        layoutChanged();
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
@@ -376,6 +379,20 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
+        }
+    }
+
+    public interface OnLayoutChangedListener {
+        void onLayoutChanged();
+    }
+
+    public void setOnLayoutChangedListener(OnLayoutChangedListener listener) {
+        mOnLayoutChangedListener = listener;
+    }
+
+    private void layoutChanged() {
+        if (mOnLayoutChangedListener != null) {
+            mOnLayoutChangedListener.onLayoutChanged();
         }
     }
 }
