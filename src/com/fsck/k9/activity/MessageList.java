@@ -768,6 +768,29 @@ public class MessageList
             }
         }
 
+        
+        mQueryString = intent.getStringExtra(SearchManager.QUERY);
+        mFolderName = null;
+        mRemoteSearch = false;
+        mSearchAccount = null;
+        mSearchFolder = null;
+        if(mQueryString != null){
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                //Query was received from Search Dialog
+                Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+                if(appData != null){
+                    mSearchAccount = appData.getString(EXTRA_SEARCH_ACCOUNT);
+                    mSearchFolder = appData.getString(EXTRA_SEARCH_FOLDER);
+                    mRemoteSearch = appData.getBoolean(EXTRA_REMOTE_SEARCH);
+                }
+            }
+            else{
+                mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
+                mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
+                
+            }
+        }
+
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         
@@ -778,6 +801,8 @@ public class MessageList
             onAccountUnavailable();
             return;
         }
+
+
 
 
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
