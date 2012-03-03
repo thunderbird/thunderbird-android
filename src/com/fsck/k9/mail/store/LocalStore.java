@@ -1138,9 +1138,16 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public void open(final OpenMode mode) throws MessagingException {
-            if (isOpen()) {
+            
+            if (isOpen() && (getMode() == mode || mode==OpenMode.READ_ONLY)) {
                 return;
             }
+            else if (isOpen()){
+                //previously opened in READ_ONLY and now requesting READ_WRITE
+                //so close connection and reopen
+                close();
+            }
+            
             try {
                 database.execute(false, new DbCallback<Void>() {
                     @Override

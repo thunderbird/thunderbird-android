@@ -1074,7 +1074,7 @@ public class ImapStore extends Store {
                 return;
 
             ImapFolder iFolder = (ImapFolder)folder;
-            checkOpen();
+            checkOpen(); //only need READ access
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
@@ -1153,7 +1153,7 @@ public class ImapStore extends Store {
 
 
         private int getRemoteMessageCount(String criteria) throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
             try {
                 int count = 0;
                 int start = 1;
@@ -1344,7 +1344,7 @@ public class ImapStore extends Store {
         
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener msgListener, SearchListener searchListener, int limit, boolean getHeaders) throws MessagingException {
 
-            checkOpen();
+            checkOpen(); //only need READ access
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 ArrayList<Integer> uids = new ArrayList<Integer>();
@@ -1431,7 +1431,7 @@ public class ImapStore extends Store {
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 if (uids == null) {
@@ -1468,7 +1468,7 @@ public class ImapStore extends Store {
             if (messages == null || messages.length == 0) {
                 return;
             }
-            checkOpen();
+            checkOpen(); //only need READ access
             List<String> uids = new ArrayList<String>(messages.length);
             HashMap<String, Message> messageMap = new HashMap<String, Message>();
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1593,7 +1593,7 @@ public class ImapStore extends Store {
         @Override
         public void fetchPart(Message message, Part part, MessageRetrievalListener listener)
         throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
 
             String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
             if (parts == null) {
@@ -1986,6 +1986,7 @@ public class ImapStore extends Store {
          */
         @Override
         public void appendMessages(Message[] messages) throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
             try {
                 for (Message message : messages) {
@@ -2058,6 +2059,7 @@ public class ImapStore extends Store {
 
         @Override
         public void expunge() throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
             try {
                 executeSimpleCommand("EXPUNGE");
@@ -2087,6 +2089,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlags(Flag[] flags, boolean value)
         throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
 
 
@@ -2121,6 +2124,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException {
+            open(OpenMode.READ_WRITE); 
             checkOpen();
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
