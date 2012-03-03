@@ -450,7 +450,7 @@
     
     <PreferenceScreen
         android:title="@string/account_settings_crypto"
-        android:key="crypto" android:dependency="account_allow_remote_search">
+        android:key="crypto">
 
         <ListPreference
             android:persistent="false"
