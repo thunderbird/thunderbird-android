@@ -1171,8 +1171,8 @@ public class ImapStore extends Store {
 
 
         }
-        
-        public void doRemoteSearch(final String queryString, final Flag[] requiredFlags, final Flag [] forbiddenFlags, final MessageRetrievalListener msgListener, final SearchListener searchListener) 
+
+        public void doRemoteSearch(final String queryString, final Flag[] requiredFlags, final Flag [] forbiddenFlags, final MessageRetrievalListener msgListener, final SearchListener searchListener)
                 throws MessagingException{
             ImapSearcher searcher = new ImapSearcher(){
                 public List<ImapResponse> search() throws IOException, MessagingException {
@@ -1183,23 +1183,23 @@ public class ImapStore extends Store {
                             case DELETED:
                                 imapQuery += "DELETED ";
                                 break;
-                                
+
                             case SEEN:
                                 imapQuery +=  "SEEN ";
                                 break;
-                                
+
                             case ANSWERED:
                                 imapQuery += "ANSWERED ";
                                 break;
-                                
+
                             case FLAGGED:
                                 imapQuery += "FLAGGED ";
                                 break;
-                                
+
                             case DRAFT:
                                 imapQuery += "DRAFT ";
                                 break;
-                                
+
                             case RECENT:
                                 imapQuery += "RECENT ";
                                 break;
@@ -1212,23 +1212,23 @@ public class ImapStore extends Store {
                             case DELETED:
                                 imapQuery += "UNDELETED ";
                                 break;
-                                
+
                             case SEEN:
                                 imapQuery +=  "UNSEEN ";
                                 break;
-                                
+
                             case ANSWERED:
                                 imapQuery += "UNANSWERED ";
                                 break;
-                                
+
                             case FLAGGED:
                                 imapQuery += "UNFLAGGED ";
                                 break;
-                                
+
                             case DRAFT:
                                 imapQuery += "UNDRAFT ";
                                 break;
-                                
+
                             case RECENT:
                                 imapQuery += "UNRECENT ";
                                 break;
@@ -1245,7 +1245,7 @@ public class ImapStore extends Store {
                     return executeSimpleCommand(imapQuery);
                 }
             };
-            
+
             search(searcher, msgListener, searchListener, (mAccount != null ? mAccount.getRemoteSearchNumResults() : 0), true);
         }
 
@@ -1341,19 +1341,19 @@ public class ImapStore extends Store {
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
             return search(searcher, listener, null, 0, false);
         }
-        
+
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener msgListener, SearchListener searchListener, int limit, boolean getHeaders) throws MessagingException {
 
             checkOpen(); //only need READ access
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 ArrayList<Integer> uids = new ArrayList<Integer>();
-                
+
                 if(searchListener != null){
                     searchListener.searchStarted();
                 }
-                
-                List<ImapResponse> responses = searcher.search(); 
+
+                List<ImapResponse> responses = searcher.search();
 
                 for (ImapResponse response : responses) {
                     if (response.mTag == null) {
@@ -1364,35 +1364,35 @@ public class ImapStore extends Store {
                         }
                     }
                 }
-                
+
                 if(searchListener != null){
                     searchListener.searchFinished(uids.size());
                 }
 
-                // Sort the uids in numerically decreasing order 
+                // Sort the uids in numerically decreasing order
                 // By doing it in decreasing order, we ensure newest messages are dealt with first
                 // This makes the most sense when a limit is imposed, and also prevents UI from going
                 // crazy adding stuff at the top.
                 Collections.sort(uids, Collections.reverseOrder());
-                
-                FetchProfile fp = new FetchProfile(); 
+
+                FetchProfile fp = new FetchProfile();
                 if(getHeaders){
                     fp.add(FetchProfile.Item.ENVELOPE);
                     fp.add(FetchProfile.Item.FLAGS);
                     fp.add(FetchProfile.Item.STRUCTURE);
                 }
-                
+
                 if(K9.DEBUG){
                     Log.i("IMAP search", "Search results: " + uids.size() + ", limit: " + limit);
                     Log.i("IMAP search", "Uids: " + Arrays.toString(uids.toArray()));
                 }
-                
+
                 for (int i = 0, count = (limit==0 ? uids.size() : Math.min(uids.size(), limit)); i < count; i++) {
                     if (msgListener != null) {
                         msgListener.messageStarted("" + uids.get(i), i, count);
                     }
                     ImapMessage message = new ImapMessage("" + uids.get(i), this);
-                    
+
                     if(getHeaders){
                         Message [] msgArray = {message};
                         if(K9.DEBUG){
@@ -1400,7 +1400,7 @@ public class ImapStore extends Store {
                         }
                         fetch(msgArray, fp, null); //don't pass the listener since we're already updating it
                     }
-                    
+
                     messages.add(message);
                     if (msgListener != null) {
                         msgListener.messageFinished(message, i, count);
@@ -1409,13 +1409,13 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            
+
             Message [] msgArray = messages.toArray(EMPTY_MESSAGE_ARRAY);
-            
+
             /*
              * Doing this here makes it one batch, but the UI spends a long time with (no subject) stuff, etc.
              * Therefore, at least for now, should fetch headers individually as we fetch the messages.
-             * 
+             *
             if(getHeaders){
                 fetch(msgArray, fp, listener);
             }*/
@@ -2124,7 +2124,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException {
-            open(OpenMode.READ_WRITE); 
+            open(OpenMode.READ_WRITE);
             checkOpen();
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -3404,35 +3404,35 @@ public class ImapStore extends Store {
             return null;
         }
     }
-    
+
     @Override
     public void searchRemoteMessages(final MessageRetrievalListener msgListener, final SearchListener searchListener, final String queryString,
             final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
-        
+
         if(!mAccount.allowRemoteSearch()){
             throw new MessagingException("Your settings do not allow remote searching of this account");
         }
-        
+
         final ImapFolder folder = (ImapFolder) getFolder(folderName);
         if(folder == null){
             throw new MessagingException("Invalid folder specified");
         }
-        
+
         try{
             folder.open(OpenMode.READ_ONLY);
             folder.checkOpen();
-            
-            
+
+
             folder.doRemoteSearch(queryString, requiredFlags, forbiddenFlags, msgListener, searchListener);
-            
+
         }
         catch(Exception e){
             e.printStackTrace();
             throw new MessagingException("Error during search: " + e.toString());
         }
-        
+
     }
-    
-    
+
+
 
 }

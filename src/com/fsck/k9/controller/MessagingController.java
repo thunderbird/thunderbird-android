@@ -815,7 +815,7 @@ public class MessagingController implements Runnable {
             }
         });
     }
-    public void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query, 
+    public void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query,
             final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener){
         final Account acct = Preferences.getPreferences(mApplication.getApplicationContext()).getAccount(acctUuid);
         final AccountStats stats = new AccountStats();
@@ -824,16 +824,16 @@ public class MessagingController implements Runnable {
             listener.remoteSearchStarted(acct, folderName);
         }
 
-        
+
         MessageRetrievalListener retrievalListener = new MessageRetrievalListener() {
             @Override
             public void messageStarted(String message, int number, int ofTotal) {
-                
+
             }
             @Override
             public void messageFinished(Message message, int number, int ofTotal){
-                
-                
+
+
                 if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
                     stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
                     stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
@@ -848,7 +848,7 @@ public class MessagingController implements Runnable {
 
             }
         };
-        
+
         SearchListener searchListener = new SearchListener(){
 
             @Override

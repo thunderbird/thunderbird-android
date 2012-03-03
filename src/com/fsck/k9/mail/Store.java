@@ -179,7 +179,7 @@ public abstract class Store {
     public Account getAccount() {
         return mAccount;
     }
-    
+
     public void searchRemoteMessages(MessageRetrievalListener msgListener, SearchListener searchListener, String queryString,
             String folder,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException{
         throw new MessagingException("K-9 does not support remote searching on this account type");

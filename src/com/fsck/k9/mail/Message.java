@@ -148,12 +148,12 @@ public abstract class Message implements Part, Body {
     public abstract boolean ccMe();
     public abstract boolean bccMe();
     public abstract long getId();
-    
+
     public abstract String getPreview();
     public abstract boolean hasAttachments();
-    
-    
-    
+
+
+
     public void delete(String trashFolderName) throws MessagingException {}
 
     /*

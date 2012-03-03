@@ -152,7 +152,7 @@ public class Account implements BaseAccount {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
-    
+
     private CryptoProvider mCryptoProvider = null;
 
     /**
@@ -399,7 +399,7 @@ public class Account implements BaseAccount {
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
-        
+
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
     }
 
@@ -1458,11 +1458,11 @@ public class Account implements BaseAccount {
     public void setCryptoAutoEncrypt(boolean cryptoAutoEncrypt) {
         mCryptoAutoEncrypt = cryptoAutoEncrypt;
     }
-    
+
     public boolean allowRemoteSearch() {
         return mAllowRemoteSearch;
     }
-    
+
     public void setAllowRemoteSearch(boolean val){
         mAllowRemoteSearch = val;
     }
@@ -1470,11 +1470,11 @@ public class Account implements BaseAccount {
     public int getRemoteSearchNumResults(){
         return mRemoteSearchNumResults;
     }
-    
+
     public void setRemoteSearchNumResults(int val){
         mRemoteSearchNumResults = (val >= 0 ? val : 0);
     }
-    
+
     public String getInboxFolderName() {
         return mInboxFolderName;
     }
@@ -1531,7 +1531,7 @@ public class Account implements BaseAccount {
     }
 
     public boolean getRemoteSearchFullText() {
-        
+
         return mRemoteSearchFullText;
     }
 

@@ -256,7 +256,7 @@ public class MessageList
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
 
-    
+
     private ListView mListView;
 
     private boolean mTouchView = true;
@@ -422,7 +422,7 @@ public class MessageList
             });
         }
 
-        
+
         public void updateFooter(final String text, final boolean progressVisible){
             runOnUiThread(new Runnable(){
                 public void run(){
@@ -434,13 +434,13 @@ public class MessageList
                 }
             });
         }
-        
+
         public void setWindowProgress(final int amt){
             runOnUiThread(new Runnable(){public void run(){
                 getWindow().setFeatureInt(Window.FEATURE_PROGRESS, amt);
             }});
         }
-        
+
         private void resetUnreadCount() {
             runOnUiThread(new Runnable() {
                 @Override
@@ -745,7 +745,7 @@ public class MessageList
             // So just leave the activity in the state it was left in.
             return;
         }
-        
+
         mQueryString = intent.getStringExtra(SearchManager.QUERY);
         mFolderName = null;
         mRemoteSearch = false;
@@ -764,11 +764,11 @@ public class MessageList
             else{
                 mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
                 mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
-                
+
             }
         }
 
-        
+
         mQueryString = intent.getStringExtra(SearchManager.QUERY);
         mFolderName = null;
         mRemoteSearch = false;
@@ -787,13 +787,13 @@ public class MessageList
             else{
                 mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
                 mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
-                
+
             }
         }
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
-        
+
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mAccount != null && !mAccount.isAvailable(this)) {
@@ -923,7 +923,7 @@ public class MessageList
             mController.notifyAccountCancel(this, accountWithNotification);
         }
 
-        
+
         if (mAdapter.messages.isEmpty()) {
             if (mRemoteSearch){
                 //TODO: Support flag based search
@@ -941,7 +941,7 @@ public class MessageList
             new Thread() {
                 @Override
                 public void run() {
-                    
+
 
                     if (!mRemoteSearch){
                         mAdapter.markAllMessagesAsDirty();
@@ -961,7 +961,7 @@ public class MessageList
                     }
 
 
-                    
+
                 }
 
             }
@@ -1283,11 +1283,11 @@ public class MessageList
     private void onEditAccount() {
         AccountSettings.actionSettings(this, mAccount);
     }
-    
-    
+
+
     @Override
     public boolean onSearchRequested() {
-         
+
          if(mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()){
              //if in a SSSable folder, ask user what they want.
              //TODO: Add ability to remember selection?
@@ -1299,7 +1299,7 @@ public class MessageList
              builder.setTitle(getString(R.string.search_mode_title));
              builder.setItems(items, new DialogInterface.OnClickListener() {
                  public void onClick(DialogInterface dialog, int item) {
-                     
+
                      Bundle appData = null;
                      if(item == 1){
                          appData = new Bundle();
@@ -1308,16 +1308,16 @@ public class MessageList
                          appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
                      }
                      //else do regular search, which doesn't require any special parameter setup
-                     
+
                      startSearch(null, false, appData, false);
                  }
              });
              AlertDialog alert = builder.create();
              alert.show();
-             
+
              return true;
          }
-         
+
          startSearch(null, false, null, false);
          return true;
      }
@@ -1964,17 +1964,17 @@ public class MessageList
 
         private final ActivityListener mListener = new ActivityListener() {
 
-            
+
             @Override
             public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
-                
+
                 if(numTotal > 0){
                     mHandler.setWindowProgress(Window.PROGRESS_END/numTotal * numDone);
                 }
                 else{
                     mHandler.setWindowProgress(Window.PROGRESS_END);
                 }
-                
+
                 //MessageView expects messages to be in the LocalStore, so add them
                 try{
                     LocalFolder localFolder = account.getLocalStore().getFolder(folderName);
@@ -1984,7 +1984,7 @@ public class MessageList
                             localFolder.appendMessages(messages);
                         }//else: the message is already in the local store so don't worry about it
                     }//else: should never really happen
-                    
+
                 }
                 catch(MessagingException e){
                     //FIXME: Do something useful here...
@@ -1992,7 +1992,7 @@ public class MessageList
                         Log.d("IMAP search", "remoteSearchAddMessage caught error: " + e.toString());
                     }
                 }
-                
+
                 addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
             }
 
@@ -2010,7 +2010,7 @@ public class MessageList
                 mHandler.progress(true);
                 mHandler.updateFooter(getString(R.string.remote_search_sending_query), true);
             }
-            
+
 
             @Override
             public void remoteSearchFinished(Account acct, String folder, int numResults){
@@ -2018,9 +2018,9 @@ public class MessageList
                 mHandler.updateFooter("", false);
                 mHandler.setWindowProgress(Window.PROGRESS_END);
             }
-            
+
             @Override
-            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){ 
+            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){
                 mHandler.progress(true);
                 if(account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()){
                     mHandler.updateFooter(getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
@@ -2030,9 +2030,9 @@ public class MessageList
                 }
                 mHandler.setWindowProgress(Window.PROGRESS_START);
             }
-            
-            
-            
+
+
+
             @Override
             public void informUserOfStatus() {
                 mHandler.refreshTitle();

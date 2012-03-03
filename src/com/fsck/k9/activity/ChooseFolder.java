@@ -232,17 +232,17 @@ public class ChooseFolder extends K9ListActivity {
 
         final EditText input = new EditText(this);
         input.addTextChangedListener(new TextWatcher() {
-            
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mAdapter.getFilter().filter(input.getText().toString());
             }
-            
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                     int after) {
             }
-            
+
             @Override
             public void afterTextChanged(Editable s) {
             }

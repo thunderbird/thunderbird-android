@@ -57,7 +57,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
     private static final String PREFERENCE_SCREEN_REMOTE_SEARCH = "remote_search";
-    
+
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
@@ -440,7 +440,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
-        
+
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
@@ -483,12 +483,12 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         }
-        
-        
+
+
         // IMAP-specific preferences
         mAllowRemoteSearch = (CheckBoxPreference) findPreference(PREFERENCE_ALLOW_REMOTE_SEARCH);
-        
-        mAllowRemoteSearch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() { 
+
+        mAllowRemoteSearch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                                                             public boolean onPreferenceChange(Preference pref, Object newVal){
                                                                 if((Boolean) newVal){
                                                                     showRemoteSearchHelp();
@@ -507,7 +507,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mAllowRemoteSearch.setChecked(mAccount.allowRemoteSearch());
             mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
             mRemoteSearchFullText.setChecked(mAccount.getRemoteSearchFullText());
-            
+
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
             mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -519,7 +519,7 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
- 
+
             mMaxPushFolders.setValue(String.valueOf(mAccount.getMaxPushFolders()));
             mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
             mMaxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -547,9 +547,9 @@ public class AccountSettings extends K9PreferenceActivity {
             final PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
             incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
             incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
-            
+
             ((PreferenceScreen) findPreference("main")).removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_REMOTE_SEARCH));
-            
+
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -716,7 +716,7 @@ public class AccountSettings extends K9PreferenceActivity {
                });
            adb.create().show();
         }
-        
+
     }
 
     private void handleCryptoAppDependencies() {
