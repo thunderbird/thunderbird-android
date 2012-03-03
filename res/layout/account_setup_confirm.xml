@@ -1,147 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/confirm_options"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:stretchColumns="3"
-            android:padding="15dp">
+            android:padding="15dp"
+            android:stretchColumns="3" >
+
             <TableRow>
-                <TextView android:layout_column="1"
-                    android:textSize="14sp"
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:paddingRight="40dp"
                     android:text="Type:"
-                    android:paddingRight="40dp"/>
-                <Spinner android:id="@+id/spinner_protocol"
-                    android:layout_column="2"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_protocol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="2"
                     android:drawSelectorOnTop="true"
                     android:prompt="@string/account_setup_basics_email_hint" />
-                <TextView android:layout_column="3"
+
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Extra information"
-                    android:gravity="center_vertical|center_horizontal"/>
+                    android:layout_column="3"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Extra information" />
             </TableRow>
+
             <TableRow>
-                <TextView android:layout_column="1"
-                    android:textSize="16sp"
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Security:" />
-                <Spinner android:id="@+id/spinner_sockettype"
+                    android:layout_column="1"
+                    android:text="Security:"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_sockettype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true"
-                    android:prompt="@string/account_setup_basics_email_hint"/>
-                <TextView android:layout_column="3"
+                    android:prompt="@string/account_setup_basics_email_hint" />
+
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Extra information"
-                    android:gravity="center_vertical|center_horizontal"/>
+                    android:layout_column="3"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Extra information" />
             </TableRow>
         </TableLayout>
 
-    <RelativeLayout android:id="@+id/server_information_header"
+        <RelativeLayout
+            android:id="@+id/server_information_header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/confirm_options"
             android:layout_marginTop="3dp"
+            android:background="#AAA"
             android:padding="9dp"
-            android:textSize="16sp"
-            android:background="#AAA" >
-        <TextView android:text="Server information"
+            android:textSize="16sp" >
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"/>
-        <TextView android:id="@+id/server_count_label"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+                android:layout_alignParentLeft="true"
+                android:text="Server information" />
 
-    <TextView android:id="@+id/server_information"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:layout_below="@id/server_information_header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- ONLY SHOW WHEN USER HAS TO ENTER A USERNAME HIMSELF -->
-    <LinearLayout android:id="@+id/account_custom_username"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:padding="8dp">
-        <TextView android:id="@+id/account_username_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please enter your username: "/>
-        <EditText android:id="@+id/account_username_field"
-            android:singleLine="true"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Username......         " />
-    </LinearLayout>
-
-    <!-- SHOULD ONLY BE MADE VISIBLE WHEN THERE ARE MULTIPLE MATCHING SERVERS
-         NOTE: see note at beginning of AbstractSetupConfirmActivity class -->
-    <RelativeLayout android:id="@+id/confirm_serverbrowse_buttons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/server_information">
-        <Button android:id="@+id/confirm_prev_server_button"
+            <TextView
+                android:id="@+id/server_count_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Previous" />
-        <Button android:id="@+id/confirm_next_server_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/confirm_prev_server_button"
-                android:text="Next" />
-    </RelativeLayout>
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
 
-    <!-- SHOULD ONLY BE MADE VISIBLE WHEN THE XML PROVIDES EXTRA INFORMATION LINKS -->
-    <RelativeLayout android:id="@+id/confirm_documentation_part"
+        <TextView
+            android:id="@+id/server_information"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_below="@id/confirm_serverbrowse_buttons">
-        <TextView android:id="@+id/server_documentation_header"
-                android:text="Server documentation"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="9dp"
-                android:textSize="14sp"
-                android:background="#AAA"
-                android:layout_alignParentLeft="true"/>
-        <TextView android:id="@+id/server_documentation_content"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_below="@id/server_documentation_header"
-                  android:padding="8dp" />
-    </RelativeLayout>
+            android:layout_below="@id/server_information_header"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp" />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <Button android:id="@+id/confirm_ok_button"
+        <!-- ONLY SHOW WHEN USER HAS TO ENTER A USERNAME HIMSELF -->
+
+        <LinearLayout
+            android:id="@+id/account_custom_username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" >
+
+            <TextView
+                android:id="@+id/account_username_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please enter your username: " />
+
+            <EditText
+                android:id="@+id/account_username_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:hint="Username......         "
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <!--
+         SHOULD ONLY BE MADE VISIBLE WHEN THERE ARE MULTIPLE MATCHING SERVERS
+         NOTE: see note at beginning of AbstractSetupConfirmActivity class
+        -->
+
+        <RelativeLayout
+            android:id="@+id/confirm_serverbrowse_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/server_information" >
+
+            <Button
+                android:id="@+id/confirm_prev_server_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text="Previous" />
+
+            <Button
+                android:id="@+id/confirm_next_server_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@id/confirm_prev_server_button"
+                android:text="Next" />
+        </RelativeLayout>
+
+        <!-- SHOULD ONLY BE MADE VISIBLE WHEN THE XML PROVIDES EXTRA INFORMATION LINKS -->
+
+        <RelativeLayout
+            android:id="@+id/confirm_documentation_part"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/confirm_serverbrowse_buttons"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:id="@+id/server_documentation_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="#AAA"
+                android:padding="9dp"
+                android:text="Server documentation"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/server_documentation_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/server_documentation_header"
+                android:padding="8dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:id="@+id/confirm_ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="Ok go"/>
-     </RelativeLayout>
-</LinearLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="Ok go" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
