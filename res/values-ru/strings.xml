@@ -533,14 +533,8 @@
     <string name="account_settings_notification_unread_count_label">Показать количество непрочитанных</string>
     <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в строке уведомлений.</string>
 
-    <string name="account_settings_hide_buttons_label">Прокрутка навигационных кнопок</string>
-    <string name="account_settings_hide_buttons_never">Никогда</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Когда присутствует клавиатура</string>
-    <string name="account_settings_hide_buttons_always">Всегда</string>
-
     <string name="account_settings_enable_move_buttons_label">Разрешить кнопки переноса сообщений</string>
     <string name="account_settings_enable_move_buttons_summary">Показывает кнопки: Архив, Переместить, Спам.</string>
-    <string name="account_settings_hide_move_buttons_label">Спрятать кнопки перемещения</string>
 
     <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>

@@ -34,6 +34,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -478,19 +479,38 @@ public class K9 extends Application {
                 }
             }
 
+            private void updateUnreadWidget() {
+                try {
+                    UnreadWidgetProvider.updateUnreadCount(K9.this);
+                } catch (Exception e) {
+                    if (K9.DEBUG) {
+                        Log.e(LOG_TAG, "Error while updating unread widget(s)", e);
+                    }
+                }
+            }
+
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+                updateUnreadWidget();
             }
 
             @Override
             public void messageDeleted(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+                updateUnreadWidget();
             }
 
             @Override
             public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
+                updateUnreadWidget();
+            }
+
+            @Override
+            public void folderStatusChanged(Account account, String folderName,
+                    int unreadMessageCount) {
+                updateUnreadWidget();
             }
 
             @Override

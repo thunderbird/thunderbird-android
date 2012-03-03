@@ -52,10 +52,12 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.SearchAccount;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -70,6 +72,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 
 
@@ -616,7 +619,11 @@ public class MessageList
         context.startActivity(intent);
     }
 
-    public static void actionHandle(Context context, String title, SearchSpecification searchSpecification) {
+    /**
+     * Creates and returns an intent that opens Unified Inbox or All Messages screen.
+     */
+    public static Intent actionHandleAccountIntent(Context context, String title,
+            SearchSpecification searchSpecification) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
         if (searchSpecification.getRequiredFlags() != null) {
@@ -632,6 +639,13 @@ public class MessageList
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        return intent;
+    }
+
+    public static void actionHandle(Context context, String title,
+            SearchSpecification searchSpecification) {
+        Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
         context.startActivity(intent);
     }
 
@@ -1388,13 +1402,21 @@ public class MessageList
     }
 
     private void onToggleRead(MessageInfoHolder holder) {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getRemoteName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
+        LocalMessage message = holder.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getRemoteName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getRemoteName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+        LocalMessage message = holder.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getRemoteName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }
@@ -1592,6 +1614,19 @@ public class MessageList
             }
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
                 menu.findItem(R.id.batch_spam_op).setVisible(false);
+            }
+
+            if (!mController.isMoveCapable(mAccount)) {
+                // FIXME: Really we want to do this for all local-only folders
+                if (mCurrentFolder != null &&
+                        !mAccount.getInboxFolderName().equals(mCurrentFolder.name)) {
+                    menu.findItem(R.id.check_mail).setVisible(false);
+                }
+                menu.findItem(R.id.batch_archive_op).setVisible(false);
+                menu.findItem(R.id.batch_spam_op).setVisible(false);
+                menu.findItem(R.id.batch_move_op).setVisible(false);
+                menu.findItem(R.id.batch_copy_op).setVisible(false);
+                menu.findItem(R.id.expunge).setVisible(false);
             }
         }
 

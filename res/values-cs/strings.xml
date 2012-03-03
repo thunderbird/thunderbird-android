@@ -549,14 +549,8 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
     <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
 
-    <string name="account_settings_hide_buttons_label">Posunovat navigační tlačítka</string>
-    <string name="account_settings_hide_buttons_never">Nikdy</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Je-li dostupná klávesnice</string>
-    <string name="account_settings_hide_buttons_always">Vždy</string>
-
     <string name="account_settings_enable_move_buttons_label">Povolit přesměrovací tlačítka</string>
     <string name="account_settings_enable_move_buttons_summary">Zobrazit tlačítka Archív, Přesunout a Nevyžádaná.</string>
-    <string name="account_settings_hide_move_buttons_label">Posunovat přesměrovací tlačítka</string>
 
     <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
     <string name="account_settings_show_pictures_never">Ne</string>

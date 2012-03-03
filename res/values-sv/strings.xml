@@ -543,14 +543,8 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_settings_notification_unread_count_label">Visa antal olästa</string>
     <string name="account_settings_notification_unread_count_summary">Visar antalet olästa brev i notifieringsytan.</string>
 
-    <string name="account_settings_hide_buttons_label">Scrolla navigationsknappar</string>
-    <string name="account_settings_hide_buttons_never">Aldrig</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">När ett tangentbord är tillgängligt</string>
-    <string name="account_settings_hide_buttons_always">Alltid</string>
-
     <string name="account_settings_enable_move_buttons_label">Aktivera flyttknappar</string>
     <string name="account_settings_enable_move_buttons_summary">Visa knappar för att arkivera, flytta och spam-markera e-post.</string>
-    <string name="account_settings_hide_move_buttons_label">Scrolla flyttknappar</string>
 
     <string name="account_settings_show_pictures_label">Visa bilder automatiskt</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>

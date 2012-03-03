@@ -541,14 +541,8 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="account_settings_notification_unread_count_label">Mostrar contador de correos sin leer</string>
     <string name="account_settings_notification_unread_count_summary">Mostrar el número de mensajes sin leer en la barra de notificaciones.</string>
 
-    <string name="account_settings_hide_buttons_label">Botones de desplazamiento</string>
-    <string name="account_settings_hide_buttons_never">Nunca</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Cuando el teclado está disponible</string>
-    <string name="account_settings_hide_buttons_always">Siempre</string>
-
     <string name="account_settings_enable_move_buttons_label">Habilitar botones de copia</string>
     <string name="account_settings_enable_move_buttons_summary">Mostrar botones de archivar, mover y SPAM</string>
-    <string name="account_settings_hide_move_buttons_label">Botones de copia</string>
 
     <string name="account_settings_show_pictures_label">Mostrar imágenes</string>
     <string name="account_settings_show_pictures_never">Nunca</string>

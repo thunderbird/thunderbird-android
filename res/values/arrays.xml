@@ -149,30 +149,6 @@
         <item>NOT_SECOND_CLASS</item>
     </string-array>
 
-    <string-array name="account_settings_hide_buttons_entries">
-        <item>@string/account_settings_hide_buttons_never</item>
-        <item>@string/account_settings_hide_buttons_keyboard_avail</item>
-        <item>@string/account_settings_hide_buttons_always</item>
-    </string-array>
-
-    <string-array name="account_settings_hide_buttons_values">
-        <item>NEVER</item>
-        <item>KEYBOARD_AVAILABLE</item>
-        <item>ALWAYS</item>
-    </string-array>
-
-    <string-array name="account_settings_hide_move_buttons_entries">
-        <item>@string/account_settings_hide_buttons_never</item>
-        <item>@string/account_settings_hide_buttons_keyboard_avail</item>
-        <item>@string/account_settings_hide_buttons_always</item>
-    </string-array>
-
-    <string-array name="account_settings_hide_move_buttons_values">
-        <item>NEVER</item>
-        <item>KEYBOARD_AVAILABLE</item>
-        <item>ALWAYS</item>
-    </string-array>
-
     <string-array name="account_settings_show_pictures_entries">
         <item>@string/account_settings_show_pictures_never</item>
         <item>@string/account_settings_show_pictures_only_from_contacts</item>

@@ -553,14 +553,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_notification_unread_count_label">Pokaż liczbę nieprzeczytanych</string>
     <string name="account_settings_notification_unread_count_summary">Pokaż liczbę nieprzeczytanych wiadomości w pasku powiadomień.</string>
 
-    <string name="account_settings_hide_buttons_label">Przyciski nawigacyjne</string>
-    <string name="account_settings_hide_buttons_never">Przyciski nie są nigdy przesuwalne</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Przesuwalne, gdy jest klawiatura</string>
-    <string name="account_settings_hide_buttons_always">Przyciski są zawsze przesuwalne</string>
-
     <string name="account_settings_enable_move_buttons_label">Użyj przycisków refile </string> <!-- FIXME -->
     <string name="account_settings_enable_move_buttons_summary">Pokaż przyciski Archiwum, Przenieś, Spam.</string>
-    <string name="account_settings_hide_move_buttons_label">Przewijaj przyciski refile </string> <!-- FIXME -->
 
     <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
     <string name="account_settings_show_pictures_never">Nie</string>

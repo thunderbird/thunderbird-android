@@ -285,6 +285,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf SD-Karte gespeichert werden.</string>
     <string name="message_view_show_pictures_instructions">Wählen Sie \"Bilder anzeigen\", um eingebettete Bilder abzurufen.</string>
     <string name="message_view_show_pictures_action">Bilder anzeigen</string>
+    <string name="message_view_show_attachments_action">Zeige Anhänge</string>
+    <string name="message_view_show_more_attachments_action">Mehr&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Lade Anhang.</string>
     <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
 
@@ -543,14 +545,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_notification_unread_count_label">Anzahl ungelesener Nachrichten anzeigen</string>
     <string name="account_settings_notification_unread_count_summary">Zeigt die Anzahl der ungelesenen Nachrichten in der Statuszeile.</string>
 
-    <string name="account_settings_hide_buttons_label">Scrolle Navigationsleiste</string>
-    <string name="account_settings_hide_buttons_never">Leiste bleibt eingeblendet</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Nur wenn Tastatur aktiv</string>
-    <string name="account_settings_hide_buttons_always">Immer</string>
-
     <string name="account_settings_enable_move_buttons_label">Spam-Leiste</string>
     <string name="account_settings_enable_move_buttons_summary">Zeige Archivieren-, Verschieben- und Spam-Schaltfläche.</string>
-    <string name="account_settings_hide_move_buttons_label">Scrolle Spam-Leiste</string>
 
     <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>
     <string name="account_settings_show_pictures_never">Niemals</string>
@@ -564,15 +560,15 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="account_settings_reply_after_quote_label">Antwort unter Zitat</string>
     <string name="account_settings_reply_after_quote_summary">Die Antwort auf eine Nachricht unterhalb der Original-Nachricht platzieren.</string>
-	
-	<string name="account_settings_strip_signature_label">Unterschrift von zitierter Antwort entfernen</string>
-	<string name="account_settings_strip_signature_summary">Beim Antworten von Nachrichten wird die Unterschrift vom zitiertem Textabschnitt entfernt</string>
+
+    <string name="account_settings_strip_signature_label">Entferne Signatur aus zitierter Antwort</string>
+    <string name="account_settings_strip_signature_summary">Beim Antworten wird die Signatur aus dem Zitat entfernt</string>
 
     <string name="account_settings_message_format_label">Formatierung</string>
     <string name="account_settings_message_format_text">Einfacher Text (Bilder und Formatierungen werden entfernt)</string>
     <string name="account_settings_message_format_html">HTML (Bilder und Formatierungen bleiben erhalten)</string>
-	<string name="account_settings_message_format_auto">Automatisch (Einfacher Text, es sei denn bei Antwort auf HTML)</string>
-	
+    <string name="account_settings_message_format_auto">Automatisch (Einfacher Text, es sei denn bei Antwort auf HTML)</string>
+
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
 
@@ -595,11 +591,11 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_crypto_auto_signature_summary">Email Adresse des Kontos verwenden um Signaturschlüssel zu schätzen.</string>
 
     <string name="account_settings_crypto_auto_encrypt">Automatische verschlüsselung</string>
-	<string name="account_settings_crypto_auto_encrypt_summary">Verschlüsselung aktivieren falls für den Empfänger ein öffentlichen Schlüssel abgespeichert ist.</string>
-    
+    <string name="account_settings_crypto_auto_encrypt_summary">Verschlüsselung aktivieren falls für den Empfänger ein öffentlichen Schlüssel abgespeichert ist.</string>
+
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
-    
+
     <string name="account_settings_storage_title">Speicher</string>
 
     <string name="account_settings_color_label">Farbe des Kontos</string>
@@ -1022,10 +1018,10 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
-    
+
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
-    
+
     <string name="continue_without_public_key_dlg_title">Ohne öffentlichen Schlüssel fortfahren?</string>
     <string name="continue_without_public_key_instructions_fmt">Einer oder mehrere Empfänger besitzen keinen abgespeicherten öffentlichen Schlüssel. Fortfahren?</string>
 
@@ -1053,7 +1049,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Verbindungsfehler.</string>
-    
+
     <string name="import_export_action">Einstellungen Importieren &amp; Exportieren</string>
     <string name="settings_export_account">Kontoeinstellungen exportieren</string>
     <string name="settings_export_all">Einstellungen und Konten exportieren</string>
@@ -1104,5 +1100,5 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="manage_accounts_move_up_action">Nach oben verschieben</string>
     <string name="manage_accounts_move_down_action">Nach unten verschieben</string>
     <string name="manage_accounts_moving_message">Konto verschieben...</string>
-    
+
 </resources>

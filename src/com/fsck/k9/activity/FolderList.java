@@ -733,6 +733,15 @@ public class FolderList extends K9ListActivity {
             menu.findItem(R.id.expunge).setVisible(false);
         }
 
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount)) {
+            // FIXME: Really we want to do this for all local-only folders
+            if (!mAccount.getInboxFolderName().equals(folder.name)) {
+                menu.findItem(R.id.check_mail).setVisible(false);
+            }
+
+            menu.findItem(R.id.expunge).setVisible(false);
+        }
+
         menu.setHeaderTitle(folder.displayName);
     }
 

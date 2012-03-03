@@ -1,9 +1,14 @@
 
 package com.fsck.k9.mail.internet;
 
+import android.content.Context;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Message.RecipientType;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -12,7 +17,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -22,6 +31,9 @@ public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
 
     public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
+
+    private static final String TEXT_DIVIDER =
+            "------------------------------------------------------------------------";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -1100,49 +1112,867 @@ public class MimeUtility {
         return tempBody;
     }
 
+
     /**
-     * An unfortunately named method that makes decisions about a Part (usually a Message)
-     * as to which of it's children will be "viewable" and which will be attachments.
-     * The method recursively sorts the viewables and attachments into seperate
-     * lists for further processing.
-     * @param part
-     * @param viewables
-     * @param attachments
-     * @throws MessagingException
+     * Empty base class for the class hierarchy used by
+     * {@link MimeUtility#extractTextAndAttachments(Context, Message)}.
+     *
+     * @see Text
+     * @see Html
+     * @see MessageHeader
+     * @see Alternative
      */
-    public static void collectParts(Part part, ArrayList<Part> viewables,
-                                    ArrayList<Part> attachments) throws MessagingException {
-        /*
-         * If the part is Multipart but not alternative it's either mixed or
-         * something we don't know about, which means we treat it as mixed
-         * per the spec. We just process it's pieces recursively.
+    static abstract class Viewable { /* empty */ }
+
+    /**
+     * Class representing textual parts of a message that aren't marked as attachments.
+     *
+     * @see MimeUtility#isPartTextualBody(Part)
+     */
+    static abstract class Textual extends Viewable {
+        private Part mPart;
+
+        public Textual(Part part) {
+            mPart = part;
+        }
+
+        public Part getPart() {
+            return mPart;
+        }
+    }
+
+    /**
+     * Class representing a {@code text/plain} part of a message.
+     */
+    static class Text extends Textual {
+        public Text(Part part) {
+            super(part);
+        }
+    }
+
+    /**
+     * Class representing a {@code text/html} part of a message.
+     */
+    static class Html extends Textual {
+        public Html(Part part) {
+            super(part);
+        }
+    }
+
+    /**
+     * Class representing a {@code message/rfc822} part of a message.
+     *
+     * <p>
+     * This is used to extract basic header information when the message contents are displayed
+     * inline.
+     * </p>
+     */
+    static class MessageHeader extends Viewable {
+        private Part mContainerPart;
+        private Message mMessage;
+
+        public MessageHeader(Part containerPart, Message message) {
+            mContainerPart = containerPart;
+            mMessage = message;
+        }
+
+        public Part getContainerPart() {
+            return mContainerPart;
+        }
+
+        public Message getMessage() {
+            return mMessage;
+        }
+    }
+
+    /**
+     * Class representing a {@code multipart/alternative} part of a message.
+     *
+     * <p>
+     * Only relevant {@code text/plain} and {@code text/html} children are stored in this container
+     * class.
+     * </p>
+     */
+    static class Alternative extends Viewable {
+        private List<Viewable> mText;
+        private List<Viewable> mHtml;
+
+        public Alternative(List<Viewable> text, List<Viewable> html) {
+            mText = text;
+            mHtml = html;
+        }
+
+        public List<Viewable> getText() {
+            return mText;
+        }
+
+        public List<Viewable> getHtml() {
+            return mHtml;
+        }
+    }
+
+    /**
+     * Store viewable text of a message as plain text and HTML, and the parts considered
+     * attachments.
+     *
+     * @see MimeUtility#extractTextAndAttachments(Context, Message)
+     */
+    public static class ViewableContainer {
+        /**
+         * The viewable text of the message in plain text.
          */
-        if (part.getBody() instanceof Multipart) {
-            Multipart mp = (Multipart)part.getBody();
-            for (int i = 0; i < mp.getCount(); i++) {
-                collectParts(mp.getBodyPart(i), viewables, attachments);
+        public final String text;
+
+        /**
+         * The viewable text of the message in HTML.
+         */
+        public final String html;
+
+        /**
+         * The parts of the message considered attachments (everything not viewable).
+         */
+        public final List<Part> attachments;
+
+        ViewableContainer(String text, String html, List<Part> attachments) {
+            this.text = text;
+            this.html = html;
+            this.attachments = attachments;
+        }
+    }
+
+    /**
+     * Collect attachment parts of a message.
+     *
+     * @param message
+     *         The message to collect the attachment parts from.
+     *
+     * @return A list of parts regarded as attachments.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public static List<Part> collectAttachments(Message message)
+            throws MessagingException {
+        try {
+            List<Part> attachments = new ArrayList<Part>();
+            getViewables(message, attachments);
+
+            return attachments;
+        } catch (Exception e) {
+            throw new MessagingException("Couldn't collect attachment parts", e);
+        }
+    }
+
+    /**
+     * Collect the viewable textual parts of a message.
+     *
+     * @param message
+     *         The message to extract the viewable parts from.
+     *
+     * @return A set of viewable parts of the message.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public static Set<Part> collectTextParts(Message message)
+            throws MessagingException {
+        try {
+            List<Part> attachments = new ArrayList<Part>();
+
+            // Collect all viewable parts
+            List<Viewable> viewables = getViewables(message, attachments);
+
+            // Extract the Part references
+            return getParts(viewables);
+        } catch (Exception e) {
+            throw new MessagingException("Couldn't extract viewable parts", e);
+        }
+    }
+
+    /**
+     * Extract the viewable textual parts of a message and return the rest as attachments.
+     *
+     * @param context
+     *         A {@link Context} instance that will be used to get localized strings.
+     * @param message
+     *         The message to extract the text and attachments from.
+     *
+     * @return A {@link ViewableContainer} instance containing the textual parts of the message as
+     *         plain text and HTML, and a list of message parts considered attachments.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public static ViewableContainer extractTextAndAttachments(Context context, Message message)
+            throws MessagingException {
+        try {
+            List<Part> attachments = new ArrayList<Part>();
+
+            // Collect all viewable parts
+            List<Viewable> viewables = getViewables(message, attachments);
+
+            /*
+             * Convert the tree of viewable parts into text and HTML
+             */
+
+            // Used to suppress the divider for the first viewable part
+            boolean hideDivider = true;
+
+            StringBuilder text = new StringBuilder();
+            StringBuilder html = new StringBuilder();
+            html.append(HtmlConverter.getHtmlHeader());
+
+            for (Viewable viewable : viewables) {
+                if (viewable instanceof Textual) {
+                    // This is either a text/plain or text/html part. Fill the variables 'text' and
+                    // 'html', converting between plain text and HTML as necessary.
+                    text.append(buildText(viewable, !hideDivider));
+                    html.append(buildHtml(viewable, !hideDivider));
+                    hideDivider = false;
+                } else if (viewable instanceof MessageHeader) {
+                    MessageHeader header = (MessageHeader) viewable;
+                    Part containerPart = header.getContainerPart();
+                    Message innerMessage =  header.getMessage();
+
+                    addTextDivider(text, containerPart, !hideDivider);
+                    addMessageHeaderText(context, text, innerMessage);
+
+                    addHtmlDivider(html, containerPart, !hideDivider);
+                    addMessageHeaderHtml(context, html, innerMessage);
+
+                    hideDivider = true;
+                } else if (viewable instanceof Alternative) {
+                    // Handle multipart/alternative contents
+                    Alternative alternative = (Alternative) viewable;
+
+                    /*
+                     * We made sure at least one of text/plain or text/html is present when
+                     * creating the Alternative object. If one part is not present we convert the
+                     * other one to make sure 'text' and 'html' always contain the same text.
+                     */
+                    List<Viewable> textAlternative = alternative.getText().isEmpty() ?
+                            alternative.getHtml() : alternative.getText();
+                    List<Viewable> htmlAlternative = alternative.getHtml().isEmpty() ?
+                            alternative.getText() : alternative.getHtml();
+
+                    // Fill the 'text' variable
+                    boolean divider = !hideDivider;
+                    for (Viewable textViewable : textAlternative) {
+                        text.append(buildText(textViewable, divider));
+                        divider = true;
+                    }
+
+                    // Fill the 'html' variable
+                    divider = !hideDivider;
+                    for (Viewable htmlViewable : htmlAlternative) {
+                        html.append(buildHtml(htmlViewable, divider));
+                        divider = true;
+                    }
+                    hideDivider = false;
+                }
             }
+
+            html.append(HtmlConverter.getHtmlFooter());
+
+            return new ViewableContainer(text.toString(), html.toString(), attachments);
+        } catch (Exception e) {
+            throw new MessagingException("Couldn't extract viewable parts", e);
         }
-        /*
-         * If the part is an embedded message we just continue to process
-         * it, pulling any viewables or attachments into the running list.
-         */
-        else if (part.getBody() instanceof Message) {
-            Message message = (Message)part.getBody();
-            collectParts(message, viewables, attachments);
-        }
-        /*
-         * If the part is HTML and it got this far it's part of a mixed (et
-         * al) and should be rendered inline.
-         */
-        else if (isPartTextualBody(part)) {
-            viewables.add(part);
+    }
+
+    /**
+     * Traverse the MIME tree of a message an extract viewable parts.
+     *
+     * @param part
+     *         The message part to start from.
+     * @param attachments
+     *         A list that will receive the parts that are considered attachments.
+     *
+     * @return A list of {@link Viewable}s.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public static List<Viewable> getViewables(Part part, List<Part> attachments) throws MessagingException {
+        List<Viewable> viewables = new ArrayList<Viewable>();
+
+        Body body = part.getBody();
+        if (body instanceof Multipart) {
+            Multipart multipart = (Multipart) body;
+            if (part.getMimeType().equalsIgnoreCase("multipart/alternative")) {
+                /*
+                 * For multipart/alternative parts we try to find a text/plain and a text/html
+                 * child. Everything else we find is put into 'attachments'.
+                 */
+                List<Viewable> text = findTextPart(multipart, true);
+
+                Set<Part> knownTextParts = getParts(text);
+                List<Viewable> html = findHtmlPart(multipart, knownTextParts, attachments, true);
+
+                if (!text.isEmpty() || !html.isEmpty()) {
+                    Alternative alternative = new Alternative(text, html);
+                    viewables.add(alternative);
+                }
+            } else {
+                // For all other multipart parts we recurse to grab all viewable children.
+                int childCount = multipart.getCount();
+                for (int i = 0; i < childCount; i++) {
+                    Part bodyPart = multipart.getBodyPart(i);
+                    viewables.addAll(getViewables(bodyPart, attachments));
+                }
+            }
+        } else if (body instanceof Message &&
+                !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
+            /*
+             * We only care about message/rfc822 parts whose Content-Disposition header has a value
+             * other than "attachment".
+             */
+            Message message = (Message) body;
+
+            // We add the Message object so we can extract the filename later.
+            viewables.add(new MessageHeader(part, message));
+
+            // Recurse to grab all viewable parts and attachments from that message.
+            viewables.addAll(getViewables(message, attachments));
+        } else if (isPartTextualBody(part)) {
+            /*
+             * Save text/plain and text/html
+             */
+            String mimeType = part.getMimeType();
+            if (mimeType.equalsIgnoreCase("text/plain")) {
+                Text text = new Text(part);
+                viewables.add(text);
+            } else {
+                Html html = new Html(part);
+                viewables.add(html);
+            }
         } else {
+            // Everything else is treated as attachment.
             attachments.add(part);
         }
 
+        return viewables;
     }
 
+    /**
+     * Search the children of a {@link Multipart} for {@code text/plain} parts.
+     *
+     * @param multipart
+     *         The {@code Multipart} to search through.
+     * @param directChild
+     *         If {@code true}, this method will return after the first {@code text/plain} was
+     *         found.
+     *
+     * @return A list of {@link Text} viewables.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    private static List<Viewable> findTextPart(Multipart multipart, boolean directChild)
+            throws MessagingException {
+        List<Viewable> viewables = new ArrayList<Viewable>();
+
+        int childCount = multipart.getCount();
+        for (int i = 0; i < childCount; i++) {
+            Part part = multipart.getBodyPart(i);
+            Body body = part.getBody();
+            if (body instanceof Multipart) {
+                Multipart innerMultipart = (Multipart) body;
+
+                /*
+                 * Recurse to find text parts. Since this is a multipart that is a child of a
+                 * multipart/alternative we don't want to stop after the first text/plain part
+                 * we find. This will allow to get all text parts for constructions like this:
+                 *
+                 * 1. multipart/alternative
+                 * 1.1. multipart/mixed
+                 * 1.1.1. text/plain
+                 * 1.1.2. text/plain
+                 * 1.2. text/html
+                 */
+                List<Viewable> textViewables = findTextPart(innerMultipart, false);
+
+                if (!textViewables.isEmpty()) {
+                    viewables.addAll(textViewables);
+                    if (directChild) {
+                        break;
+                    }
+                }
+            } else if (isPartTextualBody(part) && part.getMimeType().equalsIgnoreCase("text/plain")) {
+                Text text = new Text(part);
+                viewables.add(text);
+                if (directChild) {
+                    break;
+                }
+            }
+        }
+
+        return viewables;
+    }
+
+    /**
+     * Search the children of a {@link Multipart} for {@code text/html} parts.
+     *
+     * <p>
+     * Every part that is not a {@code text/html} we want to display, we add to 'attachments'.
+     * </p>
+     *
+     * @param multipart
+     *         The {@code Multipart} to search through.
+     * @param knownTextParts
+     *         A set of {@code text/plain} parts that shouldn't be added to 'attachments'.
+     * @param attachments
+     *         A list that will receive the parts that are considered attachments.
+     * @param directChild
+     *         If {@code true}, this method will add all {@code text/html} parts except the first
+     *         found to 'attachments'.
+     *
+     * @return A list of {@link Text} viewables.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    private static List<Viewable> findHtmlPart(Multipart multipart, Set<Part> knownTextParts,
+            List<Part> attachments, boolean directChild) throws MessagingException {
+        List<Viewable> viewables = new ArrayList<Viewable>();
+
+        boolean partFound = false;
+        int childCount = multipart.getCount();
+        for (int i = 0; i < childCount; i++) {
+            Part part = multipart.getBodyPart(i);
+            Body body = part.getBody();
+            if (body instanceof Multipart) {
+                Multipart innerMultipart = (Multipart) body;
+
+                if (directChild && partFound) {
+                    // We already found our text/html part. Now we're only looking for attachments.
+                    findAttachments(innerMultipart, knownTextParts, attachments);
+                } else {
+                    /*
+                     * Recurse to find HTML parts. Since this is a multipart that is a child of a
+                     * multipart/alternative we don't want to stop after the first text/html part
+                     * we find. This will allow to get all text parts for constructions like this:
+                     *
+                     * 1. multipart/alternative
+                     * 1.1. text/plain
+                     * 1.2. multipart/mixed
+                     * 1.2.1. text/html
+                     * 1.2.2. text/html
+                     * 1.3. image/jpeg
+                     */
+                    List<Viewable> htmlViewables = findHtmlPart(innerMultipart, knownTextParts,
+                            attachments, false);
+
+                    if (!htmlViewables.isEmpty()) {
+                        partFound = true;
+                        viewables.addAll(htmlViewables);
+                    }
+                }
+            } else if (!(directChild && partFound) && isPartTextualBody(part) &&
+                    part.getMimeType().equalsIgnoreCase("text/html")) {
+                Html html = new Html(part);
+                viewables.add(html);
+                partFound = true;
+            } else if (!knownTextParts.contains(part)) {
+                // Only add this part as attachment if it's not a viewable text/plain part found
+                // earlier.
+                attachments.add(part);
+            }
+        }
+
+        return viewables;
+    }
+
+    /**
+     * Build a set of message parts for fast lookups.
+     *
+     * @param viewables
+     *         A list of {@link Viewable}s containing references to the message parts to include in
+     *         the set.
+     *
+     * @return The set of viewable {@code Part}s.
+     *
+     * @see MimeUtility#findHtmlPart(Multipart, Set, List, boolean)
+     * @see MimeUtility#findAttachments(Multipart, Set, List)
+     */
+    private static Set<Part> getParts(List<Viewable> viewables) {
+        Set<Part> parts = new HashSet<Part>();
+
+        for (Viewable viewable : viewables) {
+            if (viewable instanceof Textual) {
+                parts.add(((Textual) viewable).getPart());
+            } else if (viewable instanceof Alternative) {
+                Alternative alternative = (Alternative) viewable;
+                parts.addAll(getParts(alternative.getText()));
+                parts.addAll(getParts(alternative.getHtml()));
+            }
+        }
+
+        return parts;
+    }
+
+    /**
+     * Traverse the MIME tree and add everything that's not a known text part to 'attachments'.
+     *
+     * @param multipart
+     *         The {@link Multipart} to start from.
+     * @param knownTextParts
+     *         A set of known text parts we don't want to end up in 'attachments'.
+     * @param attachments
+     *         A list that will receive the parts that are considered attachments.
+     */
+    private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
+            List<Part> attachments) {
+        int childCount = multipart.getCount();
+        for (int i = 0; i < childCount; i++) {
+            Part part = multipart.getBodyPart(i);
+            Body body = part.getBody();
+            if (body instanceof Multipart) {
+                Multipart innerMultipart = (Multipart) body;
+                findAttachments(innerMultipart, knownTextParts, attachments);
+            } else if (!knownTextParts.contains(part)) {
+                attachments.add(part);
+            }
+        }
+    }
+
+    /**
+     * Extract important header values from a message to display inline (plain text version).
+     *
+     * @param context
+     *         A {@link Context} instance that will be used to get localized strings.
+     * @param text
+     *         The {@link StringBuilder} that will receive the (plain text) output.
+     * @param message
+     *         The message to extract the header values from.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    private static void addMessageHeaderText(Context context, StringBuilder text, Message message)
+            throws MessagingException {
+        // From: <sender>
+        Address[] from = message.getFrom();
+        if (from != null && from.length > 0) {
+            text.append(context.getString(R.string.message_compose_quote_header_from));
+            text.append(' ');
+            text.append(Address.toString(from));
+            text.append("\n");
+        }
+
+        // To: <recipients>
+        Address[] to = message.getRecipients(RecipientType.TO);
+        if (to != null && to.length > 0) {
+            text.append(context.getString(R.string.message_compose_quote_header_to));
+            text.append(' ');
+            text.append(Address.toString(to));
+            text.append("\n");
+        }
+
+        // Cc: <recipients>
+        Address[] cc = message.getRecipients(RecipientType.CC);
+        if (cc != null && cc.length > 0) {
+            text.append(context.getString(R.string.message_compose_quote_header_cc));
+            text.append(' ');
+            text.append(Address.toString(cc));
+            text.append("\n");
+        }
+
+        // Date: <date>
+        Date date = message.getSentDate();
+        if (date != null) {
+            text.append(context.getString(R.string.message_compose_quote_header_send_date));
+            text.append(' ');
+            text.append(date.toString());
+            text.append("\n");
+        }
+
+        // Subject: <subject>
+        String subject = message.getSubject();
+        text.append(context.getString(R.string.message_compose_quote_header_subject));
+        text.append(' ');
+        if (subject == null) {
+            text.append(context.getString(R.string.general_no_subject));
+        } else {
+            text.append(subject);
+        }
+        text.append("\n\n");
+    }
+
+    /**
+     * Extract important header values from a message to display inline (HTML version).
+     *
+     * @param context
+     *         A {@link Context} instance that will be used to get localized strings.
+     * @param html
+     *         The {@link StringBuilder} that will receive the (HTML) output.
+     * @param message
+     *         The message to extract the header values from.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    private static void addMessageHeaderHtml(Context context, StringBuilder html, Message message)
+            throws MessagingException {
+
+        html.append("<table style=\"border: 0\">");
+
+        // From: <sender>
+        Address[] from = message.getFrom();
+        if (from != null && from.length > 0) {
+            addTableRow(html, context.getString(R.string.message_compose_quote_header_from),
+                    Address.toString(from));
+        }
+
+        // To: <recipients>
+        Address[] to = message.getRecipients(RecipientType.TO);
+        if (to != null && to.length > 0) {
+            addTableRow(html, context.getString(R.string.message_compose_quote_header_to),
+                    Address.toString(to));
+        }
+
+        // Cc: <recipients>
+        Address[] cc = message.getRecipients(RecipientType.CC);
+        if (cc != null && cc.length > 0) {
+            addTableRow(html, context.getString(R.string.message_compose_quote_header_cc),
+                    Address.toString(cc));
+        }
+
+        // Date: <date>
+        Date date = message.getSentDate();
+        if (date != null) {
+            addTableRow(html, context.getString(R.string.message_compose_quote_header_send_date),
+                    date.toString());
+        }
+
+        // Subject: <subject>
+        String subject = message.getSubject();
+        addTableRow(html, context.getString(R.string.message_compose_quote_header_subject),
+                (subject == null) ? context.getString(R.string.general_no_subject) : subject);
+
+        html.append("</table>");
+    }
+
+    /**
+     * Output an HTML table two column row with some hardcoded style.
+     *
+     * @param html
+     *         The {@link StringBuilder} that will receive the output.
+     * @param header
+     *         The string to be put in the {@code TH} element.
+     * @param value
+     *         The string to be put in the {@code TD} element.
+     */
+    private static void addTableRow(StringBuilder html, String header, String value) {
+        html.append("<tr><th style=\"text-align: left; vertical-align: top;\">");
+        html.append(header);
+        html.append("</th>");
+        html.append("<td>");
+        html.append(value);
+        html.append("</td></tr>");
+    }
+
+    /**
+     * Use the contents of a {@link Viewable} to create the plain text to be displayed.
+     *
+     * <p>
+     * This will use {@link HtmlConverter#htmlToText(String)} to convert HTML parts to plain text
+     * if necessary.
+     * </p>
+     *
+     * @param viewable
+     *         The viewable part to build the text from.
+     * @param prependDivider
+     *         {@code true}, if the text divider should be inserted as first element.
+     *         {@code false}, otherwise.
+     *
+     * @return The contents of the supplied viewable instance as plain text.
+     */
+    private static StringBuilder buildText(Viewable viewable, boolean prependDivider)
+    {
+        StringBuilder text = new StringBuilder();
+        if (viewable instanceof Textual) {
+            Part part = ((Textual)viewable).getPart();
+            addTextDivider(text, part, prependDivider);
+
+            String t = getTextFromPart(part);
+            if (t == null) {
+                t = "";
+            } else if (viewable instanceof Html) {
+                t = HtmlConverter.htmlToText(t);
+            }
+            text.append(t);
+        } else if (viewable instanceof Alternative) {
+            // That's odd - an Alternative as child of an Alternative; go ahead and try to use the
+            // text/plain child; fall-back to the text/html part.
+            Alternative alternative = (Alternative) viewable;
+
+            List<Viewable> textAlternative = alternative.getText().isEmpty() ?
+                    alternative.getHtml() : alternative.getText();
+
+            boolean divider = prependDivider;
+            for (Viewable textViewable : textAlternative) {
+                text.append(buildText(textViewable, divider));
+                divider = true;
+            }
+        }
+
+        return text;
+    }
+
+    /*
+     * Some constants that are used by addTextDivider() below.
+     */
+    private static final int TEXT_DIVIDER_LENGTH = TEXT_DIVIDER.length();
+    private static final String FILENAME_PREFIX = "----- ";
+    private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
+    private static final String FILENAME_SUFFIX = " ";
+    private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
+
+    /**
+     * Add a plain text divider between two plain text message parts.
+     *
+     * @param text
+     *         The {@link StringBuilder} to append the divider to.
+     * @param part
+     *         The message part that will follow after the divider. This is used to extract the
+     *         part's name.
+     * @param prependDivider
+     *         {@code true}, if the divider should be appended. {@code false}, otherwise.
+     */
+    private static void addTextDivider(StringBuilder text, Part part, boolean prependDivider) {
+        if (prependDivider) {
+            String filename = getPartName(part);
+
+            text.append("\n\n");
+            int len = filename.length();
+            if (len > 0) {
+                if (len > TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH - FILENAME_SUFFIX_LENGTH) {
+                    filename = filename.substring(0, TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH -
+                            FILENAME_SUFFIX_LENGTH - 3) + "...";
+                }
+                text.append(FILENAME_PREFIX);
+                text.append(filename);
+                text.append(FILENAME_SUFFIX);
+                text.append(TEXT_DIVIDER.substring(0, TEXT_DIVIDER_LENGTH -
+                        FILENAME_PREFIX_LENGTH - filename.length() - FILENAME_SUFFIX_LENGTH));
+            } else {
+                text.append(TEXT_DIVIDER);
+            }
+            text.append("\n\n");
+        }
+    }
+
+    /**
+     * Use the contents of a {@link Viewable} to create the HTML to be displayed.
+     *
+     * <p>
+     * This will use {@link HtmlConverter#textToHtml(String, boolean)} to convert plain text parts
+     * to HTML if necessary.
+     * </p>
+     *
+     * @param viewable
+     *         The viewable part to build the HTML from.
+     * @param prependDivider
+     *         {@code true}, if the HTML divider should be inserted as first element.
+     *         {@code false}, otherwise.
+     *
+     * @return The contents of the supplied viewable instance as HTML.
+     */
+    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider)
+    {
+        StringBuilder html = new StringBuilder();
+        if (viewable instanceof Textual) {
+            Part part = ((Textual)viewable).getPart();
+            addHtmlDivider(html, part, prependDivider);
+
+            String t = getTextFromPart(part);
+            if (t == null) {
+                t = "";
+            } else if (viewable instanceof Text) {
+                t = HtmlConverter.textToHtml(t, false);
+            }
+            html.append(t);
+        } else if (viewable instanceof Alternative) {
+            // That's odd - an Alternative as child of an Alternative; go ahead and try to use the
+            // text/html child; fall-back to the text/plain part.
+            Alternative alternative = (Alternative) viewable;
+
+            List<Viewable> htmlAlternative = alternative.getHtml().isEmpty() ?
+                    alternative.getText() : alternative.getHtml();
+
+            boolean divider = prependDivider;
+            for (Viewable htmlViewable : htmlAlternative) {
+                html.append(buildHtml(htmlViewable, divider));
+                divider = true;
+            }
+        }
+
+        return html;
+    }
+
+    /**
+     * Add an HTML divider between two HTML message parts.
+     *
+     * @param html
+     *         The {@link StringBuilder} to append the divider to.
+     * @param part
+     *         The message part that will follow after the divider. This is used to extract the
+     *         part's name.
+     * @param prependDivider
+     *         {@code true}, if the divider should be appended. {@code false}, otherwise.
+     */
+    private static void addHtmlDivider(StringBuilder html, Part part, boolean prependDivider) {
+        if (prependDivider) {
+            String filename = getPartName(part);
+
+            html.append("<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\">");
+            html.append(filename);
+            html.append("</p>");
+        }
+    }
+
+    /**
+     * Get the name of the message part.
+     *
+     * @param part
+     *         The part to get the name for.
+     *
+     * @return The (file)name of the part if available. An empty string, otherwise.
+     */
+    private static String getPartName(Part part) {
+        try {
+            String disposition = part.getDisposition();
+            if (disposition != null) {
+                String name = MimeUtility.getHeaderParameter(disposition, "filename");
+                return (name == null) ? "" : name;
+            }
+        }
+        catch (MessagingException e) { /* ignore */ }
+
+        return "";
+    }
+
+    /**
+     * Get the value of the {@code Content-Disposition} header.
+     *
+     * @param part
+     *         The message part to read the header from.
+     *
+     * @return The value of the {@code Content-Disposition} header if available. {@code null},
+     *         otherwise.
+     */
+    private static String getContentDisposition(Part part) {
+        try {
+            String disposition = part.getDisposition();
+            if (disposition != null) {
+                return MimeUtility.getHeaderParameter(disposition, null);
+            }
+        }
+        catch (MessagingException e) { /* ignore */ }
+
+        return null;
+    }
 
     public static Boolean isPartTextualBody(Part part) throws MessagingException {
         String disposition = part.getDisposition();
@@ -1208,6 +2038,17 @@ public class MimeUtility {
         }
 
         return DEFAULT_ATTACHMENT_MIME_TYPE;
+    }
+
+    public static String getExtensionByMimeType(String mimeType) {
+        String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
+        for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
+            if (contentTypeMapEntry[1].equals(lowerCaseMimeType)) {
+                return contentTypeMapEntry[0];
+            }
+        }
+
+        return null;
     }
 
     /**

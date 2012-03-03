@@ -232,6 +232,11 @@ public class AccountSetupBasics extends K9Activity
                 mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
             }
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
+            if (incomingUri.toString().startsWith("imap")) {
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+            } else if (incomingUri.toString().startsWith("pop3")) {
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
+            }
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
@@ -310,6 +315,13 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
         mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
         mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
+        mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
+        // Yahoo! has a special folder for Spam, called "Bulk Mail".
+        if (domain.endsWith(".yahoo.com")) {
+            mAccount.setSpamFolderName("Bulk Mail");
+        } else {
+            mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
+        }
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, mDefaultView.isChecked());
         finish();

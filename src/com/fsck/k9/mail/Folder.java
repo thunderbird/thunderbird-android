@@ -1,6 +1,7 @@
 package com.fsck.k9.mail;
 
 import java.util.Date;
+import java.util.Map;
 
 import android.util.Log;
 import com.fsck.k9.Account;
@@ -102,11 +103,15 @@ public abstract class Folder {
     public abstract Message[] getMessages(String[] uids, MessageRetrievalListener listener)
     throws MessagingException;
 
-    public abstract void appendMessages(Message[] messages) throws MessagingException;
+    public abstract Map<String, String> appendMessages(Message[] messages) throws MessagingException;
 
-    public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {}
+    public Map<String, String> copyMessages(Message[] msgs, Folder folder) throws MessagingException {
+        return null;
+    }
 
-    public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {}
+    public Map<String, String> moveMessages(Message[] msgs, Folder folder) throws MessagingException {
+        return null;
+    }
 
     public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
         for (Message message : msgs) {

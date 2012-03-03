@@ -48,7 +48,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter {
         final String name = mContacts.getName(cursor);
         final String address = mContacts.getEmail(cursor);
 
-        return new Address(address, name).toString();
+        return (address == null) ? "" : new Address(address, name).toString();
     }
 
     @Override
