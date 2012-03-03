@@ -91,9 +91,9 @@ public class MessageHelper {
         }
     }
     public String formatDate(Date date) {
-    	if (date==null){
-    		return "";
-    	}
+        if (date==null){
+            return "";
+        }
         if (Utility.isDateToday(date)) {
             return mTodayDateFormat.format(date);
         } else {

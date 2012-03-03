@@ -1459,22 +1459,22 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = cryptoAutoEncrypt;
     }
     
-	public boolean allowRemoteSearch() {
-		return mAllowRemoteSearch;
-	}
-	
-	public void setAllowRemoteSearch(boolean val){
-		mAllowRemoteSearch = val;
-	}
+    public boolean allowRemoteSearch() {
+        return mAllowRemoteSearch;
+    }
+    
+    public void setAllowRemoteSearch(boolean val){
+        mAllowRemoteSearch = val;
+    }
 
-	public int getRemoteSearchNumResults(){
-		return mRemoteSearchNumResults;
-	}
-	
-	public void setRemoteSearchNumResults(int val){
-		mRemoteSearchNumResults = (val >= 0 ? val : 0);
-	}
-	
+    public int getRemoteSearchNumResults(){
+        return mRemoteSearchNumResults;
+    }
+    
+    public void setRemoteSearchNumResults(int val){
+        mRemoteSearchNumResults = (val >= 0 ? val : 0);
+    }
+    
     public String getInboxFolderName() {
         return mInboxFolderName;
     }
@@ -1530,14 +1530,14 @@ public class Account implements BaseAccount {
         mEnabled = enabled;
     }
 
-	public boolean getRemoteSearchFullText() {
-		
-		return mRemoteSearchFullText;
-	}
+    public boolean getRemoteSearchFullText() {
+        
+        return mRemoteSearchFullText;
+    }
 
-	public void setRemoteSearchFullText(boolean val) {
-		mRemoteSearchFullText = val;
-	}
+    public void setRemoteSearchFullText(boolean val) {
+        mRemoteSearchFullText = val;
+    }
 
 
 }

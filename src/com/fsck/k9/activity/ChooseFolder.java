@@ -208,7 +208,7 @@ public class ChooseFolder extends K9ListActivity {
             return true;
         }
         case R.id.filter_folders: {
-        	onEnterFilter();
+            onEnterFilter();
         }
             return true;
         default:
@@ -228,43 +228,43 @@ public class ChooseFolder extends K9ListActivity {
      * Filter {@link #mAdapter} with the user-input.
      */
     private void onEnterFilter() {
-    	final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
 
-    	final EditText input = new EditText(this);
-    	input.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mAdapter.getFilter().filter(input.getText().toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-    	input.setHint(R.string.folder_list_filter_hint);
-    	filterAlert.setView(input);
+        final EditText input = new EditText(this);
+        input.addTextChangedListener(new TextWatcher() {
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAdapter.getFilter().filter(input.getText().toString());
+            }
+            
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+            }
+            
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        input.setHint(R.string.folder_list_filter_hint);
+        filterAlert.setView(input);
 
-    	filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    		public void onClick(DialogInterface dialog, int whichButton) {
-    			String value = input.getText().toString().trim();
-    			mAdapter.getFilter().filter(value);
-    		}
-    	});
+        filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString().trim();
+                mAdapter.getFilter().filter(value);
+            }
+        });
 
-    	filterAlert.setNegativeButton("Cancel",
-    			new DialogInterface.OnClickListener() {
-    		public void onClick(DialogInterface dialog, int whichButton) {
-    			mAdapter.getFilter().filter("");
-    		}
-    	});
+        filterAlert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mAdapter.getFilter().filter("");
+            }
+        });
 
-    	filterAlert.show();
+        filterAlert.show();
 
     }
 

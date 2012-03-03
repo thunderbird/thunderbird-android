@@ -171,13 +171,13 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-        	if(object1.compareCounterparty == null){
-        		return (object2.compareCounterparty == null ? 0 : 1);
-        	}else if (object2.compareCounterparty == null){
-        		return -1;
-        	}else{
-        		return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
-        	}
+            if(object1.compareCounterparty == null){
+                return (object2.compareCounterparty == null ? 0 : 1);
+            }else if (object2.compareCounterparty == null){
+                return -1;
+            }else{
+                return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
+            }
         }
 
     }
@@ -186,13 +186,13 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-        	if(object1.compareDate == null){
-        		return (object2.compareDate == null ? 0 : 1);
-        	}else if(object2.compareDate == null){
-        		return -1;
-        	}else{
-        		return object1.compareDate.compareTo(object2.compareDate);
-        	}
+            if(object1.compareDate == null){
+                return (object2.compareDate == null ? 0 : 1);
+            }else if(object2.compareDate == null){
+                return -1;
+            }else{
+                return object1.compareDate.compareTo(object2.compareDate);
+            }
         }
 
     }
@@ -925,11 +925,11 @@ public class MessageList
 
         
         if (mAdapter.messages.isEmpty()) {
-        	if (mRemoteSearch){
-        		//TODO: Support flag based search
-        		mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
-        	}
-        	else if (mFolderName != null) {
+            if (mRemoteSearch){
+                //TODO: Support flag based search
+                mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
+            }
+            else if (mFolderName != null) {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             } else if (mQueryString != null) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
@@ -1289,33 +1289,33 @@ public class MessageList
     public boolean onSearchRequested() {
          
          if(mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()){
-        	 //if in a SSSable folder, ask user what they want.
-        	 //TODO: Add ability to remember selection?
-        	 final CharSequence[] items = new CharSequence[2];
-        	 items[0] = getString(R.string.search_mode_local_all);
-        	 items[1] = getString(R.string.search_mode_remote);
+             //if in a SSSable folder, ask user what they want.
+             //TODO: Add ability to remember selection?
+             final CharSequence[] items = new CharSequence[2];
+             items[0] = getString(R.string.search_mode_local_all);
+             items[1] = getString(R.string.search_mode_remote);
 
-        	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	 builder.setTitle(getString(R.string.search_mode_title));
-        	 builder.setItems(items, new DialogInterface.OnClickListener() {
-        	     public void onClick(DialogInterface dialog, int item) {
-        	    	 
-        	         Bundle appData = null;
-        	         if(item == 1){
-        	        	 appData = new Bundle();
-        	        	 appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-                    	 appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
-                    	 appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
-        	         }
-        	         //else do regular search, which doesn't require any special parameter setup
-                	 
-                	 startSearch(null, false, appData, false);
-        	     }
-        	 });
-        	 AlertDialog alert = builder.create();
-        	 alert.show();
-        	 
-        	 return true;
+             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+             builder.setTitle(getString(R.string.search_mode_title));
+             builder.setItems(items, new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int item) {
+                     
+                     Bundle appData = null;
+                     if(item == 1){
+                         appData = new Bundle();
+                         appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+                         appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
+                         appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
+                     }
+                     //else do regular search, which doesn't require any special parameter setup
+                     
+                     startSearch(null, false, appData, false);
+                 }
+             });
+             AlertDialog alert = builder.create();
+             alert.show();
+             
+             return true;
          }
          
          startSearch(null, false, null, false);
