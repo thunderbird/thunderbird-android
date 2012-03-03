@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.HashSet;
 
 /**
  * User: dzan
@@ -197,17 +198,20 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
      */
     private void fillFromDevice(SectionListAdapter<AccountSuggestion> adp){
 
+    	HashSet<String> tmpDeDup = new HashSet<String>();
+    	
         for( android.accounts.Account acc : AccountManager.get(this).getAccounts() )
             if( mEmailValidator.isValidAddressOnly(acc.name) )
-                adp.add(getString(R.string.account_setup_device_sectionheader), new AccountSuggestion(acc.name, SuggestionType.DEVICE));
+            	if( tmpDeDup.add(acc.name) )
+            		adp.add(getString(R.string.account_setup_device_sectionheader), new AccountSuggestion(acc.name, SuggestionType.DEVICE));
 
         // TEMP DATA TO TEST
-        accountAdapter.add("file1", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
+        /*accountAdapter.add("file1", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
         accountAdapter.add("file1", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
         accountAdapter.add("file1", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
         accountAdapter.add("file2", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
         accountAdapter.add("file2", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
-        accountAdapter.add("file3", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));
+        accountAdapter.add("file3", new AccountSuggestion("piet@snot.com",SuggestionType.BACKUP));*/
     }
 
     /*
