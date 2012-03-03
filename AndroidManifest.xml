@@ -105,12 +105,14 @@
             android:name="com.fsck.k9.activity.setup.AccountSetupConfirmIncoming"
             android:label="@string/account_setup_confirm_incoming_title"
             android:configChanges="keyboardHidden|orientation|locale"
+            android:windowSoftInputMode="stateHidden"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupConfirmOutgoing"
             android:label="@string/account_setup_confirm_outgoing_title"
             android:configChanges="keyboardHidden|orientation|locale"
+            android:windowSoftInputMode="stateHidden"
             >
         </activity>
         <activity
