@@ -283,6 +283,11 @@
         <incoming uri="pop3+ssl+://pop.mail.yahoo.co.jp"  username="$user" />
         <outgoing uri="smtp://smtp.mail.yahoo.co.jp:587" username="$user" />
     </provider>
+    <provider id="auone" label="au one" domain="auone.jp"
+              note="@string/provider_note_auonejp">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
 
    <!-- Korean -->
     <provider id="naver" label="Naver" domain="naver.com"
