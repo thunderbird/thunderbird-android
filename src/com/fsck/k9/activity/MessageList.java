@@ -877,6 +877,14 @@ public class MessageList
             onAccountUnavailable();
             return;
         }
+
+
+        if(! (this instanceof Search)){
+            //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
+            //when returning from search results
+            Search.setActive(false);
+        }
+
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
 
         mStars = K9.messageListStars();
@@ -1187,8 +1195,9 @@ public class MessageList
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
+                }
                 return true;
             }
         }
@@ -1956,10 +1965,18 @@ public class MessageList
                 try{
                     LocalFolder localFolder = account.getLocalStore().getFolder(folderName);
                     if(localFolder != null){
-                        if(localFolder.getMessage(message.getUid()) == null){
+                        Message localMessage = localFolder.getMessage(message.getUid());
+                        if(localMessage == null){
+                            //add message to LocalStore so MessageView can pick it up
                             Message [] messages = {message};
                             localFolder.appendMessages(messages);
-                        }//else: the message is already in the local store so don't worry about it
+                            message = localFolder.getMessage(message.getUid());
+                        }
+                        else{
+                            //use LocalStore's copy as it might have body, etc downloaded
+                            //TODO: update LocalStore's copy if ours has newer flags?
+                            message = localMessage;
+                        }
                     }//else: should never really happen
 
                 }

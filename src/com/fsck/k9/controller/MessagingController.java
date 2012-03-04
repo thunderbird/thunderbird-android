@@ -280,8 +280,9 @@ public class MessagingController implements Runnable {
                 if (command != null) {
                     commandDescription = command.description;
 
-                    if (K9.DEBUG)
+                    if (K9.DEBUG) {
                         Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
+                    }
 
                     mBusy = true;
                     try {
@@ -303,9 +304,10 @@ public class MessagingController implements Runnable {
                         } .start();
                     }
 
-                    if (K9.DEBUG)
+                    if (K9.DEBUG) {
                         Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
                               " Command '" + command.description + "' completed");
+                    }
 
                     for (MessagingListener l : getListeners(command.listener)) {
                         l.controllerCommandCompleted(!mCommands.isEmpty());
@@ -557,7 +559,7 @@ public class MessagingController implements Runnable {
             l.listLocalMessagesStarted(account, folder);
         }
 
-        Folder localFolder = null;
+        LocalFolder localFolder = null;
         MessageRetrievalListener retrievalListener =
         new MessageRetrievalListener() {
             List<Message> pendingMessages = new ArrayList<Message>();
@@ -599,16 +601,20 @@ public class MessagingController implements Runnable {
 
 
         try {
-            Store localStore = account.getLocalStore();
+            LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
 
+            //Purging followed by getting requires 2 DB queries.
+            //TODO: Fix getMessages to allow auto-pruning at visible limit?
+            localFolder.purgeToVisibleLimit(null);
             localFolder.getMessages(
                 retrievalListener,
                 false // Skip deleted messages
             );
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
+            }
 
             for (MessagingListener l : getListeners(listener)) {
                 l.listLocalMessagesFinished(account, folder);
@@ -3236,7 +3242,7 @@ public class MessagingController implements Runnable {
                         // This is a complete hack, but is worlds better than the previous
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
-                            localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
+                            localFolder.moveMessages(new Message[] { message }, localStore.getFolder(account.getDraftsFolderName()));
                         } else {
                         }
 
