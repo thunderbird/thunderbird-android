@@ -136,24 +136,23 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
 
-    public static class UidReverseComparator implements Comparator<Message>{
+    public static class UidReverseComparator implements Comparator<Message> {
         @Override
         public int compare(Message o1, Message o2) {
-            if(o1 == null || o2 == null || o1.getUid() == null || o2.getUid() == null){
+            if (o1 == null || o2 == null || o1.getUid() == null || o2.getUid() == null) {
                 return 0;
             }
             int id1, id2;
-            try{
+            try {
                 id1 = Integer.parseInt(o1.getUid());
                 id2 = Integer.parseInt(o2.getUid());
-            }
-            catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return 0;
             }
             //reversed intentionally.
-            if(id1 < id2)
+            if (id1 < id2)
                 return 1;
-            if(id1 > id2)
+            if (id1 > id2)
                 return -1;
             return 0;
         }
@@ -304,9 +303,8 @@ public class MessagingController implements Runnable {
                 if (command != null) {
                     commandDescription = command.description;
 
-                    if (K9.DEBUG) {
+                    if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
-                    }
 
                     mBusy = true;
                     try {
@@ -328,10 +326,9 @@ public class MessagingController implements Runnable {
                         } .start();
                     }
 
-                    if (K9.DEBUG) {
+                    if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
                               " Command '" + command.description + "' completed");
-                    }
 
                     for (MessagingListener l : getListeners(command.listener)) {
                         l.controllerCommandCompleted(!mCommands.isEmpty());
@@ -636,9 +633,8 @@ public class MessagingController implements Runnable {
                 retrievalListener,
                 false // Skip deleted messages
             );
-            if (K9.DEBUG) {
+            if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
-            }
 
             for (MessagingListener l : getListeners(listener)) {
                 l.listLocalMessagesFinished(account, folder);
@@ -828,13 +824,13 @@ public class MessagingController implements Runnable {
 
 
 
-    public void searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener){
+    public void searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
             String msg = "searchRemoteMessages ("
-                    + "acct=" + acctUuid
-                    + ", folderName = " + folderName
-                    + ", query = " + query
-                    + ")";
+                         + "acct=" + acctUuid
+                         + ", folderName = " + folderName
+                         + ", query = " + query
+                         + ")";
             Log.i(K9.LOG_TAG, msg);
         }
 
@@ -846,7 +842,7 @@ public class MessagingController implements Runnable {
         });
     }
     public void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query,
-            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener){
+            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
         final Account acct = Preferences.getPreferences(mApplication.getApplicationContext()).getAccount(acctUuid);
 
         if (listener != null) {
@@ -858,25 +854,25 @@ public class MessagingController implements Runnable {
             Store remoteStore = acct.getRemoteStore();
             LocalStore localStore = acct.getLocalStore();
 
-            if(remoteStore == null || localStore == null){
+            if (remoteStore == null || localStore == null) {
                 throw new MessagingException("Could not get store");
             }
 
             Folder remoteFolder = remoteStore.getFolder(folderName);
             LocalFolder localFolder = localStore.getFolder(folderName);
-            if(remoteFolder == null || localFolder == null){
+            if (remoteFolder == null || localFolder == null) {
                 throw new MessagingException("Folder not found");
             }
 
-            if(listener != null){
+            if (listener != null) {
                 listener.remoteSearchStarted(acct, folderName);
             }
             List<Message> messages = remoteStore.searchRemoteMessages(query, folderName, requiredFlags, forbiddenFlags);
-            if(listener != null){
+            if (listener != null) {
                 listener.remoteSearchServerQueryComplete(acct, folderName, messages.size());
             }
 
-            if(K9.DEBUG){
+            if (K9.DEBUG) {
                 Log.i("Remote Search", "Remote search got " + messages.size() + " results");
             }
 
@@ -884,7 +880,7 @@ public class MessagingController implements Runnable {
 
 
             int resultLimit = acct.getRemoteSearchNumResults();
-            if(resultLimit > 0 && messages.size() > resultLimit){
+            if (resultLimit > 0 && messages.size() > resultLimit) {
                 extraResults = messages.subList(resultLimit, messages.size());
                 messages = messages.subList(0, resultLimit);
             }
@@ -905,27 +901,26 @@ public class MessagingController implements Runnable {
 
     }
 
-    public void loadSearchResults(final Account account, final String folderName, final List<Message> messages, final MessagingListener listener){
-        threadPool.execute(new Runnable(){
+    public void loadSearchResults(final Account account, final String folderName, final List<Message> messages, final MessagingListener listener) {
+        threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Store remoteStore = account.getRemoteStore();
                     LocalStore localStore = account.getLocalStore();
 
-                    if(remoteStore == null || localStore == null){
+                    if (remoteStore == null || localStore == null) {
                         throw new MessagingException("Could not get store");
                     }
 
                     Folder remoteFolder = remoteStore.getFolder(folderName);
                     LocalFolder localFolder = localStore.getFolder(folderName);
-                    if(remoteFolder == null || localFolder == null){
+                    if (remoteFolder == null || localFolder == null) {
                         throw new MessagingException("Folder not found");
                     }
 
                     loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
-                }
-                catch(MessagingException e){
+                } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Exception in loadSearchResults: " + e);
                     addErrorMessage(account, null, e);
                 }
@@ -933,7 +928,7 @@ public class MessagingController implements Runnable {
         });
     }
 
-    public void loadSearchResultsSynchronous(List<Message> messages, LocalFolder localFolder, Folder remoteFolder, MessagingListener listener) throws MessagingException{
+    public void loadSearchResultsSynchronous(List<Message> messages, LocalFolder localFolder, Folder remoteFolder, MessagingListener listener) throws MessagingException {
         FetchProfile fp_header = new FetchProfile();
         fp_header.add(FetchProfile.Item.FLAGS);
         fp_header.add(FetchProfile.Item.ENVELOPE);
@@ -941,11 +936,11 @@ public class MessagingController implements Runnable {
         fp_structure.add(FetchProfile.Item.STRUCTURE);
 
         int i = 0;
-        for(Message message : messages){
+        for (Message message : messages) {
             i++;
             LocalMessage localMsg = localFolder.getMessage(message.getUid());
 
-            if(localMsg == null){
+            if (localMsg == null) {
                 remoteFolder.fetch(new Message [] {message}, fp_header, null);
                 //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
                 remoteFolder.fetch(new Message [] {message}, fp_structure, null);
@@ -953,7 +948,7 @@ public class MessagingController implements Runnable {
                 localMsg = localFolder.getMessage(message.getUid());
             }
 
-            if(listener != null){
+            if (listener != null) {
                 listener.remoteSearchAddMessage(remoteFolder.getAccount(), remoteFolder.getName(), localMsg, i, messages.size());
             }
         }
@@ -1404,15 +1399,12 @@ public class MessagingController implements Runnable {
              * fetch results for newest to oldest. If not, no harm done.
              */
             Collections.sort(unsyncedMessages, new UidReverseComparator());
-
-
             int visibleLimit = localFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
 
             if ((visibleLimit > 0) && (listSize > visibleLimit)) {
                 unsyncedMessages = unsyncedMessages.subList(0, visibleLimit);
             }
-
 
             FetchProfile fp = new FetchProfile();
             if (remoteFolder.supportsFetchingFlags()) {
@@ -1480,7 +1472,6 @@ public class MessagingController implements Runnable {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
 
-
         localFolder.purgeToVisibleLimit(new MessageRemovalListener() {
             @Override
             public void messageRemoved(Message message) {
@@ -1490,7 +1481,6 @@ public class MessagingController implements Runnable {
             }
 
         });
-
 
         // If the oldest message seen on this sync is newer than
         // the oldest message seen on the previous sync, then
@@ -2897,10 +2887,10 @@ public class MessagingController implements Runnable {
         });
     }
 
-    public void loadMessageForView(final Account account, final String folderName, final String uid,
+    public void loadMessageForView(final Account account, final String folder, final String uid,
                                    final MessagingListener listener) {
         for (MessagingListener l : getListeners(listener)) {
-            l.loadMessageForViewStarted(account, folderName, uid);
+            l.loadMessageForViewStarted(account, folder, uid);
         }
         threadPool.execute(new Runnable() {
             @Override
@@ -2908,13 +2898,13 @@ public class MessagingController implements Runnable {
 
                 try {
                     LocalStore localStore = account.getLocalStore();
-                    LocalFolder localFolder = localStore.getFolder(folderName);
+                    LocalFolder localFolder = localStore.getFolder(folder);
                     localFolder.open(OpenMode.READ_WRITE);
 
                     LocalMessage message = localFolder.getMessage(uid);
                     if (message == null
                     || message.getId() == 0) {
-                        throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
+                        throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
                     if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
@@ -2922,7 +2912,7 @@ public class MessagingController implements Runnable {
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewHeadersAvailable(account, folderName, uid, message);
+                        l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
                     }
 
                     FetchProfile fp = new FetchProfile();
@@ -2934,16 +2924,16 @@ public class MessagingController implements Runnable {
                     localFolder.close();
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewBodyAvailable(account, folderName, uid, message);
+                        l.loadMessageForViewBodyAvailable(account, folder, uid, message);
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFinished(account, folderName, uid, message);
+                        l.loadMessageForViewFinished(account, folder, uid, message);
                     }
 
                 } catch (Exception e) {
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFailed(account, folderName, uid, e);
+                        l.loadMessageForViewFailed(account, folder, uid, e);
                     }
                     addErrorMessage(account, null, e);
 

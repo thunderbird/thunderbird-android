@@ -170,11 +170,11 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            if(object1.compareCounterparty == null){
+            if (object1.compareCounterparty == null) {
                 return (object2.compareCounterparty == null ? 0 : 1);
-            }else if (object2.compareCounterparty == null){
+            } else if (object2.compareCounterparty == null) {
                 return -1;
-            }else{
+            } else {
                 return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
             }
         }
@@ -185,11 +185,11 @@ public class MessageList
 
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            if(object1.compareDate == null){
+            if (object1.compareDate == null) {
                 return (object2.compareDate == null ? 0 : 1);
-            }else if(object2.compareDate == null){
+            } else if (object2.compareDate == null) {
                 return -1;
-            }else{
+            } else {
                 return object1.compareDate.compareTo(object2.compareDate);
             }
         }
@@ -240,6 +240,7 @@ public class MessageList
      * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
      */
     private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+
     static {
         // fill the mapping at class time loading
 
@@ -254,7 +255,6 @@ public class MessageList
         // make it immutable to prevent accidental alteration (content is immutable already)
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
-
 
     private ListView mListView;
 
@@ -422,28 +422,29 @@ public class MessageList
         }
 
 
-        public void updateFooter(final String text, final boolean progressVisible){
-            runOnUiThread(new Runnable(){
-                public void run(){
+        public void updateFooter(final String text, final boolean progressVisible) {
+            runOnUiThread(new Runnable() {
+                public void run() {
                     FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
                     holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.INVISIBLE);
-                    if(text!= null){
+                    if (text != null) {
                         holder.main.setText(text);
                     }
-                    if(progressVisible || holder.main.getText().length() > 0){
+                    if (progressVisible || holder.main.getText().length() > 0) {
                         mFooterView.setVisibility(View.VISIBLE);
-                    }
-                    else{
+                    } else {
                         mFooterView.setVisibility(View.GONE);
                     }
                 }
             });
         }
 
-        public void setWindowProgress(final int amt){
-            runOnUiThread(new Runnable(){public void run(){
-                getWindow().setFeatureInt(Window.FEATURE_PROGRESS, amt);
-            }});
+        public void setWindowProgress(final int amt) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    getWindow().setFeatureInt(Window.FEATURE_PROGRESS, amt);
+                }
+            });
         }
 
         private void resetUnreadCount() {
@@ -549,7 +550,7 @@ public class MessageList
 
         private void refreshTitleOnThread() {
             setWindowTitle();
-            if(!mRemoteSearch){
+            if (!mRemoteSearch) {
                 setWindowProgress();
             }
         }
@@ -592,7 +593,6 @@ public class MessageList
                     setTitle(getString(R.string.search_results) + ": " + mQueryString);
                 }
             }
-            //TODO: Update for ImapSearch
         }
 
         public void progress(final boolean progress) {
@@ -705,18 +705,21 @@ public class MessageList
         if (view == mFooterView) {
             if (mCurrentFolder != null && !mRemoteSearch) {
                 mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
-            }
-            else if(mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null){
+            } else if (mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null) {
                 int numResults = mAdapter.mExtraSearchResults.size();
                 Account account = Preferences.getPreferences(this).getAccount(mSearchAccount);
+                if (account == null) {
+                    mHandler.updateFooter("", false);
+                    return;
+                }
                 int limit = account.getRemoteSearchNumResults();
                 List<Message> toProcess = mAdapter.mExtraSearchResults;
-                if(limit > 0 && numResults > limit){
+                if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
                     mAdapter.mExtraSearchResults = mAdapter.mExtraSearchResults.subList(limit, mAdapter.mExtraSearchResults.size());
-                }
-                else{
+                } else {
                     mAdapter.mExtraSearchResults = null;
+                    mHandler.updateFooter("", false);
                 }
                 mController.loadSearchResults(account, mSearchFolder, toProcess, mAdapter.mListener);
             }
@@ -770,17 +773,16 @@ public class MessageList
         mRemoteSearch = false;
         mSearchAccount = null;
         mSearchFolder = null;
-        if(mQueryString != null){
+        if (mQueryString != null) {
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
-                if(appData != null){
+                if (appData != null) {
                     mSearchAccount = appData.getString(EXTRA_SEARCH_ACCOUNT);
                     mSearchFolder = appData.getString(EXTRA_SEARCH_FOLDER);
                     mRemoteSearch = appData.getBoolean(EXTRA_REMOTE_SEARCH);
                 }
-            }
-            else{
+            } else {
                 mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
                 mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
 
@@ -898,7 +900,7 @@ public class MessageList
         }
 
 
-        if(! (this instanceof Search)){
+        if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             //when returning from search results
             Search.setActive(false);
@@ -923,17 +925,17 @@ public class MessageList
             Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
         }
+
         for (Account accountWithNotification : accountsWithNotification) {
             mController.notifyAccountCancel(this, accountWithNotification);
         }
 
 
         if (mAdapter.messages.isEmpty()) {
-            if (mRemoteSearch){
+            if (mRemoteSearch) {
                 //TODO: Support flag based search
                 mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
-            }
-            else if (mFolderName != null) {
+            } else if (mFolderName != null) {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             } else if (mQueryString != null) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
@@ -947,7 +949,7 @@ public class MessageList
                 public void run() {
 
 
-                    if (!mRemoteSearch){
+                    if (!mRemoteSearch) {
                         mAdapter.markAllMessagesAsDirty();
                         if (mFolderName != null) {
                             mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
@@ -1214,9 +1216,8 @@ public class MessageList
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG) {
+                if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
-                }
                 return true;
             }
         }
@@ -1293,39 +1294,39 @@ public class MessageList
     @Override
     public boolean onSearchRequested() {
 
-         if(mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()){
-             //if in a remote searchable folder, ask user what they want.
-             //TODO: Add ability to remember selection?
-             final CharSequence[] items = new CharSequence[2];
-             items[0] = getString(R.string.search_mode_local_all);
-             items[1] = getString(R.string.search_mode_remote);
+        if (mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()) {
+            //if in a remote searchable folder, ask user what they want.
+            //TODO: Add ability to remember selection?
+            final CharSequence[] items = new CharSequence[2];
+            items[0] = getString(R.string.search_mode_local_all);
+            items[1] = getString(R.string.search_mode_remote);
 
-             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-             builder.setTitle(getString(R.string.search_mode_title));
-             builder.setItems(items, new DialogInterface.OnClickListener() {
-                 public void onClick(DialogInterface dialog, int item) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.search_mode_title));
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
 
-                     Bundle appData = null;
-                     if(item == 1){
-                         appData = new Bundle();
-                         appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-                         appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
-                         appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
-                     }
-                     //else do regular search, which doesn't require any special parameter setup
+                    Bundle appData = null;
+                    if (item == 1) {
+                        appData = new Bundle();
+                        appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+                        appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
+                        appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
+                    }
+                    //else do regular search, which doesn't require any special parameter setup
 
-                     startSearch(null, false, appData, false);
-                 }
-             });
-             AlertDialog alert = builder.create();
-             alert.show();
+                    startSearch(null, false, appData, false);
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
 
-             return true;
-         }
+            return true;
+        }
 
-         startSearch(null, false, null, false);
-         return true;
-     }
+        startSearch(null, false, null, false);
+        return true;
+    }
 
     private void changeSort(SORT_TYPE newSortType) {
         if (sortType == newSortType) {
@@ -1975,10 +1976,9 @@ public class MessageList
             @Override
             public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
 
-                if(numTotal > 0 && numDone < numTotal){
-                    mHandler.setWindowProgress(Window.PROGRESS_END/numTotal * numDone);
-                }
-                else{
+                if (numTotal > 0 && numDone < numTotal) {
+                    mHandler.setWindowProgress(Window.PROGRESS_END / numTotal * numDone);
+                } else {
                     mHandler.setWindowProgress(Window.PROGRESS_END);
                 }
 
@@ -1986,29 +1986,29 @@ public class MessageList
             }
 
             @Override
-            public void remoteSearchFailed(Account acct, String folder,
-                    final String err) {
+            public void remoteSearchFailed(Account acct, String folder, final String err) {
                 //TODO: Better error handling
-                runOnUiThread(new Runnable(){public void run(){
-                    Toast.makeText(getApplication(),  err, Toast.LENGTH_LONG).show();
-                }});
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplication(),  err, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
-            public void remoteSearchStarted(Account acct, String folder){
+            public void remoteSearchStarted(Account acct, String folder) {
                 mHandler.progress(true);
                 mHandler.updateFooter(getString(R.string.remote_search_sending_query), true);
             }
 
 
             @Override
-            public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults){
+            public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {
                 mHandler.progress(false);
-                if(extraResults != null && extraResults.size() > 0){
+                if (extraResults != null && extraResults.size() > 0) {
                     mExtraSearchResults = extraResults;
                     mHandler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
-                }
-                else{
+                } else {
                     mHandler.updateFooter("", false);
                 }
                 mHandler.setWindowProgress(Window.PROGRESS_END);
@@ -2016,12 +2016,11 @@ public class MessageList
             }
 
             @Override
-            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){
+            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
                 mHandler.progress(true);
-                if(account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()){
+                if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
                     mHandler.updateFooter(getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
-                }
-                else{
+                } else {
                     mHandler.updateFooter(getString(R.string.remote_search_downloading, numResults), true);
                 }
                 mHandler.setWindowProgress(Window.PROGRESS_START);
@@ -2161,7 +2160,11 @@ public class MessageList
         };
 
         private boolean updateForMe(Account account, String folder) {
-            return account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName);
+            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         private Drawable mAttachmentIcon;
@@ -2179,7 +2182,7 @@ public class MessageList
         }
         public void pruneDirtyMessages() {
             synchronized (mAdapter.messages) {
-                for(MessageInfoHolder holder : mAdapter.messages){
+                for (MessageInfoHolder holder : mAdapter.messages) {
                     if (holder.dirty) {
                         if (holder.selected) {
                             mSelectedCount--;

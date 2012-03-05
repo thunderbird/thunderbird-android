@@ -1148,10 +1148,9 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void open(final OpenMode mode) throws MessagingException {
 
-            if (isOpen() && (getMode() == mode || mode==OpenMode.READ_ONLY)) {
+            if (isOpen() && (getMode() == mode || mode == OpenMode.READ_ONLY)) {
                 return;
-            }
-            else if (isOpen()){
+            } else if (isOpen()) {
                 //previously opened in READ_ONLY and now requesting READ_WRITE
                 //so close connection and reopen
                 close();
@@ -1364,7 +1363,7 @@ public class LocalStore extends Store implements Serializable {
 
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException {
             //don't purge messages while a Search is active since it might throw away search results
-            if(!Search.isActive()){
+            if (!Search.isActive()) {
                 if (mVisibleLimit == 0) {
                     return ;
                 }

@@ -440,7 +440,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
-
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
@@ -483,19 +482,18 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         }
-
-
         // IMAP-specific preferences
         mAllowRemoteSearch = (CheckBoxPreference) findPreference(PREFERENCE_ALLOW_REMOTE_SEARCH);
 
-        mAllowRemoteSearch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                                                            public boolean onPreferenceChange(Preference pref, Object newVal){
-                                                                if((Boolean) newVal){
-                                                                    showRemoteSearchHelp();
-                                                                }
-                                                                return true;
-                                                            }
-                                                         });
+        mAllowRemoteSearch.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference pref, Object newVal) {
+                    if ((Boolean) newVal) {
+                        showRemoteSearchHelp();
+                    }
+                    return true;
+                }
+            });
         mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
         mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
@@ -544,9 +542,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         } else {
-            final PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
-            incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
-            incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
+            PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
+            incomingPrefs.removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
+            incomingPrefs.removePreference((ListPreference) findPreference(PREFERENCE_PUSH_MODE));
 
             ((PreferenceScreen) findPreference("main")).removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_REMOTE_SEARCH));
 
@@ -697,7 +695,7 @@ public class AccountSettings extends K9PreferenceActivity {
     protected void showRemoteSearchHelp() {
         final String noShowHelpPref = "account_settings_remote_search_hide_help";
         final SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        if(!prefs.getBoolean(noShowHelpPref, false)){
+        if (!prefs.getBoolean(noShowHelpPref, false)) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             final CheckBox noShowAgain = new CheckBox(this);
             noShowAgain.setChecked(false);
@@ -714,7 +712,7 @@ public class AccountSettings extends K9PreferenceActivity {
                        }
                    }
                });
-           adb.create().show();
+            adb.create().show();
         }
 
     }

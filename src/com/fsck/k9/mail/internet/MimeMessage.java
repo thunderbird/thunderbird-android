@@ -601,27 +601,27 @@ public class MimeMessage extends Message {
         return message;
     }
 
-    public boolean toMe(){
+    public boolean toMe() {
         return false;
     }
 
-    public boolean ccMe(){
+    public boolean ccMe() {
         return false;
     }
 
-    public boolean bccMe(){
+    public boolean bccMe() {
         return false;
     }
 
-    public long getId(){
+    public long getId() {
         return Long.parseLong(mUid); //or maybe .mMessageId?
     }
 
-    public String getPreview(){
+    public String getPreview() {
         return "";
     }
 
-    public boolean hasAttachments(){
+    public boolean hasAttachments() {
         return false;
     }
 }

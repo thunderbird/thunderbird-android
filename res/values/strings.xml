@@ -1131,8 +1131,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 the import operation. Please install a file manager application from Android Market</string>
     <string name="open_market">Open Market</string>
     <string name="close">Close</string>
-    <string name="account_settings_allow_remote_search_label">Allow Remote Search</string>
-    <string name="account_settings_allow_remote_search_summary">Enable Remote Searching for this account</string>
+    <string name="account_settings_allow_remote_search_label">Allow remote search</string>
+    <string name="account_settings_allow_remote_search_summary">Enable remote searching for this account</string>
     <string name="account_settings_remote_search_num_results_entries_all">All</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -1141,13 +1141,13 @@ the import operation. Please install a file manager application from Android Mar
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Results Limit</string>
+    <string name="account_settings_remote_search_num_label">Results limit</string>
     <string name="search_mode_local_all">All Local Folders</string>
     <string name="search_mode_remote">Remote Folder</string>
     <string name="search_mode_title">Search Location</string>
-    <string name="account_settings_remote_search">Remote Folder Searching</string>
+    <string name="account_settings_remote_search">Remote folder searching</string>
     <string name="account_settings_remote_search_full_text_summary">Can be slow</string>
-    <string name="account_settings_remote_search_full_text">Include Body Text</string>
+    <string name="account_settings_remote_search_full_text">Include body text</string>
     <string name="account_settings_allow_remote_search_help">
         To perform a remote search, press your device\'s Search button while viewing a folder from this account.
         \n\nNote: Remote search is NOT available from the Unified Inbox or from a list of folders.

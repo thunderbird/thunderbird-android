@@ -159,7 +159,7 @@ public class MessagingListener {
      * @param acct
      * @param folder
      */
-    public void remoteSearchStarted(Account acct, String folder){}
+    public void remoteSearchStarted(Account acct, String folder) {}
 
 
     /**
@@ -167,7 +167,7 @@ public class MessagingListener {
      *
      * @param numResults
      */
-    public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults){ }
+    public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) { }
 
 
     /**
@@ -177,7 +177,7 @@ public class MessagingListener {
      * @param folder
      * @param message
      */
-    public void remoteSearchAddMessage(Account account, String folder, Message message, int numDone, int numTotal){ }
+    public void remoteSearchAddMessage(Account account, String folder, Message message, int numDone, int numTotal) { }
 
     /**
      * Called when Remote Search is fully complete
@@ -195,7 +195,7 @@ public class MessagingListener {
      * @param folder
      * @param err
      */
-    public void remoteSearchFailed(Account acct, String folder, String err){ }
+    public void remoteSearchFailed(Account acct, String folder, String err) { }
 
     /**
      * General notification messages subclasses can override to be notified that the controller
@@ -207,6 +207,4 @@ public class MessagingListener {
      *         {@code false} otherwise.
      */
     public void controllerCommandCompleted(boolean moreCommandsToRun) {}
-
-
 }

@@ -1463,15 +1463,15 @@ public class Account implements BaseAccount {
         return mAllowRemoteSearch;
     }
 
-    public void setAllowRemoteSearch(boolean val){
+    public void setAllowRemoteSearch(boolean val) {
         mAllowRemoteSearch = val;
     }
 
-    public int getRemoteSearchNumResults(){
+    public int getRemoteSearchNumResults() {
         return mRemoteSearchNumResults;
     }
 
-    public void setRemoteSearchNumResults(int val){
+    public void setRemoteSearchNumResults(int val) {
         mRemoteSearchNumResults = (val >= 0 ? val : 0);
     }
 

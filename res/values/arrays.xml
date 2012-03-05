@@ -46,7 +46,6 @@
         <item>1440</item>
     </string-array>
 
-    
     <string-array name="account_settings_display_count_entries">
         <item>@string/account_setup_options_mail_display_count_10</item>
         <item>@string/account_setup_options_mail_display_count_25</item>
@@ -57,7 +56,7 @@
         <item>@string/account_setup_options_mail_display_count_1000</item>
         <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
-    
+
     <string-array name="account_settings_display_count_values">
         <item>10</item>
         <item>25</item>
