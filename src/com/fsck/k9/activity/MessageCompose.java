@@ -2289,8 +2289,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
 
                 if (ACTION_REPLY_ALL.equals(action)) {
+                    if (message.getReplyTo().length > 0) {
+                        for (Address address : message.getFrom()) {
+                            if (!mAccount.isAnIdentity(address)) {
+                                addAddress(mToView, address);
+                            }
+                        }
+                    }
                     for (Address address : message.getRecipients(RecipientType.TO)) {
-                        if (!mAccount.isAnIdentity(address)) {
+                        if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                             addAddress(mToView, address);
                         }
 
