@@ -1132,10 +1132,8 @@ Log.d("ASH", "newFolder.save() post");
     public boolean delete(final String folderName) throws com.fsck.k9.mail.MessagingException {
         LocalFolder folder = new LocalFolder(folderName);
         if (folder.exists()) {
-            if (folder.delete(false)) { // deletes folder
-                folder.delete();        // deletes folder preferences
-                return true;
-            }
+            folder.delete();             // deletes folder preferences -- must be done first
+            return folder.delete(false); // deletes folder
         }
         return false;
     }
