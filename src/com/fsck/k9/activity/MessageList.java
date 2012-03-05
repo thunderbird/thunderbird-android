@@ -1760,6 +1760,19 @@ public class MessageList
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
                 menu.findItem(R.id.batch_spam_op).setVisible(false);
             }
+
+            if (!mController.isMoveCapable(mAccount)) {
+                // FIXME: Really we want to do this for all local-only folders
+                if (mCurrentFolder != null &&
+                        !mAccount.getInboxFolderName().equals(mCurrentFolder.name)) {
+                    menu.findItem(R.id.check_mail).setVisible(false);
+                }
+                menu.findItem(R.id.batch_archive_op).setVisible(false);
+                menu.findItem(R.id.batch_spam_op).setVisible(false);
+                menu.findItem(R.id.batch_move_op).setVisible(false);
+                menu.findItem(R.id.batch_copy_op).setVisible(false);
+                menu.findItem(R.id.expunge).setVisible(false);
+            }
         }
 
         boolean newFlagState = computeBatchDirection(true);

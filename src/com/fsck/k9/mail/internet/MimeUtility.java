@@ -2040,6 +2040,17 @@ public class MimeUtility {
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
 
+    public static String getExtensionByMimeType(String mimeType) {
+        String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
+        for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
+            if (contentTypeMapEntry[1].equals(lowerCaseMimeType)) {
+                return contentTypeMapEntry[0];
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Convert some wrong MIME types encountered in the wild to canonical MIME types.
      *

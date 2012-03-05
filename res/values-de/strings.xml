@@ -285,6 +285,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf SD-Karte gespeichert werden.</string>
     <string name="message_view_show_pictures_instructions">Wählen Sie \"Bilder anzeigen\", um eingebettete Bilder abzurufen.</string>
     <string name="message_view_show_pictures_action">Bilder anzeigen</string>
+    <string name="message_view_show_attachments_action">Zeige Anhänge</string>
+    <string name="message_view_show_more_attachments_action">Mehr&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Lade Anhang.</string>
     <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
 
