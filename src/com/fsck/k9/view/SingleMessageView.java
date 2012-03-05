@@ -33,7 +33,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import java.util.List;
 
 
-public class SingleMessageView extends LinearLayout implements OnClickListener {
+public class SingleMessageView extends LinearLayout implements OnClickListener,
+        MessageHeader.OnLayoutChangedListener {
     private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
     private MessageWebView mMessageContentView;
@@ -65,6 +66,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         mHeaderPlaceHolder = (LinearLayout) findViewById(R.id.message_view_header_container);
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
+        mHeaderContainer.setOnLayoutChangedListener(this);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mInsideAttachmentsContainer = (LinearLayout) findViewById(R.id.inside_attachments_container);
@@ -506,6 +508,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
         super.onRestoreInstanceState(savedState.getSuperState());
 
         mSavedState = savedState;
+    }
+
+    public void onLayoutChanged() {
+        if (mMessageContentView != null) {
+            mMessageContentView.invalidate();
+        }
     }
 
     static class SavedState extends BaseSavedState {
