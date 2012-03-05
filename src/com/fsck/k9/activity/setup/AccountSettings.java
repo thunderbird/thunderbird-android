@@ -506,7 +506,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
             mAllowRemoteSearch.setChecked(mAccount.allowRemoteSearch());
             mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
-            mRemoteSearchFullText.setChecked(mAccount.getRemoteSearchFullText());
+            mRemoteSearchFullText.setChecked(mAccount.isRemoteSearchFullText());
 
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());

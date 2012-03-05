@@ -411,7 +411,7 @@ public class MessageList
                         }
                     }
 
-                    if (wasEmpty & !mAdapter.messages.isEmpty()) {
+                    if (wasEmpty && !mAdapter.messages.isEmpty()) {
                         mListView.setSelection(0);
                     }
                     resetUnreadCountOnThread();
@@ -1294,7 +1294,7 @@ public class MessageList
     public boolean onSearchRequested() {
 
          if(mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()){
-             //if in a SSSable folder, ask user what they want.
+             //if in a remote searchable folder, ask user what they want.
              //TODO: Add ability to remember selection?
              final CharSequence[] items = new CharSequence[2];
              items[0] = getString(R.string.search_mode_local_all);

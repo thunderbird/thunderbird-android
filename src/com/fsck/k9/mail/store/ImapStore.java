@@ -3368,7 +3368,7 @@ public class ImapStore extends Store {
                         }
                     }
                     String encodedQry = encodeString(queryString);
-                    if(mAccount.getRemoteSearchFullText()){
+                    if(mAccount.isRemoteSearchFullText()){
                         imapQuery += "TEXT " + encodedQry;
                     }
                     else{

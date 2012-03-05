@@ -1530,8 +1530,7 @@ public class Account implements BaseAccount {
         mEnabled = enabled;
     }
 
-    public boolean getRemoteSearchFullText() {
-
+    public boolean isRemoteSearchFullText() {
         return mRemoteSearchFullText;
     }
 
