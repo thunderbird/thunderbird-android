@@ -1,15 +1,16 @@
 
 package com.fsck.k9.controller;
 
+import java.util.List;
+
 import android.content.Context;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-
-import java.util.List;
 
 /**
  * Defines the interface that {@link MessagingController} will use to callback to requesters.
@@ -185,7 +186,7 @@ public class MessagingListener {
      * @param folder
      * @param numResults
      */
-    public void remoteSearchFinished(Account acct, String folder, int numResults) {}
+    public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {}
 
     /**
      * Called when there was a problem with a remote search operation.

@@ -70,7 +70,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
@@ -431,6 +430,12 @@ public class MessageList
                     if(text!= null){
                         holder.main.setText(text);
                     }
+                    if(progressVisible || holder.main.getText().length() > 0){
+                        mFooterView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        mFooterView.setVisibility(View.GONE);
+                    }
                 }
             });
         }
@@ -700,6 +705,20 @@ public class MessageList
         if (view == mFooterView) {
             if (mCurrentFolder != null && !mRemoteSearch) {
                 mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+            }
+            else if(mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null){
+                int numResults = mAdapter.mExtraSearchResults.size();
+                Account account = Preferences.getPreferences(this).getAccount(mSearchAccount);
+                int limit = account.getRemoteSearchNumResults();
+                List<Message> toProcess = mAdapter.mExtraSearchResults;
+                if(limit > 0 && numResults > limit){
+                    toProcess = toProcess.subList(0, limit);
+                    mAdapter.mExtraSearchResults = mAdapter.mExtraSearchResults.subList(limit, mAdapter.mExtraSearchResults.size());
+                }
+                else{
+                    mAdapter.mExtraSearchResults = null;
+                }
+                mController.loadSearchResults(account, mSearchFolder, toProcess, mAdapter.mListener);
             }
             return;
         }
@@ -1948,43 +1967,19 @@ public class MessageList
     class MessageListAdapter extends BaseAdapter {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
+        public List<Message> mExtraSearchResults;
+
         private final ActivityListener mListener = new ActivityListener() {
 
 
             @Override
             public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
 
-                if(numTotal > 0){
+                if(numTotal > 0 && numDone < numTotal){
                     mHandler.setWindowProgress(Window.PROGRESS_END/numTotal * numDone);
                 }
                 else{
                     mHandler.setWindowProgress(Window.PROGRESS_END);
-                }
-
-                //MessageView expects messages to be in the LocalStore, so add them
-                try{
-                    LocalFolder localFolder = account.getLocalStore().getFolder(folderName);
-                    if(localFolder != null){
-                        Message localMessage = localFolder.getMessage(message.getUid());
-                        if(localMessage == null){
-                            //add message to LocalStore so MessageView can pick it up
-                            Message [] messages = {message};
-                            localFolder.appendMessages(messages);
-                            message = localFolder.getMessage(message.getUid());
-                        }
-                        else{
-                            //use LocalStore's copy as it might have body, etc downloaded
-                            //TODO: update LocalStore's copy if ours has newer flags?
-                            message = localMessage;
-                        }
-                    }//else: should never really happen
-
-                }
-                catch(MessagingException e){
-                    //FIXME: Do something useful here...
-                    if(K9.DEBUG){
-                        Log.d("IMAP search", "remoteSearchAddMessage caught error: " + e.toString());
-                    }
                 }
 
                 addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
@@ -2007,10 +2002,17 @@ public class MessageList
 
 
             @Override
-            public void remoteSearchFinished(Account acct, String folder, int numResults){
+            public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults){
                 mHandler.progress(false);
-                mHandler.updateFooter("", false);
+                if(extraResults != null && extraResults.size() > 0){
+                    mExtraSearchResults = extraResults;
+                    mHandler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
+                }
+                else{
+                    mHandler.updateFooter("", false);
+                }
                 mHandler.setWindowProgress(Window.PROGRESS_END);
+
             }
 
             @Override

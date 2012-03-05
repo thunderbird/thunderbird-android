@@ -1851,11 +1851,11 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public Message getMessage(final String uid) throws MessagingException {
+        public LocalMessage getMessage(final String uid) throws MessagingException {
             try {
-                return database.execute(false, new DbCallback<Message>() {
+                return database.execute(false, new DbCallback<LocalMessage>() {
                     @Override
-                    public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
                             open(OpenMode.READ_WRITE);
                             LocalMessage message = new LocalMessage(uid, LocalFolder.this);
@@ -2102,7 +2102,7 @@ public class LocalStore extends Store implements Serializable {
                                         message.setUid(uid);
                                     }
                                 } else {
-                                    LocalMessage oldMessage = (LocalMessage) getMessage(uid);
+                                    LocalMessage oldMessage = getMessage(uid);
 
                                     if (oldMessage != null) {
                                         oldMessageId = oldMessage.getId();
