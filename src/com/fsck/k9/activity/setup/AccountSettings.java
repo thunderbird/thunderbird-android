@@ -2,20 +2,31 @@
 package com.fsck.k9.activity.setup;
 
 import android.app.Dialog;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceScreen;
+import android.preference.RingtonePreference;
 import android.util.Log;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.LinkedList;
-import java.util.List;
+import android.view.View;
+import android.widget.CheckBox;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -24,18 +35,17 @@ import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.service.MailService;
-
-import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.service.MailService;
 
 
 public class AccountSettings extends K9PreferenceActivity {
@@ -52,6 +62,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
     private static final String PREFERENCE_SCREEN_NOTIFICATIONS = "notifications";
+    private static final String PREFERENCE_SCREEN_REMOTE_SEARCH = "remote_search";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
@@ -101,6 +112,10 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
     private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
+    private static final String PREFERENCE_ALLOW_REMOTE_SEARCH = "account_allow_remote_search";
+    private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
+    private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
+
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
     private static final String PREFERENCE_CATEGORY_FOLDERS = "folders";
     private static final String PREFERENCE_ARCHIVE_FOLDER = "archive_folder";
@@ -162,6 +177,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
     private CheckBoxPreference mCryptoAutoEncrypt;
+    private CheckBoxPreference mAllowRemoteSearch;
+    private ListPreference mRemoteSearchNumResults;
+    private CheckBoxPreference mRemoteSearchFullText;
     private ListPreference mLocalStorageProvider;
     private ListPreference mArchiveFolder;
     private ListPreference mDraftsFolder;
@@ -472,12 +490,28 @@ public class AccountSettings extends K9PreferenceActivity {
             });
         }
         // IMAP-specific preferences
+        mAllowRemoteSearch = (CheckBoxPreference) findPreference(PREFERENCE_ALLOW_REMOTE_SEARCH);
 
+        mAllowRemoteSearch.setOnPreferenceChangeListener(
+            new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference pref, Object newVal) {
+                    if ((Boolean) newVal) {
+                        showRemoteSearchHelp();
+                    }
+                    return true;
+                }
+            });
+        mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
+        mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
         mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
         if (mIsPushCapable) {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
+
+            mAllowRemoteSearch.setChecked(mAccount.allowRemoteSearch());
+            mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
+            mRemoteSearchFullText.setChecked(mAccount.isRemoteSearchFullText());
 
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
@@ -516,8 +550,11 @@ public class AccountSettings extends K9PreferenceActivity {
             });
         } else {
             PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
-            incomingPrefs.removePreference( (PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
-            incomingPrefs.removePreference( (ListPreference) findPreference(PREFERENCE_PUSH_MODE));
+            incomingPrefs.removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
+            incomingPrefs.removePreference((ListPreference) findPreference(PREFERENCE_PUSH_MODE));
+
+            ((PreferenceScreen) findPreference("main")).removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_REMOTE_SEARCH));
+
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -677,6 +714,31 @@ public class AccountSettings extends K9PreferenceActivity {
         handleCryptoAppDependencies();
     }
 
+    protected void showRemoteSearchHelp() {
+        final String noShowHelpPref = "account_settings_remote_search_hide_help";
+        final SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        if (!prefs.getBoolean(noShowHelpPref, false)) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            final CheckBox noShowAgain = new CheckBox(this);
+            noShowAgain.setChecked(false);
+            noShowAgain.setText(R.string.no_show_again);
+            adb.setView(noShowAgain)
+               .setMessage(getString(R.string.account_settings_allow_remote_search_help))
+               .setCancelable(false)
+               .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {
+                       if(noShowAgain.isChecked()){
+                           Editor edit = prefs.edit();
+                           edit.putBoolean(noShowHelpPref, true);
+                           edit.commit();
+                       }
+                   }
+               });
+            adb.create().show();
+        }
+
+    }
+
     private void handleCryptoAppDependencies() {
         if ("".equals(mCryptoApp.getValue())) {
             mCryptoAutoSignature.setEnabled(false);
@@ -745,11 +807,14 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setTrashFolderName(mTrashFolder.getValue());
         }
 
-
+        //IMAP stuff
         if (mIsPushCapable) {
             mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
             mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
             mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
+            mAccount.setAllowRemoteSearch(mAllowRemoteSearch.isChecked());
+            mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
+            mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
         if (!mIsMoveCapable) {
@@ -776,6 +841,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
 
+        //IMAP specific stuff
         if (mIsPushCapable) {
             boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
             if (mAccount.getFolderPushMode() != FolderMode.NONE) {
