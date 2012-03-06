@@ -49,7 +49,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private DateFormat mTimeFormat;
 
     private View mChip;
-    private View mChip2;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private LinearLayout mToContainerView;
@@ -62,6 +61,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private Contacts mContacts;
     private ImageView mShowAdditionalHeadersIcon;
     private SavedState mSavedState;
+
+    private OnLayoutChangedListener mOnLayoutChangedListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -95,12 +96,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
-        mChip2 = findViewById(R.id.chip2);
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
         mShowAdditionalHeadersIcon = (ImageView) findViewById(R.id.show_additional_headers_icon);
-
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
@@ -116,20 +115,30 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
-        findViewById(R.id.show_additional_headers_area).setOnClickListener(this);
         mFromView.setOnClickListener(this);
+        findViewById(R.id.top_container).setOnClickListener(this);
+
+        TextView dummyDateView = (TextView) findViewById(R.id.dummy_date);
+        TextView dummyTimeView = (TextView) findViewById(R.id.dummy_time);
+        dummyTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
+        dummyDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.show_additional_headers_area: {
+            case R.id.top_container: {
                 onShowAdditionalHeaders();
                 break;
             }
             case R.id.from: {
                 onAddSenderToContacts();
                 break;
+            }
+            case R.id.to:
+            case R.id.cc: {
+                expand((TextView)view, ((TextView)view).getEllipsize() != null);
+                layoutChanged();
             }
         }
     }
@@ -250,8 +259,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         int chipColorAlpha = (!message.isSet(Flag.SEEN)) ? 255 : 127;
         mChip.setBackgroundColor(chipColor);
         mChip.getBackground().setAlpha(chipColorAlpha);
-        mChip2.setBackgroundColor(chipColor);
-        mChip2.getBackground().setAlpha(chipColorAlpha);
 
         setVisibility(View.VISIBLE);
 
@@ -269,9 +276,27 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         int currentVisibility = mAdditionalHeadersView.getVisibility();
         if (currentVisibility == View.VISIBLE) {
             hideAdditionalHeaders();
+            expand(mToView, false);
+            expand(mCcView, false);
         } else {
             showAdditionalHeaders();
+            expand(mToView, true);
+            expand(mCcView, true);
         }
+        layoutChanged();
+    }
+
+    /**
+     * Expand or collapse a TextView by removing or adding the 2 lines limitation
+     */
+    private void expand(TextView v, boolean expand) {
+       if (expand) {
+           v.setMaxLines(Integer.MAX_VALUE);
+           v.setEllipsize(null);
+       } else {
+           v.setMaxLines(2);
+           v.setEllipsize(android.text.TextUtils.TruncateAt.END);
+       }
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
@@ -376,6 +401,20 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
+        }
+    }
+
+    public interface OnLayoutChangedListener {
+        void onLayoutChanged();
+    }
+
+    public void setOnLayoutChangedListener(OnLayoutChangedListener listener) {
+        mOnLayoutChangedListener = listener;
+    }
+
+    private void layoutChanged() {
+        if (mOnLayoutChangedListener != null) {
+            mOnLayoutChangedListener.onLayoutChanged();
         }
     }
 }
