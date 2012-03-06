@@ -30,6 +30,7 @@
 
                 <LinearLayout
                     android:paddingTop="2dip"
+                    android:paddingBottom="3dip"
                     android:layout_column="1"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -134,14 +135,56 @@
 
                 </LinearLayout>
 
+                <!-- Dummy column that is used to ensure the height of the table row is large
+                     enough to fit the date/time column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <!-- Date/Time + Icons -->
+                    <!-- Fixed spacing -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"/>
+
+                    <!-- We don't want to hardcode the height of the star. The minHeight
+                         is that of 'answered'. -->
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="22sp"
+                        android:focusable="false"
+                        style="?android:attr/starStyle"/>
+
+                    <!-- Two text views that will be set to the same height as their
+                         counterparts in the next colum -->
+                    <TextView
+                        android:id="@+id/dummy_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"/>
+
+                    <TextView
+                        android:id="@+id/dummy_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:singleLine="true"/>
+
+                </LinearLayout>
+
+                <!-- Date/Time + Icons
+                     The height of this column is 'fill_parent' so we can put the show more/less
+                     indicator at the bottom. Unfortunately using 'fill_parent' also means that
+                     the views in this column will be cut of if their combined height exceeds
+                     that of the highest non-'fill_parent' column. That's why we need the dummy
+                     column above. -->
                 <LinearLayout
                     android:id="@+id/topright_container"
                     android:layout_marginTop="2dip"
                     android:layout_marginRight="6dip"
                     android:orientation="vertical"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_marginLeft="6dp"
                     android:gravity="right">
 
@@ -187,6 +230,21 @@
                         android:ellipsize="none"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <!-- View that will take up all available space between the time and
+                         the show more/less indicator -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/show_additional_headers_icon"
+                        android:src="@drawable/show_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginBottom="3dip"/>
 
                 </LinearLayout>
 
