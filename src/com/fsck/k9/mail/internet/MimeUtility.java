@@ -2185,7 +2185,8 @@ public class MimeUtility {
         if (address == null)
             return null;
         if (isInDomain(address, "docomo.ne.jp") || isInDomain(address, "dwmail.jp") ||
-                isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com"))
+            isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com") ||
+            isInDomain(address, "emnet.ne.jp") || isInDomain(address, "emobile.ne.jp"))
             return "docomo";
         else if (isInDomain(address, "softbank.ne.jp") || isInDomain(address, "vodafone.ne.jp") ||
                  isInDomain(address, "disney.ne.jp") || isInDomain(address, "vertuclub.ne.jp"))
