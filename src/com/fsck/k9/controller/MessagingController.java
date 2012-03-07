@@ -629,7 +629,7 @@ public class MessagingController implements Runnable {
             Log.i(K9.LOG_TAG, "searchLocalMessages ("
                   + "accountUuids=" + Utility.combine(accountUuids, ',')
                   + ", folderNames = " + Utility.combine(folderNames, ',')
-                  + ", messages.size() = " + (messages != null ? messages.length : null)
+                  + ", messages.size() = " + (messages != null ? messages.length : -1)
                   + ", query = " + query
                   + ", integrate = " + integrate
                   + ", requiredFlags = " + Utility.combine(requiredFlags, ',')
@@ -4182,7 +4182,13 @@ public class MessagingController implements Runnable {
 
         NotificationSetting n = account.getNotificationSetting();
 
-        configureNotification(notif, (n.shouldRing() ?  n.getRingtone() : null), (n.shouldVibrate() ? n.getVibration() : null), (n.isLed() ?  n.getLedColor()  : null), K9.NOTIFICATION_LED_BLINK_SLOW, ringAndVibrate);
+        configureNotification(
+                notif,
+                (n.shouldRing()) ?  n.getRingtone() : null,
+                (n.shouldVibrate()) ? n.getVibration() : null,
+                (n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
+                K9.NOTIFICATION_LED_BLINK_SLOW,
+                ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), notif);
     }

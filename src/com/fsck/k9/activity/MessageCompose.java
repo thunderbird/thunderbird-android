@@ -2427,19 +2427,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 updateFrom();
 
                 Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                                     ? Integer.parseInt(k9identity.get(IdentityField.LENGTH))
+                                     ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
                                      : 0;
                 Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                                     ? Integer.parseInt(k9identity.get(IdentityField.OFFSET))
+                                     ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
                                      : 0;
                 Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
-                        ? Integer.parseInt(k9identity.get(IdentityField.FOOTER_OFFSET))
+                        ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
                         : null;
                 Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                        ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_LENGTH))
+                        ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH))
                         : null;
                 Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                        ? Integer.parseInt(k9identity.get(IdentityField.PLAIN_OFFSET))
+                        ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET))
                         : null;
                 mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
                         ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
