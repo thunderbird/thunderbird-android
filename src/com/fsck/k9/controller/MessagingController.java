@@ -2896,76 +2896,109 @@ public class MessagingController implements Runnable {
         put("loadMessageForViewRemote", listener, new Runnable() {
             @Override
             public void run() {
-                Folder remoteFolder = null;
-                LocalFolder localFolder = null;
-                try {
-                    LocalStore localStore = account.getLocalStore();
-                    localFolder = localStore.getFolder(folder);
-                    localFolder.open(OpenMode.READ_WRITE);
-
-                    Message message = localFolder.getMessage(uid);
-
-                    if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                        /*
-                         * If the message has been synchronized since we were called we'll
-                         * just hand it back cause it's ready to go.
-                         */
-                        FetchProfile fp = new FetchProfile();
-                        fp.add(FetchProfile.Item.ENVELOPE);
-                        fp.add(FetchProfile.Item.BODY);
-                        localFolder.fetch(new Message[] { message }, fp, null);
-                    } else {
-                        /*
-                         * At this point the message is not available, so we need to download it
-                         * fully if possible.
-                         */
-
-                        Store remoteStore = account.getRemoteStore();
-                        remoteFolder = remoteStore.getFolder(folder);
-                        remoteFolder.open(OpenMode.READ_WRITE);
-
-                        // Get the remote message and fully download it
-                        Message remoteMessage = remoteFolder.getMessage(uid);
-                        FetchProfile fp = new FetchProfile();
-                        fp.add(FetchProfile.Item.BODY);
-                        remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
-
-                        // Store the message locally and load the stored message into memory
-                        localFolder.appendMessages(new Message[] { remoteMessage });
-                        fp.add(FetchProfile.Item.ENVELOPE);
-                        message = localFolder.getMessage(uid);
-                        localFolder.fetch(new Message[] { message }, fp, null);
-
-                        // Mark that this message is now fully synched
-                        if (account.isMarkMessageAsReadOnView()) {
-                            message.setFlag(Flag.SEEN, true);
-                        }
-                        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                    }
-
-                    // now that we have the full message, refresh the headers
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
-                    }
-
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewBodyAvailable(account, folder, uid, message);
-                    }
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFinished(account, folder, uid, message);
-                    }
-                } catch (Exception e) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFailed(account, folder, uid, e);
-                    }
-                    addErrorMessage(account, null, e);
-
-                } finally {
-                    closeFolder(remoteFolder);
-                    closeFolder(localFolder);
-                }
-            }//run
+                loadMessageForViewRemoteSynchronous(account, folder, uid, listener, false, false);
+            }
         });
+    }
+
+    public boolean loadMessageForViewRemoteSynchronous(final Account account, final String folder,
+            final String uid, final MessagingListener listener, final boolean force,
+            final boolean loadPartialFromSearch) {
+        Folder remoteFolder = null;
+        LocalFolder localFolder = null;
+        try {
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folder);
+            localFolder.open(OpenMode.READ_WRITE);
+
+            Message message = localFolder.getMessage(uid);
+
+            if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                Log.w(K9.LOG_TAG, "Message has local UID so cannot download fully.");
+                // ASH move toast
+                android.widget.Toast.makeText(mApplication,
+                        "Message has local UID so cannot download fully",
+                        android.widget.Toast.LENGTH_LONG).show();
+                // TODO: Using X_DOWNLOADED_FULL is wrong because it's only a partial message. But
+                // one we can't download completely. Maybe add a new flag; X_PARTIAL_MESSAGE ?
+                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
+            }
+            /* commented out because this was pulled from another unmerged branch:
+            } else if (localFolder.isLocalOnly() && !force) {
+                Log.w(K9.LOG_TAG, "Message in local-only folder so cannot download fully.");
+                // ASH move toast
+                android.widget.Toast.makeText(mApplication,
+                        "Message in local-only folder so cannot download fully",
+                        android.widget.Toast.LENGTH_LONG).show();
+                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
+            }*/
+
+            if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                /*
+                 * If the message has been synchronized since we were called we'll
+                 * just hand it back cause it's ready to go.
+                 */
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.ENVELOPE);
+                fp.add(FetchProfile.Item.BODY);
+                localFolder.fetch(new Message[] { message }, fp, null);
+            } else {
+                /*
+                 * At this point the message is not available, so we need to download it
+                 * fully if possible.
+                 */
+
+                Store remoteStore = account.getRemoteStore();
+                remoteFolder = remoteStore.getFolder(folder);
+                remoteFolder.open(OpenMode.READ_WRITE);
+
+                // Get the remote message and fully download it
+                Message remoteMessage = remoteFolder.getMessage(uid);
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.BODY);
+
+                remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
+
+                // Store the message locally and load the stored message into memory
+                localFolder.appendMessages(new Message[] { remoteMessage });
+                if (loadPartialFromSearch) {
+                    fp.add(FetchProfile.Item.BODY);
+                }
+                fp.add(FetchProfile.Item.ENVELOPE);
+                message = localFolder.getMessage(uid);
+                localFolder.fetch(new Message[] { message }, fp, null);
+
+                // Mark that this message is now fully synched
+                if (account.isMarkMessageAsReadOnView()) {
+                    message.setFlag(Flag.SEEN, true);
+                }
+                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+            }
+
+            // now that we have the full message, refresh the headers
+            for (MessagingListener l : getListeners(listener)) {
+                l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+            }
+
+            for (MessagingListener l : getListeners(listener)) {
+                l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+            }
+            for (MessagingListener l : getListeners(listener)) {
+                l.loadMessageForViewFinished(account, folder, uid, message);
+            }
+            return true;
+        } catch (Exception e) {
+            for (MessagingListener l : getListeners(listener)) {
+                l.loadMessageForViewFailed(account, folder, uid, e);
+            }
+            addErrorMessage(account, null, e);
+            return false;
+        } finally {
+            closeFolder(remoteFolder);
+            closeFolder(localFolder);
+        }
     }
 
     public void loadMessageForView(final Account account, final String folder, final String uid,
@@ -2987,7 +3020,20 @@ public class MessagingController implements Runnable {
                     || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
-                    if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
+                    // IMAP search results will usually need to be downloaded before viewing.
+                    // TODO: limit by account.getMaximumAutoDownloadMessageSize().
+                    if (!message.isSet(Flag.X_DOWNLOADED_FULL) &&
+                            !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                        if (loadMessageForViewRemoteSynchronous(account, folder, uid, listener,
+                                false, true)) {
+                            if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
+                                message.setFlag(Flag.SEEN, true);
+                                setFlag(new Message[] { message }, Flag.SEEN, true);
+                            }
+                        }
+                        return;
+                    }
+                    if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
                         setFlag(new Message[] { message }, Flag.SEEN, true);
                     }
