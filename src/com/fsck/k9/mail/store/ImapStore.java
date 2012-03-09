@@ -1101,15 +1101,6 @@ public class ImapStore extends Store {
             try {
                 String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
-                if (!exists(remoteDestName)) {
-                    // If the remote trash folder doesn't exist we try to create it.
-                    if (K9.DEBUG) {
-                        Log.i(K9.LOG_TAG, "Attempting to create remote folder '" + remoteDestName +
-                                "' for " + getLogId());
-                    }
-                    iFolder.create(FolderType.HOLDS_MESSAGES);
-                }
-
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
                 mConnection.sendCommand(String.format("UID COPY %s %s",
                                                       Utility.combine(uids, ','),
