@@ -2735,13 +2735,8 @@ public class ImapStore extends Store {
         private static final long serialVersionUID = 3725007182205882394L;
         String mAlertText;
 
-        public ImapException(String message, String alertText, Throwable throwable) {
-            super(message, throwable);
-            this.mAlertText = alertText;
-        }
-
         public ImapException(String message, String alertText) {
-            super(message);
+            super(message, true);
             this.mAlertText = alertText;
         }
 
