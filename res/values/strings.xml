@@ -782,6 +782,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="sort_by">Sort by...</string>
     <string name="sort_by_date">Date</string>
+    <string name="sort_by_arrival">Arrival</string>
     <string name="sort_by_sender">Sender</string>
     <string name="sort_by_subject">Subject</string>
     <string name="sort_by_flag">Star</string>
