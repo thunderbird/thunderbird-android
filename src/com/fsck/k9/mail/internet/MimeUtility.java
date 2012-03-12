@@ -953,16 +953,20 @@ public class MimeUtility {
         }
         header = header.replaceAll("\r|\n", "");
         String[] parts = header.split(";");
-        if (name == null) {
+        if (name == null && parts.length > 0) {
             return parts[0];
         }
         for (String part : parts) {
             if (part.trim().toLowerCase(Locale.US).startsWith(name.toLowerCase(Locale.US))) {
-                String parameter = part.split("=", 2)[1].trim();
-                if (parameter.startsWith("\"") && parameter.endsWith("\"")) {
-                    return parameter.substring(1, parameter.length() - 1);
-                } else {
-                    return parameter;
+                String[] partParts = part.split("=", 2);
+                if (partParts.length == 2) {
+                    String parameter = partParts[1].trim();
+                    int len = parameter.length();
+                    if (len >= 2 && parameter.startsWith("\"") && parameter.endsWith("\"")) {
+                        return parameter.substring(1, len - 1);
+                    } else {
+                        return parameter;
+                    }
                 }
             }
         }
