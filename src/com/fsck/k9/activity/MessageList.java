@@ -1195,8 +1195,7 @@ public class MessageList
             mAccount.setSortType(sortType);
             mAccount.setSortAscending(sortAscending);
             mAccount.save(Preferences.getPreferences(this));
-
-			reSort();
+            reSort();
         }
     }
 
