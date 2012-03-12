@@ -149,24 +149,6 @@
         <item>NOT_SECOND_CLASS</item>
     </string-array>
 
-    <string-array name="account_settings_sort_type_entries">
-        <item>@string/sort_by_date</item>
-        <item>@string/sort_by_subject</item>
-        <item>@string/sort_by_sender</item>
-        <item>@string/sort_by_unread</item>
-        <item>@string/sort_by_flag</item>
-        <item>@string/sort_by_attach</item>
-    </string-array>
-
-    <string-array name="account_settings_sort_type_values">
-        <item>SORT_DATE</item>
-        <item>SORT_SUBJECT</item>
-        <item>SORT_SENDER</item>
-        <item>SORT_UNREAD</item>
-        <item>SORT_FLAGGED</item>
-        <item>SORT_ATTACHMENT</item>
-    </string-array>
-
     <string-array name="account_settings_show_pictures_entries">
         <item>@string/account_settings_show_pictures_never</item>
         <item>@string/account_settings_show_pictures_only_from_contacts</item>

@@ -56,21 +56,6 @@
                 android:title="@string/account_settings_color_label"
                 android:summary="@string/account_settings_color_summary" />
 
-            <ListPreference
-                android:persistent="false"
-                android:key="sort_type_enum"
-                android:title="@string/account_settings_sort_type_label"
-                android:entries="@array/account_settings_sort_type_entries"
-                android:entryValues="@array/account_settings_sort_type_values"
-                android:dialogTitle="@string/account_settings_sort_type_label" />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="sort_ascending"
-                android:title="@string/account_settings_sort_ascending_label"
-                android:defaultValue="false"
-                android:summary="@string/account_settings_sort_ascending_summary"  />
-
         </PreferenceCategory>
 
         <PreferenceCategory

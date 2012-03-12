@@ -553,10 +553,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_enable_move_buttons_label">Enable refile buttons</string>
     <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam buttons.</string>
 
-    <string name="account_settings_sort_type_label">Default Sort Type</string>
-    <string name="account_settings_sort_ascending_label">Sort order</string>
-    <string name="account_settings_sort_ascending_summary">Sort in ascending order</string>
-
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_show_pictures_never">No</string>
     <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>

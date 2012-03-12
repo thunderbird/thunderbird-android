@@ -1183,13 +1183,20 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType) {
         if (sortType == newSortType) {
+            mAccount.setSortAscending( !(mController.isSortAscending(newSortType)  ));
+            mAccount.save(Preferences.getPreferences(this));
             onToggleSortAscending();
         } else {
             sortType = newSortType;
             mController.setSortType(sortType);
             sortAscending = mController.isSortAscending(sortType);
             sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
-            reSort();
+
+            mAccount.setSortType(sortType);
+            mAccount.setSortAscending(sortAscending);
+            mAccount.save(Preferences.getPreferences(this));
+
+			reSort();
         }
     }
 

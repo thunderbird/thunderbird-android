@@ -28,7 +28,6 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
@@ -54,8 +53,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
-    private static final String PREFERENCE_SORT_TYPE = "sort_type_enum";
-    private static final String PREFERENCE_SORT_ASCENDING = "sort_ascending";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
@@ -124,8 +121,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
-    private ListPreference mAccountSortType;
-    private CheckBoxPreference mAccountSortAscending;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
@@ -431,22 +426,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
         mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
         mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
-
-        mAccountSortType = (ListPreference) findPreference(PREFERENCE_SORT_TYPE);
-        mAccountSortType.setValue("" + mAccount.getSortType());
-        mAccountSortType.setSummary(mAccountSortType.getEntry());
-        mAccountSortType.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mAccountSortType.findIndexOfValue(summary);
-                mAccountSortType.setSummary(mAccountSortType.getEntries()[index]);
-                mAccountSortType.setValue(summary);
-                return false;
-            }
-        });
-
-        mAccountSortAscending = (CheckBoxPreference) findPreference(PREFERENCE_SORT_ASCENDING);
-        mAccountSortAscending.setChecked(mAccount.isSortAscending());
 
         mAccountShowPictures = (ListPreference) findPreference(PREFERENCE_SHOW_PICTURES);
         mAccountShowPictures.setValue("" + mAccount.getShowPictures());
@@ -770,9 +749,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 mAccount.getNotificationSetting().setRingtone(null);
             }
         }
-
-        mAccount.setSortType(SORT_TYPE.valueOf(mAccountSortType.getValue()));
-        mAccount.setSortAscending(mAccountSortAscending.isChecked());
 
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
 
