@@ -3260,4 +3260,61 @@ public class MimeUtility {
 
         return charset;
     }
+
+    public static ViewableContainer extractPartsFromDraft(Message message)
+            throws MessagingException {
+
+        Body body = message.getBody();
+        if (message.isMimeType("multipart/mixed") && body instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) body;
+
+            ViewableContainer container;
+            int count = multipart.getCount();
+            if (count >= 1) {
+                // The first part is either a text/plain or a multipart/alternative
+                BodyPart firstPart = multipart.getBodyPart(0);
+                container = extractTextual(firstPart);
+
+                // The rest should be attachments
+                for (int i = 1; i < count; i++) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    container.attachments.add(bodyPart);
+                }
+            } else {
+                container = new ViewableContainer(null, null, new ArrayList<Part>());
+            }
+
+            return container;
+        }
+
+        return extractTextual(message);
+    }
+
+    private static ViewableContainer extractTextual(Part part) throws MessagingException {
+        String text = null;
+        String html = null;
+        List<Part> attachments = new ArrayList<Part>();
+
+        Body firstBody = part.getBody();
+        if (part.isMimeType("text/plain") &&
+               firstBody instanceof TextBody) {
+            text = ((TextBody) firstBody).getText();
+        } else if (part.isMimeType("multipart/alternative") &&
+                firstBody instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) firstBody;
+            for (int i = 0, count = multipart.getCount(); i < count; i++) {
+                BodyPart bodyPart = multipart.getBodyPart(i);
+                if (bodyPart.getBody() instanceof TextBody) {
+                    TextBody textBody = (TextBody) bodyPart.getBody();
+                    if (text == null && bodyPart.isMimeType("text/plain")) {
+                        text = textBody.getText();
+                    } else if (html == null && bodyPart.isMimeType("text/html")) {
+                        html = textBody.getText();
+                    }
+                }
+            }
+        }
+
+        return new ViewableContainer(text, html, attachments);
+    }
 }
