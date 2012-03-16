@@ -3281,7 +3281,7 @@ public class MimeUtility {
                     container.attachments.add(bodyPart);
                 }
             } else {
-                container = new ViewableContainer(null, null, new ArrayList<Part>());
+                container = new ViewableContainer("", "", new ArrayList<Part>());
             }
 
             return container;
@@ -3291,8 +3291,8 @@ public class MimeUtility {
     }
 
     private static ViewableContainer extractTextual(Part part) throws MessagingException {
-        String text = null;
-        String html = null;
+        String text = "";
+        String html = "";
         List<Part> attachments = new ArrayList<Part>();
 
         Body firstBody = part.getBody();
