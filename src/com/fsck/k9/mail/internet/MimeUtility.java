@@ -3306,9 +3306,9 @@ public class MimeUtility {
                 BodyPart bodyPart = multipart.getBodyPart(i);
                 if (bodyPart.getBody() instanceof TextBody) {
                     TextBody textBody = (TextBody) bodyPart.getBody();
-                    if (text == null && bodyPart.isMimeType("text/plain")) {
+                    if ("".equals(text) && bodyPart.isMimeType("text/plain")) {
                         text = textBody.getText();
-                    } else if (html == null && bodyPart.isMimeType("text/html")) {
+                    } else if ("".equals(html) && bodyPart.isMimeType("text/html")) {
                         html = textBody.getText();
                     }
                 }
