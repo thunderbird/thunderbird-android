@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -45,12 +46,10 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -58,7 +57,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.Account;
@@ -1464,8 +1462,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static class ImportSelectionDialog implements NonConfigurationInstance {
         private ImportContents mImportContents;
         private Uri mUri;
-        private Dialog mDialog;
-        private ListView mImportSelectionView;
+        private AlertDialog mDialog;
         private SparseBooleanArray mSelection;
 
 
@@ -1483,8 +1480,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         public boolean retain() {
             if (mDialog != null) {
                 // Save the selection state of each list item
-                mSelection = mImportSelectionView.getCheckedItemPositions();
-                mImportSelectionView = null;
+                mSelection = mDialog.getListView().getCheckedItemPositions();
 
                 mDialog.dismiss();
                 mDialog = null;
@@ -1498,8 +1494,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
 
         public void show(final Accounts activity, SparseBooleanArray selection) {
-            final ListView importSelectionView = new ListView(activity);
-            mImportSelectionView = importSelectionView;
             List<String> contents = new ArrayList<String>();
 
             if (mImportContents.globalSettings) {
@@ -1510,23 +1504,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 contents.add(account.name);
             }
 
-            importSelectionView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            importSelectionView.setAdapter(new ArrayAdapter<String>(activity,
-                    android.R.layout.simple_list_item_checked, contents));
-            importSelectionView.setOnItemSelectedListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    CheckedTextView ctv = (CheckedTextView)view;
-                    ctv.setChecked(!ctv.isChecked());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) { /* Do nothing */ }
-            });
-
+            int count = contents.size();
+            boolean[] checkedItems = new boolean[count];
             if (selection != null) {
-                for (int i = 0, end = contents.size(); i < end; i++) {
-                    importSelectionView.setItemChecked(i, selection.get(i));
+                for (int i = 0; i < count; i++) {
+                    checkedItems[i] = selection.get(i);
+                }
+            } else {
+                for (int i = 0; i < count; i++) {
+                    checkedItems[i] = true;
                 }
             }
 
@@ -1534,23 +1520,29 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             //TODO: listview footer: "Select all" / "Select none" buttons?
             //TODO: listview footer: "Overwrite existing accounts?" checkbox
 
+            OnMultiChoiceClickListener listener = new OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    ((AlertDialog) dialog).getListView().setItemChecked(which, isChecked);
+                }
+            };
+
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMultiChoiceItems(contents.toArray(new String[0]), checkedItems, listener);
             builder.setTitle(activity.getString(R.string.settings_import_selection));
-            builder.setView(importSelectionView);
             builder.setInverseBackgroundForced(true);
             builder.setPositiveButton(R.string.okay_action,
                 new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ListAdapter adapter = importSelectionView.getAdapter();
-                        int count = adapter.getCount();
-                        SparseBooleanArray pos = importSelectionView.getCheckedItemPositions();
+                        ListView listView = ((AlertDialog) dialog).getListView();
+                        SparseBooleanArray pos = listView.getCheckedItemPositions();
 
                         boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
                         List<String> accountUuids = new ArrayList<String>();
                         int start = mImportContents.globalSettings ? 1 : 0;
-                        for (int i = start; i < count; i++) {
+                        for (int i = start, end = listView.getCount(); i < end; i++) {
                             if (pos.get(i)) {
                                 accountUuids.add(mImportContents.accounts.get(i-start).uuid);
                             }
