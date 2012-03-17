@@ -3304,12 +3304,12 @@ public class MimeUtility {
             MimeMultipart multipart = (MimeMultipart) firstBody;
             for (int i = 0, count = multipart.getCount(); i < count; i++) {
                 BodyPart bodyPart = multipart.getBodyPart(i);
-                if (bodyPart.getBody() instanceof TextBody) {
-                    TextBody textBody = (TextBody) bodyPart.getBody();
-                    if ("".equals(text) && bodyPart.isMimeType("text/plain")) {
-                        text = textBody.getText();
-                    } else if ("".equals(html) && bodyPart.isMimeType("text/html")) {
-                        html = textBody.getText();
+                String bodyText = getTextFromPart(bodyPart);
+                if (bodyText != null) {
+                    if (text.length() == 0 && bodyPart.isMimeType("text/plain")) {
+                        text = bodyText;
+                    } else if (html.length() == 0 && bodyPart.isMimeType("text/html")) {
+                        html = bodyText;
                     }
                 }
             }
