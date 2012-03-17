@@ -287,8 +287,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_view_status_attachment_not_saved">SDカードに添付ファイルを保存できません</string>
     <string name="message_view_show_pictures_instructions">\"画像表示\"ボタンを押下すると描画します</string>
     <string name="message_view_show_pictures_action">画像表示</string>
-    <string name="message_view_fetching_attachment_toast">添付取込中</string>
-    <string name="message_view_no_viewer">添付ファイルのビューワー見つけられません .<xliff:g id="mimetype">%s</xliff:g></string>
+    <string name="message_view_show_message_action">メッセージ表示</string>
+    <string name="message_view_show_attachments_action">添付ファイル表示</string>
+    <string name="message_view_show_more_attachments_action">他&#8230;</string>
+    <string name="message_view_fetching_attachment_toast">添付ファイル取得中</string>
+    <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>のビューワーが見つかりません</string>
 
     <string name="message_view_download_remainder">すべてダウンロード</string>
 
@@ -777,6 +780,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="sort_by">並べ替え...</string>
     <string name="sort_by_date">日付</string>
+    <string name="sort_by_arrival">受信順</string>
     <string name="sort_by_sender">送信者</string>
     <string name="sort_by_subject">件名</string>
     <string name="sort_by_flag">フラグ</string>
