@@ -42,10 +42,10 @@ public class ChooseFolder extends K9ListActivity {
     MessageReference mMessageReference;
     ArrayAdapter<String> mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
-    String heldInbox = null;
-    boolean hideCurrentFolder = true;
-    boolean showOptionNone = false;
-    boolean showDisplayableOnly = false;
+    String mHeldInbox = null;
+    boolean mHideCurrentFolder = true;
+    boolean mShowOptionNone = false;
+    boolean mShowDisplayableOnly = false;
 
     /**
      * What folders to display.<br/>
@@ -59,7 +59,7 @@ public class ChooseFolder extends K9ListActivity {
      * Created on the fly and invalidated if a new
      * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
      */
-    private FolderListFilter<String> myFilter = null;
+    private FolderListFilter<String> mMyFilter = null;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
     public static final String EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder";
@@ -85,13 +85,13 @@ public class ChooseFolder extends K9ListActivity {
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
-            hideCurrentFolder = false;
+            mHideCurrentFolder = false;
         }
         if (intent.getStringExtra(EXTRA_SHOW_FOLDER_NONE) != null) {
-            showOptionNone = true;
+            mShowOptionNone = true;
         }
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
-            showDisplayableOnly = true;
+            mShowDisplayableOnly = true;
         }
         if (mFolder == null)
             mFolder = "";
@@ -121,8 +121,8 @@ public class ChooseFolder extends K9ListActivity {
                 intent.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
                 intent.putExtra(EXTRA_CUR_FOLDER, mFolder);
                 String destFolderName = (String)((TextView)view).getText();
-                if (heldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
-                    destFolderName = heldInbox;
+                if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
+                    destFolderName = mHeldInbox;
                 }
                 intent.putExtra(EXTRA_NEW_FOLDER, destFolderName);
                 intent.putExtra(EXTRA_MESSAGE, mMessageReference);
@@ -277,8 +277,8 @@ public class ChooseFolder extends K9ListActivity {
     private void setDisplayMode(FolderMode aMode) {
         mMode = aMode;
         // invalidate the current filter as it is working on an inval
-        if (myFilter != null) {
-            myFilter.invalidate();
+        if (mMyFilter != null) {
+            mMyFilter.invalidate();
         }
         //re-populate the list
         MessagingController.getInstance(getApplication()).listFolders(mAccount,
@@ -322,7 +322,7 @@ public class ChooseFolder extends K9ListActivity {
                 String name = folder.getName();
 
                 // Inbox needs to be compared case-insensitively
-                if (hideCurrentFolder && (name.equals(mFolder) ||
+                if (mHideCurrentFolder && (name.equals(mFolder) ||
                 (mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) && mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
                     continue;
                 }
@@ -345,7 +345,7 @@ public class ChooseFolder extends K9ListActivity {
 
             }
 
-            if (showOptionNone) {
+            if (mShowOptionNone) {
                 localFolders.add(K9.FOLDER_NONE);
             }
 
@@ -379,7 +379,7 @@ public class ChooseFolder extends K9ListActivity {
                 for (String name : localFolders) {
                     if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
-                        heldInbox = name;
+                        mHeldInbox = name;
                     } else if (!K9.ERROR_FOLDER_NAME.equals(name) && !account.getOutboxFolderName().equals(name)) {
                         folderList.add(name);
                     }
