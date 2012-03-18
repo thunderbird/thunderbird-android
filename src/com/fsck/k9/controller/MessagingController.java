@@ -449,7 +449,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    private void doRefreshRemote(final Account account, MessagingListener listener) {
+    private void doRefreshRemote(final Account account, final MessagingListener listener) {
         put("doRefreshRemote", listener, new Runnable() {
             @Override
             public void run() {
@@ -492,14 +492,14 @@ public class MessagingController implements Runnable {
                     localFolders = localStore.getPersonalNamespaces(false);
                     Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(listener)) {
                         l.listFolders(account, folderArray);
                     }
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(listener)) {
                         l.listFoldersFinished(account);
                     }
                 } catch (Exception e) {
-                    for (MessagingListener l : getListeners()) {
+                    for (MessagingListener l : getListeners(listener)) {
                         l.listFoldersFailed(account, "");
                     }
                     addErrorMessage(account, null, e);
