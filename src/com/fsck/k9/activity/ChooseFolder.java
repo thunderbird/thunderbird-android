@@ -135,26 +135,14 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     class ChooseFolderHandler extends Handler {
-        private static final int MSG_PROGRESS = 2;
-        private static final int MSG_DATA_CHANGED = 3;
-        private static final int MSG_SET_SELECTED_FOLDER = 4;
+        private static final int MSG_PROGRESS = 1;
+        private static final int MSG_SET_SELECTED_FOLDER = 2;
 
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_PROGRESS: {
                     setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                }
-                case MSG_DATA_CHANGED: {
-                    mAdapter.notifyDataSetChanged();
-
-                    /*
-                     * Only enable the text filter after the list has been
-                     * populated to avoid possible race conditions because our
-                     * FolderListFilter isn't really thread-safe.
-                     */
-                    getListView().setTextFilterEnabled(true);
                     break;
                 }
                 case MSG_SET_SELECTED_FOLDER: {
@@ -176,10 +164,6 @@ public class ChooseFolder extends K9ListActivity {
             msg.what = MSG_SET_SELECTED_FOLDER;
             msg.arg1 = position;
             sendMessage(msg);
-        }
-
-        public void dataChanged() {
-            sendEmptyMessage(MSG_DATA_CHANGED);
         }
     }
 
@@ -409,11 +393,18 @@ public class ChooseFolder extends K9ListActivity {
                         for (String folderName: folderList) {
                             mAdapter.add(folderName);
                         }
+
+                        mAdapter.notifyDataSetChanged();
+
+                        /*
+                         * Only enable the text filter after the list has been
+                         * populated to avoid possible race conditions because our
+                         * FolderListFilter isn't really thread-safe.
+                         */
+                        getListView().setTextFilterEnabled(true);
                     }
                 });
             }
-
-            mHandler.dataChanged();
 
             if (selectedFolder != -1) {
                 mHandler.setSelectedFolder(selectedFolder);
