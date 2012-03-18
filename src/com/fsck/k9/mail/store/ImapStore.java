@@ -45,10 +45,14 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
+import org.apache.commons.io.IOUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -73,13 +77,14 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -94,9 +99,6 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  * <pre>
@@ -1091,7 +1093,7 @@ public class ImapStore extends Store {
             }
 
             ImapFolder iFolder = (ImapFolder)folder;
-            checkOpen();
+            checkOpen(); //only need READ access
 
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1217,7 +1219,7 @@ public class ImapStore extends Store {
 
 
         private int getRemoteMessageCount(String criteria) throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
             try {
                 int count = 0;
                 int start = 1;
@@ -1253,7 +1255,7 @@ public class ImapStore extends Store {
                         return executeSimpleCommand("UID SEARCH *:*");
                     }
                 };
-                Message[] messages = search(searcher, null);
+                Message[] messages = search(searcher, null).toArray(EMPTY_MESSAGE_ARRAY);
                 if (messages.length > 0) {
                     return Integer.parseInt(messages[0].getUid());
                 }
@@ -1302,7 +1304,7 @@ public class ImapStore extends Store {
                     return executeSimpleCommand(String.format("UID SEARCH %d:%d%s%s", start, end, dateSearchString, includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener);
+            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
 
         }
         protected Message[] getMessages(final List<Integer> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
@@ -1312,7 +1314,7 @@ public class ImapStore extends Store {
                     return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener);
+            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
         }
 
         protected Message[] getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
@@ -1322,12 +1324,12 @@ public class ImapStore extends Store {
                     return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener);
+            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
         }
 
-        private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
+        private List<Message> search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
 
-            checkOpen();
+            checkOpen(); //only need READ access
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 ArrayList<Integer> uids = new ArrayList<Integer>();
@@ -1342,8 +1344,12 @@ public class ImapStore extends Store {
                     }
                 }
 
-                // Sort the uids in numerically ascending order
-                Collections.sort(uids);
+                // Sort the uids in numerically decreasing order
+                // By doing it in decreasing order, we ensure newest messages are dealt with first
+                // This makes the most sense when a limit is imposed, and also prevents UI from going
+                // crazy adding stuff at the top.
+                Collections.sort(uids, Collections.reverseOrder());
+
                 for (int i = 0, count = uids.size(); i < count; i++) {
                     if (listener != null) {
                         listener.messageStarted("" + uids.get(i), i, count);
@@ -1357,7 +1363,7 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            return messages;
         }
 
 
@@ -1369,7 +1375,7 @@ public class ImapStore extends Store {
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 if (uids == null) {
@@ -1406,7 +1412,7 @@ public class ImapStore extends Store {
             if (messages == null || messages.length == 0) {
                 return;
             }
-            checkOpen();
+            checkOpen(); //only need READ access
             List<String> uids = new ArrayList<String>(messages.length);
             HashMap<String, Message> messageMap = new HashMap<String, Message>();
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1531,7 +1537,7 @@ public class ImapStore extends Store {
         @Override
         public void fetchPart(Message message, Part part, MessageRetrievalListener listener)
         throws MessagingException {
-            checkOpen();
+            checkOpen(); //only need READ access
 
             String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
             if (parts == null) {
@@ -1932,6 +1938,7 @@ public class ImapStore extends Store {
          */
         @Override
         public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
             try {
                 Map<String, String> uidMap = new HashMap<String, String>();
@@ -2044,6 +2051,7 @@ public class ImapStore extends Store {
 
         @Override
         public void expunge() throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
             try {
                 executeSimpleCommand("EXPUNGE");
@@ -2073,6 +2081,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlags(Flag[] flags, boolean value)
         throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
 
 
@@ -2107,6 +2116,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException {
+            open(OpenMode.READ_WRITE);
             checkOpen();
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -3381,5 +3391,106 @@ public class ImapStore extends Store {
             return null;
         }
     }
+
+    @Override
+    public List<Message> searchRemoteMessages(final String queryString,
+            final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
+
+        if (!mAccount.allowRemoteSearch()) {
+            throw new MessagingException("Your settings do not allow remote searching of this account");
+        }
+
+        final ImapFolder folder = (ImapFolder) getFolder(folderName);
+        if (folder == null) {
+            throw new MessagingException("Invalid folder specified");
+        }
+
+        try {
+            folder.open(OpenMode.READ_ONLY);
+            folder.checkOpen();
+
+
+            ImapSearcher searcher = new ImapSearcher() {
+                public List<ImapResponse> search() throws IOException, MessagingException {
+                    String imapQuery = "UID SEARCH ";
+                    if (requiredFlags != null) {
+                        for (Flag f : requiredFlags) {
+                            switch (f) {
+                            case DELETED:
+                                imapQuery += "DELETED ";
+                                break;
+
+                            case SEEN:
+                                imapQuery +=  "SEEN ";
+                                break;
+
+                            case ANSWERED:
+                                imapQuery += "ANSWERED ";
+                                break;
+
+                            case FLAGGED:
+                                imapQuery += "FLAGGED ";
+                                break;
+
+                            case DRAFT:
+                                imapQuery += "DRAFT ";
+                                break;
+
+                            case RECENT:
+                                imapQuery += "RECENT ";
+                                break;
+                            }
+                        }
+                    }
+                    if (forbiddenFlags != null) {
+                        for (Flag f : forbiddenFlags) {
+                            switch (f) {
+                            case DELETED:
+                                imapQuery += "UNDELETED ";
+                                break;
+
+                            case SEEN:
+                                imapQuery +=  "UNSEEN ";
+                                break;
+
+                            case ANSWERED:
+                                imapQuery += "UNANSWERED ";
+                                break;
+
+                            case FLAGGED:
+                                imapQuery += "UNFLAGGED ";
+                                break;
+
+                            case DRAFT:
+                                imapQuery += "UNDRAFT ";
+                                break;
+
+                            case RECENT:
+                                imapQuery += "UNRECENT ";
+                                break;
+                            }
+                        }
+                    }
+                    String encodedQry = encodeString(queryString);
+                    if (mAccount.isRemoteSearchFullText()) {
+                        imapQuery += "TEXT " + encodedQry;
+                    } else {
+                        imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
+                    }
+                    return folder.executeSimpleCommand(imapQuery);
+                }
+            };
+
+            //don't pass listener--we don't want to add messages until we've downloaded them
+            return folder.search(searcher, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MessagingException("Error during search: " + e.toString());
+        }
+
+    }
+
+
 
 }

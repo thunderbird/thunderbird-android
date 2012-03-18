@@ -1,7 +1,15 @@
 
 package com.fsck.k9.mail.store;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +25,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
@@ -35,8 +42,10 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -1138,9 +1147,15 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public void open(final OpenMode mode) throws MessagingException {
-            if (isOpen()) {
+
+            if (isOpen() && (getMode() == mode || mode == OpenMode.READ_ONLY)) {
                 return;
+            } else if (isOpen()) {
+                //previously opened in READ_ONLY and now requesting READ_WRITE
+                //so close connection and reopen
+                close();
             }
+
             try {
                 database.execute(false, new DbCallback<Void>() {
                     @Override
@@ -1347,17 +1362,19 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException {
-            if (mVisibleLimit == 0) {
-                return ;
-            }
-            open(OpenMode.READ_WRITE);
-            Message[] messages = getMessages(null, false);
-            for (int i = mVisibleLimit; i < messages.length; i++) {
-                if (listener != null) {
-                    listener.messageRemoved(messages[i]);
+            //don't purge messages while a Search is active since it might throw away search results
+            if (!Search.isActive()) {
+                if (mVisibleLimit == 0) {
+                    return ;
                 }
-                messages[i].destroy();
-
+                open(OpenMode.READ_WRITE);
+                Message[] messages = getMessages(null, false);
+                for (int i = mVisibleLimit; i < messages.length; i++) {
+                    if (listener != null) {
+                        listener.messageRemoved(messages[i]);
+                    }
+                    messages[i].destroy();
+                }
             }
         }
 
@@ -1839,11 +1856,11 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public Message getMessage(final String uid) throws MessagingException {
+        public LocalMessage getMessage(final String uid) throws MessagingException {
             try {
-                return database.execute(false, new DbCallback<Message>() {
+                return database.execute(false, new DbCallback<LocalMessage>() {
                     @Override
-                    public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
                             open(OpenMode.READ_WRITE);
                             LocalMessage message = new LocalMessage(uid, LocalFolder.this);
@@ -2118,7 +2135,7 @@ public class LocalStore extends Store implements Serializable {
                                     /*
                                      * Replace an existing message in the database
                                      */
-                                    LocalMessage oldMessage = (LocalMessage) getMessage(uid);
+                                    LocalMessage oldMessage = getMessage(uid);
 
                                     if (oldMessage != null) {
                                         oldMessageId = oldMessage.getId();

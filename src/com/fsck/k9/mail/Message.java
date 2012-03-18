@@ -1,19 +1,18 @@
 
 package com.fsck.k9.mail;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.io.IOException;
 
 import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-
 import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.K9;
 
 
 public abstract class Message implements Part, Body {
@@ -143,6 +142,16 @@ public abstract class Message implements Part, Body {
     public boolean isMimeType(String mimeType) throws MessagingException {
         return getContentType().startsWith(mimeType);
     }
+
+    public abstract boolean toMe();
+    public abstract boolean ccMe();
+    public abstract boolean bccMe();
+    public abstract long getId();
+
+    public abstract String getPreview();
+    public abstract boolean hasAttachments();
+
+
 
     public void delete(String trashFolderName) throws MessagingException {}
 

@@ -1,24 +1,37 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.store.UnavailableStorageException;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 
-import org.apache.james.mime4j.stream.BodyDescriptor;
-import org.apache.james.mime4j.stream.RawField;
-import org.apache.james.mime4j.parser.ContentHandler;
-import org.apache.james.mime4j.io.EOLConvertingInputStream;
-import org.apache.james.mime4j.parser.MimeStreamParser;
-import org.apache.james.mime4j.stream.MimeEntityConfig;
+import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
 import org.apache.james.mime4j.dom.field.Field;
 import org.apache.james.mime4j.field.DefaultFieldParser;
+import org.apache.james.mime4j.io.EOLConvertingInputStream;
+import org.apache.james.mime4j.parser.ContentHandler;
+import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.stream.BodyDescriptor;
+import org.apache.james.mime4j.stream.MimeEntityConfig;
+import org.apache.james.mime4j.stream.RawField;
 
-import org.apache.james.mime4j.MimeException;
-
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -586,5 +599,29 @@ public class MimeMessage extends Message {
         MimeMessage message = new MimeMessage();
         copy(message);
         return message;
+    }
+
+    public boolean toMe() {
+        return false;
+    }
+
+    public boolean ccMe() {
+        return false;
+    }
+
+    public boolean bccMe() {
+        return false;
+    }
+
+    public long getId() {
+        return Long.parseLong(mUid); //or maybe .mMessageId?
+    }
+
+    public String getPreview() {
+        return "";
+    }
+
+    public boolean hasAttachments() {
+        return false;
     }
 }
