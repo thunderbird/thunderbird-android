@@ -47,8 +47,6 @@ public class ChooseFolder extends K9ListActivity {
     boolean showOptionNone = false;
     boolean showDisplayableOnly = false;
 
-    private List<String> folderList;
-
     /**
      * What folders to display.<br/>
      * Initialized to whatever is configured
@@ -370,10 +368,12 @@ public class ChooseFolder extends K9ListActivity {
                 }
             });
             int selectedFolder = -1;
-            // We're not allowed to change the adapter from a background thread, so we use
-            // a java.util.List to build a list of the folder names.
-            // We'll add the folder names to the adapter from the UI-thread (see the 'finally' block).
-            folderList = new ArrayList<String>();
+
+            /*
+             * We're not allowed to change the adapter from a background thread, so we collect the
+             * folder names and update the adapter in the UI thread (see finally block).
+             */
+            final List<String> folderList = new ArrayList<String>();
             try {
                 int position = 0;
                 for (String name : localFolders) {
