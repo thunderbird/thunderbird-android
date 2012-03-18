@@ -46,7 +46,7 @@ public class ChooseFolder extends K9ListActivity {
     boolean hideCurrentFolder = true;
     boolean showOptionNone = false;
     boolean showDisplayableOnly = false;
-    
+
     private List<String> folderList;
 
     /**
@@ -216,7 +216,7 @@ public class ChooseFolder extends K9ListActivity {
             return true;
         }
         case R.id.filter_folders: {
-        	onEnterFilter();
+            onEnterFilter();
         }
             return true;
         default:
@@ -236,43 +236,43 @@ public class ChooseFolder extends K9ListActivity {
      * Filter {@link #mAdapter} with the user-input.
      */
     private void onEnterFilter() {
-    	final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
 
-    	final EditText input = new EditText(this);
-    	input.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mAdapter.getFilter().filter(input.getText().toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-    	input.setHint(R.string.folder_list_filter_hint);
-    	filterAlert.setView(input);
+        final EditText input = new EditText(this);
+        input.addTextChangedListener(new TextWatcher() {
 
-    	filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    		public void onClick(DialogInterface dialog, int whichButton) {
-    			String value = input.getText().toString().trim();
-    			mAdapter.getFilter().filter(value);
-    		}
-    	});
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAdapter.getFilter().filter(input.getText().toString());
+            }
 
-    	filterAlert.setNegativeButton("Cancel",
-    			new DialogInterface.OnClickListener() {
-    		public void onClick(DialogInterface dialog, int whichButton) {
-    			mAdapter.getFilter().filter("");
-    		}
-    	});
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+            }
 
-    	filterAlert.show();
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        input.setHint(R.string.folder_list_filter_hint);
+        filterAlert.setView(input);
+
+        filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString().trim();
+                mAdapter.getFilter().filter(value);
+            }
+        });
+
+        filterAlert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mAdapter.getFilter().filter("");
+            }
+        });
+
+        filterAlert.show();
 
     }
 
@@ -370,18 +370,18 @@ public class ChooseFolder extends K9ListActivity {
                 }
             });
             int selectedFolder = -1;
-            // We're not allowed to change the adapter from a background thread, so we use 
+            // We're not allowed to change the adapter from a background thread, so we use
             // a java.util.List to build a list of the folder names.
-            // We'll add the folder names to the adapter from the UI-thread (see the 'finally' block). 
+            // We'll add the folder names to the adapter from the UI-thread (see the 'finally' block).
             folderList = new ArrayList<String>();
             try {
                 int position = 0;
                 for (String name : localFolders) {
                     if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
-                    	folderList.add(getString(R.string.special_mailbox_name_inbox));
+                        folderList.add(getString(R.string.special_mailbox_name_inbox));
                         heldInbox = name;
                     } else if (!K9.ERROR_FOLDER_NAME.equals(name) && !account.getOutboxFolderName().equals(name)) {
-                    	folderList.add(name);
+                        folderList.add(name);
                     }
 
                     if (mSelectFolder != null) {
@@ -402,11 +402,11 @@ public class ChooseFolder extends K9ListActivity {
             } finally {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                    	// Now we're in the UI-thread, we can safely change the contents of the adapter.
-                    	mAdapter.clear();
-                    	for (String folderName: folderList) {
-                    		mAdapter.add(folderName);
-                    	}
+                        // Now we're in the UI-thread, we can safely change the contents of the adapter.
+                        mAdapter.clear();
+                        for (String folderName: folderList) {
+                            mAdapter.add(folderName);
+                        }
                     }
                 });
             }
