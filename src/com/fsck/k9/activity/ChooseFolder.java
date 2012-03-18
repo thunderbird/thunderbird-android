@@ -1,6 +1,11 @@
 
 package com.fsck.k9.activity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,15 +24,16 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class ChooseFolder extends K9ListActivity {
     String mFolder;
@@ -40,6 +46,8 @@ public class ChooseFolder extends K9ListActivity {
     boolean hideCurrentFolder = true;
     boolean showOptionNone = false;
     boolean showDisplayableOnly = false;
+    
+    private List<String> folderList;
 
     /**
      * What folders to display.<br/>
@@ -361,17 +369,19 @@ public class ChooseFolder extends K9ListActivity {
                     return aName.compareToIgnoreCase(bName);
                 }
             });
-            mAdapter.setNotifyOnChange(false);
             int selectedFolder = -1;
+            // We're not allowed to change the adapter from a background thread, so we use 
+            // a java.util.List to build a list of the folder names.
+            // We'll add the folder names to the adapter from the UI-thread (see the 'finally' block). 
+            folderList = new ArrayList<String>();
             try {
-                mAdapter.clear();
                 int position = 0;
                 for (String name : localFolders) {
                     if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
-                        mAdapter.add(getString(R.string.special_mailbox_name_inbox));
+                    	folderList.add(getString(R.string.special_mailbox_name_inbox));
                         heldInbox = name;
                     } else if (!K9.ERROR_FOLDER_NAME.equals(name) && !account.getOutboxFolderName().equals(name)) {
-                        mAdapter.add(name);
+                    	folderList.add(name);
                     }
 
                     if (mSelectFolder != null) {
@@ -390,11 +400,13 @@ public class ChooseFolder extends K9ListActivity {
                     position++;
                 }
             } finally {
-                mAdapter.setNotifyOnChange(true);
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        //              runOnUiThread(
-                        mAdapter.notifyDataSetChanged();
+                    	// Now we're in the UI-thread, we can safely change the contents of the adapter.
+                    	mAdapter.clear();
+                    	for (String folderName: folderList) {
+                    		mAdapter.add(folderName);
+                    	}
                     }
                 });
             }
