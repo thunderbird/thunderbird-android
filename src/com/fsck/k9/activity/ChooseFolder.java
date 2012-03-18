@@ -235,7 +235,8 @@ public class ChooseFolder extends K9ListActivity {
         input.setHint(R.string.folder_list_filter_hint);
         filterAlert.setView(input);
 
-        filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        String okay = getString(R.string.okay_action);
+        filterAlert.setPositiveButton(okay, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString().trim();
@@ -243,7 +244,8 @@ public class ChooseFolder extends K9ListActivity {
             }
         });
 
-        filterAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        String cancel = getString(R.string.cancel_action);
+        filterAlert.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 mAdapter.getFilter().filter("");
