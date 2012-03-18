@@ -49,6 +49,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private DateFormat mTimeFormat;
 
     private View mChip;
+    private View mChip2;
+    private View mChip3;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private LinearLayout mToContainerView;
@@ -96,6 +98,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
+        mChip2 = findViewById(R.id.chip2);
+        mChip3 = findViewById(R.id.chip3);
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
@@ -115,19 +119,18 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
+        findViewById(R.id.show_additional_headers_area).setOnClickListener(this);
+        findViewById(R.id.additional_headers_row).setOnClickListener(this);
         mFromView.setOnClickListener(this);
-        findViewById(R.id.top_container).setOnClickListener(this);
-
-        TextView dummyDateView = (TextView) findViewById(R.id.dummy_date);
-        TextView dummyTimeView = (TextView) findViewById(R.id.dummy_time);
-        dummyTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
-        dummyDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
+        mToView.setOnClickListener(this);
+        mCcView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.top_container: {
+            case R.id.additional_headers_row:
+            case R.id.show_additional_headers_area: {
                 onShowAdditionalHeaders();
                 break;
             }
@@ -259,6 +262,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         int chipColorAlpha = (!message.isSet(Flag.SEEN)) ? 255 : 127;
         mChip.setBackgroundColor(chipColor);
         mChip.getBackground().setAlpha(chipColorAlpha);
+        mChip2.setBackgroundColor(chipColor);
+        mChip2.getBackground().setAlpha(chipColorAlpha);
+        mChip3.setBackgroundColor(chipColor);
+        mChip3.getBackground().setAlpha(chipColorAlpha);
 
         setVisibility(View.VISIBLE);
 
