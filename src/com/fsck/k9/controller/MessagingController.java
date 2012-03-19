@@ -2846,7 +2846,7 @@ public class MessagingController implements Runnable {
                     || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
-                    if (!message.isSet(Flag.SEEN)) {
+                    if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
                         setFlag(new Message[] { message }, Flag.SEEN, true);
                     }

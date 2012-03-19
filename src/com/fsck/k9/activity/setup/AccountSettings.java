@@ -48,6 +48,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
+    private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
@@ -94,9 +95,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
     private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
-
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
-
     private static final String PREFERENCE_CATEGORY_FOLDERS = "folders";
     private static final String PREFERENCE_ARCHIVE_FOLDER = "archive_folder";
     private static final String PREFERENCE_DRAFTS_FOLDER = "drafts_folder";
@@ -114,6 +113,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private PreferenceScreen mComposingScreen;
 
     private EditTextPreference mAccountDescription;
+    private CheckBoxPreference mMarkMessageAsReadOnView;
     private ListPreference mCheckFrequency;
     private ListPreference mDisplayCount;
     private ListPreference mMessageAge;
@@ -157,10 +157,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
     private CheckBoxPreference mCryptoAutoEncrypt;
-
     private ListPreference mLocalStorageProvider;
-
-
     private ListPreference mArchiveFolder;
     private ListPreference mDraftsFolder;
     private ListPreference mSentFolder;
@@ -203,6 +200,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mMarkMessageAsReadOnView = (CheckBoxPreference) findPreference(PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW);
+        mMarkMessageAsReadOnView.setChecked(mAccount.isMarkMessageAsReadOnView());
 
         mMessageFormat = (ListPreference) findPreference(PREFERENCE_MESSAGE_FORMAT);
         mMessageFormat.setValue(mAccount.getMessageFormat().name());
@@ -672,6 +672,7 @@ public class AccountSettings extends K9PreferenceActivity {
         }
 
         mAccount.setDescription(mAccountDescription.getText());
+        mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());

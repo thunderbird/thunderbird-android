@@ -756,16 +756,15 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPrevious.requestFocus();
     }
 
-    private void onMarkAsUnread() {
+    private void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.SEEN, false);
+                    new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             setTitle(subject);
         }
     }
-
 
     private void onDownloadRemainder() {
         if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
@@ -833,7 +832,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             onSendAlternate();
             break;
         case R.id.mark_as_unread:
-            onMarkAsUnread();
+            onToggleRead();
             break;
         case R.id.flag:
             onFlag();
@@ -943,6 +942,12 @@ public class MessageView extends K9Activity implements OnClickListener {
             if (additionalHeadersItem != null) {
                 additionalHeadersItem.setTitle(mMessageView.additionalHeadersVisible() ?
                                                R.string.hide_full_header_action : R.string.show_full_header_action);
+            }
+
+            if (mMessage != null) {
+                int actionTitle = mMessage.isSet(Flag.SEEN) ?
+                        R.string.mark_as_unread_action : R.string.mark_as_read_action;
+                menu.findItem(R.id.mark_as_unread).setTitle(actionTitle);
             }
         }
         return super.onPrepareOptionsMenu(menu);
