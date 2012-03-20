@@ -6,6 +6,7 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
@@ -2168,8 +2169,22 @@ public class MimeUtility {
     }
 
     public static String fixupCharset(String charset, Message message) throws MessagingException {
-        if (charset == null || "0".equals(charset))
-            charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
+        if (charset == null || "0".equals(charset)) {
+            if (StringUtils.isNullOrEmpty(K9.getK9Language())) {
+                if (Locale.JAPAN.equals(Locale.getDefault())) {
+                    charset = "ISO-2022-JP";
+                }
+            }
+            else {
+                if ("ja".equals(K9.getK9Language())) {
+                    charset = "ISO-2022-JP";
+                }
+            }
+
+            if (charset == null || "0".equals(charset)) {
+                charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
+            }
+        }
 
         charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
