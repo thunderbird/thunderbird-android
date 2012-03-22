@@ -55,6 +55,7 @@
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
+
                     <MultiAutoCompleteTextView
                         android:id="@+id/to"
                         android:layout_height="wrap_content"
@@ -65,17 +66,18 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_width="fill_parent"
                         android:layout_marginRight="6dip"
-                        android:layout_weight="5"
-                        />
+                        android:layout_weight="5"/>
+
                     <ImageButton
                         android:id="@+id/add_to"
                         android:src="@drawable/ic_button_contacts"
                         android:layout_weight="1"
                         android:layout_height="fill_parent"
                         android:layout_width="60dip"
-                        android:layout_marginTop="1dip"
-                        />
-        </LinearLayout>
+                        android:layout_marginTop="1dip"/>
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/cc_wrapper"
                     android:visibility="gone"
@@ -84,6 +86,7 @@
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
+
                     <MultiAutoCompleteTextView
                         android:id="@+id/cc"
                         android:layout_width="fill_parent"
@@ -94,17 +97,18 @@
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_cc_hint"
                         android:textColor="@android:color/primary_text_light"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                       />
-                   <ImageButton
-                       android:id="@+id/add_cc"
-                       android:src="@drawable/ic_button_contacts"
-                       android:layout_weight="1"
-                       android:layout_width="60dip"
-                       android:layout_height="fill_parent"
-                        android:layout_marginTop="1dip"
-                       />
-        </LinearLayout>
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <ImageButton
+                        android:id="@+id/add_cc"
+                        android:src="@drawable/ic_button_contacts"
+                        android:layout_weight="1"
+                        android:layout_width="60dip"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="1dip"/>
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/bcc_wrapper"
                     android:visibility="gone"
@@ -124,17 +128,17 @@
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_bcc_hint"
                         android:textColor="@android:color/primary_text_light"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        />
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
                     <ImageButton
                         android:layout_marginTop="1dip"
                         android:layout_height="fill_parent"
                         android:id="@+id/add_bcc"
                         android:layout_weight="1"
                         android:layout_width="60dip"
-                        android:src="@drawable/ic_button_contacts"
-                        />
-        </LinearLayout>
+                        android:src="@drawable/ic_button_contacts"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layout_encrypt"
