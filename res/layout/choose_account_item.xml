@@ -3,37 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:paddingRight="6dip"
-    android:paddingBottom="2dip"
-    android:descendantFocusability="blocksDescendants"
-    android:gravity="center_vertical" >
+    android:background="#cccccc"
+    android:gravity="left|center_vertical">
 
-    <View
-        android:id="@+id/chip"
-        android:layout_width="6dip"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" >
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </LinearLayout>
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingTop="2dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="2dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 </LinearLayout>

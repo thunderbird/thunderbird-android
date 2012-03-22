@@ -15,6 +15,7 @@ import com.fsck.k9.mail.*;
 import com.fsck.k9.view.MessageWebView;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -31,14 +32,17 @@ import android.provider.OpenableColumns;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AutoCompleteTextView.Validator;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -84,6 +88,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 4;
+    private static final int DIALOG_CHOOSE_IDENTITY = 5;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -128,12 +133,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int MSG_DISCARDED_DRAFT = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
-    private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
-    private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
-    private static final int CONTACT_PICKER_TO = 4;
-    private static final int CONTACT_PICKER_CC = 5;
-    private static final int CONTACT_PICKER_BCC = 6;
+    private static final int CONTACT_PICKER_TO = 2;
+    private static final int CONTACT_PICKER_CC = 3;
+    private static final int CONTACT_PICKER_BCC = 4;
 
+    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -186,7 +190,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private QuotedTextMode mQuotedTextMode = QuotedTextMode.NONE;
 
-    private TextView mFromView;
+    private Button mChooseIdentityButton;
     private LinearLayout mCcWrapper;
     private LinearLayout mBccWrapper;
     private MultiAutoCompleteTextView mToView;
@@ -410,7 +414,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mAddressAdapter = EmailAddressAdapter.getInstance(this);
         mAddressValidator = new EmailAddressValidator();
 
-        mFromView = (TextView) findViewById(R.id.from);
+        mChooseIdentityButton = (Button) findViewById(R.id.identity);
+        mChooseIdentityButton.setOnClickListener(this);
+
+        if (mAccount.getIdentities().size() == 1 &&
+                Preferences.getPreferences(this).getAvailableAccounts().size() == 1) {
+            findViewById(R.id.identity_container).setVisibility(View.GONE);
+        }
+
         mToView = (MultiAutoCompleteTextView) findViewById(R.id.to);
         mCcView = (MultiAutoCompleteTextView) findViewById(R.id.cc);
         mBccView = (MultiAutoCompleteTextView) findViewById(R.id.bcc);
@@ -548,8 +559,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mQuotedTextEdit.setOnClickListener(this);
         mQuotedTextDelete.setOnClickListener(this);
 
-        mFromView.setVisibility(View.GONE);
-
         mToView.setAdapter(mAddressAdapter);
         mToView.setTokenizer(new Rfc822Tokenizer());
         mToView.setValidator(mAddressValidator);
@@ -607,8 +616,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mReadReceipt = mAccount.isMessageReadReceiptAlways();
         mQuoteStyle = mAccount.getQuoteStyle();
 
+        updateFrom();
+
         if (!mSourceMessageProcessed) {
-            updateFrom();
             updateSignature();
 
             if (ACTION_REPLY.equals(action) ||
@@ -1776,12 +1786,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addAttachment(data.getData());
             mDraftNeedsSaving = true;
             break;
-        case ACTIVITY_CHOOSE_IDENTITY:
-            onIdentityChosen(data);
-            break;
-        case ACTIVITY_CHOOSE_ACCOUNT:
-            onAccountChosen(data);
-            break;
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
@@ -1811,15 +1815,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         startActivityForResult(mContacts.contactPickerIntent(), resultId);
     }
 
-
-
-    private void onAccountChosen(final Intent intent) {
-        final Bundle extras = intent.getExtras();
-        final String uuid = extras.getString(ChooseAccount.EXTRA_ACCOUNT);
-        final Identity identity = (Identity) extras.getSerializable(ChooseAccount.EXTRA_IDENTITY);
-
-        final Account account = Preferences.getPreferences(this).getAccount(uuid);
-
+    private void onAccountChosen(Account account, Identity identity) {
         if (!mAccount.equals(account)) {
             if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Switching account from " + mAccount + " to " + account);
@@ -1863,11 +1859,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         switchToIdentity(identity);
     }
 
-    private void onIdentityChosen(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        switchToIdentity((Identity) bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
-    }
-
     private void switchToIdentity(Identity identity) {
         mIdentity = identity;
         mIdentityChanged = true;
@@ -1877,10 +1868,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void updateFrom() {
-        if (mIdentityChanged) {
-            mFromView.setVisibility(View.VISIBLE);
-        }
-        mFromView.setText(getString(R.string.message_view_from_format, mIdentity.getName(), mIdentity.getEmail()));
+        mChooseIdentityButton.setText(getIdentityDescription(mIdentity));
     }
 
     private void updateSignature() {
@@ -1922,6 +1910,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 final String sourceMessageUid = mMessageReference.uid;
                 MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
             }
+            break;
+        case R.id.identity:
+            showDialog(DIALOG_CHOOSE_IDENTITY);
             break;
         }
     }
@@ -1989,34 +1980,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case R.id.add_attachment_video:
             onAddAttachment2("video/*");
             break;
-        case R.id.choose_identity:
-            onChooseIdentity();
-            break;
         case R.id.read_receipt:
             onReadReceipt();
         default:
             return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private void onChooseIdentity() {
-        // keep things simple: trigger account choice only if there are more
-        // than 1 account
-        mIgnoreOnPause = true;
-        if (Preferences.getPreferences(this).getAvailableAccounts().size() > 1) {
-            final Intent intent = new Intent(this, ChooseAccount.class);
-            intent.putExtra(ChooseAccount.EXTRA_ACCOUNT, mAccount.getUuid());
-            intent.putExtra(ChooseAccount.EXTRA_IDENTITY, mIdentity);
-            startActivityForResult(intent, ACTIVITY_CHOOSE_ACCOUNT);
-        } else if (mAccount.getIdentities().size() > 1) {
-            Intent intent = new Intent(this, ChooseIdentity.class);
-            intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
-            startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
-        } else {
-            Toast.makeText(this, getString(R.string.no_identities),
-                           Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
@@ -2148,6 +2117,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             })
             .create();
+        case DIALOG_CHOOSE_IDENTITY:
+            Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.send_as);
+            final IdentityAdapter adapter = new IdentityAdapter(this, getLayoutInflater());
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    IdentityContainer container = (IdentityContainer) adapter.getItem(which);
+                    onAccountChosen(container.account, container.identity);
+                }
+            });
+
+            return builder.create();
         }
         return super.onCreateDialog(id);
     }
@@ -3183,5 +3165,138 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         return insertable;
+    }
+
+    /**
+     * Used to store an {@link Identity} instance together with the {@link Account} it belongs to.
+     *
+     * @see IdentityAdapter
+     */
+    static class IdentityContainer {
+        public final Identity identity;
+        public final Account account;
+
+        IdentityContainer(Identity identity, Account account) {
+            this.identity = identity;
+            this.account = account;
+        }
+    }
+
+    /**
+     * Adapter for the <em>Choose identity</em> list view.
+     *
+     * <p>
+     * Account names are displayed as section headers, identities as selectable list items.
+     * </p>
+     */
+    static class IdentityAdapter extends BaseAdapter {
+        private LayoutInflater mLayoutInflater;
+        private List<Object> mItems;
+        private FontSizes mFontSizes;
+
+        public IdentityAdapter(Context context, LayoutInflater layoutInflater) {
+            mLayoutInflater = layoutInflater;
+            mFontSizes = K9.getFontSizes();
+
+            List<Object> items = new ArrayList<Object>();
+            Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
+            Account[] accounts = prefs.getAvailableAccounts().toArray(EMPTY_ACCOUNT_ARRAY);
+            for (Account account : accounts) {
+                items.add(account);
+                List<Identity> identities = account.getIdentities();
+                for (Identity identity : identities) {
+                    items.add(new IdentityContainer(identity, account));
+                }
+            }
+            mItems = items;
+        }
+
+        @Override
+        public int getCount() {
+            return mItems.size();
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return (mItems.get(position) instanceof Account) ? 0 : 1;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return (mItems.get(position) instanceof IdentityContainer);
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mItems.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Object item = mItems.get(position);
+
+            View view = null;
+            if (item instanceof Account) {
+                if (convertView != null && convertView.getTag() instanceof TextView) {
+                    view = convertView;
+                } else {
+                    view = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
+                    TextView name = (TextView) view.findViewById(R.id.name);
+                    view.setTag(name);
+                }
+
+                Account account = (Account) item;
+                TextView name = (TextView) view.getTag();
+                name.setText(account.getDescription());
+            } else if (item instanceof IdentityContainer) {
+                if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
+                    view = convertView;
+                } else {
+                    view = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
+                    IdentityHolder holder = new IdentityHolder();
+                    holder.name = (TextView) view.findViewById(R.id.name);
+                    holder.name.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
+                    holder.description = (TextView) view.findViewById(R.id.description);
+                    holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
+                    holder.chip = view.findViewById(R.id.chip);
+                    view.setTag(holder);
+                }
+
+                IdentityContainer identityContainer = (IdentityContainer) item;
+                Identity identity = identityContainer.identity;
+                Account account = identityContainer.account;
+                IdentityHolder holder = (IdentityHolder) view.getTag();
+                holder.name.setText(identity.getDescription());
+                holder.description.setText(getIdentityDescription(identity));
+                holder.chip.setBackgroundColor(account.getChipColor());
+            }
+
+            return view;
+        }
+
+        static class IdentityHolder {
+            public TextView name;
+            public TextView description;
+            public View chip;
+        }
+    }
+
+    private static String getIdentityDescription(Identity identity) {
+        return String.format("%s <%s>", identity.getName(), identity.getEmail());
     }
 }

@@ -20,17 +20,34 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="6dp"
                 android:orientation="vertical"
                 android:background="#ededed" >
 
-                <TextView
-                    android:id="@+id/from"
+                <LinearLayout
+                    android:id="@+id/identity_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:textColor="@android:color/primary_text_light"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dip"
+                        android:layout_marginRight="6dip"
+                        android:text="@string/send_as"
+                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <Button
+                        android:id="@+id/identity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dip"
+                        android:layout_marginRight="6dip"/>
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/to_wrapper"
                     android:layout_height="wrap_content"
@@ -64,8 +81,8 @@
                     android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:baselineAligned="true"
-	                android:layout_marginLeft="6dip"
-	                android:layout_marginRight="6dip"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
 	                <MultiAutoCompleteTextView
 	                    android:id="@+id/cc"

@@ -31,12 +31,6 @@
 		android:icon="@drawable/ic_menu_close_clear_cancel"
 	/>
 	<item
-		android:id="@+id/choose_identity"
-        android:alphabeticShortcut="i"
-		android:title="@string/send_as"
-		android:icon="@drawable/ic_menu_identity"
-	/>
-	<item
 		android:id="@+id/read_receipt"
 	android:alphabeticShortcut="r"
 		android:title="@string/read_receipt"
