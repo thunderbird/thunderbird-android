@@ -9,8 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:scrollbarStyle="outsideInset"
-        android:fillViewport="true" >
+        android:scrollbarStyle="insideOverlay"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -64,16 +64,16 @@
                         android:hint="@string/message_compose_to_hint"
                         android:textColor="@android:color/primary_text_light"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_width="fill_parent"
+                        android:layout_width="0dp"
                         android:layout_marginRight="6dip"
-                        android:layout_weight="5"/>
+                        android:layout_weight="1"/>
 
                     <ImageButton
                         android:id="@+id/add_to"
+                        android:contentDescription="@string/message_compose_description_add_to"
                         android:src="@drawable/ic_button_contacts"
-                        android:layout_weight="1"
                         android:layout_height="fill_parent"
-                        android:layout_width="60dip"
+                        android:layout_width="wrap_content"
                         android:layout_marginTop="1dip"/>
 
                 </LinearLayout>
@@ -89,9 +89,9 @@
 
                     <MultiAutoCompleteTextView
                         android:id="@+id/cc"
-                        android:layout_width="fill_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_weight="1"
                         android:layout_marginRight="6dip"
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
@@ -101,9 +101,9 @@
 
                     <ImageButton
                         android:id="@+id/add_cc"
+                        android:contentDescription="@string/message_compose_description_add_cc"
                         android:src="@drawable/ic_button_contacts"
-                        android:layout_weight="1"
-                        android:layout_width="60dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_marginTop="1dip"/>
 
@@ -120,10 +120,10 @@
 
                     <MultiAutoCompleteTextView
                         android:id="@+id/bcc"
-                        android:layout_width="fill_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="6dip"
-                        android:layout_weight="5"
+                        android:layout_weight="1"
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_bcc_hint"
@@ -131,11 +131,11 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageButton
+                        android:id="@+id/add_bcc"
+                        android:contentDescription="@string/message_compose_description_add_bcc"
                         android:layout_marginTop="1dip"
                         android:layout_height="fill_parent"
-                        android:id="@+id/add_bcc"
-                        android:layout_weight="1"
-                        android:layout_width="60dip"
+                        android:layout_width="wrap_content"
                         android:src="@drawable/ic_button_contacts"/>
 
                 </LinearLayout>
@@ -228,6 +228,7 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/divider_horizontal_email" />
 
             </LinearLayout>
@@ -235,8 +236,8 @@
             <EditText
                 android:id="@+id/message_content"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="left|top"
                 android:hint="@string/message_compose_content_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
@@ -249,12 +250,13 @@
                 android:id="@+id/upper_signature"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
                 android:gravity="left|top"
                 android:editable="false"
                 android:minLines="0"
                 android:autoText="true"
                 android:capitalize="sentences"
+                android:hint="@string/message_compose_signature_hint"
+                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -265,9 +267,7 @@
                 android:padding="0dip"
                 android:layout_gravity="right"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true" />
+                android:layout_width="match_parent"/>
 
             <!-- Quoted text bar -->
             <RelativeLayout
@@ -279,11 +279,11 @@
                     android:id="@+id/quoted_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
                     android:gravity="left|top"
                     android:minLines="3"
                     android:autoText="true"
                     android:capitalize="sentences"
+                    android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                     android:textColor="@android:color/primary_text_light"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -301,19 +301,17 @@
 
                     <ImageButton
                         android:id="@+id/quoted_text_edit"
+                        android:contentDescription="@string/message_compose_description_edit_quoted_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
                         android:layout_marginRight="8dip"
                         android:background="@drawable/btn_edit" />
 
                     <ImageButton
                         android:id="@+id/quoted_text_delete"
+                        android:contentDescription="@string/message_compose_description_delete_quoted_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
                         android:background="@drawable/btn_dialog" />
 
                 </LinearLayout>
@@ -324,12 +322,13 @@
                 android:id="@+id/lower_signature"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
                 android:gravity="left|top"
                 android:editable="false"
                 android:minLines="0"
                 android:autoText="true"
                 android:capitalize="sentences"
+                android:hint="@string/message_compose_signature_hint"
+                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 

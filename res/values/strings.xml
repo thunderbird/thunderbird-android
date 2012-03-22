@@ -260,6 +260,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Subject</string>
     <string name="message_compose_content_hint">Message text</string>
+    <string name="message_compose_signature_hint">Signature</string>
     <string name="message_compose_quote_header_separator">-------- Original Message --------</string>
     <string name="message_compose_quote_header_subject">Subject:</string>
     <string name="message_compose_quote_header_send_date">Sent:</string>
@@ -273,6 +274,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
+    <string name="message_compose_description_add_to">Add recipient (To)</string>
+    <string name="message_compose_description_add_cc">Add recipient (CC)</string>
+    <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
+    <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
