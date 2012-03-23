@@ -2085,7 +2085,7 @@ public class MessagingController implements Runnable {
         PendingCommand command = new PendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
 
-        int length = 3 + uids.length;
+        int length = 4 + uids.length;
         command.arguments = new String[length];
         command.arguments[0] = srcFolder;
         command.arguments[1] = destFolder;
