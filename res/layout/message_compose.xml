@@ -20,6 +20,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:paddingTop="6dp"
                 android:orientation="vertical"
                 android:background="#ededed" >
@@ -212,7 +213,6 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
-                    android:layout_marginBottom="4dp"
                     android:background="@drawable/divider_horizontal_email" />
 
             </LinearLayout>
