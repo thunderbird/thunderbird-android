@@ -6,6 +6,10 @@
     android:orientation="horizontal"
     android:background="#cccccc"
     android:gravity="left|center_vertical">
+    <View
+        android:id="@+id/chip"
+        android:layout_height="fill_parent"
+        android:layout_width="6dp"/>
 
     <TextView
         android:id="@+id/name"
@@ -13,11 +17,11 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:ellipsize="end"
-        android:paddingTop="2dp"
+        android:paddingTop="8dp"
         android:paddingLeft="18dp"
         android:paddingRight="4dp"
-        android:paddingBottom="2dp"
+        android:paddingBottom="8dp"
         android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

@@ -3263,6 +3263,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Account account = (Account) item;
                 TextView name = (TextView) view.getTag();
                 name.setText(account.getDescription());
+                view.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
             } else if (item instanceof IdentityContainer) {
                 if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
                     view = convertView;
@@ -3270,10 +3271,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     view = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
                     IdentityHolder holder = new IdentityHolder();
                     holder.name = (TextView) view.findViewById(R.id.name);
-                    holder.name.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
                     holder.description = (TextView) view.findViewById(R.id.description);
-                    holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
-                    holder.chip = view.findViewById(R.id.chip);
                     view.setTag(holder);
                 }
 
@@ -3283,7 +3281,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 IdentityHolder holder = (IdentityHolder) view.getTag();
                 holder.name.setText(identity.getDescription());
                 holder.description.setText(getIdentityDescription(identity));
-                holder.chip.setBackgroundColor(account.getChipColor());
             }
 
             return view;
@@ -3292,7 +3289,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         static class IdentityHolder {
             public TextView name;
             public TextView description;
-            public View chip;
         }
     }
 
