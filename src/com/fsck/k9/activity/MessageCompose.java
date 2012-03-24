@@ -3252,18 +3252,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             View view = null;
             if (item instanceof Account) {
-                if (convertView != null && convertView.getTag() instanceof TextView) {
+                if (convertView != null && convertView.getTag() instanceof AccountHolder) {
                     view = convertView;
                 } else {
                     view = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
-                    TextView name = (TextView) view.findViewById(R.id.name);
-                    view.setTag(name);
+                    AccountHolder holder = new AccountHolder();
+                    holder.name = (TextView) view.findViewById(R.id.name);
+                    holder.chip = view.findViewById(R.id.chip);
+                    view.setTag(holder);
                 }
 
                 Account account = (Account) item;
-                TextView name = (TextView) view.getTag();
-                name.setText(account.getDescription());
-                view.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
+                AccountHolder holder = (AccountHolder) view.getTag();
+                holder.name.setText(account.getDescription());
+                holder.chip.setBackgroundColor(account.getChipColor());
             } else if (item instanceof IdentityContainer) {
                 if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
                     view = convertView;
@@ -3277,13 +3279,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 IdentityContainer identityContainer = (IdentityContainer) item;
                 Identity identity = identityContainer.identity;
-                Account account = identityContainer.account;
                 IdentityHolder holder = (IdentityHolder) view.getTag();
                 holder.name.setText(identity.getDescription());
                 holder.description.setText(getIdentityDescription(identity));
             }
 
             return view;
+        }
+
+        static class AccountHolder {
+            public TextView name;
+            public View chip;
         }
 
         static class IdentityHolder {
