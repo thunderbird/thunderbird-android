@@ -24,20 +24,13 @@
                 android:orientation="vertical"
                 android:background="#ededed" >
 
-                <LinearLayout
-                    android:id="@+id/identity_container"
+                <Button
+                    android:id="@+id/identity"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/identity"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|center"
-                        android:layout_marginLeft="6dip"
-                        android:layout_marginRight="6dip"/>
-
-                </LinearLayout>
+                    android:gravity="left|center"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"/>
 
                 <LinearLayout
                     android:id="@+id/to_wrapper"

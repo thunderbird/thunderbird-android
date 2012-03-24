@@ -419,7 +419,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (mAccount.getIdentities().size() == 1 &&
                 Preferences.getPreferences(this).getAvailableAccounts().size() == 1) {
-            findViewById(R.id.identity_container).setVisibility(View.GONE);
+            mChooseIdentityButton.setVisibility(View.GONE);
         }
 
         mToView = (MultiAutoCompleteTextView) findViewById(R.id.to);
