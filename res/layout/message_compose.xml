@@ -29,20 +29,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dip"
-                        android:layout_marginRight="6dip"
-                        android:text="@string/send_as"
-                        android:textColor="@android:color/primary_text_light"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
                     <Button
                         android:id="@+id/identity"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="left|center"
                         android:layout_marginLeft="6dip"
                         android:layout_marginRight="6dip"/>
 

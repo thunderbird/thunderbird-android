@@ -1868,7 +1868,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void updateFrom() {
-        mChooseIdentityButton.setText(getIdentityDescription(mIdentity));
+        mChooseIdentityButton.setText(mIdentity.getEmail());
     }
 
     private void updateSignature() {
