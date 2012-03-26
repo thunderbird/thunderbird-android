@@ -217,10 +217,12 @@
 
             </LinearLayout>
 
+            <!-- We have to use "wrap_content" (not "0dip") for "layout_height", otherwise the
+                 EditText won't properly grow in height while the user is typing the message -->
             <EditText
                 android:id="@+id/message_content"
                 android:layout_width="fill_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left|top"
                 android:hint="@string/message_compose_content_hint"
