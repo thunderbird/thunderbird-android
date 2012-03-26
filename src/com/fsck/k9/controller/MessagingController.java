@@ -2265,10 +2265,12 @@ public class MessagingController implements Runnable {
                     String newUid = remoteUidMap.get(remoteSrcUid);
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
-                    localDestMessage.setUid(newUid);
-                    localDestFolder.changeUid((LocalMessage)localDestMessage);
-                    for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, destFolder, localDestUid, newUid);
+                    if (localDestMessage != null) {
+                        localDestMessage.setUid(newUid);
+                        localDestFolder.changeUid((LocalMessage)localDestMessage);
+                        for (MessagingListener l : getListeners()) {
+                            l.messageUidChanged(account, destFolder, localDestUid, newUid);
+                        }
                     }
                 }
             }
