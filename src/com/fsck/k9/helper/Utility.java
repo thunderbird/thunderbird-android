@@ -19,6 +19,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utility {
+    /**
+     * Regular expression that represents characters we won't allow in file names.
+     *
+     * <p>
+     * Allowed are:
+     * <ul>
+     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
+     *   <li>spaces: {@code " "}</li>
+     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
+     *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
+     *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
+     * </ul></p>
+     *
+     * @see #sanitizeFilename(String)
+     */
+    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]+";
+
+    /**
+     * Invalid characters in a file name are replaced by this character.
+     *
+     * @see #sanitizeFilename(String)
+     */
+    private static final String REPLACEMENT_CHARACTER = "_";
 
     // \u00A0 (non-breaking space) happens to be used by French MUA
 
@@ -604,5 +627,17 @@ public class Utility {
         if (cursor != null) {
             cursor.close();
         }
+    }
+
+    /**
+     * Replace characters we don't allow in file names with a replacement character.
+     *
+     * @param filename
+     *         The original file name.
+     *
+     * @return The sanitized file name containing only allowed characters.
+     */
+    public static String sanitizeFilename(String filename) {
+        return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
     }
 }
