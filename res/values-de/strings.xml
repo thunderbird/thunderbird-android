@@ -1123,4 +1123,29 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="import_dialog_error_message">Es wurde keine geeignete Applikation gefunden, um den Import durchzuführen. Bitte installieren Sie einen Dateimanager aus dem Play Store.</string>
     <string name="open_market">Play Store öffnen</string>
     <string name="close">Abbrechen</string>
+
+    <string name="webview_contextmenu_link_view_action">Öffnen</string>
+    <string name="webview_contextmenu_link_share_action">Link weitergeben</string>
+    <string name="webview_contextmenu_link_copy_action">Link kopieren</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
+
+    <string name="webview_contextmenu_image_title">Bild</string>
+    <string name="webview_contextmenu_image_view_action">Bild anzeigen</string>
+    <string name="webview_contextmenu_image_save_action">Bild speichern</string>
+    <string name="webview_contextmenu_image_download_action">Bild herunterladen</string>
+    <string name="webview_contextmenu_image_copy_action">Bild-URL kopieren</string>
+    <string name="webview_contextmenu_image_clipboard_label">Bild-URL</string>
+
+    <string name="webview_contextmenu_phone_call_action">Anrufen</string>
+    <string name="webview_contextmenu_phone_save_action">Im Adressbuch speichern</string>
+    <string name="webview_contextmenu_phone_copy_action">Telefonnummer kopieren</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Telefonnummer</string>
+
+    <string name="webview_contextmenu_email_send_action">E-Mail senden</string>
+    <string name="webview_contextmenu_email_save_action">Im Adressbuch speichern</string>
+    <string name="webview_contextmenu_email_copy_action">E-Mail-Adresse kopieren</string>
+    <string name="webview_contextmenu_email_clipboard_label">E-Mail-Adresse</string>
+
+    <string name="image_saved_as">Das Bild wurde als \"<xliff:g id="filename">%s</xliff:g>\" gespeichert.</string>
+    <string name="image_saving_failed">Speichern des Bildes fehlgeschlagen.</string>
 </resources>
