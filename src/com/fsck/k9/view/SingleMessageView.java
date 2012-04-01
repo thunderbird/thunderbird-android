@@ -7,16 +7,26 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.*;
+import android.webkit.WebView;
+import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -25,16 +35,51 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.List;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
-        MessageHeader.OnLayoutChangedListener {
+        MessageHeader.OnLayoutChangedListener, OnCreateContextMenuListener {
+    private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
+    private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
+    private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
+
+    private static final int MENU_ITEM_IMAGE_VIEW = Menu.FIRST;
+    private static final int MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 1;
+    private static final int MENU_ITEM_IMAGE_COPY = Menu.FIRST + 2;
+
+    private static final int MENU_ITEM_PHONE_CALL = Menu.FIRST;
+    private static final int MENU_ITEM_PHONE_SAVE = Menu.FIRST + 1;
+    private static final int MENU_ITEM_PHONE_COPY = Menu.FIRST + 2;
+
+    private static final int MENU_ITEM_EMAIL_SEND = Menu.FIRST;
+    private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
+    private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
+
+    private static final String[] ATTACHMENT_PROJECTION = new String[] {
+        AttachmentProviderColumns._ID,
+        AttachmentProviderColumns.DISPLAY_NAME
+    };
+    private static final int DISPLAY_NAME_INDEX = 1;
+
+
     private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
     private MessageWebView mMessageContentView;
@@ -57,11 +102,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private View mAttachmentsContainer;
     private LinearLayout mInsideAttachmentsContainer;
     private SavedState mSavedState;
+    private ClipboardManager mClipboardManager;
+
 
     public void initialize(Activity activity) {
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mMessageContentView.configure();
+        activity.registerForContextMenu(mMessageContentView);
+        mMessageContentView.setOnCreateContextMenuListener(this);
 
         mHeaderPlaceHolder = (LinearLayout) findViewById(R.id.message_view_header_container);
 
@@ -114,6 +163,210 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mShowMessageAction.setOnClickListener(this);
         mShowAttachmentsAction.setOnClickListener(this);
         mShowPicturesAction.setOnClickListener(this);
+
+        mClipboardManager = ClipboardManager.getInstance(activity);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu);
+
+        WebView webview = (WebView) v;
+        WebView.HitTestResult result = webview.getHitTestResult();
+        int type = result.getType();
+        Context context = getContext();
+
+        switch (type) {
+            case HitTestResult.SRC_ANCHOR_TYPE: {
+                final String url = result.getExtra();
+                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case MENU_ITEM_LINK_VIEW: {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                getContext().startActivity(intent);
+                                break;
+                            }
+                            case MENU_ITEM_LINK_SHARE: {
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("text/plain");
+                                intent.putExtra(Intent.EXTRA_TEXT, url);
+                                getContext().startActivity(intent);
+                                break;
+                            }
+                            case MENU_ITEM_LINK_COPY: {
+                                String label = getContext().getString(
+                                        R.string.webview_contextmenu_link_clipboard_label);
+                                mClipboardManager.setText(label, url);
+                                break;
+                            }
+                        }
+                        return true;
+                    }
+                };
+
+                menu.setHeaderTitle(url);
+
+                menu.add(Menu.NONE, MENU_ITEM_LINK_VIEW, 0,
+                        context.getString(R.string.webview_contextmenu_link_view_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_LINK_SHARE, 1,
+                        context.getString(R.string.webview_contextmenu_link_share_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_LINK_COPY, 2,
+                        context.getString(R.string.webview_contextmenu_link_copy_action))
+                        .setOnMenuItemClickListener(listener);
+
+                break;
+            }
+            case HitTestResult.IMAGE_TYPE:
+            case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
+                final String url = result.getExtra();
+                final boolean externalImage = url.startsWith("http");
+                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case MENU_ITEM_IMAGE_VIEW: {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                if (!externalImage) {
+                                    // Grant read permission if this points to our
+                                    // AttachmentProvider
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                }
+                                getContext().startActivity(intent);
+                                break;
+                            }
+                            case MENU_ITEM_IMAGE_SAVE: {
+                                new DownloadImageTask().execute(url);
+                                break;
+                            }
+                            case MENU_ITEM_IMAGE_COPY: {
+                                String label = getContext().getString(
+                                        R.string.webview_contextmenu_image_clipboard_label);
+                                mClipboardManager.setText(label, url);
+                                break;
+                            }
+                        }
+                        return true;
+                    }
+                };
+
+                menu.setHeaderTitle((externalImage) ?
+                        url : context.getString(R.string.webview_contextmenu_image_title));
+
+                menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
+                        context.getString(R.string.webview_contextmenu_image_view_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
+                        (externalImage) ?
+                            context.getString(R.string.webview_contextmenu_image_download_action) :
+                            context.getString(R.string.webview_contextmenu_image_save_action))
+                        .setOnMenuItemClickListener(listener);
+
+                if (externalImage) {
+                    menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
+                            context.getString(R.string.webview_contextmenu_image_copy_action))
+                            .setOnMenuItemClickListener(listener);
+                }
+
+                break;
+            }
+            case HitTestResult.PHONE_TYPE: {
+                final String phoneNumber = result.getExtra();
+                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case MENU_ITEM_PHONE_CALL: {
+                                Uri uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                getContext().startActivity(intent);
+                                break;
+                            }
+                            case MENU_ITEM_PHONE_SAVE: {
+                                Contacts contacts = Contacts.getInstance(getContext());
+                                contacts.addPhoneContact(phoneNumber);
+                                break;
+                            }
+                            case MENU_ITEM_PHONE_COPY: {
+                                String label = getContext().getString(
+                                        R.string.webview_contextmenu_phone_clipboard_label);
+                                mClipboardManager.setText(label, phoneNumber);
+                                break;
+                            }
+                        }
+
+                        return true;
+                    }
+                };
+
+                menu.setHeaderTitle(phoneNumber);
+
+                menu.add(Menu.NONE, MENU_ITEM_PHONE_CALL, 0,
+                        context.getString(R.string.webview_contextmenu_phone_call_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_PHONE_SAVE, 1,
+                        context.getString(R.string.webview_contextmenu_phone_save_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_PHONE_COPY, 2,
+                        context.getString(R.string.webview_contextmenu_phone_copy_action))
+                        .setOnMenuItemClickListener(listener);
+
+                break;
+            }
+            case WebView.HitTestResult.EMAIL_TYPE: {
+                final String email = result.getExtra();
+                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case MENU_ITEM_EMAIL_SEND: {
+                                Uri uri = Uri.parse(WebView.SCHEME_MAILTO + email);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                getContext().startActivity(intent);
+                                break;
+                            }
+                            case MENU_ITEM_EMAIL_SAVE: {
+                                Contacts contacts = Contacts.getInstance(getContext());
+                                contacts.createContact(new Address(email));
+                                break;
+                            }
+                            case MENU_ITEM_EMAIL_COPY: {
+                                String label = getContext().getString(
+                                        R.string.webview_contextmenu_email_clipboard_label);
+                                mClipboardManager.setText(label, email);
+                                break;
+                            }
+                        }
+
+                        return true;
+                    }
+                };
+
+                menu.setHeaderTitle(email);
+
+                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SEND, 0,
+                        context.getString(R.string.webview_contextmenu_email_send_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SAVE, 1,
+                        context.getString(R.string.webview_contextmenu_email_save_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_EMAIL_COPY, 2,
+                        context.getString(R.string.webview_contextmenu_email_copy_action))
+                        .setOnMenuItemClickListener(listener);
+
+                break;
+            }
+        }
     }
 
     @Override
@@ -553,6 +806,119 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             out.writeInt((this.attachmentViewVisible) ? 1 : 0);
             out.writeInt((this.hiddenAttachmentsVisible) ? 1 : 0);
             out.writeInt((this.showPictures) ? 1 : 0);
+        }
+    }
+
+    class DownloadImageTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String urlString = params[0];
+            try {
+                boolean externalImage = urlString.startsWith("http");
+
+                String filename = null;
+                String mimeType = null;
+                InputStream in = null;
+
+                try {
+                    if (externalImage) {
+                        URL url = new URL(urlString);
+                        URLConnection conn = url.openConnection();
+                        in = conn.getInputStream();
+
+                        String path = url.getPath();
+
+                        // Try to get the filename from the URL
+                        int start = path.lastIndexOf("/");
+                        if (start != -1 && start + 1 < path.length()) {
+                            filename = URLDecoder.decode(path.substring(start + 1), "UTF-8");
+                        } else {
+                            // Use a dummy filename if necessary
+                            filename = "saved_image";
+                        }
+
+                        // Get the MIME type if we couldn't find a file extension
+                        if (filename.indexOf('.') == -1) {
+                            mimeType = conn.getContentType();
+                        }
+                    } else {
+                        ContentResolver contentResolver = getContext().getContentResolver();
+                        Uri uri = Uri.parse(urlString);
+
+                        // Get the filename from AttachmentProvider
+                        Cursor cursor = contentResolver.query(uri, ATTACHMENT_PROJECTION, null, null, null);
+                        if (cursor != null) {
+                            try {
+                                if (cursor.moveToNext()) {
+                                    filename = cursor.getString(DISPLAY_NAME_INDEX);
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+                        }
+
+                        // Use a dummy filename if necessary
+                        if (filename == null) {
+                            filename = "saved_image";
+                        }
+
+                        // Get the MIME type if we couldn't find a file extension
+                        if (filename.indexOf('.') == -1) {
+                            mimeType = contentResolver.getType(uri);
+                        }
+
+                        in = contentResolver.openInputStream(uri);
+                    }
+
+                    // Do we still need an extension?
+                    if (filename.indexOf('.') == -1) {
+                        // Use JPEG as fallback
+                        String extension = "jpeg";
+                        if (mimeType != null) {
+                            // Try to find an extension for the given MIME type
+                            String ext = MimeUtility.getExtensionByMimeType(mimeType);
+                            if (ext != null) {
+                                extension = ext;
+                            }
+                        }
+                        filename += "." + extension;
+                    }
+
+                    String sanitized = Utility.sanitizeFilename(filename);
+
+                    File directory = new File(K9.getAttachmentDefaultPath());
+                    File file = Utility.createUniqueFile(directory, sanitized);
+                    FileOutputStream out = new FileOutputStream(file);
+                    try {
+                        IOUtils.copy(in, out);
+                        out.flush();
+                    } finally {
+                        out.close();
+                    }
+
+                    return file.getName();
+
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String filename) {
+            String text;
+            if (filename == null) {
+                text = getContext().getString(R.string.image_saving_failed);
+            } else {
+                text = getContext().getString(R.string.image_saved_as, filename);
+            }
+
+            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
         }
     }
 }

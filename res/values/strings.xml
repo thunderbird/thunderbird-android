@@ -1141,4 +1141,29 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 the import operation. Please install a file manager application from Android Market</string>
     <string name="open_market">Open Market</string>
     <string name="close">Close</string>
+
+    <string name="webview_contextmenu_link_view_action">Open for viewing</string>
+    <string name="webview_contextmenu_link_share_action">Share link</string>
+    <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
+
+    <string name="webview_contextmenu_image_title">Image</string>
+    <string name="webview_contextmenu_image_view_action">View image</string>
+    <string name="webview_contextmenu_image_save_action">Save image</string>
+    <string name="webview_contextmenu_image_download_action">Download image</string>
+    <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>
+    <string name="webview_contextmenu_image_clipboard_label">Image URL</string>
+
+    <string name="webview_contextmenu_phone_call_action">Call number</string>
+    <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>
+    <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>
+
+    <string name="webview_contextmenu_email_send_action">Send mail</string>
+    <string name="webview_contextmenu_email_save_action">Save to Contacts</string>
+    <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>
+    <string name="webview_contextmenu_email_clipboard_label">Email address</string>
+
+    <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Saving the image failed.</string>
 </resources>
