@@ -258,6 +258,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">件名</string>
     <string name="message_compose_content_hint">本文</string>
+    <string name="message_compose_signature_hint">署名</string>
     <string name="message_compose_quote_header_separator">-------- 元メール --------</string>
     <string name="message_compose_quote_header_subject">件名:</string>
     <string name="message_compose_quote_header_send_date">送信日:</string>
@@ -271,6 +272,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません。このメールが送信される前に自動的にダウンロードされます。</string>
     <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
     <string name="message_compose_show_quoted_text_action">元のメッセージを引用する</string>
+    <string name="message_compose_description_add_to">Toに宛先を追加します</string>
+    <string name="message_compose_description_add_cc">CCに宛先を追加します</string>
+    <string name="message_compose_description_add_bcc">BCCに宛先を追加します</string>
+    <string name="message_compose_description_delete_quoted_text">引用文を削除します</string>
+    <string name="message_compose_description_edit_quoted_text">引用文を編集します</string>
 
     <string name="message_view_from_format">送信者: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">宛先:</string>
@@ -547,6 +553,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
     <string name="account_settings_notification_unread_count_label">未読件数の表示</string>
     <string name="account_settings_notification_unread_count_summary">通知バーに未読メッセージの件数を表示する</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
 
     <string name="account_settings_enable_move_buttons_label">メール整理ボタンを有効にする</string>
     <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
@@ -1118,4 +1126,29 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="import_dialog_error_message">設定をインポートするためのアプリケーションがありません。Androidマーケットからファイルマネージャをインストールしてください。</string>
     <string name="open_market">マーケット</string>
     <string name="close">閉じる</string>
+
+    <string name="webview_contextmenu_link_view_action">開く</string>
+    <string name="webview_contextmenu_link_share_action">リンクを共有</string>
+    <string name="webview_contextmenu_link_copy_action">リンクをコピー</string>
+    <string name="webview_contextmenu_link_clipboard_label">リンク</string>
+
+    <string name="webview_contextmenu_image_title">画像</string>
+    <string name="webview_contextmenu_image_view_action">表示</string>
+    <string name="webview_contextmenu_image_save_action">画像を保存</string>
+    <string name="webview_contextmenu_image_download_action">画像をダウンロード</string>
+    <string name="webview_contextmenu_image_copy_action">画像のURLをコピー</string>
+    <string name="webview_contextmenu_image_clipboard_label">画像のURL</string>
+
+    <string name="webview_contextmenu_phone_call_action">発信</string>
+    <string name="webview_contextmenu_phone_save_action">連絡先に保存</string>
+    <string name="webview_contextmenu_phone_copy_action">電話番号をコピー</string>
+    <string name="webview_contextmenu_phone_clipboard_label">電話番号</string>
+
+    <string name="webview_contextmenu_email_send_action">メール送信</string>
+    <string name="webview_contextmenu_email_save_action">連絡先に保存</string>
+    <string name="webview_contextmenu_email_copy_action">メールアドレスをコピー</string>
+    <string name="webview_contextmenu_email_clipboard_label">メールアドレス</string>
+
+    <string name="image_saved_as">\"<xliff:g id="filename">%s</xliff:g>\"に保存しました</string>
+    <string name="image_saving_failed">画像の保存に失敗しました</string>
 </resources>
