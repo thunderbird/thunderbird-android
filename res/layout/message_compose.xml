@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="#ffffff" >
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -23,7 +22,7 @@
                 android:layout_marginBottom="4dp"
                 android:paddingTop="6dp"
                 android:orientation="vertical"
-                android:background="#ededed" >
+                android:background="#45bcbcbc">
 
                 <Button
                     android:id="@+id/identity"
@@ -47,7 +46,6 @@
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_to_hint"
-                        android:textColor="@android:color/primary_text_light"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_width="0dp"
                         android:layout_marginRight="6dip"
@@ -81,7 +79,6 @@
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_cc_hint"
-                        android:textColor="@android:color/primary_text_light"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageButton
@@ -112,7 +109,6 @@
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_bcc_hint"
-                        android:textColor="@android:color/primary_text_light"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageButton
@@ -144,7 +140,6 @@
                         <CheckBox
                             android:text="@string/btn_crypto_sign"
                             android:id="@+id/cb_crypto_signature"
-                            android:textColor="@android:color/primary_text_light"
                             android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -160,7 +155,6 @@
                                 android:id="@+id/userId"
                                 android:ellipsize="end"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@android:color/primary_text_light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -168,7 +162,6 @@
                                 android:id="@+id/userIdRest"
                                 android:textSize="10sp"
                                 android:ellipsize="end"
-                                android:textColor="@android:color/primary_text_light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -179,7 +172,6 @@
                     <CheckBox
                         android:text="@string/btn_encrypt"
                         android:id="@+id/cb_encrypt"
-                        android:textColor="@android:color/primary_text_light"
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -197,7 +189,6 @@
                     android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
-                    android:textColor="@android:color/primary_text_light"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <!--
@@ -229,7 +220,6 @@
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionDone|flagNoEnterAction"
                 android:minLines="3"
-                android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -243,7 +233,6 @@
                 android:capitalize="sentences"
                 android:hint="@string/message_compose_signature_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-                android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -270,7 +259,6 @@
                     android:autoText="true"
                     android:capitalize="sentences"
                     android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-                    android:textColor="@android:color/primary_text_light"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <com.fsck.k9.view.MessageWebView
@@ -315,7 +303,6 @@
                 android:capitalize="sentences"
                 android:hint="@string/message_compose_signature_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-                android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>

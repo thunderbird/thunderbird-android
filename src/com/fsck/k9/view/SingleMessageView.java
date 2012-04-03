@@ -600,7 +600,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (mScreenReaderEnabled) {
             mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
         } else {
-            mMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
+            mMessageContentView.setText(emailText, contentType);
             mMessageContentView.scrollTo(0, 0);
         }
 

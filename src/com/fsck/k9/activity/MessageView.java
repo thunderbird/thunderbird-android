@@ -287,7 +287,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     public void onCreate(Bundle icicle) {
-        super.onCreate(icicle, false);
+        super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_view);

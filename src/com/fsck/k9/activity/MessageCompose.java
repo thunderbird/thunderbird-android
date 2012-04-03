@@ -19,12 +19,14 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -377,7 +379,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(K9.getK9ThemeResourceId(K9.THEME_LIGHT));
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.message_compose);
 
@@ -952,7 +953,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mQuotedTextMode != QuotedTextMode.NONE && mMessageFormat == MessageFormat.HTML) {
             mQuotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
             if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
-                mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
+                mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
             }
         }
         mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
@@ -2119,9 +2120,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             })
             .create();
         case DIALOG_CHOOSE_IDENTITY:
-            Builder builder = new AlertDialog.Builder(this);
+            Context context = new ContextWrapper(this);
+            context.setTheme(K9.getK9ThemeResourceId(K9.THEME_LIGHT));
+            Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.send_as);
-            final IdentityAdapter adapter = new IdentityAdapter(this, getLayoutInflater());
+            final IdentityAdapter adapter = new IdentityAdapter(context, getLayoutInflater());
             builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -2480,7 +2483,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             } else {
                                 mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                             }
-                            mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
+                            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
                         }
                     }
                     if (bodyPlainOffset != null && bodyPlainLength != null) {
@@ -2663,7 +2666,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             // Add the HTML reply header to the top of the content.
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mQuoteStyle);
             // Load the message with the reply header.
-            mQuotedHTML.loadDataWithBaseURL("http://", mQuotedHtmlContent.getQuotedContent(), "text/html", "utf-8", null);
+            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage,
                     getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT), mQuoteStyle));
 
