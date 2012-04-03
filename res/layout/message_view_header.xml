@@ -216,7 +216,7 @@
             android:id="@+id/show_additional_headers_area"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="21.5dp"
+            android:layout_height="21dp"
             android:focusable="true"
             android:clickable="true"
             android:background="@drawable/message_view_header_background">
@@ -248,10 +248,9 @@
             </RelativeLayout>
 
             <View
-                android:id="@+id/separator"
                 android:layout_width="fill_parent"
-                android:layout_height="1.5dp"
-                android:background="#59000000"/>
+                android:layout_height="1dip"
+                android:background="@drawable/divider_horizontal_email" />
 
         </LinearLayout>
 
