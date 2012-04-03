@@ -526,7 +526,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         String type;
         String text = pgpData.getDecryptedData();
         if (text != null) {
-            type = "text/plain";
+            /*
+             * also return here html instead of text/plain. with text/plain the
+             * webview does not render the CSS on the darktheme to make the text
+             * white. so the user is not able to see the mailcontent.
+             */
+            type = "text/html";
+
         } else {
             // getTextForDisplay() always returns HTML-ified content.
             text = message.getTextForDisplay();
