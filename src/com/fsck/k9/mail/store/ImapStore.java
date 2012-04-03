@@ -1655,13 +1655,16 @@ public class ImapStore extends Store {
 
             if (fetchList.containsKey("BODY")) {
                 int index = fetchList.getKeyIndex("BODY") + 2;
-                result = fetchList.getObject(index);
+                int size = fetchList.size();
+                if (index < size) {
+                    result = fetchList.getObject(index);
 
-                // Check if there's an origin octet
-                if (result instanceof String) {
-                    String originOctet = (String)result;
-                    if (originOctet.startsWith("<")) {
-                        result = fetchList.getObject(index + 1);
+                    // Check if there's an origin octet
+                    if (result instanceof String) {
+                        String originOctet = (String) result;
+                        if (originOctet.startsWith("<") && (index + 1) < size) {
+                            result = fetchList.getObject(index + 1);
+                        }
                     }
                 }
             }
