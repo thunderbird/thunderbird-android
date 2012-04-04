@@ -827,7 +827,7 @@ public class ImapStore extends Store {
 
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
-            if (!mAccount.getInboxFolderName().equalsIgnoreCase(mName)) {
+            if (!mAccount.getInboxFolderName().equals(mName)) {
                 ImapConnection connection = null;
                 synchronized (this) {
                     if (mConnection == null) {
@@ -850,6 +850,8 @@ public class ImapStore extends Store {
             }
 
             prefixedName += mName;
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "ImapFolder.getPrefixedName: " + mName + " --> " + prefixedName);
             return prefixedName;
         }
 
