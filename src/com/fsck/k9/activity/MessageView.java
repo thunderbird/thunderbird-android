@@ -980,7 +980,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                             !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
+                        String text = getString(R.string.message_view_downloading);
+                        mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
                     mMessageView.setOnFlagListener(new OnClickListener() {
@@ -1033,7 +1034,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                     if ((MessageView.this.mMessage == null) ||
                     !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
+                        mMessageView.showStatusMessage(getString(R.string.webview_empty_message));
                     }
                 }
             });

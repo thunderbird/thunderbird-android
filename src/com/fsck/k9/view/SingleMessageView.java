@@ -524,15 +524,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         resetView();
 
         String type;
-        String text = pgpData.getDecryptedData();
+        String text = null;
+        if (pgpData != null) {
+            text = pgpData.getDecryptedData();
+        }
         if (text != null) {
-            /*
-             * also return here html instead of text/plain. with text/plain the
-             * webview does not render the CSS on the darktheme to make the text
-             * white. so the user is not able to see the mailcontent.
-             */
             type = "text/html";
-
+            text = "<html><body><pre>" + text + "</pre></body></html>";
         } else {
             // getTextForDisplay() always returns HTML-ified content.
             text = message.getTextForDisplay();
@@ -544,7 +542,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             loadBodyFromText(emailText, contentType);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
         } else {
-            loadBodyFromUrl("file:///android_asset/empty.html");
+            showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
         mHasAttachments = message.hasAttachments();
@@ -596,10 +594,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
     }
 
-    public void loadBodyFromUrl(String url) {
-        mMessageContentView.loadUrl(url);
+    public void showStatusMessage(String status) {
+        String text = "<html><body><div style=\"text-align:center; color: grey;\">" +
+                status +
+                "</div></body></html>";
+        loadBodyFromText(text, "text/html");
         mCryptoView.hide();
-
     }
 
     private void loadBodyFromText(String emailText, String contentType) {
@@ -769,6 +769,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mSavedState = savedState;
     }
 
+    @Override
     public void onLayoutChanged() {
         if (mMessageContentView != null) {
             mMessageContentView.invalidate();
