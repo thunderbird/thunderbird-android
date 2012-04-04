@@ -953,16 +953,20 @@ public class MimeUtility {
         }
         header = header.replaceAll("\r|\n", "");
         String[] parts = header.split(";");
-        if (name == null) {
+        if (name == null && parts.length > 0) {
             return parts[0];
         }
         for (String part : parts) {
             if (part.trim().toLowerCase(Locale.US).startsWith(name.toLowerCase(Locale.US))) {
-                String parameter = part.split("=", 2)[1].trim();
-                if (parameter.startsWith("\"") && parameter.endsWith("\"")) {
-                    return parameter.substring(1, parameter.length() - 1);
-                } else {
-                    return parameter;
+                String[] partParts = part.split("=", 2);
+                if (partParts.length == 2) {
+                    String parameter = partParts[1].trim();
+                    int len = parameter.length();
+                    if (len >= 2 && parameter.startsWith("\"") && parameter.endsWith("\"")) {
+                        return parameter.substring(1, len - 1);
+                    } else {
+                        return parameter;
+                    }
                 }
             }
         }
@@ -2178,8 +2182,11 @@ public class MimeUtility {
     }
 
     private static String getJisVariantFromAddress(String address) {
+        if (address == null)
+            return null;
         if (isInDomain(address, "docomo.ne.jp") || isInDomain(address, "dwmail.jp") ||
-                isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com"))
+            isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com") ||
+            isInDomain(address, "emnet.ne.jp") || isInDomain(address, "emobile.ne.jp"))
             return "docomo";
         else if (isInDomain(address, "softbank.ne.jp") || isInDomain(address, "vodafone.ne.jp") ||
                  isInDomain(address, "disney.ne.jp") || isInDomain(address, "vertuclub.ne.jp"))
@@ -3255,5 +3262,81 @@ public class MimeUtility {
             return "shift_jis";
 
         return charset;
+    }
+
+    public static ViewableContainer extractPartsFromDraft(Message message)
+            throws MessagingException {
+
+        Body body = message.getBody();
+        if (message.isMimeType("multipart/mixed") && body instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) body;
+
+            ViewableContainer container;
+            int count = multipart.getCount();
+            if (count >= 1) {
+                // The first part is either a text/plain or a multipart/alternative
+                BodyPart firstPart = multipart.getBodyPart(0);
+                container = extractTextual(firstPart);
+
+                // The rest should be attachments
+                for (int i = 1; i < count; i++) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    container.attachments.add(bodyPart);
+                }
+            } else {
+                container = new ViewableContainer("", "", new ArrayList<Part>());
+            }
+
+            return container;
+        }
+
+        return extractTextual(message);
+    }
+
+    private static ViewableContainer extractTextual(Part part) throws MessagingException {
+        String text = "";
+        String html = "";
+        List<Part> attachments = new ArrayList<Part>();
+
+        Body firstBody = part.getBody();
+        if (part.isMimeType("text/plain")) {
+            String bodyText = getTextFromPart(part);
+            if (bodyText != null) {
+                text = fixDraftTextBody(bodyText);
+            }
+        } else if (part.isMimeType("multipart/alternative") &&
+                firstBody instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) firstBody;
+            for (int i = 0, count = multipart.getCount(); i < count; i++) {
+                BodyPart bodyPart = multipart.getBodyPart(i);
+                String bodyText = getTextFromPart(bodyPart);
+                if (bodyText != null) {
+                    if (text.length() == 0 && bodyPart.isMimeType("text/plain")) {
+                        text = fixDraftTextBody(bodyText);
+                    } else if (html.length() == 0 && bodyPart.isMimeType("text/html")) {
+                        html = fixDraftTextBody(bodyText);
+                    }
+                }
+            }
+        }
+
+        return new ViewableContainer(text, html, attachments);
+    }
+
+    /**
+     * Fix line endings of text bodies in draft messages.
+     *
+     * <p>
+     * We create drafts with LF line endings. The values in the identity header are based on that.
+     * So we replace CRLF with LF when loading messages (from the server).
+     * </p>
+     *
+     * @param text
+     *         The body text with CRLF line endings
+     *
+     * @return The text with LF line endings
+     */
+    private static String fixDraftTextBody(String text) {
+        return text.replace("\r\n", "\n");
     }
 }

@@ -23,14 +23,8 @@ public class K9Activity extends Activity {
 
     @Override
     public void onCreate(Bundle icicle) {
-        onCreate(icicle, true);
-    }
-
-    public void onCreate(Bundle icicle, boolean useTheme) {
         setLanguage(this, K9.getK9Language());
-        if (useTheme) {
-            setTheme(K9.getK9Theme());
-        }
+        setTheme(K9.getK9ThemeResourceId());
         super.onCreate(icicle);
         setupFormats();
 

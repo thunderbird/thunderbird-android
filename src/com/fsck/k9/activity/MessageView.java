@@ -289,7 +289,7 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     @Override
     public void onCreate(Bundle icicle) {
-        super.onCreate(icicle, false);
+        super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_view);
@@ -758,16 +758,15 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPrevious.requestFocus();
     }
 
-    private void onMarkAsUnread() {
+    private void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.SEEN, false);
+                    new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             setTitle(subject);
         }
     }
-
 
     private void onDownloadRemainder() {
         if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
@@ -835,7 +834,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             onSendAlternate();
             break;
         case R.id.mark_as_unread:
-            onMarkAsUnread();
+            onToggleRead();
             break;
         case R.id.flag:
             onFlag();
@@ -946,6 +945,12 @@ public class MessageView extends K9Activity implements OnClickListener {
                 additionalHeadersItem.setTitle(mMessageView.additionalHeadersVisible() ?
                                                R.string.hide_full_header_action : R.string.show_full_header_action);
             }
+
+            if (mMessage != null) {
+                int actionTitle = mMessage.isSet(Flag.SEEN) ?
+                        R.string.mark_as_unread_action : R.string.mark_as_read_action;
+                menu.findItem(R.id.mark_as_unread).setTitle(actionTitle);
+            }
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -977,7 +982,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                             !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
+                        String text = getString(R.string.message_view_downloading);
+                        mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
                     mMessageView.setOnFlagListener(new OnClickListener() {
@@ -1030,7 +1036,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                     if ((MessageView.this.mMessage == null) ||
                     !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
+                        mMessageView.showStatusMessage(getString(R.string.webview_empty_message));
                     }
                 }
             });

@@ -148,7 +148,7 @@ public class Prefs extends K9PreferenceActivity {
                            entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
                            entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
-        final String theme = (K9.getK9Theme() == android.R.style.Theme) ? "dark" : "light";
+        final String theme = (K9.getK9Theme() == K9.THEME_DARK) ? "dark" : "light";
         mTheme = setupListPreference(PREFERENCE_THEME, theme);
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
@@ -348,7 +348,7 @@ public class Prefs extends K9PreferenceActivity {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
-        K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
+        K9.setK9Theme(mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT);
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
         K9.setCompactLayouts(compactLayouts.isChecked());

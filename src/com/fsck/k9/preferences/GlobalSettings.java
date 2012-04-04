@@ -181,7 +181,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(android.R.style.Theme_Light))
+                new V(1, new ThemeSetting(K9.THEME_LIGHT))
             ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
@@ -291,35 +291,48 @@ public class GlobalSettings {
     /**
      * The theme setting.
      */
-    public static class ThemeSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+    public static class ThemeSetting extends SettingsDescription {
+        private static final String THEME_LIGHT = "light";
+        private static final String THEME_DARK = "dark";
 
         public ThemeSetting(int defaultValue) {
             super(defaultValue);
-
-            Map<Integer, String> mapping = new HashMap<Integer, String>();
-            mapping.put(android.R.style.Theme_Light, "light");
-            mapping.put(android.R.style.Theme, "dark");
-            mMapping = Collections.unmodifiableMap(mapping);
-        }
-
-        @Override
-        protected Map<Integer, String> getMapping() {
-            return mMapping;
         }
 
         @Override
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
-                if (mMapping.containsKey(theme)) {
-                    return theme;
+                if (theme == K9.THEME_LIGHT ||
+                        // We used to store the resource ID of the theme in the preference storage,
+                        // but don't use the database upgrade mechanism to update the values. So
+                        // we have to deal with the old format here.
+                        theme == android.R.style.Theme_Light) {
+                    return K9.THEME_LIGHT;
+                } else if (theme == K9.THEME_DARK || theme == android.R.style.Theme) {
+                    return K9.THEME_DARK;
                 }
             } catch (NumberFormatException e) {
                 /* do nothing */
             }
 
             throw new InvalidSettingValueException();
+        }
+
+        @Override
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_LIGHT.equals(value)) {
+                return K9.THEME_LIGHT;
+            } else if (THEME_DARK.equals(value)) {
+                return K9.THEME_DARK;
+            }
+
+            throw new InvalidSettingValueException();
+        }
+
+        @Override
+        public String toPrettyString(Object value) {
+            return (((Integer)value).intValue() == K9.THEME_LIGHT) ? THEME_LIGHT : THEME_DARK;
         }
     }
 

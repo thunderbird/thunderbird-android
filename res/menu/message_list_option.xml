@@ -16,6 +16,10 @@
                 android:title="@string/sort_by_date"
             />
             <item
+                android:id="@+id/set_sort_arrival"
+                android:title="@string/sort_by_arrival"
+            />
+            <item
                 android:id="@+id/set_sort_subject"
                 android:title="@string/sort_by_subject"
             />

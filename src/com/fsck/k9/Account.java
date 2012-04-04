@@ -151,6 +151,7 @@ public class Account implements BaseAccount {
     private String mSyncKey;
     private String mSecurityKey;
     private boolean mCryptoAutoEncrypt;
+    private boolean mMarkMessageAsReadOnView;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -238,6 +239,7 @@ public class Account implements BaseAccount {
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
         mEnabled = true;
+        mMarkMessageAsReadOnView = true;
 
         searchableFolders = Searchable.ALL;
 
@@ -395,6 +397,7 @@ public class Account implements BaseAccount {
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mSyncKey = prefs.getString(mUuid + ".syncKey", "");
         mSecurityKey = prefs.getString(mUuid + ".securityKey", "");
+        mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -412,7 +415,7 @@ public class Account implements BaseAccount {
             String accountUuids = Utility.combine(newUuids, ',');
             SharedPreferences.Editor editor = preferences.getPreferences().edit();
             editor.putString("accountUuids", accountUuids);
-
+            
             editor.remove(mUuid + ".storeUri");
             editor.remove(mUuid + ".localStoreUri");
             editor.remove(mUuid + ".transportUri");
@@ -474,6 +477,7 @@ public class Account implements BaseAccount {
             editor.remove(mUuid + ".securityKey");
             editor.remove(mUuid + ".enableMoveButtons");
             editor.remove(mUuid + ".hideMoveButtonsEnum");
+            editor.remove(mUuid + ".markMessageAsReadOnView");
             for (String type : networkTypes) {
                 editor.remove(mUuid + ".useCompression." + type);
             }
@@ -634,7 +638,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putString(mUuid + ".syncKey", mSyncKey);
         editor.putString(mUuid + ".securityKey", mSecurityKey);
-
+        editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
         editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
@@ -1546,5 +1550,13 @@ public class Account implements BaseAccount {
 
     public synchronized void setEnabled(boolean enabled) {
         mEnabled = enabled;
+    }
+
+    public synchronized boolean isMarkMessageAsReadOnView() {
+        return mMarkMessageAsReadOnView;
+    }
+
+    public synchronized void setMarkMessageAsReadOnView(boolean value) {
+        mMarkMessageAsReadOnView = value;
     }
 }

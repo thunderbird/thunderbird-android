@@ -2163,12 +2163,29 @@ public class LocalStore extends Store implements Serializable {
                                     deleteAttachments(message.getUid());
                                 }
 
-                                ViewableContainer container =
-                                        MimeUtility.extractTextAndAttachments(mApplication, message);
+                                boolean isDraft = (message.getHeader(K9.IDENTITY_HEADER) != null);
 
-                                List<Part> attachments = container.attachments;
-                                String text = container.text;
-                                String html = HtmlConverter.convertEmoji2Img(container.html);
+                                List<Part> attachments;
+                                String text;
+                                String html;
+                                if (isDraft) {
+                                    // Don't modify the text/plain or text/html part of our own
+                                    // draft messages because this will cause the values stored in
+                                    // the identity header to be wrong.
+                                    ViewableContainer container =
+                                            MimeUtility.extractPartsFromDraft(message);
+
+                                    text = container.text;
+                                    html = container.html;
+                                    attachments = container.attachments;
+                                } else {
+                                    ViewableContainer container =
+                                            MimeUtility.extractTextAndAttachments(mApplication, message);
+
+                                    attachments = container.attachments;
+                                    text = container.text;
+                                    html = HtmlConverter.convertEmoji2Img(container.html);
+                                }
 
                                 String preview = calculateContentPreview(text);
 

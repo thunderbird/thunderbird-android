@@ -185,6 +185,15 @@ public class MessageList
 
     }
 
+    public static class ArrivalComparator implements Comparator<MessageInfoHolder> {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
+            return object1.compareArrival.compareTo(object2.compareArrival);
+        }
+
+    }
+
     public static class SubjectComparator implements Comparator<MessageInfoHolder> {
 
         @Override
@@ -234,6 +243,7 @@ public class MessageList
         final Map<SORT_TYPE, Comparator<MessageInfoHolder>> map = new EnumMap<SORT_TYPE, Comparator<MessageInfoHolder>>(SORT_TYPE.class);
         map.put(SORT_TYPE.SORT_ATTACHMENT, new AttachmentComparator());
         map.put(SORT_TYPE.SORT_DATE, new DateComparator());
+        map.put(SORT_TYPE.SORT_ARRIVAL, new ArrivalComparator());
         map.put(SORT_TYPE.SORT_FLAGGED, new FlaggedComparator());
         map.put(SORT_TYPE.SORT_SENDER, new SenderComparator());
         map.put(SORT_TYPE.SORT_SUBJECT, new SubjectComparator());
@@ -460,7 +470,7 @@ public class MessageList
 
             {
                 // add the date comparator if not already specified
-                if (sortType != SORT_TYPE.SORT_DATE) {
+                if (sortType != SORT_TYPE.SORT_DATE && sortType != SORT_TYPE.SORT_ARRIVAL) {
                     final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
                     if (sortDateAscending) {
                         chain.add(comparator);
@@ -1441,6 +1451,10 @@ public class MessageList
         }
         case R.id.set_sort_date: {
             changeSort(SORT_TYPE.SORT_DATE);
+            return true;
+        }
+        case R.id.set_sort_arrival: {
+            changeSort(SORT_TYPE.SORT_ARRIVAL);
             return true;
         }
         case R.id.set_sort_subject: {

@@ -409,7 +409,7 @@ public class ImapResponseParser {
 
 
         public Object getKeyedValue(Object key) {
-            for (int i = 0, count = size(); i < count; i++) {
+            for (int i = 0, count = size() - 1; i < count; i++) {
                 if (equalsIgnoreCase(get(i), key)) {
                     return get(i + 1);
                 }
@@ -434,7 +434,7 @@ public class ImapResponseParser {
                 return false;
             }
 
-            for (int i = 0, count = size(); i < count; i++) {
+            for (int i = 0, count = size() - 1; i < count; i++) {
                 if (equalsIgnoreCase(key, get(i))) {
                     return true;
                 }
@@ -443,7 +443,7 @@ public class ImapResponseParser {
         }
 
         public int getKeyIndex(Object key) {
-            for (int i = 0, count = size(); i < count; i++) {
+            for (int i = 0, count = size() - 1; i < count; i++) {
                 if (equalsIgnoreCase(key, get(i))) {
                     return i;
                 }
