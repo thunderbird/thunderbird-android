@@ -7,7 +7,7 @@
     <string name="app_license">Лицензия Apache License, Version 2.0.</string>
     <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Информация об изменениях: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">Мы используем следующие тертьесторонние библиотеки: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_libraries">Мы используем следующие библиотеки третьих сторон: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Иконки настроения: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">читать вложения электронной почты</string>
@@ -108,9 +108,9 @@
     <string name="view_hide_details_action">Показать/спрятать подробности</string>
     <string name="add_cc_bcc_action">Добавить Копию/СК</string>
     <string name="edit_subject_action">Редактировать тему</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <string name="read_receipt">Уведомление о прочтении</string>
+    <string name="read_receipt_enabled">Уведомление о прочтении будет запрошено</string>
+    <string name="read_receipt_disabled">Уведомление о прочтении не будет запрошено</string>
     <string name="add_attachment_action">Добавить вложение</string>
     <string name="add_attachment_action_image">Добавить вложение (Изображение)</string>
     <string name="add_attachment_action_video">Добавить вложение (Видео)</string>
@@ -324,8 +324,8 @@
     <string name="global_settings_messageview_fixedwidth_summary">Использовать шрифт фиксированной ширины при показе плоского текста</string>
     <string name="global_settings_messageview_return_to_list_label">Вернуться к списку после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Вернуться к списку сообщений после удаления сообщения</string>
-    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
-    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+    <string name="global_settings_messageview_show_next_label">Показать след. сообщение после удаления</string>
+    <string name="global_settings_messageview_show_next_summary">По умолчанию показывать след. сообщение после удаления</string>
 
     <string name="global_settings_confirm_actions_title">Подтверждение действий</string>
     <string name="global_settings_confirm_actions_summary">Показывать диалог при совершении действий</string>
@@ -340,7 +340,7 @@
 
     <string name="quiet_time">Время тишины</string>
     <string name="quiet_time_description">Запретить сигнал, вибрацию, мигание в ночное время</string>
-    <string name="quiet_time_starts">Начинало времени тишины</string>
+    <string name="quiet_time_starts">Начало времени тишины</string>
     <string name="quiet_time_ends">Конец времени тишины</string>
 
     <string name="account_setup_basics_title">Установить новый адрес</string>
@@ -414,7 +414,7 @@
     <string name="account_setup_expunge_policy_on_poll">В ходе каждого запроса</string>
     <string name="account_setup_expunge_policy_manual">Только вручную</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">Автоопределение области имен IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
 
     <string name="drafts_folder_label">Имя папки Черновиков</string>
@@ -550,11 +550,11 @@
     <string name="account_settings_reply_after_quote_summary">При ответе цитата будет выше ответа.</string>
 
     <string name="account_settings_message_format_label">Формат сообщения</string>
-    <string name="account_settings_message_format_text">Плоский текст (изображения и форматирование не сохраняется)</string>
+    <string name="account_settings_message_format_text">Обычный текст (изображения и форматирование не сохраняется)</string>
     <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
 
-    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
-    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
+    <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
+    <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
 
     <string name="account_settings_quote_style_label">Стиль цитирования</string>
     <string name="account_settings_quote_style_prefix">Префикс (например Gmail, Pine)</string>
@@ -582,7 +582,7 @@
     <string name="account_settings_color_label">Цвет учётной записи</string>
     <string name="account_settings_color_summary">Выберите цвет учётной записи, используемый в папке и списке учётных записей</string>
 
-    <string name="account_settings_led_color_label">Notification LED color</string>
+    <string name="account_settings_led_color_label">Цвет светодиода для уведомления</string>
     <string name="account_settings_led_color_summary">Выбрать цвет мигания для учётной записи</string>
 
     <string name="account_settings_mail_display_count_label">Количество показываемых сообщений</string>
@@ -680,13 +680,13 @@
     <string name="account_settings_ring_summary">Звонок при новых сообщениях</string>
     <string name="account_settings_vibrate_enable">Вибрация</string>
     <string name="account_settings_vibrate_summary">Вибрация при новых сообщениях</string>
-    <string name="account_settings_vibrate_pattern_label">Паттерн вибрации</string>
+    <string name="account_settings_vibrate_pattern_label">Тип вибрации</string>
     <string name="account_settings_vibrate_pattern_default">По умолчанию</string>
-    <string name="account_settings_vibrate_pattern_1">паттерн 1</string>
-    <string name="account_settings_vibrate_pattern_2">паттерн 2</string>
-    <string name="account_settings_vibrate_pattern_3">паттерн 3</string>
-    <string name="account_settings_vibrate_pattern_4">паттерн 4</string>
-    <string name="account_settings_vibrate_pattern_5">паттерн 5</string>
+    <string name="account_settings_vibrate_pattern_1">Вибрация 1</string>
+    <string name="account_settings_vibrate_pattern_2">Вибрация 2</string>
+    <string name="account_settings_vibrate_pattern_3">Вибрация 3</string>
+    <string name="account_settings_vibrate_pattern_4">Вибрация 4</string>
+    <string name="account_settings_vibrate_pattern_5">Вибрация 5</string>
     <string name="account_settings_vibrate_times">Повторять вибрацию</string>
     <string name="account_settings_ringtone">Выбор мелодии</string>
     <string name="account_settings_led_label">Мигать</string>
@@ -839,7 +839,7 @@
     <string name="background_ops_never">Никогда</string>
     <string name="background_ops_always">Всегда</string>
     <string name="background_ops_enabled">Когда \'Фоновый режим\' включен</string>
-    <string name="background_ops_auto_sync">Когда \'Фоновые данные\' &amp; \'Автосинхронизация\' включены</string>
+    <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
 
     <string name="no_message_seletected_toast">Никаких сообщшний не выбранно</string>
 
@@ -956,11 +956,11 @@
     <string name="font_size_message_view_date">Дата</string>
     <string name="font_size_message_view_content">Тело сообщения</string>
 
-    <string name="font_size_tiniest">самый крочшечный</string>
+    <string name="font_size_tiniest">Самый крочшечный</string>
     <string name="font_size_tiny">Крошечный</string>
     <string name="font_size_smaller">Еще меньше</string>
     <string name="font_size_small">Маленький</string>
-    <string name="font_size_medium">средний</string>
+    <string name="font_size_medium">Средний</string>
     <string name="font_size_large">Большой</string>
     <string name="font_size_larger">Наибольший</string>
 
@@ -1033,46 +1033,49 @@
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Не получается соединиться.</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+    <string name="import_export_action">Импорт и экспорт настроек</string>
+    
+    <string name="settings_export_account">Экспортировать настройки учетной записи</string>
+    <string name="settings_export_all">Экспортировать настройки и учетные записи</string>
+    <string name="settings_import_dialog_title">Импорт</string>
+    <string name="settings_export_dialog_title">Экспорт</string>
+    <string name="settings_import">Импортировать настройки</string>
+    <string name="settings_import_selection">Импортировать выбранное</string>
+    <string name="settings_import_global_settings">Глобальные настройки</string>
+    <string name="settings_exporting">Экспорт настроек...</string>
+    <string name="settings_importing">Импорт настроек...</string>
+    <string name="settings_import_scanning_file">Сканирование файла...</string>
+    <string name="settings_export_success">Настройки были экспортированы в <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Глобальные настройки были импортированы из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Импортирован <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 учетная запись</item>
+        <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> учетных записи</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> учетных записей</item>
+    </plurals>
+    <string name="settings_export_failure">Не удалось экспортировать настройки</string>
+    <string name="settings_import_failure">Не удалось экспортировать настройки из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Экспорт удался</string>
+    <string name="settings_export_failed_header">Экспорт не удался</string>
+    <string name="settings_import_success_header">Импорт удался</string>
+    <string name="settings_import_failed_header">Импорт не удался</string>
+    <string name="settings_import_activate_account_header">Активировать учетную запись</string>
+    <string name="settings_import_activate_account_intro">Чтобы использовать учетную запись \"<xliff:g id="account">%s</xliff:g>\", Вам необходимо указать <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">пароль</item>
+        <item quantity="few">пароля</item>
+        <item quantity="other">паролей</item>
+    </plurals>
+    <string name="settings_import_incoming_server">Сервер для входящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Сервер для исходящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="one">Установка пароля...</item>
+        <item quantity="other">Установка паролей...</item>
+    </plurals>
+    <string name="settings_import_use_incoming_server_password">Использовать пароль от сервера для входящей почты</string>
+    <string name="activate_account_action">Активировать</string>
 
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+    <string name="settings_unknown_version">Невозможно определить версию файла <xliff:g id="version">%s</xliff:g></string>
 
     <string name="account_unavailable">Учётная запись\"<xliff:g id="account">%s</xliff:g>\" недоступна; проверьте хранилище</string>
 
@@ -1080,8 +1083,8 @@
     <string name="attachment_save_title">Сохранить вложение</string>
     <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
+    <string name="manage_accounts_move_up_action">Переместить вверх</string>
+    <string name="manage_accounts_move_down_action">Переместить вниз</string>
+    <string name="manage_accounts_moving_message">Перемещение учетной записи...</string>
 
 </resources>
