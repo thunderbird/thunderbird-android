@@ -971,7 +971,7 @@
     <string name="unread_modifier"> - Μη αναγνωσμένα</string>
 
     <string name="search_all_messages_title">Όλα τα μηνύματα</string>
-    <string name="search_all_messages_detail">'Ολα τα μηνύματα σε φακέλους αναζήτησης</string>
+    <string name="search_all_messages_detail">Όλα τα μηνύματα σε φακέλους αναζήτησης</string>
 
     <string name="integrated_inbox_title">Ενιαία Εισερχόμενα</string>
     <string name="integrated_inbox_detail">Όλα τα μηνύματα στους ενοποιημένους φακέλους</string>
