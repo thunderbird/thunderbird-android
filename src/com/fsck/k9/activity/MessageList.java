@@ -827,12 +827,11 @@ public class MessageList
 
         mController.addListener(mAdapter.mListener);
 
-        final Preferences preferences = Preferences.getPreferences(this);
-
         Account[] accountsWithNotification;
         if (mAccount != null) {
             accountsWithNotification = new Account[] { mAccount };
         } else {
+            Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
         }
 
@@ -849,26 +848,8 @@ public class MessageList
                 }
             } else if (mQueryString != null) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-                boolean hasArchiveFolder = false;
-                if(mAccountUuids == null) {
-                    for (final Account acct : preferences.getAccounts()) {
-                        if (acct != null && acct.hasArchiveFolder()) {
-                            hasArchiveFolder = true;
-                            break;
-                        }
-                    }
-                } else {
-                    for (final String accountUuid : mAccountUuids) {
-                        final Account acct = preferences.getAccount(accountUuid);
-                        if (acct != null && acct.hasArchiveFolder()) {
-                            hasArchiveFolder = true;
-                            break;
-                        }
-                    }
-                }
-                if (!hasArchiveFolder) {
-                    mBatchArchiveButton.setVisibility(View.GONE);
-                }
+                // Don't show the archive button if this is a search.
+                mBatchArchiveButton.setVisibility(View.GONE);
             }
 
         } else {
