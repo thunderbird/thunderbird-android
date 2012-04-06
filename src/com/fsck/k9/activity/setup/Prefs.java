@@ -370,13 +370,13 @@ public class Prefs extends K9PreferenceActivity {
 
         // If we don't have any accounts with an archive folder, then don't enable the preference.
         boolean hasArchiveFolder = false;
-        for(final Account acct : Preferences.getPreferences(this).getAccounts()) {
-            if(acct.hasArchiveFolder()) {
+        for (final Account acct : Preferences.getPreferences(this).getAccounts()) {
+            if (acct.hasArchiveFolder()) {
                 hasArchiveFolder = true;
                 break;
             }
         }
-        if(!hasArchiveFolder) {
+        if (!hasArchiveFolder) {
             mBatchButtonsArchive.setEnabled(false);
             mBatchButtonsArchive.setSummary(R.string.global_settings_archive_disabled_reason);
         }
