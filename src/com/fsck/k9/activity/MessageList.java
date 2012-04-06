@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -2319,6 +2320,8 @@ public class MessageList
          */
         private void bindView(final int position, final View view, final MessageViewHolder holder,
                               final MessageInfoHolder message) {
+            ColorStateList read_or_unread_color = holder.subject.getTextColors().withAlpha(message.read ? 127 : 255);
+            holder.subject.setTextColor(read_or_unread_color);
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
@@ -2338,7 +2341,7 @@ public class MessageList
 
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
-            view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+            view.getBackground().setAlpha(message.downloaded ? 0 : 32);
 
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
                 holder.subject.setText(getText(R.string.general_no_subject));
@@ -2359,6 +2362,7 @@ public class MessageList
                 holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
                                        .append(message.sender).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
+                holder.preview.setTextColor(read_or_unread_color);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
@@ -2378,11 +2382,12 @@ public class MessageList
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } else {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
-
+                holder.from.setTextColor(read_or_unread_color);
                 holder.from.setTypeface(null, senderTypeface);
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
+            holder.date.setTextColor(read_or_unread_color);
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
