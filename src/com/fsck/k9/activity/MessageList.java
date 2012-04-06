@@ -821,8 +821,10 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        sortType = mController.getSortType();
-        sortAscending = mController.isSortAscending(sortType);
+        sortType = mAccount.getSortType();
+        mController.setSortType(sortType);
+        sortAscending = mAccount.isSortAscending();
+        mController.setSortAscending(sortType, sortAscending);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
@@ -1209,12 +1211,18 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType) {
         if (sortType == newSortType) {
+            mAccount.setSortAscending( !(mController.isSortAscending(newSortType)  ));
+            mAccount.save(Preferences.getPreferences(this));
             onToggleSortAscending();
         } else {
             sortType = newSortType;
             mController.setSortType(sortType);
             sortAscending = mController.isSortAscending(sortType);
             sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+
+            mAccount.setSortType(sortType);
+            mAccount.setSortAscending(sortAscending);
+            mAccount.save(Preferences.getPreferences(this));
             reSort();
         }
     }
