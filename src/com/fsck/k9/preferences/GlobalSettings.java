@@ -197,22 +197,22 @@ public class GlobalSettings {
                 new V(4, new BooleanSetting(true))
             ));
         s.put("batchButtonsMarkRead", Settings.versions(
-        		new V(1, new BooleanSetting(true))
+        		new V(8, new BooleanSetting(true))
         	));
         s.put("batchButtonsDelete", Settings.versions(
-        		new V(1, new BooleanSetting(true))
+        		new V(8, new BooleanSetting(true))
         	));
         s.put("batchButtonsArchive", Settings.versions(
-        		new V(1, new BooleanSetting(false))
+        		new V(8, new BooleanSetting(false))
         	));
         s.put("batchButtonsMove", Settings.versions(
-        		new V(1, new BooleanSetting(false))
+        		new V(8, new BooleanSetting(false))
         	));
         s.put("batchButtonsFlag", Settings.versions(
-        		new V(1, new BooleanSetting(true))
+        		new V(8, new BooleanSetting(true))
         	));
         s.put("batchButtonsUnselect", Settings.versions(
-        		new V(1, new BooleanSetting(true))
+        		new V(8, new BooleanSetting(true))
         	));
 
         SETTINGS = Collections.unmodifiableMap(s);
