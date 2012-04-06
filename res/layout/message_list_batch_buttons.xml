@@ -27,6 +27,20 @@
             android:src="@drawable/ic_button_delete"
         />
         <ImageButton
+            android:id="@+id/batch_archive_button"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_button_archive"
+        />
+        <ImageButton
+            android:id="@+id/batch_move_button"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_button_move"
+        />
+        <ImageButton
             android:id="@+id/batch_flag_button"
             android:layout_width="0dip"
             android:layout_height="fill_parent"

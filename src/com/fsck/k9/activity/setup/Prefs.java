@@ -74,7 +74,12 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
-
+    private static final String PREFERENCE_BATCH_BUTTONS_MARK_READ = "batch_buttons_mark_read";
+    private static final String PREFERENCE_BATCH_BUTTONS_DELETE = "batch_buttons_delete";
+    private static final String PREFERENCE_BATCH_BUTTONS_ARCHIVE = "batch_buttons_archive";
+    private static final String PREFERENCE_BATCH_BUTTONS_MOVE = "batch_buttons_move";
+    private static final String PREFERENCE_BATCH_BUTTONS_FLAG = "batch_buttons_flag";
+    private static final String PREFERENCE_BATCH_BUTTONS_UNSELECT = "batch_buttons_unselect";
 
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
@@ -121,6 +126,12 @@ public class Prefs extends K9PreferenceActivity {
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
     private Preference mAttachmentPathPreference;
 
+    private CheckBoxPreference mBatchButtonsMarkRead;
+    private CheckBoxPreference mBatchButtonsDelete;
+    private CheckBoxPreference mBatchButtonsArchive;
+    private CheckBoxPreference mBatchButtonsMove;
+    private CheckBoxPreference mBatchButtonsFlag;
+    private CheckBoxPreference mBatchButtonsUnselect;
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -342,6 +353,19 @@ public class Prefs extends K9PreferenceActivity {
                 }
             };
         });
+        
+        mBatchButtonsMarkRead = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MARK_READ);
+        mBatchButtonsDelete = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_DELETE);
+        mBatchButtonsArchive = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_ARCHIVE);
+        mBatchButtonsMove = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MOVE);
+        mBatchButtonsFlag = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_FLAG);
+        mBatchButtonsUnselect = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_UNSELECT);
+        mBatchButtonsMarkRead.setChecked(K9.batchButtonsMarkRead());
+        mBatchButtonsDelete.setChecked(K9.batchButtonsDelete());
+        mBatchButtonsArchive.setChecked(K9.batchButtonsArchive());
+        mBatchButtonsMove.setChecked(K9.batchButtonsMove());
+        mBatchButtonsFlag.setChecked(K9.batchButtonsFlag());
+        mBatchButtonsUnselect.setChecked(K9.batchButtonsUnselect());        
     }
 
     private void saveSettings() {
@@ -380,6 +404,12 @@ public class Prefs extends K9PreferenceActivity {
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
 
+        K9.setBatchButtonsMarkRead(mBatchButtonsMarkRead.isChecked());
+        K9.setBatchButtonsDelete(mBatchButtonsDelete.isChecked());
+        K9.setBatchButtonsArchive(mBatchButtonsArchive.isChecked());
+        K9.setBatchButtonsMove(mBatchButtonsMove.isChecked());
+        K9.setBatchButtonsFlag(mBatchButtonsFlag.isChecked());
+        K9.setBatchButtonsUnselect(mBatchButtonsUnselect.isChecked());
 
         K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
