@@ -697,7 +697,7 @@ public class K9 extends Application {
     }
 
     public static int getK9ThemeResourceId(int theme) {
-        return (theme == THEME_LIGHT) ? android.R.style.Theme_Light : android.R.style.Theme;
+        return (theme == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
     public static int getK9ThemeResourceId() {

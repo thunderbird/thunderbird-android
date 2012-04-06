@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.K9Dialog" parent="@android:Theme.Light">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@drawable/popup_background</item>
@@ -6,8 +8,15 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowContentOverlay">@drawable/panel_separator</item>
-
     </style>
 
+    <!--
+      Fix a bug with AutoCompleteTextView
+      See https://code.google.com/p/android/issues/detail?id=5237
+    -->
+    <style name="Widget.K9.AutoCompleteTextView" parent="@android:style/Widget.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
 
 </resources>
+
