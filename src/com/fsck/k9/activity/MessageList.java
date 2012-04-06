@@ -1631,7 +1631,7 @@ public class MessageList
             if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
                 menu.findItem(R.id.expunge).setVisible(false);
             }
-            if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
+            if (!mAccount.hasArchiveFolder()) {
                 menu.findItem(R.id.batch_archive_op).setVisible(false);
             }
             if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
@@ -1839,9 +1839,10 @@ public class MessageList
             menu.findItem(R.id.spam).setVisible(false);
         }
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName())) {
+        if (!account.hasArchiveFolder()) {
             menu.findItem(R.id.archive).setVisible(false);
         }
+
         if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName())) {
             menu.findItem(R.id.spam).setVisible(false);
         }

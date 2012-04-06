@@ -935,6 +935,14 @@ public class Account implements BaseAccount {
         mArchiveFolderName = archiveFolderName;
     }
 
+    /**
+     * Checks if this account has an archive folder set.
+     * @return true if account has an archive folder set.
+     */
+    public synchronized boolean hasArchiveFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mArchiveFolderName);
+    }
+
     public synchronized String getSpamFolderName() {
         return mSpamFolderName;
     }
@@ -1276,7 +1284,6 @@ public class Account implements BaseAccount {
      * Only to be called durin initial account-setup!<br/>
      * Side-effect: changes {@link #mLocalStorageProviderId}.
      *
-     * @param context
      * @param newStorageProviderId
      *            Never <code>null</code>.
      * @throws MessagingException
