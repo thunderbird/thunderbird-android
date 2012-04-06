@@ -19,6 +19,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -365,7 +366,20 @@ public class Prefs extends K9PreferenceActivity {
         mBatchButtonsArchive.setChecked(K9.batchButtonsArchive());
         mBatchButtonsMove.setChecked(K9.batchButtonsMove());
         mBatchButtonsFlag.setChecked(K9.batchButtonsFlag());
-        mBatchButtonsUnselect.setChecked(K9.batchButtonsUnselect());        
+        mBatchButtonsUnselect.setChecked(K9.batchButtonsUnselect());
+
+        // If we don't have any accounts with an archive folder, then don't enable the preference.
+        boolean hasArchiveFolder = false;
+        for(final Account acct : Preferences.getPreferences(this).getAccounts()) {
+            if(acct.hasArchiveFolder()) {
+                hasArchiveFolder = true;
+                break;
+            }
+        }
+        if(!hasArchiveFolder) {
+            mBatchButtonsArchive.setEnabled(false);
+            mBatchButtonsArchive.setSummary(R.string.global_settings_archive_disabled_reason);
+        }
     }
 
     private void saveSettings() {

@@ -366,6 +366,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_mark_read">Mark read/unread</string>
     <string name="global_settings_delete">Delete</string>
     <string name="global_settings_archive">Move to archive</string>
+    <string name="global_settings_archive_disabled_reason">No archive folders.</string>
     <string name="global_settings_move">Move</string>
     <string name="global_settings_flag">Flag</string>
     <string name="global_settings_unselect">Unselect</string>
