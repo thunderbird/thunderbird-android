@@ -1101,8 +1101,8 @@
 
     <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
 
-    <string name="messagelist_sent_to_me_sigil">�</string>
-    <string name="messagelist_sent_cc_me_sigil">�</string>
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Σύνδεση αδύνατη</string>
 
     <string name="import_export_action">Εισαγωγή &amp; Εξαγωγή ρυθμίσεων</string>
@@ -1157,7 +1157,7 @@
     <string name="manage_accounts_moving_message">Ο λογαριασμός μετακινείται...</string>
 
     <string name="unread_widget_label">Μη αναγνωσμένα K-9</string>
-    <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για�</string>
+    <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
 
     <string name="import_dialog_error_title">Λείπει εφαρμογή επόπτη αρχείων</string>
     <string name="import_dialog_error_message">Δεν υπάρχιε κατάλληλη εφαρμογή για να χειριστεί την εισαγωγή.
