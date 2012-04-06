@@ -2032,6 +2032,23 @@ public class LocalStore extends Store implements Serializable {
         }
 
         /**
+         * Execute runnable within a transactional context, useful for batching
+         * multiple independently transactional methods, e.g.,
+         * storeSmallMessage.
+         */
+        public void executeRunnableInTransaction(final Runnable runnable)
+                throws MessagingException {
+            database.execute(true, new DbCallback<Void>() {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db)
+                        throws WrappedException, UnavailableStorageException {
+                    runnable.run();
+                    return null;
+                }
+            });
+        }
+
+        /**
          * The method differs slightly from the contract; If an incoming message already has a uid
          * assigned and it matches the uid of an existing message then this message will replace the
          * old message. It is implemented as a delete/insert. This functionality is used in saving

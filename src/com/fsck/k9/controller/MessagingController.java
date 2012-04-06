@@ -1542,14 +1542,21 @@ public class MessagingController implements Runnable {
         return true;
     }
 
+    private static class WrappedException extends RuntimeException {
+        public WrappedException(final Exception cause) {
+            super(cause);
+        }
+    }
+
     private void downloadSmallMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
-                                       ArrayList<Message> smallMessages,
+                                       final ArrayList<Message> smallMessages,
                                        final AtomicInteger progress,
                                        final int unreadBeforeStart,
                                        final AtomicInteger newMessages,
                                        final int todo,
-                                       FetchProfile fp) throws MessagingException {
+                                       final FetchProfile fp)
+                                       throws MessagingException {
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
@@ -1557,62 +1564,75 @@ public class MessagingController implements Runnable {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
 
-        remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
-        fp, new MessageRetrievalListener() {
-            @Override
-            public void messageFinished(final Message message, int number, int ofTotal) {
-                try {
+        try {
+            localFolder.executeRunnableInTransaction(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
+                        fp, new MessageRetrievalListener() {
+                            @Override
+                            public void messageFinished(final Message message, int number, int ofTotal) {
+                                try {
 
-                    if (!shouldImportMessage(account, folder, message, progress, earliestDate)) {
-                        progress.incrementAndGet();
+                                    if (!shouldImportMessage(account, folder, message, progress, earliestDate)) {
+                                        progress.incrementAndGet();
 
-                        return;
+                                        return;
+                                    }
+
+                                    // Store the updated message locally
+                                    final Message localMessage = localFolder.storeSmallMessage(message, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progress.incrementAndGet();
+                                        }
+                                    });
+
+                                    // Increment the number of "new messages" if the newly downloaded message is
+                                    // not marked as read.
+                                    if (!localMessage.isSet(Flag.SEEN)) {
+                                        newMessages.incrementAndGet();
+                                    }
+
+                                    if (K9.DEBUG)
+                                        Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
+                                              + account + ":" + folder + ":" + message.getUid());
+
+                                    // Update the listener with what we've found
+                                    for (MessagingListener l : getListeners()) {
+                                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                                        l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                                        if (!localMessage.isSet(Flag.SEEN)) {
+                                            l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                                        }
+                                    }
+                                    // Send a notification of this message
+
+                                    if (shouldNotifyForMessage(account, localFolder, message)) {
+                                        notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
+                                    }
+
+                                } catch (MessagingException me) {
+                                    addErrorMessage(account, null, me);
+                                    Log.e(K9.LOG_TAG, "SYNC: fetch small messages", me);
+                                }
+                            }
+
+                            @Override
+                            public void messageStarted(String uid, int number, int ofTotal) {}
+
+                            @Override
+                            public void messagesFinished(int total) {}
+                        });
+                    } catch (MessagingException me) {
+                        throw new WrappedException(me);
                     }
-
-                    // Store the updated message locally
-                    final Message localMessage = localFolder.storeSmallMessage(message, new Runnable() {
-                        @Override
-                        public void run() {
-                            progress.incrementAndGet();
-                        }
-                    });
-
-                    // Increment the number of "new messages" if the newly downloaded message is
-                    // not marked as read.
-                    if (!localMessage.isSet(Flag.SEEN)) {
-                        newMessages.incrementAndGet();
-                    }
-
-                    if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
-                              + account + ":" + folder + ":" + message.getUid());
-
-                    // Update the listener with what we've found
-                    for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                        l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                        if (!localMessage.isSet(Flag.SEEN)) {
-                            l.synchronizeMailboxNewMessage(account, folder, localMessage);
-                        }
-                    }
-                    // Send a notification of this message
-
-                    if (shouldNotifyForMessage(account, localFolder, message)) {
-                        notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
-                    }
-
-                } catch (MessagingException me) {
-                    addErrorMessage(account, null, me);
-                    Log.e(K9.LOG_TAG, "SYNC: fetch small messages", me);
                 }
-            }
-
-            @Override
-            public void messageStarted(String uid, int number, int ofTotal) {}
-
-            @Override
-            public void messagesFinished(int total) {}
-        });
+            });
+        } catch (WrappedException we) {
+            throw (MessagingException) we.getCause();
+        }
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
