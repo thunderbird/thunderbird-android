@@ -416,7 +416,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         mContacts = Contacts.getInstance(MessageCompose.this);
 
-        mAddressAdapter = EmailAddressAdapter.getInstance(this);
+        mAddressAdapter = new EmailAddressAdapter(this);
         mAddressValidator = new EmailAddressValidator();
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
