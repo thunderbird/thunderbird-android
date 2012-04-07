@@ -1211,8 +1211,6 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType) {
         if (sortType == newSortType) {
-            mAccount.setSortAscending( !(mController.isSortAscending(newSortType)  ));
-            mAccount.save(Preferences.getPreferences(this));
             onToggleSortAscending();
         } else {
             sortType = newSortType;
@@ -1261,6 +1259,9 @@ public class MessageList
 
         sortAscending = mController.isSortAscending(sortType);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+            
+        mAccount.setSortAscending( sortAscending);
+        mAccount.save(Preferences.getPreferences(this));
 
         reSort();
     }
