@@ -193,7 +193,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
     }
 
     @Override
-    public ContactItem getEmailFromContactPicker(final Intent data) {
+    public ContactItem extractInfoFromContactPickerIntent(final Intent data) {
         Cursor cursor = null;
         ArrayList<String> email = new ArrayList<String>();
 

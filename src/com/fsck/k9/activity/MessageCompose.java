@@ -1797,7 +1797,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
-            ContactItem contact = mContacts.getEmailFromContactPicker(data);
+            ContactItem contact = mContacts.extractInfoFromContactPickerIntent(data);
             if (contact == null) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                 return;

@@ -183,7 +183,7 @@ public abstract class Contacts {
      * @return A {@link ContactItem} instance describing the picked contact. Or {@code null} if the
      *         contact doesn't have any email addresses.
      */
-    public abstract ContactItem getEmailFromContactPicker(final Intent intent);
+    public abstract ContactItem extractInfoFromContactPickerIntent(final Intent intent);
 
     /**
      * Does the device actually have a Contacts application suitable for
