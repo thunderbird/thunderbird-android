@@ -12,6 +12,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.fsck.k9.R;
+import com.fsck.k9.helper.ContactItem;
 
 public class ArrayItemList extends K9ListActivity implements OnItemClickListener {
     @Override
@@ -20,16 +21,18 @@ public class ArrayItemList extends K9ListActivity implements OnItemClickListener
 
         setContentView(R.layout.item_list);
 
-        ArrayList<String> pa = getIntent().getStringArrayListExtra("emailAddresses");
-        if (pa == null) {
+        Intent i = getIntent();
+        ContactItem contact = (ContactItem) i.getSerializableExtra("contact");
+        if (contact == null) {
             return;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pa);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contact.getEmailAddresses());
 
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
         listView.setAdapter(adapter);
+        setTitle(contact.getDisplayName());
     }
 
     @Override

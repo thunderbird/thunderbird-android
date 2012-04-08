@@ -193,33 +193,48 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
     }
 
     @Override
-    public ArrayList<String> getEmailFromContactPicker(final Intent data) {
+    public ContactItem getEmailFromContactPicker(final Intent data) {
         Cursor cursor = null;
+        Cursor cursor2 = null;
+        ContactItem item = new ContactItem();
         ArrayList<String> email = new ArrayList<String>();
 
         try {
             Uri result = data.getData();
+            String displayName = null;
 
+            cursor = mContentResolver.query(result, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+            }
             // Get the contact id from the Uri
             String id = result.getLastPathSegment();
-            cursor = mContentResolver.query(Email.CONTENT_URI,
+            cursor2 = mContentResolver.query(Email.CONTENT_URI,
                                             null, Email.CONTACT_ID + "=?", new String[] { id },
                                             null);
 
-            if (cursor != null) {
-                int emailIdx = cursor.getColumnIndex(Email.DATA);
+            if (cursor2 != null) {
+                int emailIdx = cursor2.getColumnIndex(Email.DATA);
 
-                while (cursor.moveToNext()) {
-                    email.add(cursor.getString(emailIdx));
+                while (cursor2.moveToNext()) {
+                    email.add(cursor2.getString(emailIdx));
                 }
+
+                if (email.size() == 0) {
+                    return null;
+                }
+                item.setDisplayName(displayName);
+                item.setEmailAddresses(email);
+                return item;
             }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
         } finally {
             Utility.closeQuietly(cursor);
+            Utility.closeQuietly(cursor2);
         }
 
-        return email;
+        return null;
     }
 
     /**

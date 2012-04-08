@@ -2,7 +2,6 @@ package com.fsck.k9.helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -182,7 +181,7 @@ public abstract class Contacts {
      * @param intent The {@link Intent} returned by this contact picker.
      * @return The primary email address of the picked contact.
      */
-    public abstract ArrayList<String> getEmailFromContactPicker(final Intent intent);
+    public abstract ContactItem getEmailFromContactPicker(final Intent intent);
 
     /**
      * Does the device actually have a Contacts application suitable for

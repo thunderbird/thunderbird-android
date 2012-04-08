@@ -73,6 +73,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -1796,14 +1797,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
-            ArrayList<String> email = mContacts.getEmailFromContactPicker(data);
-            if (email.size() == 0) {
+            ContactItem contact = mContacts.getEmailFromContactPicker(data);
+            if (contact == null) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                 return;
             }
-            if (email.size() > 1) {
+            if (contact.getEmailAddresses().size() > 1) {
                 Intent i = new Intent(this, ArrayItemList.class);
-                i.putExtra("emailAddresses", email);
+                i.putExtra("contact", contact);
 
                 if (requestCode == CONTACT_PICKER_TO) {
                     startActivityForResult(i, CONTACT_PICKER_TO2);
@@ -1815,18 +1816,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 return;
             }
             if (K9.DEBUG) {
-                for (int i = 0; i < email.size(); i++) {
-                    Log.v(K9.LOG_TAG, "email[" + i + "]: " + email.get(i));
+                ArrayList<String> emails = contact.getEmailAddresses();
+                for (int i = 0; i < emails.size(); i++) {
+                    Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
                 }
             }
 
 
+            String email = contact.getEmailAddresses().get(0);
             if (requestCode == CONTACT_PICKER_TO) {
-                addAddress(mToView, new Address(email.get(0), ""));
+                addAddress(mToView, new Address(email, ""));
             } else if (requestCode == CONTACT_PICKER_CC) {
-                addAddress(mCcView, new Address(email.get(0), ""));
+                addAddress(mCcView, new Address(email, ""));
             } else if (requestCode == CONTACT_PICKER_BCC) {
-                addAddress(mBccView, new Address(email.get(0), ""));
+                addAddress(mBccView, new Address(email, ""));
             } else {
                 return;
             }
