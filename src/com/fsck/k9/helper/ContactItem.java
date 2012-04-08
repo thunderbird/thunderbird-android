@@ -1,24 +1,17 @@
 package com.fsck.k9.helper;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ContactItem implements Serializable {
     private static final long serialVersionUID = 4893328130147843375L;
 
-    private String displayName = null;
-    private ArrayList<String> emailAddresses = null;
+    public final String displayName;
+    public final List<String> emailAddresses;
 
-    public String getDisplayName() {
-        return displayName;
-    }
-    public void setDisplayName(String displayName) {
+    public ContactItem(String displayName, List<String> emailAddresses) {
         this.displayName = displayName;
-    }
-    public ArrayList<String> getEmailAddresses() {
-        return emailAddresses;
-    }
-    public void setEmailAddresses(ArrayList<String> emailAddresses) {
-        this.emailAddresses = emailAddresses;
+        this.emailAddresses = Collections.unmodifiableList(emailAddresses);
     }
 }

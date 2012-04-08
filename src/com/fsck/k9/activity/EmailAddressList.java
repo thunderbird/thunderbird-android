@@ -25,12 +25,13 @@ public class EmailAddressList extends K9ListActivity implements OnItemClickListe
             return;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.email_address_list_item, contact.getEmailAddresses());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.email_address_list_item, contact.emailAddresses);
 
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
         listView.setAdapter(adapter);
-        setTitle(contact.getDisplayName());
+        setTitle(contact.displayName);
     }
 
     @Override

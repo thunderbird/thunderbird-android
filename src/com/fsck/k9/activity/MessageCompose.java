@@ -1802,7 +1802,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                 return;
             }
-            if (contact.getEmailAddresses().size() > 1) {
+            if (contact.emailAddresses.size() > 1) {
                 Intent i = new Intent(this, EmailAddressList.class);
                 i.putExtra("contact", contact);
 
@@ -1816,14 +1816,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 return;
             }
             if (K9.DEBUG) {
-                ArrayList<String> emails = contact.getEmailAddresses();
+                List<String> emails = contact.emailAddresses;
                 for (int i = 0; i < emails.size(); i++) {
                     Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
                 }
             }
 
 
-            String email = contact.getEmailAddresses().get(0);
+            String email = contact.emailAddresses.get(0);
             if (requestCode == CONTACT_PICKER_TO) {
                 addAddress(mToView, new Address(email, ""));
             } else if (requestCode == CONTACT_PICKER_CC) {

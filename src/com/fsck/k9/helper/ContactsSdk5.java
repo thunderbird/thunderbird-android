@@ -229,10 +229,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
                     displayName = email.get(0);
                 }
 
-                ContactItem item = new ContactItem();
-                item.setDisplayName(displayName);
-                item.setEmailAddresses(email);
-                return item;
+                return new ContactItem(displayName, email);
             }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
