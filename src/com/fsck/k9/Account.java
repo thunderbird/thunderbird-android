@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -78,7 +78,7 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
-    public static final SORT_TYPE DEFAULT_SORT_TYPE = SORT_TYPE.SORT_DATE;
+    public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
 
 
@@ -125,7 +125,7 @@ public class Account implements BaseAccount {
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
-    private SORT_TYPE mSortType;
+    private SortType mSortType;
     private boolean mSortAscending;
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
@@ -342,10 +342,10 @@ public class Account implements BaseAccount {
                                   0xff000000);
 
         try {
-            mSortType = SORT_TYPE.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
-                                                 SORT_TYPE.SORT_DATE.name()));
+            mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
+                                                 SortType.SORT_DATE.name()));
         } catch (Exception e) {
-            mSortType = SORT_TYPE.SORT_DATE;
+            mSortType = SortType.SORT_DATE;
         }
 
         mSortAscending = prefs.getBoolean(mUuid + ".sortAscending", false);
@@ -1034,11 +1034,11 @@ public class Account implements BaseAccount {
         this.mNotifySync = showOngoing;
     }
 
-    public synchronized SORT_TYPE getSortType() {
+    public synchronized SortType getSortType() {
         return mSortType;
     }
 
-    public synchronized void setSortType(SORT_TYPE sortType) {
+    public synchronized void setSortType(SortType sortType) {
         mSortType = sortType;
     }
 

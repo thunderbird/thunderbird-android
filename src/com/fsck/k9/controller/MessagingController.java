@@ -136,7 +136,7 @@ public class MessagingController implements Runnable {
     private Thread mThread;
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
 
-    private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
+    private HashMap<SortType, Boolean> sortAscending = new HashMap<SortType, Boolean>();
 
     private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
@@ -144,7 +144,7 @@ public class MessagingController implements Runnable {
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
-    public enum SORT_TYPE {
+    public enum SortType {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
@@ -157,7 +157,7 @@ public class MessagingController implements Runnable {
         private int descendingToast;
         private boolean defaultAscending;
 
-        SORT_TYPE(int ascending, int descending, boolean ndefaultAscending) {
+        SortType(int ascending, int descending, boolean ndefaultAscending) {
             ascendingToast = ascending;
             descendingToast = descending;
             defaultAscending = ndefaultAscending;
@@ -175,7 +175,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    private SORT_TYPE sortType = Account.DEFAULT_SORT_TYPE;
+    private SortType sortType = Account.DEFAULT_SORT_TYPE;
 
     private MessagingListener checkMailListener = null;
 
@@ -4362,22 +4362,22 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public SORT_TYPE getSortType() {
+    public SortType getSortType() {
         return sortType;
     }
 
-    public void setSortType(SORT_TYPE sortType) {
+    public void setSortType(SortType sortType) {
         this.sortType = sortType;
     }
 
-    public boolean isSortAscending(SORT_TYPE sortType) {
+    public boolean isSortAscending(SortType sortType) {
         Boolean sortAsc = sortAscending.get(sortType);
         if (sortAsc == null) {
             return sortType.isDefaultAscending();
         } else return sortAsc;
     }
 
-    public void setSortAscending(SORT_TYPE sortType, boolean nsortAscending) {
+    public void setSortAscending(SortType sortType, boolean nsortAscending) {
         sortAscending.put(sortType, nsortAscending);
     }
 

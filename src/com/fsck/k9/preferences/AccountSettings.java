@@ -12,7 +12,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
@@ -161,7 +161,7 @@ public class AccountSettings {
                 new V(1, new StringSetting("Sent"))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting(SORT_TYPE.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting(SortType.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
                 new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))

@@ -63,7 +63,7 @@ import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
@@ -233,21 +233,21 @@ public class MessageList
     private static final String EXTRA_RETURN_FROM_MESSAGE_VIEW = "returnFromMessageView";
 
     /**
-     * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
+     * Maps a {@link SortType} to a {@link Comparator} implementation.
      */
-    private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+    private static final Map<SortType, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
 
     static {
         // fill the mapping at class time loading
 
-        final Map<SORT_TYPE, Comparator<MessageInfoHolder>> map = new EnumMap<SORT_TYPE, Comparator<MessageInfoHolder>>(SORT_TYPE.class);
-        map.put(SORT_TYPE.SORT_ATTACHMENT, new AttachmentComparator());
-        map.put(SORT_TYPE.SORT_DATE, new DateComparator());
-        map.put(SORT_TYPE.SORT_ARRIVAL, new ArrivalComparator());
-        map.put(SORT_TYPE.SORT_FLAGGED, new FlaggedComparator());
-        map.put(SORT_TYPE.SORT_SENDER, new SenderComparator());
-        map.put(SORT_TYPE.SORT_SUBJECT, new SubjectComparator());
-        map.put(SORT_TYPE.SORT_UNREAD, new UnreadComparator());
+        final Map<SortType, Comparator<MessageInfoHolder>> map = new EnumMap<SortType, Comparator<MessageInfoHolder>>(SortType.class);
+        map.put(SortType.SORT_ATTACHMENT, new AttachmentComparator());
+        map.put(SortType.SORT_DATE, new DateComparator());
+        map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
+        map.put(SortType.SORT_FLAGGED, new FlaggedComparator());
+        map.put(SortType.SORT_SENDER, new SenderComparator());
+        map.put(SortType.SORT_SUBJECT, new SubjectComparator());
+        map.put(SortType.SORT_UNREAD, new UnreadComparator());
 
         // make it immutable to prevent accidental alteration (content is immutable already)
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
@@ -292,7 +292,7 @@ public class MessageList
 
     private MessageListHandler mHandler = new MessageListHandler();
 
-    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
+    private SortType sortType = SortType.SORT_DATE;
 
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
@@ -472,8 +472,8 @@ public class MessageList
 
             {
                 // add the date comparator if not already specified
-                if (sortType != SORT_TYPE.SORT_DATE && sortType != SORT_TYPE.SORT_ARRIVAL) {
-                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
+                if (sortType != SortType.SORT_DATE && sortType != SortType.SORT_ARRIVAL) {
+                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
                     if (sortDateAscending) {
                         chain.add(comparator);
                     } else {
@@ -825,7 +825,7 @@ public class MessageList
         mController.setSortType(sortType);
         sortAscending = mAccount.isSortAscending();
         mController.setSortAscending(sortType, sortAscending);
-        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
 
@@ -1209,14 +1209,14 @@ public class MessageList
         AccountSettings.actionSettings(this, mAccount);
     }
 
-    private void changeSort(SORT_TYPE newSortType) {
+    private void changeSort(SortType newSortType) {
         if (sortType == newSortType) {
             onToggleSortAscending();
         } else {
             sortType = newSortType;
             mController.setSortType(sortType);
             sortAscending = mController.isSortAscending(sortType);
-            sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+            sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
 
             mAccount.setSortType(sortType);
             mAccount.setSortAscending(sortAscending);
@@ -1235,7 +1235,7 @@ public class MessageList
     }
 
     private void onCycleSort() {
-        SORT_TYPE[] sorts = SORT_TYPE.values();
+        SortType[] sorts = SortType.values();
         int curIndex = 0;
 
         for (int i = 0; i < sorts.length; i++) {
@@ -1258,7 +1258,7 @@ public class MessageList
         mController.setSortAscending(sortType, !sortAscending);
 
         sortAscending = mController.isSortAscending(sortType);
-        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
             
         mAccount.setSortAscending( sortAscending);
         mAccount.save(Preferences.getPreferences(this));
@@ -1473,31 +1473,31 @@ public class MessageList
             return true;
         }
         case R.id.set_sort_date: {
-            changeSort(SORT_TYPE.SORT_DATE);
+            changeSort(SortType.SORT_DATE);
             return true;
         }
         case R.id.set_sort_arrival: {
-            changeSort(SORT_TYPE.SORT_ARRIVAL);
+            changeSort(SortType.SORT_ARRIVAL);
             return true;
         }
         case R.id.set_sort_subject: {
-            changeSort(SORT_TYPE.SORT_SUBJECT);
+            changeSort(SortType.SORT_SUBJECT);
             return true;
         }
         case R.id.set_sort_sender: {
-            changeSort(SORT_TYPE.SORT_SENDER);
+            changeSort(SortType.SORT_SENDER);
             return true;
         }
         case R.id.set_sort_flag: {
-            changeSort(SORT_TYPE.SORT_FLAGGED);
+            changeSort(SortType.SORT_FLAGGED);
             return true;
         }
         case R.id.set_sort_unread: {
-            changeSort(SORT_TYPE.SORT_UNREAD);
+            changeSort(SortType.SORT_UNREAD);
             return true;
         }
         case R.id.set_sort_attach: {
-            changeSort(SORT_TYPE.SORT_ATTACHMENT);
+            changeSort(SortType.SORT_ATTACHMENT);
             return true;
         }
         case R.id.select_all:
