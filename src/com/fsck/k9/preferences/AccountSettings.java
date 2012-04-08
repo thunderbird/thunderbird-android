@@ -161,10 +161,10 @@ public class AccountSettings {
                 new V(1, new StringSetting("Sent"))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(1, new EnumSetting(SORT_TYPE.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting(SORT_TYPE.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
             ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER))
