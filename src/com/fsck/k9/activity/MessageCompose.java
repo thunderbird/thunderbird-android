@@ -135,9 +135,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int MSG_DISCARDED_DRAFT = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
-    private static final int CONTACT_PICKER_TO = 2;
-    private static final int CONTACT_PICKER_CC = 3;
-    private static final int CONTACT_PICKER_BCC = 4;
+    private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
+    private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
+    private static final int CONTACT_PICKER_TO = 4;
+    private static final int CONTACT_PICKER_CC = 5;
+    private static final int CONTACT_PICKER_BCC = 6;
+    private static final int CONTACT_PICKER_TO2 = 7;
+    private static final int CONTACT_PICKER_CC2 = 8;
+    private static final int CONTACT_PICKER_BCC2 = 9;
 
     private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
@@ -1791,17 +1796,37 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
-            String email = mContacts.getEmailFromContactPicker(data);
-            if (email.length() == 0) {
+            ArrayList<String> email = mContacts.getEmailFromContactPicker(data);
+            if (email.size() == 0) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                 return;
             }
+            if (email.size() > 1) {
+                Intent i = new Intent(this, ArrayItemList.class);
+                i.putExtra("emailAddresses", email);
+
+                if (requestCode == CONTACT_PICKER_TO) {
+                    startActivityForResult(i, CONTACT_PICKER_TO2);
+                } else if (requestCode == CONTACT_PICKER_CC) {
+                    startActivityForResult(i, CONTACT_PICKER_CC2);
+                } else if (requestCode == CONTACT_PICKER_BCC) {
+                    startActivityForResult(i, CONTACT_PICKER_BCC2);
+                }
+                return;
+            }
+            if (K9.DEBUG) {
+                for (int i = 0; i < email.size(); i++) {
+                    Log.v(K9.LOG_TAG, "email[" + i + "]: " + email.get(i));
+                }
+            }
+
+
             if (requestCode == CONTACT_PICKER_TO) {
-                addAddress(mToView, new Address(email, ""));
+                addAddress(mToView, new Address(email.get(0), ""));
             } else if (requestCode == CONTACT_PICKER_CC) {
-                addAddress(mCcView, new Address(email, ""));
+                addAddress(mCcView, new Address(email.get(0), ""));
             } else if (requestCode == CONTACT_PICKER_BCC) {
-                addAddress(mBccView, new Address(email, ""));
+                addAddress(mBccView, new Address(email.get(0), ""));
             } else {
                 return;
             }
@@ -1809,6 +1834,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
 
             break;
+        case CONTACT_PICKER_TO2:
+        case CONTACT_PICKER_CC2:
+        case CONTACT_PICKER_BCC2:
+            String emailAddr = data.getStringExtra("EMAIL_ADDRESS");
+            if (requestCode == CONTACT_PICKER_TO2) {
+                addAddress(mToView, new Address(emailAddr, ""));
+            } else if (requestCode == CONTACT_PICKER_CC2) {
+                addAddress(mCcView, new Address(emailAddr, ""));
+            } else if (requestCode == CONTACT_PICKER_BCC2) {
+                addAddress(mBccView, new Address(emailAddr, ""));
+            } else {
+                return;
+            }
         }
     }
 

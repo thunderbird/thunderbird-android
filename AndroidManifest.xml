@@ -281,7 +281,10 @@
             android:name="com.fsck.k9.activity.AccessibleEmailContentActivity"
             >
         </activity>
-
+        <activity android:name="com.fsck.k9.activity.ArrayItemList"
+            android:configChanges="locale"
+            >
+        </activity>
         <receiver android:name="com.fsck.k9.service.BootReceiver"
               android:enabled="true"
               >

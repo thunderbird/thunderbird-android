@@ -1,5 +1,7 @@
 package com.fsck.k9.helper;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -191,9 +193,9 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
     }
 
     @Override
-    public String getEmailFromContactPicker(final Intent data) {
+    public ArrayList<String> getEmailFromContactPicker(final Intent data) {
         Cursor cursor = null;
-        String email = "";
+        ArrayList<String> email = new ArrayList<String>();
 
         try {
             Uri result = data.getData();
@@ -204,10 +206,12 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
                                             null, Email.CONTACT_ID + "=?", new String[] { id },
                                             null);
 
-            int emailIdx = cursor.getColumnIndex(Email.DATA);
+            if (cursor != null) {
+                int emailIdx = cursor.getColumnIndex(Email.DATA);
 
-            if (cursor.moveToFirst()) {
-                email = cursor.getString(emailIdx);
+                while (cursor.moveToNext()) {
+                    email.add(cursor.getString(emailIdx));
+                }
             }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
