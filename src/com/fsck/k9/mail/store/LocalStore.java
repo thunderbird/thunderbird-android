@@ -2794,6 +2794,8 @@ public class LocalStore extends Store implements Serializable {
             text = text.replaceAll("(?m)^On .*wrote.?$", "");
             // Remove a more generic quote header from the preview
             text = text.replaceAll("(?m)^.*\\w+:$", "");
+            // Remove horizontal rules.
+            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", " ");
 
             // URLs in the preview should just be shown as "..." - They're not
             // clickable and they usually overwhelm the preview
@@ -2802,6 +2804,9 @@ public class LocalStore extends Store implements Serializable {
             text = text.replaceAll("(\\r|\\n)+", " ");
             // Collapse whitespace in the preview
             text = text.replaceAll("\\s+", " ");
+            // Remove any whitespace at the beginning and end of the string.
+            text = text.trim();
+
             if (text.length() <= 512) {
                 return text;
             } else {
