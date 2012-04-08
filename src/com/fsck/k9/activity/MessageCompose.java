@@ -26,7 +26,6 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -136,8 +135,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int MSG_DISCARDED_DRAFT = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
-    private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
-    private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
     private static final int CONTACT_PICKER_TO = 4;
     private static final int CONTACT_PICKER_CC = 5;
     private static final int CONTACT_PICKER_BCC = 6;
