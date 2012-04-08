@@ -1804,7 +1804,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             if (contact.emailAddresses.size() > 1) {
                 Intent i = new Intent(this, EmailAddressList.class);
-                i.putExtra("contact", contact);
+                i.putExtra(EmailAddressList.EXTRA_CONTACT_ITEM, contact);
 
                 if (requestCode == CONTACT_PICKER_TO) {
                     startActivityForResult(i, CONTACT_PICKER_TO2);
