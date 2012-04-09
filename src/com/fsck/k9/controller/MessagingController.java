@@ -136,46 +136,11 @@ public class MessagingController implements Runnable {
     private Thread mThread;
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
 
-    private HashMap<SortType, Boolean> sortAscending = new HashMap<SortType, Boolean>();
-
     private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
     ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
-
-    public enum SortType {
-        SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
-        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
-        SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
-        SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
-        SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
-
-        private int ascendingToast;
-        private int descendingToast;
-        private boolean defaultAscending;
-
-        SortType(int ascending, int descending, boolean ndefaultAscending) {
-            ascendingToast = ascending;
-            descendingToast = descending;
-            defaultAscending = ndefaultAscending;
-        }
-
-        public int getToast(boolean ascending) {
-            if (ascending) {
-                return ascendingToast;
-            } else {
-                return descendingToast;
-            }
-        }
-        public boolean isDefaultAscending() {
-            return defaultAscending;
-        }
-    }
-
-    private SortType sortType = Account.DEFAULT_SORT_TYPE;
 
     private MessagingListener checkMailListener = null;
 
@@ -4360,25 +4325,6 @@ public class MessagingController implements Runnable {
         if (this.checkMailListener != null) {
             addListener(this.checkMailListener);
         }
-    }
-
-    public SortType getSortType() {
-        return sortType;
-    }
-
-    public void setSortType(SortType sortType) {
-        this.sortType = sortType;
-    }
-
-    public boolean isSortAscending(SortType sortType) {
-        Boolean sortAsc = sortAscending.get(sortType);
-        if (sortAsc == null) {
-            return sortType.isDefaultAscending();
-        } else return sortAsc;
-    }
-
-    public void setSortAscending(SortType sortType, boolean nsortAscending) {
-        sortAscending.put(sortType, nsortAscending);
     }
 
     public Collection<Pusher> getPushers() {

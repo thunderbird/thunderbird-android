@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
@@ -63,7 +64,6 @@ import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
@@ -292,10 +292,9 @@ public class MessageList
 
     private MessageListHandler mHandler = new MessageListHandler();
 
-    private SortType sortType = SortType.SORT_DATE;
-
-    private boolean sortAscending = true;
-    private boolean sortDateAscending = false;
+    private SortType mSortType = SortType.SORT_DATE;
+    private boolean mSortAscending = true;
+    private boolean mSortDateAscending = false;
 
     private boolean mStars = true;
     private boolean mCheckboxes = true;
@@ -462,8 +461,8 @@ public class MessageList
 
             {
                 // add the specified comparator
-                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(sortType);
-                if (sortAscending) {
+                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(mSortType);
+                if (mSortAscending) {
                     chain.add(comparator);
                 } else {
                     chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
@@ -472,9 +471,9 @@ public class MessageList
 
             {
                 // add the date comparator if not already specified
-                if (sortType != SortType.SORT_DATE && sortType != SortType.SORT_ARRIVAL) {
+                if (mSortType != SortType.SORT_DATE && mSortType != SortType.SORT_ARRIVAL) {
                     final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
-                    if (sortDateAscending) {
+                    if (mSortDateAscending) {
                         chain.add(comparator);
                     } else {
                         chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
@@ -821,11 +820,9 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        sortType = mAccount.getSortType();
-        mController.setSortType(sortType);
-        sortAscending = mAccount.isSortAscending();
-        mController.setSortAscending(sortType, sortAscending);
-        sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
+        mSortType = mAccount.getSortType();
+        mSortAscending = mAccount.isSortAscending(mSortType);
+        mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
 
@@ -1209,24 +1206,22 @@ public class MessageList
         AccountSettings.actionSettings(this, mAccount);
     }
 
-    private void changeSort(SortType newSortType) {
-        if (sortType == newSortType) {
+    private void changeSort(SortType sortType) {
+        if (mSortType == sortType) {
             onToggleSortAscending();
         } else {
-            sortType = newSortType;
-            mController.setSortType(sortType);
-            sortAscending = mController.isSortAscending(sortType);
-            sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
+            mSortType = sortType;
+            mAccount.setSortType(mSortType);
+            mSortAscending = mAccount.isSortAscending(mSortType);
+            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
 
-            mAccount.setSortType(sortType);
-            mAccount.setSortAscending(sortAscending);
             mAccount.save(Preferences.getPreferences(this));
             reSort();
         }
     }
 
     private void reSort() {
-        int toastString = sortType.getToast(sortAscending);
+        int toastString = mSortType.getToast(mSortAscending);
 
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
@@ -1239,7 +1234,7 @@ public class MessageList
         int curIndex = 0;
 
         for (int i = 0; i < sorts.length; i++) {
-            if (sorts[i] == sortType) {
+            if (sorts[i] == mSortType) {
                 curIndex = i;
                 break;
             }
@@ -1255,14 +1250,10 @@ public class MessageList
     }
 
     private void onToggleSortAscending() {
-        mController.setSortAscending(sortType, !sortAscending);
-
-        sortAscending = mController.isSortAscending(sortType);
-        sortDateAscending = mController.isSortAscending(SortType.SORT_DATE);
-            
-        mAccount.setSortAscending( sortAscending);
+        mSortAscending = !mSortAscending;
+        mAccount.setSortAscending(mSortType, mSortAscending);
+        mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
         mAccount.save(Preferences.getPreferences(this));
-
         reSort();
     }
 

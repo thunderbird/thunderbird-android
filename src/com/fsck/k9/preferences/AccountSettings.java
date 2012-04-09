@@ -9,10 +9,10 @@ import java.util.TreeMap;
 
 import android.content.SharedPreferences;
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.preferences.Settings.*;

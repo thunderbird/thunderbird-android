@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fsck.k9.controller.MessagingController.SortType;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -25,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +78,37 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
+    public enum SortType {
+        SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
+        SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
+        SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
+        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
+        SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
+        SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
+        SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
+
+        private int ascendingToast;
+        private int descendingToast;
+        private boolean defaultAscending;
+
+        SortType(int ascending, int descending, boolean ndefaultAscending) {
+            ascendingToast = ascending;
+            descendingToast = descending;
+            defaultAscending = ndefaultAscending;
+        }
+
+        public int getToast(boolean ascending) {
+            if (ascending) {
+                return ascendingToast;
+            } else {
+                return descendingToast;
+            }
+        }
+        public boolean isDefaultAscending() {
+            return defaultAscending;
+        }
+    }
+
     public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
 
@@ -126,7 +157,7 @@ public class Account implements BaseAccount {
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
-    private boolean mSortAscending;
+    private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -218,7 +249,7 @@ public class Account implements BaseAccount {
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mSortType = DEFAULT_SORT_TYPE;
-        mSortAscending = DEFAULT_SORT_ASCENDING;
+        mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -348,7 +379,7 @@ public class Account implements BaseAccount {
             mSortType = SortType.SORT_DATE;
         }
 
-        mSortAscending = prefs.getBoolean(mUuid + ".sortAscending", false);
+        mSortAscending.put(mSortType, prefs.getBoolean(mUuid + ".sortAscending", false));
 
         try {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
@@ -619,7 +650,7 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putString(mUuid + ".sortTypeEnum", mSortType.name());
-        editor.putBoolean(mUuid + ".sortAscending", mSortAscending);
+        editor.putBoolean(mUuid + ".sortAscending", mSortAscending.get(mSortType));
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -1042,12 +1073,15 @@ public class Account implements BaseAccount {
         mSortType = sortType;
     }
 
-    public synchronized boolean isSortAscending() {
-        return mSortAscending;
+    public synchronized boolean isSortAscending(SortType sortType) {
+        if (mSortAscending.get(sortType) == null) {
+            mSortAscending.put(sortType, sortType.isDefaultAscending());
+        }
+        return mSortAscending.get(sortType);
     }
 
-    public synchronized void setSortAscending(boolean sortAscending) {
-        mSortAscending = sortAscending;
+    public synchronized void setSortAscending(SortType sortType, boolean sortAscending) {
+        mSortAscending.put(sortType, sortAscending);
     }
 
     public synchronized ShowPictures getShowPictures() {
