@@ -175,13 +175,15 @@ public abstract class Contacts {
     public abstract Intent contactPickerIntent();
 
     /**
-     * Given a contact picker intent, returns the primary email address of that
-     * contact.
+     * Given a contact picker intent, returns a {@code ContactItem} instance for that contact.
      *
-     * @param intent The {@link Intent} returned by this contact picker.
-     * @return The primary email address of the picked contact.
+     * @param intent
+     *         The {@link Intent} returned by the contact picker.
+     *
+     * @return A {@link ContactItem} instance describing the picked contact. Or {@code null} if the
+     *         contact doesn't have any email addresses.
      */
-    public abstract ContactItem getEmailFromContactPicker(final Intent intent);
+    public abstract ContactItem extractInfoFromContactPickerIntent(final Intent intent);
 
     /**
      * Does the device actually have a Contacts application suitable for

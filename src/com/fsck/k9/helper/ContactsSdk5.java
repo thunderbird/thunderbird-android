@@ -193,45 +193,48 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
     }
 
     @Override
-    public ContactItem getEmailFromContactPicker(final Intent data) {
+    public ContactItem extractInfoFromContactPickerIntent(final Intent data) {
         Cursor cursor = null;
-        Cursor cursor2 = null;
-        ContactItem item = new ContactItem();
         ArrayList<String> email = new ArrayList<String>();
 
         try {
             Uri result = data.getData();
             String displayName = null;
 
-            cursor = mContentResolver.query(result, null, null, null, null);
-            if (cursor.moveToFirst()) {
-                displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-            }
             // Get the contact id from the Uri
             String id = result.getLastPathSegment();
-            cursor2 = mContentResolver.query(Email.CONTENT_URI,
-                                            null, Email.CONTACT_ID + "=?", new String[] { id },
-                                            null);
 
-            if (cursor2 != null) {
-                int emailIdx = cursor2.getColumnIndex(Email.DATA);
+            cursor = mContentResolver.query(Email.CONTENT_URI, PROJECTION,
+                    Email.CONTACT_ID + "=?", new String[] { id }, null);
 
-                while (cursor2.moveToNext()) {
-                    email.add(cursor2.getString(emailIdx));
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String address = cursor.getString(EMAIL_INDEX);
+                    if (address != null) {
+                        email.add(address);
+                    }
+
+                    if (displayName == null) {
+                        displayName = cursor.getString(NAME_INDEX);
+                    }
                 }
 
+                // Return 'null' if no email addresses have been found
                 if (email.size() == 0) {
                     return null;
                 }
-                item.setDisplayName(displayName);
-                item.setEmailAddresses(email);
-                return item;
+
+                // Use the first email address found as display name
+                if (displayName == null) {
+                    displayName = email.get(0);
+                }
+
+                return new ContactItem(displayName, email);
             }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Failed to get email data", e);
         } finally {
             Utility.closeQuietly(cursor);
-            Utility.closeQuietly(cursor2);
         }
 
         return null;

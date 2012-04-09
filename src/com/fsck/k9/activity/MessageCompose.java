@@ -26,7 +26,6 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -136,8 +135,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int MSG_DISCARDED_DRAFT = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
-    private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
-    private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
     private static final int CONTACT_PICKER_TO = 4;
     private static final int CONTACT_PICKER_CC = 5;
     private static final int CONTACT_PICKER_BCC = 6;
@@ -1797,14 +1794,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO:
         case CONTACT_PICKER_CC:
         case CONTACT_PICKER_BCC:
-            ContactItem contact = mContacts.getEmailFromContactPicker(data);
+            ContactItem contact = mContacts.extractInfoFromContactPickerIntent(data);
             if (contact == null) {
                 Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
                 return;
             }
-            if (contact.getEmailAddresses().size() > 1) {
+            if (contact.emailAddresses.size() > 1) {
                 Intent i = new Intent(this, EmailAddressList.class);
-                i.putExtra("contact", contact);
+                i.putExtra(EmailAddressList.EXTRA_CONTACT_ITEM, contact);
 
                 if (requestCode == CONTACT_PICKER_TO) {
                     startActivityForResult(i, CONTACT_PICKER_TO2);
@@ -1816,14 +1813,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 return;
             }
             if (K9.DEBUG) {
-                ArrayList<String> emails = contact.getEmailAddresses();
+                List<String> emails = contact.emailAddresses;
                 for (int i = 0; i < emails.size(); i++) {
                     Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
                 }
             }
 
 
-            String email = contact.getEmailAddresses().get(0);
+            String email = contact.emailAddresses.get(0);
             if (requestCode == CONTACT_PICKER_TO) {
                 addAddress(mToView, new Address(email, ""));
             } else if (requestCode == CONTACT_PICKER_CC) {

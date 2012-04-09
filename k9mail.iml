@@ -103,7 +103,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Android 2.3.1 Platform" level="application" />
   </component>
 </module>
 
