@@ -133,19 +133,12 @@ public class Account implements BaseAccount {
         // decide on owners name
         String name = "";
         try {
-            name = Contacts.getInstance(context).getOwnerName();
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get owner name, using default account name", e);
-        }
-        if (name == null || name.length() == 0) {
-            try {
-                Account account = Preferences.getPreferences(context).getDefaultAccount();
-                if (account != null) {
-                    name = account.getName();
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not get default account name", e);
+            Account account = Preferences.getPreferences(context).getDefaultAccount();
+            if (account != null) {
+                name = account.getName();
             }
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Could not get default account name", e);
         }
         if (name == null) {
             name = "";
