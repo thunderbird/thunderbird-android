@@ -1210,11 +1210,12 @@ public class MessageList
             onToggleSortAscending();
         } else {
             mSortType = sortType;
-            mAccount.setSortType(mSortType);
-            mSortAscending = mAccount.isSortAscending(mSortType);
-            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-
-            mAccount.save(Preferences.getPreferences(this));
+            if (mAccount != null) {
+                mAccount.setSortType(mSortType);
+                mSortAscending = mAccount.isSortAscending(mSortType);
+                mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
+                mAccount.save(Preferences.getPreferences(this));
+            }
             reSort();
         }
     }
@@ -1250,9 +1251,11 @@ public class MessageList
 
     private void onToggleSortAscending() {
         mSortAscending = !mSortAscending;
-        mAccount.setSortAscending(mSortType, mSortAscending);
-        mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-        mAccount.save(Preferences.getPreferences(this));
+        if (mAccount != null) {
+            mAccount.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
+            mAccount.save(Preferences.getPreferences(this));
+        }
         reSort();
     }
 
