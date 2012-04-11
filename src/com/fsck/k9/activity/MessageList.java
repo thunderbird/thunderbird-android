@@ -820,15 +820,14 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        mSortType = mAccount.getSortType();
-        mSortAscending = mAccount.isSortAscending(mSortType);
-        mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-
         mController.addListener(mAdapter.mListener);
 
         Account[] accountsWithNotification;
         if (mAccount != null) {
             accountsWithNotification = new Account[] { mAccount };
+            mSortType = mAccount.getSortType();
+            mSortAscending = mAccount.isSortAscending(mSortType);
+            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
         } else {
             Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
