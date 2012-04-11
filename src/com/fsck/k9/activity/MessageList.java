@@ -1652,7 +1652,7 @@ public class MessageList
             if (!mAccount.hasArchiveFolder()) {
                 menu.findItem(R.id.batch_archive_op).setVisible(false);
             }
-            if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
+            if (!mAccount.hasSpamFolder()) {
                 menu.findItem(R.id.batch_spam_op).setVisible(false);
             }
 
@@ -1861,7 +1861,7 @@ public class MessageList
             menu.findItem(R.id.archive).setVisible(false);
         }
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName())) {
+        if (!mAccount.hasSpamFolder()) {
             menu.findItem(R.id.spam).setVisible(false);
         }
 

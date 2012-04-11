@@ -959,6 +959,14 @@ public class Account implements BaseAccount {
         mDraftsFolderName = draftsFolderName;
     }
 
+    /**
+     * Checks if this account has a drafts folder set.
+     * @return true if account has a drafts folder set.
+     */
+    public synchronized boolean hasDraftsFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mDraftsFolderName);
+    }
+
     public synchronized String getSentFolderName() {
         return mSentFolderName;
     }
@@ -971,12 +979,29 @@ public class Account implements BaseAccount {
         mSentFolderName = sentFolderName;
     }
 
+    /**
+     * Checks if this account has a sent folder set.
+     * @return true if account has a sent folder set.
+     */
+    public synchronized boolean hasSentFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mSentFolderName);
+    }
+
+
     public synchronized String getTrashFolderName() {
         return mTrashFolderName;
     }
 
     public synchronized void setTrashFolderName(String trashFolderName) {
         mTrashFolderName = trashFolderName;
+    }
+
+    /**
+     * Checks if this account has a trash folder set.
+     * @return true if account has a trash folder set.
+     */
+    public synchronized boolean hasTrashFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mTrashFolderName);
     }
 
     public synchronized String getArchiveFolderName() {
@@ -1001,6 +1026,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setSpamFolderName(String spamFolderName) {
         mSpamFolderName = spamFolderName;
+    }
+
+    /**
+     * Checks if this account has a spam folder set.
+     * @return true if account has a spam folder set.
+     */
+    public synchronized boolean hasSpamFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mSpamFolderName);
     }
 
     public synchronized String getOutboxFolderName() {

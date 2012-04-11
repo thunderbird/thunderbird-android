@@ -3181,9 +3181,9 @@ public class MessagingController implements Runnable {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
                         }
-                        if (K9.FOLDER_NONE.equals(account.getSentFolderName())) {
+                        if (!account.hasSentFolder()) {
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Sent folder set to " + K9.FOLDER_NONE + ", deleting sent message");
+                                Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
                             message.setFlag(Flag.DELETED, true);
                         } else {
                             LocalFolder localSentFolder = (LocalFolder) localStore.getFolder(account.getSentFolderName());
@@ -3516,7 +3516,7 @@ public class MessagingController implements Runnable {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
-            if (folder.equals(account.getTrashFolderName()) || K9.FOLDER_NONE.equals(account.getTrashFolderName())) {
+            if (folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
 
