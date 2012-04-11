@@ -1837,16 +1837,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         case CONTACT_PICKER_TO2:
         case CONTACT_PICKER_CC2:
         case CONTACT_PICKER_BCC2:
-            String emailAddr = data.getStringExtra("EMAIL_ADDRESS");
+            String emailAddr = data.getStringExtra(EmailAddressList.EXTRA_EMAIL_ADDRESS);
             if (requestCode == CONTACT_PICKER_TO2) {
                 addAddress(mToView, new Address(emailAddr, ""));
             } else if (requestCode == CONTACT_PICKER_CC2) {
                 addAddress(mCcView, new Address(emailAddr, ""));
             } else if (requestCode == CONTACT_PICKER_BCC2) {
                 addAddress(mBccView, new Address(emailAddr, ""));
-            } else {
-                return;
             }
+            break;
         }
     }
 
