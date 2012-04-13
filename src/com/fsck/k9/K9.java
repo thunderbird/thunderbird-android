@@ -4,6 +4,7 @@ package com.fsck.k9;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -24,6 +25,7 @@ import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -194,6 +196,8 @@ public class K9 extends Application {
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
 
+    private static SortType mSortType;
+    private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
     /**
      * The MIME type(s) of attachments we're willing to view.
@@ -471,6 +475,8 @@ public class K9 extends Application {
         super.onCreate();
         app = this;
 
+        mSortType = Account.DEFAULT_SORT_TYPE;
+        mSortAscending.put(Account.DEFAULT_SORT_TYPE, Account.DEFAULT_SORT_ASCENDING);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -1119,4 +1125,24 @@ public class K9 extends Application {
     public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
         K9.mAttachmentDefaultPath = attachmentDefaultPath;
     }
+
+    public static synchronized SortType getSortType() {
+        return mSortType;
+    }
+
+    public static synchronized void setSortType(SortType sortType) {
+        mSortType = sortType;
+    }
+
+    public static synchronized boolean isSortAscending(SortType sortType) {
+        if (mSortAscending.get(sortType) == null) {
+            mSortAscending.put(sortType, sortType.isDefaultAscending());
+        }
+        return mSortAscending.get(sortType);
+    }
+
+    public static synchronized void setSortAscending(SortType sortType, boolean sortAscending) {
+        mSortAscending.put(sortType, sortAscending);
+    }
+
 }

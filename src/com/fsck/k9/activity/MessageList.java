@@ -831,6 +831,9 @@ public class MessageList
         } else {
             Preferences preferences = Preferences.getPreferences(this);
             accountsWithNotification = preferences.getAccounts();
+            mSortType = K9.getSortType(); // ASH
+            mSortAscending = K9.isSortAscending(mSortType);
+            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
 
         for (Account accountWithNotification : accountsWithNotification) {
@@ -1215,6 +1218,10 @@ public class MessageList
                 mSortAscending = mAccount.isSortAscending(mSortType);
                 mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
                 mAccount.save(Preferences.getPreferences(this));
+            } else {
+                K9.setSortType(mSortType);
+                mSortAscending = K9.isSortAscending(mSortType);
+                mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
             }
             reSort();
         }
@@ -1255,6 +1262,9 @@ public class MessageList
             mAccount.setSortAscending(mSortType, mSortAscending);
             mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
             mAccount.save(Preferences.getPreferences(this));
+        } else {
+            K9.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
         reSort();
     }
