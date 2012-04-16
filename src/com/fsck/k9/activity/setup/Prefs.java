@@ -28,6 +28,7 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.FileBrowserHelper;
+import com.fsck.k9.helper.VersionHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
@@ -279,7 +280,7 @@ public class Prefs extends K9PreferenceActivity {
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Build.VERSION.SDK_INT <= 7) {
+        if (VersionHelper.ApiLevelPre(Build.VERSION_CODES.FROYO)) {
             mMobileOptimizedLayout.setEnabled(false);
         }
 
