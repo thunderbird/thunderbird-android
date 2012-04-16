@@ -30,4 +30,14 @@ public class VersionHelper {
     public static boolean ApiLevelPre(int beforeLevel) {
         return Build.VERSION.SDK_INT < beforeLevel;
     }
+
+    /**
+     * check if the device version if AFTER the given level. (>)
+     * Means > in math.
+     * @param aboveLevel device > aboveLevel
+     * @return true if sdk version > aboveLevel
+     */
+    public static boolean ApiLevelAbove(int aboveLevel) {
+        return Build.VERSION.SDK_INT > aboveLevel;
+    }
 }
