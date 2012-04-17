@@ -190,6 +190,11 @@ public class HtmlConverter {
         return buff.toString();
     }
 
+    private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
+        "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">";
+    private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
+    private static final String HTML_NEWLINE = "<br />";
+
     /**
      * Convert a text string into an HTML document.
      *
@@ -217,14 +222,19 @@ public class HtmlConverter {
         }
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        int c;
+        boolean isStartOfLine = false;  // Are we currently at the start of a line?
+        int quoteDepth = 0; // Number of DIVs deep we are.
+        int quotesThisLine = 0; // How deep we should be quoting for this line.
         try {
+            int c;
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
                     // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
                     // doublespaced.
-                    buff.append("<br />");
+                    buff.append(HTML_NEWLINE);
+                    isStartOfLine = true;
+                    quotesThisLine = 0;
                     break;
                 case '&':
                     buff.append("&amp;");
@@ -233,11 +243,39 @@ public class HtmlConverter {
                     buff.append("&lt;");
                     break;
                 case '>':
-                    buff.append("&gt;");
+                    if(isStartOfLine) {
+                        quotesThisLine++;
+                    } else {
+                        buff.append("&gt;");
+                    }
                     break;
                 case '\r':
                     break;
+                case ' ':
+                    if(isStartOfLine) {
+                        // If we're still in the start of the line and we have spaces, don't output them, since they
+                        // may be collapsed by our div-converting magic.
+                        break;
+                    }
                 default:
+                    if(isStartOfLine) {
+                        // Not a quote character and not a space.  Content is starting now.
+                        isStartOfLine = false;
+                        if(K9.DEBUG) {
+                            Log.d(K9.LOG_TAG, "currentQuoteDepth: " + quoteDepth + " quotesThisLine: " + quotesThisLine);
+                        }
+                        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
+                        if(quotesThisLine > quoteDepth) {
+                            for(int i = quoteDepth; i < quotesThisLine; i++) {
+                                buff.append(HTML_BLOCKQUOTE_START);
+                            }
+                        } else if(quotesThisLine < quoteDepth) {
+                            for(int i = quoteDepth; i > quotesThisLine; i--) {
+                                buff.append(HTML_BLOCKQUOTE_END);
+                            }
+                        }
+                        quoteDepth = quotesThisLine;
+                    }
                     buff.append((char)c);
                 }//switch
             }
@@ -245,7 +283,20 @@ public class HtmlConverter {
             //Should never happen
             Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
         }
+        // Close off any quotes we may have opened.
+        if (quoteDepth > 0) {
+            for (int i = quoteDepth; i > 0; i--) {
+                buff.append(HTML_BLOCKQUOTE_END);
+            }
+        }
         text = buff.toString();
+
+        // Make newlines at the end of blockquotes nicer by putting newlines beyond the first one outside of the
+        // blockquote.
+        text = text.replaceAll(
+            "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
+            HTML_BLOCKQUOTE_END + "$1"
+        );
 
         // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
