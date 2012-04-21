@@ -466,26 +466,28 @@
     <string-array name="supported_languages">
         <item></item>
         <item>ca</item>
-        <item>cs</item>
         <item>da</item>
         <item>de</item>
         <item>en</item>
         <item>es</item>
-        <item>fr</item>
-        <item>fr_CA</item>
         <item>gl</item>
-        <item>it</item>
-        <item>ja</item>
         <item>hu</item>
         <item>nl</item>
-        <item>pl</item>
-        <item>pt_BR</item>
         <item>ru</item>
         <item>tr</item>
-        <item>zh_TW</item>
-        <item>zh_CN</item>
+        <item>fr</item>
+        <item>fr_CA</item>
+        <item>it</item>
+        <item>pl</item>
+        <item>pt_BR</item>
         <item>fi</item>
         <item>sv</item>
+        <item>cs</item>
+        <item>el</item>
+        <item>uk</item>
+        <item>zh_TW</item>
+        <item>zh_CN</item>
+        <item>ja</item>
         <item>ko</item>
     </string-array>
 
