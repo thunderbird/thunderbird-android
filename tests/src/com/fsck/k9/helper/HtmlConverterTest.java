@@ -27,7 +27,7 @@ public class HtmlConverterTest {
             ">> Guess!";
         String result = HtmlConverter.textToHtml(message, false);
         writeToFile(result);
-        Assert.assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif\">Panama!<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">a canal<br /><br />Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">A man, a plan...<br /></blockquote>Too easy!</blockquote><br />Nice job :)<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\"><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">Guess!</blockquote></blockquote></pre>", result);
+        Assert.assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif\">Panama!<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">a canal<br /><br />Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">A man, a plan...<br /></blockquote>Too easy!</blockquote><br />Nice job :)<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\"><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">Guess!</blockquote></blockquote></pre>", result);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class HtmlConverterTest {
             "> :)";
         String result = HtmlConverter.textToHtml(message, false);
         writeToFile(result);
-        Assert.assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif\">*facepalm*<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">A wise man once said...<br /><br />LOL F1RST!!!!!<br /><br />:)</blockquote></pre>", result);
+        Assert.assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif\">*facepalm*<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">A wise man once said...<br /><br />LOL F1RST!!!!!<br /><br />:)</blockquote></pre>", result);
     }
 
     private void writeToFile(final String content) {

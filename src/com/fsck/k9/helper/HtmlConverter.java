@@ -191,7 +191,7 @@ public class HtmlConverter {
     }
 
     private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
-        "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">";
+        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">";
     private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
     private static final String HTML_NEWLINE = "<br />";
 
