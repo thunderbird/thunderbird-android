@@ -220,8 +220,6 @@
     <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>
     <string name="debug_enable_sensitive_logging_summary">允许在日志中显示密码。</string>
 
-    <string name="message_header_mua">K-9 Mail for Android</string>
-
     <string name="combined_inbox_title">全部邮件</string>
     <string name="combined_inbox_label">全部账户的最近邮件</string>
     <string name="combined_inbox_list_title">全部邮件收件箱</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

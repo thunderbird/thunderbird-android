@@ -189,7 +189,6 @@ Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot 
     <string name="debug_enable_debug_logging_summary">Extra diagnosztikai naplózás</string>
     <string name="debug_enable_sensitive_logging_title">Személyes adatok naplózása</string>
     <string name="debug_enable_sensitive_logging_summary">Jelszavak naplózása</string>
-    <string name="message_header_mua">K-9 Levlező program Android rendszerhez</string>
     <string name="combined_inbox_title">Minden levél</string>
     <string name="combined_inbox_label">Legújabb üzenetek az összes fiókból</string>
     <string name="combined_inbox_list_title">Minden beérkezett üzenet</string>

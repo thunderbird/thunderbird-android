@@ -256,8 +256,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="debug_enable_sensitive_logging_title">Journaliser les informations personnelles</string>
     <string name="debug_enable_sensitive_logging_summary">Vos mots de passe pourront se retrouver dans le journal</string>
 
-    <string name="message_header_mua">K-9 Mail pour Android</string>
-
     <string name="combined_inbox_title">Tous les messages</string>
     <string name="combined_inbox_label">Messages récents de tous les comptes</string>
     <string name="combined_inbox_list_title">Toutes les boîtes de réception</string>

@@ -232,8 +232,6 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen aufzeichnen</string>
     <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau aufzeichnen</string>
 
-    <string name="message_header_mua">K-9 Mail for Android</string>
-
     <string name="combined_inbox_title">Alle Nachrichten</string>
     <string name="combined_inbox_label">Neue Nachrichten aller Konten</string>
     <string name="combined_inbox_list_title">Globaler Posteingang</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

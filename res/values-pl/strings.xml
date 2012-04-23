@@ -244,8 +244,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>
     <string name="debug_enable_sensitive_logging_summary">Logi mogą zawierać Twoje hasła</string>
 
-    <string name="message_header_mua">K-9 Mail</string>
-
     <string name="combined_inbox_title">Wszystkie wiadomości</string>
     <string name="combined_inbox_label">Ostatnie wiadomości ze wszystkich kont</string>
     <string name="combined_inbox_list_title">Wszystkie odebrane</string>

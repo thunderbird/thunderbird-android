@@ -231,8 +231,6 @@ Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource pa
     <string name="debug_enable_sensitive_logging_title">Información sensible</string>
     <string name="debug_enable_sensitive_logging_summary">Deben mostrarse password en el log</string>
 
-    <string name="message_header_mua">K-9 Mail for Android</string>
-
     <string name="combined_inbox_title">Todos los correos</string>
     <string name="combined_inbox_label">Mensajes recientes para todas las cuentas</string>
     <string name="combined_inbox_list_title">Todos los correos de Entrada</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

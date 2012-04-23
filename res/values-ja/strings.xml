@@ -234,8 +234,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="debug_enable_sensitive_logging_title">詳細情報ログ</string>
     <string name="debug_enable_sensitive_logging_summary">ログにパスワードが表示される</string>
 
-    <string name="message_header_mua">K-9 for Android </string>
-
     <string name="combined_inbox_title">すべてのメール</string>
     <string name="combined_inbox_label">全アカウントの最新メール</string>
     <string name="combined_inbox_list_title">受信トレイのすべてのメール</string>

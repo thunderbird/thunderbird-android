@@ -232,8 +232,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>
     <string name="debug_enable_sensitive_logging_summary">로그에 비밀번호를 남길수도 있습니다.</string>
 
-    <string name="message_header_mua">안드로이드용 K-9 메일 </string>
-
     <string name="combined_inbox_title">모든 메일</string>
     <string name="combined_inbox_label">모든 계정의 모든 메시지</string>
     <string name="combined_inbox_list_title">받은편지함의 모든 메일</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

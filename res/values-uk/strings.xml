@@ -234,8 +234,6 @@
     <string name="debug_enable_sensitive_logging_title">Запис конфіденційної інформації</string>
     <string name="debug_enable_sensitive_logging_summary">Можна записувати паролі в журнали.</string>
 
-    <string name="message_header_mua">K-9 Mail для Android</string>
-
     <string name="combined_inbox_title">Уся пошта</string>
     <string name="combined_inbox_label">Останні повідомлення з усіх поштових скриньок</string>
     <string name="combined_inbox_list_title">Усі вхідні повідомлення</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
@@ -368,7 +366,7 @@
     <string name="global_settings_move">Перемістити</string>
     <string name="global_settings_flag">Позначити</string>
     <string name="global_settings_unselect">Зняти виділення</string>
-	
+
     <string name="quiet_time">Час беззвучного режиму</string>
     <string name="quiet_time_description">Заборонити вібрацю, дзвінок та блимання у нічний час</string>
     <string name="quiet_time_starts">Початок часу тишини</string>
@@ -815,7 +813,7 @@
     <string name="account_clear_dlg_title">Очистити обліковий запис</string>
     <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
 
-    <string name="provider_note_live"> Тільки деякі скриньки \"Plus\" підтримують отримання пошти через POP. Якщо ви не можете підключитися з правильними даними, 
+    <string name="provider_note_live"> Тільки деякі скриньки \"Plus\" підтримують отримання пошти через POP. Якщо ви не можете підключитися з правильними даними,
         то, можливо, ви не маєте такої
         \"Plus\" скриньки. Будь ласка, завантажте веб-браузер, щоб отримати доступ до таких пощтових скриньок.</string>
     <string name="provider_note_yahoojp">Якщо ви хочете використовувати POP3 для цього постачальника, ви маєте дозволити використання POP3 на сторінці налаштувань пошти Yahoo.</string>
@@ -830,7 +828,7 @@
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
 
     <string name="message_help_key">Del (or D) - Видалити\u000AR -
-    Відповісти\u000AA - Відповісти усі\u000AF - Переслати\u000AJ або P - Попереднє 
+    Відповісти\u000AA - Відповісти усі\u000AF - Переслати\u000AJ або P - Попереднє
     Повідомлення\u000AK, N - Наступне повідомлення\u000AM - Перемістити\u000AY - Копіювати\u000AZ - Зменшити\u000AShift-Z -
     Збільшити\u000aG - Зірочка</string>
     <string name="message_list_help_key">Del (or D) - Видалити\u000AR -
@@ -1145,7 +1143,7 @@
     <string name="unread_widget_select_account">Показати кількість непрочитаних для…</string>
 
     <string name="import_dialog_error_title">Відсутній файловий менеджер</string>
-    <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту. 
+    <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту.
     Будь ласка інсталюйте файловий менеджер з Play Google.</string>
     <string name="open_market">Відкрити Play Google</string>
     <string name="close">Закрити</string>

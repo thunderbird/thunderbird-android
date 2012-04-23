@@ -206,8 +206,6 @@
     <string name="debug_enable_sensitive_logging_title">Hassas bigi günlüğü tut</string>
     <string name="debug_enable_sensitive_logging_summary">Günlüklerde şifreler görünebilir.</string>
 
-    <string name="message_header_mua">Android için K-9 Posta</string>
-
     <string name="combined_inbox_title">Bütün Postalar</string>
     <string name="combined_inbox_label">Bütün hesaplardan gelen yeni mesajlar</string>
     <string name="combined_inbox_list_title">Gelen Kutusu bütün postaları</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
