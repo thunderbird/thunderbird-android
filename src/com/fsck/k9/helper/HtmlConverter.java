@@ -1249,7 +1249,7 @@ public class HtmlConverter {
         final String font = K9.messageViewFixedWidthFont()
                             ? "monospace"
                             : "sans-serif";
-        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "\">";
+        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "; margin-top: 0px\">";
     }
 
     private static String htmlifyMessageFooter() {
