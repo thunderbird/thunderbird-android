@@ -11,7 +11,7 @@ import static junit.framework.Assert.*;
 
 public class HtmlConverterTest {
     // Useful if you want to write stuff to a file for debugging in a browser.
-    private static final boolean WRITE_TO_FILE = true;
+    private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
 
     @Test
