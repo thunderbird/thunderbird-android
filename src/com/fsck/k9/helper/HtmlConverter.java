@@ -190,8 +190,9 @@ public class HtmlConverter {
         return buff.toString();
     }
 
+    private static final String HTML_BLOCKQUOTE_COLOR_TOKEN = "$$COLOR$$";
     private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
-        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">";
+        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
     private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
     private static final String HTML_NEWLINE = "<br />";
 
@@ -267,7 +268,7 @@ public class HtmlConverter {
                         // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
                         if(quotesThisLine > quoteDepth) {
                             for(int i = quoteDepth; i < quotesThisLine; i++) {
-                                buff.append(HTML_BLOCKQUOTE_START);
+                                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
                             }
                         } else if(quotesThisLine < quoteDepth) {
                             for(int i = quoteDepth; i > quotesThisLine; i--) {
@@ -324,6 +325,35 @@ public class HtmlConverter {
         text = sb.toString();
 
         return text;
+    }
+
+    protected static final String QUOTE_COLOR_DEFAULT = "#ccc";
+    protected static final String QUOTE_COLOR_LEVEL_1 = "#729fcf";
+    protected static final String QUOTE_COLOR_LEVEL_2 = "#ad7fa8";
+    protected static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
+    protected static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
+    protected static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
+
+    /**
+     * Return an HTML hex color string for a given quote level.
+     * @param level Quote level
+     * @return Hex color string with prepended #.
+     */
+    protected static String getQuoteColor(final int level) {
+        switch(level) {
+            case 1:
+                return QUOTE_COLOR_LEVEL_1;
+            case 2:
+                return QUOTE_COLOR_LEVEL_2;
+            case 3:
+                return QUOTE_COLOR_LEVEL_3;
+            case 4:
+                return QUOTE_COLOR_LEVEL_4;
+            case 5:
+                return QUOTE_COLOR_LEVEL_5;
+            default:
+                return QUOTE_COLOR_DEFAULT;
+        }
     }
 
     /**
