@@ -16,8 +16,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
-    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
     <string name="app_license">Wszelkie prawa zastrzeżone</string>
     <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -307,7 +305,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_view_fetching_attachment_toast">Pobieram załącznik…</string>
     <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Pobieranie…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Nie wszystkie nagłówki zostały pobrane lub zapisane. Wybierz \"Zapisuj nagłówki lokalnie\" w ustawieniach serwera poczty przychodzącej, aby tę funcje aktywować</string>
@@ -779,7 +777,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_signature_label">Sygnatura</string>
     <string name="account_settings_signature_summary">Dodawaj sygnaturę do każdej wysyłanej wiadomości</string>
 
-    <string name="default_signature">-- \nWysłane za pomocą mojego telefonu Android.</string>
+    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
     <string name="default_identity_description">Tożsamość domyślna</string>
     <string name="choose_identity">Wybierz tożsamość</string>
     <string name="choose_identity_title">Wybierz tożsamość</string>
@@ -828,12 +826,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
         do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
         nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
         korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
-    <string name="provider_note_yahoojp">Jeśli chcesz uzywać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
-    <string name="provider_note_auonejp">Jeśli chcesz uzywać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Au one.</string>
-    <string name="provider_note_naver">Jeśli chcesz uzywać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Naver.</string>
-    <string name="provider_note_hanmail">Jeśli chcesz uzywać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Hanmail(Daum).</string>
-    <string name="provider_note_paran">Jeśli chcesz uzywać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień pocztyParan.</string>
-    <string name="provider_note_nate">Jeśli chcesz uzywać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Nate.</string>
+    <string name="provider_note_yahoojp">Jeśli chcesz używać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
+    <string name="provider_note_auonejp">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Au one.</string>
+    <string name="provider_note_naver">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Naver.</string>
+    <string name="provider_note_hanmail">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Hanmail(Daum).</string>
+    <string name="provider_note_paran">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień pocztyParan.</string>
+    <string name="provider_note_nate">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
@@ -866,6 +864,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
         I - Porządek sortowania\n
         Q - Widok folderów\n
         S - Zaznacz/odznacz\n
+        Z - Przełącz przeczytane/nieprzeczytane\n
+        / - Szukaj\n
+        5 - Sprawdź pocztę
     </string>
 
     <string name="folder_list_help_key">
@@ -937,7 +938,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="batch_spam_op">Przenieś wybrane do Spamu</string>
     <string name="batch_move_op">Przenieś</string>
     <string name="batch_copy_op">Skopiuj</string>
-    <string name="batch_flag_mode">Star mode</string>
+    <string name="batch_flag_mode">Tryb gwiadzki</string>
     <string name="batch_select_mode">Tryb zaznaczania</string>
     <string name="batch_plain_mode">Tryb zwykły</string>
     <string name="batch_select_all">Zaznacz wszystko</string>
@@ -1141,23 +1142,23 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="settings_import_incoming_server">Serwer przychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Serwer wychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Ustawiam hasło...</item>
-        <item quantity="other">Ustawiam haseła...</item>
+        <item quantity="one">Ustawiam hasło…</item>
+        <item quantity="other">Ustawiam hasła…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Użyj hasła serwera przychodzącego</string>
     <string name="activate_account_action">Aktywuj</string>
 
     <string name="settings_unknown_version">Nie można użyć wersji <xliff:g id="version">%s</xliff:g></string>
 
-    <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź pamięc</string>
+    <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź pamięć</string>
 
     <string name="settings_attachment_default_path">Zapisuj załączniki do…</string>
     <string name="attachment_save_title">Zapisz załączniki</string>
     <string name="attachment_save_desc">Brak przeglądarki plików. Chcesz zapisać ten załącznik?</string>
 
-    <string name="manage_accounts_move_up_action">W górę</string>
-    <string name="manage_accounts_move_down_action">W dół</string>
-    <string name="manage_accounts_moving_message">przenoszenie konta…</string>
+    <string name="manage_accounts_move_up_action">Przenieś w górę</string>
+    <string name="manage_accounts_move_down_action">Przenieś w dół</string>
+    <string name="manage_accounts_moving_message">Przenoszenie konta…</string>
 
     <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
@@ -1167,7 +1168,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="open_market">Otwórz Google Play</string>
     <string name="close">Zamknij</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Brak tekstu</string>
 
     <string name="webview_contextmenu_link_view_action">Otwórz podgląd</string>
     <string name="webview_contextmenu_link_share_action">Udostępnij link</string>
