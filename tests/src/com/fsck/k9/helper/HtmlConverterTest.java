@@ -1,20 +1,16 @@
 package com.fsck.k9.helper;
 
-import junit.framework.Assert;
-import org.junit.Test;
+import junit.framework.TestCase;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import static junit.framework.Assert.*;
-
-public class HtmlConverterTest {
+public class HtmlConverterTest extends TestCase {
     // Useful if you want to write stuff to a file for debugging in a browser.
     private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
 
-    @Test
     public void testTextQuoteToHtmlBlockquote() {
         String message = "Panama!\n" +
             "\n" +
@@ -32,7 +28,6 @@ public class HtmlConverterTest {
         assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif; margin-top: 0px\">Panama!<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">a canal<br /><br />Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">A man, a plan...<br /></blockquote>Too easy!</blockquote><br />Nice job :)<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\"><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">Guess!</blockquote></blockquote></pre>", result);
     }
 
-    @Test
     public void testTextQuoteToHtmlBlockquoteIndented() {
         String message = "*facepalm*\n" +
             "\n" +
@@ -47,7 +42,6 @@ public class HtmlConverterTest {
         assertEquals("<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif; margin-top: 0px\">*facepalm*<br /><br />Bob Barker &lt;bob@aol.com&gt; wrote:<br /><blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">A wise man once said...<br /><br />LOL F1RST!!!!!<br /><br />:)</blockquote></pre>", result);
     }
 
-    @Test
     public void testQuoteDepthColor() {
         assertEquals(HtmlConverter.getQuoteColor(1), HtmlConverter.QUOTE_COLOR_LEVEL_1);
         assertEquals(HtmlConverter.getQuoteColor(2), HtmlConverter.QUOTE_COLOR_LEVEL_2);
