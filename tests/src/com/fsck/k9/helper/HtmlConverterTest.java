@@ -66,7 +66,7 @@ public class HtmlConverterTest extends TestCase {
     }
 
     private void writeToFile(final String content) {
-        if(!WRITE_TO_FILE) {
+        if (!WRITE_TO_FILE) {
             return;
         }
         try {

@@ -192,7 +192,7 @@ public class HtmlConverter {
 
     private static final String HTML_BLOCKQUOTE_COLOR_TOKEN = "$$COLOR$$";
     private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
-        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
+            "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
     private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
     private static final String HTML_NEWLINE = "<br />";
 
@@ -244,7 +244,7 @@ public class HtmlConverter {
                     buff.append("&lt;");
                     break;
                 case '>':
-                    if(isStartOfLine) {
+                    if (isStartOfLine) {
                         quotesThisLine++;
                     } else {
                         buff.append("&gt;");
@@ -253,25 +253,25 @@ public class HtmlConverter {
                 case '\r':
                     break;
                 case ' ':
-                    if(isStartOfLine) {
+                    if (isStartOfLine) {
                         // If we're still in the start of the line and we have spaces, don't output them, since they
                         // may be collapsed by our div-converting magic.
                         break;
                     }
                 default:
-                    if(isStartOfLine) {
+                    if (isStartOfLine) {
                         // Not a quote character and not a space.  Content is starting now.
                         isStartOfLine = false;
-                        if(K9.DEBUG) {
+                        if (K9.DEBUG) {
                             Log.d(K9.LOG_TAG, "currentQuoteDepth: " + quoteDepth + " quotesThisLine: " + quotesThisLine);
                         }
                         // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
-                        if(quotesThisLine > quoteDepth) {
-                            for(int i = quoteDepth; i < quotesThisLine; i++) {
+                        if (quotesThisLine > quoteDepth) {
+                            for (int i = quoteDepth; i < quotesThisLine; i++) {
                                 buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
                             }
-                        } else if(quotesThisLine < quoteDepth) {
-                            for(int i = quoteDepth; i > quotesThisLine; i--) {
+                        } else if (quotesThisLine < quoteDepth) {
+                            for (int i = quoteDepth; i > quotesThisLine; i--) {
                                 buff.append(HTML_BLOCKQUOTE_END);
                             }
                         }
@@ -295,9 +295,9 @@ public class HtmlConverter {
         // Make newlines at the end of blockquotes nicer by putting newlines beyond the first one outside of the
         // blockquote.
         text = text.replaceAll(
-            "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
-            HTML_BLOCKQUOTE_END + "$1"
-        );
+                   "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
+                   HTML_BLOCKQUOTE_END + "$1"
+               );
 
         // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
