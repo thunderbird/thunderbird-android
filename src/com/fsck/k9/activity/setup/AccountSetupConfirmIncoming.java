@@ -8,12 +8,9 @@ package com.fsck.k9.activity.setup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.ServerType;
-import org.apache.http.conn.scheme.Scheme;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;

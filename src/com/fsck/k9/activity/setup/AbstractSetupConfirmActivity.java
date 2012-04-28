@@ -30,7 +30,6 @@ import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.ServerType;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.SocketType;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.Server;
 import com.fsck.k9.helper.configxmlparser.AutoconfigInfo.InformationBlock;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
