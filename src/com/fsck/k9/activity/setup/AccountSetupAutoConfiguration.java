@@ -6,6 +6,7 @@ import android.os.*;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fsck.k9.K9;
@@ -85,7 +86,9 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     private Button mCancelButton;
     private Button mNextButton;
     private TextView mWarningMsg;
-
+    private TextView mStatusTitle;
+    private ImageView mDoneMark;
+    
     private String mEmailAddress;
     private String mPassword;
     private String mLastMessage;
@@ -118,12 +121,14 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         // Setting up the view
         setContentView(R.layout.account_setup_autoconfig);
         mMessageView = (TextView)findViewById(R.id.status_message);
+        mStatusTitle = (TextView)findViewById(R.id.autoconfig_status_title);
         mWarningMsg = (TextView)findViewById(R.id.autoconfig_warning);
         mWarningMsg.setVisibility(View.INVISIBLE);
         mProgressCircle = (ProgressBar)findViewById(R.id.autoconfig_progress);
         mProgressCircle.setIndeterminate(true);
         mProgressCircle.setVisibility(View.VISIBLE);
-
+        mDoneMark = (ImageView)findViewById(R.id.autoconfig_done_mark);
+        
         mCancelButton = (Button)findViewById(R.id.autoconfig_button_cancel);
         mCancelButton.setOnClickListener(this);
         mNextButton = (Button)findViewById(R.id.autoconfig_button_next);
@@ -570,14 +575,20 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 			public void run() {
 				// hide progress circle & enable button for any case
 				mProgressCircle.setVisibility(View.INVISIBLE);
-				mNextButton.setEnabled(true);
 
 				// 1. All good, continue
-				// all is fine
-
+				if( !bForceManual ){
+					mStatusTitle.setText(R.string.account_setup_autoconfig_succesful_attempt);
+					mDoneMark.setImageResource(R.drawable.setup_ok);
+					mNextButton.setEnabled(true);
 				// 2. Nothing came up, must manually config.. + help?
-				if( bForceManual ) mNextButton.setText(getString(R.string.account_setup_basics_manual_setup_action));
-
+				}else{
+					mNextButton.setText(getString(R.string.account_setup_basics_manual_setup_action));
+					mStatusTitle.setText(R.string.account_setup_autoconfig_forcemanual);
+					mDoneMark.setImageResource(R.drawable.setup_not_ok);
+				}
+				mDoneMark.setVisibility(View.VISIBLE);
+				
 				// 3. Data did not came over HTTPS this could be UNSAFE !!!!!!
 				if( bUnsafe ) mWarningMsg.setVisibility(View.VISIBLE);
 			}
