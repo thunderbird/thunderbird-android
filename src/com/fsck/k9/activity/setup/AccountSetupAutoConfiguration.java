@@ -490,16 +490,16 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 				}
 
 			}catch (SocketTimeoutException ex){
-				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
+				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
 						tmpURL+"' ( time-out is"+TIMEOUT+" )", ex);
 			}catch (MalformedURLException ex){
-				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
+				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
 						tmpURL+"'", ex);
 			}catch (UnknownHostException ex){
-				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
+				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
 						tmpURL+"'", ex);
 			}catch (SSLPeerUnverifiedException ex){
-				Log.e(K9.LOG_TAG, "Error while testing settings", ex);
+				Log.v(K9.LOG_TAG, "Error while testing settings", ex);
 				// TODO: use custom trust manager so this exception could get thrown
 				//acceptKeyDialog(R.string.account_setup_failed_dlg_certificate_message_fmt,i,ex);
 			}catch (SAXException e) {
@@ -509,7 +509,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 				setMessage(R.string.account_setup_autoconfig_fail,false);
 				bParseFailed = true;
 			}catch (ErrorCodeException ex) {
-				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '" +
+				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '" +
 						tmpURL + "' site didn't respond as expected. Got code: " + ex.getErrorCode(), ex);
 			}catch(IOException ex) {
 				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
