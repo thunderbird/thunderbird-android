@@ -6,20 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9ListActivity;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.SectionListAdapter;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.HashSet;
 
 /**
@@ -36,12 +29,18 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     private static final int DIALOG_BACKUP_ACCOUNT = 2;
 
     private static final String BUNDLE_TYPE_SUGGESTION = "SUGGESTION";
+	public static final int GET_LOGIN = 1;
+	
+	public static final String DATA_LOGIN = "datalogin";
+	public static final String DATA_PASSWORD = "datapassword";
+	public static final String DATA_DEFAULT = "datadefault";
+	public static final String DATA_MANUAL = "datamanual";
+	
     public enum SuggestionType { DEVICE, BACKUP, NEW }
 
     // temp hard coded value ( since we don't ask if it should be default account for now )
     private boolean bMakeDefault = true;
 
-    private Account mAccount;
     private Button mNewAccountDialogButton;
     private Button mPasswordDialogButton;
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
@@ -100,11 +99,24 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.new_account:
-                showDialog(DIALOG_NEW_ACCOUNT);
+                //showDialog(DIALOG_NEW_ACCOUNT);
+            	AccountSetupGetLogin.startForResult(this);
                 break;
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if( requestCode == GET_LOGIN && resultCode == RESULT_OK){
+    		String login = data.getStringExtra(DATA_LOGIN);
+    		String pasw = data.getStringExtra(DATA_PASSWORD);
+    		boolean defaultAcc = data.getBooleanExtra(DATA_DEFAULT, false);
+    		boolean manual = data.getBooleanExtra(DATA_MANUAL, false);
+    		
+    		if( manual ) onManualSetup(login, pasw);
+    		else startSettingsDetection(login, pasw);
+    	}
+    }
     /*
         Dialogues
      */

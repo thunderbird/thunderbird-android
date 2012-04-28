@@ -105,6 +105,12 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.setup.AccountSetupGetLogin"
+            android:label="@string/account_setup_basics_title"
+            android:configChanges="locale"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupAutoConfiguration"
             android:label="@string/account_setup_autoconfig_title"
             android:configChanges="keyboardHidden|orientation|locale"
