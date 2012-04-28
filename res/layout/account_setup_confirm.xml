@@ -36,12 +36,12 @@
                     android:drawSelectorOnTop="true"
                     android:prompt="@string/account_setup_basics_email_hint" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="3"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="Extra information" />
+                    android:text="Extra information" />-->
             </TableRow>
 
             <TableRow>
@@ -61,12 +61,12 @@
                     android:drawSelectorOnTop="true"
                     android:prompt="@string/account_setup_basics_email_hint" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="3"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="Extra information" />
+                    android:text="Extra information" />-->
             </TableRow>
         </TableLayout>
 
