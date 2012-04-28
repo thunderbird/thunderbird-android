@@ -175,12 +175,10 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
         // get the data
         String tmp, line;
-        BufferedReader reader;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         tmp = "";
 
         try{
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
             while( (line = reader.readLine()) != null)
                 tmp += line;
 
@@ -192,8 +190,10 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
         catch (ConnectException ex){
 		// ignore this, it just means the url doesn't exist which happens often, we test for it!
         }
-        finally
-            { conn.disconnect(); }
+        finally{ 
+        	reader.close();
+        	conn.disconnect(); 
+        }
 
         return tmp;
     }
