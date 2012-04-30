@@ -129,32 +129,6 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
         Dialog dialog = new Dialog(this);
 
         switch(dialog_id){
-            case DIALOG_NEW_ACCOUNT:
-                dialog.setContentView(R.layout.account_dialog_new);
-                dialog.setTitle(R.string.account_setup_dialog_new_title);
-
-                final EditText emailField = ((EditText)dialog.findViewById(R.id.account_dialog_address_field));
-                final EditText passwordField = ((EditText)dialog.findViewById(R.id.account_dialog_password_field));
-                final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);
-                final CheckBox defaultCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_default_box);
-
-                mNewAccountDialogButton = ((Button)dialog.findViewById(R.id.account_dialog_next));
-
-                mNewAccountDialogButton.setOnClickListener(new OnClickListener() {
-                    public void onClick(View view) {
-                        String email = emailField.getText().toString();
-                        String password = passwordField.getText().toString();
-
-                        // TODO: replace this with a few listeners on the fields that activate/deactive the button on acceptable values
-                        if( !mEmailValidator.isValidAddressOnly(email) || password.isEmpty() ) return;
-
-                        if(manualCheck.isChecked())
-                            onManualSetup(email, password);
-                        else startSettingsDetection(email, password);
-                    }
-                });
-                break;
-
             case DIALOG_DEVICE_ACCOUNT:
             case DIALOG_BACKUP_ACCOUNT:
                 dialog.setContentView(R.layout.account_dialog_password);
