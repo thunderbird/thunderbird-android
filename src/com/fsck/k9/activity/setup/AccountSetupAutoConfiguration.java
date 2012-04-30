@@ -19,6 +19,7 @@ import com.fsck.k9.mail.store.TrustManagerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.xml.sax.InputSource;
@@ -169,7 +170,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
     /*
         Checks if an url is available / exists
      */
-    private String getXMLData(URL url) throws IOException, ErrorCodeException, SocketTimeoutException {
+    private String getXMLData(URL url) throws IOException, ErrorCodeException, SocketTimeoutException, FileNotFoundException {
         // think we should assume no redirects
         // TODO: use k9's own TrustManager so the right exception gets throwed and the user can choose to accept the certificate
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -180,25 +181,31 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 
         // get the data
         String tmp, line;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         tmp = "";
+        BufferedReader reader = null;
+        
+		try {
+			reader = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			while ((line = reader.readLine()) != null)
+				tmp += line;
 
-        try{
-            while( (line = reader.readLine()) != null)
-                tmp += line;
-
-            if( conn.getResponseCode() != 200 )
-                throw new ErrorCodeException("Server did not return as expected.",conn.getResponseCode());
-       }
-        catch (SocketTimeoutException ex)
-            { throw ex; }
-        catch (ConnectException ex){
-		// ignore this, it just means the url doesn't exist which happens often, we test for it!
-        }
-        finally{ 
-        	reader.close();
-        	conn.disconnect(); 
-        }
+			if (conn.getResponseCode() != 200)
+				throw new ErrorCodeException(
+						"Server did not return as expected.",
+						conn.getResponseCode());
+		} catch (SocketTimeoutException ex) {
+			throw ex;
+		} catch (FileNotFoundException e){
+			throw e;
+		}catch (ConnectException ex) {
+			// ignore this, it just means the url doesn't exist which happens
+			// often, we test for it!
+		} finally {
+			if (reader != null)
+				reader.close();
+			conn.disconnect();
+		}
 
         return tmp;
     }
@@ -208,7 +215,7 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
      * Does an DNS MX lookup of the domain and returns a list of records.
      * This uses the Mozilla webservice to do so.
      */
-    private List<String> doMXLookup(String domain) throws IOException{
+    private List<String> doMXLookup(String domain) throws IOException, HttpHostConnectException{
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet method = new HttpGet(dnsMXLookupUrl + domain);
 
@@ -517,8 +524,8 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '" +
 						tmpURL + "' site didn't respond as expected. Got code: " + ex.getErrorCode(), ex);
 			}catch(IOException ex) {
-				Log.e(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
-						tmpURL+"'", ex);
+				Log.v(K9.LOG_TAG, "Error while attempting auto-configuration with url '"+
+						tmpURL+"'");
 			} finally {
 				// might be the user cancelled by now or the app was destroyed
 				if (mDestroyed) return;
