@@ -16,6 +16,12 @@ package com.fsck.k9.mail;
 public class Flag {
 	
 	/*
+	 * IMPORTANT!!
+	 * 
+	 * INTERNAL NAME MUST EQUAL THE NAME OF THE FIELD!!!
+	 */
+	
+	/*
 	 * IMAP Spec flags.
 	 */
     public static final Flag DELETED = new Flag("DELETED", "\\Deleted");
@@ -85,49 +91,62 @@ public class Flag {
      */
     private static final String USER_PREFIX = "USER_";
     
-    private final String name;
-    private final String internal_name;
+    private final String name;				// for use towards third party 	ex. "\\Deleted"
+    private final String internal_name;		// for internal use in database,...   ex. "DELETED"
     protected boolean bCustom;
     
     /**
      * When a Flag is created dynamically we know it's a custom flag.
-     * @param name Name of the flag.
+     * 
+     * @param name Internal name of the flag.
      * @return Newly created Flag object.
      */
-    public static Flag CreateFlag(String name) {
-    	Flag tmpFlag = new Flag(USER_PREFIX+name, name);
+    public static Flag CreateFlag(String internal_name) {
+    	Flag tmpFlag = new Flag(USER_PREFIX+internal_name, internal_name);
     	tmpFlag.bCustom = true;
     	return tmpFlag;
 	}
     
-    private Flag(String name){
-    	this(name, name);
-    }
-    
-    private Flag(String internal_name, String name){
-    	this.name = name;
-    	this.bCustom = true;
-    	this.internal_name = internal_name;
+    private Flag(String internal_name){
+    	this(internal_name, internal_name);
     }
     
     /**
+     * Create a new Flag. This doesn't create a custom flag, it's used to define
+     * the predefined flags.
+     * 
+     * @param internal_name Name for internal use in database,...   ex. "DELETED"
+     * @param name Name for use towards third party ( ex. "\\Deleted" )
+     */
+    private Flag(String internal_name, String name){
+    	this.name = name;
+    	this.bCustom = false;
+    	this.internal_name = internal_name;
+    }
+    
+    /** 
      * Returns the predefined static flag object if any. Otherwise a new
      * custom flag is created and returned.
      * 
-     * TODO We might not want to create a custom flag by default and just
-     * throw an exception. Only 10 uses of this method so refactoring possible.
-     * Catching the exception should then proceed with a CreateFlag(name) call.
+     * When the name starts with the USER_PREFIX we don't add it again to
+     * create a new one. This is the case for example when this is called with
+     * strings retrieved from the database.
+     * 
+     * IMPORTANT remember the name of the field of predefined flags must equal the
+     * internal name!
      * 
      * @param name Name of Flag wanted.
      * @return	Predefined Flag object if any otherwise new custom Flag.
      * @throws IllegalArgumentException Thrown when the field is not accessible.
      */
-    public static Flag valueOf(String name) throws IllegalArgumentException{
+    public static Flag valueOf(String internal_name) throws IllegalArgumentException{
     	try {
-			return (Flag)(Flag.class.getField(name).get(null));
+			return (Flag)(Flag.class.getField(internal_name).get(null));
 		} catch (NoSuchFieldException e) {
 			// not a predefined flag
-			return Flag.CreateFlag(name);
+			if(internal_name.startsWith(USER_PREFIX))
+				return Flag.CreateFlag(internal_name.substring(USER_PREFIX.length()));
+			else return Flag.CreateFlag(internal_name);
 		} catch (IllegalAccessException e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -138,25 +157,24 @@ public class Flag {
      * example "\\Deleted" will return the DELETED flag. When no such
      * flag exists we assume it's a custom flag and create it.
      * 
-     * TODO this could be faster this way: 
+     * ! this could be faster this way: 
      * http://java.dzone.com/articles/enum-tricks-customized-valueof
-     * 
      * Since it's only used once I don't see the point.
      * 
      * @param real_name Real name to look for.
      * @return The flag that was found or created.
      */
-    public static Flag valueOfByRealName(String internal_name){
+    public static Flag valueOfByRealName(String name){
     	for( Flag f : IMAP_FLAGS )
-    		if(f.internal_name.equalsIgnoreCase(internal_name))
+    		if(f.name.equalsIgnoreCase(name))
     			return f;
-    	return Flag.CreateFlag(internal_name);
+    	return Flag.CreateFlag(name);
     }
     
     @Override
-    public String toString() { return name; }
+    public String toString() { return internal_name; }
     
-    public String name() { return name; }
+    public String name() { return internal_name; }
     
     /**
      * Returns the real keyword name without user prefix. This is
@@ -165,7 +183,7 @@ public class Flag {
      * @return Real keyword string.
      */
     public String realName(){
-    	return internal_name;
+    	return name;
     }
     
 }
