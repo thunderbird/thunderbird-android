@@ -91,24 +91,25 @@ public class Flag {
      */
     private static final String USER_PREFIX = "USER_";
     
-    private final String name;				// for use towards third party 	ex. "\\Deleted"
-    private final String internal_name;		// for internal use in database,...   ex. "DELETED"
-    protected boolean bCustom;
+    private final String mName;				// for use towards third party 	ex. "\\Deleted"
+    										// when internal name = name we refer to it as just name
+    private final String mInternalName;		// for internal use in database,...   ex. "DELETED"
+    protected boolean mCustom;
     
     /**
      * When a Flag is created dynamically we know it's a custom flag.
      * 
-     * @param name Internal name of the flag.
+     * @param mName Internal name of the flag.
      * @return Newly created Flag object.
      */
-    public static Flag CreateFlag(String internal_name) {
-    	Flag tmpFlag = new Flag(USER_PREFIX+internal_name, internal_name);
-    	tmpFlag.bCustom = true;
+    public static Flag CreateFlag(String name) {
+    	Flag tmpFlag = new Flag(USER_PREFIX+name, name);
+    	tmpFlag.mCustom = true;
     	return tmpFlag;
 	}
     
-    private Flag(String internal_name){
-    	this(internal_name, internal_name);
+    private Flag(String name){
+    	this(name, name);
     }
     
     /**
@@ -119,9 +120,9 @@ public class Flag {
      * @param name Name for use towards third party ( ex. "\\Deleted" )
      */
     private Flag(String internal_name, String name){
-    	this.name = name;
-    	this.bCustom = false;
-    	this.internal_name = internal_name;
+    	this.mName = name;
+    	this.mCustom = false;
+    	this.mInternalName = internal_name;
     }
     
     /** 
@@ -135,7 +136,7 @@ public class Flag {
      * IMPORTANT remember the name of the field of predefined flags must equal the
      * internal name!
      * 
-     * @param name Name of Flag wanted.
+     * @param mName Name of Flag wanted.
      * @return	Predefined Flag object if any otherwise new custom Flag.
      * @throws IllegalArgumentException Thrown when the field is not accessible.
      */
@@ -166,15 +167,15 @@ public class Flag {
      */
     public static Flag valueOfByRealName(String name){
     	for( Flag f : IMAP_FLAGS )
-    		if(f.name.equalsIgnoreCase(name))
+    		if(f.mName.equalsIgnoreCase(name))
     			return f;
     	return Flag.CreateFlag(name);
     }
     
     @Override
-    public String toString() { return internal_name; }
+    public String toString() { return mInternalName; }
     
-    public String name() { return internal_name; }
+    public String name() { return mInternalName; }
     
     /**
      * Returns the real keyword name without user prefix. This is
@@ -183,7 +184,7 @@ public class Flag {
      * @return Real keyword string.
      */
     public String realName(){
-    	return name;
+    	return mName;
     }
     
 }
