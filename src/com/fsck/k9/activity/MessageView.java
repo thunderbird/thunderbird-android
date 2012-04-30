@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +48,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private View mArchive;
     private View mMove;
     private View mSpam;
+    private View mHeader;
     private Account mAccount;
     private MessageReference mMessageReference;
     private ArrayList<MessageReference> mMessageReferences;
@@ -293,6 +295,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         setContentView(R.layout.message_view);
 
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
+        mHeader = findViewById(R.id.header_container);
 
         //set a callback for the attachment view. With this callback the attachmentview
         //request the start of a filebrowser activity.
@@ -378,6 +381,9 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (intent.getBooleanExtra(EXTRA_NEXT, false)) {
             mNext.requestFocus();
         }
+
+        // Enable gesture detection for MessageViews
+        mGestureDetector = new GestureDetector(new MyGestureDetector(false));
 
         setupButtonViews();
         displayMessage(mMessageReference);
@@ -715,7 +721,8 @@ public class MessageView extends K9Activity implements OnClickListener {
      */
     @Override
     protected void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        onNext();
+        if (isEventInsideHeader(e1))
+            onNext();
     }
 
     /**
@@ -723,7 +730,14 @@ public class MessageView extends K9Activity implements OnClickListener {
      */
     @Override
     protected void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        onPrevious();
+        if (isEventInsideHeader(e1))
+            onPrevious();
+    }
+
+    private boolean isEventInsideHeader(MotionEvent e) {
+        Rect headerRect = new Rect();
+        mHeader.getGlobalVisibleRect(headerRect);
+        return headerRect.contains((int)e.getRawX(), (int)e.getRawY());
     }
 
     protected void onNext() {

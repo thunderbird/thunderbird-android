@@ -690,6 +690,9 @@ public class MessageList
         mPreviewLines = K9.messageListPreviewLines();
 
         initializeMessageList(getIntent(), true);
+
+        // Enable gesture detection for MessageLists
+        mGestureDetector = new GestureDetector(new MyGestureDetector(true));
     }
 
     @Override
@@ -924,20 +927,6 @@ public class MessageList
         mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
         mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
         mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
-
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector(true));
-        gestureListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        mListView.setOnTouchListener(gestureListener);
     }
 
     /**
@@ -1807,7 +1796,9 @@ public class MessageList
      * @param selected true if this was an attempt to select (i.e. left to right).
      */
     private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
-        int position = mListView.pointToPosition((int) downMotion.getX(), (int) downMotion.getY());
+        int[] listPosition = new int[2];
+        mListView.getLocationOnScreen(listPosition);
+        int position = mListView.pointToPosition((int) downMotion.getRawX() - listPosition[0], (int) downMotion.getRawY() - listPosition[1]);
         if (position != AdapterView.INVALID_POSITION) {
             MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
