@@ -560,7 +560,6 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 					// out of options... manual configuration
 					}else{
 						bForceManual = true;
-						setMessage(R.string.account_setup_autoconfig_forcemanual, true);
 					}
 
 				}
@@ -579,15 +578,14 @@ public class AccountSetupAutoConfiguration extends K9Activity implements View.On
 				// 1. All good, continue
 				if( !bForceManual ){
 					mStatusTitle.setText(R.string.account_setup_autoconfig_succesful_attempt);
-					mDoneMark.setImageResource(R.drawable.setup_ok);
-					mNextButton.setEnabled(true);
+					mDoneMark.setVisibility(View.VISIBLE);
 				// 2. Nothing came up, must manually config.. + help?
 				}else{
 					mNextButton.setText(getString(R.string.account_setup_basics_manual_setup_action));
 					mStatusTitle.setText(R.string.account_setup_autoconfig_forcemanual);
-					mDoneMark.setImageResource(R.drawable.setup_not_ok);
 				}
-				mDoneMark.setVisibility(View.VISIBLE);
+				
+				mNextButton.setEnabled(true);
 				
 				// 3. Data did not came over HTTPS this could be UNSAFE !!!!!!
 				if( bUnsafe ) mWarningMsg.setVisibility(View.VISIBLE);
