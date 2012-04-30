@@ -178,13 +178,13 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
 
                 final EditText passwordField = ((EditText) dialog.findViewById(R.id.account_dialog_password_field));
                 final CheckBox manualCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_manual_box);
-                final CheckBox defaultCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_default_box);
+                //final CheckBox defaultCheck = (CheckBox)dialog.findViewById(R.id.account_dialog_default_box);
 
                 mPasswordDialogButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View view) {
                         String email = args.get(BUNDLE_TYPE_SUGGESTION).toString();
                         String password = passwordField.getText().toString();
-                        bMakeDefault = defaultCheck.isChecked();
+                        //bMakeDefault = defaultCheck.isChecked();
 
                         // TODO: replace this with a few listeners on the fields that activate/deactive the button on acceptable values
                         if( password.isEmpty() ) return;
