@@ -1861,7 +1861,7 @@ public class MessageList
             menu.findItem(R.id.archive).setVisible(false);
         }
 
-        if (!mAccount.hasSpamFolder()) {
+        if (!account.hasSpamFolder()) {
             menu.findItem(R.id.spam).setVisible(false);
         }
 
