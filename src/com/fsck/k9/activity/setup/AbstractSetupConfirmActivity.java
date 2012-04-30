@@ -130,6 +130,7 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
         mProtocolSpinner.setOnItemSelectedListener(this);
         mSocketTypeSpinner.setOnItemSelectedListener(this);
         mOkButton.setOnClickListener(this);
+        ((Button)findViewById(R.id.confirm_cancel_button)).setOnClickListener(this);
         mUsernameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -150,6 +151,11 @@ public abstract class AbstractSetupConfirmActivity extends K9Activity implements
             case R.id.confirm_ok_button:
                 finishAction();
                 break;
+            case R.id.confirm_cancel_button:
+            	// by deleting we make sure the user ends up in the init screen again instead of a useless accountlist
+            	Preferences.getPreferences(this).deleteAccount(mAccount);
+            	finish();
+            	return;
             case R.id.confirm_next_server_button:
                 // TODO: write this,... it will probably never be used since no isp has 2 host for exact the same thing
                 break;
