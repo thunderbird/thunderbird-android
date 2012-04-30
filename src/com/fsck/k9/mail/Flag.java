@@ -105,6 +105,10 @@ public class Flag {
      * Returns the predefined static flag object if any. Otherwise a new
      * custom flag is created and returned.
      * 
+     * When the name starts with the USER_PREFIX we don't add it again to
+     * create a new one. This is the case for example when this is called with
+     * strings retrieved from the database.
+     * 
      * TODO We might not want to create a custom flag by default and just
      * throw an exception. Only 10 uses of this method so refactoring possible.
      * Catching the exception should then proceed with a CreateFlag(name) call.
@@ -118,7 +122,9 @@ public class Flag {
 			return (Flag)(Flag.class.getField(name).get(null));
 		} catch (NoSuchFieldException e) {
 			// not a predefined flag
-			return Flag.CreateFlag(name);
+			if(name.startsWith(USER_PREFIX))
+				return Flag.CreateFlag(name.substring(USER_PREFIX.length()));
+			else return Flag.CreateFlag(name);
 		} catch (IllegalAccessException e) {
 			throw new IllegalArgumentException(e);
 		}
