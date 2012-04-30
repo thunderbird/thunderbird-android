@@ -118,12 +118,12 @@ public class MimeHeader {
         writer.flush();
     }
 
-    // encode non printable characters except LF/CR codes.
+    // encode non printable characters except LF/CR/TAB codes.
     public boolean hasToBeEncoded(String text) {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             if (c < 0x20 || 0x7e < c) { // non printable
-                if (c != 0x0a && c != 0x0d) { // non LF/CR
+                if (c != 0x0a && c != 0x0d && c != 0x09) { // non LF/CR/TAB
                     return true;
                 }
             }
