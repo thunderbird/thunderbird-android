@@ -1616,16 +1616,7 @@ public class ImapStore extends Store {
                 ImapList flags = fetchList.getKeyedList("FLAGS");
                 if (flags != null) {
                     for (int i = 0, count = flags.size(); i < count; i++) {
-                        String flag = flags.getString(i);
-                        if (flag.equalsIgnoreCase("\\Deleted")) {
-                            message.setFlagInternal(Flag.DELETED, true);
-                        } else if (flag.equalsIgnoreCase("\\Answered")) {
-                            message.setFlagInternal(Flag.ANSWERED, true);
-                        } else if (flag.equalsIgnoreCase("\\Seen")) {
-                            message.setFlagInternal(Flag.SEEN, true);
-                        } else if (flag.equalsIgnoreCase("\\Flagged")) {
-                            message.setFlagInternal(Flag.FLAGGED, true);
-                        }
+                        message.setFlagInternal(Flag.valueOfByRealName(flags.getString(i)), true);
                     }
                 }
             }
@@ -2058,16 +2049,7 @@ public class ImapStore extends Store {
         private String combineFlags(Flag[] flags) {
             ArrayList<String> flagNames = new ArrayList<String>();
             for (Flag flag : flags) {
-                if (flag == Flag.SEEN) {
-                    flagNames.add("\\Seen");
-                } else if (flag == Flag.DELETED) {
-                    flagNames.add("\\Deleted");
-                } else if (flag == Flag.ANSWERED) {
-                    flagNames.add("\\Answered");
-                } else if (flag == Flag.FLAGGED) {
-                    flagNames.add("\\Flagged");
-                }
-
+            	flagNames.add(flag.realName());
             }
             return Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ');
         }
