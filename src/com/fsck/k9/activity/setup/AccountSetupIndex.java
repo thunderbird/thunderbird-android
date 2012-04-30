@@ -70,6 +70,11 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
         fillFromDevice(accountAdapter);
         new BackupScan().execute();
 
+        // if no accounts on device were found go straight to new acc screen
+        if( accountAdapter.getCount() == 0 ){
+        	AccountSetupGetLogin.startForResult(this);
+        }
+        
         // configuring the view
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
@@ -99,7 +104,6 @@ public class AccountSetupIndex extends K9ListActivity implements OnItemClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.new_account:
-                //showDialog(DIALOG_NEW_ACCOUNT);
             	AccountSetupGetLogin.startForResult(this);
                 break;
         }
