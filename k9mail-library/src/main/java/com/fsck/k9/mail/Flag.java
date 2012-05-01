@@ -187,4 +187,13 @@ public class Flag {
     	return mName;
     }
     
+    @Override
+    public boolean equals(Object o) {
+    	if ( o instanceof Flag ){
+    		Flag f = (Flag)o;
+    		return ( (f) == this ||
+    				(f.mCustom == this.mCustom && f.mInternalName == this.mInternalName 
+    				&& f.mName == this.mName));
+    	}else return false;
+    }
 }
