@@ -1966,7 +1966,9 @@ public class ImapStore extends RemoteStore {
         private String combineFlags(Iterable<Flag> flags) {
             List<String> flagNames = new ArrayList<String>();
             for (Flag flag : flags) {
-            	flagNames.add(flag.realName());
+            	// client's can't add the RECENT flag!
+            	if( !flag.equals(Flag.RECENT) )
+            		flagNames.add(flag.realName());
             }
             return combine(flagNames.toArray(new String[flagNames.size()]), ' ');
         }
