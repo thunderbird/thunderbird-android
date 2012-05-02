@@ -302,6 +302,41 @@
         <item>EXPUNGE_ON_POLL</item>
         <item>EXPUNGE_MANUALLY</item>
     </string-array>
+    
+    <string-array name="settings_charset_entries">
+        <item>@string/setting_charset_system</item>
+        <item>West European</item>
+        <item>East European</item>
+        <item>South European</item>
+        <item>North European</item>
+        <item>Cyrillic</item>
+        <item>Arabic</item>
+        <item>Greek</item>
+        <item>Hebrew</item>
+        <item>Latin 5</item>
+        <item>Latin6</item>
+        <item>Thai</item>
+        <item>Latin7</item>
+        <item>Latin8</item>
+        <item>Latin9</item>
+    </string-array>
+    <string-array name="settings_charset_values">
+        <item>US-ASCII</item>
+        <item>ISO-8859-1</item>
+        <item>ISO-8859-2</item>
+        <item>ISO-8859-3</item>
+        <item>ISO-8859-4</item>
+        <item>ISO-8859-5</item>
+        <item>ISO-8859-6</item>
+        <item>ISO-8859-7</item>
+        <item>ISO-8859-8</item>
+        <item>ISO-8859-9</item>
+        <item>ISO-8859-10</item>
+        <item>ISO-8859-11</item>
+        <item>ISO-8859-13</item>
+        <item>ISO-8859-14</item>
+        <item>ISO-8859-15</item>
+    </string-array>
 
     <string-array name="settings_language_entries">
         <item>@string/setting_language_system</item>
