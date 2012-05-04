@@ -11,6 +11,8 @@ import android.webkit.WebView;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.VersionHelper;
+
 import java.lang.reflect.Method;
 
 public class MessageWebView extends WebView {
@@ -92,19 +94,17 @@ public class MessageWebView extends WebView {
 
         // SINGLE_COLUMN layout was broken on Android < 2.2, so we
         // administratively disable it
-        if (Build.VERSION.SDK_INT > 7 && K9.mobileOptimizedLayout()) {
+        if (VersionHelper.ApiLevelAbove(Build.VERSION_CODES.ECLAIR_MR1) && K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         } else {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
         /*
-         * Build.VERSION.SDK is deprecated cause it just returns the
-         * "its raw String representation"
-         *  http://developer.android.com/reference/android/os/Build.VERSION_CODES.html#GINGERBREAD
-         *  http://developer.android.com/reference/android/os/Build.VERSION.html#SDK
+         * setOverScrollMode was introduced in 9,
+         * there are not workarounds
          */
-        if (Build.VERSION.SDK_INT >= 9) {
+        if (VersionHelper.ApiLevel(Build.VERSION_CODES.GINGERBREAD)) {
             setOverScrollMode(OVER_SCROLL_NEVER);
         }
 
