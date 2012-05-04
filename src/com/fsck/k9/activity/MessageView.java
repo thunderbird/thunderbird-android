@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,7 +47,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     private View mArchive;
     private View mMove;
     private View mSpam;
-    private View mHeader;
     private Account mAccount;
     private MessageReference mMessageReference;
     private ArrayList<MessageReference> mMessageReferences;
@@ -82,6 +80,18 @@ public class MessageView extends K9Activity implements OnClickListener {
      * @see MessageList#actionHandleFolder(Context, Bundle)
      */
     private Bundle mMessageListExtras;
+
+    /**
+     * Screen width in pixels.
+     *
+     * <p>
+     * Used to detect right-to-left bezel swipes.
+     * </p>
+     *
+     * @see #onSwipeRightToLeft(MotionEvent, MotionEvent)
+     */
+    private int mScreenWidthInPixels;
+
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
@@ -295,7 +305,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         setContentView(R.layout.message_view);
 
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
-        mHeader = findViewById(R.id.header_container);
 
         //set a callback for the attachment view. With this callback the attachmentview
         //request the start of a filebrowser activity.
@@ -381,6 +390,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (intent.getBooleanExtra(EXTRA_NEXT, false)) {
             mNext.requestFocus();
         }
+
+        mScreenWidthInPixels = getResources().getDisplayMetrics().widthPixels;
 
         // Enable gesture detection for MessageViews
         mGestureDetector = new GestureDetector(new MyGestureDetector(false));
@@ -717,27 +728,24 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     /**
-     * Handle a right-to-left swipe as "move to next message."
+     * Handle a right-to-left swipe starting at the edge of the screen as "move to next message."
      */
     @Override
     protected void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        if (isEventInsideHeader(e1))
+        if ((int) e1.getRawX() > mScreenWidthInPixels - BEZEL_SWIPE_THRESHOLD) {
             onNext();
+        }
     }
 
     /**
-     * Handle a left-to-right swipe as "move to previous message."
+     * Handle a left-to-right swipe starting at the edge of the screen as
+     * "move to previous message."
      */
     @Override
     protected void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        if (isEventInsideHeader(e1))
+        if ((int) e1.getRawX() < BEZEL_SWIPE_THRESHOLD) {
             onPrevious();
-    }
-
-    private boolean isEventInsideHeader(MotionEvent e) {
-        Rect headerRect = new Rect();
-        mHeader.getGlobalVisibleRect(headerRect);
-        return headerRect.contains((int)e.getRawX(), (int)e.getRawY());
+        }
     }
 
     protected void onNext() {

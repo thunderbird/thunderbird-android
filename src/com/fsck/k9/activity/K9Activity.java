@@ -19,6 +19,8 @@ import com.fsck.k9.K9;
 
 
 public class K9Activity extends Activity {
+    protected static final int BEZEL_SWIPE_THRESHOLD = 20;
+
     protected GestureDetector mGestureDetector;
 
     @Override
