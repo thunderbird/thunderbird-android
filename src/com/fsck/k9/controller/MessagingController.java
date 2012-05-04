@@ -16,12 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Application;
 import android.app.KeyguardManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.Process;
@@ -38,6 +36,7 @@ import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.NotificationBuilder;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -2997,80 +2996,139 @@ public class MessagingController implements Runnable {
 
     private void cancelNotification(int id) {
         NotificationManager notifMgr =
-            (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+            (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+
         notifMgr.cancel(id);
     }
 
     private void notifyWhileSendingDone(Account account) {
         if (account.isShowOngoing()) {
             cancelNotification(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
-
-
         }
     }
+
+    /**
+     * Display an ongoing notification while a message is being sent.
+     *
+     * @param account
+     *         The account the message is sent from. Never {@code null}.
+     */
     private void notifyWhileSending(Account account) {
         if (!account.isShowOngoing()) {
             return;
         }
+
         NotificationManager notifMgr =
-            (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notif = new Notification(R.drawable.ic_menu_refresh,
-                                              mApplication.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, account.getInboxFolderName());
+            (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        builder.setSmallIcon(R.drawable.ic_menu_refresh);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setOngoing(true);
+        builder.setTicker(mApplication.getString(R.string.notification_bg_send_ticker,
+                account.getDescription()));
+
+        builder.setContentTitle(mApplication.getString(R.string.notification_bg_send_title));
+        builder.setContentText(account.getDescription());
+
+        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
+                account.getInboxFolderName());
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
-        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_send_title),
-                                 account.getDescription() , pi);
-        notif.flags = Notification.FLAG_ONGOING_EVENT;
+        builder.setContentIntent(pi);
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
-            configureNotification(notif,  null, null, account.getNotificationSetting().getLedColor(), K9.NOTIFICATION_LED_BLINK_FAST, true);
+            configureNotification(builder, null, null,
+                    account.getNotificationSetting().getLedColor(),
+                    K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
+        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
+                builder.getNotification());
     }
 
     private void notifySendTempFailed(Account account, Exception lastFailure) {
         notifySendFailed(account, lastFailure, account.getOutboxFolderName());
     }
+
     private void notifySendPermFailed(Account account, Exception lastFailure) {
         notifySendFailed(account, lastFailure, account.getDraftsFolderName());
     }
+
+    /**
+     * Display a notification when sending a message has failed.
+     *
+     * @param account
+     *         The account that was used to sent the message.
+     * @param lastFailure
+     *         The {@link Exception} instance that indicated sending the message has failed.
+     * @param openFolder
+     *         The name of the folder to open when the notification is clicked.
+     */
     private void notifySendFailed(Account account, Exception lastFailure, String openFolder) {
-        NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
+        NotificationManager notifMgr =
+                (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setAutoCancel(true);
+        builder.setTicker(mApplication.getString(R.string.send_failure_subject));
+        builder.setContentTitle(mApplication.getString(R.string.send_failure_subject));
+        builder.setContentText(getRootCauseMessage(lastFailure));
 
         Intent i = FolderList.actionHandleNotification(mApplication, account, openFolder);
-
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
+        builder.setContentIntent(pi);
 
-        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), getRootCauseMessage(lastFailure), pi);
+        configureNotification(builder,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR,
+                K9.NOTIFICATION_LED_BLINK_FAST, true);
 
-        configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
-        notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(), notif);
+        notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
+                builder.getNotification());
     }
 
-
+    /**
+     * Display an ongoing notification while checking for new messages on the server.
+     *
+     * @param account
+     *         The account that is checked for new messages. Never {@code null}.
+     * @param folder
+     *         The folder that is being checked for new messages. Never {@code null}.
+     */
     private void notifyFetchingMail(final Account account, final Folder folder) {
-        if (account.isShowOngoing()) {
-            final NotificationManager notifMgr = (NotificationManager)mApplication
-                                                 .getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification notif = new Notification(R.drawable.ic_menu_refresh,
-                                                  mApplication.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
-                                                  System.currentTimeMillis());
-            Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, account.getInboxFolderName());
-            PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
-            notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_sync_title), account.getDescription()
-                                     + mApplication.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
-            notif.flags = Notification.FLAG_ONGOING_EVENT;
-
-            if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
-                configureNotification(notif,  null, null, account.getNotificationSetting().getLedColor(), K9.NOTIFICATION_LED_BLINK_FAST, true);
-            }
-
-            notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
+        if (!account.isShowOngoing()) {
+            return;
         }
+
+        final NotificationManager notifMgr =
+                (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        builder.setSmallIcon(R.drawable.ic_menu_refresh);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setOngoing(true);
+        builder.setTicker(mApplication.getString(
+                R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()));
+        builder.setContentTitle(mApplication.getString(R.string.notification_bg_sync_title));
+        builder.setContentText(account.getDescription() +
+                mApplication.getString(R.string.notification_bg_title_separator) +
+                folder.getName());
+
+        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
+                account.getInboxFolderName());
+        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
+        builder.setContentIntent(pi);
+
+        if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
+            configureNotification(builder,  null, null,
+                    account.getNotificationSetting().getLedColor(),
+                    K9.NOTIFICATION_LED_BLINK_FAST, true);
+        }
+
+        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
+                builder.getNotification());
     }
+
     private void notifyFetchingMailCancel(final Account account) {
         if (account.isShowOngoing()) {
             cancelNotification(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
@@ -4126,22 +4184,31 @@ public class MessagingController implements Runnable {
         }
 
         NotificationManager notifMgr =
-            (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationBuilder builder = NotificationBuilder.getInstance(context);
+        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setTicker(messageNotice);
+
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
         if (account.isNotificationShowsUnreadCount()) {
-            notif.number = unreadCount;
+            builder.setNumber(unreadCount);
         }
 
-        Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
+        String accountDescr = (account.getDescription() != null) ?
+                account.getDescription() : account.getEmail();
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
+                unreadCount, accountDescr);
+        builder.setContentTitle(accountNotice);
+        builder.setContentText(messageNotice);
+
+        Intent i = FolderList.actionHandleNotification(context, account,
+                message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+        builder.setContentIntent(pi);
 
-        String accountDescr = (account.getDescription() != null) ? account.getDescription() : account.getEmail();
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadCount, accountDescr);
-        notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
-
-        // Only ring or vibrate if we have not done so already on this
-        // account and fetch
+        // Only ring or vibrate if we have not done so already on this account and fetch
         boolean ringAndVibrate = false;
         if (!account.isRingNotified()) {
             account.setRingNotified(true);
@@ -4151,38 +4218,36 @@ public class MessagingController implements Runnable {
         NotificationSetting n = account.getNotificationSetting();
 
         configureNotification(
-                notif,
+                builder,
                 (n.shouldRing()) ?  n.getRingtone() : null,
                 (n.shouldVibrate()) ? n.getVibration() : null,
                 (n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
                 K9.NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
-        notifMgr.notify(account.getAccountNumber(), notif);
+        notifMgr.notify(account.getAccountNumber(), builder.getNotification());
     }
 
     /**
-     * @param notification
-     *            Object to configure. Never <code>null</code>.
+     * Configure the notification sound and LED
+     *
+     * @param builder
+     *         {@link NotificationBuilder} instance used to configure the notification.
+     *         Never {@code null}.
      * @param ringtone
-     *          String name of ringtone. <code>null</code> if no ringtone should be played
+     *          String name of ringtone. {@code null}, if no ringtone should be played.
      * @param vibrationPattern
-     *         <code>long[]</code> vibration pattern. <code>null</code> if no vibration should be played
+     *         {@code long[]} vibration pattern. {@code null}, if no vibration should be played.
      * @param ledColor
-     *         <code>Integer</code> Color to flash LED. <code>null</code> if no LED flash should happen
+     *         Color to flash LED. {@code null}, if no LED flash should happen.
      * @param ledSpeed
-     *         <code>int</code> should LEDs flash K9.NOTIFICATION_LED_BLINK_SLOW or K9.NOTIFICATION_LED_BLINK_FAST
+     *         Either {@link K9#NOTIFICATION_LED_BLINK_SLOW} or
+     *         {@link K9#NOTIFICATION_LED_BLINK_FAST}.
      * @param ringAndVibrate
-     *            <code>true</code> if ringtone/vibration are allowed,
-     *            <code>false</code> otherwise.
+     *          {@code true}, if ringtone/vibration are allowed. {@code false}, otherwise.
      */
-    private void configureNotification(final Notification notification,
-                                       final String ringtone,
-                                       final long[] vibrationPattern,
-                                       final Integer ledColor,
-                                       final int ledSpeed,
-
-                                       final boolean ringAndVibrate) {
+    private void configureNotification(NotificationBuilder builder, String ringtone,
+            long[] vibrationPattern, Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
 
         // if it's quiet time, then we shouldn't be ringing, buzzing or flashing
         if (K9.isQuietTime()) {
@@ -4190,25 +4255,27 @@ public class MessagingController implements Runnable {
         }
 
         if (ringAndVibrate) {
-            if (ringtone != null) {
-                notification.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-                notification.audioStreamType = AudioManager.STREAM_NOTIFICATION;
+            if (ringtone != null && !TextUtils.isEmpty(ringtone)) {
+                builder.setSound(Uri.parse(ringtone));
             }
+
             if (vibrationPattern != null) {
-                notification.vibrate = vibrationPattern;
+                builder.setVibrate(vibrationPattern);
             }
         }
 
         if (ledColor != null) {
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notification.ledARGB = ledColor;
+            int ledOnMS;
+            int ledOffMS;
             if (ledSpeed == K9.NOTIFICATION_LED_BLINK_SLOW) {
-                notification.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
-                notification.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
-            } else if (ledSpeed == K9.NOTIFICATION_LED_BLINK_FAST) {
-                notification.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                notification.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+                ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
+                ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+            } else {
+                ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+                ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
             }
+
+            builder.setLights(ledColor, ledOnMS, ledOffMS);
         }
     }
 
