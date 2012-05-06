@@ -759,14 +759,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             /*
-             * Note: According to the documenation ACTION_VIEW and ACTION_SENDTO
-             * don't accept EXTRA_* parameters. Contrary to the AOSP Email application
-             * we don't accept those EXTRAs.
-             * Dear developer, if your application is using those EXTRAs you're doing
-             * it wrong! So go fix your program or get AOSP to change the documentation.
+             * Note: According to the documenation ACTION_VIEW and ACTION_SENDTO don't accept
+             * EXTRA_* parameters.
+             * And previously we didn't process these EXTRAs. But it looks like nobody bothers to
+             * read the official documentation and just copies wrong sample code that happens to
+             * work with the AOSP Email application. And because even big players get this wrong,
+             * we're now finally giving in and read the EXTRAs for ACTION_SENDTO (below).
              */
         }
-        else if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) {
+
+        if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action) ||
+                Intent.ACTION_SENDTO.equals(action)) {
+
             /*
              * Note: Here we allow a slight deviation from the documentated behavior.
              * EXTRA_TEXT is used as message body (if available) regardless of the MIME
@@ -774,7 +778,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              * using EXTRA_STREAM.
              */
             CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
-            if (text != null) {
+            // Only use EXTRA_TEXT if the body hasn't already been set by the mailto URI
+            if (text != null && mMessageContentView.getText().length() == 0) {
                 mMessageContentView.setText(text);
             }
 
@@ -797,7 +802,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-            if (subject != null) {
+            // Only use EXTRA_SUBJECT if the subject hasn't already been set by the mailto URI
+            if (subject != null && mSubjectView.getText().length() == 0) {
                 mSubjectView.setText(subject);
             }
 
@@ -806,16 +812,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
 
             if (extraEmail != null) {
-                setRecipients(mToView, Arrays.asList(extraEmail));
+                addRecipients(mToView, Arrays.asList(extraEmail));
             }
 
             boolean ccOrBcc = false;
             if (extraCc != null) {
-                ccOrBcc |= setRecipients(mCcView, Arrays.asList(extraCc));
+                ccOrBcc |= addRecipients(mCcView, Arrays.asList(extraCc));
             }
 
             if (extraBcc != null) {
-                ccOrBcc |= setRecipients(mBccView, Arrays.asList(extraBcc));
+                ccOrBcc |= addRecipients(mBccView, Arrays.asList(extraBcc));
             }
 
             if (ccOrBcc) {
@@ -825,19 +831,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
-    private boolean setRecipients(TextView view, List<String> recipients) {
-        boolean recipientAdded = false;
-        if (recipients != null) {
-            StringBuilder addressList = new StringBuilder();
-            for (String recipient : recipients) {
-                addressList.append(recipient);
-                addressList.append(", ");
-                recipientAdded = true;
-            }
-            view.setText(addressList);
+    private boolean addRecipients(TextView view, List<String> recipients) {
+        if (recipients == null || recipients.size() == 0) {
+            return false;
         }
 
-        return recipientAdded;
+        StringBuilder addressList = new StringBuilder();
+
+        // Read current contents of the TextView
+        String text = view.getText().toString();
+        addressList.append(text);
+
+        // Add comma if necessary
+        if (text.length() != 0 && !(text.endsWith(", ") || text.endsWith(","))) {
+            addressList.append(", ");
+        }
+
+        // Add recipients
+        for (String recipient : recipients) {
+            addressList.append(recipient);
+            addressList.append(", ");
+        }
+
+        view.setText(addressList);
+
+        return true;
     }
 
     private void initializeCrypto() {
@@ -3003,13 +3021,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             to = new ArrayList<String>(to);
             to.add(0, recipient);
         }
-        setRecipients(mToView, to);
+        addRecipients(mToView, to);
 
         // Read carbon copy recipients from the "cc" parameter.
-        boolean ccOrBcc = setRecipients(mCcView, uri.getQueryParameters("cc"));
+        boolean ccOrBcc = addRecipients(mCcView, uri.getQueryParameters("cc"));
 
         // Read blind carbon copy recipients from the "bcc" parameter.
-        ccOrBcc |= setRecipients(mBccView, uri.getQueryParameters("bcc"));
+        ccOrBcc |= addRecipients(mBccView, uri.getQueryParameters("bcc"));
 
         if (ccOrBcc) {
             // Display CC and BCC text fields if CC or BCC recipients were set by the intent.
