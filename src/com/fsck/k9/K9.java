@@ -77,6 +77,7 @@ public class K9 extends Application {
     }
 
     private static String language = "";
+    private static String charset = "US-ASCII";
     private static int theme = THEME_LIGHT;
 
     private static final FontSizes fontSizes = new FontSizes();
@@ -454,6 +455,7 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
         
         editor.putString("language", language);
+        editor.putString("charset", charset);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -633,6 +635,7 @@ public class K9 extends Application {
         }
 
         K9.setK9Language(sprefs.getString("language", ""));
+        K9.setK9Charset(sprefs.getString("charset", "US-ASCII"));
 
         int theme = sprefs.getInt("theme", THEME_LIGHT);
 
@@ -697,10 +700,19 @@ public class K9 extends Application {
     public static String getK9Language() {
         return language;
     }
-
+    
     public static void setK9Language(String nlanguage) {
         language = nlanguage;
     }
+    
+    public static String getK9Charset() {
+        return charset;
+    }
+    
+	public static void setK9Charset(String ncharset) {
+		charset = ncharset;
+		
+	}
 
     public static int getK9ThemeResourceId(int theme) {
         return (theme == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;

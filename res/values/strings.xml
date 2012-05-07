@@ -879,7 +879,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
 
     <string name="setting_language_system">System default</string>
-    <string name="setting_charset_system">System default</string>
+    <string name="setting_charset_system">System default (US-ASCII)</string>
 
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>

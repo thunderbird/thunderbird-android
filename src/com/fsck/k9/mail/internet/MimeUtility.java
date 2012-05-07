@@ -1040,7 +1040,7 @@ public class MimeUtility {
                      */
                     if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
                         InputStreamReader in = new InputStreamReader(part.getBody().getInputStream(),
-                                "US-ASCII");
+                                K9.getK9Charset());
                         char[] buf = new char[256];
                         in.read(buf, 0, buf.length);
                         String str = new String(buf);
@@ -2138,7 +2138,7 @@ public class MimeUtility {
 
     public static String fixupCharset(String charset, Message message) throws MessagingException {
         if (charset == null || "0".equals(charset))
-            charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
+            charset = K9.getK9Charset();  // No encoding, so use us-ascii, which is the standard.
 
         charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
@@ -2273,8 +2273,8 @@ public class MimeUtility {
         }
         if (!supported) {
             Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-                  ". Falling back to US-ASCII");
-            charset = "US-ASCII";
+                  ". Falling back to " + K9.getK9Charset());
+            charset = K9.getK9Charset();
         }
         /*
          * Convert and return as new String

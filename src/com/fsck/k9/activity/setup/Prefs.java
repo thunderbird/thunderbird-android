@@ -46,6 +46,7 @@ public class Prefs extends K9PreferenceActivity {
      * Keys of the preferences defined in res/xml/global_preferences.xml
      */
     private static final String PREFERENCE_LANGUAGE = "language";
+    private static final String PREFERENCE_CHARSET = "charset";
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
@@ -92,6 +93,7 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
     private ListPreference mLanguage;
+    private ListPreference mCharset;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
@@ -162,6 +164,9 @@ public class Prefs extends K9PreferenceActivity {
 
         final String theme = (K9.getK9Theme() == K9.THEME_DARK) ? "dark" : "light";
         mTheme = setupListPreference(PREFERENCE_THEME, theme);
+        
+        final String charset = (K9.getK9Charset());
+        mCharset = setupListPreference(PREFERENCE_CHARSET, charset);
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
@@ -386,6 +391,7 @@ public class Prefs extends K9PreferenceActivity {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
+        K9.setK9Charset(mCharset.getValue());
         K9.setK9Theme(mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT);
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
