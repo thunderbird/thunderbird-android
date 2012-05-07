@@ -371,12 +371,12 @@ public class LockableDatabase {
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
             try {
-                mDb = application.openOrCreateDatabase(databaseFile.getPath(), Context.MODE_PRIVATE, null);
+                mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
             } catch (SQLiteException e) {
                 // try to gracefully handle DB corruption - see issue 2537
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 databaseFile.delete();
-                mDb = application.openOrCreateDatabase(databaseFile.getPath(), Context.MODE_PRIVATE, null);
+                mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
             }
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
