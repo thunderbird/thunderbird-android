@@ -16,9 +16,10 @@ package com.fsck.k9.mail;
 public class Flag {
 
     /*
-     * IMPORTANT!!
+     * IMPORTANT WARNING!!
      *
-     * INTERNAL NAME MUST EQUAL THE NAME OF THE FIELD!!!
+     * DO NOT ADD STATIC FIELDS TO THIS CLASS UNLESS THEY ARE
+     * NEW FLAGS THAT GET PREDEFINED.
      */
 
     /*
@@ -31,8 +32,6 @@ public class Flag {
 
     public static final Flag DRAFT = new Flag("DRAFT", "\\Draft");
     public static final Flag RECENT = new Flag("RECENT", "\\Recent");
-
-    private static final Flag[] IMAP_FLAGS = new Flag[] {DELETED, SEEN, ANSWERED, FLAGGED, DRAFT, RECENT};
 
     /*
      * The following flags are for internal library use only.
@@ -91,9 +90,9 @@ public class Flag {
      */
     private static final String USER_PREFIX = "USER_";
 
-    private final String mName;				// for use towards third party 	ex. "\\Deleted"
+    private final String mName;             // for use towards third party  ex. "\\Deleted"
     // when internal name = name we refer to it as just name
-    private final String mInternalName;		// for internal use in database,...   ex. "DELETED"
+    private final String mInternalName;     // for internal use in database,...   ex. "DELETED"
     protected boolean mCustom;
 
     /**
@@ -103,7 +102,7 @@ public class Flag {
      * @return Newly created Flag object.
      */
     public static Flag createFlag(String name) {
-        Flag tmpFlag = new Flag(USER_PREFIX+name, name);
+        Flag tmpFlag = new Flag(USER_PREFIX + name, name);
         tmpFlag.mCustom = true;
         return tmpFlag;
     }
@@ -137,17 +136,20 @@ public class Flag {
      * internal name!
      *
      * @param mName Name of Flag wanted.
-     * @return	Predefined Flag object if any otherwise new custom Flag.
+     * @return  Predefined Flag object if any otherwise new custom Flag.
      * @throws IllegalArgumentException Thrown when the field is not accessible.
      */
     public static Flag valueOf(String internalName) throws IllegalArgumentException {
         try {
+            // the argument being 'null' implies we look for a static field
             return (Flag)(Flag.class.getField(internalName).get(null));
         } catch (NoSuchFieldException e) {
             // not a predefined flag
-            if(internalName.startsWith(USER_PREFIX))
+            if (internalName.startsWith(USER_PREFIX)) {
                 return Flag.createFlag(internalName.substring(USER_PREFIX.length()));
-            else return Flag.createFlag(internalName);
+            } else {
+                return Flag.createFlag(internalName);
+            }
         } catch (IllegalAccessException e) {
             throw new IllegalArgumentException(e);
         }
@@ -166,9 +168,10 @@ public class Flag {
      * @return The flag that was found or created.
      */
     public static Flag valueOfByRealName(String name) {
-        for( Flag f : IMAP_FLAGS )
-            if(f.mName.equalsIgnoreCase(name))
+        for (Flag f : new Flag[] {DELETED, SEEN, ANSWERED, FLAGGED, DRAFT, RECENT})
+            if (f.mName.equalsIgnoreCase(name)) {
                 return f;
+            }
         return Flag.createFlag(name);
     }
 
@@ -193,11 +196,13 @@ public class Flag {
 
     @Override
     public boolean equals(Object o) {
-        if ( o instanceof Flag ) {
+        if (o instanceof Flag) {
             Flag f = (Flag)o;
-            return ( (f) == this ||
-                     (f.mCustom == this.mCustom && f.mInternalName == this.mInternalName
-                      && f.mName == this.mName));
-        } else return false;
+            return ((f) == this ||
+                    (f.mCustom == this.mCustom && f.mInternalName == this.mInternalName
+                     && f.mName == this.mName));
+        } else {
+            return false;
+        }
     }
 }
