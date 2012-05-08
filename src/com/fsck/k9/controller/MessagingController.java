@@ -3021,7 +3021,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
             (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
         builder.setSmallIcon(R.drawable.ic_menu_refresh);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -3068,7 +3068,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
@@ -3103,7 +3103,7 @@ public class MessagingController implements Runnable {
         final NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.getInstance(mApplication);
+        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
         builder.setSmallIcon(R.drawable.ic_menu_refresh);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -4186,7 +4186,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.getInstance(context);
+        NotificationBuilder builder = NotificationBuilder.createInstance(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setTicker(messageNotice);
