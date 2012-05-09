@@ -239,8 +239,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="debug_enable_sensitive_logging_title">Záznam citlivých informací</string>
     <string name="debug_enable_sensitive_logging_summary">V záznamech mohou být zobrazena hesla</string>
 
-    <string name="message_header_mua">K-9 Mail pro Android</string>
-
     <string name="combined_inbox_title">Veškerá pošta</string>
     <string name="combined_inbox_label">Poslední zprávy ze všech účtů</string>
     <string name="combined_inbox_list_title">Veškerá doručená pošta</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

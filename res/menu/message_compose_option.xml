@@ -32,8 +32,9 @@
 	/>
 	<item
 		android:id="@+id/read_receipt"
-	android:alphabeticShortcut="r"
-		android:title="@string/read_receipt"
+        android:alphabeticShortcut="r"
+        android:title="@string/read_receipt"
+        android:icon="@drawable/ic_menu_reply_receipt"
 	/>
 	<item
 		android:id="@+id/add_attachment_image"

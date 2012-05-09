@@ -353,7 +353,7 @@ public class SettingsImporter {
         }
 
         // Make sure the account name is unique
-        String accountName = (account.name != null) ? account.name : "Imported";
+        String accountName = account.name;
         if (isAccountNameUsed(accountName, accounts)) {
             // Account name is already in use. So generate a new one by appending " (x)", where x
             // is the first number >= 1 that results in an unused account name.
@@ -941,6 +941,11 @@ public class SettingsImporter {
         } else {
             skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT);
             Log.i(K9.LOG_TAG, "Skipping account with UUID " + uuid);
+        }
+
+        // If we couldn't find an account name use the UUID
+        if (account.name == null) {
+            account.name = uuid;
         }
 
         return account;

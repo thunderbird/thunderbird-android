@@ -179,14 +179,14 @@
      </target>
     <target name="astyle">
     <exec executable="astyle" failonerror="true">
-        <arg line="--style=java --indent=spaces=4 --brackets=attach --convert-tabs   --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java'"/>
+        <arg line="--style=java --indent=spaces=4 --indent-switches --max-instatement-indent=4 --brackets=attach --add-brackets --convert-tabs --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java' 'tests/src/com/fsck/k9/*.java'"/>
     </exec>
      </target>
     <target name="help">
         <!-- displays starts at col 13
               |13                                                              80| -->
         <echo>Android Ant Build. Available targets:</echo>
-        <echo>   help:      Displays this help.</echo>
+        <echo>   help:      Displays this help.</echo> 
         <echo>   debug:     Builds the application and sign it with a debug key.</echo>
         <echo>   release:   Builds the application. The generated apk file must be</echo>
         <echo>              signed before it is published.</echo>

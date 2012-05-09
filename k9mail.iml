@@ -20,6 +20,10 @@
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="true" />
         <option name="GENERATE_UNSIGNED_APK" value="false" />
         <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="" />
+        <option name="PACK_TEST_CODE" value="false" />
+        <option name="RUN_PROGUARD" value="false" />
+        <option name="PROGUARD_CFG_PATH" value="/proguard.cfg" />
+        <resOverlayFolders />
       </configuration>
     </facet>
   </component>
@@ -31,7 +35,6 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/src" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -99,7 +102,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Android 2.3.1 Platform" level="application" />
+    <orderEntry type="inheritedJdk" />
   </component>
 </module>
 

@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import android.content.SharedPreferences;
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
@@ -23,6 +24,11 @@ public class AccountSettings {
     static {
         Map<String, TreeMap<Integer, SettingsDescription>> s =
             new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+
+        /**
+         * When adding new settings here, be sure to increment {@link Settings.VERSION}
+         * and use that for whatever you add here.
+         */
 
         s.put("archiveFolderName", Settings.versions(
                 new V(1, new StringSetting("Archive"))
@@ -158,6 +164,12 @@ public class AccountSettings {
             ));
         s.put("sentFolderName", Settings.versions(
                 new V(1, new StringSetting("Sent"))
+            ));
+        s.put("sortTypeEnum", Settings.versions(
+                new V(9, new EnumSetting(SortType.class, Account.DEFAULT_SORT_TYPE))
+            ));
+        s.put("sortAscending", Settings.versions(
+                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
             ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER))

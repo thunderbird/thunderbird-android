@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.FolderInfoHolder;
+import com.fsck.k9.activity.FolderList.FolderListAdapter.FolderListFilter;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -50,9 +51,12 @@ import java.util.List;
  */
 
 public class FolderList extends K9ListActivity {
-
+    /*
+     * Constants for showDialog() etc.
+     */
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
-    private static final int DIALOG_EMPTY_TRASH = 2;
+    private static final int DIALOG_FIND_FOLDER = 2;
+    private static final int DIALOG_EMPTY_TRASH = 3;
 
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -411,6 +415,7 @@ public class FolderList extends K9ListActivity {
         if (mAccount.getFolderPushMode() != FolderMode.NONE) {
             MailService.actionRestartPushers(this, null);
         }
+        mAdapter.getFilter().filter(null);
         onRefresh(false);
     }
 
@@ -423,44 +428,7 @@ public class FolderList extends K9ListActivity {
      * Filter {@link #mAdapter} with the user-input.
      */
     private void onEnterFilter() {
-        final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
-
-        final EditText input = new EditText(this);
-        input.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mAdapter.getFilter().filter(input.getText().toString());
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                    int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        input.setHint(R.string.folder_list_filter_hint);
-        filterAlert.setView(input);
-
-        filterAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                mAdapter.getFilter().filter(value);
-            }
-        });
-
-        filterAlert.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mAdapter.getFilter().filter("");
-            }
-        });
-
-        filterAlert.show();
-
+        showDialog(DIALOG_FIND_FOLDER);
     }
 
     private void onEditPrefs() {
@@ -665,33 +633,72 @@ public class FolderList extends K9ListActivity {
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ:
-            return ConfirmationDialog.create(this,
-                    id,
-                    R.string.mark_all_as_read_dlg_title,
-                    getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+            case DIALOG_MARK_ALL_AS_READ:
+                return ConfirmationDialog.create(this, id, R.string.mark_all_as_read_dlg_title,
+                        getString(R.string.mark_all_as_read_dlg_instructions_fmt,
                             mSelectedContextFolder.displayName),
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            markAllAsRead();
-                        }
-                    });
-        case DIALOG_EMPTY_TRASH:
-            return ConfirmationDialog.create(this,
-                    id,
-                    R.string.empty_trash_dlg_title,
-                    R.string.empty_trash_dlg_instructions,
-                    R.string.okay_action,
-                    R.string.cancel_action,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            emptyTrash();
-                        }
-                    });
+                        R.string.okay_action, R.string.cancel_action,
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                markAllAsRead();
+                            }
+                        });
+            case DIALOG_FIND_FOLDER: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.filter_folders_action);
+
+                final EditText input = new EditText(this);
+                input.setId(R.id.filter_folders);
+                input.setHint(R.string.folder_list_filter_hint);
+                input.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mAdapter.getFilter().filter(input.getText());
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count,
+                            int after) { /* not used */ }
+
+                    @Override
+                    public void afterTextChanged(Editable s) { /* not used */ }
+                });
+
+                builder.setView(input);
+
+                builder.setPositiveButton(getString(R.string.okay_action),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String value = input.getText().toString();
+                                mAdapter.getFilter().filter(value);
+                            }
+                        });
+
+                builder.setNegativeButton(getString(R.string.cancel_action),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                mAdapter.getFilter().filter(null);
+                            }
+                        });
+
+                return builder.create();
+            }
+            case DIALOG_EMPTY_TRASH:
+                return ConfirmationDialog.create(this,
+                        id,
+                        R.string.empty_trash_dlg_title,
+                        R.string.empty_trash_dlg_instructions,
+                        R.string.okay_action,
+                        R.string.cancel_action,
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                emptyTrash();
+                            }
+                        });
         }
 
         return super.onCreateDialog(id);
@@ -700,15 +707,30 @@ public class FolderList extends K9ListActivity {
     @Override
     public void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ:
-            ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                    mSelectedContextFolder.displayName));
-            break;
-        case DIALOG_EMPTY_TRASH:
-            ((AlertDialog)dialog).setMessage(getString(R.string.empty_trash_dlg_instructions));
-            break;
-        default:
-            super.onPrepareDialog(id, dialog);
+            case DIALOG_MARK_ALL_AS_READ: {
+                AlertDialog alertDialog = (AlertDialog) dialog;
+                alertDialog.setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                        mSelectedContextFolder.displayName));
+                break;
+            }
+            case DIALOG_FIND_FOLDER: {
+                AlertDialog alertDialog = (AlertDialog) dialog;
+                EditText input = (EditText) alertDialog.findViewById(R.id.filter_folders);
+
+                // Populate the EditText with the current search term
+                FolderListFilter filter = (FolderListFilter) mAdapter.getFilter();
+                input.setText(filter.getSearchTerm());
+
+                // Place the cursor at the end of the text
+                input.setSelection(input.getText().length());
+                break;
+            }
+            case DIALOG_EMPTY_TRASH:
+                ((AlertDialog)dialog).setMessage(getString(R.string.empty_trash_dlg_instructions));
+                break;
+            default: {
+                super.onPrepareDialog(id, dialog);
+            }
         }
     }
 
@@ -1180,6 +1202,11 @@ public class FolderList extends K9ListActivity {
          * @author Marcus@Wolschon.biz
          */
         public class FolderListFilter extends Filter {
+            private CharSequence mSearchTerm;
+
+            public CharSequence getSearchTerm() {
+                return mSearchTerm;
+            }
 
             /**
              * Do the actual search.
@@ -1189,6 +1216,7 @@ public class FolderList extends K9ListActivity {
              */
             @Override
             protected FilterResults performFiltering(CharSequence searchTerm) {
+                mSearchTerm = searchTerm;
                 FilterResults results = new FilterResults();
 
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {

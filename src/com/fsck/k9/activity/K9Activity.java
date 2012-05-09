@@ -19,7 +19,9 @@ import com.fsck.k9.K9;
 
 
 public class K9Activity extends Activity {
-    private GestureDetector gestureDetector;
+    protected static final int BEZEL_SWIPE_THRESHOLD = 20;
+
+    protected GestureDetector mGestureDetector;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -27,10 +29,6 @@ public class K9Activity extends Activity {
         setTheme(K9.getK9ThemeResourceId());
         super.onCreate(icicle);
         setupFormats();
-
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-
     }
 
     public static void setLanguage(Context context, String language) {
@@ -51,8 +49,10 @@ public class K9Activity extends Activity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        super.dispatchTouchEvent(ev);
-        return gestureDetector.onTouchEvent(ev);
+        if (mGestureDetector != null) {
+            mGestureDetector.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -184,6 +184,10 @@ public class K9Activity extends Activity {
                             Log.d(K9.LOG_TAG, "New swipe algorithm: Swipe did not meet minimum distance requirements.");
                         return false;
                     }
+
+                    // successful fling, cancel the 2nd event to prevent any other action from happening
+                    // see http://code.google.com/p/android/issues/detail?id=8497
+                    e2.setAction(MotionEvent.ACTION_CANCEL);
                 } catch (Exception e) {
                     // nothing
                 }

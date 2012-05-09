@@ -81,6 +81,18 @@ public class MessageView extends K9Activity implements OnClickListener {
      */
     private Bundle mMessageListExtras;
 
+    /**
+     * Screen width in pixels.
+     *
+     * <p>
+     * Used to detect right-to-left bezel swipes.
+     * </p>
+     *
+     * @see #onSwipeRightToLeft(MotionEvent, MotionEvent)
+     */
+    private int mScreenWidthInPixels;
+
+
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
         public void onUnmount(String providerId) {
@@ -381,6 +393,11 @@ public class MessageView extends K9Activity implements OnClickListener {
             mNext.requestFocus();
         }
 
+        mScreenWidthInPixels = getResources().getDisplayMetrics().widthPixels;
+
+        // Enable gesture detection for MessageViews
+        mGestureDetector = new GestureDetector(new MyGestureDetector(false));
+
         setupButtonViews();
         displayMessage(mMessageReference);
     }
@@ -451,12 +468,12 @@ public class MessageView extends K9Activity implements OnClickListener {
         mPrevious.setEnabled(mPreviousMessage != null);
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if the Archive folder is not the current folder and not NONE.
+            // Only enable the button if they have an archive folder and it's not the current folder.
             mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+                                mAccount.hasArchiveFolder());
             // Only enable the button if the Spam folder is not the current folder and not NONE.
             mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                             !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+                             mAccount.hasSpamFolder());
             mMove.setEnabled(true);
         } else {
             disableMoveButtons();
@@ -713,19 +730,24 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     /**
-     * Handle a right-to-left swipe as "move to next message."
+     * Handle a right-to-left swipe starting at the edge of the screen as "move to next message."
      */
     @Override
     protected void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        onNext();
+        if ((int) e1.getRawX() > mScreenWidthInPixels - BEZEL_SWIPE_THRESHOLD) {
+            onNext();
+        }
     }
 
     /**
-     * Handle a left-to-right swipe as "move to previous message."
+     * Handle a left-to-right swipe starting at the edge of the screen as
+     * "move to previous message."
      */
     @Override
     protected void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        onPrevious();
+        if ((int) e1.getRawX() < BEZEL_SWIPE_THRESHOLD) {
+            onPrevious();
+        }
     }
 
     protected void onNext() {
@@ -880,10 +902,10 @@ public class MessageView extends K9Activity implements OnClickListener {
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
         }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
+        if (!mAccount.hasArchiveFolder()) {
             menu.findItem(R.id.archive).setVisible(false);
         }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
+        if (!mAccount.hasSpamFolder()) {
             menu.findItem(R.id.spam).setVisible(false);
         }
         return true;

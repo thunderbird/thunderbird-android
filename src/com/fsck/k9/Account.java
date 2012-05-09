@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,40 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
+    public enum SortType {
+        SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
+        SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
+        SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
+        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
+        SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
+        SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
+        SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
+
+        private int ascendingToast;
+        private int descendingToast;
+        private boolean defaultAscending;
+
+        SortType(int ascending, int descending, boolean ndefaultAscending) {
+            ascendingToast = ascending;
+            descendingToast = descending;
+            defaultAscending = ndefaultAscending;
+        }
+
+        public int getToast(boolean ascending) {
+            if (ascending) {
+                return ascendingToast;
+            } else {
+                return descendingToast;
+            }
+        }
+        public boolean isDefaultAscending() {
+            return defaultAscending;
+        }
+    }
+
+    public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
+    public static final boolean DEFAULT_SORT_ASCENDING = false;
+
 
     /**
      * <pre>
@@ -120,6 +155,8 @@ public class Account implements BaseAccount {
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
+    private SortType mSortType;
+    private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -213,6 +250,8 @@ public class Account implements BaseAccount {
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
+        mSortType = DEFAULT_SORT_TYPE;
+        mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -334,6 +373,15 @@ public class Account implements BaseAccount {
                                   (random.nextInt(0x70) * 0xff) +
                                   (random.nextInt(0x70) * 0xffff) +
                                   0xff000000);
+
+        try {
+            mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
+                                                 SortType.SORT_DATE.name()));
+        } catch (Exception e) {
+            mSortType = SortType.SORT_DATE;
+        }
+
+        mSortAscending.put(mSortType, prefs.getBoolean(mUuid + ".sortAscending", false));
 
         try {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
@@ -599,6 +647,8 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
+        editor.putString(mUuid + ".sortTypeEnum", mSortType.name());
+        editor.putBoolean(mUuid + ".sortAscending", mSortAscending.get(mSortType));
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -937,6 +987,14 @@ public class Account implements BaseAccount {
         mDraftsFolderName = draftsFolderName;
     }
 
+    /**
+     * Checks if this account has a drafts folder set.
+     * @return true if account has a drafts folder set.
+     */
+    public synchronized boolean hasDraftsFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mDraftsFolderName);
+    }
+
     public synchronized String getSentFolderName() {
         return mSentFolderName;
     }
@@ -949,12 +1007,29 @@ public class Account implements BaseAccount {
         mSentFolderName = sentFolderName;
     }
 
+    /**
+     * Checks if this account has a sent folder set.
+     * @return true if account has a sent folder set.
+     */
+    public synchronized boolean hasSentFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mSentFolderName);
+    }
+
+
     public synchronized String getTrashFolderName() {
         return mTrashFolderName;
     }
 
     public synchronized void setTrashFolderName(String trashFolderName) {
         mTrashFolderName = trashFolderName;
+    }
+
+    /**
+     * Checks if this account has a trash folder set.
+     * @return true if account has a trash folder set.
+     */
+    public synchronized boolean hasTrashFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mTrashFolderName);
     }
 
     public synchronized String getArchiveFolderName() {
@@ -965,12 +1040,28 @@ public class Account implements BaseAccount {
         mArchiveFolderName = archiveFolderName;
     }
 
+    /**
+     * Checks if this account has an archive folder set.
+     * @return true if account has an archive folder set.
+     */
+    public synchronized boolean hasArchiveFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mArchiveFolderName);
+    }
+
     public synchronized String getSpamFolderName() {
         return mSpamFolderName;
     }
 
     public synchronized void setSpamFolderName(String spamFolderName) {
         mSpamFolderName = spamFolderName;
+    }
+
+    /**
+     * Checks if this account has a spam folder set.
+     * @return true if account has a spam folder set.
+     */
+    public synchronized boolean hasSpamFolder() {
+        return !K9.FOLDER_NONE.equalsIgnoreCase(mSpamFolderName);
     }
 
     public synchronized String getOutboxFolderName() {
@@ -1033,6 +1124,25 @@ public class Account implements BaseAccount {
 
     public synchronized void setShowOngoing(boolean showOngoing) {
         this.mNotifySync = showOngoing;
+    }
+
+    public synchronized SortType getSortType() {
+        return mSortType;
+    }
+
+    public synchronized void setSortType(SortType sortType) {
+        mSortType = sortType;
+    }
+
+    public synchronized boolean isSortAscending(SortType sortType) {
+        if (mSortAscending.get(sortType) == null) {
+            mSortAscending.put(sortType, sortType.isDefaultAscending());
+        }
+        return mSortAscending.get(sortType);
+    }
+
+    public synchronized void setSortAscending(SortType sortType, boolean sortAscending) {
+        mSortAscending.put(sortType, sortAscending);
     }
 
     public synchronized ShowPictures getShowPictures() {
@@ -1306,7 +1416,6 @@ public class Account implements BaseAccount {
      * Only to be called durin initial account-setup!<br/>
      * Side-effect: changes {@link #mLocalStorageProviderId}.
      *
-     * @param context
      * @param newStorageProviderId
      *            Never <code>null</code>.
      * @throws MessagingException
