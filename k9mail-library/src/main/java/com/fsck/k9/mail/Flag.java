@@ -19,7 +19,8 @@ public class Flag {
      * IMPORTANT WARNING!!
      *
      * DO NOT ADD STATIC FIELDS TO THIS CLASS UNLESS THEY ARE
-     * NEW FLAGS THAT GET PREDEFINED.
+     * NEW FLAGS THAT GET PREDEFINED. IF YOU DO ADD A NEW PREDEFINED
+     * FLAG ADD IT IN THE valueOfByRealName() METHOD BELOW TOO!
      */
 
     /*
@@ -90,10 +91,10 @@ public class Flag {
      */
     private static final String USER_PREFIX = "USER_";
 
-    private final String mName;             // for use towards third party  ex. "\\Deleted"
     // when internal name = name we refer to it as just name
+    private final String mName;             // for use towards third party  ex. "\\Deleted"
     private final String mInternalName;     // for internal use in database,...   ex. "DELETED"
-    protected boolean mCustom;
+    protected final boolean mCustom;
 
     /**
      * When a Flag is created dynamically we know it's a custom flag.
@@ -102,8 +103,7 @@ public class Flag {
      * @return Newly created Flag object.
      */
     public static Flag createFlag(String name) {
-        Flag tmpFlag = new Flag(USER_PREFIX + name, name);
-        tmpFlag.mCustom = true;
+        Flag tmpFlag = new Flag(USER_PREFIX + name, name, true);
         return tmpFlag;
     }
 
@@ -119,8 +119,12 @@ public class Flag {
      * @param name Name for use towards third party ( ex. "\\Deleted" )
      */
     private Flag(String internalName, String name) {
+        this(internalName, name, false);
+    }
+
+    private Flag(String internalName, String name, boolean isCustom) {
         this.mName = name;
-        this.mCustom = false;
+        this.mCustom = isCustom;
         this.mInternalName = internalName;
     }
 
@@ -156,6 +160,11 @@ public class Flag {
     }
 
     /**
+     * NOTE
+     * This method is intended to be used with Flags which have a different
+     * internal and external name! Else use valueOf(String) !!
+     *
+     *
      * Returns the predefined flag matching the given "real name". For
      * example "\\Deleted" will return the DELETED flag. When no such
      * flag exists we assume it's a custom flag and create it.
@@ -168,10 +177,15 @@ public class Flag {
      * @return The flag that was found or created.
      */
     public static Flag valueOfByRealName(String name) {
-        for (Flag f : new Flag[] {DELETED, SEEN, ANSWERED, FLAGGED, DRAFT, RECENT})
+        for (Flag f : new Flag[] {DELETED, SEEN, ANSWERED, FLAGGED, DRAFT, RECENT,
+                                  X_DESTROYED, X_DOWNLOADED_FULL, X_DOWNLOADED_PARTIAL, X_GOT_ALL_HEADERS,
+                                  X_REMOTE_COPY_STARTED, X_SEND_FAILED, X_SEND_IN_PROGRESS
+                                 }) {
             if (f.mName.equalsIgnoreCase(name)) {
                 return f;
             }
+        }
+
         return Flag.createFlag(name);
     }
 
@@ -199,10 +213,15 @@ public class Flag {
         if (o instanceof Flag) {
             Flag f = (Flag)o;
             return ((f) == this ||
-                    (f.mCustom == this.mCustom && f.mInternalName == this.mInternalName
-                     && f.mName == this.mName));
+                    (f.mCustom == this.mCustom && f.mInternalName.equals(this.mInternalName)
+                     && f.mName.equals(this.mName)));
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return mInternalName.hashCode();
     }
 }
