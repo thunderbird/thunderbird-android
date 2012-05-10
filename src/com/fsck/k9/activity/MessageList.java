@@ -983,6 +983,9 @@ public class MessageList
         }
     }
 
+    // for J/K keyboard navigation
+    final int DIRECTION_UP = 0, DIRECTION_DOWN = 1;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Shortcuts that work no matter what is selected
@@ -1109,13 +1112,108 @@ public class MessageList
                         setFlag(selection, Flag.SEEN, !message.read);
                         return true;
                     }
+                    // move down: puts the second visible line in the first visible slot
+                    case KeyEvent.KEYCODE_J: {
+                        setOurSelection(position, DIRECTION_DOWN);
+                        return true;
+                    }
+                    // move up: puts the first visible line in the second visible slot
+                    case KeyEvent.KEYCODE_K: {
+                        setOurSelection(position, DIRECTION_UP);
+                        return true;
+                    }
                     }
                 }
             }
         } finally {
+            // if we haven't moved the trackball, the position will be -1,
+            // so choose the first if the user touches either the K or J keys:
+            if (position == -1 &&
+                    (keyCode == KeyEvent.KEYCODE_K || keyCode == KeyEvent.KEYCODE_J)) {
+                mListView.setSelection(0);
+                return true;
+            }
+            // move up: puts the first visible line in the second visible slot
+            // if we ran off the bottom, we come here because message == null
+            int this_count = mListView.getCount();
+            if (keyCode == KeyEvent.KEYCODE_K &&
+                    position == (this_count - 1)) {  // position is 0-based, count is 1-based
+                setOurSelection(position, DIRECTION_UP);
+                return true;
+            }
             retval = super.onKeyDown(keyCode, event);
         }
         return retval;
+    }
+
+    // This function can implement any of three methods for moving the
+    // highlight from item to item. One is active; two (A and B) are
+    // commented out.
+    //   The active code mimics the behavior of the trackball: the message
+    // stays stationary but the highlighted item moves until it reaches the
+    // top or bottom of the screen, then the appropriate new item appears
+    // at the top or bottom, respectively, of the screen one line at a time.
+    //   The (A) commented positioning code scrolls the message list so that
+    // the position of the highlighted message item stays the same on
+    // the screen, whereever the user put it with a focus method such
+    // as the trackball.
+    //   The (B) commented code keeps the message list unmoving (more or less)
+    // until the user scrolls to the bottom, then shifts the whole page
+    // and goes to the top of the new page. The reverse happens when
+    // the user scrolls to the top of the page. This method results in a
+    // long delay before the new page appears in either direction.
+    private void setOurSelection(int position, int direction) {
+
+        int item_height            = findViewById(R.layout.message_list_item).getHeight();
+        int first_visible_position = mListView.getFirstVisiblePosition();
+        int last_visible_position  = mListView.getLastVisiblePosition();
+        // check whether GUI reported incorrect number of visible items
+        int widget_height          = mListView.getHeight();
+        if (widget_height < (last_visible_position - first_visible_position + 1) * item_height) {
+            last_visible_position      = last_visible_position - 1; // sometimes this is 1 too high
+        }
+        int num_visible_items      = last_visible_position - first_visible_position + 1;
+
+        // (A) int position_save = position;  // we will try to put the new selected line where the old one was
+        switch (direction) {
+        case DIRECTION_DOWN:
+            position = position + 1;
+            if (position > mListView.getCount()) {
+                position = position - 1;
+            }
+            if (position > last_visible_position && position <= mListView.getCount()) {
+                // this is the one the user wants, after all, so let's select it
+                // and the user wants it at the bottom of the screen.
+                // (B) we just ran off the bottom of the screen, so display the next num_visible_items
+                // messages and highlight the first one (which is the one after the bottom of
+                // the list the user currently sees).
+                // (B) mListView.setSelectionFromTop(position, 0);
+                mListView.setSelectionFromTop(position, item_height *(num_visible_items - 1));
+                return;
+            }
+            break;
+        case DIRECTION_UP:
+            position = position - 1;
+            if (position < first_visible_position) {
+                if (position < 0) {
+                    position = 0;
+                } else {
+                    position = first_visible_position - 1;
+                }
+                // this is the one the user wants, after all, so let's select it
+                // we want to display the num_visible_items messsages that precede the one
+                // the user sees at the top of the display, with the first (new) item highlighted.
+                // (B) with the *last* item highlighted.
+                // (B) mListView.setSelectionFromTop(position, item_height *(num_visible_items - 1));
+                mListView.setSelection(position);
+                return;
+            }
+            break;
+        }
+        // if we didn't run off either end of the visible screen, leave the
+        // selected item where it was, just highlight it.
+        mListView.setSelectionFromTop(position, ((position - first_visible_position) * item_height));
+        // (A) mListView.setSelectionFromTop(position, ((position_save - first_visible_position) * item_height));
     }
 
     @Override
