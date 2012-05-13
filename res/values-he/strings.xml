@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_revision_url">https://github.com/k9mail/k-9/wiki/ReleaseNotes</string>
-  <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
-  <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt" formatted="false">Copyright 2008-%s The K-9 Dog Walkers. Portions Copyright 2006-%s the Android Open Source Project.</string>
-  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <string name="app_authors_fmt">מפתחים: %s</string>
-  <string name="app_revision_fmt">Revision Information: %s</string>
   <string name="app_libraries">"אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: %s"</string>
   <string name="app_emoji_icons">Emoji icons: %s</string>
   <string name="read_attachment_label">קרא הקבצים המצורפים לדוא"ל</string>
