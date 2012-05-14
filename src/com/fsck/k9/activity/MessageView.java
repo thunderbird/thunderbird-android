@@ -81,6 +81,18 @@ public class MessageView extends K9Activity implements OnClickListener {
      */
     private Bundle mMessageListExtras;
 
+    /**
+     * Screen width in pixels.
+     *
+     * <p>
+     * Used to detect right-to-left bezel swipes.
+     * </p>
+     *
+     * @see #onSwipeRightToLeft(MotionEvent, MotionEvent)
+     */
+    private int mScreenWidthInPixels;
+
+
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
         public void onUnmount(String providerId) {
@@ -378,6 +390,11 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (intent.getBooleanExtra(EXTRA_NEXT, false)) {
             mNext.requestFocus();
         }
+
+        mScreenWidthInPixels = getResources().getDisplayMetrics().widthPixels;
+
+        // Enable gesture detection for MessageViews
+        mGestureDetector = new GestureDetector(new MyGestureDetector(false));
 
         setupButtonViews();
         displayMessage(mMessageReference);
@@ -711,19 +728,24 @@ public class MessageView extends K9Activity implements OnClickListener {
     }
 
     /**
-     * Handle a right-to-left swipe as "move to next message."
+     * Handle a right-to-left swipe starting at the edge of the screen as "move to next message."
      */
     @Override
     protected void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        onNext();
+        if ((int) e1.getRawX() > mScreenWidthInPixels - BEZEL_SWIPE_THRESHOLD) {
+            onNext();
+        }
     }
 
     /**
-     * Handle a left-to-right swipe as "move to previous message."
+     * Handle a left-to-right swipe starting at the edge of the screen as
+     * "move to previous message."
      */
     @Override
     protected void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        onPrevious();
+        if ((int) e1.getRawX() < BEZEL_SWIPE_THRESHOLD) {
+            onPrevious();
+        }
     }
 
     protected void onNext() {

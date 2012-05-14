@@ -1172,7 +1172,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onAbout() {
         String appName = getString(R.string.app_name);
-        String year = "2011";
+        String year = "2012";
         WebView wv = new WebView(this);
         StringBuilder html = new StringBuilder()
         .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
