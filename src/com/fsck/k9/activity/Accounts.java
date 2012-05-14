@@ -1089,7 +1089,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             onRecreate(realAccount);
             break;
         case R.id.export:
-            onExport(false, realAccount);
+            onExport(false, realAccount, false);
             break;
         case R.id.move_up:
             onMove(realAccount, true);
@@ -1148,7 +1148,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             onSearchRequested();
             break;
         case R.id.export_all:
-            onExport(true, null);
+            onExport(true, null, true);
+            break;
+        case R.id.export_only_globals:
+            onExport(true, null, false);
             break;
         case R.id.import_settings:
             onImport();
@@ -1806,15 +1809,54 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     }
 
-    public void onExport(final boolean includeGlobals, final Account account) {
-
+    public void onExport(final boolean includeGlobals, final Account singleAccount, final boolean allAccounts) {
         // TODO, prompt to allow a user to choose which accounts to export
+<<<<<<< HEAD
         Set<String> accountUuids = null;
         if (account != null) {
             accountUuids = new HashSet<String>();
             accountUuids.add(account.getUuid());
+=======
+        HashSet<String> accountUuids = null;
+        if (allAccounts) {
+            accountUuids = new HashSet<String>();
+            Account[] accounts = Preferences.getPreferences(this).getAccounts();
+            for (Account account : accounts) {
+                accountUuids.add(account.getUuid());
+            }
+        }
+        else if (singleAccount != null) {
+            accountUuids = new HashSet<String>();
+            accountUuids.add(singleAccount.getUuid());
         }
 
+        List<String> formats = StorageFormat.getPresentableFormats();
+        Log.i(K9.LOG_TAG, "Got formats to present to user: " + formats);
+       
+        if (formats.size() > 1) {
+            chooseFormat(formats, includeGlobals, accountUuids, allAccounts);
+>>>>>>> upstream/issue549
+        }
+        else if (formats.size() == 1) {
+            finishExport(formats.get(0), includeGlobals, accountUuids, allAccounts);
+        }
+        else {
+            showDialog(Accounts.this, R.string.settings_export_failed_header, Accounts.this.getString(R.string.settings_export_no_available_formats));
+        }
+    }
+    
+    private void chooseFormat(final List<String> formats, final boolean includeGlobals, final Set<String> accountUuids, final boolean allAccounts) {
+        for (String format : formats) {
+            Integer res = StorageFormat.getPresentableResource(format);
+            if (res != null) {
+                String presentableString = getString(res);
+                Log.i(K9.LOG_TAG, "For format \'" + format + "\' got presentable String \"" + presentableString + "\"");
+            }
+        }
+     // TODO: Once there are more file formats, build a UI to select which one to use.  For now, use the safe one.
+        String storageFormat = StorageFormat.ENCRYPTED_BLOB;
+
+<<<<<<< HEAD
         ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids);
         setNonConfigurationInstance(asyncTask);
         asyncTask.execute();
@@ -1828,6 +1870,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private Set<String> mAccountUuids;
         private String mFileName;
 
+=======
+        Log.i(K9.LOG_TAG, "Chosen format is \'" + storageFormat + "\'");
+        finishExport(storageFormat, includeGlobals, accountUuids, allAccounts);
+    }
+    
+    private void finishExport(final String storageFormat, final boolean includeGlobals, final Set<String> accountUuids, final boolean allAccounts) {
+        AsyncUIProcessor.getInstance(this.getApplication()).exportSettings(this, storageFormat, includeGlobals, accountUuids, new ExportListener() {
+>>>>>>> upstream/issue549
 
         private ExportAsyncTask(Accounts activity, boolean includeGlobals,
                 Set<String> accountUuids) {
