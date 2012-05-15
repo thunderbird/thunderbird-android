@@ -827,15 +827,18 @@ public class MessageList
         mController.addListener(mAdapter.mListener);
 
         Account[] accountsWithNotification;
-        if (mAccount != null) {
-            accountsWithNotification = new Account[] { mAccount };
-            mSortType = mAccount.getSortType();
-            mSortAscending = mAccount.isSortAscending(mSortType);
-            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
+
+        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        Account account = getCurrentAccount(prefs);
+
+        if (account != null) {
+            accountsWithNotification = new Account[] { account };
+            mSortType = account.getSortType();
+            mSortAscending = account.isSortAscending(mSortType);
+            mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
         } else {
-            Preferences preferences = Preferences.getPreferences(this);
-            accountsWithNotification = preferences.getAccounts();
-            mSortType = K9.getSortType(); // ASH
+            accountsWithNotification = prefs.getAccounts();
+            mSortType = K9.getSortType();
             mSortAscending = K9.isSortAscending(mSortType);
             mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
@@ -1203,17 +1206,20 @@ public class MessageList
             onToggleSortAscending();
         } else {
             mSortType = sortType;
-            if (mAccount != null) {
-                mAccount.setSortType(mSortType);
-                mSortAscending = mAccount.isSortAscending(mSortType);
-                mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-                mAccount.save(Preferences.getPreferences(this));
+
+            Preferences prefs = Preferences.getPreferences(getApplicationContext());
+            Account account = getCurrentAccount(prefs);
+
+            if (account != null) {
+                account.setSortType(mSortType);
+                mSortAscending = account.isSortAscending(mSortType);
+                mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
+                account.save(prefs);
             } else {
                 K9.setSortType(mSortType);
                 mSortAscending = K9.isSortAscending(mSortType);
                 mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
 
-                Preferences prefs = Preferences.getPreferences(getApplicationContext());
                 Editor editor = prefs.getPreferences().edit();
                 K9.save(editor);
                 editor.commit();
@@ -2981,4 +2987,25 @@ public class MessageList
         Accounts.listAccounts(this);
     }
 
+    /**
+     * Return the currently "open" account if available.
+     *
+     * @param prefs
+     *         A {@link Preferences} instance that might be used to retrieve the current
+     *         {@link Account}.
+     *
+     * @return The {@code Account} all displayed messages belong to.
+     */
+    private Account getCurrentAccount(Preferences prefs) {
+        Account account = null;
+        if (mQueryString != null && !mIntegrate && mAccountUuids != null &&
+                mAccountUuids.length == 1) {
+            String uuid = mAccountUuids[0];
+            account = prefs.getAccount(uuid);
+        } else if (mAccount != null) {
+            account = mAccount;
+        }
+
+        return account;
+    }
 }
