@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -25,10 +26,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -187,6 +190,8 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
+    private Set<String> mSpamBlacklist = new HashSet<String>();
+    private boolean mSpamFilterEnabled;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -442,6 +447,10 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        
+        mSpamFilterEnabled = prefs.getBoolean(mUuid + ".spamFilterEnabled", false);
+        String blacklistAsString = prefs.getString(mUuid + ".spamBlacklist", "");
+        mSpamBlacklist = new HashSet<String>(Arrays.asList(blacklistAsString.split(";")));
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -526,6 +535,8 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
+        editor.remove(mUuid + ".spamFilterEnabled");
+        editor.remove(mUuid + ".spamBlacklist");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -697,6 +708,10 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
+        
+        String blacklistAsString = StringUtils.join(mSpamBlacklist, ";");
+        editor.putString(mUuid + ".spamBlacklist", blacklistAsString);
+        editor.putBoolean(mUuid + ".spamFilterEnabled", mSpamFilterEnabled);
 
         for (String type : networkTypes) {
             Boolean useCompression = compressionMap.get(type);
@@ -1623,5 +1638,25 @@ public class Account implements BaseAccount {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
+    }
+    
+    public boolean isSpamFilterEnabled() {
+    	return mSpamFilterEnabled;
+    }
+    
+    public void setIsSpamFilterEnabled(boolean value) {
+    	mSpamFilterEnabled = value;
+    }
+    
+    public Set<String> getSpamBlacklist() {
+    	return mSpamBlacklist;
+    }
+    
+    public String getSpamBlacklistAsString() {
+    	return StringUtils.join(mSpamBlacklist, "\n");
+    }
+    
+    public void setSpamBlacklistAsString(String str) {
+    	mSpamBlacklist = new HashSet<String>(Arrays.asList(str.split("\n")));
     }
 }

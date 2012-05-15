@@ -37,6 +37,7 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.NotificationBuilder;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -1401,6 +1402,17 @@ public class MessagingController implements Runnable {
                             l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                         }
                         return;
+                    }
+                    
+                    // Spam check
+                    if (account.isSpamFilterEnabled() && !StringUtils.isNullOrEmpty(account.getSpamFolderName())) {
+                        if (folder.equals(account.getInboxFolderName()) && isSpamMessage(message)) {
+                            // moveOrCopyMessageSynchronous() would require a local copy of the message
+                            queueMoveOrCopy(account, folder, account.getSpamFolderName(), false,
+                                new String[] {message.getUid() });
+                            processPendingCommands(account);
+                            return; // do not include as small / large message to not show it in the view
+                        }
                     }
 
                     if (account.getMaximumAutoDownloadMessageSize() > 0 &&
@@ -3442,6 +3454,15 @@ public class MessagingController implements Runnable {
                     unreadCountAffected = true;
                 }
             }
+            
+            // Update spam rules
+            if (account.isSpamFilterEnabled()) {
+	            if (srcFolder.equals(account.getSpamFolderName()) && !destFolder.equals(account.getTrashFolderName())) {
+	                markAsNoSpam(inMessages);
+	            } else if (destFolder.equals(account.getSpamFolderName())) {
+	                markAsSpam(inMessages);
+	            }
+            }
 
             Message[] messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
             if (messages.length > 0) {
@@ -3505,6 +3526,51 @@ public class MessagingController implements Runnable {
 
             throw new RuntimeException("Error moving message", me);
         }
+    }
+    
+    /**
+     * Adds the messages' sender addresses to the blacklist
+     * 
+     * @param messages The messages to be marked as spam
+     */
+    private void markAsSpam(Message[] messages) {
+        for (Message message : messages) {
+            Set<String> spamBlacklist = message.getFolder().getAccount().getSpamBlacklist();
+            for (Address address : message.getFrom()) {
+                 spamBlacklist.add(address.getAddress().toLowerCase());
+            }
+        }
+    }
+
+    /**
+     * Removes the messages' sender addresses from the blacklist
+     * 
+     * @param messages The messages whose spam mark is to be removed
+     */
+    private void markAsNoSpam(Message[] messages) {
+        for (Message message : messages) {
+            Set<String> spamBlacklist = message.getFolder().getAccount().getSpamBlacklist();
+            for (Address address : message.getFrom()) {
+                 spamBlacklist.remove(address.getAddress().toLowerCase());
+            }
+        }
+    }
+    
+    /**
+     * Checks if the message is spam, referring to the blacklist
+     * 
+     * @param message the message to check
+     * @return true, if the message is spam, false otherwise
+     */
+    private boolean isSpamMessage(Message message) {
+        Set<String> spamBlacklist = message.getFolder().getAccount().getSpamBlacklist();
+        for (Address address : message.getFrom()) {
+            if ((address.getAddress() != null) && !("".equals(address.getAddress()))
+             && spamBlacklist.contains(address.getAddress().toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void expunge(final Account account, final String folder, final MessagingListener listener) {

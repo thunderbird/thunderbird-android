@@ -212,6 +212,12 @@ public class AccountSettings {
                 new V(1, new IntegerResourceSetting(5,
                 R.array.account_settings_vibrate_times_label))
             ));
+        s.put("spamBlacklist", Settings.versions(
+                new V(10, new StringSetting(""))
+            ));
+        s.put("spamFilterEnabled", Settings.versions(
+                new V(10, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
