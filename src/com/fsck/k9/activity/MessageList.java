@@ -1049,7 +1049,7 @@ public class MessageList
             return true;
         }
         case KeyEvent.KEYCODE_I: {
-            onToggleSortAscending();
+            changeSort(mSortType);
             return true;
         }
         case KeyEvent.KEYCODE_H: {
@@ -1202,30 +1202,55 @@ public class MessageList
     }
 
     private void changeSort(SortType sortType) {
-        if (mSortType == sortType) {
-            onToggleSortAscending();
-        } else {
-            mSortType = sortType;
+        Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
+        changeSort(sortType, sortAscending);
+    }
 
-            Preferences prefs = Preferences.getPreferences(getApplicationContext());
-            Account account = getCurrentAccount(prefs);
+    /**
+     * Change the sort type and sort order used for the message list.
+     *
+     * @param sortType
+     *         Specifies which field to use for sorting the message list.
+     * @param sortAscending
+     *         Specifies the sort order. If this argument is {@code null} the default search order
+     *         for the sort type is used.
+     */
+    // FIXME: Don't save the changes in the UI thread
+    private void changeSort(SortType sortType, Boolean sortAscending) {
+        mSortType = sortType;
 
-            if (account != null) {
-                account.setSortType(mSortType);
+        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        Account account = getCurrentAccount(prefs);
+
+        if (account != null) {
+            account.setSortType(mSortType);
+
+            if (sortAscending == null) {
                 mSortAscending = account.isSortAscending(mSortType);
-                mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
-                account.save(prefs);
             } else {
-                K9.setSortType(mSortType);
-                mSortAscending = K9.isSortAscending(mSortType);
-                mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
-
-                Editor editor = prefs.getPreferences().edit();
-                K9.save(editor);
-                editor.commit();
+                mSortAscending = sortAscending;
             }
-            reSort();
+            account.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
+
+            account.save(prefs);
+        } else {
+            K9.setSortType(mSortType);
+
+            if (sortAscending == null) {
+                mSortAscending = K9.isSortAscending(mSortType);
+            } else {
+                mSortAscending = sortAscending;
+            }
+            K9.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
+
+            Editor editor = prefs.getPreferences().edit();
+            K9.save(editor);
+            editor.commit();
         }
+
+        reSort();
     }
 
     private void reSort() {
@@ -1255,19 +1280,6 @@ public class MessageList
         }
 
         changeSort(sorts[curIndex]);
-    }
-
-    private void onToggleSortAscending() {
-        mSortAscending = !mSortAscending;
-        if (mAccount != null) {
-            mAccount.setSortAscending(mSortType, mSortAscending);
-            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-            mAccount.save(Preferences.getPreferences(this));
-        } else {
-            K9.setSortAscending(mSortType, mSortAscending);
-            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
-        }
-        reSort();
     }
 
     /**
