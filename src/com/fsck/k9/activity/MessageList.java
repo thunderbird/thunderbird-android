@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -1211,6 +1212,11 @@ public class MessageList
                 K9.setSortType(mSortType);
                 mSortAscending = K9.isSortAscending(mSortType);
                 mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
+
+                Preferences prefs = Preferences.getPreferences(getApplicationContext());
+                Editor editor = prefs.getPreferences().edit();
+                K9.save(editor);
+                editor.commit();
             }
             reSort();
         }

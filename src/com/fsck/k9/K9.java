@@ -462,6 +462,9 @@ public class K9 extends Application {
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
 
+        editor.putString("sortTypeEnum", mSortType.name());
+        editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
+
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
         editor.putBoolean("compactLayouts", compactLayouts);
@@ -474,9 +477,6 @@ public class K9 extends Application {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
-
-        mSortType = Account.DEFAULT_SORT_TYPE;
-        mSortAscending.put(Account.DEFAULT_SORT_TYPE, Account.DEFAULT_SORT_ASCENDING);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -619,6 +619,15 @@ public class K9 extends Application {
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
         mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
 
+        try {
+            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            mSortType = SortType.valueOf(value);
+        } catch (Exception e) {
+            mSortType = Account.DEFAULT_SORT_TYPE;
+        }
+
+        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        mSortAscending.put(mSortType, sortAscending);
 
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
