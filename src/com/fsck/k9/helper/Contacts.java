@@ -31,6 +31,7 @@ public abstract class Contacts {
      * @return Appropriate {@link Contacts} instance for this device.
      */
     public static Contacts getInstance(Context context) {
+        Context appContext = context.getApplicationContext();
         if (sInstance == null) {
             /*
              * Check the version of the SDK we are running on. Choose an
@@ -41,9 +42,9 @@ public abstract class Contacts {
                  * The new API was introduced with SDK 5. But Android versions < 2.2
                  * need some additional code to be able to search for phonetic names.
                  */
-                sInstance = new ContactsSdk5p(context);
+                sInstance = new ContactsSdk5p(appContext);
             } else {
-                sInstance = new ContactsSdk5(context);
+                sInstance = new ContactsSdk5(appContext);
             }
         }
 

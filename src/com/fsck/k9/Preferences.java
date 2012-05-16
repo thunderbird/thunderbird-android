@@ -25,8 +25,9 @@ public class Preferences {
     private static Preferences preferences;
 
     public static synchronized Preferences getPreferences(Context context) {
+        Context appContext = context.getApplicationContext();
         if (preferences == null) {
-            preferences = new Preferences(context);
+            preferences = new Preferences(appContext);
         }
         return preferences;
     }
