@@ -28,7 +28,7 @@ public class ViewablesTest extends AndroidTestCase {
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>" +
                 "</body></html>";
@@ -90,13 +90,13 @@ public class ViewablesTest extends AndroidTestCase {
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText1 +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; " +
                         "border-bottom: 1px solid #000\"></p>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText2 +
                 "</pre>" +
                 "</body></html>";
@@ -156,7 +156,7 @@ public class ViewablesTest extends AndroidTestCase {
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
@@ -177,7 +177,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "</tr>" +
                 "</table>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 innerBodyText +
                 "</pre>" +
                 "</body></html>";
