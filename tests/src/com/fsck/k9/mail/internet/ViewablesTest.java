@@ -108,7 +108,7 @@ public class ViewablesTest extends AndroidTestCase {
 
     public void testTextPlusRfc822Message() throws MessagingException {
         Locale.setDefault(Locale.US);
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
 
         String bodyText = "Some text here";
         String innerBodyText = "Hey there. I'm inside a message/rfc822 (inline) attachment.";
