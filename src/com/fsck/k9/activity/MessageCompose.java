@@ -185,6 +185,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private boolean mSourceMessageProcessed = false;
 
+    enum Action {
+        COMPOSE,
+        REPLY,
+        REPLY_ALL,
+        FORWARD,
+        EDIT_DRAFT
+    }
+
+    /**
+     * Contains the action we're currently performing (e.g. replying to a message)
+     */
+    private Action mAction;
+
     private enum QuotedTextMode {
         NONE,
         SHOW,
@@ -587,8 +600,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
 
-        final String action = intent.getAction();
-        initFromIntent(intent);
+        if (initFromIntent(intent)) {
+            mAction = Action.COMPOSE;
+        } else {
+            String action = intent.getAction();
+            if (ACTION_COMPOSE.equals(action)) {
+                mAction = Action.COMPOSE;
+            } else if (ACTION_REPLY.equals(action)) {
+                mAction = Action.REPLY;
+            } else if (ACTION_REPLY_ALL.equals(action)) {
+                mAction = Action.REPLY_ALL;
+            } else if (ACTION_FORWARD.equals(action)) {
+                mAction = Action.FORWARD;
+            } else if (ACTION_EDIT_DRAFT.equals(action)) {
+                mAction = Action.EDIT_DRAFT;
+            } else {
+                // This shouldn't happen
+                Log.w(K9.LOG_TAG, "MessageCompose was started with an unsupported action");
+                mAction = Action.COMPOSE;
+            }
+        }
 
         if (mIdentity == null) {
             mIdentity = mAccount.getIdentity(0);
@@ -609,7 +640,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         mMessageFormat = mAccount.getMessageFormat();
         if (mMessageFormat == MessageFormat.AUTO) {
-            if (ACTION_COMPOSE.equals(action)) {
+            if (mAction == Action.COMPOSE) {
                 mMessageFormat = MessageFormat.TEXT;
             } else if (mSourceMessageBody != null) {
                 // mSourceMessageBody is set to something when replying to and forwarding decrypted
@@ -626,10 +657,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (!mSourceMessageProcessed) {
             updateSignature();
 
-            if (ACTION_REPLY.equals(action) ||
-                    ACTION_REPLY_ALL.equals(action) ||
-                    ACTION_FORWARD.equals(action) ||
-                    ACTION_EDIT_DRAFT.equals(action)) {
+            if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
+                    mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT) {
                 /*
                  * If we need to load the message we add ourself as a message listener here
                  * so we can kick it off. Normally we add in onResume but we don't
@@ -644,7 +673,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
             }
 
-            if (!ACTION_EDIT_DRAFT.equals(action)) {
+            if (mAction != Action.EDIT_DRAFT) {
                 String bccAddress = mAccount.getAlwaysBcc();
                 if ((bccAddress != null) && !("".equals(bccAddress))) {
                     String[] bccAddresses = bccAddress.split(",");
@@ -662,14 +691,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             updateTitle();
         }
 
-        if (ACTION_REPLY.equals(action) ||
-                ACTION_REPLY_ALL.equals(action)) {
+        if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
             mMessageReference.flag = Flag.ANSWERED;
         }
 
-        if (ACTION_REPLY.equals(action) ||
-                ACTION_REPLY_ALL.equals(action) ||
-                ACTION_EDIT_DRAFT.equals(action)) {
+        if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
+                mAction == Action.EDIT_DRAFT) {
             //change focus to message body.
             mMessageContentView.requestFocus();
         } else {
@@ -742,12 +769,29 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Handle external intents that trigger the message compose activity.
      *
-     * @param intent The (external) intent that started the activity.
+     * <p>
+     * Supported external intents:
+     * <ul>
+     *   <li>{@link Intent#ACTION_VIEW}</li>
+     *   <li>{@link Intent#ACTION_SENDTO}</li>
+     *   <li>{@link Intent#ACTION_SEND}</li>
+     *   <li>{@link Intent#ACTION_SEND_MULTIPLE}</li>
+     * </ul>
+     * </p>
+     *
+     * @param intent
+     *         The (external) intent that started the activity.
+     *
+     * @return {@code true}, if this activity was started by an external intent. {@code false},
+     *         otherwise.
      */
-    private void initFromIntent(final Intent intent) {
+    private boolean initFromIntent(final Intent intent) {
+        boolean startedByExternalIntent = false;
         final String action = intent.getAction();
 
         if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action)) {
+            startedByExternalIntent = true;
+
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
              */
@@ -770,6 +814,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action) ||
                 Intent.ACTION_SENDTO.equals(action)) {
+            startedByExternalIntent = true;
 
             /*
              * Note: Here we allow a slight deviation from the documentated behavior.
@@ -829,6 +874,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 onAddCcBcc();
             }
         }
+
+        return startedByExternalIntent;
     }
 
     private boolean addRecipients(TextView view, List<String> recipients) {
@@ -1879,7 +1926,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             // on draft edit, make sure we don't keep previous message UID
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())) {
+            if (mAction == Action.EDIT_DRAFT) {
                 mMessageReference = null;
             }
 
@@ -2240,9 +2287,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param message Source message
      */
     private void processSourceMessage(Message message) {
-        String action = getIntent().getAction();
         try {
-            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
+            if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
                 if (message.getSubject() != null) {
                     final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
 
@@ -2297,7 +2343,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 // Quote the message and setup the UI.
                 populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
 
-                if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action)) {
+                if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
                     Identity useIdentity = null;
                     for (Address address : message.getRecipients(RecipientType.TO)) {
                         Identity identity = mAccount.findIdentity(address);
@@ -2325,7 +2371,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
 
-                if (ACTION_REPLY_ALL.equals(action)) {
+                if (mAction == Action.REPLY_ALL) {
                     if (message.getReplyTo().length > 0) {
                         for (Address address : message.getFrom()) {
                             if (!mAccount.isAnIdentity(address)) {
@@ -2349,7 +2395,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         mCcWrapper.setVisibility(View.VISIBLE);
                     }
                 }
-            } else if (ACTION_FORWARD.equals(action)) {
+            } else if (mAction == Action.FORWARD) {
                 String subject = message.getSubject();
                 if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
                     mSubjectView.setText("Fwd: " + subject);
@@ -2366,7 +2412,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
                     }
                 }
-            } else if (ACTION_EDIT_DRAFT.equals(action)) {
+            } else if (mAction == Action.EDIT_DRAFT) {
                 String showQuotedTextMode = "NONE";
 
                 mDraftId = MessagingController.getInstance(getApplication()).getId(message);
@@ -2643,8 +2689,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mMessageFormat == MessageFormat.HTML) {
             // Strip signature.
             // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
-            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) ||
-                                                ACTION_REPLY.equals(getIntent().getAction()))) {
+            if (mAccount.isStripSignature() &&
+                    (mAction == Action.REPLY || mAction == Action.REPLY_ALL)) {
                 Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
                 if (dashSignatureHtml.find()) {
                     Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
@@ -2722,8 +2768,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     getBodyTextFromMessage(mSourceMessage, MessageFormat.TEXT), mQuoteStyle));
 
         } else if (mMessageFormat == MessageFormat.TEXT) {
-            if (mAccount.isStripSignature() && (ACTION_REPLY_ALL.equals(getIntent().getAction()) ||
-                                                ACTION_REPLY.equals(getIntent().getAction()))) {
+            if (mAccount.isStripSignature() &&
+                    (mAction == Action.REPLY || mAction == Action.REPLY_ALL)) {
                 if (DASH_SIGNATURE_PLAIN.matcher(content).find()) {
                     content = DASH_SIGNATURE_PLAIN.matcher(content).replaceFirst("\r\n");
                 }
@@ -3097,7 +3143,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             /*
              * Save a draft
              */
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())) {
+            if (mAction == Action.EDIT_DRAFT) {
                 /*
                  * We're saving a previously saved draft, so update the new message's uid
                  * to the old message's uid.
