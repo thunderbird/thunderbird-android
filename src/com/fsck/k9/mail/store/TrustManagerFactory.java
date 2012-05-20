@@ -91,32 +91,25 @@ public final class TrustManagerFactory {
                 try {
                     localTrustManager.checkServerTrusted(new X509Certificate[] {chain[0]}, authType);
                 } catch (Exception e1) {
-                    /* on HTC phones there is an RSA lib bug which causes this method to fail permanently with an strange error:
-                     * E/k9      (25824): Caused by: java.lang.RuntimeException: error:0407006A:rsa routines:RSA_padding_check_PKCS1_type_1:block type is not 01 (SHA-1)
+                    /*
+                     * on HTC phones there is an RSA lib bug which causes this
+                     * method to fail permanently with an strange error: E/k9
+                     * (25824): Caused by: java.lang.RuntimeException:
+                     * error:0407006A:rsa
+                     * routines:RSA_padding_check_PKCS1_type_1:block type is not
+                     * 01 (SHA-1)
                      *
-                     * SO WE try a workaround: we use every pubkey from our keystore and check if the chain validates against it.
+                     * SO WE try a workaround: we use every pubkey from our
+                     * keystore and check if the chain validates against it.
                      * http://code.google.com/p/k9mail/issues/detail?id=3976
                      */
-                    Log.d(LOG_TAG, "SSL-connection HTC padding Bug workaround executing");
-                    boolean verified = false;
                     try {
-                        Enumeration<String> aliases;
-                        aliases = keyStore.aliases();
-                        while (aliases.hasMoreElements()) {
-                            String alias = aliases.nextElement();
-                            Certificate cert = keyStore.getCertificate(alias);
-                            try {
-                                chain[0].verify(cert.getPublicKey());
-                                verified = true;
-                                break;
-                            } catch (Exception e3) {}
-                        }
-                        if (!verified) {
-                            /* no valid public key found so this connection isnot trusted */
-                            throw new CertificateException("Certificate cannot be verified; KeyStore Exception: " + e);
-                        }
-                    } catch (KeyStoreException e2) {
-                        Log.e(LOG_TAG, "KeyStore Problem", e2);
+                        checkServerTrustedHTCWorkaround(chain, authType);
+                    } catch (CertificateException e2) {
+                        /* workaround did not report trusted as well
+                         * -> throw original exception
+                         */
+                        throw new CertificateException("Certificate cannot be verified; KeyStore Exception: ", e);
                     }
                 }
 
@@ -135,6 +128,58 @@ public final class TrustManagerFactory {
                                                + mHost);
             }
         }
+
+        /**
+         * This method is an workaround for an HTC RSA lib bug.
+         *
+         * This method is only called by checkServerTrusted
+         * NEVER CALL THIS METHOD DIRECTLY.
+         *
+         * on HTC phones there is an RSA lib bug which causes this method to
+         * fail permanently with an strange error: E/k9 (25824): Caused by:
+         * java.lang.RuntimeException: error:0407006A:rsa
+         * routines:RSA_padding_check_PKCS1_type_1:block type is not 01 (SHA-1)
+         *
+         * SO WE try a workaround: we use every pubkey from our keystore and
+         * check if the chain validates against it.
+         * http://code.google.com/p/k9mail/issues/detail?id=3976
+         *
+         * @param chain
+         * @param authType
+         * @throws CertificateException
+         */
+        public void checkServerTrustedHTCWorkaround(X509Certificate[] chain, String authType)
+        throws CertificateException {
+            Log.d(LOG_TAG, "SSL-connection HTC padding Bug workaround executing");
+            boolean verified = false;
+            try {
+                Enumeration<String> aliases;
+                aliases = keyStore.aliases();
+                while (aliases.hasMoreElements()) {
+                    String alias = aliases.nextElement();
+                    Certificate cert = keyStore.getCertificate(alias);
+                    try {
+                        /*
+                         * we only check the leaf of a certificate chain. during
+                         * import for selfsigned certs we also only import the
+                         * leaf of a chain.
+                         */
+                        chain[0].verify(cert.getPublicKey());
+                        verified = true;
+                        break;
+                    } catch (Exception e3) {
+                        Log.e(LOG_TAG, e3.toString());
+                    }
+                }
+                if (!verified) {
+                    /* no valid public key found so this connection isnot trusted */
+                    throw new CertificateException();
+                }
+            } catch (KeyStoreException e2) {
+                Log.e(LOG_TAG, "KeyStore Problem", e2);
+            }
+        }
+
 
         public X509Certificate[] getAcceptedIssuers() {
             return defaultTrustManager.getAcceptedIssuers();
