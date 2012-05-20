@@ -14,7 +14,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Contacts;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 /**
  * Prompts the user to select an account type. The account type, along with the
@@ -22,12 +27,14 @@ import java.net.URI;
  * AccountSetupIncoming activity.
  */
 public class AccountSetupAccountType extends K9Activity implements OnClickListener {
-    private static final String EXTRA_ACCOUNT = "account";
 
+    private static final String EXTRA_IS_MANUAL = "mManual";
+    private static final String EXTRA_EMAIL = "email";
+    private static final String EXTRA_PASSWORD = "password";
+    private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private Account mAccount;
-
     private boolean mMakeDefault;
 
     public static void actionSelectAccountType(Context context, Account account, boolean makeDefault) {
@@ -37,6 +44,18 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         context.startActivity(i);
     }
 
+    public static void actionStartManualConfiguration(Context context, String email, String password, boolean makeDefault) {
+        Intent i = new Intent(context, AccountSetupAccountType.class);
+        i.putExtra(EXTRA_IS_MANUAL, true);
+        i.putExtra(EXTRA_EMAIL, email);
+        i.putExtra(EXTRA_PASSWORD, password);
+        i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
+        context.startActivity(i);
+    }
+
+    /*
+        'Constructor'
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +64,15 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         ((Button)findViewById(R.id.imap)).setOnClickListener(this);
         ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
 
-        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
+        if( getIntent().getBooleanExtra(EXTRA_IS_MANUAL, false) ){
+            mAccount = Account.getBlankAccount(this,
+                    getIntent().getStringExtra(EXTRA_EMAIL),
+                    getIntent().getStringExtra(EXTRA_PASSWORD));
+        }else{
+            String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
+        }
     }
 
     private void onPop() {

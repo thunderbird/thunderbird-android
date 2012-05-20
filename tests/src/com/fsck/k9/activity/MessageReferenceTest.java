@@ -1,10 +1,11 @@
 package com.fsck.k9.activity;
 
+import android.test.AndroidTestCase;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import junit.framework.TestCase;
 
-public class MessageReferenceTest extends TestCase
+public class MessageReferenceTest extends AndroidTestCase
 {
     /**
      * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider FORWARDED a flag.)

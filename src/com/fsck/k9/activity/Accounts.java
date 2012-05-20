@@ -59,19 +59,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
-import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.SearchAccount;
-import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.*;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
+import com.fsck.k9.activity.setup.AccountSetupIndex;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -408,12 +401,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {
 
-        @Override
         public void onUnmount(String providerId) {
             refresh();
         }
 
-        @Override
         public void onMount(String providerId) {
             refresh();
         }
@@ -515,7 +506,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onAddNewAccount() {
-        AccountSetupBasics.actionNewAccount(this);
+        AccountSetupIndex.actionNewAccount(this);
     }
 
     private void onEditAccount(Account account) {
@@ -1757,7 +1748,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             account = nAccount;
             searchModifier = nSearchModifier;
         }
-        @Override
+
         public void onClick(View v) {
             String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
             if (account instanceof SearchAccount) {
@@ -1769,32 +1760,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                                          combine(searchAccount.getForbiddenFlags(), searchModifier.forbiddenFlags));
             } else {
                 SearchSpecification searchSpec = new SearchSpecification() {
-                    @Override
                     public String[] getAccountUuids() {
                         return new String[] { account.getUuid() };
                     }
 
-                    @Override
                     public Flag[] getForbiddenFlags() {
                         return searchModifier.forbiddenFlags;
                     }
 
-                    @Override
                     public String getQuery() {
                         return "";
                     }
 
-                    @Override
                     public Flag[] getRequiredFlags() {
                         return searchModifier.requiredFlags;
                     }
 
-                    @Override
                     public boolean isIntegrate() {
                         return false;
                     }
 
-                    @Override
                     public String[] getFolderNames() {
                         return null;
                     }

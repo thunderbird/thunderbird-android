@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <TextView android:id="@+id/form_label_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setup_basics_email_hint"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText android:id="@+id/account_dialog_address_field"
+        android:singleLine="true"
+        android:inputType="textEmailAddress"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:hint="someone@example.com"/>
+
+    <TextView android:id="@+id/form_label_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setup_basics_password_hint"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText android:id="@+id/account_dialog_password_field"
+        android:inputType="textPassword"
+        android:password="true"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:nextFocusDown="@+id/next"/>
+
+    <CheckBox android:id="@+id/account_dialog_manual_box"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:lines="1"
+        android:text="@string/account_setup_basics_manual_setup_action"/>
+
+	<CheckBox android:id="@+id/account_dialog_default_box"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:lines="1"
+        android:text="@string/account_settings_default"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <Button android:id="@+id/account_dialog_next"
+            android:text="@string/next_action"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableRight="@drawable/button_indicator_next"  />
+    </RelativeLayout>
+
+</LinearLayout>
