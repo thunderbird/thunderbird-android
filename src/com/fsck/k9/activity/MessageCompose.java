@@ -2284,322 +2284,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
-     * @param message Source message
+     *
+     * @param message
+     *         The source message used to populate the various text fields.
      */
     private void processSourceMessage(Message message) {
         try {
-            if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
-                if (message.getSubject() != null) {
-                    final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
-
-                    if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
-                        mSubjectView.setText("Re: " + subject);
-                    } else {
-                        mSubjectView.setText(subject);
-                    }
-                } else {
-                    mSubjectView.setText("");
+            switch (mAction) {
+                case REPLY:
+                case REPLY_ALL: {
+                    processMessageToReplyTo(message);
+                    break;
                 }
-
-                /*
-                 * If a reply-to was included with the message use that, otherwise use the from
-                 * or sender address.
-                 */
-                Address[] replyToAddresses;
-                if (message.getReplyTo().length > 0) {
-                    replyToAddresses = message.getReplyTo();
-                } else {
-                    replyToAddresses = message.getFrom();
+                case FORWARD: {
+                    processMessageToForward(message);
+                    break;
                 }
-
-                // if we're replying to a message we sent, we probably meant
-                // to reply to the recipient of that message
-                if (mAccount.isAnIdentity(replyToAddresses)) {
-                    replyToAddresses = message.getRecipients(RecipientType.TO);
+                case EDIT_DRAFT: {
+                    processDraftMessage(message);
+                    break;
                 }
-
-                addAddresses(mToView, replyToAddresses);
-
-
-
-                if (message.getMessageId() != null && message.getMessageId().length() > 0) {
-                    mInReplyTo = message.getMessageId();
-
-                    if (message.getReferences() != null && message.getReferences().length > 0) {
-                        StringBuilder buffy = new StringBuilder();
-                        for (int i = 0; i < message.getReferences().length; i++)
-                            buffy.append(message.getReferences()[i]);
-
-                        mReferences = buffy.toString() + " " + mInReplyTo;
-                    } else {
-                        mReferences = mInReplyTo;
-                    }
-
-                } else {
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "could not get Message-ID.");
+                default: {
+                    Log.w(K9.LOG_TAG, "processSourceMessage() called with unsupported action");
+                    break;
                 }
-
-                // Quote the message and setup the UI.
-                populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
-
-                if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
-                    Identity useIdentity = null;
-                    for (Address address : message.getRecipients(RecipientType.TO)) {
-                        Identity identity = mAccount.findIdentity(address);
-                        if (identity != null) {
-                            useIdentity = identity;
-                            break;
-                        }
-                    }
-                    if (useIdentity == null) {
-                        if (message.getRecipients(RecipientType.CC).length > 0) {
-                            for (Address address : message.getRecipients(RecipientType.CC)) {
-                                Identity identity = mAccount.findIdentity(address);
-                                if (identity != null) {
-                                    useIdentity = identity;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (useIdentity != null) {
-                        Identity defaultIdentity = mAccount.getIdentity(0);
-                        if (useIdentity != defaultIdentity) {
-                            switchToIdentity(useIdentity);
-                        }
-                    }
-                }
-
-                if (mAction == Action.REPLY_ALL) {
-                    if (message.getReplyTo().length > 0) {
-                        for (Address address : message.getFrom()) {
-                            if (!mAccount.isAnIdentity(address)) {
-                                addAddress(mToView, address);
-                            }
-                        }
-                    }
-                    for (Address address : message.getRecipients(RecipientType.TO)) {
-                        if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                            addAddress(mToView, address);
-                        }
-
-                    }
-                    if (message.getRecipients(RecipientType.CC).length > 0) {
-                        for (Address address : message.getRecipients(RecipientType.CC)) {
-                            if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                                addAddress(mCcView, address);
-                            }
-
-                        }
-                        mCcWrapper.setVisibility(View.VISIBLE);
-                    }
-                }
-            } else if (mAction == Action.FORWARD) {
-                String subject = message.getSubject();
-                if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
-                    mSubjectView.setText("Fwd: " + subject);
-                } else {
-                    mSubjectView.setText(subject);
-                }
-                mQuoteStyle = QuoteStyle.HEADER;
-
-                // Quote the message and setup the UI.
-                populateUIWithQuotedMessage(true);
-
-                if (!mSourceMessageProcessed) {
-                    if (!loadAttachments(message, 0)) {
-                        mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
-                    }
-                }
-            } else if (mAction == Action.EDIT_DRAFT) {
-                String showQuotedTextMode = "NONE";
-
-                mDraftId = MessagingController.getInstance(getApplication()).getId(message);
-                mSubjectView.setText(message.getSubject());
-                addAddresses(mToView, message.getRecipients(RecipientType.TO));
-                if (message.getRecipients(RecipientType.CC).length > 0) {
-                    addAddresses(mCcView, message.getRecipients(RecipientType.CC));
-                    mCcWrapper.setVisibility(View.VISIBLE);
-                }
-
-                Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
-                if (bccRecipients.length > 0) {
-                    addAddresses(mBccView, bccRecipients);
-                    String bccAddress = mAccount.getAlwaysBcc();
-                    if (bccRecipients.length == 1 && bccAddress != null && bccAddress.equals(bccRecipients[0].toString())) {
-                        // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
-                        mBccWrapper.setVisibility(View.GONE);
-                    } else {
-                        mBccWrapper.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                // Read In-Reply-To header from draft
-                final String[] inReplyTo = message.getHeader("In-Reply-To");
-                if ((inReplyTo != null) && (inReplyTo.length >= 1)) {
-                    mInReplyTo = inReplyTo[0];
-                }
-
-                // Read References header from draft
-                final String[] references = message.getHeader("References");
-                if ((references != null) && (references.length >= 1)) {
-                    mReferences = references[0];
-                }
-
-                if (!mSourceMessageProcessed) {
-                    loadAttachments(message, 0);
-                }
-
-                // Decode the identity header when loading a draft.
-                // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
-                Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
-                if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
-                    k9identity = parseIdentityHeader(message.getHeader(K9.IDENTITY_HEADER)[0]);
-                }
-
-                Identity newIdentity = new Identity();
-                if (k9identity.containsKey(IdentityField.SIGNATURE)) {
-                    newIdentity.setSignatureUse(true);
-                    newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
-                    mSignatureChanged = true;
-                } else {
-                    newIdentity.setSignatureUse(message.getFolder().getAccount().getSignatureUse());
-                    newIdentity.setSignature(mIdentity.getSignature());
-                }
-
-                if (k9identity.containsKey(IdentityField.NAME)) {
-                    newIdentity.setName(k9identity.get(IdentityField.NAME));
-                    mIdentityChanged = true;
-                } else {
-                    newIdentity.setName(mIdentity.getName());
-                }
-
-                if (k9identity.containsKey(IdentityField.EMAIL)) {
-                    newIdentity.setEmail(k9identity.get(IdentityField.EMAIL));
-                    mIdentityChanged = true;
-                } else {
-                    newIdentity.setEmail(mIdentity.getEmail());
-                }
-
-                if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
-                    mMessageReference = null;
-                    try {
-                        String originalMessage = k9identity.get(IdentityField.ORIGINAL_MESSAGE);
-                        MessageReference messageReference = new MessageReference(originalMessage);
-
-                        // Check if this is a valid account in our database
-                        Preferences prefs = Preferences.getPreferences(getApplicationContext());
-                        Account account = prefs.getAccount(messageReference.accountUuid);
-                        if (account != null) {
-                            mMessageReference = messageReference;
-                        }
-                    } catch (MessagingException e) {
-                        Log.e(K9.LOG_TAG, "Could not decode message reference in identity.", e);
-                    }
-                }
-
-                int cursorPosition = 0;
-                if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
-                    try {
-                        cursorPosition = Integer.valueOf(k9identity.get(IdentityField.CURSOR_POSITION)).intValue();
-                    } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
-                    }
-                }
-
-                if (k9identity.containsKey(IdentityField.QUOTED_TEXT_MODE)) {
-                    showQuotedTextMode = k9identity.get(IdentityField.QUOTED_TEXT_MODE);
-                }
-
-                mIdentity = newIdentity;
-
-                updateSignature();
-                updateFrom();
-
-                Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                                     ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
-                                     : 0;
-                Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                                     ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
-                                     : 0;
-                Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
-                        ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
-                        : null;
-                Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                        ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH))
-                        : null;
-                Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                        ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET))
-                        : null;
-                mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
-                        ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
-                        : mAccount.getQuoteStyle();
-
-                // Always respect the user's current composition format preference, even if the
-                // draft was saved in a different format.
-                // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
-                String messageFormat = k9identity.get(IdentityField.MESSAGE_FORMAT);
-                if (messageFormat == null) {
-                    // This message probably wasn't created by us. The exception is legacy
-                    // drafts created before the advent of HTML composition. In those cases,
-                    // we'll display the whole message (including the quoted part) in the
-                    // composition window. If that's the case, try and convert it to text to
-                    // match the behavior in text mode.
-                    mMessageContentView.setText(getBodyTextFromMessage(message, MessageFormat.TEXT));
-                    mMessageFormat = MessageFormat.TEXT;
-                    showOrHideQuotedText(QuotedTextMode.valueOf(showQuotedTextMode));
-                    return;
-                }
-
-                mMessageFormat = MessageFormat.valueOf(messageFormat);
-
-                if (mMessageFormat == MessageFormat.HTML) {
-                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-                    if (part != null) { // Shouldn't happen if we were the one who saved it.
-                        String text = MimeUtility.getTextFromPart(part);
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-                        }
-
-                        // Grab our reply text.
-                        String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-                        mMessageContentView.setText(HtmlConverter.htmlToText(bodyText));
-
-                        // Regenerate the quoted html without our user content in it.
-                        StringBuilder quotedHTML = new StringBuilder();
-                        quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
-                        quotedHTML.append(text.substring(bodyOffset + bodyLength));
-                        if (quotedHTML.length() > 0) {
-                            mQuotedHtmlContent = new InsertableHtmlContent();
-                            mQuotedHtmlContent.setQuotedContent(quotedHTML);
-                            // We don't know if bodyOffset refers to the header or to the footer
-                            mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
-                            if (bodyFooterOffset != null) {
-                                mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
-                            } else {
-                                mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
-                            }
-                            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
-                        }
-                    }
-                    if (bodyPlainOffset != null && bodyPlainLength != null) {
-                        processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
-                    }
-                } else if (mMessageFormat == MessageFormat.TEXT) {
-                    processSourceMessageText(message, bodyOffset, bodyLength, true);
-                } else {
-                    Log.e(K9.LOG_TAG, "Unhandled message format.");
-                }
-
-                // Set the cursor position if we have it.
-                try {
-                    mMessageContentView.setSelection(cursorPosition);
-                } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
-                }
-
-                showOrHideQuotedText(QuotedTextMode.valueOf(showQuotedTextMode));
             }
         } catch (MessagingException me) {
             /**
@@ -2611,6 +2319,324 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSourceMessageProcessed = true;
             mDraftNeedsSaving = false;
         }
+    }
+
+    private void processMessageToReplyTo(Message message) throws MessagingException {
+        if (message.getSubject() != null) {
+            final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
+
+            if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
+                mSubjectView.setText("Re: " + subject);
+            } else {
+                mSubjectView.setText(subject);
+            }
+        } else {
+            mSubjectView.setText("");
+        }
+
+        /*
+         * If a reply-to was included with the message use that, otherwise use the from
+         * or sender address.
+         */
+        Address[] replyToAddresses;
+        if (message.getReplyTo().length > 0) {
+            replyToAddresses = message.getReplyTo();
+        } else {
+            replyToAddresses = message.getFrom();
+        }
+
+        // if we're replying to a message we sent, we probably meant
+        // to reply to the recipient of that message
+        if (mAccount.isAnIdentity(replyToAddresses)) {
+            replyToAddresses = message.getRecipients(RecipientType.TO);
+        }
+
+        addAddresses(mToView, replyToAddresses);
+
+
+
+        if (message.getMessageId() != null && message.getMessageId().length() > 0) {
+            mInReplyTo = message.getMessageId();
+
+            if (message.getReferences() != null && message.getReferences().length > 0) {
+                StringBuilder buffy = new StringBuilder();
+                for (int i = 0; i < message.getReferences().length; i++)
+                    buffy.append(message.getReferences()[i]);
+
+                mReferences = buffy.toString() + " " + mInReplyTo;
+            } else {
+                mReferences = mInReplyTo;
+            }
+
+        } else {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "could not get Message-ID.");
+        }
+
+        // Quote the message and setup the UI.
+        populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
+
+        if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
+            Identity useIdentity = null;
+            for (Address address : message.getRecipients(RecipientType.TO)) {
+                Identity identity = mAccount.findIdentity(address);
+                if (identity != null) {
+                    useIdentity = identity;
+                    break;
+                }
+            }
+            if (useIdentity == null) {
+                if (message.getRecipients(RecipientType.CC).length > 0) {
+                    for (Address address : message.getRecipients(RecipientType.CC)) {
+                        Identity identity = mAccount.findIdentity(address);
+                        if (identity != null) {
+                            useIdentity = identity;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (useIdentity != null) {
+                Identity defaultIdentity = mAccount.getIdentity(0);
+                if (useIdentity != defaultIdentity) {
+                    switchToIdentity(useIdentity);
+                }
+            }
+        }
+
+        if (mAction == Action.REPLY_ALL) {
+            if (message.getReplyTo().length > 0) {
+                for (Address address : message.getFrom()) {
+                    if (!mAccount.isAnIdentity(address)) {
+                        addAddress(mToView, address);
+                    }
+                }
+            }
+            for (Address address : message.getRecipients(RecipientType.TO)) {
+                if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                    addAddress(mToView, address);
+                }
+
+            }
+            if (message.getRecipients(RecipientType.CC).length > 0) {
+                for (Address address : message.getRecipients(RecipientType.CC)) {
+                    if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                        addAddress(mCcView, address);
+                    }
+
+                }
+                mCcWrapper.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void processMessageToForward(Message message) throws MessagingException {
+        String subject = message.getSubject();
+        if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
+            mSubjectView.setText("Fwd: " + subject);
+        } else {
+            mSubjectView.setText(subject);
+        }
+        mQuoteStyle = QuoteStyle.HEADER;
+
+        // Quote the message and setup the UI.
+        populateUIWithQuotedMessage(true);
+
+        if (!mSourceMessageProcessed) {
+            if (!loadAttachments(message, 0)) {
+                mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
+            }
+        }
+    }
+
+    private void processDraftMessage(Message message) throws MessagingException {
+        String showQuotedTextMode = "NONE";
+
+        mDraftId = MessagingController.getInstance(getApplication()).getId(message);
+        mSubjectView.setText(message.getSubject());
+        addAddresses(mToView, message.getRecipients(RecipientType.TO));
+        if (message.getRecipients(RecipientType.CC).length > 0) {
+            addAddresses(mCcView, message.getRecipients(RecipientType.CC));
+            mCcWrapper.setVisibility(View.VISIBLE);
+        }
+
+        Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
+        if (bccRecipients.length > 0) {
+            addAddresses(mBccView, bccRecipients);
+            String bccAddress = mAccount.getAlwaysBcc();
+            if (bccRecipients.length == 1 && bccAddress != null && bccAddress.equals(bccRecipients[0].toString())) {
+                // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
+                mBccWrapper.setVisibility(View.GONE);
+            } else {
+                mBccWrapper.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Read In-Reply-To header from draft
+        final String[] inReplyTo = message.getHeader("In-Reply-To");
+        if ((inReplyTo != null) && (inReplyTo.length >= 1)) {
+            mInReplyTo = inReplyTo[0];
+        }
+
+        // Read References header from draft
+        final String[] references = message.getHeader("References");
+        if ((references != null) && (references.length >= 1)) {
+            mReferences = references[0];
+        }
+
+        if (!mSourceMessageProcessed) {
+            loadAttachments(message, 0);
+        }
+
+        // Decode the identity header when loading a draft.
+        // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
+        Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
+        if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
+            k9identity = parseIdentityHeader(message.getHeader(K9.IDENTITY_HEADER)[0]);
+        }
+
+        Identity newIdentity = new Identity();
+        if (k9identity.containsKey(IdentityField.SIGNATURE)) {
+            newIdentity.setSignatureUse(true);
+            newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
+            mSignatureChanged = true;
+        } else {
+            newIdentity.setSignatureUse(message.getFolder().getAccount().getSignatureUse());
+            newIdentity.setSignature(mIdentity.getSignature());
+        }
+
+        if (k9identity.containsKey(IdentityField.NAME)) {
+            newIdentity.setName(k9identity.get(IdentityField.NAME));
+            mIdentityChanged = true;
+        } else {
+            newIdentity.setName(mIdentity.getName());
+        }
+
+        if (k9identity.containsKey(IdentityField.EMAIL)) {
+            newIdentity.setEmail(k9identity.get(IdentityField.EMAIL));
+            mIdentityChanged = true;
+        } else {
+            newIdentity.setEmail(mIdentity.getEmail());
+        }
+
+        if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
+            mMessageReference = null;
+            try {
+                String originalMessage = k9identity.get(IdentityField.ORIGINAL_MESSAGE);
+                MessageReference messageReference = new MessageReference(originalMessage);
+
+                // Check if this is a valid account in our database
+                Preferences prefs = Preferences.getPreferences(getApplicationContext());
+                Account account = prefs.getAccount(messageReference.accountUuid);
+                if (account != null) {
+                    mMessageReference = messageReference;
+                }
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Could not decode message reference in identity.", e);
+            }
+        }
+
+        int cursorPosition = 0;
+        if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
+            try {
+                cursorPosition = Integer.valueOf(k9identity.get(IdentityField.CURSOR_POSITION)).intValue();
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
+            }
+        }
+
+        if (k9identity.containsKey(IdentityField.QUOTED_TEXT_MODE)) {
+            showQuotedTextMode = k9identity.get(IdentityField.QUOTED_TEXT_MODE);
+        }
+
+        mIdentity = newIdentity;
+
+        updateSignature();
+        updateFrom();
+
+        Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
+                             ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
+                             : 0;
+        Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
+                             ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
+                             : 0;
+        Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
+                ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
+                : null;
+        Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
+                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH))
+                : null;
+        Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
+                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET))
+                : null;
+        mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
+                ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
+                : mAccount.getQuoteStyle();
+
+        // Always respect the user's current composition format preference, even if the
+        // draft was saved in a different format.
+        // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
+        String messageFormat = k9identity.get(IdentityField.MESSAGE_FORMAT);
+        if (messageFormat == null) {
+            // This message probably wasn't created by us. The exception is legacy
+            // drafts created before the advent of HTML composition. In those cases,
+            // we'll display the whole message (including the quoted part) in the
+            // composition window. If that's the case, try and convert it to text to
+            // match the behavior in text mode.
+            mMessageContentView.setText(getBodyTextFromMessage(message, MessageFormat.TEXT));
+            mMessageFormat = MessageFormat.TEXT;
+            showOrHideQuotedText(QuotedTextMode.valueOf(showQuotedTextMode));
+            return;
+        }
+
+        mMessageFormat = MessageFormat.valueOf(messageFormat);
+
+        if (mMessageFormat == MessageFormat.HTML) {
+            Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+            if (part != null) { // Shouldn't happen if we were the one who saved it.
+                String text = MimeUtility.getTextFromPart(part);
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                }
+
+                // Grab our reply text.
+                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+                mMessageContentView.setText(HtmlConverter.htmlToText(bodyText));
+
+                // Regenerate the quoted html without our user content in it.
+                StringBuilder quotedHTML = new StringBuilder();
+                quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
+                quotedHTML.append(text.substring(bodyOffset + bodyLength));
+                if (quotedHTML.length() > 0) {
+                    mQuotedHtmlContent = new InsertableHtmlContent();
+                    mQuotedHtmlContent.setQuotedContent(quotedHTML);
+                    // We don't know if bodyOffset refers to the header or to the footer
+                    mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
+                    if (bodyFooterOffset != null) {
+                        mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
+                    } else {
+                        mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                    }
+                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
+                }
+            }
+            if (bodyPlainOffset != null && bodyPlainLength != null) {
+                processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
+            }
+        } else if (mMessageFormat == MessageFormat.TEXT) {
+            processSourceMessageText(message, bodyOffset, bodyLength, true);
+        } else {
+            Log.e(K9.LOG_TAG, "Unhandled message format.");
+        }
+
+        // Set the cursor position if we have it.
+        try {
+            mMessageContentView.setSelection(cursorPosition);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
+        }
+
+        showOrHideQuotedText(QuotedTextMode.valueOf(showQuotedTextMode));
     }
 
     /*
