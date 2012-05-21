@@ -89,6 +89,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ATTACHMENT_DEF_PATH = "attachment_default_path";
+    private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
     private ListPreference mLanguage;
@@ -121,6 +122,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference compactLayouts;
+    private CheckBoxPreference mWrapFolderNames;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
@@ -355,6 +357,9 @@ public class Prefs extends K9PreferenceActivity {
             };
         });
         
+        mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
+        mWrapFolderNames.setChecked(K9.wrapFolderNames());
+
         mBatchButtonsMarkRead = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MARK_READ);
         mBatchButtonsDelete = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_DELETE);
         mBatchButtonsArchive = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_ARCHIVE);
@@ -417,6 +422,7 @@ public class Prefs extends K9PreferenceActivity {
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
+        K9.setWrapFolderNames(mWrapFolderNames.isChecked());
 
         K9.setBatchButtonsMarkRead(mBatchButtonsMarkRead.isChecked());
         K9.setBatchButtonsDelete(mBatchButtonsDelete.isChecked());

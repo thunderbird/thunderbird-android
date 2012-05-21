@@ -185,6 +185,7 @@ public class K9 extends Application {
     private static String mQuietTimeEnds = null;
     private static boolean compactLayouts = false;
     private static String mAttachmentDefaultPath = "";
+    private static boolean mWrapFolderNames = false;
 
     private static boolean mBatchButtonsMarkRead = true;
     private static boolean mBatchButtonsDelete = true;
@@ -445,6 +446,7 @@ public class K9 extends Application {
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
+        editor.putBoolean("wrapFolderNames", mWrapFolderNames);
 
         editor.putBoolean("batchButtonsMarkRead", mBatchButtonsMarkRead);
         editor.putBoolean("batchButtonsDelete", mBatchButtonsDelete);
@@ -604,6 +606,7 @@ public class K9 extends Application {
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
+        mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
 
         mBatchButtonsMarkRead = sprefs.getBoolean("batchButtonsMarkRead", true);
         mBatchButtonsDelete = sprefs.getBoolean("batchButtonsDelete", true);
@@ -1125,6 +1128,13 @@ public class K9 extends Application {
         } catch (NameNotFoundException e) {
             return false;
         }
+    }
+
+    public static boolean wrapFolderNames() {
+    	return mWrapFolderNames;
+    }
+    public static void setWrapFolderNames(final boolean state) {
+    	mWrapFolderNames = state;
     }
 
     public static String getAttachmentDefaultPath() {

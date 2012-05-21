@@ -1178,6 +1178,10 @@ public class FolderList extends K9ListActivity {
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
             holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderName());
+            if (K9.wrapFolderNames()) {
+                holder.folderName.setEllipsize(null);
+                holder.folderName.setSingleLine(false);
+            }
             holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
 
 
