@@ -192,7 +192,7 @@ public class K9 extends Application {
     private static boolean mBatchButtonsMove = false;
     private static boolean mBatchButtonsFlag = true;
     private static boolean mBatchButtonsUnselect = true;
-    
+
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
 
@@ -452,7 +452,7 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsMove", mBatchButtonsMove);
         editor.putBoolean("batchButtonsFlag", mBatchButtonsFlag);
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
-        
+
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
@@ -461,6 +461,9 @@ public class K9 extends Application {
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
+
+        editor.putString("sortTypeEnum", mSortType.name());
+        editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
         editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
@@ -474,9 +477,6 @@ public class K9 extends Application {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
-
-        mSortType = Account.DEFAULT_SORT_TYPE;
-        mSortAscending.put(Account.DEFAULT_SORT_TYPE, Account.DEFAULT_SORT_ASCENDING);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -611,7 +611,7 @@ public class K9 extends Application {
         mBatchButtonsMove = sprefs.getBoolean("batchButtonsMove", true);
         mBatchButtonsFlag = sprefs.getBoolean("batchButtonsFlag", true);
         mBatchButtonsUnselect = sprefs.getBoolean("batchButtonsUnselect", true);
-        
+
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
@@ -619,6 +619,15 @@ public class K9 extends Application {
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
         mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
 
+        try {
+            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            mSortType = SortType.valueOf(value);
+        } catch (Exception e) {
+            mSortType = Account.DEFAULT_SORT_TYPE;
+        }
+
+        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        mSortAscending.put(mSortType, sortAscending);
 
         mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
@@ -1058,47 +1067,47 @@ public class K9 extends Application {
     }
 
     public static boolean batchButtonsMarkRead() {
-    	return mBatchButtonsMarkRead;
+        return mBatchButtonsMarkRead;
     }
     public static void setBatchButtonsMarkRead(final boolean state) {
-    	mBatchButtonsMarkRead = state;
+        mBatchButtonsMarkRead = state;
     }
-    
+
     public static boolean batchButtonsDelete() {
-    	return mBatchButtonsDelete;
+        return mBatchButtonsDelete;
     }
     public static void setBatchButtonsDelete(final boolean state) {
-    	mBatchButtonsDelete = state;
+        mBatchButtonsDelete = state;
     }
-    
+
     public static boolean batchButtonsArchive() {
-    	return mBatchButtonsArchive;
+        return mBatchButtonsArchive;
     }
     public static void setBatchButtonsArchive(final boolean state) {
-    	mBatchButtonsArchive = state;
+        mBatchButtonsArchive = state;
     }
-    
+
     public static boolean batchButtonsMove() {
-    	return mBatchButtonsMove;
+        return mBatchButtonsMove;
     }
     public static void setBatchButtonsMove(final boolean state) {
-    	mBatchButtonsMove = state;
+        mBatchButtonsMove = state;
     }
-    
+
     public static boolean batchButtonsFlag() {
-    	return mBatchButtonsFlag;
+        return mBatchButtonsFlag;
     }
     public static void setBatchButtonsFlag(final boolean state) {
-    	mBatchButtonsFlag = state;
+        mBatchButtonsFlag = state;
     }
-    
+
     public static boolean batchButtonsUnselect() {
-    	return mBatchButtonsUnselect;
+        return mBatchButtonsUnselect;
     }
     public static void setBatchButtonsUnselect(final boolean state) {
-    	mBatchButtonsUnselect = state;
+        mBatchButtonsUnselect = state;
     }
-    
+
     /**
      * Check if this system contains a buggy Gallery 3D package.
      *
