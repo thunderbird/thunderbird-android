@@ -1551,6 +1551,11 @@ public class MessageList
             onEditPrefs();
             return true;
         }
+        case R.id.trash: {
+        	setAllSelected(true);
+        	onEmptyMessages();
+            return true;
+        }
         }
 
         if (mQueryString != null) {
@@ -1617,6 +1622,26 @@ public class MessageList
         }
         }
     }
+    
+    private void onEmptyMessages() {
+    	
+        final List<MessageInfoHolder> selection = new ArrayList<MessageInfoHolder>();
+        synchronized (mAdapter.messages) {
+            for (final MessageInfoHolder holder : mAdapter.messages) {
+                if (holder.selected) {
+                    selection.add(holder);
+                }
+            }
+        }
+     
+        final List<Message> messagesToRemove = new ArrayList<Message>();
+        for (MessageInfoHolder holder : selection) {
+            messagesToRemove.add(holder.message);
+        }
+        mHandler.removeMessages(selection);
+        mController.deleteMessages(messagesToRemove.toArray(EMPTY_MESSAGE_ARRAY), null);
+    }
+
 
     private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
                                       R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op,
@@ -2692,8 +2717,6 @@ public class MessageList
     @Override
     public void onAnimationStart(Animation animation) {
     }
-
-
 
     private void setAllSelected(boolean isSelected) {
         mSelectedCount = 0;

@@ -117,7 +117,7 @@
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
     <string name="dump_settings_action">Dump settings</string>
-    <string name="empty_trash_action">Empty Trash</string>
+    <string name="clear_trash_action">Clear all messages</string>
     <string name="expunge_action">Expunge</string>
     <string name="clear_local_folder_action">Clear local messages</string>
     <string name="set_sort_action">Choose sort</string>

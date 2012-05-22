@@ -161,4 +161,8 @@
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
     />
+    <item
+        android:id="@+id/trash"
+        android:title="@string/clear_trash_action"
+    />
 </menu>
