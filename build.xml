@@ -162,19 +162,19 @@
  
     <!-- Install the package on the default emulator -->
     <target name="install" depends="debug">
-        <echo>Installing ${out.debug.file} onto default emulator...</echo>
+        <echo>Installing ${out.final.file} onto default emulator...</echo>
         <exec executable="${adb}" failonerror="true">
             <arg value="install" />
-            <arg path="${out.debug.file}" />
+            <arg path="${out.final.file}" />
         </exec>
     </target>
     <!-- Re-Install the package on the default emulator -->
     <target name="reinstall" depends="debug">
-        <echo>Reinstalling ${out.debug.file} onto default emulator...</echo>
+        <echo>Reinstalling ${out.final.file} onto default emulator...</echo>
         <exec executable="${adb}" failonerror="true">
             <arg value="install" />
             <arg value="-r" />
-            <arg path="${out.debug.file}" />
+            <arg path="${out.final.file}" />
         </exec>
      </target>
     <target name="astyle">
@@ -214,6 +214,7 @@
 
     <property environment="env" />
     <target name="javadoc" description="build javadoc">
+        <mkdir dir="javadoc"/>
         <javadoc
             destdir="javadoc"
             doctitle="K-9 Mail"

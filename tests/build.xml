@@ -79,7 +79,21 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
-    <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <!-- version-tag: custom -->
 
+    <target name="test-report">
+        <xpath input="${tested.project.dir}/AndroidManifest.xml"
+                expression="/manifest/@package" output="tested.manifest.package" />
+        <xpath input="AndroidManifest.xml"
+                expression="/manifest/@package" output="manifest.package" />
+        <echo>Downloading XML test report...</echo>
+        <exec executable="${adb}" failonerror="true">
+	    <arg line="${adb.device.arg}"/>
+            <arg value="pull" />
+            <arg value="/data/data/${tested.manifest.package}/files/junit-report.xml" />
+            <arg value="junit-report.xml" />
+        </exec>
+    </target>
+
+    <import file="${sdk.dir}/tools/ant/build.xml" />
 </project>
