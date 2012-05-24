@@ -51,7 +51,7 @@
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="dangerous"
                 android:label="@string/delete_messages_label"
-                android:description="@string/read_messages_desc"/>
+                android:description="@string/delete_messages_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
     <application
