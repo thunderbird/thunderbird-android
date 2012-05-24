@@ -1114,9 +1114,9 @@
     <string name="settings_import">匯入設定</string>
     <string name="settings_import_selection">匯入選擇</string>
     <string name="settings_import_global_settings">全域設定</string>
-    <string name="settings_exporting">正在匯出設定...</string>
-    <string name="settings_importing">正在匯入設定...</string>
-    <string name="settings_import_scanning_file">檢查檔案...</string>
+    <string name="settings_exporting">正在匯出設定…</string>
+    <string name="settings_importing">正在匯入設定…</string>
+    <string name="settings_import_scanning_file">檢查檔案…</string>
     <string name="settings_export_success">匯出的設定檔案已經儲存到 <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">從 <xliff:g id="filename">%s</xliff:g> 匯入全域設定檔案</string>
     <string name="settings_import_success">成功匯入 <xliff:g id="account">%s</xliff:g> 從 <xliff:g id="filename">%s</xliff:g></string>
@@ -1139,8 +1139,8 @@
     <string name="settings_import_incoming_server">內送伺服器 (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">外寄伺服器 (<xliff:g id="hostname">%s</xliff:g>):</string>
     <!-- NEW: <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
+        <item quantity="one">Setting password…</item>
+        <item quantity="other">Setting passwords…</item>
     </plurals>-->
     <string name="settings_import_use_incoming_server_password">使用內送伺服器密碼</string>
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
@@ -1149,13 +1149,13 @@
 
     <string name="account_unavailable">帳戶 \"<xliff:g id="account">%s</xliff:g>\" 目前無法使用; 請檢查儲存空間</string>
 
-    <string name="settings_attachment_default_path">另存附件...</string>
+    <string name="settings_attachment_default_path">另存附件…</string>
     <string name="attachment_save_title">儲存附件</string>
     <string name="attachment_save_desc">找不到檔案瀏覽器，您要將附件儲存到哪裡？</string>
 
     <string name="manage_accounts_move_up_action">上移</string>
     <string name="manage_accounts_move_down_action">下移</string>
-    <string name="manage_accounts_moving_message">移動帳戶...</string>
+    <string name="manage_accounts_moving_message">移動帳戶…</string>
 
     <string name="unread_widget_select_account">顯示未讀數量…</string>
 

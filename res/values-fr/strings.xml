@@ -847,7 +847,7 @@ de plus</string>
     <string name="sort_attach_first">Messages avec pièces jointes en premier</string>
     <string name="sort_unattached_first">Messages sans pièces jointes en premier</string>
 
-    <string name="sort_by">Trier...</string>
+    <string name="sort_by">Trier…</string>
     <string name="sort_by_date">Date</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_sender">Expéditeur</string>
@@ -1135,9 +1135,9 @@ de plus</string>
     <string name="settings_import">Importer les paramètres</string>
     <string name="settings_import_selection">Importer la sélection</string>
     <string name="settings_import_global_settings">Paramètres globaux</string>
-    <string name="settings_exporting">Exportation des paramètres...</string>
-    <string name="settings_importing">Importation des paramètres...</string>
-    <string name="settings_import_scanning_file">Balayage des fichiers...</string>
+    <string name="settings_exporting">Exportation des paramètres…</string>
+    <string name="settings_importing">Importation des paramètres…</string>
+    <string name="settings_import_scanning_file">Balayage des fichiers…</string>
     <string name="settings_export_success">Paramètres exportés vers <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Paramètres globaux importés depuis <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importés <xliff:g id="accounts">%s</xliff:g> depuis <xliff:g id="filename">%s</xliff:g></string>
@@ -1152,7 +1152,7 @@ de plus</string>
     <string name="settings_import_success_header">Importation réussi</string>
     <string name="settings_import_failed_header">Importation échoué</string>
     <string name="settings_import_activate_account_header">Activer le compte</string>
-    <string name="settings_import_activate_account_intro">Pour pouvoir utiliser le compte \"<xliff:g id="account">%s</xliff:g>\" vous devez fournir le <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">Pour pouvoir utiliser le compte \"<xliff:g id="account">%s</xliff:g>\" vous devez fournir le <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">mot de passe serveur</item>
         <item quantity="other">mots de passe serveur</item>
@@ -1160,8 +1160,8 @@ de plus</string>
     <string name="settings_import_incoming_server">Serveur entrant (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Serveur sortant (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Réglage du mot de passe...</item>
-        <item quantity="other">Réglages des mots de passe...</item>
+        <item quantity="one">Réglage du mot de passe…</item>
+        <item quantity="other">Réglages des mots de passe…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Utilisez le mot de passe du serveur entrant</string>
     <string name="activate_account_action">Activer</string>
@@ -1176,7 +1176,7 @@ de plus</string>
 
     <string name="manage_accounts_move_up_action">Déplacer haut</string>
     <string name="manage_accounts_move_down_action">Déplacer bas</string>
-    <string name="manage_accounts_moving_message">Déplacer compte...</string>
+    <string name="manage_accounts_moving_message">Déplacer compte…</string>
 
     <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
 

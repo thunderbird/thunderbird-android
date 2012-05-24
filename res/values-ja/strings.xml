@@ -823,7 +823,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="sort_attach_first">添付メール順</string>
     <string name="sort_unattached_first">添付メール逆順</string>
 
-    <string name="sort_by">並べ替え...</string>
+    <string name="sort_by">並べ替え…</string>
     <string name="sort_by_date">日付</string>
     <string name="sort_by_arrival">受信順</string>
     <string name="sort_by_sender">送信者</string>
@@ -1112,9 +1112,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_import">設定をインポート</string>
     <string name="settings_import_selection">インポート項目の選択</string>
     <string name="settings_import_global_settings">グローバル設定</string>
-    <string name="settings_exporting">設定をエクスポートしています...</string>
-    <string name="settings_importing">設定をインポートしています...</string>
-    <string name="settings_import_scanning_file">ファイルを調べています...</string>
+    <string name="settings_exporting">設定をエクスポートしています…</string>
+    <string name="settings_importing">設定をインポートしています…</string>
+    <string name="settings_import_scanning_file">ファイルを調べています…</string>
     <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
     <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
@@ -1137,8 +1137,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="settings_import_incoming_server">受信メールサーバ (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">送信メールサーバ (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">パスワードを設定...</item>
-        <item quantity="other">パスワードを設定...</item>
+        <item quantity="one">パスワードを設定…</item>
+        <item quantity="other">パスワードを設定…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">受信メールサーバパスワードを利用</string>
     <string name="activate_account_action">有効</string>

@@ -821,7 +821,7 @@ http://k9mail.googlecode.com/
     <string name="sort_attach_first">Πρώτα τα μηνύματα με συνημμένα</string>
     <string name="sort_unattached_first">Πρώτα τα μηνύματα δίχως συνημμένα</string>
 
-    <string name="sort_by">Ταξινόμηση κατά...</string>
+    <string name="sort_by">Ταξινόμηση κατά…</string>
     <string name="sort_by_date">Ημερομηνία</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_sender">Αποστολέα</string>
@@ -1120,9 +1120,9 @@ http://k9mail.googlecode.com/
     <string name="settings_import">Εισαγωγή ρυθμίσεων</string>
     <string name="settings_import_selection">Εισαγωγή επιλογής</string>
     <string name="settings_import_global_settings">Συνολικές ρυθμίσεις</string>
-    <string name="settings_exporting">Εξαγωγή ρυθμίσεων σε εξέλιξη...</string>
-    <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη...</string>
-    <string name="settings_import_scanning_file">Ανίχνευση αρχείου...</string>
+    <string name="settings_exporting">Εξαγωγή ρυθμίσεων σε εξέλιξη…</string>
+    <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη…</string>
+    <string name="settings_import_scanning_file">Ανίχνευση αρχείου…</string>
     <string name="settings_export_success">Οι εξαγόμενες ρυθμίσεις αποθηκεύτηκαν στο <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ρυθμίσεις εισήχθηκαν από το <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Εισήχθηκαν <xliff:g id="accounts">%s</xliff:g> λογαριασμοί από το <xliff:g id="filename">%s</xliff:g></string>
@@ -1137,7 +1137,7 @@ http://k9mail.googlecode.com/
     <string name="settings_import_success_header">Εισαγωγή επιτυχημένη</string>
     <string name="settings_import_failed_header">Εισαγωγή απέτυχε</string>
     <string name="settings_import_activate_account_header">Ενεργοποίηση λογαριασμού</string>
-    <string name="settings_import_activate_account_intro">Για να χρησιμοποιήσετε το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' πρέπει να εισάγετε <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">Για να χρησιμοποιήσετε το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' πρέπει να εισάγετε <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">συνθηματικό για τον εξυπηρέτη</item>
         <item quantity="other">συνθηματικά για τον εξυπηρέτη</item>
@@ -1145,8 +1145,8 @@ http://k9mail.googlecode.com/
     <string name="settings_import_incoming_server">Εξυπηρέτης εισερχόμενων (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Εξυπηρέτης εξερχόμενων (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Καθορισμός συνθηματικού...</item>
-        <item quantity="other">Καθορισμός συνθηματικών...</item>
+        <item quantity="one">Καθορισμός συνθηματικού…</item>
+        <item quantity="other">Καθορισμός συνθηματικών…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Χρήση του συνθηματικού του εξυπηρέτη εισερχόμενων</string>
     <string name="activate_account_action">Ενεργοποίηση</string>
@@ -1155,13 +1155,13 @@ http://k9mail.googlecode.com/
 
     <string name="account_unavailable">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' δεν είναι διαθέσιμος. Ελέγξτε αποθήκευση.</string>
 
-    <string name="settings_attachment_default_path">Αποθήκευση συνημμένων στο...</string>
+    <string name="settings_attachment_default_path">Αποθήκευση συνημμένων στο…</string>
     <string name="attachment_save_title">Αποθήκευση συνημμένων</string>
     <string name="attachment_save_desc">Δεν βρέθηκε επόπτης αρχείων. Πού θέλετε να αποθηκευτεί αυτό το συνημμένο;</string>
 
     <string name="manage_accounts_move_up_action">Μετακίνηση πάνω</string>
     <string name="manage_accounts_move_down_action">Μετακίνηση κάτω</string>
-    <string name="manage_accounts_moving_message">Ο λογαριασμός μετακινείται...</string>
+    <string name="manage_accounts_moving_message">Ο λογαριασμός μετακινείται…</string>
 
     <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
 

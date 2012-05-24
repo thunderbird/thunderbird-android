@@ -39,7 +39,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 \n * SD 카드에 첨부파일 저장
 \n * 휴지통 비우기
 \n * 메시지 정렬
-\n * ...그리고 그 밖에
+\n * …그리고 그 밖에
 \n
 \nK-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무료 hotmail 계정을 Microsoft Exchange와 연결할때 발생되는 문제로 인해 지원하지 않습니다.
 \n
@@ -1120,9 +1120,9 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <!-- NEW: <string name="settings_import">Import settings</string>-->
     <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
     <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
+    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
+    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
+    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
     <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
     <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
     <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
@@ -1137,7 +1137,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
     <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
     <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
+    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
     <!-- NEW: <plurals name="settings_import_server_passwords">
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
@@ -1145,8 +1145,8 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
+        <item quantity="one">Setting password…</item>
+        <item quantity="other">Setting passwords…</item>
     </plurals>-->
     <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
@@ -1161,7 +1161,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="manage_accounts_move_up_action">위로</string>
     <string name="manage_accounts_move_down_action">아래로</string>
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
+    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
 
     <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
 

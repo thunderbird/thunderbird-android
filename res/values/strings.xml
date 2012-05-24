@@ -827,7 +827,7 @@ http://k9mail.googlecode.com/
     <string name="sort_attach_first">Messages with attachments first</string>
     <string name="sort_unattached_first">Messages without attachments first</string>
 
-    <string name="sort_by">Sort by...</string>
+    <string name="sort_by">Sort by…</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Arrival</string>
     <string name="sort_by_sender">Sender</string>
@@ -1126,9 +1126,9 @@ http://k9mail.googlecode.com/
     <string name="settings_import">Import settings</string>
     <string name="settings_import_selection">Import selection</string>
     <string name="settings_import_global_settings">Global settings</string>
-    <string name="settings_exporting">Exporting settings...</string>
-    <string name="settings_importing">Importing settings...</string>
-    <string name="settings_import_scanning_file">Scanning file...</string>
+    <string name="settings_exporting">Exporting settings…</string>
+    <string name="settings_importing">Importing settings…</string>
+    <string name="settings_import_scanning_file">Scanning file…</string>
     <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
@@ -1143,7 +1143,7 @@ http://k9mail.googlecode.com/
     <string name="settings_import_success_header">Import succeeded</string>
     <string name="settings_import_failed_header">Import failed</string>
     <string name="settings_import_activate_account_header">Activate account</string>
-    <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
@@ -1151,8 +1151,8 @@ http://k9mail.googlecode.com/
     <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
+        <item quantity="one">Setting password…</item>
+        <item quantity="other">Setting passwords…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>
     <string name="activate_account_action">Activate</string>
@@ -1161,13 +1161,13 @@ http://k9mail.googlecode.com/
 
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
-    <string name="settings_attachment_default_path">Save attachments to...</string>
+    <string name="settings_attachment_default_path">Save attachments to…</string>
     <string name="attachment_save_title">Save attachment</string>
     <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>
 
     <string name="manage_accounts_move_up_action">Move up</string>
     <string name="manage_accounts_move_down_action">Move down</string>
-    <string name="manage_accounts_moving_message">Moving account...</string>
+    <string name="manage_accounts_moving_message">Moving account…</string>
 
     <string name="unread_widget_select_account">Show unread count for…</string>
 
