@@ -223,9 +223,7 @@
             classpath="${env.ANDROID_HOME}/platforms/android-15/android.jar"
             sourcepath="gen;src"
             linkoffline="http://d.android.com/reference ${env.ANDROID_HOME}/docs/reference/"
-            stylesheetfile="${env.ANDROID_HOME}/docs/assets/android-developer-docs.css"
         />
-        <copy file="${env.ANDROID_HOME}/docs/assets/android-developer-core.css" todir="javadoc" />
     </target>
 
     <!-- END K-9 STUFF-->
