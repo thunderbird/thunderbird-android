@@ -82,9 +82,7 @@ http://k9mail.googlecode.com/
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Skriv</string>
-    <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Välj en mapp</string>
-    <string name="choose_color_title">Välj en färg</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -118,7 +116,6 @@ http://k9mail.googlecode.com/
     <string name="continue_action">Fortsätt</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Färdig</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">Ta bort</string>
     <string name="discard_action">Radera</string>
     <string name="save_draft_action">Spara som utkast</string>
     <string name="retry_action">Försök igen</string>
@@ -142,9 +139,6 @@ http://k9mail.googlecode.com/
     <string name="clear_pending_action">Rensa avvaktande handlingar (farligt!)</string>
 
     <string name="accounts_action">Konton</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Läs</string>
     <string name="mark_as_read_action">Markera som läst</string>
     <string name="send_alternate_action">Vidarebefordra med annat program</string>
     <string name="send_alternate_chooser_title">Välj avsändare</string>
@@ -161,39 +155,28 @@ http://k9mail.googlecode.com/
     <string name="select_text_action">Markera text</string>
 
     <string name="mark_as_unread_action">Markera som oläst</string>
-    <string name="move_to_action">Flytta till</string>
-    <string name="folders_action">Mappar</string>
-    <string name="view_hide_details_action">Visa/dölj detaljer</string>
     <string name="add_cc_bcc_action">Lägg till Cc/Bcc</string>
-    <string name="edit_subject_action">Redigera ämne</string>
     <!-- NEW: <string name="read_receipt">Read receipt</string>-->
     <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
     <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Lägg till bilaga</string>
     <string name="add_attachment_action_image">Lägg till bilaga (Bild)</string>
     <string name="add_attachment_action_video">Lägg till bilaga (Video)</string>
-    <string name="dump_settings_action">Dumpa inställningar</string>
     <string name="empty_trash_action">Töm papperskorg</string>
     <string name="expunge_action">Utplåna</string>
     <string name="clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
-    <string name="set_sort_action">Välj sortering</string>
-    <string name="reverse_sort_action">Omvänd sortering</string>
     <string name="about_action">Om</string>
 
     <string name="prefs_title">Inställningar</string>
     <string name="accounts_context_menu_title">Kontoinställningar</string>
-    <string name="folder_context_menu_title">Mappinställningar</string>
 
     <string name="general_no_subject">(Inget ämne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Inget datum</string>
     <string name="general_no_sender">Ingen avsändare</string>
     <string name="status_loading">Kontrollerar</string>
-    <string name="status_loading_folder">(Kontrollerar <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Hämtar brev\u2026</string>
     <string name="status_network_error">Anslutningsfel</string>
     <string name="status_invalid_id_error">Kan inte hitta brevet</string>
-    <string name="status_error">Fel</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Skickar</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Försök hämta fler brev igen</string>
 
@@ -217,11 +200,7 @@ http://k9mail.googlecode.com/
     <string name="recreating_account">Skapar om konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Ny e-post</string>
-    <string name="notification_new_scrolling">Nytt brev från <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> nya brev (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">i <xliff:g id="number_accounts">%d</xliff:g> konton</string>
-    <string name="notification_unsent_title">Brevet har inte sänts</string>
 
     <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Kontrollerar e-post</string>
@@ -246,17 +225,6 @@ http://k9mail.googlecode.com/
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Skräppost)</string>
 
     <string name="send_failure_subject">Misslyckades med att skicka några brev</string>
-    <string name="send_failure_body_abbrev">Se mappen <xliff:g id="errorFolder">%s</xliff:g> för detaljer.</string>
-    <string name="send_failure_body_fmt">K-9 stötte på problem med att skicka några av dina brev.
-     På grund av problemets natur kan K-9 dock inte vara säker på om meddelandena skickades
-    eller inte. Mottagarna kan redan ha tagit emot kopior av brevet.
-    \u000a\u000aDe meddelanden för vilka denna typ av problem har inträffat är nu markerade med sjärnor i din utkorg.
-    Om du avlägsnar stjärnorna kommer K-9 att försöka sända breven igen.
-    Lång-tryck på utkorgen och klicka på \"Skicka e-post\" för att initiera ett nytt försök att skicka.\u000A\u000a
-    Mappen <xliff:g id="errorFolder">%s</xliff:g> kan innehålle felmeddelanden angående problemet.</string>
-
-    <string name="alert_header">K-9-varning</string>
-    <string name="no_connection_alert">Synkning och skickande har avbrutits eftersom det inte finns någon tillgänglig nätverksanslutning.</string>
 
     <string name="end_of_folder">Ingen mer e-post</string>
 
@@ -266,22 +234,8 @@ http://k9mail.googlecode.com/
     <string name="debug_enable_sensitive_logging_title">Logga känslig information</string>
     <string name="debug_enable_sensitive_logging_summary">Kan visa lösenord i loggarna.</string>
 
-    <string name="combined_inbox_title">All e-post</string>
-    <string name="combined_inbox_label">Nya brev från alla konton</string>
-    <string name="combined_inbox_list_title">Inkorg med alla nya brev</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Hämta fler brev</string>
     <string name="message_to_fmt">Till:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Radera</string>
-    <string name="message_list_mark_read_action">Markera som läst</string>
-    <string name="message_list_mark_unread_action">Markera som oläst</string>
-    <string name="message_list_flag_action">Lägg till stjärna</string>
-    <string name="message_list_unflag_action">Ta bort stjärna</string>
 
     <string name="message_compose_to_hint">Till</string>
     <string name="message_compose_cc_hint">Cc</string>
@@ -296,10 +250,8 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_to">Till:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n\n</string>
-    <string name="message_compose_quoted_text_label">Citerad text</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
-    <string name="message_compose_downloading_attachments_toast">Några bilagor hämtades inte. De kommer att hämtas automatiskt innan detta brev sänds.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
     <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
     <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
@@ -318,10 +270,8 @@ http://k9mail.googlecode.com/
     <string name="message_view_archive_action">Arkiv</string>
     <string name="message_view_move_action">Flytta</string>
     <string name="message_view_spam_action">Skräp</string>
-    <string name="message_view_datetime_fmt">dd MMM yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Bilagan har sparats till SD-kortet som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan inte spara bilaga till SD-kortet.</string>
-    <string name="message_view_show_pictures_instructions">Välj \"Visa bilder\" för att visa inbäddade bilder.</string>
     <string name="message_view_show_pictures_action">Visa bilder</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
@@ -336,24 +286,12 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Alla huvuden har hämtats, men det det finns inga ytterligare huvuden att visa.</string>
     <string name="message_additional_headers_retrieval_failed">Hämtningen av ytterligare huvuden från databasen eller e-postservern misslyckades.</string>
 
-    <string name="mailbox_select_dlg_title">Mappar</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Ny mapp</string>
-
-    <string name="new_mailbox_dlg_title">Namn på ny mapp</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Mer från denna avsändare</string>
 
-    <string name="message_copied_toast">Brevet kopierat</string>
-    <string name="message_moved_toast">Brevet flyttat</string>
-    <string name="message_deleted_toast">Brevet raderat</string>
     <string name="message_discarded_toast">Brevet kasserat</string>
     <string name="message_saved_toast">Brevet sparat som utkast</string>
-    <string name="message_delete_failed">Brevet kunde inte raderas</string>
-
-    <string name="about_header">Om <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Stjärnor</string>
     <string name="global_settings_flag_summary">Stjärnor indikerar flaggade brev</string>
@@ -406,10 +344,7 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
     <string name="account_setup_basics_instructions">Ange detta kontos e-post-adress:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Du kan lägga till ytterligare<xliff:g id="number_accounts">%d</xliff:g> konton.)</string>
     <string name="account_setup_basics_email_hint">e-postadress</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> är inte en giltig e-postadress.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> är redan tillagd.</string>
     <string name="account_setup_basics_password_hint">Lösenord</string>
     <string name="account_setup_basics_default_label">Skicka e-post från detta konto som standard</string>
     <string name="account_setup_basics_manual_setup_action">Konfigurera manuellt</string>
@@ -420,15 +355,12 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerar inställningar för utgående server\u2026</string>
     <string name="account_setup_check_settings_authenticate">Authentiserar\u2026</string>
     <string name="account_setup_check_settings_fetch">Hämtar kontoinställningar\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Avslutar\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Avbryter\u2026</string>
 
     <string name="account_setup_names_title">Nästan färdig!</string>
     <string name="account_setup_names_instructions">Ditt konto är nu konfigurerat och e-posten är på väg!</string>
     <string name="account_setup_names_account_name_label">Ge detta konto ett namn (frivilligt):</string>
     <string name="account_setup_names_user_name_label">Ange ditt namn (visas på utgående e-post):</string>
-
-    <string name="account_setup_finished_toast">Ditt konto är nu konfigurerat!\n\nHämtar e-post\u2026</string>
 
     <string name="account_setup_account_type_title">Kontotyp</string>
     <string name="account_setup_account_type_instructions">Vilken typ av konto är detta?</string>
@@ -453,7 +385,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_incoming_delete_policy_label">När jag raderar ett brev</string>
     <string name="account_setup_incoming_delete_policy_never_label">Radera inte på servern</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Efter 7 dagar</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Radera från servern</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Markera som lästa på servern</string>
 
@@ -552,7 +483,6 @@ http://k9mail.googlecode.com/
     <string name="idle_refresh_period_48min">Var 48:e minut</string>
     <string name="idle_refresh_period_60min">Var 60:e minut</string>
 
-    <string name="account_setup_options_default_label">Skicka brev från detta konto som standard</string>
     <string name="account_setup_options_notify_label">Meddela mig vid ny e-post</string>
     <string name="account_setup_options_notify_sync_label">Meddela mig vid kontroll efter ny e-post</string>
 
@@ -578,7 +508,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_push_advanced_title">Advancerat</string>
     <string name="account_settings_title_fmt">Allmänna inställningar</string>
-    <string name="account_settings_default">Standardkonto</string>
     <string name="account_settings_default_label">Standardkonto</string>
     <string name="account_settings_default_summary">Skicka e-post från detta konto som standard</string>
     <string name="account_settings_notify_label">Notifiera om ny e-post</string>
@@ -586,7 +515,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_email_label">Din e-postadress</string>
     <string name="account_settings_notify_summary">Notifiera i statusraden när det kommer ny e-post</string>
     <string name="account_settings_notify_sync_summary">Notifiera i statusraden vid kontroll efter ny e-post</string>
-    <string name="account_settings_show_combined_label">Visa kombinerad inkorg</string>
     <string name="account_settings_notify_self_label">Notifiera för e-post från mig själv</string>
     <string name="account_settings_notify_self_summary">Notifiera även för e-post som jag själv har skickat</string>
     <string name="account_settings_notification_opens_unread_label">Notifieringar öppnar oläst e-post</string>
@@ -644,7 +572,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
-    <string name="account_settings_second_class_check_frequency_label">Frekvens för kontroll av andra klass</string>
 
     <string name="account_settings_storage_title">Lagring</string>
 
@@ -742,11 +669,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
     <string name="account_settings_outgoing_label">Utgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurera server för utgående e-post (SMTP)</string>
-    <string name="account_settings_add_account_label">Lägg till konto</string>
     <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Ditt namn</string>
     <string name="notifications_title">Notifieringar</string>
-    <string name="account_settings_ring_summary">Ring när det kommer ny e-post</string>
     <string name="account_settings_vibrate_enable">Vibrera</string>
     <string name="account_settings_vibrate_summary">Vibrera när det kommer e-post</string>
     <string name="account_settings_vibrate_pattern_label">Vibrationsmönster</string>
@@ -760,8 +685,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_ringtone">Ringsignal för ny e-post</string>
     <string name="account_settings_led_label">Blinka LED</string>
     <string name="account_settings_led_summary">Blinka LED när det kommer ny e-post</string>
-
-    <string name="account_settings_servers">Serverinställningar</string>
 
     <string name="account_settings_composition_title">Inställningar för att skriva brev</string>
     <string name="account_settings_composition_label">Standardinställningar</string>
@@ -778,7 +701,6 @@ http://k9mail.googlecode.com/
     <string name="new_identity_action">Ny identitet</string>
 
     <string name="account_settings_always_bcc_label">Skicka alltid Bcc till</string>
-    <string name="account_settings_always_bcc_summary">Skicka en kopia av alla utgående brev till denna adress</string>
 
     <string name="manage_identities_edit_action">Redigera</string>
     <string name="manage_identities_move_up_action">Flytta upp</string>
@@ -799,18 +721,14 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_signature_use_label">Använd signatur</string>
     <string name="account_settings_signature_label">Signatur</string>
-    <string name="account_settings_signature_summary">Lägg till en signatur till alla brev du skickar</string>
 
     <string name="default_identity_description">Ursprunglig identitet</string>
-    <string name="choose_identity">Välj identitet</string>
     <string name="choose_identity_title">Välj identitet</string>
     <string name="choose_account_title">Välj konto/identitet</string>
     <string name="send_as">Skicka som</string>
 
-    <string name="no_identities">Gå till Kontoinställningar -&gt; Hantera identiteter för att skapa en identitet</string>
     <string name="no_removable_identity">Du kan inte radera din enda identitet</string>
     <string name="identity_has_no_email">Du kan inte använda en identitet utan e-postadress</string>
-    <string name="identity_will_not_be_saved">Ditt val av identitet och signatur kommer inte att sparas med utkast</string>
 
     <string name="sort_earliest_first">Äldsta brev först</string>
     <string name="sort_latest_first">Nyaste brev först</string>
@@ -833,7 +751,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by_flag">Stjärnor</string>
     <string name="sort_by_unread">Lästa/olästa</string>
     <string name="sort_by_attach">Bilagor</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Radera konto</string>
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
@@ -937,7 +854,6 @@ http://k9mail.googlecode.com/
     <string name="batch_move_op">Flytta markerade</string>
     <string name="batch_copy_op">Kopierade markerade</string>
     <string name="batch_flag_mode">Stjärnläge</string>
-    <string name="batch_select_mode">Markeringsläge</string>
     <string name="batch_plain_mode">Vanligt läge</string>
     <string name="batch_select_all">Markera alla</string>
     <string name="batch_deselect_all">Avmarkera alla</string>
@@ -1078,8 +994,6 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
     <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
-
-    <string name="charset_not_found">Detta meddelande kan inte visas eftersom teckenuppsättningen \"<xliff:g id="charset">%s</xliff:g>\" inte kunde hittas.</string>
 
     <string name="select_text_now">Välj text att kopiera.</string>
 

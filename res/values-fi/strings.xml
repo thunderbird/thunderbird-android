@@ -80,9 +80,7 @@ http://k9mail.googlecode.com/
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title">Kirjoita</string>
-    <string name="debug_title">Vianetsintä</string>
     <string name="choose_folder_title">Valitse kansio</string>
-    <string name="choose_color_title">Valitse väri</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -116,7 +114,6 @@ http://k9mail.googlecode.com/
     <string name="continue_action">Jatka</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Tehty</string>
-    <string name="remove_action">Poista</string>
     <string name="discard_action">Hylkää</string>
     <string name="save_draft_action">Tallenna luonnoksena</string>
     <string name="retry_action">Yritä uudelleen</string>
@@ -140,9 +137,6 @@ http://k9mail.googlecode.com/
     <string name="clear_pending_action">Tyhjennä odottavat toimenpiteet (vaara!)</string>
 
     <string name="accounts_action">Tilit</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Lue</string>
     <string name="mark_as_read_action">Merkitse luetuksi</string>
     <string name="send_alternate_action">Jaa</string>
     <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
@@ -159,39 +153,28 @@ http://k9mail.googlecode.com/
     <string name="select_text_action">Valitse teksti</string>
 
     <string name="mark_as_unread_action">Merkitse Lukemattomaksi</string>
-    <string name="move_to_action">Siirrä</string>
-    <string name="folders_action">Kansiot</string>
-    <string name="view_hide_details_action">Näytä/piilota lisätiedot</string>
     <string name="add_cc_bcc_action">Lisää Kopio/Piilokopio</string>
-    <string name="edit_subject_action">Muokkaa aihetta</string>
     <!-- NEW: <string name="read_receipt">Read receipt</string>-->
     <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
     <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
     <string name="add_attachment_action">Lisää liite</string>
     <string name="add_attachment_action_image">Lisää liite (kuva)</string>
     <string name="add_attachment_action_video">Lisää liite (video)</string>
-    <string name="dump_settings_action">Tyhjennyksen asetukset</string>
     <string name="empty_trash_action">Tyhjennä roskakori</string>
     <string name="expunge_action">Poista</string>
     <string name="clear_local_folder_action">Poista paikalliset viestit</string>
-    <string name="set_sort_action">Valitse lajittelu</string>
-    <string name="reverse_sort_action">Käänteinen järjestys</string>
     <string name="about_action">Tietoja</string>
 
     <string name="prefs_title">Asetukset</string>
     <string name="accounts_context_menu_title">Tilin asetukset</string>
-    <string name="folder_context_menu_title">Kansion asetukset</string>
 
     <string name="general_no_subject">(Ei aihetta)</string>
     <string name="general_no_date">Ei päivämäärää</string>
     <string name="general_no_sender">Ei lähettäjää</string>
     <string name="status_loading">Hakee</string>
-    <string name="status_loading_folder">(Haku <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Lataa viestejä\u2026</string>
     <string name="status_network_error">Yhteysvirhe</string>
     <string name="status_invalid_id_error">Viestiä ei löydy</string>
-    <string name="status_error">Virhe</string>
-    <string name="status_sending">Lähettää</string>
 
     <string name="status_loading_more_failed">Yritä ladata lisää viestejä</string>
 
@@ -214,11 +197,7 @@ http://k9mail.googlecode.com/
     <string name="recreating_account">Luodaan uudelleen tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Uusi posti</string>
-    <string name="notification_new_scrolling">Uusi posti, lähettäjä <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lukematonta (<xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> Uutta posti(a) (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_new_multi_account_fmt"><xliff:g id="number_accounts">%d</xliff:g> tilillä</string>
-    <string name="notification_unsent_title">Viestiä ei ole lähetetty</string>
 
     <string name="notification_bg_sync_ticker">Tarkistaa: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Tarkistaa posteja</string>
@@ -243,17 +222,6 @@ http://k9mail.googlecode.com/
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Roskaposti)</string>
 
     <string name="send_failure_subject">Kaikkia viestejä ei onnistuttu lähettämään</string>
-    <string name="send_failure_body_abbrev">Katso <xliff:g id="errorFolder">%s</xliff:g> kansiosta lisätietoja.</string>
-    <string name="send_failure_body_fmt">K-9 epäonnistui joidenkin viestien lähettämisessä.
-       Ongelman luonteesta johtuen K-9 ei voi olla varma lähetettiinkö viestit vai ei.
-       On mahdollista että vastaanottajat ovat kuitenkin saaneet viestin..
-      \u000a\u000aViestit, joiden kohdalla oli ongelmia, on merkitty tähdellä Lähtevissä viesteissä.
-      Jos poistat tähdet, K-9 yrittää lähettää viestit uudelleen.
-      Paina pitkään Lähtevät-kansiota avataksesi \"Lähetä viestit\"-toiminta, jolloin viestien lähetystä yritetään uudelleen.\u000A\u000a
-      The <xliff:g id="errorFolder">%s</xliff:g> kansiossa saattaa olla virheilmoituksia epäonnistumisesta.</string>
-
-    <string name="alert_header">K-9-hälytys</string>
-    <string name="no_connection_alert">Synkronointi ja lähetys pysäytetty verkon hitauden vuoksi.</string>
 
     <string name="end_of_folder">Ei enää viestejä</string>
 
@@ -263,22 +231,8 @@ http://k9mail.googlecode.com/
     <string name="debug_enable_sensitive_logging_title">Kirjoita lokiin arkaluontoisia tietoja</string>
     <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
 
-    <string name="combined_inbox_title">Kaikki postit</string>
-    <string name="combined_inbox_label">Viimeisimmät viestit kaikilta tileiltä</string>
-    <string name="combined_inbox_list_title">Saapuneet</string>
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Hae lisää viestejä</string>
     <string name="message_to_fmt">Vastaanottja: <xliff:g id="counterParty"> %s </xliff:g></string>
-    <string name="message_list_delete_action">Poista</string>
-    <string name="message_list_mark_read_action">Merkitse luetuksi</string>
-    <string name="message_list_mark_unread_action">Merkitse lukemattomaksi</string>
-    <string name="message_list_flag_action">Lisää tähti</string>
-    <string name="message_list_unflag_action">Poista tähti</string>
 
     <string name="message_compose_to_hint">Vastaanottaja</string>
     <string name="message_compose_cc_hint">Kopio</string>
@@ -293,10 +247,8 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_to">Vastaanottaja:</string>
     <string name="message_compose_quote_header_cc">Kopio:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n\n</string>
-    <string name="message_compose_quoted_text_label">Lainattu teksti</string>
     <string name="message_compose_error_no_recipients">Valitse ainakin yksi vastaanottaja.</string>
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
-    <string name="message_compose_downloading_attachments_toast">Kaikkia liitteitä ei ladattu. Ne ladataan automaattisest ennen tämän viestin lähettämistä.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida jatkolähettää, koska niitä ei ole ladattu.</string>
     <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
     <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
@@ -315,10 +267,8 @@ http://k9mail.googlecode.com/
     <string name="message_view_archive_action">Arkistoi</string>
     <string name="message_view_move_action">Siirrä</string>
     <string name="message_view_spam_action">Roskaposti</string>
-    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Liite tallennettu SD -kortille nimellä <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Liitteen tallennus SD-kortille epäonnistui.</string>
-    <string name="message_view_show_pictures_instructions">Valitse \"Näytä kuvat\" nähdäksesi viestin kuvat.</string>
     <string name="message_view_show_pictures_action">Näytä kuvat</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
@@ -333,24 +283,12 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Kaikki otsikkotietdot on ladattu, mutta lisätietoja ei ole enempää tarjolla.</string>
     <string name="message_additional_headers_retrieval_failed">Lisätietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
 
-    <string name="mailbox_select_dlg_title">Kansiot</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Uusi kansio</string>
-
-    <string name="new_mailbox_dlg_title">Uuden kansion nimi</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Lisää samalta lähettäjältä</string>
 
-    <string name="message_copied_toast">Viesti kopioitu</string>
-    <string name="message_moved_toast">Viesti siirretty</string>
-    <string name="message_deleted_toast">Viesti poistettu</string>
     <string name="message_discarded_toast">Viesti peruutettu</string>
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
-    <string name="message_delete_failed">Viestiä ei voitu poistaa</string>
-
-    <string name="about_header">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Versio: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Viestin tähdet</string>
     <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
@@ -403,10 +341,7 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_basics_title">Lisää uusi tili</string>
     <string name="account_setup_basics_instructions">Anna tilin sähköpostiosoite:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Voit lisätä vielä <xliff:g id="number_accounts">%d</xliff:g> tiliä.)</string>
     <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> -osoite on virheellinen.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> on jo lisätty.</string>
     <string name="account_setup_basics_password_hint">Salasana</string>
     <string name="account_setup_basics_default_label">Lähetä viestit oletuksena tältä tililtä</string>
     <string name="account_setup_basics_manual_setup_action">Anna asetukset käsin</string>
@@ -417,15 +352,12 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_check_outgoing_msg">Tarkistaa lähtevän postin palvelimen asetuksia\u2026</string>
     <string name="account_setup_check_settings_authenticate">Vahvistetaan\u2026</string>
     <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Lopetetaan\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Peruttaa\u2026</string>
 
     <string name="account_setup_names_title">Melkein valmista!</string>
     <string name="account_setup_names_instructions">Tilisi on määritetty ja postit ovat jo matkalla!</string>
     <string name="account_setup_names_account_name_label">Anna tilin nimi (ei pakollinen):</string>
     <string name="account_setup_names_user_name_label">Anna nimesi (näkyy lähtevissä viesteissä):</string>
-
-    <string name="account_setup_finished_toast">Tilisi on määritetty!\n\nHaen posteja\u2026</string>
 
     <string name="account_setup_account_type_title">Tilin tyyppi</string>
     <string name="account_setup_account_type_instructions">Mikä tämän tilin tyyppi on?</string>
@@ -450,7 +382,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_incoming_delete_policy_label">Aina kun poistan viestin</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">7 päivän jälkeen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Poistettu palvelimelta</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
 
@@ -547,7 +478,6 @@ http://k9mail.googlecode.com/
     <string name="idle_refresh_period_48min">Joka 48 minuutti</string>
     <string name="idle_refresh_period_60min">Joka 60 minuutti</string>
 
-    <string name="account_setup_options_default_label">Lähetä postit oletuksena tältä tililtä</string>
     <string name="account_setup_options_notify_label">Ilmoitus postin saapumisesta</string>
     <string name="account_setup_options_notify_sync_label">Ilmoitus postin tarkistamisesta</string>
 
@@ -573,7 +503,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_push_advanced_title">Lisäasetukset</string>
     <string name="account_settings_title_fmt">Yleiset asetukset</string>
-    <string name="account_settings_default">Oletustili</string>
     <string name="account_settings_default_label">Oletustili</string>
     <string name="account_settings_default_summary">Lähetä postit oletuksena tältä tililtä</string>
     <string name="account_settings_notify_label">Ilmoitus saapuneesta postista</string>
@@ -581,7 +510,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_email_label">Sähköpostiosoitteesi</string>
     <string name="account_settings_notify_summary">Näytä ilmoitusrivillä uudesta viestistä</string>
     <string name="account_settings_notify_sync_summary">Näytä ilmoitusrivillä uusien viestien tarkastuksesta</string>
-    <string name="account_settings_show_combined_label">Näytä yhdistetty Saapunet -kansio</string>
     <string name="account_settings_notify_self_label">Ilmoita lähettämästäni viestistä</string>
     <string name="account_settings_notify_self_summary">Ilmoita omista viesteistä</string>
     <string name="account_settings_notification_opens_unread_label">Ilmoituksesta avataan lukemattomat viestit -kansio</string>
@@ -639,7 +567,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Kansion tarkastusväli</string>
-    <string name="account_settings_second_class_check_frequency_label">2. luokan tarkistuksen väli</string>
 
     <string name="account_settings_storage_title">Tallennus</string>
 
@@ -737,11 +664,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
     <string name="account_settings_outgoing_label">Lähtevän postin palvelin</string>
     <string name="account_settings_outgoing_summary">Määritä lähtevän postin (SMTP) palvelin</string>
-    <string name="account_settings_add_account_label">Lisää toinen tili</string>
     <string name="account_settings_description_label">Tilin nimi</string>
     <string name="account_settings_name_label">Nimesi</string>
     <string name="notifications_title">Ilmoitukset</string>
-    <string name="account_settings_ring_summary">Äänimerkki saapuvasta viestistä</string>
     <string name="account_settings_vibrate_enable">Värinä</string>
     <string name="account_settings_vibrate_summary">Värinähälytys saapuvasta viestistä</string>
     <string name="account_settings_vibrate_pattern_label">Värinän mallit</string>
@@ -755,8 +680,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_ringtone">Uuden viestin ilmoitusääni</string>
     <string name="account_settings_led_label">Merkkivalo vilkkuu</string>
     <string name="account_settings_led_summary">Viestin saapuessa merkkivalo vilkkuu</string>
-
-    <string name="account_settings_servers">Palvelimen asetukset</string>
 
     <string name="account_settings_composition_title">Viestin kirjoituksen asetukset</string>
     <string name="account_settings_composition_label">Kirjoituksen oletusasetukset</string>
@@ -773,7 +696,6 @@ http://k9mail.googlecode.com/
     <string name="new_identity_action">Uusi identiteetti</string>
 
     <string name="account_settings_always_bcc_label">Piilokopio kaikista viesteistä osoitteeseen</string>
-    <string name="account_settings_always_bcc_summary">Tähän osoitteeseen lähetetään kopio jokaisesta lähetetystä viestistä</string>
 
     <string name="manage_identities_edit_action">Muokkaa</string>
     <string name="manage_identities_move_up_action">Siirrä ylös</string>
@@ -794,18 +716,14 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_signature_use_label">Käytä allekirjoitusta</string>
     <string name="account_settings_signature_label">Allekirjoitus</string>
-    <string name="account_settings_signature_summary">Lisää allekirjoitus jokaiseen lähetettävään viestiin</string>
 
     <string name="default_identity_description">Oletusidentiteetti</string>
-    <string name="choose_identity">Valitse identiteetti</string>
     <string name="choose_identity_title">Valitse identiteetti</string>
     <string name="choose_account_title">Valitse tili/identiteetti</string>
     <string name="send_as">Lähetä</string>
 
-    <string name="no_identities">Mene tilin asetuksiin -> Hallitse identiteettejä luodaksesi identiteetin</string>
     <string name="no_removable_identity">Et voi poistaa ainoaa identiteettiäsi</string>
     <string name="identity_has_no_email">Identiteettiä ei voi käyttää ilman sähköpostiosoitetta</string>
-    <string name="identity_will_not_be_saved">Identiteettivalintaa ja allekirjoitusta ei talleteta vedokseen</string>
 
     <string name="sort_earliest_first">Vanhemmat viestit ensin</string>
     <string name="sort_latest_first">Uusimmat viestit ensin</string>
@@ -828,7 +746,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by_flag">Tähti</string>
     <string name="sort_by_unread">Luetut/Lukemattomat</string>
     <string name="sort_by_attach">Liitteet</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Poista tili</string>
     <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
@@ -932,7 +849,6 @@ http://k9mail.googlecode.com/
     <string name="batch_move_op">Siirrä valitut</string>
     <string name="batch_copy_op">Kopioi valitut</string>
     <string name="batch_flag_mode">Tähtitila</string>
-    <string name="batch_select_mode">Valintatila</string>
     <string name="batch_plain_mode">Pelkistetty tila</string>
     <string name="batch_select_all">Valitse kaikki</string>
     <string name="batch_deselect_all">>Poista kaikki valinnat</string>
@@ -1073,8 +989,6 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
     <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
-
-    <string name="charset_not_found">Viestiä ei voi näyttää koska merkistöä \"<xliff:g id="charset">%s</xliff:g>\" ei löytynyt.</string>
 
     <string name="select_text_now">Valitse kopioitava teksti.</string>
 

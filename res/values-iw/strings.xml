@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -82,9 +82,7 @@ http://k9mail.googlecode.com/
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">חבר</string>
-    <string name="debug_title">איתור באגים</string>
     <string name="choose_folder_title">בחר תיקייה</string>
-    <string name="choose_color_title">בחר צבע</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -118,7 +116,6 @@ http://k9mail.googlecode.com/
     <string name="continue_action">המשך</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">סיום</string>
-    <string name="remove_action">מחק</string>
     <string name="discard_action">השלך</string>
     <string name="save_draft_action">שמור כטיוטה</string>
     <string name="retry_action">נסה שוב</string>
@@ -142,9 +139,6 @@ http://k9mail.googlecode.com/
     <string name="clear_pending_action">נקה פעולות ממתינות(סכנה!)</string>
 
     <string name="accounts_action">חשבונות</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">קרא</string>
     <string name="mark_as_read_action">סמן כנקרא</string>
     <string name="send_alternate_action">שתף</string>
     <string name="send_alternate_chooser_title">בחר את השולח</string>
@@ -160,39 +154,28 @@ http://k9mail.googlecode.com/
     <string name="select_text_action">בחר טקסט</string>
 
     <string name="mark_as_unread_action">סמן כלא נקרא</string>
-    <string name="move_to_action">העבר ל</string>
-    <string name="folders_action">תיקיות</string>
-    <string name="view_hide_details_action">הצג/הסתר פרטים</string>
     <string name="add_cc_bcc_action">הוסף עותק / עותק מוסתר</string>
-    <string name="edit_subject_action">ערוך נושא</string>
     <string name="read_receipt">אישור קריאה</string>
     <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
     <string name="read_receipt_disabled">לא נדרש אישור קריאה</string>
     <string name="add_attachment_action">צרף קובץ</string>
     <string name="add_attachment_action_image">הוסף קובץ (תמונה)</string>
     <string name="add_attachment_action_video">הוסף קובת (וידאו)</string>
-    <string name="dump_settings_action">הגדרות מחיקה</string>
     <string name="empty_trash_action">רוקן אשפה</string>
     <string name="expunge_action">רוקן</string>
     <string name="clear_local_folder_action">נקה הודעות מקומיות</string>
-    <string name="set_sort_action">בחר מיון</string>
-    <string name="reverse_sort_action">מיון הפוך</string>
     <string name="about_action">אודות</string>
 
     <string name="prefs_title">הגדרות</string>
     <string name="accounts_context_menu_title">אפשרויות חשבון</string>
-    <string name="folder_context_menu_title">אפשרויות תיקייה</string>
 
     <string name="general_no_subject">(ללא כותרת)</string>
     <string name="general_no_date">ללא תאריך</string>
     <string name="general_no_sender">ללא שולח</string>
     <!-- NEW: <string name="status_loading">Polling</string>-->
-    <!-- NEW: <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>-->
     <string name="status_loading_more">טוען הודעות</string>
     <string name="status_network_error">שגיאת חיבור</string>
     <string name="status_invalid_id_error">לא נמצאו הודעות</string>
-    <string name="status_error">שגיאה</string>
-    <string name="status_sending">שולח…</string>
 
     <string name="status_loading_more_failed">נסה שוב לטעון הודעות נוספות</string>
 
@@ -217,11 +200,7 @@ http://k9mail.googlecode.com/
     <string name="recreating_account">יוצר מחדש חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">מייל חדש</string>
-    <string name="notification_new_scrolling">מייל חדש מ <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">ב <xliff:g id="number_accounts">%d</xliff:g> חשבונות</string>
-    <string name="notification_unsent_title">ההודעה לא נשלחה</string>
 
     <string name="notification_bg_sync_ticker">בודק דוא\"ל: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">בודק דוא\"ל</string>
@@ -246,13 +225,6 @@ http://k9mail.googlecode.com/
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (דואר זבל)</string>
 
     <string name="send_failure_subject">נכשל בשליחת כמה הודעות</string>
-    <string name="send_failure_body_abbrev">ראה את התיקיות שלך <xliff:g id="errorFolder">%s</xliff:g> לפרטים.</string>
-    <string name="send_failure_body_fmt">K-9 נתקל בבעיה לשלוח כמה הודעות שלך. עם זאת, בשל אופייה של הבעיה, K-9 לא יכול להיות בטוח אם ההודעות נשלחו או לא. ייתכן שהנמענים כבר קיבלו עותקים של ההודעה.\n\n
-המסרים שעבורם זה סוג של בעיה שחלו עכשיו מסומנים בכוכב בתיבת הדואר היוצא. אם תסיר את הכוכבים, K-9 ינסה לשלוח את ההודעות שוב. לחיצה ארוכה על תיבת הדואר היוצא כדי לאתר את פעולת \ "ההודעות שנשלחו\" על מנת ליצור ניסיון נוסף לשלוח.\n\n
-התיקייה <xliff:g id="errorFolder">%s</xliff:g> עשויה להכיל הודעות שגיאה לגבי הכישלונות ".</string>
-
-    <string name="alert_header">K-9 התראה</string>
-    <string name="no_connection_alert">סינכרון ושליחה הופסק עקב כך שאין רשת.</string>
 
     <string name="end_of_folder">אין עוד הודעות</string>
 
@@ -262,22 +234,8 @@ http://k9mail.googlecode.com/
     <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
     <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
 
-    <string name="combined_inbox_title">כל הדואר</string>
-    <string name="combined_inbox_label">הודעות אחרונות מכל החשבונות</string>
-    <string name="combined_inbox_list_title">כל הדואר הנכנס</string>
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
     <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">מחק</string>
-    <string name="message_list_mark_read_action">סמן שנקרא</string>
-    <string name="message_list_mark_unread_action">סמן כלא נקרא</string>
-    <string name="message_list_flag_action">הוסף כוכב</string>
-    <string name="message_list_unflag_action">מחק כוכב</string>
 
     <string name="message_compose_to_hint">ל</string>
     <string name="message_compose_cc_hint">עותק</string>
@@ -292,10 +250,8 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_to">ל:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כותב:\n\n</string>
-    <string name="message_compose_quoted_text_label">טקסט מצוטט</string>
     <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
     <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
-    <string name="message_compose_downloading_attachments_toast">קבצים מסוימים לא הורדו. הם יורדו אוטומטית לפני שליחת ההודעה.</string>
     <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>
     <string name="message_compose_show_quoted_text_action">צטט הודעה</string>
     <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
@@ -314,10 +270,8 @@ http://k9mail.googlecode.com/
     <string name="message_view_archive_action">ארכיון</string>
     <string name="message_view_move_action">העבר</string>
     <string name="message_view_spam_action">דואר זבל</string>
-    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">הקובץ המצורף נשמר בכרטיס ה SD בתור <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
-    <string name="message_view_show_pictures_instructions">בחר \ "הצג תמונות \" כדי להציג תמונות מוטבעות.</string>
     <string name="message_view_show_pictures_action">הצג תמונות</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
@@ -332,24 +286,12 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
     <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
 
-    <string name="mailbox_select_dlg_title">תיקיות</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">תיקייה חדשה</string>
-
-    <string name="new_mailbox_dlg_title">שם תיקייה חדשה</string>
-
     <string name="folder_push_active_symbol">(דחיפה)</string>
 
     <string name="from_same_sender">עוד מהשולח הזה</string>
 
-    <string name="message_copied_toast">ההודעה הועתקה</string>
-    <string name="message_moved_toast">ההודעה הועברה</string>
-    <string name="message_deleted_toast">ההודעה נמחקה</string>
     <string name="message_discarded_toast">ההודעה נמחקה</string>
     <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
-    <string name="message_delete_failed">ההודעה לא יכולה להימחק</string>
-
-    <string name="about_header">אודות <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">גרסא: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">הצג כוכבים</string>
     <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
@@ -402,10 +344,7 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_basics_title">הגדר חשבון חדש</string>
     <string name="account_setup_basics_instructions">הזן את כתובת הדוא\"ל של החשבון הזה:</string>
-    <string name="account_setup_basics_instructions2_fmt">(ניתן להוסיף עוד <xliff:g id="number_accounts">%d</xliff:g> חשבונות.)</string>
     <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
-    <string name="account_setup_basics_email_error_invalid_fmt">אינה כתובת דוא\"ל חוקית.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> כבר נוסף.</string>
     <string name="account_setup_basics_password_hint">סיסמא</string>
     <string name="account_setup_basics_default_label">הוראות הגדרה</string>
     <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
@@ -416,15 +355,12 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
     <string name="account_setup_check_settings_authenticate">מאמת …</string>
     <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
-    <string name="account_setup_check_settings_finishing_msg">מסיים…</string>
     <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
 
     <string name="account_setup_names_title">כמעט מוכן!</string>
     <string name="account_setup_names_instructions">החשבון שלך מוגדר, והדואר נמצא בדרך!</string>
     <string name="account_setup_names_account_name_label">תן שם לחשבון זה (לא חובה):</string>
     <string name="account_setup_names_user_name_label">הקלד את שמך (מוצג בהודעות יוצאות):</string>
-
-    <string name="account_setup_finished_toast">החשבון שלך מוגדר!\n\nשולף דואר …</string>
 
     <string name="account_setup_account_type_title">סוג חשבון</string>
     <string name="account_setup_account_type_instructions">איזה סוג חשבון זה?</string>
@@ -449,7 +385,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
     <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">אחרי 7 ימים</string>
     <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
     <string name="account_setup_incoming_delete_policy_markread_label">סמן כנקרא בשרת</string>
 
@@ -471,8 +406,8 @@ http://k9mail.googlecode.com/
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
     <string name="account_setup_expunge_policy_manual">רק באופן ידני</string>
 
+    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <!-- NEW: <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>-->
-    <string name="account_setup_incoming_imap_path_prefix_hint">(שימוש אוטומטי בNAMESPACE אם קיים)</string>
 
     <string name="drafts_folder_label">תיקיית טיוטות</string>
     <string name="sent_folder_label">תיקיית הודעות שנשלחו</string>
@@ -548,7 +483,6 @@ http://k9mail.googlecode.com/
     <string name="idle_refresh_period_48min">כל 48 דקות</string>
     <string name="idle_refresh_period_60min">כל 60 דקות</string>
 
-    <string name="account_setup_options_default_label">לשלוח דואר מחשבון זה כברירת מחדל</string>
     <string name="account_setup_options_notify_label">הודע לי כאשר מגיע דואר</string>
     <string name="account_setup_options_notify_sync_label">הודע לי בזמן שהדואר נבדק</string>
 
@@ -574,7 +508,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_push_advanced_title">מתקדם</string>
     <string name="account_settings_title_fmt">הגדרות חשבון</string>
-    <string name="account_settings_default">חשבון ברירת מחדל</string>
     <string name="account_settings_default_label">חשבון ברירת מחדל</string>
     <string name="account_settings_default_summary">לשלוח דואר מחשבון זה כברירת מחדל</string>
     <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
@@ -582,7 +515,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_email_label">כתובת הדוא\"ל שלך</string>
     <string name="account_settings_notify_summary">נא הודע לי בשורת מצב כאשר מגיע דואר</string>
     <string name="account_settings_notify_sync_summary">נא הודע לי בשורת המצב בזמן שהדואר נבדק</string>
-    <string name="account_settings_show_combined_label">הצג תיבת דואר נכנס משולבת</string>
     <string name="account_settings_notify_self_label">כלול את הדואר היוצא</string>
     <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
     <string name="account_settings_notification_opens_unread_label">ההתראה פותחת הודעות שלא נקראו</string>
@@ -640,7 +572,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <!-- NEW: <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>-->
-    <!-- NEW: <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>-->
 
     <string name="account_settings_storage_title">אחסון</string>
 
@@ -738,11 +669,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
     <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
     <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
-    <string name="account_settings_add_account_label">הוסף חשבון אחר</string>
     <string name="account_settings_description_label">שם חשבון</string>
     <string name="account_settings_name_label">השם שלך</string>
     <string name="notifications_title">התראות</string>
-    <string name="account_settings_ring_summary">צלצל שמגיע מייל</string>
     <string name="account_settings_vibrate_enable">רטט</string>
     <string name="account_settings_vibrate_summary">תרטוט שמגיע מייל</string>
     <string name="account_settings_vibrate_pattern_label">דפוסי רטט</string>
@@ -756,8 +685,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_ringtone">רינגטון מייל חדש</string>
     <string name="account_settings_led_label">הבהוב LED</string>
     <string name="account_settings_led_summary">תהבהב ב LED כשמגיע מייל חדש</string>
-
-    <string name="account_settings_servers">הגדרות שרת</string>
 
     <string name="account_settings_composition_title">אפשרויות הרכב הודעה</string>
     <string name="account_settings_composition_label">הרכב ברירת המחדל</string>
@@ -774,7 +701,6 @@ http://k9mail.googlecode.com/
     <string name="new_identity_action">זהות חדשה</string>
 
     <string name="account_settings_always_bcc_label">עותק מוסתר לכל ההודעות אל</string>
-    <string name="account_settings_always_bcc_summary">שלח לכתובת הזו עותק של כל הודעה יוצאת</string>
 
     <string name="manage_identities_edit_action">ערוך</string>
     <string name="manage_identities_move_up_action">העבר למעלה</string>
@@ -795,18 +721,14 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_signature_use_label">השתמש בחתימה</string>
     <string name="account_settings_signature_label">חתימה</string>
-    <string name="account_settings_signature_summary">צרף חתימה לכל הודעה שתשלח</string>
 
     <string name="default_identity_description">הזהות הראשונית</string>
-    <string name="choose_identity">בחר זהות</string>
     <string name="choose_identity_title">בחר זהות</string>
     <string name="choose_account_title">בחר חשבון/זהות</string>
     <string name="send_as">שלח כ</string>
 
-    <string name="no_identities">לך להגדרות חשבון -&gt; ניהול זהויות, כדי ליצור זהויות</string>
     <string name="no_removable_identity">"לא ניתן להסיר את הזהות היחידה שלך"</string>
     <string name="identity_has_no_email">"אתה לא יכול להשתמש בזהות ללא כתובת דואר אלקטרוני"</string>
-    <string name="identity_will_not_be_saved">השינויים בבחירת זהותך וחתימתך לא ישמרו עם הטיוטה</string>
 
     <string name="sort_earliest_first">הודעות קודמות ראשונות</string>
     <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
@@ -829,7 +751,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by_flag">כוכב</string>
     <string name="sort_by_unread">נקרא/לא נקרא</string>
     <string name="sort_by_attach">קבצים מצורפים</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">מחק חשבון</string>
     <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
@@ -945,7 +866,6 @@ http://k9mail.googlecode.com/
     <string name="batch_move_op">העבר נבחרים</string>
     <string name="batch_copy_op">העתק נבחרים</string>
     <string name="batch_flag_mode">מצב \'כוכב\'</string>
-    <string name="batch_select_mode">בחר מצב</string>
     <string name="batch_plain_mode">מצב רגיל</string>
     <string name="batch_select_all">בחר הכל</string>
     <string name="batch_deselect_all">הקב את כל הבחירות</string>
@@ -1086,8 +1006,6 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
     <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
-
-    <string name="charset_not_found">"לא ניתן להציג הודעה זו בגלל שהקידוד \"<xliff:g id="charset">%s</xliff:g>\" לא נמצא."</string>
 
     <string name="select_text_now">בחר טקסט כדי להעתיק.</string>
 

@@ -82,9 +82,7 @@ http://k9mail.googlecode.com/
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Componi</string>
-    <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Scegli la cartella</string>
-    <string name="choose_color_title">Scegli un colore</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -118,7 +116,6 @@ http://k9mail.googlecode.com/
     <string name="continue_action">Continua</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Fatto</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">Rimuovi</string>
     <string name="discard_action">Ignora</string>
     <string name="save_draft_action">Salva come bozza</string>
     <string name="retry_action">Riprova</string>
@@ -142,9 +139,6 @@ http://k9mail.googlecode.com/
     <string name="clear_pending_action">Annulla tutte le azioni in corso (pericolo!)</string>
 
     <string name="accounts_action">Account</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Leggi</string>
     <string name="mark_as_read_action">Segna come letto</string>
     <string name="send_alternate_action">Inoltra con altra applicazione</string>
     <string name="send_alternate_chooser_title">Scegli il mittente</string>
@@ -161,39 +155,28 @@ http://k9mail.googlecode.com/
     <string name="select_text_action">Seleziona testo</string>
 
     <string name="mark_as_unread_action">Segna come da leggere</string>
-    <string name="move_to_action">Sposta in</string>
-    <string name="folders_action">Cartelle</string>
-    <string name="view_hide_details_action">Mostra/nascondi dettagli</string>
     <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
-    <string name="edit_subject_action">Modifica oggetto</string>
     <string name="read_receipt">Notifica di lettura</string>
     <string name="read_receipt_enabled">Notifica di lettura attiva</string>
     <string name="read_receipt_disabled">Notifica di lettura disattiva</string>
     <string name="add_attachment_action">Aggiungi allegato</string>
     <string name="add_attachment_action_image">Aggiungi allegato (Immagine)</string>
     <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
-    <string name="dump_settings_action">Elimina impostazioni</string>
     <string name="empty_trash_action">Svuota cestino</string>
     <string name="expunge_action">Rimuovi messaggi eliminati</string>
     <string name="clear_local_folder_action">Cancella messaggi locali</string>
-    <string name="set_sort_action">Scegli ordinamento</string>
-    <string name="reverse_sort_action">Inverti ordinamento</string>
     <string name="about_action">Informazioni su</string>
 
     <string name="prefs_title">Impostazioni</string>
     <string name="accounts_context_menu_title">Opzioni account</string>
-    <string name="folder_context_menu_title">Opzioni cartella</string>
 
     <string name="general_no_subject">(Nessun oggetto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Nessuna data</string>
     <string name="general_no_sender">Nessun mittente</string>
     <string name="status_loading">Recupero in corso</string>
-    <string name="status_loading_folder">(Verifica di <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Caricamento dei messaggi in corso\u2026</string>
     <string name="status_network_error">Errore di connessione</string>
     <string name="status_invalid_id_error">Messaggio non trovato</string>
-    <string name="status_error">Errore</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Invio in corso</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
 
@@ -217,11 +200,7 @@ http://k9mail.googlecode.com/
     <string name="recreating_account">Ricreare account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nuova posta</string>
-    <string name="notification_new_scrolling">Nuova posta da <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> account</string>
-    <string name="notification_unsent_title">Messaggio non inviato</string>
 
     <string name="notification_bg_sync_ticker">Controllo posta in corso: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Controllo posta</string>
@@ -246,17 +225,6 @@ http://k9mail.googlecode.com/
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
-    <string name="send_failure_body_abbrev">Guarda nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
-    <string name="send_failure_body_fmt">K-9 ha riscontrato un problema nell\'invio di alcuni dei tuoi messaggi.
-     Tuttavia, a causa della natura del problema, K-9 non può essere certo che i messaggi siano
-    stati realmente inviati. I destinatari potrebbero aver già ricevuto una copia del messaggio.
-    \u000a\u000aI messaggi per i quali è stato riscontrato questo problema sono marcati con una stella nella Posta in Uscita.
-    Rimuovendo le stelle K-9 proverà a inviare i messaggi di nuovo.
-    Premere a lungo la cartella Posta in uscita per visualizzare l\'opzione \"Invia messaggi \" e avviare un nuovo tentativo di invio.\u000A\u000a
-    La cartella <xliff:g id="errorFolder">%s</xliff:g> potrebbe contenere messaggi di errore per quanto riguarda gli invii falliti.</string>
-
-    <string name="alert_header">Allarme di K-9</string>
-    <string name="no_connection_alert">La sincronizzazione e l\'invio sono sospesi per mancanza di rete.</string>
 
     <string name="end_of_folder">Non ci sono nuovi messaggi</string>
 
@@ -266,22 +234,8 @@ http://k9mail.googlecode.com/
     <string name="debug_enable_sensitive_logging_title">Registra informazioni sensibili</string>
     <string name="debug_enable_sensitive_logging_summary">Può mostrare le passwords nei files di logs.</string>
 
-    <string name="combined_inbox_title">Tutti i messaggi</string>
-    <string name="combined_inbox_label">Messaggi recenti da tutti gli account</string>
-    <string name="combined_inbox_list_title">Tutti i messaggi in arrivo</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
     <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Elimina</string>
-    <string name="message_list_mark_read_action">Segna come letto</string>
-    <string name="message_list_mark_unread_action">Segna come da leggere</string>
-    <string name="message_list_flag_action">Metti stella</string>
-    <string name="message_list_unflag_action">Togli stella</string>
 
     <string name="message_compose_to_hint">A</string>
     <string name="message_compose_cc_hint">Cc</string>
@@ -296,10 +250,8 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_to">A:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
-    <string name="message_compose_quoted_text_label">Testo quotato</string>
     <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
     <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
-    <string name="message_compose_downloading_attachments_toast">Alcuni allegati non sono stati scaricati. Verranno scaricati automaticamente prima che questo messaggio venga inviato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
     <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
     <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
@@ -318,10 +270,8 @@ http://k9mail.googlecode.com/
     <string name="message_view_archive_action">Archivia</string>
     <string name="message_view_move_action">Sposta</string>
     <string name="message_view_spam_action">Spam</string>
-    <string name="message_view_datetime_fmt">gg MMM aaaa hh:mm a</string>
     <string name="message_view_status_attachment_saved">Allegato salvato su scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
-    <string name="message_view_show_pictures_instructions">Seleziona \"Mostra immagini\" per visualizzare le immagini incorporate.</string>
     <string name="message_view_show_pictures_action">Mostra immagini</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
@@ -336,24 +286,12 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
     <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
 
-    <string name="mailbox_select_dlg_title">Cartelle</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Nuova cartella</string>
-
-    <string name="new_mailbox_dlg_title">Nome della nuova cartella</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Altri da questo mittente</string>
 
-    <string name="message_copied_toast">Messaggio copiato</string>
-    <string name="message_moved_toast">Message spostato</string>
-    <string name="message_deleted_toast">Message eliminato</string>
     <string name="message_discarded_toast">Message scartato</string>
     <string name="message_saved_toast">Messaggio salvato come bozza</string>
-    <string name="message_delete_failed">Il messaggio non può essere eliminato</string>
-
-    <string name="about_header">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Versione: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Mostra stelle</string>
     <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
@@ -406,10 +344,7 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_basics_title">Configura un nuovo account</string>
     <string name="account_setup_basics_instructions">Inserisci l\'indirizzo e-mail di questo account:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Puoi aggiungere altri <xliff:g id="number_accounts">%d</xliff:g> account)</string>
     <string name="account_setup_basics_email_hint">Indirizzo e-mail</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> non è un indirizzo e-mail valido.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> è già stato aggiunto.</string>
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_default_label">Account predefinito per l\'invio della posta</string>
     <string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
@@ -420,15 +355,12 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server della posta in uscita in corso\u2026</string>
     <string name="account_setup_check_settings_authenticate">Autenticazione in corso\u2026</string>
     <string name="account_setup_check_settings_fetch">Recupero delle impostazioni dell\'account in corso\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Completamento delle operazioni in corso\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Annullamento delle operazioni in corso\u2026</string>
 
     <string name="account_setup_names_title">Quasi fatto!</string>
     <string name="account_setup_names_instructions">Il tuo account è stato impostato, e la posta è in viaggio!</string>
     <string name="account_setup_names_account_name_label">Assegna un nome all\'account (opzionale):</string>
     <string name="account_setup_names_user_name_label">Scrivi il tuo nome (visualizzato nei messaggi in uscita):</string>
-
-    <string name="account_setup_finished_toast">Il tuo account è stato impostato!\n\nRecupero messaggi in corso\u2026</string>
 
     <string name="account_setup_account_type_title">Tipo di account</string>
     <string name="account_setup_account_type_instructions">Che tipo di account è questo?</string>
@@ -453,7 +385,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_incoming_delete_policy_label">Quando si elimina un messaggio</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Dopo 7 giorni</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Elimina dal server</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Segna come letto sul server</string>
 
@@ -552,7 +483,6 @@ http://k9mail.googlecode.com/
     <string name="idle_refresh_period_48min">Ogni 48 minuti</string>
     <string name="idle_refresh_period_60min">Ogni 60 minuti</string>
 
-    <string name="account_setup_options_default_label">Usa questo account come predefinito per l\'invio dei messaggi</string>
     <string name="account_setup_options_notify_label">Notifica l\'arrivo di nuovi messaggi</string>
     <string name="account_setup_options_notify_sync_label">Notifica mentre controlli la posta</string>
 
@@ -578,7 +508,6 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_push_advanced_title">Impostazioni avanzate</string>
     <string name="account_settings_title_fmt">Impostazioni account</string>
-    <string name="account_settings_default">Account predefinito</string>
     <string name="account_settings_default_label">Account predefinito</string>
     <string name="account_settings_default_summary">Invia mail da questo account per impostazione predefinita</string>
     <string name="account_settings_notify_label">Notifica nuovo messaggio</string>
@@ -586,7 +515,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_email_label">Il tuo indirizzo e-mail</string>
     <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
     <string name="account_settings_notify_sync_summary">Notifica nella barra di stato mentre la posta viene controllata</string>
-    <string name="account_settings_show_combined_label">Mostra Posta in arrivo combinata</string>
     <string name="account_settings_notify_self_label">Includi la Posta in uscita</string>
     <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
     <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
@@ -644,7 +572,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Frequenza verifica cartelle</string>
-    <string name="account_settings_second_class_check_frequency_label">Frequenza di controllo di 2a classe</string>
 
     <string name="account_settings_storage_title">Memorizzazione</string>
 
@@ -742,11 +669,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_incoming_summary">Configura il server della posta in arrivo</string>
     <string name="account_settings_outgoing_label">Configurazione posta in uscita</string>
     <string name="account_settings_outgoing_summary">Configura il server della posta in uscita (SMTP)</string>
-    <string name="account_settings_add_account_label">Aggiungi un altro account</string>
     <string name="account_settings_description_label">Nome account</string>
     <string name="account_settings_name_label">Il tuo nome</string>
     <string name="notifications_title">Notifiche</string>
-    <string name="account_settings_ring_summary">Squilla quando arriva un messaggio</string>
     <string name="account_settings_vibrate_enable">Vibrazione</string>
     <string name="account_settings_vibrate_summary">Vibra quando arriva un messaggio</string>
     <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
@@ -760,8 +685,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
     <string name="account_settings_led_label">LED lampeggiante</string>
     <string name="account_settings_led_summary">LED lampeggiante quando arriva un messaggio</string>
-
-    <string name="account_settings_servers">Impostazioni del server</string>
 
     <string name="account_settings_composition_title">Opzioni composizione messaggi</string>
     <string name="account_settings_composition_label">Opzioni predefinite</string>
@@ -778,7 +701,6 @@ http://k9mail.googlecode.com/
     <string name="new_identity_action">Aggiungi identità</string>
 
     <string name="account_settings_always_bcc_label">Invia in Ccn tutti i messaggi a</string>
-    <string name="account_settings_always_bcc_summary">Invia a questo indirizzo una copia di ogni messaggio in uscita</string>
 
     <string name="manage_identities_edit_action">Modifica</string>
     <string name="manage_identities_move_up_action">Sposta su</string>
@@ -799,18 +721,14 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_signature_use_label">Usa la firma</string>
     <string name="account_settings_signature_label">Firma</string>
-    <string name="account_settings_signature_summary">Aggiungere la firma in ogni messaggio inviato</string>
 
     <string name="default_identity_description">Identità iniziale</string>
-    <string name="choose_identity">Scegli identità</string>
     <string name="choose_identity_title">Scegli identità</string>
     <string name="choose_account_title">Scegli account/identità</string>
     <string name="send_as">Invia come</string>
 
-    <string name="no_identities">Vai a Impostazioni account -&gt; Gestione identità per creare identità</string>
     <string name="no_removable_identity">Non è possibile rimuovere la propria unica identità</string>
     <string name="identity_has_no_email">Non è possibile utilizzare una identità senza un indirizzo e-mail</string>
-    <string name="identity_will_not_be_saved">L\'identità scelta e le modifiche alla firma non vengono salvate nelle bozze</string>
 
     <string name="sort_earliest_first">Data messaggio (più recenti)</string>
     <string name="sort_latest_first">Data messaggio (più vecchi)</string>
@@ -833,7 +751,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by_flag">Stella</string>
     <string name="sort_by_unread">Letto/da leggere</string>
     <string name="sort_by_attach">Allegati</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Rimuovi Account</string>
     <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
@@ -938,7 +855,6 @@ http://k9mail.googlecode.com/
     <string name="batch_move_op">Sposta selezionati</string>
     <string name="batch_copy_op">Copia selezionati</string>
     <string name="batch_flag_mode">Modalità stella</string>
-    <string name="batch_select_mode">Seleziona modalità</string>
     <string name="batch_plain_mode">Modalità normale</string>
     <string name="batch_select_all">Seleziona tutti</string>
     <string name="batch_deselect_all">Cancella tutte le selezioni</string>
@@ -1079,8 +995,6 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
     <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
-
-    <string name="charset_not_found">Questo messaggio non può essere visualizzato perché il set di caratteri \"<xliff:g id="charset">%s</xliff:g>\" non è stato trovato.</string>
 
     <string name="select_text_now">Seleziona il testo da copiare.</string>
 
