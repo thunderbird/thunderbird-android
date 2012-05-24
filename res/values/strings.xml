@@ -1,10 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">K-9 Accounts</string>
+    <string name="unread_widget_label">K-9 Unread</string>
+
+    <string name="remote_control_label">K-9 Mail remote control</string>
+    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Welcome to K-9 Mail setup. K-9 is an open source mail client for Android originally based on the
+standard Android Mail client.
+\n\n
+\nK-9\'s improved features include:
+\n * Push mail using IMAP IDLE
+\n * Better performance
+\n * Message refiling
+\n * Email signatures
+\n * Bcc-to-self
+\n * Folder subscriptions
+\n * All folder synchronization
+\n * Return-address configuration
+\n * Keyboard shortcuts
+\n * Better IMAP support
+\n * Saving attachments to SD
+\n * Empty Trash
+\n * Message sorting
+\n * …and more
+\n
+\nPlease note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
+some quirks when talking to Microsoft Exchange.
+\n
+\nPlease submit bug reports, contribute new features and ask questions at
+http://k9mail.googlecode.com/
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>
+    <string name="open_market">Open Play Store</string>
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -21,7 +80,6 @@
     <string name="accounts_title">Accounts</string>
     <string name="advanced">Advanced</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">K-9 Accounts</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -203,31 +261,6 @@
     <string name="no_connection_alert">Syncing and sending suspended due to lack of network.</string>
 
     <string name="end_of_folder">No more messages</string>
-
-    <string name="accounts_welcome">
-Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android originally based on the standard Android Mail client.
-\n
-\n\nK-9\'s improved features include:
-\n * Push mail using IMAP IDLE
-\n * Better performance
-\n * Message refiling
-\n * Email signatures
-\n * Bcc-to-self
-\n * Folder subscriptions
-\n * All folder synchronization
-\n * Return-address configuration
-\n * Keyboard shortcuts
-\n * Better IMAP support
-\n * Saving attachments to SD
-\n * Empty Trash
-\n * Message sorting
-\n * ...and more
-\n
-\nPlease note that K-9 does not support most free Hotmail accounts and, like many mail clients, has some quirks when talking to Microsoft Exchange.
-\n
-\n Please submit bug reports, contribute new features and ask questions at http://k9mail.googlecode.com/
-
-</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
@@ -770,7 +803,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_signature_label">Signature</string>
     <string name="account_settings_signature_summary">Append a signature to every message you send</string>
 
-    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
     <string name="default_identity_description">Initial identity</string>
     <string name="choose_identity">Choose identity</string>
     <string name="choose_identity_title">Choose identity</string>
@@ -970,9 +1002,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_searchable_displayable">Displayable</string>
     <string name="account_settings_searchable_none">None</string>
 
-    <string name="remote_control_label">K-9 Mail remote control</string>
-    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
-
     <string name="font_size_settings_title">Font size</string>
     <string name="font_size_settings_description">Configure font size</string>
 
@@ -1140,13 +1169,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="manage_accounts_move_down_action">Move down</string>
     <string name="manage_accounts_moving_message">Moving account...</string>
 
-    <string name="unread_widget_label">K-9 Unread</string>
     <string name="unread_widget_select_account">Show unread count for…</string>
 
     <string name="import_dialog_error_title">Missing File Manager Application</string>
-    <string name="import_dialog_error_message">There is no suitable application to handle
-the import operation. Please install a file manager application from Android Market</string>
-    <string name="open_market">Open Market</string>
     <string name="close">Close</string>
 
     <string name="webview_empty_message">No text</string>
