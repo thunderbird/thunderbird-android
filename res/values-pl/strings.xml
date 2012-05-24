@@ -14,9 +14,67 @@
 <!--  #################################################################################### -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">Konta K-9</string>
+    <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
+
+    <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
+    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
+
+
+    <!-- Used in the about dialog -->
+    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Wszelkie prawa zastrzeżone</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
+\n\n
+\n * Obsługa Push Mail z użyciem IMAP IDLE
+\n * Lepsza wydajność
+\n * Message refiling
+\n * Obsługa sygnaturek
+\n * Kopia UDW-do-siebie
+\n * Subscrypcja wybranych folderów
+\n * Synchronizacja wszystkich folderów
+\n * Konfiguracja adresu zwrotnego
+\n * Skróty klawiszowe
+\n * Lepsza obsługa protokołu IMAP
+\n * Zapisywanie załączników na kartę SD
+\n * Opróźnianie folderu \"Trash\"
+\n * Sortowanie wiadomości
+\n * … i wiele innych
+\n
+\nK-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
+\n
+\nWszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
+http://k9mail.googlecode.com/
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
+    <string name="open_market">Otwórz Google Play</string>
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -33,7 +91,6 @@
     <string name="accounts_title">Konta</string>
     <string name="advanced">Zaawansowane</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">Konta K-9</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -209,32 +266,6 @@
     <string name="no_connection_alert">Synchronizacja oraz wysyłka zostały zawieszone z powodu braku dostępu do sieci.</string>
 
     <string name="end_of_folder">Nie ma więcej wiadomości</string>
-
-    <string name="accounts_welcome">
-Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
-\n
-\n * Obsługa Push Mail z użyciem IMAP IDLE
-\n * Lepsza wydajność
-\n * Message refiling
-\n * Obsługa sygnaturek
-\n * Kopia UDW-do-siebie
-\n * Subscrypcja wybranych folderów
-\n * Synchronizacja wszystkich folderów
-\n * Konfiguracja adresu zwrotnego
-\n * Skróty klawiszowe
-\n * Lepsza obsługa protokołu IMAP
-\n * Zapisywanie załączników na kartę SD
-\n * Opróźnianie folderu \"Trash\"
-\n * Sortowanie wiadomości
-\n * … i wiele innych
-\n
-\nK-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
-\n
-\nWszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-\n
-\nhttp://k9mail.googlecode.com/
-
-</string>
 
     <string name="debug_version_fmt">Wersja <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Włącz logowanie</string>
@@ -777,7 +808,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_signature_label">Sygnatura</string>
     <string name="account_settings_signature_summary">Dodawaj sygnaturę do każdej wysyłanej wiadomości</string>
 
-    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
     <string name="default_identity_description">Tożsamość domyślna</string>
     <string name="choose_identity">Wybierz tożsamość</string>
     <string name="choose_identity_title">Wybierz tożsamość</string>
@@ -850,7 +880,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
         Shift-Z - Powiększ\n
         G - Gwiazdka
     </string>
-
     <string name="message_list_help_key">
         Del lub D - Usuń\n
         R - Odpowiedz\n
@@ -870,13 +899,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     </string>
 
     <string name="folder_list_help_key">
-        1 - Wyśw. tylko foldery 1szej klasy\n
-        2 - Wyśw. foldery 1szej i 2giej klasy\n
-        3 - Wyśw. wszystkie poza folderami 2giej klasy\n
-        4 - Wyświetl wszystkie foldery\n
-        Q - Lista kont\n
-        S - Edytuj ustawienia konta
-    </string>
+    1 - Wyśw. tylko foldery 1szej klasy\n
+    2 - Wyśw. foldery 1szej i 2giej klasy\n
+    3 - Wyśw. wszystkie poza folderami 2giej klasy\n
+    4 - Wyświetl wszystkie foldery\n
+    Q - Lista kont\n
+    S - Edytuj ustawienia konta</string>
 
     <string name="folder_list_filter_hint">Wpisz nazwę folderu</string>
 
@@ -1000,9 +1028,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_searchable_all">Wszystkie</string>
     <string name="account_settings_searchable_displayable">Wyświetlane</string>
     <string name="account_settings_searchable_none">Żaden</string>
-
-    <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
-    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
 
     <string name="font_size_settings_title">Rozmiar czcionki</string>
     <string name="font_size_settings_description">Ustawienia rozmiarów czcionek</string>
@@ -1160,12 +1185,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="manage_accounts_move_down_action">Przenieś w dół</string>
     <string name="manage_accounts_moving_message">Przenoszenie konta…</string>
 
-    <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
 
     <string name="import_dialog_error_title">Brakuje aplikacji zarządania plikami</string>
-    <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
-    <string name="open_market">Otwórz Google Play</string>
     <string name="close">Zamknij</string>
 
     <string name="webview_empty_message">Brak tekstu</string>

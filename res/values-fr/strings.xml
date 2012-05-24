@@ -24,11 +24,66 @@ ArtfulBits Inc. (c) 2005-2009 (http://www.artfulbits.com)
 Android Localizer (aiLocalizer)
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">Comptes K-9</string>
+    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+
+    <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
+    <string name="remote_control_desc">Permettre à cette application de contrôler les paramètres et activités de K-9 Mail</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
+\n\n
+\nVoici ce que K-9 Mail apporte de plus\u00A0:
+\n * La technologie PUSH en passant par le protocole IMAP
+\n * De meilleures performances
+\n * Signer ses messages
+\n * S\'envoyer une copie des messages automatiquement
+\n * Choisir les dossiers à synchroniser
+\n * Choisir l\'adresse e-mail de réponse
+\n * Des raccourcis clavier
+\n * Un meilleur support de l\'IMAP
+\n * Sauver les pièces jointes sur la carte SD
+\n * Vider la corbeille
+\n * Trier les messages
+\n * …et bien plus encore
+\n
+\nVeuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
+\n
+\nSi vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0:
+http://k9mail.googlecode.com/ (en anglais)
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
+    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
     <string name="app_libraries">Tierces librairies utilisées\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -45,7 +100,6 @@ Android Localizer (aiLocalizer)
     <string name="accounts_title">Comptes</string>
     <string name="advanced">Avancé</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
-    <string name="shortcuts_title">Comptes K-9</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
@@ -95,6 +149,7 @@ Android Localizer (aiLocalizer)
     <string name="send_messages_action">Envoyer les messages</string>
     <string name="list_folders_action">Liste des dossiers</string>
     <string name="refresh_folders_action">Rafraîchir les dossiers</string>
+    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
     <string name="mark_all_as_read_action">Marquer tous les messages comme lus</string>
     <string name="add_account_action">Ajouter un compte</string>
     <string name="compose_action">Composer</string>
@@ -227,29 +282,6 @@ de plus</string>
 
     <string name="end_of_folder">Aucun message</string>
 
-    <string name="accounts_welcome">
-Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
-    \n
-    \n\nVoici ce que K-9 Mail apporte de plus\u00A0:
-    \n * La technologie PUSH en passant par le protocole IMAP
-    \n * De meilleures performances
-    \n * Signer ses messages
-    \n * S\'envoyer une copie des messages automatiquement
-    \n * Choisir les dossiers à synchroniser
-    \n * Choisir l\'adresse e-mail de réponse
-    \n * Des raccourcis clavier
-    \n * Un meilleur support de l\'IMAP
-    \n * Sauver les pièces jointes sur la carte SD
-    \n * Vider la corbeille
-    \n * Trier les messages
-    \n * ...et bien plus encore
-    \n
-    \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
-    \n
-    \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http://k9mail.googlecode.com/ (en anglais)
-
-</string>
-
     <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
     <string name="debug_enable_debug_logging_summary">Journaliser les informations de diagnostic supplémentaires</string>
@@ -278,6 +310,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="message_compose_bcc_hint">Cci</string>
     <string name="message_compose_subject_hint">Objet</string>
     <string name="message_compose_content_hint">Texte du message</string>
+    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
     <string name="message_compose_quote_header_separator">-------- Message d\'origine --------</string>
     <string name="message_compose_quote_header_subject">Objet\u00A0:</string>
     <string name="message_compose_quote_header_send_date">Envoyé:</string>
@@ -291,6 +324,11 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>
     <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
     <string name="message_compose_show_quoted_text_action">Citer le message</string>
+    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
+    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
+    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
 
     <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Pour\u00A0:</string>
@@ -307,10 +345,13 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
     <string name="message_view_show_pictures_instructions">Sélectionnez «\u00A0Afficher les images\u00A0» pour afficher les images intégrées.</string>
     <string name="message_view_show_pictures_action">Afficher les images</string>
+    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
+    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
     <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
     <string name="message_view_no_viewer">Impossible de trouver un visualisateur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
-
     <string name="message_view_download_remainder">Télécharger le message complet</string>
+    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
@@ -369,6 +410,16 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
     <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verrouillé</string>
+
+    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
+    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
+    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
+    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
+    <!-- NEW: <string name="global_settings_move">Move</string>-->
+    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
+    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
 
     <string name="quiet_time">Heures silencieuses</string>
     <string name="quiet_time_description">Désactiver les sons, vibrations et éclairage DEL aux heures programmées</string>
@@ -564,6 +615,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus après un accès à partir des notifications</string>
     <string name="account_settings_notification_unread_count_label">Afficher le nombre de messages non lus</string>
     <string name="account_settings_notification_unread_count_summary">Afficher le nombre de messages non lus dans la barre de notification</string>
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
     <string name="account_settings_enable_move_buttons_label">Activer les boutons de déplacement</string>
     <string name="account_settings_enable_move_buttons_summary">Afficher les boutons Archiver, Déplacer ou Spam</string>
@@ -770,7 +823,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_signature_label">Signature</string>
     <string name="account_settings_signature_summary">Ajouter une signature à chaque message envoyé</string>
 
-    <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
     <string name="default_identity_description">Identité initiale</string>
     <string name="choose_identity">Choisir l\'identité</string>
     <string name="choose_identity_title">Choisir l\'identité</string>
@@ -797,6 +849,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="sort_by">Trier...</string>
     <string name="sort_by_date">Date</string>
+    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_sender">Expéditeur</string>
     <string name="sort_by_subject">Sujet</string>
     <string name="sort_by_flag">Étoile</string>
@@ -819,6 +872,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     il est possible que vous n\'ayez pas payé un compte «\u00A0Plus\u00A0». Veuillez
     lancer le navigateur Web pour accéder à ces comptes de messagerie.</string>
     <string name="provider_note_yahoojp">Pour utiliser POP3 avec ce fournisseur, vous devez activer POP3 dans les paramètres Yahoo Mail.</string>
+    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
     <string name="provider_note_naver">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Naver Mail.</string>
     <string name="provider_note_hanmail">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Hanmail(Daum) mail.</string>
     <string name="provider_note_paran">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Paran mail.</string>
@@ -828,7 +882,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter le certificat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejetter le certificat</string>
 
-  <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
+    <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
     Répondre\u000AA - Répondre à tous\u000AF - Transférer\u000AJ ou P - Message
     précédent\u000AK, N - Prochain message\u000AM - Déplacer\u000AY - Copier\u000AZ - Zoom arrière\u000AShift-Z -
     Zoom avant\u000aG - Étoile</string>
@@ -844,6 +898,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     4 - Afficher tous les dossiers\u000A
     Q - Retourner au comptes\u000A
     S - Éditer les paramètres du compte</string>
+
+    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
 
     <string name="folder_list_display_mode_label">Dossiers</string>
     <string name="folder_list_display_mode_all">Afficher tous les dossiers</string>
@@ -966,9 +1022,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_searchable_displayable">Affichables</string>
     <string name="account_settings_searchable_none">Aucuns</string>
 
-    <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
-    <string name="remote_control_desc">Permettre à cette application de contrôler les paramètres et activités de K-9 Mail</string>
-
     <string name="font_size_settings_title">Taille de police</string>
     <string name="font_size_settings_description">Configurer la taille de police</string>
 
@@ -976,7 +1029,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="font_size_account_name">Nom du compte</string>
     <string name="font_size_account_description">Description du compte</string>
 
-   <string name="font_size_folder_list">Liste des dossiers</string>
+    <string name="font_size_folder_list">Liste des dossiers</string>
     <string name="font_size_folder_name">Nom du dossier</string>
     <string name="font_size_folder_status">Status du dossier</string>
 
@@ -995,6 +1048,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="font_size_message_view_time">Heure du message</string>
     <string name="font_size_message_view_date">Date du message</string>
     <string name="font_size_message_view_content">Contenu du message</string>
+
+    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
+    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
     <string name="font_size_tiniest">Plus minuscule</string>
     <string name="font_size_tiny">Minuscule</string>
@@ -1037,6 +1093,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
+    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
+    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer des brouillons.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme crypté.</string>
 
@@ -1056,17 +1115,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
         <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
-    <!--
-    Translators:
-
-    Please review how to handle pluralization for your language at (1) and ajust
-    the <item> elements accordingly
-
-    Possible values for 'quantity': zero, one, two, few, many, other
-
-    (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
@@ -1130,4 +1178,35 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="manage_accounts_move_down_action">Déplacer bas</string>
     <string name="manage_accounts_moving_message">Déplacer compte...</string>
 
+    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+
+    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
+    <!-- NEW: <string name="close">Close</string>-->
+
+    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+
+    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
+    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
 </resources>
