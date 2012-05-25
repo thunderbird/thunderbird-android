@@ -39,6 +39,14 @@
                 android:dialogTitle="@string/settings_language_label" />
 
             <ListPreference
+            	android:persistent="false"
+            	android:key="charset"
+            	android:title="@string/settings_charset_label"
+            	android:entries="@array/settings_charset_entries"
+            	android:entryValues="@array/settings_charset_values"
+            	android:dialogTitle="@string/settings_charset_label" />
+            	
+            	<ListPreference
                 android:persistent="false"
                 android:key="theme"
                 android:title="@string/settings_theme_label"
@@ -72,6 +80,7 @@
                 android:key="compact_layouts"
                 android:title="@string/compact_layouts_title"
                 android:summary="@string/compact_layouts_summary" />
+            
                 
 
         </PreferenceCategory>
