@@ -827,7 +827,6 @@
       See Android SDK documentation for the class SimpleDateFormat.
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">批量操作</string>
     <string name="batch_delete_op">删除选中的邮件</string>

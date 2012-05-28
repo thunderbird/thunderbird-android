@@ -835,7 +835,6 @@ http://k9mail.googlecode.com/
       See Android SDK documentation for the class SimpleDateFormat.
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Ops em lote</string>
     <string name="batch_delete_op">Excluir selecionados</string>

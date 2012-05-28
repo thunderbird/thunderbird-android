@@ -517,10 +517,10 @@
     </string-array>
 
     <string-array name="date_formats">
-        <item>@string/date_format_short</item>
-        <item>@string/date_format_medium</item>
+        <item>SHORT</item> <!-- Hardcoded in DateFormatter -->
+        <item>MEDIUM</item> <!-- Hardcoded in DateFormatter -->
         <item>@string/date_format_common</item>
-        <item>@string/date_format_iso8601</item>
+        <item>yyyy-MM-dd</item> <!-- ISO8601 date format -->
     </string-array>
 
     <string-array name="font_entries">
