@@ -253,7 +253,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
-    <string name="error_contact_address_not_found">No email address could be found.</string>
+    <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
     <string name="message_compose_description_add_to">Add recipient (To)</string>
@@ -359,13 +359,13 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
-    <string name="account_setup_names_title">Almost done!</string>
+    <string name="account_setup_names_title">You\'re almost done!</string>
     <string name="account_setup_names_instructions">Your account is set up, and mail is on its way!</string>
     <string name="account_setup_names_account_name_label">Give this account a name (optional):</string>
     <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
 
     <string name="account_setup_account_type_title">Account type</string>
-    <string name="account_setup_account_type_instructions">What type of account is this?</string>
+    <string name="account_setup_account_type_instructions">What kind account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
@@ -377,8 +377,8 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_imap_server_label">IMAP server</string>
     <string name="account_setup_incoming_webdav_server_label">Exchange server</string>
     <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Security type</string>
-    <string name="account_setup_incoming_auth_type_label">Authentication type</string>
+    <string name="account_setup_incoming_security_label">Security</string>
+    <string name="account_setup_incoming_auth_type_label">Authentication</string>
     <string name="account_setup_incoming_security_none_label">None</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (if available)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (always)</string>
@@ -431,7 +431,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Security type</string>
+    <string name="account_setup_outgoing_security_label">Security</string>
     <string name="account_setup_outgoing_security_none_label">None</string>
     <string name="account_setup_outgoing_security_ssl_label">SSL</string>
     <string name="account_setup_outgoing_security_tls_optional_label">TLS (if available)</string>
@@ -439,7 +439,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_require_login_label">Require sign-in.</string>
     <string name="account_setup_outgoing_username_label">Username</string>
     <string name="account_setup_outgoing_password_label">Password</string>
-    <string name="account_setup_outgoing_authentication_label">Authentication type</string>
+    <string name="account_setup_outgoing_authentication_label">Authentication</string>
     <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
     <string name="account_setup_outgoing_authentication_basic_label">Username &amp; password</string>
     <string name="account_setup_outgoing_authentication_basic_username_label">Username</string>
