@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import android.test.AndroidTestCase;
+
+import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -107,6 +109,7 @@ public class ViewablesTest extends AndroidTestCase {
     }
 
     public void testTextPlusRfc822Message() throws MessagingException {
+    	K9Activity.setLanguage(getContext(), "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
 
