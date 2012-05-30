@@ -1,5 +1,13 @@
-local.properties
-bin
-gen
 .settings
+bin
+coverage
+coverage.ec
+coverage.em
+gen
+javadoc
+junit-report.xml
+lint-results.*ml
+lint-results_files
+local.properties
+monkey.txt
 *~

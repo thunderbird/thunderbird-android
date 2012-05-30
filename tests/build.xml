@@ -81,19 +81,194 @@
     -->
     <!-- version-tag: custom -->
 
-    <target name="test-report">
-        <xpath input="${tested.project.dir}/AndroidManifest.xml"
+    <!-- K-9 CUSTOM STUFF -->
+
+    <property environment="env" />
+
+    <property name="javadoc-dir" location="javadoc" />
+
+    <target name="javadoc" description="build javadoc">
+        <mkdir dir="${javadoc-dir}"/>
+        <javadoc
+            destdir="${javadoc-dir}"
+            doctitle="K-9 Mail"
+            verbose="on"
+            use="true"
+            classpath="${env.ANDROID_HOME}/platforms/${target}/android.jar"
+            sourcepath="gen;src"
+            linkoffline="http://d.android.com/reference ${env.ANDROID_HOME}/docs/reference/"
+        />
+    </target>
+
+    <target name="lint-xml">
+        <exec executable="lint" failonerror="true">
+            <arg value="--xml" />
+            <arg value="lint-results.xml" />
+            <arg path="." />
+        </exec>
+    </target>
+
+    <target name="lint-html">
+        <exec executable="lint" failonerror="true">
+            <arg value="--html" />
+            <arg value="lint-results.html" />
+            <arg path="." />
+        </exec>
+    </target>
+
+    <property name="junit-file" location="junit-report.xml" />
+
+    <!-- This is overridden because otherwise it deletes coverage.em after extraction, requiring
+         another compile. Also, test.runner can be changed here instead of in ant.properties, and
+         the code to pull the results is integrated. Changes are commented because from looking at
+         r20-preview, this might break and need to be redone. -->
+    <target name="test" depends="-test-project-check"
+                description="OVERRIDE: Runs tests from the package defined in test.package property">
+
+        <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
+
+        <property name="test.runner" value="com.zutubi.android.junitreport.JUnitReportTestRunner" /><!-- changed from original -->
+
+        <!-- Application package of the tested project extracted from its manifest file -->
+        <xpath input="${tested.project.absolute.dir}/AndroidManifest.xml"
                 expression="/manifest/@package" output="tested.manifest.package" />
         <xpath input="AndroidManifest.xml"
                 expression="/manifest/@package" output="manifest.package" />
-        <echo>Downloading XML test report...</echo>
+
+        <property name="emma.dump.file"
+                value="/data/data/${tested.manifest.package}/coverage.ec" />
+
+        <if condition="${emma.enabled}">
+            <then>
+                <echo>WARNING: Code Coverage is currently only supported on the emulator and rooted devices.</echo>
+                <run-tests-helper emma.enabled="true">
+                    <extra-instrument-args>
+                        <arg value="-e" />
+                           <arg value="coverageFile" />
+                           <arg value="${emma.dump.file}" />
+                    </extra-instrument-args>
+                </run-tests-helper>
+                <echo>Downloading coverage file into project directory...</echo>
+                <exec executable="${adb}" failonerror="true">
+                    <arg line="${adb.device.arg}" />
+                    <arg value="pull" />
+                    <arg value="${emma.dump.file}" />
+                    <arg value="coverage.ec" />
+                </exec>
+                <echo>Extracting coverage report...</echo>
+                <emma>
+                    <report sourcepath="${tested.project.absolute.dir}/${source.dir}"
+                                      verbosity="${verbosity}">
+                        <!-- TODO: report.dir or something like should be introduced if necessary -->
+                        <infileset dir=".">
+                            <include name="coverage.ec" />
+                            <include name="coverage.em" />
+                        </infileset>
+                        <!-- TODO: reports in other, indicated by user formats -->
+                        <html outfile="coverage.html" />
+                   </report>
+                </emma>
+                <!-- commented out from original
+                <echo>Cleaning up temporary files...</echo>
+                <delete file="coverage.ec" />
+                <delete file="coverage.em" />
+                -->
+                <echo>Saving the report file in ${basedir}/coverage/coverage.html</echo>
+            </then>
+            <else>
+                <run-tests-helper />
+            </else>
+        </if>
+        <!-- added for JUnitReportTestRunner: -->
+        <echo>Saving the JUnit test report as ${junit-file}</echo>
         <exec executable="${adb}" failonerror="true">
-	    <arg line="${adb.device.arg}"/>
+            <arg line="${adb.device.arg}"/>
             <arg value="pull" />
             <arg value="/data/data/${tested.manifest.package}/files/junit-report.xml" />
-            <arg value="junit-report.xml" />
+            <arg value="${junit-file}" />
         </exec>
     </target>
+
+    <scriptdef name="lastindexplus1" language="javascript">
+        <attribute name="text" />
+        <attribute name="substring" />
+        <attribute name="property" />
+        <![CDATA[
+            var text = attributes.get("text");
+            var substring = attributes.get("substring");
+            project.setProperty(attributes.get("property"), text.lastIndexOf(substring) + 1);
+        ]]>
+    </scriptdef>
+
+    <scriptdef name="substring" language="javascript">
+        <attribute name="text" />
+        <attribute name="start" />
+        <attribute name="end" />
+        <attribute name="property" />
+        <![CDATA[
+            var text = attributes.get("text");
+            var start = attributes.get("start");
+            var end = attributes.get("end") || text.length();
+            project.setProperty(attributes.get("property"), text.substring(start, end));
+        ]]>
+    </scriptdef>
+
+    <target name="artifacts" description="Copies the apks as unique CloudBees artifacts">
+        <lastindexplus1 text="${env.GIT_BRANCH}" substring="/" property="lastindexof" />
+        <substring text="${env.GIT_BRANCH}" start="${lastindexof}" property="branch" />
+        <substring text="${env.GIT_COMMIT}" start="0" end="10" property="commit" />
+
+        <!-- calls ../build.xml -->
+        <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
+        <condition property="my.project.target" value="-artifacti" else="-artifactd">
+            <isset property="emma.enabled" />
+        </condition>
+        <subant target="${my.project.target}" failonerror="true">
+            <fileset dir="${tested.project.absolute.dir}" includes="build.xml" />
+        </subant>
+
+        <!-- define out.final.file if not already defined (if calling without debug, for instance) -->
+        <condition property="out.final.file.isset" value="true" else="false">
+            <isset property="out.final.file" />
+        </condition>
+        <if condition="${out.final.file.isset}">
+            <else>
+                <property name="out.final.file"
+                        location="${out.absolute.dir}/${ant.project.name}-debug.apk" />
+            </else>
+        </if>
+
+        <copy file="${out.final.file}"
+              tofile="${out.dir}/K9-${branch}-${env.BUILD_ID}-${commit}-${env.BUILD_NUMBER}-tests.apk"
+              verbose="on"
+        />
+    </target>
+
+    <target name="-pre-clean" description="Removes testing output">
+        <delete file="${junit-file}" verbose="${verbose}" />
+        <delete file="lint-results.xml" verbose="${verbose}" />
+        <delete file="lint-results.html" verbose="${verbose}" />
+        <delete dir="lint-results_files" verbose="${verbose}" />
+        <delete file="coverage.ec" verbose="${verbose}" />
+        <delete file="coverage.em" verbose="${verbose}" />
+        <delete dir="coverage" verbose="${verbose}" />
+        <delete dir="${javadoc-dir}" verbose="${verbose}" />
+    </target>
+
+    <target name="help" depends="android_rules.help">
+        <!-- displays starts at col 13
+              |13                                                              80| -->
+        <echo>Additional targets:</echo>
+        <echo>   javadoc:   Javadoc output to javadoc/. ANDROID_HOME environment</echo>
+        <echo>              variable must be set (i.e. /opt/android-sdk-linux/).</echo>
+        <echo>   lint-xml:  Lint output lint-results.xml.</echo>
+        <echo>   lint-html: Lint output to lint-results.html.</echo>
+        <echo>   test:      Overridden -- also outputs junit-report.xml.</echo>
+        <echo>   artifacts: Copies the apks as unique CloudBees artifacts. Usage:</echo>
+        <echo>                  ant [emma] [debug] artifacts</echo>
+    </target>
+
+    <!-- END K-9 CUSTOM STUFF -->
 
     <import file="${sdk.dir}/tools/ant/build.xml" />
 </project>
