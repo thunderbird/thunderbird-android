@@ -365,7 +365,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
 
     <string name="account_setup_account_type_title">Account type</string>
-    <string name="account_setup_account_type_instructions">What kind account is this?</string>
+    <string name="account_setup_account_type_instructions">What kind of account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
