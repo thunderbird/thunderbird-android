@@ -12,6 +12,8 @@
 
     <string name="read_attachment_label">Anhänge der Nachricht lesen</string>
     <string name="read_attachment_desc">Dieser Anwendung erlauben die Anhänge Ihrer Nachrichten zu lesen.</string>
+    <string name="receive_email_label">Benachrichtigung über neue Emails</string>
+    <string name="receive_email_desc">Erlaubt dieser Anwendung über neue Emails benachrichtigt zu werden. Eine Benachrichtigung enthält den Sender, den Empfänger und den Betreff der Emails.</string>
     <string name="read_messages_label">Nachrichten lesen</string>
     <string name="read_messages_desc">Der Anwendung erlauben Ihre Nachrichten zu lesen.</string>
     <string name="delete_messages_label">Nachrichten löschen</string>
