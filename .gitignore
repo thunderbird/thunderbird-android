@@ -1,3 +1,7 @@
+# Local per-repo rules can be added to the .git/info/exclude file in your
+# repo. These rules are not committed with the repo so they are not shared
+# with others. This method can be used for locally-generated files that you
+# don’t expect other users to generate, like files created by your editor.
 .settings
 bin
 coverage

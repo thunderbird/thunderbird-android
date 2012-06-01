@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="K9" default="help">
+<project name="K9Tests" default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
-    <loadproperties srcFile="local.properties" />
+    <property file="local.properties" />
 
     <!-- The ant.properties file can be created by you. It is only edited by the
          'android' tool to add properties to it.
@@ -41,25 +41,23 @@
 
     <!-- quick check on sdk.dir -->
     <fail
-            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through an env var"
             unless="sdk.dir"
     />
 
-
-<!-- extension targets. Uncomment the ones where you want to do custom work
-     in between standard targets -->
-<!--
-    <target name="-pre-build">
-    </target>
-    <target name="-pre-compile">
-    </target>
-
-    /* This is typically used for code obfuscation.
-       Compiled code location: ${out.classes.absolute.dir}
-       If this is not done in place, override ${out.dex.input.absolute.dir} */
-    <target name="-post-compile">
-    </target>
--->
+    <!--
+        Import per project custom build rules if present at the root of the project.
+        This is the place to put custom intermediary targets such as:
+            -pre-build
+            -pre-compile
+            -post-compile (This is typically used for code obfuscation.
+                           Compiled code location: ${out.classes.absolute.dir}
+                           If this is not done in place, override ${out.dex.input.absolute.dir})
+            -post-package
+            -post-build
+            -pre-clean
+    -->
+    <import file="custom_rules.xml" optional="true" />
 
     <!-- Import the actual build file.
 
@@ -80,41 +78,9 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: custom -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
 
     <!-- K-9 CUSTOM STUFF -->
-
-    <property environment="env" />
-
-    <property name="javadoc-dir" location="javadoc" />
-
-    <target name="javadoc" description="build javadoc">
-        <mkdir dir="${javadoc-dir}"/>
-        <javadoc
-            destdir="${javadoc-dir}"
-            doctitle="K-9 Mail"
-            verbose="on"
-            use="true"
-            classpath="${env.ANDROID_HOME}/platforms/${target}/android.jar"
-            sourcepath="gen;src"
-            linkoffline="http://d.android.com/reference ${env.ANDROID_HOME}/docs/reference/"
-        />
-    </target>
-
-    <target name="lint-xml">
-        <exec executable="lint" failonerror="true">
-            <arg value="--xml" />
-            <arg value="lint-results.xml" />
-            <arg path="." />
-        </exec>
-    </target>
-
-    <target name="lint-html">
-        <exec executable="lint" failonerror="true">
-            <arg value="--html" />
-            <arg value="lint-results.html" />
-            <arg path="." />
-        </exec>
-    </target>
 
     <property name="junit-file" location="junit-report.xml" />
 
@@ -189,34 +155,14 @@
         </exec>
     </target>
 
-    <scriptdef name="lastindexplus1" language="javascript">
-        <attribute name="text" />
-        <attribute name="substring" />
-        <attribute name="property" />
-        <![CDATA[
-            var text = attributes.get("text");
-            var substring = attributes.get("substring");
-            project.setProperty(attributes.get("property"), text.lastIndexOf(substring) + 1);
-        ]]>
-    </scriptdef>
-
-    <scriptdef name="substring" language="javascript">
-        <attribute name="text" />
-        <attribute name="start" />
-        <attribute name="end" />
-        <attribute name="property" />
-        <![CDATA[
-            var text = attributes.get("text");
-            var start = attributes.get("start");
-            var end = attributes.get("end") || text.length();
-            project.setProperty(attributes.get("property"), text.substring(start, end));
-        ]]>
-    </scriptdef>
-
     <target name="artifacts" description="Copies the apks as unique CloudBees artifacts">
-        <lastindexplus1 text="${env.GIT_BRANCH}" substring="/" property="lastindexof" />
-        <substring text="${env.GIT_BRANCH}" start="${lastindexof}" property="branch" />
-        <substring text="${env.GIT_COMMIT}" start="0" end="10" property="commit" />
+        <fail unless="env.GIT_BRANCH" message="The environment variable GIT_BRANCH must exist." />
+        <fail unless="env.GIT_COMMIT" message="The environment variable GIT_COMMIT must exist." />
+        <fail unless="env.BUILD_ID" message="The environment variable BUILD_ID must exist." />
+        <fail unless="env.BUILD_NUMBER" message="The environment variable BUILD_NUMBER must exist." />
+
+        <regex property="branch" input="${env.GIT_BRANCH}" regexp="(?:.*/)?(.+)" select="\1" global="true" />
+        <regex property="commit" input="${env.GIT_COMMIT}" regexp="([\da-fA-F]{10})" select="\1" />
 
         <!-- calls ../build.xml -->
         <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
@@ -227,19 +173,14 @@
             <fileset dir="${tested.project.absolute.dir}" includes="build.xml" />
         </subant>
 
-        <!-- define out.final.file if not already defined (if calling without debug, for instance) -->
-        <condition property="out.final.file.isset" value="true" else="false">
-            <isset property="out.final.file" />
-        </condition>
-        <if condition="${out.final.file.isset}">
+        <if condition="${build.is.mode.set}">
             <else>
-                <property name="out.final.file"
-                        location="${out.absolute.dir}/${ant.project.name}-debug.apk" />
+                <runtarget target="-set-debug-files" />
             </else>
         </if>
 
         <copy file="${out.final.file}"
-              tofile="${out.dir}/K9-${branch}-${env.BUILD_ID}-${commit}-${env.BUILD_NUMBER}-tests.apk"
+              tofile="${out.dir}/${ant.project.name}-${branch}-${env.BUILD_ID}-${commit}-${env.BUILD_NUMBER}.apk"
               verbose="on"
         />
     </target>
@@ -268,7 +209,9 @@
         <echo>                  ant [emma] [debug] artifacts</echo>
     </target>
 
+    <!-- common to both build.xml and tests/build.xml -->
+    <import file="../build_common.xml" />
+
     <!-- END K-9 CUSTOM STUFF -->
 
-    <import file="${sdk.dir}/tools/ant/build.xml" />
 </project>
