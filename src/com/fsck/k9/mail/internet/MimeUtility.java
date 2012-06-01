@@ -3324,6 +3324,7 @@ public class MimeUtility {
             String bodyText = getTextFromPart(part);
             if (bodyText != null) {
                 text = fixDraftTextBody(bodyText);
+                html = HtmlConverter.textToHtml(text, false);
             }
         } else if (part.isMimeType("multipart/alternative") &&
                 firstBody instanceof MimeMultipart) {
