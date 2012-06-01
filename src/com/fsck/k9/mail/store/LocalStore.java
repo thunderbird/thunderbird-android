@@ -1589,13 +1589,13 @@ public class LocalStore extends Store implements Serializable {
                                                 mp.addBodyPart(bp);
                                             }
 
-                                            if (mAccount.getMessageFormat() == MessageFormat.HTML) {
+                                            if (mAccount.getMessageFormat() != MessageFormat.TEXT) {
                                                 if (htmlContent != null) {
                                                     TextBody body = new TextBody(htmlContent);
                                                     MimeBodyPart bp = new MimeBodyPart(body, "text/html");
                                                     mp.addBodyPart(bp);
                                                 }
-    
+
                                                 // If we have both text and html content and our MIME type
                                                 // isn't multipart/alternative, then corral them into a new
                                                 // multipart/alternative part and put that into the parent.
