@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity.setup;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +39,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
+
+    private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
+    private static final int DIALOG_COLOR_PICKER_LED = 2;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -809,21 +813,44 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     public void onChooseChipColor() {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener() {
-            public void colorChanged(int color) {
-                mAccount.setChipColor(color);
-            }
-        },
-        mAccount.getChipColor()).show();
+        showDialog(DIALOG_COLOR_PICKER_ACCOUNT);
     }
 
+
     public void onChooseLedColor() {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener() {
-            public void colorChanged(int color) {
-                mAccount.getNotificationSetting().setLedColor(color);
+        showDialog(DIALOG_COLOR_PICKER_LED);
+    }
+
+    @Override
+    public Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+            case DIALOG_COLOR_PICKER_ACCOUNT: {
+                dialog = new ColorPickerDialog(this,
+                        new ColorPickerDialog.OnColorChangedListener() {
+                            public void colorChanged(int color) {
+                                mAccount.setChipColor(color);
+                            }
+                        },
+                        mAccount.getChipColor()).create();
+
+                break;
             }
-        },
-        mAccount.getNotificationSetting().getLedColor()).show();
+            case DIALOG_COLOR_PICKER_LED: {
+                dialog = new ColorPickerDialog(this,
+                        new ColorPickerDialog.OnColorChangedListener() {
+                            public void colorChanged(int color) {
+                                mAccount.getNotificationSetting().setLedColor(color);
+                            }
+                        },
+                        mAccount.getNotificationSetting().getLedColor()).create();
+
+                break;
+            }
+        }
+
+        return dialog;
     }
 
     public void onChooseAutoExpandFolder() {

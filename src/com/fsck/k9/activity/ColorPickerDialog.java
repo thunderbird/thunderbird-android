@@ -10,6 +10,7 @@
 package com.fsck.k9.activity;
 import com.fsck.k9.R;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.*;
 import android.graphics.Color;
 import android.util.Log;
@@ -176,5 +177,9 @@ public class ColorPickerDialog {
 
     public void show() {
         dialog.show();
+    }
+
+    public Dialog create() {
+        return dialog;
     }
 }
