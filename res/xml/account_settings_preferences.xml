@@ -18,6 +18,9 @@
   Make sure to add android:persistent="false" to all preferences to disable saving
   the preference values to SharedPreferences. We use our own storage mechanism for
   the preferences. See com.fsck.k9.preferences.Storage.
+
+  Also note that every sub-PreferenceScreen needs an "android:key" parameter so the correct screen
+  can be displayed after the device has been rotated.
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
@@ -43,7 +46,8 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/account_settings_display_prefs_title">
+        android:title="@string/account_settings_display_prefs_title"
+        android:key="display">
 
         <PreferenceCategory
             android:title="@string/account_settings_message_lists"
@@ -82,7 +86,8 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/interaction_preferences">
+        android:title="@string/interaction_preferences"
+        android:key="interaction">
 
         <CheckBoxPreference
             android:persistent="false"
@@ -341,7 +346,7 @@
     </PreferenceScreen>
     <PreferenceScreen
         android:title="@string/account_settings_storage_title"
-        android:key="folders">
+        android:key="storage_provider">
 
         <ListPreference
             android:persistent="false"

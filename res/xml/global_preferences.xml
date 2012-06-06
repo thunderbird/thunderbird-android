@@ -18,6 +18,9 @@
   Make sure to add android:persistent="false" to all preferences to disable saving
   the preference values to SharedPreferences. We use our own storage mechanism for
   the preferences. See com.fsck.k9.preferences.Storage.
+
+  Also note that every sub-PreferenceScreen needs an "android:key" parameter so the correct screen
+  can be displayed after the device has been rotated.
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
@@ -66,13 +69,13 @@
                 android:key="animations"
                 android:title="@string/animations_title"
                 android:summary="@string/animations_summary" />
-                
+
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="compact_layouts"
                 android:title="@string/compact_layouts_title"
                 android:summary="@string/compact_layouts_summary" />
-                
+
 
         </PreferenceCategory>
 
@@ -157,7 +160,7 @@
                 android:dependency="messagelist_show_contact_name"
                 />
 
-				
+
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -243,7 +246,7 @@
 			android:title="@string/global_settings_batch_buttons"
 			android:summary="@string/global_settings_batch_buttons_summary"
 			android:key="batch_buttons_settings">
-		
+
 			<CheckBoxPreference
 				android:persistent="false"
 				android:key="batch_buttons_mark_read"
@@ -272,37 +275,37 @@
 				android:persistent="false"
 				android:key="batch_buttons_flag"
 				android:title="@string/global_settings_flag"
-			/> 				
+			/>
 
 			<CheckBoxPreference
 				android:persistent="false"
 				android:key="batch_buttons_unselect"
 				android:title="@string/global_settings_unselect"
-			/> 				
+			/>
 
 		</PreferenceScreen>
 
     </PreferenceScreen>
 
-    <PreferenceScreen 
+    <PreferenceScreen
         android:title="@string/notifications_title"
         android:key="notification_preferences">
-        
-        <CheckBoxPreference 
+
+        <CheckBoxPreference
             android:key="quiet_time_enabled"
             android:persistent="false"
             android:title="@string/quiet_time"
             android:summary="@string/quiet_time_description"
             />
         <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_starts" 
+            android:key="quiet_time_starts"
             android:persistent="false"
             android:dependency="quiet_time_enabled"
             android:dialogTitle="@string/quiet_time_starts"
             android:title="@string/quiet_time_starts"
             />
         <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_ends" 
+            android:key="quiet_time_ends"
             android:dependency="quiet_time_enabled"
             android:persistent="false"
             android:dialogTitle="@string/quiet_time_ends"
