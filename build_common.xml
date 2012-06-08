@@ -8,9 +8,21 @@
     <!-- ANT-CONTRIB -->
 
     <!-- jar file from where the tasks are loaded -->
-    <path id="antcontrib">
-        <pathelement path="tools/ant-contrib.jar" />
-    </path>
+    <if>
+        <condition>
+            <isset property="tested.project.dir" />
+        </condition>
+        <then>
+            <path id="antcontrib">
+                <pathelement path="${tested.project.dir}/tools/ant-contrib.jar" />
+            </path>
+        </then>
+        <else>
+            <path id="antcontrib">
+                <pathelement path="tools/ant-contrib.jar" />
+            </path>
+        </else>
+    </if>
 
     <!-- ant-contrib tasks -->
     <!-- this is normally named propertyregex -->
