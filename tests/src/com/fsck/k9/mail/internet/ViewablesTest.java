@@ -111,7 +111,7 @@ public class ViewablesTest extends AndroidTestCase {
     public void testTextPlusRfc822Message() throws MessagingException {
     	K9Activity.setLanguage(getContext(), "en");
         Locale.setDefault(Locale.US);
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
         String bodyText = "Some text here";
         String innerBodyText = "Hey there. I'm inside a message/rfc822 (inline) attachment.";
@@ -152,7 +152,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "\n\n" +
                 "From: from@example.com" + "\n" +
                 "To: to@example.com" + "\n" +
-                "Sent: Sat Mar 17 00:00:00 GMT+00:00 2012" + "\n" +
+                "Sent: Sat Mar 17 00:00:00 GMT+01:00 2012" + "\n" +
                 "Subject: Subject" + "\n" +
                 "\n" +
                 innerBodyText;
@@ -173,7 +173,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "<td>to@example.com</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Sent:</th>" +
-                "<td>Sat Mar 17 00:00:00 GMT+00:00 2012</td>" +
+                "<td>Sat Mar 17 00:00:00 GMT+01:00 2012</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Subject:</th>" +
                 "<td>Subject</td>" +
