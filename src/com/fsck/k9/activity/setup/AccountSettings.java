@@ -833,7 +833,7 @@ public class AccountSettings extends K9PreferenceActivity {
                                 mAccount.setChipColor(color);
                             }
                         },
-                        mAccount.getChipColor()).create();
+                        mAccount.getChipColor());
 
                 break;
             }
@@ -844,13 +844,29 @@ public class AccountSettings extends K9PreferenceActivity {
                                 mAccount.getNotificationSetting().setLedColor(color);
                             }
                         },
-                        mAccount.getNotificationSetting().getLedColor()).create();
+                        mAccount.getNotificationSetting().getLedColor());
 
                 break;
             }
         }
 
         return dialog;
+    }
+
+    @Override
+    public void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case DIALOG_COLOR_PICKER_ACCOUNT: {
+                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+                colorPicker.setColor(mAccount.getChipColor());
+                break;
+            }
+            case DIALOG_COLOR_PICKER_LED: {
+                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+                colorPicker.setColor(mAccount.getNotificationSetting().getLedColor());
+                break;
+            }
+        }
     }
 
     public void onChooseAutoExpandFolder() {
