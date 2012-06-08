@@ -132,6 +132,7 @@
                         </infileset>
                         <!-- TODO: reports in other, indicated by user formats -->
                         <html outfile="coverage.html" />
+                        <xml outfile="coverage.xml" />
                    </report>
                 </emma>
                 <!-- commented out from original
@@ -192,6 +193,7 @@
         <delete dir="lint-results_files" verbose="${verbose}" />
         <delete file="coverage.ec" verbose="${verbose}" />
         <delete file="coverage.em" verbose="${verbose}" />
+        <delete file="coverage.xml" verbose="${verbose}" />
         <delete dir="coverage" verbose="${verbose}" />
         <delete dir="${javadoc-dir}" verbose="${verbose}" />
     </target>
