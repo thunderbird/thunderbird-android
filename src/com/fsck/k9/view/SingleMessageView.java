@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -140,7 +141,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
-        if (isScreenReaderActive(activity)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+                isScreenReaderActive(activity)) {
+            // Only use the special screen reader mode on pre-ICS devices with active screen reader
             mAccessibleMessageContentView.setVisibility(View.VISIBLE);
             mMessageContentView.setVisibility(View.GONE);
             mScreenReaderEnabled = true;
