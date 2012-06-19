@@ -384,6 +384,10 @@ public class ImapResponseParser {
             return (String)get(index);
         }
 
+        public long getLong(int index) {
+            return Long.parseLong(getString(index));
+        }
+        
         public int getNumber(int index) {
             return Integer.parseInt(getString(index));
         }
