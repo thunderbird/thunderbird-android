@@ -160,6 +160,13 @@ public class Address {
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
     
+    /**
+     * Parse a header line containing an address in "&lt;mailto:list@example.com&gt;"
+     * format and return an array of one Address object.
+     * 
+     * @param mailto
+     * @return An array of one Address.
+     */
     public static Address[] parseMailto(String mailto) {
     	if (StringUtils.isNullOrEmpty(mailto)) {
     		return EMPTY_ADDRESS_ARRAY;
