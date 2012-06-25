@@ -278,7 +278,7 @@ http://k9mail.googlecode.com/.
     <string name="message_view_fetching_attachment_toast">Lade Anhang.</string>
     <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
     <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Herunterladen…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Es wurden nicht alle Header heruntergeladen oder gespeichert. Wählen Sie \"Alle Header lokal speichern\" in den Einstellungen für den Posteingangsserver um dies zukünftig zu ermöglichen.</string>
@@ -326,15 +326,15 @@ http://k9mail.googlecode.com/.
     <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>
     <string name="global_settings_privacy_mode_summary">Der Betreff der Nachricht wird nicht in der Benachrichtigungszeile angezeigt</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Gruppenoperationen-Schaltflächen</string>
+    <string name="global_settings_batch_buttons_summary">Zeige folgende Schaltflächen in der Nachrichtenliste an</string>
+    <string name="global_settings_mark_read">Als (un)gelesen markieren</string>
+    <string name="global_settings_delete">Löschen</string>
+    <string name="global_settings_archive">Archivieren</string>
+    <string name="global_settings_archive_disabled_reason">Es wurde kein Archiv-Ordner gefunden.</string>
+    <string name="global_settings_move">Verschieben</string>
+    <string name="global_settings_flag">Als wichtig markieren</string>
+    <string name="global_settings_unselect">Alle deselektieren</string>
 
     <string name="quiet_time">Ruhezeit</string>
     <string name="quiet_time_description">Deaktivere Klingeln, Vibrieren und Leuchten in der Nacht</string>
@@ -766,7 +766,7 @@ http://k9mail.googlecode.com/.
         \"Plus\"-Konto nicht bezahlt. Starten Sie den Webbrowser, um auf
         diese Mailkonten zuzugreifen.</string>
     <string name="provider_note_yahoojp">Wenn Sie für diesen Provider POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Einstellungen POP3 aktivieren.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <string name="provider_note_auonejp">Wenn Sie für diesen Provider IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "AU One"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_naver">Wenn Sie für diesen Provider IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Naver Mail"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_hanmail">Wenn Sie für diesen Provider IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Hanmail(Daum)"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_paran">Wenn Sie für diesen Provider IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Paran"-Einstellungsseite aktivieren.</string>
@@ -1070,7 +1070,7 @@ http://k9mail.googlecode.com/.
     <string name="import_dialog_error_title">Kein Dateimanager gefunden!</string>
     <string name="close">Abbrechen</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Kein Nachrichtentext</string>
 
     <string name="webview_contextmenu_link_view_action">Öffnen</string>
     <string name="webview_contextmenu_link_share_action">Link weitergeben</string>
