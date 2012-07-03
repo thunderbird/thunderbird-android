@@ -3080,11 +3080,29 @@ public class MessagingController implements Runnable {
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
         builder.setContentIntent(pi);
 
-        configureNotification(builder,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR,
+        configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
         notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
                 builder.getNotification());
+    }
+
+    public void notify(String tag, int id, String title, String text, PendingIntent pi) {
+        final NotificationManager notifMgr = (NotificationManager) mApplication
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationBuilder builder = NotificationBuilder
+                .createInstance(mApplication);
+        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setAutoCancel(true);
+        builder.setTicker(title);
+        builder.setContentTitle(title);
+        builder.setContentText(text);
+        builder.setContentIntent(pi);
+        configureNotification(builder, null, null,
+                K9.NOTIFICATION_LED_FAILURE_COLOR,
+                K9.NOTIFICATION_LED_BLINK_FAST, true);
+        notifMgr.notify(tag, id, builder.getNotification());
     }
 
     /**

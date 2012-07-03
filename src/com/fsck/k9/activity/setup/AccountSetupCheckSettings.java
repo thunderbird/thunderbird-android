@@ -3,6 +3,9 @@ package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -105,6 +108,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
+                    clearCertificateErrorNotifications();
                     if (mCheckIncoming) {
                         store = mAccount.getRemoteStore();
 
@@ -193,6 +197,19 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 mMessageView.setText(getString(resId));
             }
         });
+    }
+
+    private void clearCertificateErrorNotifications() {
+        final Application app = getApplication();
+        final NotificationManager notifMgr = (NotificationManager) app
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        final String uuid = mAccount.getUuid();
+        if (mCheckOutgoing){
+            notifMgr.cancel(uuid, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING);
+        }
+        if (mCheckIncoming){
+            notifMgr.cancel(uuid, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING);
+        }
     }
 
     private void showErrorDialog(final int msgResId, final Object... args) {

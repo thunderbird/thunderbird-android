@@ -26,7 +26,7 @@ import java.net.URLEncoder;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     OnCheckedChangeListener {
-    private static final String EXTRA_ACCOUNT = "account";
+    public static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
