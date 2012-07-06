@@ -3432,11 +3432,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     static class IdentityAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
         private List<Object> mItems;
-        private FontSizes mFontSizes;
 
         public IdentityAdapter(Context context, LayoutInflater layoutInflater) {
             mLayoutInflater = layoutInflater;
-            mFontSizes = K9.getFontSizes();
 
             List<Object> items = new ArrayList<Object>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());

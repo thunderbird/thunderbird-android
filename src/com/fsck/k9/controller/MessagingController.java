@@ -2220,13 +2220,14 @@ public class MessagingController implements Runnable {
              * upto speed with the remote UIDs of remote destionation folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<String> remoteSrcUids = remoteUidMap.keySet();
-                Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
+                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
+                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
 
-                while (remoteSrcUidsIterator.hasNext()) {
-                    String remoteSrcUid = remoteSrcUidsIterator.next();
+                while (remoteSrcEntriesIterator.hasNext()) {
+                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
+                    String remoteSrcUid = entry.getKey();
                     String localDestUid = localUidMap.get(remoteSrcUid);
-                    String newUid = remoteUidMap.get(remoteSrcUid);
+                    String newUid = entry.getValue();
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
@@ -3267,7 +3268,6 @@ public class MessagingController implements Runnable {
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
                             localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
-                        } else {
                         }
 
                         message.setFlag(Flag.X_SEND_FAILED, true);

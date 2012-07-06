@@ -3303,10 +3303,8 @@ public class LocalStore extends Store implements Serializable {
 
                 if (!isSet(Flag.DELETED)) {
 
-                    if (flag == Flag.SEEN) {
-                        if (set != isSet(Flag.SEEN)) {
-                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
-                        }
+                    if (flag == Flag.SEEN && set != isSet(Flag.SEEN)) {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
                     }
 
                     if (flag == Flag.FLAGGED) {

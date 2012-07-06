@@ -272,8 +272,6 @@ public class MessageList
     private Account mAccount;
     private int mUnreadMessageCount = 0;
 
-    private GestureDetector gestureDetector;
-    private View.OnTouchListener gestureListener;
     /**
      * Stores the name of the folder that we want to open as soon as possible
      * after load.
@@ -364,13 +362,13 @@ public class MessageList
                 @Override
                 public void run() {
                     for (MessageInfoHolder message : messages) {
-                        if (message != null) {
-                            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                                if (message.selected && mSelectedCount > 0) {
-                                    mSelectedCount--;
-                                }
-                                mAdapter.messages.remove(message);
+                        if (message != null && (mFolderName == null || (
+                                message.folder != null &&
+                                message.folder.name.equals(mFolderName)))) {
+                            if (message.selected && mSelectedCount > 0) {
+                                mSelectedCount--;
                             }
+                            mAdapter.messages.remove(message);
                         }
                     }
                     resetUnreadCountOnThread();
