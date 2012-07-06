@@ -362,13 +362,13 @@ public class MessageList
                 @Override
                 public void run() {
                     for (MessageInfoHolder message : messages) {
-                        if (message != null) {
-                            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                                if (message.selected && mSelectedCount > 0) {
-                                    mSelectedCount--;
-                                }
-                                mAdapter.messages.remove(message);
+                        if (message != null && (mFolderName == null || (
+                                message.folder != null &&
+                                message.folder.name.equals(mFolderName)))) {
+                            if (message.selected && mSelectedCount > 0) {
+                                mSelectedCount--;
                             }
+                            mAdapter.messages.remove(message);
                         }
                     }
                     resetUnreadCountOnThread();
