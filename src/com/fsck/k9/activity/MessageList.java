@@ -272,8 +272,6 @@ public class MessageList
     private Account mAccount;
     private int mUnreadMessageCount = 0;
 
-    private GestureDetector gestureDetector;
-    private View.OnTouchListener gestureListener;
     /**
      * Stores the name of the folder that we want to open as soon as possible
      * after load.
