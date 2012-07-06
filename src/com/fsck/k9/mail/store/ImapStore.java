@@ -2204,21 +2204,19 @@ public class ImapStore extends Store {
                     capabilityList = response;
                 }
 
-                if (capabilityList != null) {
-                    if (!capabilityList.isEmpty() && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                if (capabilityList != null && !capabilityList.isEmpty() &&
+                        ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
+                    if (K9.DEBUG) {
+                        Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                    }
+                    for (Object capability : capabilityList) {
+                        if (capability instanceof String) {
+//                            if (K9.DEBUG)
+//                            {
+//                                Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
+//                            }
+                            capabilities.add(((String)capability).toUpperCase(Locale.US));
                         }
-                        for (Object capability : capabilityList) {
-                            if (capability instanceof String) {
-//                                if (K9.DEBUG)
-//                                {
-//                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
-//                                }
-                                capabilities.add(((String)capability).toUpperCase(Locale.US));
-                            }
-                        }
-
                     }
                 }
             }
