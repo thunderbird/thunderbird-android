@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity {
     Account mAccount;
-    String mUID;
     ArrayAdapter<String> adapter;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
