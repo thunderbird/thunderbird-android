@@ -3092,7 +3092,7 @@ public class ImapStore extends Store {
                         List<Long> newSeqs = new ArrayList<Long>();
                         Iterator<Long> flagIter = flagSyncMsgSeqs.iterator();
                         while (flagIter.hasNext()) {
-                            Long flagMsg = flagIter.next();
+                            long flagMsg = flagIter.next();
                             if (flagMsg >= msgSeq) {
                                 flagIter.remove();
                                 if (flagMsg > msgSeq) {
