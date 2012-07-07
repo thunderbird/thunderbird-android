@@ -3106,11 +3106,10 @@ public class ImapStore extends Store {
                         List<Long> msgSeqs = new ArrayList<Long>(msgSeqUidMap.keySet());
                         Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
 
-                        for (long msgSeqNumI : msgSeqs) {
+                        for (long msgSeqNum : msgSeqs) {
                             if (K9.DEBUG) {
-                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNumI);
+                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
                             }
-                            long msgSeqNum = msgSeqNumI;
                             if (msgSeqNum == msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
                                 if (K9.DEBUG) {
