@@ -10,7 +10,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Config;
 import android.util.Log;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
@@ -153,14 +152,6 @@ public class Preferences {
 
     public void setDefaultAccount(Account account) {
         getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
-    }
-
-    public void dump() {
-        if (Config.LOGV) {
-            for (String key : getPreferences().getAll().keySet()) {
-                Log.v(K9.LOG_TAG, key + " = " + getPreferences().getAll().get(key));
-            }
-        }
     }
 
     public SharedPreferences getPreferences() {
