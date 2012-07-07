@@ -518,9 +518,6 @@ public class MessagingController implements Runnable {
             List<Message> pendingMessages = new ArrayList<Message>();
 
 
-            int totalDone = 0;
-
-
             @Override
             public void messageStarted(String message, int number, int ofTotal) {}
             @Override
@@ -528,7 +525,6 @@ public class MessagingController implements Runnable {
 
                 if (!isMessageSuppressed(account, folder, message)) {
                     pendingMessages.add(message);
-                    totalDone++;
                     if (pendingMessages.size() > 10) {
                         addPendingMessages();
                     }
