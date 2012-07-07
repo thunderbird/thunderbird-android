@@ -34,6 +34,14 @@ public class ImapUtilityTest extends TestCase {
         actual = ImapUtility.getImapSequenceValues("1");
         MoreAsserts.assertEquals(expected, actual.toArray());
 
+        expected = new String[] {"2147483648"};     // Integer.MAX_VALUE + 1
+        actual = ImapUtility.getImapSequenceValues("2147483648");
+        MoreAsserts.assertEquals(expected, actual.toArray());
+
+        expected = new String[] {"4294967295"};     // 2^32 - 1
+        actual = ImapUtility.getImapSequenceValues("4294967295");
+        MoreAsserts.assertEquals(expected, actual.toArray());
+
         expected = new String[] {"1", "3", "2"};
         actual = ImapUtility.getImapSequenceValues("1,3,2");
         MoreAsserts.assertEquals(expected, actual.toArray());
@@ -48,6 +56,11 @@ public class ImapUtilityTest extends TestCase {
 
         expected = new String[] {"1", "2", "3", "4", "9", "8", "7"};
         actual = ImapUtility.getImapSequenceValues("1,2:4,9:7");
+        MoreAsserts.assertEquals(expected, actual.toArray());
+
+        // Test numbers larger than Integer.MAX_VALUE (2147483647)
+        expected = new String[] {"2147483646", "2147483647", "2147483648"};
+        actual = ImapUtility.getImapSequenceValues("2147483646:2147483648");
         MoreAsserts.assertEquals(expected, actual.toArray());
 
         // Test partially invalid sets
@@ -74,6 +87,15 @@ public class ImapUtilityTest extends TestCase {
 
         expected = new String[0];
         actual = ImapUtility.getImapSequenceValues("1:x");
+        MoreAsserts.assertEquals(expected, actual.toArray());
+
+        // Test values larger than 2^32 - 1
+        expected = new String[0];
+        actual = ImapUtility.getImapSequenceValues("4294967296:4294967297");
+        MoreAsserts.assertEquals(expected, actual.toArray());
+
+        expected = new String[0];
+        actual = ImapUtility.getImapSequenceValues("4294967296");     // 2^32
         MoreAsserts.assertEquals(expected, actual.toArray());
     }
 
