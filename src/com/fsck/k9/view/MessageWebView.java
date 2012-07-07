@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -98,22 +99,20 @@ public class MessageWebView extends WebView {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
-        /*
-         * Build.VERSION.SDK is deprecated cause it just returns the
-         * "its raw String representation"
-         *  http://developer.android.com/reference/android/os/Build.VERSION_CODES.html#GINGERBREAD
-         *  http://developer.android.com/reference/android/os/Build.VERSION.html#SDK
-         */
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
-
+        disableOverscrolling();
 
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
         // Disable network images by default.  This is overridden by preferences.
         blockNetworkData(true);
 
+    }
+
+    @TargetApi(9)
+    private void disableOverscrolling() {
+        if (Build.VERSION.SDK_INT >= 9) {
+            setOverScrollMode(OVER_SCROLL_NEVER);
+        }
     }
 
     public void setText(String text, String contentType) {
