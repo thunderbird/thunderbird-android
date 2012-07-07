@@ -156,6 +156,8 @@ public class LocalStore extends Store implements Serializable {
 
             AttachmentProvider.clear(mApplication);
 
+            db.beginTransaction();
+            try {
             try {
                 // schema version 29 was when we moved to incremental updates
                 // in the case of a new db or a < v29 db, we blow away and start from scratch
@@ -383,6 +385,11 @@ public class LocalStore extends Store implements Serializable {
 
             if (db.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
+            }
+
+            db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
 
             // Unless we're blowing away the whole data store, there's no reason to prune attachments
