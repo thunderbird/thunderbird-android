@@ -379,13 +379,13 @@ public class LocalStore extends Store implements Serializable {
 
                 db.setVersion(DB_VERSION);
 
-                if (db.getVersion() != DB_VERSION) {
-                    throw new Error("Database upgrade failed!");
-                }
-
                 db.setTransactionSuccessful();
             } finally {
                 db.endTransaction();
+            }
+
+            if (db.getVersion() != DB_VERSION) {
+                throw new Error("Database upgrade failed!");
             }
 
             // Unless we're blowing away the whole data store, there's no reason to prune attachments
