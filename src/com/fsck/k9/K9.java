@@ -135,6 +135,10 @@ public class K9 extends Application {
 
     public static boolean DEBUG_PROTOCOL_WEBDAV = true;
 
+    /**
+     * only application with this permission should be able to receive emails.
+     */
+    public final static String K9_EMAIL_RECEIVED_PERMISSION = "com.fsck.k9.permission.EMAIL_RECEIVED";
 
 
     /**
@@ -492,7 +496,7 @@ public class K9 extends Application {
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
-                    K9.this.sendBroadcast(intent);
+                    K9.this.sendBroadcast(intent, K9.K9_EMAIL_RECEIVED_PERMISSION);
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
                               + " account=" + account.getDescription()
