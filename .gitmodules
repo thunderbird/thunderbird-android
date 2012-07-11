@@ -1,0 +1,3 @@
+[submodule "plugins/ActionBarSherlock"]
+	path = plugins/ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock
