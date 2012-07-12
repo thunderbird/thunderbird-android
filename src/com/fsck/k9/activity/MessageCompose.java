@@ -22,8 +22,8 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -2164,8 +2164,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_compose_option, menu);
-
+        getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+        
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
             menu.findItem(R.id.save).setEnabled(false);
