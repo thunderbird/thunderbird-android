@@ -29,8 +29,8 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -1040,7 +1040,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
         // submenus don't actually set the menuInfo, so the "advanced"
         // submenu wouldn't work.
@@ -1242,7 +1242,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.accounts_option, menu);
+        getSupportMenuInflater().inflate(R.menu.accounts_option, menu);
         return true;
     }
 
@@ -1262,7 +1262,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         if (account instanceof SearchAccount) {
             for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.getItem(i);
+                android.view.MenuItem item = menu.getItem(i);
                 if (item.getItemId() != R.id.open) {
                     item.setVisible(false);
                 }

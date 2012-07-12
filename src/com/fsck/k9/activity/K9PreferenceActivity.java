@@ -1,20 +1,28 @@
 package com.fsck.k9.activity;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.fsck.k9.K9;
+
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.ListPreference;
 import android.preference.Preference;
 
 
-public class K9PreferenceActivity extends PreferenceActivity {
+public class K9PreferenceActivity extends SherlockPreferenceActivity {
     @Override
     public void onCreate(Bundle icicle) {
         K9Activity.setLanguage(this, K9.getK9Language());
-        // http://code.google.com/p/k9mail/issues/detail?id=2439
-        // Re-enable themeing support in preferences when
-        // http://code.google.com/p/android/issues/detail?id=4611 is resolved
-        // setTheme(K9.getK9Theme());
+
+        if (Build.VERSION.SDK_INT >= 6 && Build.VERSION.SDK_INT < 11) {
+            // there's a display bug in 2.1, 2.2, 2.3 (unsure about 2.0)
+            // which causes PreferenceScreens to have a black background.
+            // http://code.google.com/p/android/issues/detail?id=4611
+            setTheme(K9.getK9ThemeResourceId(K9.THEME_DARK));
+        }else{
+		setTheme(K9.getK9ThemeResourceId());
+        }
+
         super.onCreate(icicle);
     }
 

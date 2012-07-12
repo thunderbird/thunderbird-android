@@ -1,5 +1,11 @@
 package com.fsck.k9.activity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,20 +19,42 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.fsck.k9.*;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.activity.FolderInfoHolder;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.FolderList.FolderListAdapter.FolderListFilter;
-import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
+import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
@@ -35,14 +63,9 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.MailService;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -578,11 +601,11 @@ public class FolderList extends K9ListActivity {
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.folder_list_option, menu);
+        getSupportMenuInflater().inflate(R.menu.folder_list_option, menu);
         return true;
     }
 
-    @Override public boolean onContextItemSelected(MenuItem item) {
+    @Override public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
