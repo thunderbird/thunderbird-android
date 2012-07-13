@@ -33,6 +33,7 @@ import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.view.MessageWebView;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -279,12 +280,12 @@ public class Prefs extends K9PreferenceActivity {
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Build.VERSION.SDK_INT <= 7) {
+        if (!MessageWebView.isSingleColumnLayoutSupported()) {
             mMobileOptimizedLayout.setEnabled(false);
+            mMobileOptimizedLayout.setChecked(false);
+        } else {
+            mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         }
-
-
-        mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
@@ -354,7 +355,7 @@ public class Prefs extends K9PreferenceActivity {
                 }
             };
         });
-        
+
         mBatchButtonsMarkRead = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MARK_READ);
         mBatchButtonsDelete = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_DELETE);
         mBatchButtonsArchive = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_ARCHIVE);
