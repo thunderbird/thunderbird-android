@@ -539,7 +539,7 @@ public class MessageList
             String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
             //setTitle(dispString);
             mNavigationSpinner.setTitle(mFolderName);
-            mNavigationSpinner.setSubTitle(mAccount.getName());
+            mNavigationSpinner.setSubTitle(mAccount.getEmail());
         } else if (mQueryString != null) {
             if (mTitle != null) {
                 String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
