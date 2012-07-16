@@ -5,12 +5,14 @@
         android:alphabeticShortcut="c"
         android:title="@string/compose_action"
         android:icon="@drawable/ic_menu_compose"
+        android:showAsAction="always"
     />
     <item
         android:id="@+id/set_sort"
         android:title="@string/sort_by"
-        android:icon="@drawable/ic_menu_set_sort">
-        <menu>
+        android:icon="@drawable/ic_menu_set_sort"
+        android:showAsAction="always" >      
+		<menu>
             <item
                 android:id="@+id/set_sort_date"
                 android:title="@string/sort_by_date"
@@ -45,6 +47,7 @@
         android:id="@+id/select_all"
         android:title="@string/batch_select_all"
         android:icon="@drawable/ic_menu_select_all"
+        android:showAsAction="always"
     />
     <item
         android:id="@+id/batch_ops"
@@ -108,12 +111,6 @@
         </menu>
     </item>
     <item
-        android:id="@+id/list_folders"
-        android:alphabeticShortcut="f"
-        android:title="@string/list_folders_action"
-        android:icon="@drawable/ic_menu_navigate"
-    />
-    <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:title="@string/send_messages_action"
@@ -124,21 +121,19 @@
         android:alphabeticShortcut="r"
         android:title="@string/check_mail_action"
         android:icon="@drawable/ic_menu_refresh"
-    />
-    <item
-        android:id="@+id/accounts"
-        android:title="@string/accounts_action"
-        android:icon="@drawable/ic_menu_account_list"
+        android:showAsAction="always"
     />
     <item
         android:id="@+id/mark_all_as_read"
         android:title="@string/mark_all_as_read_action"
         android:icon="@drawable/ic_menu_inbox"
+        android:showAsAction="always"
     />
     <item
         android:id="@+id/settings"
         android:title="@string/preferences_action"
-        android:icon="@drawable/ic_menu_preferences">
+        android:icon="@drawable/ic_menu_preferences"
+        android:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/folder_settings"
@@ -160,5 +155,6 @@
     <item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
+        android:showAsAction="ifRoom"
     />
 </menu>

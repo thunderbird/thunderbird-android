@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -29,18 +30,16 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -48,9 +47,15 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.AccountStats;
@@ -82,7 +87,7 @@ import com.fsck.k9.mail.store.StorageManager;
  */
 public class MessageList
     extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener {
+    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener, OnNavigationListener {
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -231,6 +236,10 @@ public class MessageList
     private static final String EXTRA_LIST_POSITION = "listPosition";
     private static final String EXTRA_RETURN_FROM_MESSAGE_VIEW = "returnFromMessageView";
 
+    private static final Long AB_NAVIGATION_INBOX = 0l;
+    private static final Long AB_NAVIGATION_FOLDERS = 1l;
+    private static final Long AB_NAVIGATION_ACCOUNTS = 2l;
+
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
      */
@@ -307,6 +316,9 @@ public class MessageList
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
+    private MenuItem mRefreshMenuItem;
+    private View mActionBarProgressView;
+
     private Bundle mState = null;
 
     /**
@@ -361,8 +373,8 @@ public class MessageList
                 public void run() {
                     for (MessageInfoHolder message : messages) {
                         if (message != null && (mFolderName == null || (
-                                message.folder != null &&
-                                message.folder.name.equals(mFolderName)))) {
+                                                    message.folder != null &&
+                        message.folder.name.equals(mFolderName)))) {
                             if (message.selected && mSelectedCount > 0) {
                                 mSelectedCount--;
                             }
@@ -522,7 +534,7 @@ public class MessageList
                 }
             }
 
-            getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
+            setSupportProgress(level);
         }
 
         private void setWindowTitle() {
@@ -550,10 +562,20 @@ public class MessageList
         }
 
         public void progress(final boolean progress) {
+            // Make sure we don't try this before the menu is initialized
+            // this could happen while the activity is initialized.
+            if (mRefreshMenuItem == null) {
+                return;
+            }
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showProgressIndicator(progress);
+                    if (progress) {
+                        mRefreshMenuItem.setActionView(mActionBarProgressView);
+                    } else {
+                        mRefreshMenuItem.setActionView(null);
+                    }
                 }
             });
         }
@@ -649,7 +671,7 @@ public class MessageList
     }
 
     public static void actionHandle(Context context, String title,
-            SearchSpecification searchSpecification) {
+                                    SearchSpecification searchSpecification) {
         Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
         context.startActivity(intent);
     }
@@ -679,6 +701,7 @@ public class MessageList
         super.onCreate(savedInstanceState);
 
         mInflater = getLayoutInflater();
+        initializeActionBar();
         initializeLayout();
 
         // Only set "touchable" when we're first starting up the activity.
@@ -700,7 +723,7 @@ public class MessageList
 
     private void initializeMessageList(Intent intent, boolean create) {
         boolean returnFromMessageView = intent.getBooleanExtra(
-                EXTRA_RETURN_FROM_MESSAGE_VIEW, false);
+                                            EXTRA_RETURN_FROM_MESSAGE_VIEW, false);
 
         if (!create && returnFromMessageView) {
             // We're returning from the MessageView activity with "Manage back button" enabled.
@@ -892,9 +915,24 @@ public class MessageList
         mHandler.refreshTitle();
 
     }
-    private void initializeLayout() {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+    private void initializeActionBar() {
         requestWindowFeature(Window.FEATURE_PROGRESS);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.actionbar_top_custom);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+                                    ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setListNavigationCallbacks(
+            new MessageListNavigationSpinner(this,
+                                             new String[] {"Inbox", "Folders", "Accounts"},
+                                             new Long[] {AB_NAVIGATION_INBOX, AB_NAVIGATION_FOLDERS, AB_NAVIGATION_ACCOUNTS }),
+            this);
+    }
+
+    private void initializeLayout() {
         setContentView(R.layout.message_list);
 
         mListView = (ListView) findViewById(R.id.message_list);
@@ -927,6 +965,62 @@ public class MessageList
         mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
         mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
         mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
+
+        mActionBarProgressView = mInflater.inflate(R.layout.actionbar_indeterminate_progress, null);
+    }
+
+    private class MessageListNavigationSpinner extends ArrayAdapter<String> implements SpinnerAdapter {
+
+        private String mTitle = "";
+        private String mSubTitle = "";
+
+        private Long[] mIds;
+
+        public MessageListNavigationSpinner(Context context, String[] objects, Long[] ids) {
+            super(context, R.layout.actionbar_spinner,
+                  android.R.id.text1, objects);
+            setDropDownViewResource(android.R.layout.simple_list_item_1);
+            mIds = new Long[ids.length];
+            mIds = ids;
+        }
+
+        public boolean setTitle(String title) {
+            if (!title.equals(mTitle)) {
+                mTitle = title;
+                notifyDataSetChanged();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean setSubTitle(String subtitle) {
+            if (!subtitle.equals(mSubTitle)) {
+                mSubTitle = subtitle;
+                notifyDataSetChanged();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            // TODO Auto-generated method stub
+            return super.getDropDownView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+            return super.getView(position, convertView, parent);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return mIds[position];
+        }
     }
 
     /**
@@ -1480,10 +1574,6 @@ public class MessageList
             onCompose();
             return true;
         }
-        case R.id.accounts: {
-            onAccounts();
-            return true;
-        }
         case R.id.set_sort_date: {
             changeSort(SortType.SORT_DATE);
             return true;
@@ -1564,10 +1654,6 @@ public class MessageList
         }
         case R.id.send_messages: {
             mController.sendPendingMessages(mAccount, mAdapter.mListener);
-            return true;
-        }
-        case R.id.list_folders: {
-            onShowFolderList();
             return true;
         }
         case R.id.mark_all_as_read: {
@@ -1695,7 +1781,7 @@ public class MessageList
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
-
+        mRefreshMenuItem = menu.findItem(R.id.check_mail);
         return true;
     }
 
@@ -1781,21 +1867,6 @@ public class MessageList
 
     public void onSendAlternate(Account account, MessageInfoHolder holder) {
         mController.sendAlternate(this, account, holder.message);
-    }
-
-    public void showProgressIndicator(boolean status) {
-        setProgressBarIndeterminateVisibility(status);
-        ProgressBar bar = (ProgressBar)mListView.findViewById(R.id.message_list_progress);
-        if (bar == null) {
-            return;
-        }
-
-        bar.setIndeterminate(true);
-        if (status) {
-            bar.setVisibility(ProgressBar.VISIBLE);
-        } else {
-            bar.setVisibility(ProgressBar.INVISIBLE);
-        }
     }
 
     @Override
@@ -3015,5 +3086,18 @@ public class MessageList
         }
 
         return account;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        if (itemId == AB_NAVIGATION_FOLDERS) {
+            onShowFolderList();
+            return true;
+        } else if (itemId == AB_NAVIGATION_ACCOUNTS) {
+            onAccounts();
+            return true;
+        }
+
+        return false;
     }
 }

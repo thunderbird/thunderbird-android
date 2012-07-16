@@ -208,6 +208,7 @@
             android:name="com.fsck.k9.activity.MessageList"
             android:launchMode="singleTask"
             android:configChanges="locale"
+            android:uiOptions="splitActionBarWhenNarrow"
             >
             <intent-filter>
                 <!-- This action is only to allow an entry point for launcher shortcuts -->

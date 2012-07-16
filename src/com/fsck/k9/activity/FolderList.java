@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,6 +41,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.AccountStats;
@@ -266,7 +266,6 @@ public class FolderList extends K9ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         setContentView(R.layout.folder_list);
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -395,8 +394,7 @@ public class FolderList extends K9ListActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Shortcuts that work no matter what is selected
         switch (keyCode) {
-        case KeyEvent.KEYCODE_Q:
-        {
+        case KeyEvent.KEYCODE_Q: {
             onAccounts();
             return true;
         }
@@ -676,59 +674,63 @@ public class FolderList extends K9ListActivity {
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
-            case DIALOG_MARK_ALL_AS_READ:
-                return ConfirmationDialog.create(this, id, R.string.mark_all_as_read_dlg_title,
-                        getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                            mSelectedContextFolder.displayName),
-                        R.string.okay_action, R.string.cancel_action,
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                markAllAsRead();
-                            }
-                        });
-            case DIALOG_FIND_FOLDER: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.filter_folders_action);
+        case DIALOG_MARK_ALL_AS_READ:
+            return ConfirmationDialog.create(this, id, R.string.mark_all_as_read_dlg_title,
+                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mSelectedContextFolder.displayName),
+                                             R.string.okay_action, R.string.cancel_action,
+            new Runnable() {
+                @Override
+                public void run() {
+                    markAllAsRead();
+                }
+            });
+        case DIALOG_FIND_FOLDER: {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.filter_folders_action);
 
-                final EditText input = new EditText(this);
-                input.setId(R.id.filter_folders);
-                input.setHint(R.string.folder_list_filter_hint);
-                input.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mAdapter.getFilter().filter(input.getText());
-                    }
+            final EditText input = new EditText(this);
+            input.setId(R.id.filter_folders);
+            input.setHint(R.string.folder_list_filter_hint);
+            input.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mAdapter.getFilter().filter(input.getText());
+                }
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count,
-                            int after) { /* not used */ }
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,
+                int after) {
+                    /* not used */
+                }
 
-                    @Override
-                    public void afterTextChanged(Editable s) { /* not used */ }
-                });
+                @Override
+                public void afterTextChanged(Editable s) {
+                    /* not used */
+                }
+            });
 
-                builder.setView(input);
+            builder.setView(input);
 
-                builder.setPositiveButton(getString(R.string.okay_action),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                String value = input.getText().toString();
-                                mAdapter.getFilter().filter(value);
-                            }
-                        });
+            builder.setPositiveButton(getString(R.string.okay_action),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String value = input.getText().toString();
+                    mAdapter.getFilter().filter(value);
+                }
+            });
 
-                builder.setNegativeButton(getString(R.string.cancel_action),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                mAdapter.getFilter().filter(null);
-                            }
-                        });
+            builder.setNegativeButton(getString(R.string.cancel_action),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    mAdapter.getFilter().filter(null);
+                }
+            });
 
-                return builder.create();
-            }
+            return builder.create();
+        }
         }
 
         return super.onCreateDialog(id);
@@ -737,27 +739,27 @@ public class FolderList extends K9ListActivity {
     @Override
     public void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-            case DIALOG_MARK_ALL_AS_READ: {
-                AlertDialog alertDialog = (AlertDialog) dialog;
-                alertDialog.setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                        mSelectedContextFolder.displayName));
-                break;
-            }
-            case DIALOG_FIND_FOLDER: {
-                AlertDialog alertDialog = (AlertDialog) dialog;
-                EditText input = (EditText) alertDialog.findViewById(R.id.filter_folders);
+        case DIALOG_MARK_ALL_AS_READ: {
+            AlertDialog alertDialog = (AlertDialog) dialog;
+            alertDialog.setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                             mSelectedContextFolder.displayName));
+            break;
+        }
+        case DIALOG_FIND_FOLDER: {
+            AlertDialog alertDialog = (AlertDialog) dialog;
+            EditText input = (EditText) alertDialog.findViewById(R.id.filter_folders);
 
-                // Populate the EditText with the current search term
-                FolderListFilter filter = (FolderListFilter) mAdapter.getFilter();
-                input.setText(filter.getSearchTerm());
+            // Populate the EditText with the current search term
+            FolderListFilter filter = (FolderListFilter) mAdapter.getFilter();
+            input.setText(filter.getSearchTerm());
 
-                // Place the cursor at the end of the text
-                input.setSelection(input.getText().length());
-                break;
-            }
-            default: {
-                super.onPrepareDialog(id, dialog);
-            }
+            // Place the cursor at the end of the text
+            input.setSelection(input.getText().length());
+            break;
+        }
+        default: {
+            super.onPrepareDialog(id, dialog);
+        }
         }
     }
 
