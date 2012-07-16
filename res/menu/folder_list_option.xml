@@ -5,6 +5,7 @@
         android:alphabeticShortcut="c"
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
+		android:showAsAction="always"
 	/>
 	<item
         android:title="@string/folder_list_display_mode_label"
@@ -60,6 +61,7 @@
         android:alphabeticShortcut="r"
 		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
+		android:showAsAction="always"
 	/>
     <item
         android:id="@+id/settings"

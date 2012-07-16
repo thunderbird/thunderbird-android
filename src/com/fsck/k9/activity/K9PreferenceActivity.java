@@ -19,8 +19,8 @@ public class K9PreferenceActivity extends SherlockPreferenceActivity {
             // which causes PreferenceScreens to have a black background.
             // http://code.google.com/p/android/issues/detail?id=4611
             setTheme(K9.getK9ThemeResourceId(K9.THEME_DARK));
-        }else{
-		setTheme(K9.getK9ThemeResourceId());
+        } else {
+            setTheme(K9.getK9ThemeResourceId());
         }
 
         super.onCreate(icicle);
