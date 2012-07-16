@@ -51,11 +51,6 @@
 		android:title="@string/empty_trash_action"
 		android:icon="@drawable/ic_menu_delete"
 	/>
-    <item
-		android:id="@+id/accounts"
-		android:title="@string/accounts_action"
-		android:icon="@drawable/ic_menu_account_list"
-	/>
 	<item
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
