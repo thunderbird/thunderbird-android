@@ -39,6 +39,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -57,6 +59,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.ActionBarNavigationSpinner;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -72,7 +75,7 @@ import com.fsck.k9.service.MailService;
  * Activity shows list of the Account's folders
  */
 
-public class FolderList extends K9ListActivity {
+public class FolderList extends K9ListActivity implements OnNavigationListener {
     /*
      * Constants for showDialog() etc.
      */
@@ -101,6 +104,8 @@ public class FolderList extends K9ListActivity {
 
     private FontSizes mFontSizes = K9.getFontSizes();
     private Context context;
+	private MenuItem mRefreshMenuItem;
+	private View mActionBarProgressView;
 
     class FolderListHandler extends Handler {
 
@@ -164,9 +169,19 @@ public class FolderList extends K9ListActivity {
         }
 
         public void progress(final boolean progress) {
+            // Make sure we don't try this before the menu is initialized
+            // this could happen while the activity is initialized.
+            if (mRefreshMenuItem == null) {
+                return;
+            }
+
             runOnUiThread(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(progress);
+			if (progress) {
+                        mRefreshMenuItem.setActionView(mActionBarProgressView);
+                    } else {
+                        mRefreshMenuItem.setActionView(null);
+                    }
                 }
             });
 
@@ -265,7 +280,8 @@ public class FolderList extends K9ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress, null);
+        initializeActionBar();
         setContentView(R.layout.folder_list);
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -286,6 +302,37 @@ public class FolderList extends K9ListActivity {
         onNewIntent(getIntent());
 
         context = this;
+    }
+
+    private void initializeActionBar() {
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        actionBar.setListNavigationCallbacks(
+            new ActionBarNavigationSpinner(this,
+                                             new String[] {"Inbox", "Folders", "Accounts"},
+                                             new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX,
+			ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS,
+			ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS }),
+            this);
+
+        actionBar.setSelectedNavigationItem(1);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_INBOX) {
+            onOpenFolder("INBOX");
+            return true;
+        } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
+            onAccounts();
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -528,9 +575,6 @@ public class FolderList extends K9ListActivity {
 
         case R.id.send_messages:
             MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
-            return true;
-        case R.id.accounts:
-            onAccounts();
 
             return true;
 
@@ -600,6 +644,7 @@ public class FolderList extends K9ListActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.folder_list_option, menu);
+        mRefreshMenuItem = menu.findItem(R.id.check_mail);
         return true;
     }
 
