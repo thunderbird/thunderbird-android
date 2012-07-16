@@ -1,10 +1,13 @@
 package com.fsck.k9.helper;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.fsck.k9.R;
 
@@ -22,8 +25,7 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
     private Context mContext;
     
     public ActionBarNavigationSpinner(Context context, String[] objects, Long[] ids) {
-        super(context, R.layout.actionbar_spinner,
-              android.R.id.text1, objects);
+        super(context, R.layout.actionbar_spinner, objects);
         setDropDownViewResource(android.R.layout.simple_list_item_1);
         mIds = new Long[ids.length];
         mIds = ids;
@@ -59,8 +61,21 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-        return super.getView(position, convertView, parent);
+     View row = convertView;
+
+     if(row==null){
+    	 LayoutInflater inflater = LayoutInflater.from(mContext);
+    	 row=inflater.inflate(R.layout.actionbar_spinner, parent, false);
+     }
+
+     TextView title = (TextView) row.findViewById(R.id.actionbar_title_first);
+     TextView subtitle = (TextView) row.findViewById(R.id.actionbar_title_sub);
+
+     title.setText(mTitle);
+     subtitle.setText(mSubTitle);
+
+     return row;
+
     }
 
     @Override
