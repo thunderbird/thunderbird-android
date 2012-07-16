@@ -113,11 +113,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    String dispString = mAdapter.mListener.formatHeader(FolderList.this,
-                                        getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
-
-
-                    setTitle(dispString);
+                    mNavigationSpinner.setTitle(getString(R.string.folders_title) + " [" + mUnreadMessageCount + "]");
+                    mNavigationSpinner.setSubTitle(mAccount.getEmail());
                 }
             });
         }
@@ -373,7 +370,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         setListAdapter(mAdapter);
         getListView().setTextFilterEnabled(mAdapter.getFilter() != null); // should never be false but better safe then sorry
 
-        setTitle(mAccount.getDescription());
+        mHandler.refreshTitle();
 
     }
 
