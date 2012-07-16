@@ -13,7 +13,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -39,7 +38,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -47,7 +45,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +66,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.ActionBarNavigationSpinner;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
@@ -236,10 +234,6 @@ public class MessageList
     private static final String EXTRA_LIST_POSITION = "listPosition";
     private static final String EXTRA_RETURN_FROM_MESSAGE_VIEW = "returnFromMessageView";
 
-    private static final Long AB_NAVIGATION_INBOX = 0l;
-    private static final Long AB_NAVIGATION_FOLDERS = 1l;
-    private static final Long AB_NAVIGATION_ACCOUNTS = 2l;
-
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
      */
@@ -318,7 +312,7 @@ public class MessageList
 
     private MenuItem mRefreshMenuItem;
     private View mActionBarProgressView;
-
+    private ActionBarNavigationSpinner mNavigationSpinner;
     private Bundle mState = null;
 
     /**
@@ -550,7 +544,9 @@ public class MessageList
                 }
 
                 String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
-                setTitle(dispString);
+                //setTitle(dispString);
+                mNavigationSpinner.setTitle(mFolderName);
+                mNavigationSpinner.setSubTitle(mAccount.getName());
             } else if (mQueryString != null) {
                 if (mTitle != null) {
                     String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
@@ -925,11 +921,12 @@ public class MessageList
                                     ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setListNavigationCallbacks(
-            new MessageListNavigationSpinner(this,
+        mNavigationSpinner = new ActionBarNavigationSpinner(this,
                                              new String[] {"Inbox", "Folders", "Accounts"},
-                                             new Long[] {AB_NAVIGATION_INBOX, AB_NAVIGATION_FOLDERS, AB_NAVIGATION_ACCOUNTS }),
-            this);
+                                             new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX, 
+            		ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS, 
+            		ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS });
+        actionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     }
 
     private void initializeLayout() {
@@ -969,59 +966,6 @@ public class MessageList
         mActionBarProgressView = mInflater.inflate(R.layout.actionbar_indeterminate_progress, null);
     }
 
-    private class MessageListNavigationSpinner extends ArrayAdapter<String> implements SpinnerAdapter {
-
-        private String mTitle = "";
-        private String mSubTitle = "";
-
-        private Long[] mIds;
-
-        public MessageListNavigationSpinner(Context context, String[] objects, Long[] ids) {
-            super(context, R.layout.actionbar_spinner,
-                  android.R.id.text1, objects);
-            setDropDownViewResource(android.R.layout.simple_list_item_1);
-            mIds = new Long[ids.length];
-            mIds = ids;
-        }
-
-        public boolean setTitle(String title) {
-            if (!title.equals(mTitle)) {
-                mTitle = title;
-                notifyDataSetChanged();
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public boolean setSubTitle(String subtitle) {
-            if (!subtitle.equals(mSubTitle)) {
-                mSubTitle = subtitle;
-                notifyDataSetChanged();
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView,
-                                    ViewGroup parent) {
-            // TODO Auto-generated method stub
-            return super.getDropDownView(position, convertView, parent);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            return super.getView(position, convertView, parent);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mIds[position];
-        }
-    }
 
     /**
      * Container for values to be kept while the device configuration is
@@ -3089,10 +3033,10 @@ public class MessageList
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemId == AB_NAVIGATION_FOLDERS) {
+        if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS) {
             onShowFolderList();
             return true;
-        } else if (itemId == AB_NAVIGATION_ACCOUNTS) {
+        } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
             onAccounts();
             return true;
         }
