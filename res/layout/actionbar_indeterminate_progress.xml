@@ -20,13 +20,11 @@
     android:gravity="center"
     android:paddingRight="12dp"
     android:paddingLeft="12dp">
-	<!--  FrameLayout ignores margins so we use this padding
+	<!--  FrameLayout ignores margins on android 2.x so we use this padding
     to make sure the total is the same width as the icon we
     replace and no visual shifting occurs  -->
     <ProgressBar android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
         android:layout_gravity="center"
         style="?android:attr/indeterminateProgressStyle" />
 </FrameLayout>
