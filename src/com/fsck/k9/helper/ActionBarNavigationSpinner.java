@@ -86,8 +86,8 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
 	public static ActionBarNavigationSpinner getDefaultSpinner(Context context) {
 		return new ActionBarNavigationSpinner(context,
         		new String[] {context.getString(R.string.special_mailbox_name_inbox), 
-				context.getString(R.string.folder_list_display_mode_label), 
-				context.getString(R.string.special_mailbox_name_inbox)},
+				context.getString(R.string.folders_title), 
+				context.getString(R.string.accounts_title)},
             new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX, 
         		ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS, 
         		ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS });
