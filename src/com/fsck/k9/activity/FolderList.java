@@ -106,6 +106,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     private Context context;
 	private MenuItem mRefreshMenuItem;
 	private View mActionBarProgressView;
+	private ActionBarNavigationSpinner mNavigationSpinner;
 
     class FolderListHandler extends Handler {
 
@@ -311,13 +312,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-        actionBar.setListNavigationCallbacks(
-            new ActionBarNavigationSpinner(this,
-                                             new String[] {"Inbox", "Folders", "Accounts"},
-                                             new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX,
-			ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS,
-			ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS }),
-            this);
+        mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
+        actionBar.setListNavigationCallbacks(mNavigationSpinner, this);
 
         actionBar.setSelectedNavigationItem(1);
     }

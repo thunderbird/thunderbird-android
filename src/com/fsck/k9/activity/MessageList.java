@@ -537,7 +537,7 @@ public class MessageList
             }
 
             String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
-            //setTitle(dispString);
+
             mNavigationSpinner.setTitle(mFolderName);
             mNavigationSpinner.setSubTitle(mAccount.getEmail());
         } else if (mQueryString != null) {
@@ -907,11 +907,7 @@ public class MessageList
                                     ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        mNavigationSpinner = new ActionBarNavigationSpinner(this,
-                                             new String[] {"Inbox", "Folders", "Accounts"},
-                                             new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX,
-			ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS,
-			ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS });
+        mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
         actionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     }
 
