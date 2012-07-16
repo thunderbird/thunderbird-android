@@ -133,7 +133,7 @@
         android:id="@+id/settings"
         android:title="@string/preferences_action"
         android:icon="@drawable/ic_menu_preferences"
-        android:showAsAction="ifRoom">
+        android:showAsAction="never">
         <menu>
             <item
                 android:id="@+id/folder_settings"
