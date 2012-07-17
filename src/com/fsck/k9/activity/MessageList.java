@@ -1500,6 +1500,12 @@ public class MessageList
         final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
         int itemId = item.getItemId();
         switch (itemId) {
+        case android.R.id.home: {
+            // app icon in action bar clicked; go home
+            Accounts.listAccountsClearTop(this);
+            finish();
+            return true;
+        }
         case R.id.compose: {
             onCompose();
             return true;
