@@ -852,6 +852,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case android.R.id.home: 
+            Accounts.listAccountsClearTop(this);
+            finish();        
+            break;
         case R.id.delete:
             onDelete();
             break;

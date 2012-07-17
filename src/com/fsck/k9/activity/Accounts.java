@@ -315,6 +315,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         context.startActivity(intent);
     }
 
+    public static void listAccountsClearTop(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.putExtra(EXTRA_STARTUP, false);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
+    
     @Override
     public void onNewIntent(Intent intent) {
         Uri uri = intent.getData();
