@@ -155,6 +155,6 @@
     <item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
     />
 </menu>
