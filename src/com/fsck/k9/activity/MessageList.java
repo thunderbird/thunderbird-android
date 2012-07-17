@@ -313,7 +313,9 @@ public class MessageList
 
     private MenuItem mRefreshMenuItem;
     private View mActionBarProgressView;
+    private View mCustomRefreshView;
     private ActionBarNavigationSpinner mNavigationSpinner;
+    private ActionBar mActionBar;
     private Bundle mState = null;
 
     /**
@@ -558,9 +560,9 @@ public class MessageList
         }
 
         if (progress) {
-            mRefreshMenuItem.setActionView(mActionBarProgressView);
+            mActionBar.setCustomView(mActionBarProgressView);
         } else {
-            mRefreshMenuItem.setActionView(null);
+            mActionBar.setCustomView(mCustomRefreshView);
         }
     }
 
@@ -901,14 +903,26 @@ public class MessageList
     private void initializeActionBar() {
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setCustomView(R.layout.actionbar_top_custom);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+        mActionBar = getSupportActionBar();
+
+        mCustomRefreshView = mInflater.inflate(R.layout.actionbar_top_custom, null);
+        ImageButton mCustomRefresh = (ImageButton) mCustomRefreshView.findViewById(R.id.actionbar_refresh_button);
+        mCustomRefresh.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mFolderName != null) {
+	                checkMail(mAccount, mFolderName);
+				}
+			}
+		});
+
+        mActionBar.setCustomView(mCustomRefreshView);
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
                                     ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
-        actionBar.setListNavigationCallbacks(mNavigationSpinner, this);
+        mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     }
 
     private void initializeLayout() {
@@ -1568,12 +1582,6 @@ public class MessageList
         }
 
         switch (itemId) {
-        case R.id.check_mail: {
-            if (mFolderName != null) {
-                checkMail(mAccount, mFolderName);
-            }
-            return true;
-        }
         case R.id.send_messages: {
             mController.sendPendingMessages(mAccount, mAdapter.mListener);
             return true;
