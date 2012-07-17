@@ -278,7 +278,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress, null);
+        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
         initializeActionBar();
         setContentView(R.layout.folder_list);
         mListView = getListView();
