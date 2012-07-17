@@ -536,19 +536,13 @@ public class MessageList
         private void setWindowTitle() {
             String displayName;
 
+            // regular folder content display
             if (mFolderName != null) {
-                displayName  = mFolderName;
 
-                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_inbox);
-                } else if (mAccount.getOutboxFolderName().equals(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_outbox);
-                }
-
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
-
-                mNavigationSpinner.setTitle(mFolderName);
+                mNavigationSpinner.setTitle(mFolderName+" ["+mUnreadMessageCount+"]");
                 mNavigationSpinner.setSubTitle(mAccount.getEmail());
+              
+            // query result display
             } else if (mQueryString != null) {
                 if (mTitle != null) {
                     String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
