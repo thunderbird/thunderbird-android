@@ -62,6 +62,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.activity.misc.SwipeGestureDetector;
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -84,9 +86,9 @@ import com.fsck.k9.mail.store.StorageManager;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList
-    extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener, OnNavigationListener {
+public class MessageList extends K9ListActivity implements OnClickListener,
+        AdapterView.OnItemClickListener, AnimationListener, OnNavigationListener,
+        OnSwipeGestureListener {
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -301,13 +303,13 @@ public class MessageList
     private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
-    private View mBatchButtonArea;
-    private ImageButton mBatchReadButton;
-    private ImageButton mBatchDeleteButton;
-    private ImageButton mBatchFlagButton;
-    private ImageButton mBatchArchiveButton;
-    private ImageButton mBatchMoveButton;
-    private ImageButton mBatchDoneButton;
+//    private View mBatchButtonArea;
+//    private ImageButton mBatchReadButton;
+//    private ImageButton mBatchDeleteButton;
+//    private ImageButton mBatchFlagButton;
+//    private ImageButton mBatchArchiveButton;
+//    private ImageButton mBatchMoveButton;
+//    private ImageButton mBatchDoneButton;
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
@@ -691,7 +693,7 @@ public class MessageList
         initializeMessageList(getIntent(), true);
 
         // Enable gesture detection for MessageLists
-        mGestureDetector = new GestureDetector(new MyGestureDetector(true));
+        mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
     }
 
     @Override
@@ -850,12 +852,12 @@ public class MessageList
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
                 // Hide the archive button if we don't have an archive folder.
                 if (!mAccount.hasArchiveFolder()) {
-                    mBatchArchiveButton.setVisibility(View.GONE);
+//                    mBatchArchiveButton.setVisibility(View.GONE);
                 }
             } else if (mQueryString != null) {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
                 // Don't show the archive button if this is a search.
-                mBatchArchiveButton.setVisibility(View.GONE);
+//                mBatchArchiveButton.setVisibility(View.GONE);
             }
 
         } else {
@@ -920,9 +922,8 @@ public class MessageList
     }
 
     private void initializeLayout() {
-        setContentView(R.layout.message_list);
-
-        mListView = (ListView) findViewById(R.id.message_list);
+        mListView = getListView();
+        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
@@ -931,26 +932,26 @@ public class MessageList
 
         registerForContextMenu(mListView);
 
-        mBatchButtonArea = findViewById(R.id.batch_button_area);
-        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
-        mBatchReadButton.setOnClickListener(this);
-        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
-        mBatchDeleteButton.setOnClickListener(this);
-        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
-        mBatchFlagButton.setOnClickListener(this);
-        mBatchArchiveButton = (ImageButton) findViewById(R.id.batch_archive_button);
-        mBatchArchiveButton.setOnClickListener(this);
-        mBatchMoveButton = (ImageButton) findViewById(R.id.batch_move_button);
-        mBatchMoveButton.setOnClickListener(this);
-        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-        mBatchDoneButton.setOnClickListener(this);
-
-        mBatchReadButton.setVisibility(K9.batchButtonsMarkRead() ? View.VISIBLE : View.GONE);
-        mBatchDeleteButton.setVisibility(K9.batchButtonsDelete() ? View.VISIBLE : View.GONE);
-        mBatchArchiveButton.setVisibility(K9.batchButtonsArchive() ? View.VISIBLE : View.GONE);
-        mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
-        mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
-        mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
+//        mBatchButtonArea = findViewById(R.id.batch_button_area);
+//        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
+//        mBatchReadButton.setOnClickListener(this);
+//        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
+//        mBatchDeleteButton.setOnClickListener(this);
+//        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
+//        mBatchFlagButton.setOnClickListener(this);
+//        mBatchArchiveButton = (ImageButton) findViewById(R.id.batch_archive_button);
+//        mBatchArchiveButton.setOnClickListener(this);
+//        mBatchMoveButton = (ImageButton) findViewById(R.id.batch_move_button);
+//        mBatchMoveButton.setOnClickListener(this);
+//        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
+//        mBatchDoneButton.setOnClickListener(this);
+//
+//        mBatchReadButton.setVisibility(K9.batchButtonsMarkRead() ? View.VISIBLE : View.GONE);
+//        mBatchDeleteButton.setVisibility(K9.batchButtonsDelete() ? View.VISIBLE : View.GONE);
+//        mBatchArchiveButton.setVisibility(K9.batchButtonsArchive() ? View.VISIBLE : View.GONE);
+//        mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
+//        mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
+//        mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
 
         mActionBarProgressView = mInflater.inflate(R.layout.actionbar_indeterminate_progress, null);
     }
@@ -1046,14 +1047,14 @@ public class MessageList
             return false;
         }
         case KeyEvent.KEYCODE_DPAD_LEFT: {
-            if (mBatchButtonArea.hasFocus()) {
+            if (false /*mBatchButtonArea.hasFocus()*/) {
                 return false;
             } else {
                 return true;
             }
         }
         case KeyEvent.KEYCODE_DPAD_RIGHT: {
-            if (mBatchButtonArea.hasFocus()) {
+            if (false /*mBatchButtonArea.hasFocus()*/) {
                 return false;
             } else {
                 return true;
@@ -1799,13 +1800,13 @@ public class MessageList
     }
 
     @Override
-    protected void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
+    public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
         // Handle right-to-left as an un-select
         handleSwipe(e1, false);
     }
 
     @Override
-    protected void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+    public void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
         // Handle left-to-right as a select.
         handleSwipe(e1, true);
     }
@@ -2623,20 +2624,20 @@ public class MessageList
     }
 
     private void hideBatchButtons() {
-        if (mBatchButtonArea.getVisibility() != View.GONE) {
-            mBatchButtonArea.setVisibility(View.GONE);
-            mBatchButtonArea.startAnimation(
-                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
-        }
+//        if (mBatchButtonArea.getVisibility() != View.GONE) {
+//            mBatchButtonArea.setVisibility(View.GONE);
+//            mBatchButtonArea.startAnimation(
+//                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
+//        }
     }
 
     private void showBatchButtons() {
-        if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
-            mBatchButtonArea.setVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
-            animation.setAnimationListener(this);
-            mBatchButtonArea.startAnimation(animation);
-        }
+//        if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
+//            mBatchButtonArea.setVisibility(View.VISIBLE);
+//            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
+//            animation.setAnimationListener(this);
+//            mBatchButtonArea.startAnimation(animation);
+//        }
     }
 
     private void toggleBatchButtons() {
@@ -2672,8 +2673,8 @@ public class MessageList
                     showBatchButtons();
                 }
 
-                mBatchReadButton.setImageResource(readButtonIconId);
-                mBatchFlagButton.setImageResource(flagButtonIconId);
+//                mBatchReadButton.setImageResource(readButtonIconId);
+//                mBatchFlagButton.setImageResource(flagButtonIconId);
 
 
             }
@@ -2720,62 +2721,62 @@ public class MessageList
 
     @Override
     public void onClick(View v) {
-        boolean newState = false;
-        List<Message> messageList = new ArrayList<Message>();
-        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-
-        if (v == mBatchDoneButton) {
-            setAllSelected(false);
-            return;
-        }
-
-        if (v == mBatchFlagButton) {
-            newState = computeBatchDirection(true);
-        } else {
-            newState = computeBatchDirection(false);
-        }
-
-        if (v == mBatchArchiveButton) {
-            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
-            onArchive(selection);
-            return;
-        }
-
-        if (v == mBatchMoveButton) {
-            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
-            onMove(selection);
-            return;
-        }
-
-        for (MessageInfoHolder holder : mAdapter.getMessages()) {
-            if (holder.selected) {
-                if (v == mBatchDeleteButton) {
-                    removeHolderList.add(holder);
-                } else if (v == mBatchFlagButton) {
-                    holder.flagged = newState;
-                } else if (v == mBatchReadButton) {
-                    holder.read = newState;
-                }
-                messageList.add(holder.message);
-            }
-        }
-
-        mAdapter.removeMessages(removeHolderList);
-
-        if (!messageList.isEmpty()) {
-            if (v == mBatchDeleteButton) {
-                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-                mSelectedCount = 0;
-                toggleBatchButtons();
-            } else {
-                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
-            }
-        } else {
-            // Should not happen
-            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
-        }
-
-        mAdapter.sortMessages();
+//        boolean newState = false;
+//        List<Message> messageList = new ArrayList<Message>();
+//        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+//
+//        if (v == mBatchDoneButton) {
+//            setAllSelected(false);
+//            return;
+//        }
+//
+//        if (v == mBatchFlagButton) {
+//            newState = computeBatchDirection(true);
+//        } else {
+//            newState = computeBatchDirection(false);
+//        }
+//
+//        if (v == mBatchArchiveButton) {
+//            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+//            onArchive(selection);
+//            return;
+//        }
+//
+//        if (v == mBatchMoveButton) {
+//            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+//            onMove(selection);
+//            return;
+//        }
+//
+//        synchronized (mAdapter.messages) {
+//            for (MessageInfoHolder holder : mAdapter.messages) {
+//                if (holder.selected) {
+//                    if (v == mBatchDeleteButton) {
+//                        removeHolderList.add(holder);
+//                    } else if (v == mBatchFlagButton) {
+//                        holder.flagged = newState;
+//                    } else if (v == mBatchReadButton) {
+//                        holder.read = newState;
+//                    }
+//                    messageList.add(holder.message);
+//                }
+//            }
+//        }
+//        mAdapter.removeMessages(removeHolderList);
+//
+//        if (!messageList.isEmpty()) {
+//            if (v == mBatchDeleteButton) {
+//                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
+//                mSelectedCount = 0;
+//                toggleBatchButtons();
+//            } else {
+//                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+//            }
+//        } else {
+//            // Should not happen
+//            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+//        }
+//        mHandler.sortMessages();
     }
 
     @Override
