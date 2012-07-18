@@ -13,6 +13,8 @@ import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -52,8 +54,10 @@ public final class TrustManagerFactory {
             return null;
         }
     }
-
-    private static class SecureX509TrustManager implements X509TrustManager {
+    /** private
+     * but we have to access the class in the junit tests
+     **/
+    static class SecureX509TrustManager implements X509TrustManager {
         private static final Map<String, SecureX509TrustManager> mTrustManager =
             new HashMap<String, SecureX509TrustManager>();
 
@@ -104,7 +108,18 @@ public final class TrustManagerFactory {
                      * http://code.google.com/p/k9mail/issues/detail?id=3976
                      */
                     try {
-                        checkServerTrustedHTCWorkaround(chain, authType);
+                        Map<String, Certificate> aliasmap = new HashMap<String, Certificate>();
+                        Enumeration<String> eAliases;
+                        try {
+                            eAliases = keyStore.aliases();
+                            while (eAliases.hasMoreElements()) {
+                                String alias = eAliases.nextElement();
+                                aliasmap.put(alias, keyStore.getCertificate(alias));
+                            }
+                            checkServerTrustedHTCWorkaround(aliasmap, chain, authType);
+                        } catch (KeyStoreException e2) {
+                            throw new CertificateException(e2);
+                        }
                     } catch (CertificateException e2) {
                         /* workaround did not report trusted as well
                          * -> throw original exception
@@ -144,20 +159,18 @@ public final class TrustManagerFactory {
          * check if the chain validates against it.
          * http://code.google.com/p/k9mail/issues/detail?id=3976
          *
+         * @param aliases Alias -> Certificate mapping (get from keyStore)
          * @param chain
          * @param authType
          * @throws CertificateException
          */
-        public void checkServerTrustedHTCWorkaround(X509Certificate[] chain, String authType)
+        public void checkServerTrustedHTCWorkaround(Map<String, Certificate> aliases , X509Certificate[] chain, String authType)
         throws CertificateException {
             Log.d(LOG_TAG, "SSL-connection HTC padding Bug workaround executing");
             boolean verified = false;
             try {
-                Enumeration<String> aliases;
-                aliases = keyStore.aliases();
-                while (aliases.hasMoreElements()) {
-                    String alias = aliases.nextElement();
-                    Certificate cert = keyStore.getCertificate(alias);
+                for (Entry<String, Certificate> alias : aliases.entrySet()) {
+                    Certificate cert = alias.getValue();
                     try {
                         /*
                          * we only check the leaf of a certificate chain. during
@@ -171,12 +184,12 @@ public final class TrustManagerFactory {
                         Log.e(LOG_TAG, e3.toString());
                     }
                 }
-                if (!verified) {
-                    /* no valid public key found so this connection isnot trusted */
-                    throw new CertificateException();
-                }
-            } catch (KeyStoreException e2) {
+            } catch (Exception e2) {
                 Log.e(LOG_TAG, "KeyStore Problem", e2);
+            }
+            if (!verified) {
+                /* no valid public key found so this connection isnot trusted */
+                throw new CertificateException();
             }
         }
 
