@@ -1024,6 +1024,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                         mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
+                    setTitle(clonedMessage.getSubject());
                     mMessageView.setOnFlagListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
