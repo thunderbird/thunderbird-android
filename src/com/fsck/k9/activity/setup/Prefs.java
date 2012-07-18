@@ -86,6 +86,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
+    private static final String PREFERENCE_PRAGMASYNCOFF = "pragmasyncoff";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
@@ -119,6 +120,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
+    private CheckBoxPreference mPragmaSync;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference compactLayouts;
@@ -320,6 +322,8 @@ public class Prefs extends K9PreferenceActivity {
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
 
+        mPragmaSync= (CheckBoxPreference)findPreference(PREFERENCE_PRAGMASYNCOFF);
+        
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
 

@@ -230,6 +230,10 @@ http://k9mail.googlecode.com/
 
     <string name="end_of_folder">No more messages</string>
 
+    <string name="enable_pragmasync_title">Enable Database SYNC=off</string>
+    <string name="enable_pragmasync_summary">Disables database syncing (useful for slow SD-cards)</string>
+  
+    
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
