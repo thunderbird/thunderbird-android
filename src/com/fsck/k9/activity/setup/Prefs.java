@@ -316,6 +316,33 @@ public class Prefs extends K9PreferenceActivity {
 
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
+        // In ICS+ there is no 'background data' setting that apps can chose to ignore anymore. So
+        // we hide that option for "Background Sync".
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            CharSequence[] oldEntries = mBackgroundOps.getEntries();
+            CharSequence[] newEntries = new CharSequence[3];
+            // Use "When 'Auto-sync' is checked" instead of "When 'Background data' & 'Auto-sync'
+            // are checked" as description.
+            newEntries[0] = getString(R.string.background_ops_auto_sync_only);
+            newEntries[1] = oldEntries[2];
+            newEntries[2] = oldEntries[3];
+
+            CharSequence[] oldValues = mBackgroundOps.getEntryValues();
+            CharSequence[] newValues = new CharSequence[3];
+            newValues[0] = oldValues[1];
+            newValues[1] = oldValues[2];
+            newValues[2] = oldValues[3];
+
+            mBackgroundOps.setEntries(newEntries);
+            mBackgroundOps.setEntryValues(newValues);
+
+            // Since ConnectivityManager.getBackgroundDataSetting() always returns 'true' on ICS+
+            // we map WHEN_CHECKED to ALWAYS.
+            if (K9.getBackgroundOps() == K9.BACKGROUND_OPS.WHEN_CHECKED) {
+                mBackgroundOps.setValue(K9.BACKGROUND_OPS.ALWAYS.toString());
+                mBackgroundOps.setSummary(mBackgroundOps.getEntry());
+            }
+        }
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
