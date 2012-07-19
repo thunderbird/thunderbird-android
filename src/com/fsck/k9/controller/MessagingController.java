@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -4188,7 +4189,10 @@ public class MessagingController implements Runnable {
         builder.setTicker(messageNotice);
 
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
-        if (account.isNotificationShowsUnreadCount()) {
+        if (account.isNotificationShowsUnreadCount() ||
+                // Honeycomb and newer don't show the number as overlay on the notification icon.
+                // However, the number will appear in the detailed notification view.
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             builder.setNumber(unreadCount);
         }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
@@ -50,6 +51,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
+    private static final String PREFERENCE_SCREEN_NOTIFICATIONS = "notifications";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
@@ -572,8 +574,23 @@ public class AccountSettings extends K9PreferenceActivity {
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-        mNotificationUnreadCount = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
-        mNotificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
+        CheckBoxPreference notificationUnreadCount =
+                (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
+
+        /*
+         * Honeycomb and newer don't show the notification number as overlay on the notification
+         * icon in the status bar, so we hide the setting.
+         *
+         * See http://code.google.com/p/android/issues/detail?id=21477
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            PreferenceScreen notificationsPrefs =
+                    (PreferenceScreen) findPreference(PREFERENCE_SCREEN_NOTIFICATIONS);
+            notificationsPrefs.removePreference(notificationUnreadCount);
+        } else {
+            notificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
+            mNotificationUnreadCount = notificationUnreadCount;
+        }
 
         new PopulateFolderPrefsTask().execute();
 
@@ -690,7 +707,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
-        mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
+        if (mNotificationUnreadCount != null) {
+            mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
+        }
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         if (mIsExpungeCapable) {
