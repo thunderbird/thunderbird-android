@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -1411,24 +1412,46 @@ public class MessageList extends K9ListActivity implements
         }
     }
 
-    private void onToggleRead(MessageInfoHolder holder) {
-        LocalMessage message = holder.message;
-        Folder folder = message.getFolder();
-        Account account = folder.getAccount();
-        String folderName = folder.getName();
-        mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !holder.read);
-        holder.read = !holder.read;
-        mHandler.sortMessages();
+    private void onToggleRead(final List<MessageInfoHolder> holders) {
+    	LocalMessage message;
+    	Folder folder;
+    	Account account;
+    	String folderName;
+    	
+        int i = 0;
+    	for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
+            final MessageInfoHolder h = iterator.next();
+	        message = h.message;
+	        folder = message.getFolder();
+	        account = folder.getAccount();
+	        folderName = message.getFolder().getName();
+	        
+	        mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !h.read);
+	        
+	        h.read = !h.read;
+	        mHandler.sortMessages();
+    	}
     }
 
-    private void onToggleFlag(MessageInfoHolder holder) {
-        LocalMessage message = holder.message;
-        Folder folder = message.getFolder();
-        Account account = folder.getAccount();
-        String folderName = folder.getName();
-        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !holder.flagged);
-        holder.flagged = !holder.flagged;
-        mHandler.sortMessages();
+    private void onToggleFlag(final List<MessageInfoHolder> holders) {
+    	LocalMessage message;
+    	Folder folder;
+    	Account account;
+    	String folderName;
+    	
+        int i = 0;
+    	for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
+            final MessageInfoHolder h = iterator.next();
+	        message = h.message;
+	        folder = message.getFolder();
+	        account = folder.getAccount();
+	        folderName = message.getFolder().getName();
+	        
+	        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !h.flagged);
+	        
+	        h.flagged = !h.flagged;
+	        mHandler.sortMessages();
+    	}
     }
 
     private void checkMail(Account account, String folderName) {
@@ -1864,7 +1887,7 @@ public class MessageList extends K9ListActivity implements
             public void onClick(View v) {
                 // Perform action on clicks
                 MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                onToggleFlag(message);
+                onToggleFlag(Arrays.asList(new MessageInfoHolder[]{message}));
             }
         };
 
@@ -2606,14 +2629,14 @@ public class MessageList extends K9ListActivity implements
 				mSelectedCount = 0;
 				break;
 			}
-			/*case R.id.mark_as_read: {
-				onToggleRead(holder);
+			case R.id.read_toggle: {
+				onToggleRead(selection);
 				break;
 			}
-			case R.id.flag: {
-				onToggleFlag(holder);
+			case R.id.flag_toggle: {
+				onToggleFlag(selection);
 				break;
-			}*/
+			}
 			case R.id.archive: {
 				onArchive(selection);
 				mSelectedCount = 0;
