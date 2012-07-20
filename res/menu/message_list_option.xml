@@ -50,67 +50,6 @@
         android:showAsAction="always"
     />
     <item
-        android:id="@+id/batch_ops"
-        android:title="@string/batch_ops"
-        android:icon="@drawable/ic_menu_batch">
-        <menu>
-            <item
-                android:id="@+id/batch_flag_mode"
-                android:title="@string/batch_flag_mode"
-                android:visible="false"
-            />
-            <item
-                android:id="@+id/batch_plain_mode"
-                android:title="@string/batch_plain_mode"
-                android:visible="false"
-            />
-            <item
-                android:id="@+id/batch_delete_op"
-                android:title="@string/batch_delete_op"
-            />
-            <item
-                android:id="@+id/batch_mark_read_op"
-                android:title="@string/batch_mark_read_op"
-            />
-            <item
-                android:id="@+id/batch_flag_op"
-                android:title="@string/batch_flag_op"
-            />
-            <item
-                android:id="@+id/batch_mark_unread_op"
-                android:title="@string/batch_mark_unread_op"
-            />
-            <item
-                android:id="@+id/batch_unflag_op"
-                android:title="@string/batch_unflag_op"
-            />
-            <item
-                android:id="@+id/batch_archive_op"
-                android:title="@string/batch_archive_op"
-            />
-            <item
-                android:id="@+id/batch_spam_op"
-                android:title="@string/batch_spam_op"
-            />
-            <item
-                android:id="@+id/batch_move_op"
-                android:title="@string/batch_move_op"
-            />
-            <item
-                android:id="@+id/batch_copy_op"
-                android:title="@string/batch_copy_op"
-            />
-            <item
-                android:id="@+id/batch_select_all"
-                android:title="@string/batch_select_all"
-            />
-            <item
-                android:id="@+id/batch_deselect_all"
-                android:title="@string/batch_deselect_all"
-            />
-        </menu>
-    </item>
-    <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:title="@string/send_messages_action"
