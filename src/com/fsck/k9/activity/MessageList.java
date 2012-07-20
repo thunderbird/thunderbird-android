@@ -703,6 +703,13 @@ public class MessageList extends K9ListActivity implements
 					int position, long id) {
 				return handleContextRelatedClick(position);
 			}});
+        
+        // Correcting for screen rotation when in ActionMode
+        mSelectedCount = getSelectionFromCheckboxes().size();
+        if (mSelectedCount > 0) {
+        	mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+        	mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
+        }
     }
 
     @Override
@@ -1559,6 +1566,40 @@ public class MessageList extends K9ListActivity implements
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if (mQueryString != null) {
+            menu.findItem(R.id.mark_all_as_read).setVisible(false);
+            menu.findItem(R.id.expunge).setVisible(false);
+            menu.findItem(R.id.check_mail).setVisible(false);
+            menu.findItem(R.id.send_messages).setVisible(false);
+            menu.findItem(R.id.folder_settings).setVisible(false);
+            menu.findItem(R.id.account_settings).setVisible(false);
+        } else {
+            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
+                menu.findItem(R.id.check_mail).setVisible(false);
+            } else {
+                menu.findItem(R.id.send_messages).setVisible(false);
+            }
+
+            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
+                menu.findItem(R.id.expunge).setVisible(false);
+            }
+
+            if (!mController.isMoveCapable(mAccount)) {
+                // FIXME: Really we want to do this for all local-only folders
+                if (mCurrentFolder != null &&
+                        !mAccount.getInboxFolderName().equals(mCurrentFolder.name)) {
+                    menu.findItem(R.id.check_mail).setVisible(false);
+                }
+                menu.findItem(R.id.expunge).setVisible(false);
+            }
+        }
+
+        return true;
+    }
+    
     @Override
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
         // Handle right-to-left as an un-select
