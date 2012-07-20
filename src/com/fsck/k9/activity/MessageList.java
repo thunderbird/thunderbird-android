@@ -523,10 +523,10 @@ public class MessageList extends K9ListActivity implements
         // query result display
         } else if (mQueryString != null) {
             if (mTitle != null) {
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
-                setTitle(dispString);
+                setTitle(mTitle);
             } else {
-                setTitle(getString(R.string.search_results) + ": " + mQueryString);
+                setTitle(getString(R.string.search_results));
+                //setSubTitle(mQueryString);
             }
         }
     }
@@ -538,10 +538,14 @@ public class MessageList extends K9ListActivity implements
             return;
         }
 
-        if (progress) {
-            mActionBar.setCustomView(mActionBarProgressView);
+        if (mQueryString == null) {
+            if (progress) {
+                mActionBar.setCustomView(mActionBarProgressView);
+            } else {
+                mActionBar.setCustomView(mCustomRefreshView);
+            }
         } else {
-            mActionBar.setCustomView(mCustomRefreshView);
+
         }
     }
 
@@ -662,8 +666,12 @@ public class MessageList extends K9ListActivity implements
         context = this;
         super.onCreate(savedInstanceState);
 
+        // need this for actionbar initialization
+        mQueryString = getIntent().getStringExtra(EXTRA_QUERY);
+
         mInflater = getLayoutInflater();
-        initializeActionBar();
+        mActionBar = getSupportActionBar();
+        if (mQueryString == null) initializeActionBar();
         initializeLayout();
 
         // Only set "touchable" when we're first starting up the activity.
@@ -886,10 +894,6 @@ public class MessageList extends K9ListActivity implements
     }
 
     private void initializeActionBar() {
-        requestWindowFeature(Window.FEATURE_PROGRESS);
-
-        mActionBar = getSupportActionBar();
-
         mCustomRefreshView = mInflater.inflate(R.layout.actionbar_top_custom, null);
         ImageButton mCustomRefresh = (ImageButton) mCustomRefreshView.findViewById(R.id.actionbar_refresh_button);
         mCustomRefresh.setOnClickListener(new OnClickListener() {
