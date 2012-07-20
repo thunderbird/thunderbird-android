@@ -1322,10 +1322,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         }
         mAdapter.removeMessages(holders);
         mController.deleteMessages(messagesToRemove.toArray(EMPTY_MESSAGE_ARRAY), null);
-
-        if (mSelectedCount == 0) {
-		mActionMode.finish();
-        }
     }
 
     @Override
@@ -1342,9 +1338,9 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             }
 
             final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+            final List<MessageInfoHolder> holders = mActiveMessages;
 
             if (destFolderName != null) {
-                final List<MessageInfoHolder> holders = mActiveMessages;
 
                 mActiveMessages = null; // don't need it any more
 
@@ -3145,10 +3141,18 @@ public class MessageList extends K9ListActivity implements OnClickListener,
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
 
+			/*
+			 * In the following we assume that we can't move or copy
+			 * mails to the same folder. Also that spam isn't available if we are
+			 * in the spam folder,same for archive.
+			 *
+			 * This is the case currently so safe assumption.
+			 */
 			switch (item.getItemId()) {
 			case R.id.delete: {
 				onDelete(selection);
-				return true;
+				mSelectedCount = 0;
+				break;
 			}
 			/*case R.id.mark_as_read: {
 				onToggleRead(holder);
@@ -3160,26 +3164,35 @@ public class MessageList extends K9ListActivity implements OnClickListener,
 			}*/
 			case R.id.archive: {
 				onArchive(selection);
-				return true;
+				mSelectedCount = 0;
+				break;
 			}
 			case R.id.spam: {
 				onSpam(selection);
-				return true;
+				mSelectedCount = 0;
+				break;
 			}
 			case R.id.move: {
 				onMove(selection);
-				return true;
+				mSelectedCount = 0;
+				break;
 			}
 			case R.id.copy: {
 				onCopy(selection);
-				return true;
+				mSelectedCount = 0;
+				break;
 			}
 			/*case R.id.send_alternate: {
 				onSendAlternate(mAccount, holder);
 				break;
 			}*/
-			default: return false;
 			}
+
+			if (mSelectedCount == 0) {
+				mActionMode.finish();
+			}
+
+			return true;
 		}
 	};
 }
