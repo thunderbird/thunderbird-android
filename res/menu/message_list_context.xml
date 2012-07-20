@@ -6,8 +6,8 @@
         android:showAsAction="always"
     />
     <item
-        android:id="@+id/mark_as_read"
-        android:title="@string/mark_as_read_action"
+        android:id="@+id/read_toggle"
+        android:title="@string/read_toggle_action"
         android:showAsAction="always"
     />
     <item
@@ -16,8 +16,8 @@
         android:showAsAction="always"
     />
     <item
-        android:id="@+id/flag"
-        android:title="@string/flag_action"
+        android:id="@+id/flag_toggle"
+        android:title="@string/flag_toggle_action"
         android:showAsAction="ifRoom"
     />
     <item

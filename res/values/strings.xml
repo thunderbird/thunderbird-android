@@ -144,6 +144,7 @@ http://k9mail.googlecode.com/
 
     <string name="accounts_action">Accounts</string>
     <string name="mark_as_read_action">Mark as read</string>
+    <string name="read_toggle_action">(un)read</string>
     <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 
@@ -152,6 +153,7 @@ http://k9mail.googlecode.com/
     messages in the folder that are not displayed in K-9)</string>
 
     <string name="flag_action">Add star</string>
+    <string name="flag_toggle_action">(Un)star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
     <string name="show_full_header_action">Show full header</string>
