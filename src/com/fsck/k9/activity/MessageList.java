@@ -31,8 +31,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
@@ -84,8 +82,8 @@ import com.fsck.k9.mail.store.StorageManager;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9ListActivity implements OnClickListener,
-        AdapterView.OnItemClickListener, AnimationListener, OnNavigationListener,
+public class MessageList extends K9ListActivity implements
+        AdapterView.OnItemClickListener, OnNavigationListener,
         OnSwipeGestureListener {
 
     /**
@@ -301,14 +299,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
     private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
-//    private View mBatchButtonArea;
-//    private ImageButton mBatchReadButton;
-//    private ImageButton mBatchDeleteButton;
-//    private ImageButton mBatchFlagButton;
-//    private ImageButton mBatchArchiveButton;
-//    private ImageButton mBatchMoveButton;
-//    private ImageButton mBatchDoneButton;
-
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
@@ -318,12 +308,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
     private ActionBar mActionBar;
     private ActionMode mActionMode;
     private Bundle mState = null;
-
-    /**
-     * Remember the selection to be consistent between menu display and menu item
-     * selection
-     */
-    private MessageInfoHolder mSelectedMessage;
 
     /**
      * Relevant messages for the current context when we have to remember the
@@ -535,8 +519,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         }
 
         private void setWindowTitle() {
-            String displayName;
-
             // regular folder content display
             if (mFolderName != null) {
 
@@ -951,27 +933,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
 
         registerForContextMenu(mListView);
 
-//        mBatchButtonArea = findViewById(R.id.batch_button_area);
-//        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
-//        mBatchReadButton.setOnClickListener(this);
-//        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
-//        mBatchDeleteButton.setOnClickListener(this);
-//        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
-//        mBatchFlagButton.setOnClickListener(this);
-//        mBatchArchiveButton = (ImageButton) findViewById(R.id.batch_archive_button);
-//        mBatchArchiveButton.setOnClickListener(this);
-//        mBatchMoveButton = (ImageButton) findViewById(R.id.batch_move_button);
-//        mBatchMoveButton.setOnClickListener(this);
-//        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-//        mBatchDoneButton.setOnClickListener(this);
-//
-//        mBatchReadButton.setVisibility(K9.batchButtonsMarkRead() ? View.VISIBLE : View.GONE);
-//        mBatchDeleteButton.setVisibility(K9.batchButtonsDelete() ? View.VISIBLE : View.GONE);
-//        mBatchArchiveButton.setVisibility(K9.batchButtonsArchive() ? View.VISIBLE : View.GONE);
-//        mBatchMoveButton.setVisibility(K9.batchButtonsMove() ? View.VISIBLE : View.GONE);
-//        mBatchFlagButton.setVisibility(K9.batchButtonsFlag() ? View.VISIBLE : View.GONE);
-//        mBatchDoneButton.setVisibility(K9.batchButtonsUnselect() ? View.VISIBLE : View.GONE);
-
         mActionBarProgressView = mInflater.inflate(R.layout.actionbar_indeterminate_progress, null);
     }
 
@@ -1065,20 +1026,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             }
             return false;
         }
-        case KeyEvent.KEYCODE_DPAD_LEFT: {
-            if (false /*mBatchButtonArea.hasFocus()*/) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        case KeyEvent.KEYCODE_DPAD_RIGHT: {
-            if (false /*mBatchButtonArea.hasFocus()*/) {
-                return false;
-            } else {
-                return true;
-            }
-        }
         case KeyEvent.KEYCODE_C: {
             onCompose();
             return true;
@@ -1124,18 +1071,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
                         onDelete(selection);
                         return true;
                     }
-                    case KeyEvent.KEYCODE_F: {
-                        onForward(message);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_A: {
-                        onReplyAll(message);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_R: {
-                        onReply(message);
-                        return true;
-                    }
                     case KeyEvent.KEYCODE_G: {
                         setFlag(selection, Flag.FLAGGED, !message.flagged);
                         return true;
@@ -1176,11 +1111,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             }
         }
         return super.onKeyUp(keyCode, event);
-    }
-
-
-    private void onResendMessage(MessageInfoHolder message) {
-        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
     }
 
     private void onOpenMessage(MessageInfoHolder message) {
@@ -1376,18 +1306,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         }
     }
 
-    private void onReply(MessageInfoHolder holder) {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false, null);
-    }
-
-    private void onReplyAll(MessageInfoHolder holder) {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true, null);
-    }
-
-    private void onForward(MessageInfoHolder holder) {
-        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
-    }
-
     private void onMarkAllAsRead(final Account account, final String folder) {
         if (K9.confirmMarkAllAsRead()) {
             showDialog(DIALOG_MARK_ALL_AS_READ);
@@ -1520,7 +1438,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
         int itemId = item.getItemId();
         switch (itemId) {
         case android.R.id.home: {
@@ -1562,34 +1479,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             return true;
         }
         case R.id.select_all:
-        case R.id.batch_select_all: {
-            setAllSelected(true);
-            return true;
-        }
-        case R.id.batch_deselect_all: {
-            setAllSelected(false);
-            return true;
-        }
-        case R.id.batch_delete_op: {
-            onDelete(selection);
-            return true;
-        }
-        case R.id.batch_mark_read_op: {
-            setFlag(selection, Flag.SEEN, true);
-            return true;
-        }
-        case R.id.batch_mark_unread_op: {
-            setFlag(selection, Flag.SEEN, false);
-            return true;
-        }
-        case R.id.batch_flag_op: {
-            setFlag(selection, Flag.FLAGGED, true);
-            return true;
-        }
-        case R.id.batch_unflag_op: {
-            setFlag(selection, Flag.FLAGGED, false);
-            return true;
-        }
         case R.id.app_settings: {
             onEditPrefs();
             return true;
@@ -1623,22 +1512,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             onEditAccount();
             return true;
         }
-        case R.id.batch_copy_op: {
-            onCopy(selection);
-            return true;
-        }
-        case R.id.batch_archive_op: {
-            onArchive(selection);
-            return true;
-        }
-        case R.id.batch_spam_op: {
-            onSpam(selection);
-            return true;
-        }
-        case R.id.batch_move_op: {
-            onMove(selection);
-            return true;
-        }
         case R.id.expunge: {
             if (mCurrentFolder != null) {
                 onExpunge(mAccount, mCurrentFolder.name);
@@ -1651,82 +1524,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         }
     }
 
-    private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
-                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op,
-                                      R.id.batch_archive_op, R.id.batch_spam_op, R.id.batch_move_op,
-                                      R.id.batch_select_all, R.id.batch_deselect_all
-                                    };
-
-    private void setOpsState(Menu menu, boolean state, boolean enabled) {
-        for (int id : batch_ops) {
-            menu.findItem(id).setVisible(state);
-            menu.findItem(id).setEnabled(enabled);
-        }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean anySelected = anySelected();
-
-        menu.findItem(R.id.select_all).setVisible(! anySelected);
-        menu.findItem(R.id.batch_ops).setVisible(anySelected);
-
-        setOpsState(menu, true, anySelected);
-
-        if (mQueryString != null) {
-            menu.findItem(R.id.mark_all_as_read).setVisible(false);
-            menu.findItem(R.id.expunge).setVisible(false);
-            menu.findItem(R.id.batch_archive_op).setVisible(false);
-            menu.findItem(R.id.batch_spam_op).setVisible(false);
-            menu.findItem(R.id.batch_move_op).setVisible(false);
-            menu.findItem(R.id.batch_copy_op).setVisible(false);
-            menu.findItem(R.id.check_mail).setVisible(false);
-            menu.findItem(R.id.send_messages).setVisible(false);
-            menu.findItem(R.id.folder_settings).setVisible(false);
-            menu.findItem(R.id.account_settings).setVisible(false);
-        } else {
-            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            } else {
-                menu.findItem(R.id.send_messages).setVisible(false);
-            }
-
-            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
-                menu.findItem(R.id.expunge).setVisible(false);
-            }
-            if (!mAccount.hasArchiveFolder()) {
-                menu.findItem(R.id.batch_archive_op).setVisible(false);
-            }
-            if (!mAccount.hasSpamFolder()) {
-                menu.findItem(R.id.batch_spam_op).setVisible(false);
-            }
-
-            if (!mController.isMoveCapable(mAccount)) {
-                // FIXME: Really we want to do this for all local-only folders
-                if (mCurrentFolder != null &&
-                        !mAccount.getInboxFolderName().equals(mCurrentFolder.name)) {
-                    menu.findItem(R.id.check_mail).setVisible(false);
-                }
-                menu.findItem(R.id.batch_archive_op).setVisible(false);
-                menu.findItem(R.id.batch_spam_op).setVisible(false);
-                menu.findItem(R.id.batch_move_op).setVisible(false);
-                menu.findItem(R.id.batch_copy_op).setVisible(false);
-                menu.findItem(R.id.expunge).setVisible(false);
-            }
-        }
-
-        boolean newFlagState = computeBatchDirection(true);
-        boolean newReadState = computeBatchDirection(false);
-        menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
-        menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
-        menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
-        menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
-        menu.findItem(R.id.batch_deselect_all).setVisible(anySelected);
-        menu.findItem(R.id.batch_select_all).setEnabled(true);
-
-        return true;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -1735,85 +1532,7 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         return true;
     }
 
-//    @Override
-//    public boolean onContextItemSelected(android.view.MenuItem item) {
-//        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-//        final MessageInfoHolder holder = mSelectedMessage == null ? (MessageInfoHolder) mAdapter.getItem(info.position) : mSelectedMessage;
-//        // don't need this anymore
-//        mSelectedMessage = null;
-//
-//        final List<MessageInfoHolder> selection = getSelectionFromMessage(holder);
-//        switch (item.getItemId()) {
-//        case R.id.open: {
-//            onOpenMessage(holder);
-//            break;
-//        }
-//        case R.id.select: {
-//            setSelected(selection, true);
-//            break;
-//        }
-//        case R.id.deselect: {
-//            setSelected(selection, false);
-//            break;
-//        }
-//        case R.id.delete: {
-//            onDelete(selection);
-//            break;
-//        }
-//        case R.id.reply: {
-//            onReply(holder);
-//            break;
-//        }
-//        case R.id.reply_all: {
-//            onReplyAll(holder);
-//            break;
-//        }
-//        case R.id.forward: {
-//            onForward(holder);
-//            break;
-//        }
-//        case R.id.send_again: {
-//            onResendMessage(holder);
-//            break;
-//
-//        }
-//        case R.id.mark_as_read: {
-//            onToggleRead(holder);
-//            break;
-//        }
-//        case R.id.flag: {
-//            onToggleFlag(holder);
-//            break;
-//        }
-//        case R.id.archive: {
-//            onArchive(selection);
-//            break;
-//        }
-//        case R.id.spam: {
-//            onSpam(selection);
-//            break;
-//        }
-//        case R.id.move: {
-//            onMove(selection);
-//            break;
-//        }
-//        case R.id.copy: {
-//            onCopy(selection);
-//            break;
-//        }
-//        case R.id.send_alternate: {
-//            onSendAlternate(mAccount, holder);
-//            break;
-//        }
-//        case R.id.same_sender: {
-//            MessageList.actionHandle(MessageList.this,
-//                                     "From " + holder.sender, holder.senderAddress, false,
-//                                     null, null);
-//            break;
-//        }
-//        }
-//        return super.onContextItemSelected(item);
-//    }
+
 
     public void onSendAlternate(Account account, MessageInfoHolder holder) {
         mController.sendAlternate(this, account, holder.message);
@@ -1844,60 +1563,6 @@ public class MessageList extends K9ListActivity implements OnClickListener,
             handleContextRelatedClick(position);
         }
     }
-
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//
-//        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-//        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
-//        // remember which message was originally selected, in case the list changes while the
-//        // dialog is up
-//        mSelectedMessage = message;
-//
-//        if (message == null) {
-//            return;
-//        }
-//
-//        getMenuInflater().inflate(R.menu.message_list_context, menu);
-//
-//        menu.setHeaderTitle(message.message.getSubject());
-//
-//        if (message.read) {
-//            menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
-//        }
-//
-//        if (message.flagged) {
-//            menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
-//        }
-//
-//        Account account = message.message.getFolder().getAccount();
-//        if (!mController.isCopyCapable(account)) {
-//            menu.findItem(R.id.copy).setVisible(false);
-//        }
-//
-//        if (!mController.isMoveCapable(account)) {
-//            menu.findItem(R.id.move).setVisible(false);
-//            menu.findItem(R.id.archive).setVisible(false);
-//            menu.findItem(R.id.spam).setVisible(false);
-//        }
-//
-//        if (!account.hasArchiveFolder()) {
-//            menu.findItem(R.id.archive).setVisible(false);
-//        }
-//
-//        if (!account.hasSpamFolder()) {
-//            menu.findItem(R.id.spam).setVisible(false);
-//        }
-//
-//        if (message.selected) {
-//            menu.findItem(R.id.select).setVisible(false);
-//            menu.findItem(R.id.deselect).setVisible(true);
-//        } else {
-//            menu.findItem(R.id.select).setVisible(true);
-//            menu.findItem(R.id.deselect).setVisible(false);
-//        }
-//    }
 
     class MessageListAdapter extends BaseAdapter {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
@@ -2531,136 +2196,10 @@ public class MessageList extends K9ListActivity implements OnClickListener,
         }
     }
 
-    private void hideBatchButtons() {
-//        if (mBatchButtonArea.getVisibility() != View.GONE) {
-//            mBatchButtonArea.setVisibility(View.GONE);
-//            mBatchButtonArea.startAnimation(
-//                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
-//        }
-    }
-
-    private void showBatchButtons() {
-//        if (mBatchButtonArea.getVisibility() != View.VISIBLE) {
-//            mBatchButtonArea.setVisibility(View.VISIBLE);
-//            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
-//            animation.setAnimationListener(this);
-//            mBatchButtonArea.startAnimation(animation);
-//        }
-    }
-
     static class FooterViewHolder {
         public ProgressBar progress;
         public TextView main;
     }
-
-
-    private boolean computeBatchDirection(boolean flagged) {
-        boolean newState = false;
-
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (flagged) {
-                        if (!holder.flagged) {
-                            newState = true;
-                            break;
-                        }
-                    } else {
-                        if (!holder.read) {
-                            newState = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return newState;
-    }
-
-    private boolean anySelected() {
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-//        boolean newState = false;
-//        List<Message> messageList = new ArrayList<Message>();
-//        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-//
-//        if (v == mBatchDoneButton) {
-//            setAllSelected(false);
-//            return;
-//        }
-//
-//        if (v == mBatchFlagButton) {
-//            newState = computeBatchDirection(true);
-//        } else {
-//            newState = computeBatchDirection(false);
-//        }
-//
-//        if (v == mBatchArchiveButton) {
-//            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
-//            onArchive(selection);
-//            return;
-//        }
-//
-//        if (v == mBatchMoveButton) {
-//            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
-//            onMove(selection);
-//            return;
-//        }
-//
-//        synchronized (mAdapter.messages) {
-//            for (MessageInfoHolder holder : mAdapter.messages) {
-//                if (holder.selected) {
-//                    if (v == mBatchDeleteButton) {
-//                        removeHolderList.add(holder);
-//                    } else if (v == mBatchFlagButton) {
-//                        holder.flagged = newState;
-//                    } else if (v == mBatchReadButton) {
-//                        holder.read = newState;
-//                    }
-//                    messageList.add(holder.message);
-//                }
-//            }
-//        }
-//        mAdapter.removeMessages(removeHolderList);
-//
-//        if (!messageList.isEmpty()) {
-//            if (v == mBatchDeleteButton) {
-//                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-//                mSelectedCount = 0;
-//                toggleBatchButtons();
-//            } else {
-//                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
-//            }
-//        } else {
-//            // Should not happen
-//            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
-//        }
-//        mHandler.sortMessages();
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-    }
-
-    @Override
-    public void onAnimationStart(Animation animation) {
-    }
-
-
 
     private void setAllSelected(boolean isSelected) {
         mSelectedCount = 0;
