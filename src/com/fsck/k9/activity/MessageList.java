@@ -1555,12 +1555,6 @@ public class MessageList extends K9ListActivity implements
         return true;
     }
 
-
-
-    public void onSendAlternate(Account account, MessageInfoHolder holder) {
-        mController.sendAlternate(this, account, holder.message);
-    }
-
     @Override
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
         // Handle right-to-left as an un-select
@@ -2657,10 +2651,6 @@ public class MessageList extends K9ListActivity implements
 				mSelectedCount = 0;
 				break;
 			}
-			/*case R.id.send_alternate: {
-				onSendAlternate(mAccount, holder);
-				break;
-			}*/
 			}
 			
 			if (mSelectedCount == 0) {
