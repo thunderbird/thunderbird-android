@@ -2249,6 +2249,11 @@ public class MessageList extends K9ListActivity implements
     	}
         mAdapter.notifyDataSetChanged();
 		mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
+		
+		if (mQueryString != null) {
+			// we might have to disable some options
+			mActionMode.invalidate();
+		}
     }
     
     /**
@@ -2589,8 +2594,28 @@ public class MessageList extends K9ListActivity implements
 		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			// TODO Auto-generated method stub
-			return false;
+			if (mQueryString != null) {
+				// show all
+	            menu.findItem(R.id.move).setVisible(true);
+	            menu.findItem(R.id.archive).setVisible(true);
+	            menu.findItem(R.id.spam).setVisible(true);
+	            menu.findItem(R.id.copy).setVisible(true);
+	            
+	            // hide uncapable
+				/*
+				 *  TODO think of a better way then looping over all
+				 *  messages.
+				 */
+				final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+				Account account;
+				
+				for (MessageInfoHolder holder : selection) {
+					account = holder.message.getFolder().getAccount();
+					setContextCapabilities(account, menu);
+				}
+				
+			}
+			return true;
 		}
 		
 		@Override
@@ -2603,9 +2628,36 @@ public class MessageList extends K9ListActivity implements
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.message_list_context, menu);
+			
+			// check capabilities 
+			if (mQueryString == null) {
+				setContextCapabilities(mAccount, menu);
+			}
+			
 			return true;
 		}
 		
+		private void setContextCapabilities(Account mAccount, Menu menu) {           
+			// hide unsupported
+	        if (!mController.isCopyCapable(mAccount)) {
+	            menu.findItem(R.id.copy).setVisible(false);
+	        }
+	
+	        if (!mController.isMoveCapable(mAccount)) {
+	            menu.findItem(R.id.move).setVisible(false);
+	            menu.findItem(R.id.archive).setVisible(false);
+	            menu.findItem(R.id.spam).setVisible(false);
+	        }
+	
+	        if (!mAccount.hasArchiveFolder()) {
+	            menu.findItem(R.id.archive).setVisible(false);
+	        }
+	
+	        if (!mAccount.hasSpamFolder()) {
+	            menu.findItem(R.id.spam).setVisible(false);
+	        }		
+		}
+
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
