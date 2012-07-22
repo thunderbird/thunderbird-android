@@ -63,6 +63,7 @@ public class K9 extends Application {
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
+    public static final String SPAM_FILTER_TAG = "SPAM";
 
     /**
      * Components that are interested in knowing when the K9 instance is
