@@ -696,7 +696,9 @@ public class MessageList extends K9ListActivity implements
         mSelectedCount = getSelectionFromCheckboxes().size();
         if (mSelectedCount > 0) {
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-            mActionMode.setTitle(mSelectedCount + " " + getString(R.string.actionbar_selected));
+            mActionMode.setTitle(String.format(
+                    getString(R.string.actionbar_selected),
+                    mSelectedCount));
         }
     }
 
@@ -2380,7 +2382,7 @@ public class MessageList extends K9ListActivity implements
 		mSelectedCount += 1;
 	}
         mAdapter.notifyDataSetChanged();
-		mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
+		mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
 
 		if (mQueryString != null) {
 			// we might have to disable some options
