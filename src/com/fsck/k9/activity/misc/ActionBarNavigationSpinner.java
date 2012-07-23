@@ -1,4 +1,4 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.activity.misc;
 
 import android.content.Context;
 import android.view.LayoutInflater;
