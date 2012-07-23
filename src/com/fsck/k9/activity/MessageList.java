@@ -553,8 +553,8 @@ public class MessageList extends K9ListActivity implements
 	                    } else {
 	                    	mActionBar.setCustomView(mCustomRefreshView);
 	                    }
-                	}else{
-                		
+                	} else {
+
                 	}
                 }
             });
@@ -677,10 +677,10 @@ public class MessageList extends K9ListActivity implements
     public void onCreate(Bundle savedInstanceState) {
         context = this;
         super.onCreate(savedInstanceState);
-        
+
         // need this for actionbar initialization
         mQueryString = getIntent().getStringExtra(EXTRA_QUERY);
-        
+
         mInflater = getLayoutInflater();
         mActionBar = getSupportActionBar();
         if (mQueryString == null) initializeActionBar();
@@ -695,7 +695,7 @@ public class MessageList extends K9ListActivity implements
 
         // Enable gesture detection for MessageLists
         mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
-        
+
         // Enable context action bar behaviour
         getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
@@ -703,12 +703,12 @@ public class MessageList extends K9ListActivity implements
 					int position, long id) {
 				return handleContextRelatedClick(position);
 			}});
-        
+
         // Correcting for screen rotation when in ActionMode
         mSelectedCount = getSelectionFromCheckboxes().size();
         if (mSelectedCount > 0) {
         	mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-        	mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
+        	mActionMode.setTitle(mSelectedCount + " " + getString(R.string.actionbar_selected));
         }
     }
 
@@ -933,7 +933,7 @@ public class MessageList extends K9ListActivity implements
         mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
         mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     }
-    
+
     private void initializeLayout() {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -1295,7 +1295,7 @@ public class MessageList extends K9ListActivity implements
 
             final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
             final List<MessageInfoHolder> holders = mActiveMessages;
-            
+
             if (destFolderName != null) {
 
                 mActiveMessages = null; // don't need it any more
@@ -1428,7 +1428,7 @@ public class MessageList extends K9ListActivity implements
     	Folder folder;
     	Account account;
     	String folderName;
-    	
+
         int i = 0;
     	for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
             final MessageInfoHolder h = iterator.next();
@@ -1436,9 +1436,9 @@ public class MessageList extends K9ListActivity implements
 	        folder = message.getFolder();
 	        account = folder.getAccount();
 	        folderName = message.getFolder().getName();
-	        
+
 	        mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !h.read);
-	        
+
 	        h.read = !h.read;
 	        mHandler.sortMessages();
     	}
@@ -1449,7 +1449,7 @@ public class MessageList extends K9ListActivity implements
     	Folder folder;
     	Account account;
     	String folderName;
-    	
+
         int i = 0;
     	for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
             final MessageInfoHolder h = iterator.next();
@@ -1457,9 +1457,9 @@ public class MessageList extends K9ListActivity implements
 	        folder = message.getFolder();
 	        account = folder.getAccount();
 	        folderName = message.getFolder().getName();
-	        
+
 	        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !h.flagged);
-	        
+
 	        h.flagged = !h.flagged;
 	        mHandler.sortMessages();
     	}
@@ -1599,7 +1599,7 @@ public class MessageList extends K9ListActivity implements
 
         return true;
     }
-    
+
     @Override
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
         // Handle right-to-left as an un-select
@@ -2294,13 +2294,13 @@ public class MessageList extends K9ListActivity implements
     	}
         mAdapter.notifyDataSetChanged();
 		mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
-		
+
 		if (mQueryString != null) {
 			// we might have to disable some options
 			mActionMode.invalidate();
 		}
     }
-    
+
     /**
      * @param holders
      *            Messages to update. Never {@code null}.
@@ -2582,7 +2582,7 @@ public class MessageList extends K9ListActivity implements
         Accounts.listAccounts(this);
     }
 
-    
+
     /**
      * Return the currently "open" account if available.
      *
@@ -2617,26 +2617,29 @@ public class MessageList extends K9ListActivity implements
 
         return false;
     }
-    
+
     private boolean handleContextRelatedClick(int position){
     	MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(position);
 		if (mActionMode != null) {
 			if (mSelectedCount > 1) {
 				toggleMessageSelect(holder);
 			} else {
-				if( holder.selected ) mActionMode.finish();
-				else toggleMessageSelect(holder);
+				if (holder.selected) {
+				    mActionMode.finish();
+				} else {
+				    toggleMessageSelect(holder);
+				}
 			}
-		}else{
+		} else {
 			mActionMode = MessageList.this.startActionMode(mActionModeCallback);
 			toggleMessageSelect(holder);
 		}
-		
+
 		return true;
     }
-    
+
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-		
+
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			if (mQueryString != null) {
@@ -2645,7 +2648,7 @@ public class MessageList extends K9ListActivity implements
 	            menu.findItem(R.id.archive).setVisible(true);
 	            menu.findItem(R.id.spam).setVisible(true);
 	            menu.findItem(R.id.copy).setVisible(true);
-	            
+
 	            // hide uncapable
 				/*
 				 *  TODO think of a better way then looping over all
@@ -2653,65 +2656,65 @@ public class MessageList extends K9ListActivity implements
 				 */
 				final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
 				Account account;
-				
+
 				for (MessageInfoHolder holder : selection) {
 					account = holder.message.getFolder().getAccount();
 					setContextCapabilities(account, menu);
 				}
-				
+
 			}
 			return true;
 		}
-		
+
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			mActionMode = null;
 			setAllSelected(false);
 		}
-		
+
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.message_list_context, menu);
-			
-			// check capabilities 
+
+			// check capabilities
 			if (mQueryString == null) {
 				setContextCapabilities(mAccount, menu);
 			}
-			
+
 			return true;
 		}
-		
-		private void setContextCapabilities(Account mAccount, Menu menu) {           
+
+		private void setContextCapabilities(Account mAccount, Menu menu) {
 			// hide unsupported
 	        if (!mController.isCopyCapable(mAccount)) {
 	            menu.findItem(R.id.copy).setVisible(false);
 	        }
-	
+
 	        if (!mController.isMoveCapable(mAccount)) {
 	            menu.findItem(R.id.move).setVisible(false);
 	            menu.findItem(R.id.archive).setVisible(false);
 	            menu.findItem(R.id.spam).setVisible(false);
 	        }
-	
+
 	        if (!mAccount.hasArchiveFolder()) {
 	            menu.findItem(R.id.archive).setVisible(false);
 	        }
-	
+
 	        if (!mAccount.hasSpamFolder()) {
 	            menu.findItem(R.id.spam).setVisible(false);
-	        }		
+	        }
 		}
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
-			
+
 			/*
-			 * In the following we assume that we can't move or copy 
+			 * In the following we assume that we can't move or copy
 			 * mails to the same folder. Also that spam isn't available if we are
 			 * in the spam folder,same for archive.
-			 * 
+			 *
 			 * This is the case currently so safe assumption.
 			 */
 			switch (item.getItemId()) {
@@ -2738,7 +2741,7 @@ public class MessageList extends K9ListActivity implements
 				mSelectedCount = 0;
 				break;
 			}
-			case R.id.move: { 
+			case R.id.move: {
 				onMove(selection);
 				mSelectedCount = 0;
 				break;
@@ -2749,11 +2752,11 @@ public class MessageList extends K9ListActivity implements
 				break;
 			}
 			}
-			
+
 			if (mSelectedCount == 0) {
 				mActionMode.finish();
 			}
-			
+
 			return true;
 		}
 	};
