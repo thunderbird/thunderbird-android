@@ -5,29 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
 
+
 public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements SpinnerAdapter {
 
-    public static final Long AB_NAVIGATION_INBOX = 0l;
-    public static final Long AB_NAVIGATION_FOLDERS = 1l;
-    public static final Long AB_NAVIGATION_ACCOUNTS = 2l;
-    
+    public static final long AB_NAVIGATION_INBOX = 0L;
+    public static final long AB_NAVIGATION_FOLDERS = 1L;
+    public static final long AB_NAVIGATION_ACCOUNTS = 2L;
+
     private String mTitle = "";
     private String mSubTitle = "";
-
-    private Long[] mIds;
-
+    private long[] mIds;
     private Context mContext;
-    
-    public ActionBarNavigationSpinner(Context context, String[] objects, Long[] ids) {
+
+    public ActionBarNavigationSpinner(Context context, String[] objects, long[] ids) {
         super(context, R.layout.actionbar_spinner, objects);
         setDropDownViewResource(android.R.layout.simple_list_item_1);
-        mIds = new Long[ids.length];
         mIds = ids;
         this.mContext = context;
     }
@@ -37,9 +34,8 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
             mTitle = title;
             notifyDataSetChanged();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean setSubTitle(String subtitle) {
@@ -47,35 +43,32 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
             mSubTitle = subtitle;
             notifyDataSetChanged();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
-    public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         return super.getDropDownView(position, convertView, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-     View row = convertView;
+        View row = convertView;
 
-     if(row==null){
-    	 LayoutInflater inflater = LayoutInflater.from(mContext);
-    	 row=inflater.inflate(R.layout.actionbar_spinner, parent, false);
-     }
+        if (row == null) {
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            row = inflater.inflate(R.layout.actionbar_spinner, parent, false);
+        }
 
-     TextView title = (TextView) row.findViewById(R.id.actionbar_title_first);
-     TextView subtitle = (TextView) row.findViewById(R.id.actionbar_title_sub);
+        TextView title = (TextView) row.findViewById(R.id.actionbar_title_first);
+        TextView subtitle = (TextView) row.findViewById(R.id.actionbar_title_sub);
 
-     title.setText(mTitle);
-     subtitle.setText(mSubTitle);
+        title.setText(mTitle);
+        subtitle.setText(mSubTitle);
 
-     return row;
-
+        return row;
     }
 
     @Override
@@ -83,13 +76,15 @@ public class ActionBarNavigationSpinner extends ArrayAdapter<String> implements 
         return mIds[position];
     }
 
-	public static ActionBarNavigationSpinner getDefaultSpinner(Context context) {
-		return new ActionBarNavigationSpinner(context,
-        		new String[] {context.getString(R.string.special_mailbox_name_inbox), 
-				context.getString(R.string.folders_title), 
-				context.getString(R.string.accounts_title)},
-            new Long[] {ActionBarNavigationSpinner.AB_NAVIGATION_INBOX, 
-        		ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS, 
-        		ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS });
-	}
+    public static ActionBarNavigationSpinner getDefaultSpinner(Context context) {
+        return new ActionBarNavigationSpinner(context,
+                new String[] {
+                        context.getString(R.string.special_mailbox_name_inbox),
+                        context.getString(R.string.folders_title),
+                        context.getString(R.string.accounts_title) },
+                new long[] {
+                        ActionBarNavigationSpinner.AB_NAVIGATION_INBOX,
+                        ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS,
+                        ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS });
+    }
 }
