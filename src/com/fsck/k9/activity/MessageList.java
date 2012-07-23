@@ -695,8 +695,8 @@ public class MessageList extends K9ListActivity implements
         // Correcting for screen rotation when in ActionMode
         mSelectedCount = getSelectionFromCheckboxes().size();
         if (mSelectedCount > 0) {
-		mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-		mActionMode.setTitle(mSelectedCount+" "+getString(R.string.actionbar_selected));
+            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+            mActionMode.setTitle(mSelectedCount + " " + getString(R.string.actionbar_selected));
         }
     }
 
@@ -1408,10 +1408,10 @@ public class MessageList extends K9ListActivity implements
     }
 
     private void onToggleRead(final List<MessageInfoHolder> holders) {
-        LocalMessage message;
-        Folder folder;
-        Account account;
-        String folderName;
+    	LocalMessage message;
+    	Folder folder;
+    	Account account;
+    	String folderName;
 
         int i = 0;
         for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
@@ -2713,10 +2713,13 @@ public class MessageList extends K9ListActivity implements
 			if (mSelectedCount > 1) {
 				toggleMessageSelect(holder);
 			} else {
-				if( holder.selected ) mActionMode.finish();
-				else toggleMessageSelect(holder);
+				if (holder.selected) {
+				    mActionMode.finish();
+				} else {
+				    toggleMessageSelect(holder);
+				}
 			}
-		}else{
+		} else {
 			mActionMode = MessageList.this.startActionMode(mActionModeCallback);
 			toggleMessageSelect(holder);
 		}
