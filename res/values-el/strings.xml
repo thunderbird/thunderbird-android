@@ -189,7 +189,7 @@ http://k9mail.googlecode.com/
     <string name="abbrev_bytes">b</string>
 
     <string name="account_size_changed">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' συμπυκνώθηκε από
-    <xliff:g id="oldSize">%s</xliff:g>	σε <xliff:g id="newSize">%s</xliff:g></string>
+    <xliff:g id="oldSize">%s</xliff:g>    σε <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Συμπύκνωση λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
     <string name="clearing_account">Καθαρισμός λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
@@ -493,7 +493,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_options_mail_display_count_1000">1000 μηνύματα</string>
     <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
 
-    <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντογραφή ή μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρέτη</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντιγραφή ή μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρέτη</string>
 
     <string name="account_setup_failed_dlg_title">Οι ρυθμίσεις δεν μπόρεσαν να ολοκληρωθούν</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Εσφαλμένο όνομα χρήστη ή συνθηματικό.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
@@ -533,7 +533,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_default_quoted_text_shown_label">Παράθεση αρχικού μηνύματος στην απάντηση</string>
     <string name="account_settings_default_quoted_text_shown_summary">Το αρχικό μήνυμα να είναι μέσα στην απάντηση.</string>
 
-    <string name="account_settings_reply_after_quote_label">Απάντηση μετα την παράθεση του κειμένου</string>
+    <string name="account_settings_reply_after_quote_label">Απάντηση μετά την παράθεση του κειμένου</string>
     <string name="account_settings_reply_after_quote_summary">Το αρχικό μήνυμα να εμφανίζεται πάνω από την απάντηση.</string>
 
     <string name="account_settings_strip_signature_label">Να μην τοποθετείται υπογραφή στην παράθεση</string>
@@ -542,10 +542,10 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_label">Τύπος κειμένου μηνύματος</string>
     <string name="account_settings_message_format_text">Απλό κείμενο (αφαιρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
-    <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμεο εκτός αν απαντά σε μήνυμα HTML)</string>
+    <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο εκτός αν απαντά σε μήνυμα HTML)</string>
 
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
-    <string name="account_settings_message_read_receipt_summary">Πάντοτε να απιτείται απόδειξη ανάγνωσης</string>
+    <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
 
     <string name="account_settings_quote_style_label">Μορφή παράθεσης για απάντηση</string>
     <string name="account_settings_quote_style_prefix">Πρόθεση (όπως στο Gmail, Pine)</string>
@@ -610,7 +610,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_age_6_months">Τους τελευταίους 6 μήνες</string>
     <string name="account_settings_message_age_1_year">Το τελευταίο έτος</string>
 
-    <string name="account_settings_folder_display_mode_label">Φάκελοι που προβάλονται</string>
+    <string name="account_settings_folder_display_mode_label">Φάκελοι που προβάλλονται</string>
     <string name="account_settings_folder_display_mode_all">Όλοι</string>
     <string name="account_settings_folder_display_mode_first_class">Μόνο φάκελοι 1ου επιπέδου</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">Φάκελοι 1ου και 2ου επιπέδου</string>
@@ -682,7 +682,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_led_label">Αναβοσβήσιμο λυχνίας</string>
     <string name="account_settings_led_summary">Αναβοσβήσιμο LED όταν φτάνει μήνυμα</string>
 
-    <string name="account_settings_composition_title">Επιλογές σύνθεσης μηνυμάτος</string>
+    <string name="account_settings_composition_title">Επιλογές σύνθεσης μηνύματος</string>
     <string name="account_settings_composition_label">Εξ ορισμού σύνθεση</string>
     <string name="account_settings_composition_summary">Ορισμός εξ ορισμού Αποστολέα, Ιδιωτικής κοινοποίησης και υπογραφής</string>
 
@@ -780,7 +780,7 @@ http://k9mail.googlecode.com/
     <string name="message_list_help_key">Del (ή D) - Διαγραφή\u000AR -
     Απάντηση\u000AA - Απάντηση σε όλους\u000AC - Σύνθεση\u000AF - Προώθηση\u000aM -
     Μετακίνηση\u000AY - Αντιγραφή\u000AG - Αστέρι\u000AO - Ταξινόμηση\u000AI - Σειρά ταξινόμησης\u000AQ
-    - Επστροφή στους φακέλους\u000AS - Επιλογή/Αποεπιλογή</string>
+    - Επιστροφή στους φακέλους\u000AS - Επιλογή/Αποεπιλογή</string>
 
     <string name="folder_list_help_key">
     1 - Προβολή φακλέλων πρώτου επιπέδου\u000A
@@ -802,7 +802,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_signature__location_before_quoted_text">Πριν το κείμενο παράθεσης</string>
     <string name="account_settings_signature__location_after_quoted_text">Μετά το κείμενο παράθεσης</string>
     <string name="setting_theme_dark">Σκοτεινό</string>
-    <string name="setting_theme_light">Ανοικτόχρωμο</string>
+    <string name="setting_theme_light">Ανοιχτόχρωμο</string>
     <string name="display_preferences">Προβολή</string>
     <string name="global_preferences">Γενικές</string>
     <string name="debug_preferences">Αποσφαλμάτωση</string>
@@ -846,7 +846,7 @@ http://k9mail.googlecode.com/
     <string name="batch_archive_op">Μετακίνηση στην Αρχειοθέτηση</string>
     <string name="batch_spam_op">Μετακίνηση στα Σκουπίδια</string>
     <string name="batch_move_op">Μετακίνηση</string>
-    <string name="batch_copy_op">ΑντιγραφήCopy selected</string>
+    <string name="batch_copy_op">Αντιγραφή επιλεγμένων</string>
     <string name="batch_flag_mode">Αστέρι</string>
     <string name="batch_plain_mode">Απλή επιλογή</string>
     <string name="batch_select_all">Επιλογή όλων</string>
