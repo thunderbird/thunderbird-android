@@ -130,7 +130,7 @@ public class GlobalSettings {
         s.put("hideSpecialAccounts", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("keyguardPrivacy", Settings.versions(
+        s.put("privacyMode", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
         s.put("language", Settings.versions(

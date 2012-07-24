@@ -155,7 +155,17 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static boolean mKeyguardPrivacy = false;
+    private static PrivacyMode mPrivacyMode = PrivacyMode.ALWAYS;
+    /**
+     * controls when to show the subject
+     * in the notification area
+     * -> Global Settings -> Privacy -> Notification
+     */
+    public enum PrivacyMode {
+        ALWAYS,
+        UNLOCKED_ONLY,
+        NEVER
+    }
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -465,7 +475,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+        editor.putString("privacyMode", mPrivacyMode.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -629,7 +639,7 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+        mPrivacyMode = PrivacyMode.valueOf(sprefs.getString("privacyMode", PrivacyMode.ALWAYS.toString()));
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -1050,12 +1060,12 @@ public class K9 extends Application {
     /**
      * @return Whether privacy rules should be applied when system is locked
      */
-    public static boolean keyguardPrivacy() {
-        return mKeyguardPrivacy;
+    public static PrivacyMode getPrivacyMode() {
+        return mPrivacyMode;
     }
 
-    public static void setKeyguardPrivacy(final boolean state) {
-        mKeyguardPrivacy = state;
+    public static void setPrivacyMode(final PrivacyMode mode) {
+        mPrivacyMode = mode;
     }
 
     public static boolean useCompactLayouts() {

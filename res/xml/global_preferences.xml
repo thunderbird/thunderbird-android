@@ -348,9 +348,12 @@
         android:title="@string/privacy_preferences"
         android:key="privacy_preferences">
 
-        <CheckBoxPreference
+        <ListPreference
             android:persistent="false"
             android:key="privacy_mode"
+            android:defaultValue="ALWAYS" 
+            android:entries="@array/global_settings_privacy_mode"
+            android:entryValues="@array/global_settings_privacy_mode_values"
             android:title="@string/global_settings_privacy_mode_title"
             android:summary="@string/global_settings_privacy_mode_summary"/>
 

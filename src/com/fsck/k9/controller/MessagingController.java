@@ -30,6 +30,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.PrivacyMode;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -4175,8 +4176,10 @@ public class MessagingController implements Runnable {
 
         // If privacy mode active and keyguard active
         // OR
+        // GlobalPreference is NEVER display subject
+        // OR
         // If we could not set a per-message notification, revert to a default message
-        if ((K9.keyguardPrivacy() && keyguardService.inKeyguardRestrictedInputMode()) || messageNotice.length() == 0) {
+        if ((K9.getPrivacyMode() == PrivacyMode.UNLOCKED_ONLY && keyguardService.inKeyguardRestrictedInputMode()) || (K9.getPrivacyMode() == PrivacyMode.NEVER) || messageNotice.length() == 0) {
             messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 
