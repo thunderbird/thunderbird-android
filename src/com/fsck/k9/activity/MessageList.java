@@ -1515,6 +1515,8 @@ public class MessageList extends K9ListActivity implements
             return true;
         }
         case R.id.select_all:
+        	toggleAllSelected();
+        	return true;
         case R.id.app_settings: {
             onEditPrefs();
             return true;
@@ -2276,6 +2278,32 @@ public class MessageList extends K9ListActivity implements
         mAdapter.notifyDataSetChanged();
     }
 
+    private void toggleAllSelected() {
+    	boolean newState = true;
+        
+        synchronized (mAdapter.messages) {
+            if (mSelectedCount > 0) {
+            	newState = false;
+            }
+            
+            mSelectedCount = 0;
+            
+            for (MessageInfoHolder holder : mAdapter.messages) {
+                holder.selected = newState;
+                mSelectedCount += (newState ? 1 : 0);
+            }
+            
+            if (newState) {
+            	mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+            	mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
+            } else {
+            	mActionMode.finish();
+            	mSelectedCount = 0;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+    
     private void setSelected(final List<MessageInfoHolder> holders, final boolean newState) {
         for (final MessageInfoHolder holder : holders) {
             if (holder.selected != newState) {
