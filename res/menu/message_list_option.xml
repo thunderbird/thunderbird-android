@@ -4,13 +4,13 @@
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:title="@string/compose_action"
-        android:icon="@drawable/ic_menu_compose"
+        android:icon="@drawable/ic_action_compose"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/set_sort"
         android:title="@string/sort_by"
-        android:icon="@drawable/ic_menu_set_sort"
+        android:icon="@drawable/ic_action_sort"
         android:showAsAction="always" >
 		<menu>
             <item
@@ -53,13 +53,14 @@
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:title="@string/send_messages_action"
-        android:icon="@drawable/ic_menu_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="never"
     />
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:title="@string/check_mail_action"
-        android:icon="@drawable/ic_menu_refresh"
+        android:icon="@drawable/ic_action_refresh"
         android:showAsAction="always"
     />
     <item
