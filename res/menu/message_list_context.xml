@@ -4,35 +4,46 @@
         android:id="@+id/delete"
         android:title="@string/delete_action"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_delete"
     />
     <item
         android:id="@+id/read_toggle"
         android:title="@string/read_toggle_action"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_toggle_read"
     />
     <item
         android:id="@+id/archive"
         android:title="@string/archive_action"
         android:showAsAction="always"
+        android:icon="@drawable/ic_action_archive"
     />
     <item
         android:id="@+id/flag_toggle"
         android:title="@string/flag_toggle_action"
         android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_toggle_flag"
     />
     <item
         android:id="@+id/spam"
         android:title="@string/spam_action"
         android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_spam"
     />
     <item
-        android:id="@+id/move"
-        android:title="@string/move_action"
-        android:showAsAction="ifRoom"
-    />
-    <item
-        android:id="@+id/copy"
-        android:title="@string/copy_action"
-        android:showAsAction="ifRoom"
-    />
+		android:id="@+id/move_or_copy"
+	    android:title="@string/move_or_copy_action"
+	    android:showAsAction="ifRoom"
+	    android:icon="@drawable/ic_action_move_or_copy">
+	    <menu>
+		    <item
+		        android:id="@+id/move"
+		        android:title="@string/move_action"
+		    />
+		    <item
+		        android:id="@+id/copy"
+		        android:title="@string/copy_action"
+		    />
+		</menu>
+	</item>
 </menu>
