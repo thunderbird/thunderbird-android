@@ -9,7 +9,8 @@
 	<item
 		android:id="@+id/search"
 		android:title="@string/search_action"
-		android:icon="@android:drawable/ic_search_category_default"
+		android:icon="@drawable/ic_action_search"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/add_new_account"
