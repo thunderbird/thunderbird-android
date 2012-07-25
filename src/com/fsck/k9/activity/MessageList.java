@@ -914,6 +914,7 @@ public class MessageList extends K9ListActivity implements
 			}
 		});
 
+        mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setCustomView(mCustomRefreshView);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
                                     ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -1461,9 +1462,7 @@ public class MessageList extends K9ListActivity implements
         int itemId = item.getItemId();
         switch (itemId) {
         case android.R.id.home: {
-            // app icon in action bar clicked; go home
-            Accounts.listAccountsClearTop(this);
-            finish();
+            onShowFolderList();
             return true;
         }
         case R.id.compose: {
