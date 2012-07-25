@@ -306,6 +306,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
@@ -557,8 +558,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home: 
-            Accounts.listAccountsClearTop(this);
-            finish();
+            onAccounts();
             
             return true;
         

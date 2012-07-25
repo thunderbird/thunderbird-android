@@ -318,6 +318,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.message_view);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
         //set a callback for the attachment view. With this callback the attachmentview
@@ -853,7 +855,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home: 
-            Accounts.listAccountsClearTop(this);
             finish();        
             break;
         case R.id.delete:
