@@ -47,7 +47,7 @@
         android:id="@+id/select_all"
         android:title="@string/batch_select_all"
         android:icon="@drawable/ic_menu_select_all"
-        android:showAsAction="always"
+        android:showAsAction="never"
     />
     <item
         android:id="@+id/send_messages"
