@@ -155,13 +155,13 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static PrivacyMode mPrivacyMode = PrivacyMode.ALWAYS;
+    private static NotificationPrivacyMode mNotificationPrivacyMode = NotificationPrivacyMode.ALWAYS;
     /**
      * controls when to show the subject
      * in the notification area
      * -> Global Settings -> Privacy -> Notification
      */
-    public enum PrivacyMode {
+    public enum NotificationPrivacyMode {
         ALWAYS,
         UNLOCKED_ONLY,
         NEVER
@@ -475,7 +475,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putString("privacyMode", mPrivacyMode.toString());
+        editor.putString("notificationPrivacyMode", mNotificationPrivacyMode.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -639,7 +639,7 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mPrivacyMode = PrivacyMode.valueOf(sprefs.getString("privacyMode", PrivacyMode.ALWAYS.toString()));
+        mNotificationPrivacyMode = NotificationPrivacyMode.valueOf(sprefs.getString("notificationPrivacyMode", NotificationPrivacyMode.ALWAYS.toString()));
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -1060,12 +1060,12 @@ public class K9 extends Application {
     /**
      * @return Whether privacy rules should be applied when system is locked
      */
-    public static PrivacyMode getPrivacyMode() {
-        return mPrivacyMode;
+    public static NotificationPrivacyMode getNotificationPrivacyMode() {
+        return mNotificationPrivacyMode;
     }
 
-    public static void setPrivacyMode(final PrivacyMode mode) {
-        mPrivacyMode = mode;
+    public static void setNotificationPrivacyMode(final NotificationPrivacyMode mode) {
+        mNotificationPrivacyMode = mode;
     }
 
     public static boolean useCompactLayouts() {

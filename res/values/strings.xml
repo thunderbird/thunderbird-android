@@ -326,8 +326,8 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
-    <string name="global_settings_privacy_mode_title">Notifications</string>
-    <string name="global_settings_privacy_mode_summary">Set when to show subject in notification bar.</string>
+    <string name="global_settings_notification_privacy_mode_title">Notifications</string>
+    <string name="global_settings_notification_privacy_mode_summary">Set when to show subject in notification bar.</string>
 	<string-array name="global_settings_privacy_mode">
         <item name="1">Always show Subject</item>
         <item name="2">Only Show when unlocked</item>

@@ -2,8 +2,10 @@ package com.fsck.k9.preferences;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +17,7 @@ import android.os.Environment;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationPrivacyMode;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
@@ -130,8 +133,9 @@ public class GlobalSettings {
         s.put("hideSpecialAccounts", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("privacyMode", Settings.versions(
-                new V(1, new BooleanSetting(false))
+        s.put("keyguardPrivacy", Settings.versions(
+                new V(1, new BooleanSetting(false)),
+                new V(12,null)
             ));
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
@@ -227,10 +231,26 @@ public class GlobalSettings {
         s.put("batchButtonsUnselect", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));
+        s.put("notificationPrivacyMode", Settings.versions(
+                new V(12, new EnumSetting(NotificationPrivacyMode.class,NotificationPrivacyMode.ALWAYS))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        u.put(12, new SettingsUpgrader() {
+
+			@Override
+			public Set<String> upgrade(Map<String, Object> settings) {
+				if((Boolean)settings.get("keyguardPrivacy")) {
+					/* current setting: only show subject when unlocked */
+					settings.put("privacyMode", NotificationPrivacyMode.UNLOCKED_ONLY);
+				} else {
+					/* always show subject */
+					settings.put("privacyMode", NotificationPrivacyMode.ALWAYS);
+				}
+				return new HashSet<String>(Arrays.asList("privacyMode"));
+			}});
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 

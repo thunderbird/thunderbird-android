@@ -323,15 +323,15 @@ http://k9mail.googlecode.com/.
     <string name="global_settings_confirm_action_mark_all_as_read">Alle als gelesen markieren</string>
     <string name="global_settings_confirm_action_send">Senden</string>
 
-    <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>
-    <string name="global_settings_privacy_mode_summary">Anzeigemodus des Betreffes in der Benachrichtigungszeile</string>
-    <string-array name="global_settings_privacy_mode">
+    <string name="global_settings_notification_privacy_mode_title">Vertrauliche Benachrichtigung</string>
+    <string name="global_settings_notification_privacy_mode_summary">Anzeigemodus des Betreffes in der Benachrichtigungszeile</string>
+    <string-array name="global_settings_notification_privacy_mode">
         <item name="1">Betreff immer anzeigen</item>
         <item name="2">Nur, wenn Gerät entsperrt ist</item>
         <item name="3">Niemals Betreff anzeigen</item>
-   </string-array>
+    </string-array>
     
-    <string-array name="global_settings_privacy_mode_values">
+    <string-array name="global_settings_notification_privacy_mode_values">
         <item name="1">ALWAYS</item>
         <item name="2">UNLOCKED_ONLY</item>
         <item name="3">NEVER</item>
