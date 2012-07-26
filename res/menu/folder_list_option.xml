@@ -4,7 +4,7 @@
 		android:id="@+id/compose"
         android:alphabeticShortcut="c"
 		android:title="@string/compose_action"
-		android:icon="@drawable/ic_menu_compose"
+        android:icon="@drawable/ic_action_compose"
 		android:showAsAction="always"
 	/>
 	<item
@@ -55,7 +55,7 @@
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
 		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
+		android:icon="@drawable/ic_action_refresh"
 		android:showAsAction="always"
 	/>
     <item
