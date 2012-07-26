@@ -517,7 +517,13 @@ public class MessageList extends K9ListActivity implements
         // regular folder content display
         if (mFolderName != null) {
 
-            mNavigationSpinner.setTitle(mFolderName+" ["+mUnreadMessageCount+"]");
+            String folderNameProc = mFolderName;
+
+            if (folderNameProc.length() > 15) {
+                folderNameProc = mFolderName.substring(0, 15) + "...";
+            }
+
+            mNavigationSpinner.setTitle(folderNameProc + " [" + mUnreadMessageCount + "]");
             mNavigationSpinner.setSubTitle(mAccount.getEmail());
 
         // query result display
@@ -526,7 +532,6 @@ public class MessageList extends K9ListActivity implements
                 setTitle(mTitle);
             } else {
                 setTitle(getString(R.string.search_results));
-                //setSubTitle(mQueryString);
             }
         }
     }
