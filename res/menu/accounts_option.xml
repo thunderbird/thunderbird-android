@@ -4,7 +4,8 @@
 		android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:title="@string/compose_action"
-		android:icon="@drawable/ic_menu_compose"
+		android:icon="@drawable/ic_action_compose"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/search"
