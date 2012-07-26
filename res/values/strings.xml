@@ -117,7 +117,7 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Clear folder</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
-    <string name="move_or_copy_action">Move or Copymove_or_copy_action</string>
+    <string name="move_or_copy_action">Move or Copy</string>
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
