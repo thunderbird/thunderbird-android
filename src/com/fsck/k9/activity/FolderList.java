@@ -319,7 +319,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_INBOX) {
-            onOpenFolder("INBOX");
+            onOpenFolder(mAccount.getInboxFolderName());
             return true;
         } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
             onAccounts();
