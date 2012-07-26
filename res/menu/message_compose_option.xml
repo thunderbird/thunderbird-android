@@ -4,7 +4,8 @@
 		android:id="@+id/send"
         android:alphabeticShortcut="s"
 		android:title="@string/send_action"
-		android:icon="@drawable/ic_menu_send"
+		android:icon="@drawable/ic_action_send"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/add_cc_bcc"
