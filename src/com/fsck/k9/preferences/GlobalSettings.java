@@ -232,7 +232,7 @@ public class GlobalSettings {
                 new V(8, new BooleanSetting(true))
             ));
         s.put("notificationPrivacyMode", Settings.versions(
-                new V(12, new EnumSetting(NotificationPrivacyMode.class, NotificationPrivacyMode.ALWAYS))
+                new V(12, new EnumSetting(NotificationPrivacyMode.class, NotificationPrivacyMode.ALWAYS_SHOW))
                 ));
 
         SETTINGS = Collections.unmodifiableMap(s);
@@ -277,10 +277,10 @@ public class GlobalSettings {
             Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
             if (keyguardPrivacy != null && keyguardPrivacy) {
                 // current setting: only show subject when unlocked
-                settings.put("privacyMode", NotificationPrivacyMode.UNLOCKED_ONLY);
+                settings.put("privacyMode", NotificationPrivacyMode.SHOW_UNLOCKED_ONLY);
             } else {
                 // always show subject [old default]
-                settings.put("privacyMode", NotificationPrivacyMode.ALWAYS);
+                settings.put("privacyMode", NotificationPrivacyMode.ALWAYS_SHOW);
             }
             return new HashSet<String>(Arrays.asList("privacyMode"));
         }

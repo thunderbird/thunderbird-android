@@ -155,16 +155,16 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static NotificationPrivacyMode mNotificationPrivacyMode = NotificationPrivacyMode.ALWAYS;
+    private static NotificationPrivacyMode mNotificationPrivacyMode = NotificationPrivacyMode.ALWAYS_SHOW;
     /**
      * controls when to show the subject
      * in the notification area
      * -> Global Settings -> Privacy -> Notification
      */
     public enum NotificationPrivacyMode {
-        ALWAYS,
-        UNLOCKED_ONLY,
-        NEVER
+        ALWAYS_SHOW,
+        SHOW_UNLOCKED_ONLY,
+        NEVER_SHOW
     }
 
     private static boolean mMessageListStars = true;
@@ -639,7 +639,7 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mNotificationPrivacyMode = NotificationPrivacyMode.valueOf(sprefs.getString("notificationPrivacyMode", NotificationPrivacyMode.ALWAYS.toString()));
+        mNotificationPrivacyMode = NotificationPrivacyMode.valueOf(sprefs.getString("notificationPrivacyMode", NotificationPrivacyMode.ALWAYS_SHOW.toString()));
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
