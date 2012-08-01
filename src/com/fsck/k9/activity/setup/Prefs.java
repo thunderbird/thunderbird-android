@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
@@ -56,7 +57,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MANAGE_BACK = "manage_back";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
-    private static final String PREFERENCE_PRIVACY_MODE = "privacy_mode";
+    private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts";
@@ -101,7 +102,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
-    private CheckBoxPreference mPrivacyMode;
+    private ListPreference mNotificationHideSubjectMode;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mHideSpecialAccounts;
@@ -216,8 +217,8 @@ public class Prefs extends K9PreferenceActivity {
                                             K9.confirmMarkAllAsRead()
                                         });
 
-        mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
-        mPrivacyMode.setChecked(K9.keyguardPrivacy());
+        mNotificationHideSubjectMode = (ListPreference) findPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT);
+        mNotificationHideSubjectMode.setValue(K9.getNotificationHideSubjectMode().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -426,7 +427,8 @@ public class Prefs extends K9PreferenceActivity {
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
         K9.setConfirmMarkAllAsRead(mConfirmActions.getCheckedItems()[3]);
-        K9.setKeyguardPrivacy(mPrivacyMode.isChecked());
+        K9.setNotificationHideSubjectMode(NotificationHideSubject.valueOf(mNotificationHideSubjectMode.getValue()));
+
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
         K9.setHideSpecialAccounts(mHideSpecialAccounts.isChecked());
