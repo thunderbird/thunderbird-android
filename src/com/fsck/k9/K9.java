@@ -155,7 +155,17 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static boolean mKeyguardPrivacy = false;
+    private static NotificationHideSubject mNotificationHideSubject = NotificationHideSubject.NEVER;
+    /**
+     * controls when to show the subject
+     * in the notification area
+     * -> Global Settings -> Privacy -> Notification
+     */
+    public enum NotificationHideSubject {
+        ALWAYS,
+        WHEN_LOCKED,
+        NEVER
+    }
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -465,7 +475,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+        editor.putString("notificationHideSubjectMode", mNotificationHideSubject.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -629,8 +639,8 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
-
+        mNotificationHideSubject = NotificationHideSubject.valueOf(sprefs.getString("notificationHideSubjectMode", NotificationHideSubject.NEVER.toString()));
+        
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
@@ -1050,12 +1060,12 @@ public class K9 extends Application {
     /**
      * @return Whether privacy rules should be applied when system is locked
      */
-    public static boolean keyguardPrivacy() {
-        return mKeyguardPrivacy;
+    public static NotificationHideSubject getNotificationHideSubjectMode() {
+        return mNotificationHideSubject;
     }
 
-    public static void setKeyguardPrivacy(final boolean state) {
-        mKeyguardPrivacy = state;
+    public static void setNotificationHideSubjectMode(final NotificationHideSubject mode) {
+        mNotificationHideSubject = mode;
     }
 
     public static boolean useCompactLayouts() {
