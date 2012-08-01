@@ -155,16 +155,16 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static NotificationPrivacyMode mNotificationPrivacyMode = NotificationPrivacyMode.ALWAYS_SHOW;
+    private static NotificationHideSubject mNotificationHideSubject = NotificationHideSubject.NEVER;
     /**
      * controls when to show the subject
      * in the notification area
      * -> Global Settings -> Privacy -> Notification
      */
-    public enum NotificationPrivacyMode {
-        ALWAYS_SHOW,
-        SHOW_UNLOCKED_ONLY,
-        NEVER_SHOW
+    public enum NotificationHideSubject {
+        ALWAYS,
+        WHEN_LOCKED,
+        NEVER
     }
 
     private static boolean mMessageListStars = true;
@@ -475,7 +475,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putString("notificationPrivacyMode", mNotificationPrivacyMode.toString());
+        editor.putString("notificationHideSubjectMode", mNotificationHideSubject.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -639,8 +639,8 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mNotificationPrivacyMode = NotificationPrivacyMode.valueOf(sprefs.getString("notificationPrivacyMode", NotificationPrivacyMode.ALWAYS_SHOW.toString()));
-
+        mNotificationHideSubject = NotificationHideSubject.valueOf(sprefs.getString("notificationHideSubjectMode", NotificationHideSubject.NEVER.toString()));
+        
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
@@ -1060,12 +1060,12 @@ public class K9 extends Application {
     /**
      * @return Whether privacy rules should be applied when system is locked
      */
-    public static NotificationPrivacyMode getNotificationPrivacyMode() {
-        return mNotificationPrivacyMode;
+    public static NotificationHideSubject getNotificationHideSubjectMode() {
+        return mNotificationHideSubject;
     }
 
-    public static void setNotificationPrivacyMode(final NotificationPrivacyMode mode) {
-        mNotificationPrivacyMode = mode;
+    public static void setNotificationHideSubjectMode(final NotificationHideSubject mode) {
+        mNotificationHideSubject = mode;
     }
 
     public static boolean useCompactLayouts() {

@@ -17,7 +17,7 @@ import android.os.Environment;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationPrivacyMode;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
@@ -231,8 +231,8 @@ public class GlobalSettings {
         s.put("batchButtonsUnselect", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));
-        s.put("notificationPrivacyMode", Settings.versions(
-                new V(12, new EnumSetting(NotificationPrivacyMode.class, NotificationPrivacyMode.ALWAYS_SHOW))
+        s.put("notificationHideSubjectMode", Settings.versions(
+                new V(12, new EnumSetting(NotificationHideSubject.class, NotificationHideSubject.NEVER))
                 ));
 
         SETTINGS = Collections.unmodifiableMap(s);
@@ -277,12 +277,12 @@ public class GlobalSettings {
             Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
             if (keyguardPrivacy != null && keyguardPrivacy) {
                 // current setting: only show subject when unlocked
-                settings.put("privacyMode", NotificationPrivacyMode.SHOW_UNLOCKED_ONLY);
+                settings.put("hideSubjectMode", NotificationHideSubject.WHEN_LOCKED);
             } else {
                 // always show subject [old default]
-                settings.put("privacyMode", NotificationPrivacyMode.ALWAYS_SHOW);
+                settings.put("hideSubjectMode", NotificationHideSubject.NEVER);
             }
-            return new HashSet<String>(Arrays.asList("privacyMode"));
+            return new HashSet<String>(Arrays.asList("hideSubjectMode"));
         }
     }
 

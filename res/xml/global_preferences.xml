@@ -350,12 +350,12 @@
 
         <ListPreference
             android:persistent="false"
-            android:key="notification_privacy_mode"
-            android:defaultValue="ALWAYS" 
-            android:entries="@array/global_settings_notification_privacy_mode"
-            android:entryValues="@array/global_settings_notification_privacy_mode_values"
-            android:title="@string/global_settings_notification_privacy_mode_title"
-            android:summary="@string/global_settings_notification_privacy_mode_summary"/>
+            android:key="notification_hide_subject"
+            android:defaultValue="NEVER"
+            android:entries="@array/global_settings_notification_hide_subject_mode"
+            android:entryValues="@array/global_settings_notification_hide_subject_mode_values"
+            android:title="@string/global_settings_notification_hide_subject_mode_title"
+            android:summary="@string/global_settings_notification_hide_subject_mode_summary"/>
 
     </PreferenceScreen>
 
