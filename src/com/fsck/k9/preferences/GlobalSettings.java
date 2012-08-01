@@ -274,11 +274,12 @@ public class GlobalSettings {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
-            if ((Boolean)settings.get("keyguardPrivacy")) {
+            Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
+            if (keyguardPrivacy != null && keyguardPrivacy) {
                 // current setting: only show subject when unlocked
                 settings.put("privacyMode", NotificationPrivacyMode.UNLOCKED_ONLY);
             } else {
-                // always show subject
+                // always show subject [old default]
                 settings.put("privacyMode", NotificationPrivacyMode.ALWAYS);
             }
             return new HashSet<String>(Arrays.asList("privacyMode"));
