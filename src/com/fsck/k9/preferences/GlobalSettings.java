@@ -135,7 +135,7 @@ public class GlobalSettings {
             ));
         s.put("keyguardPrivacy", Settings.versions(
                 new V(1, new BooleanSetting(false)),
-                new V(12,null)
+                new V(12, null)
             ));
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
@@ -232,25 +232,13 @@ public class GlobalSettings {
                 new V(8, new BooleanSetting(true))
             ));
         s.put("notificationPrivacyMode", Settings.versions(
-                new V(12, new EnumSetting(NotificationPrivacyMode.class,NotificationPrivacyMode.ALWAYS))
-            ));
+                new V(12, new EnumSetting(NotificationPrivacyMode.class, NotificationPrivacyMode.ALWAYS))
+                ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
-        u.put(12, new SettingsUpgrader() {
-
-			@Override
-			public Set<String> upgrade(Map<String, Object> settings) {
-				if((Boolean)settings.get("keyguardPrivacy")) {
-					/* current setting: only show subject when unlocked */
-					settings.put("privacyMode", NotificationPrivacyMode.UNLOCKED_ONLY);
-				} else {
-					/* always show subject */
-					settings.put("privacyMode", NotificationPrivacyMode.ALWAYS);
-				}
-				return new HashSet<String>(Arrays.asList("privacyMode"));
-			}});
+        u.put(12, new SettingsUpgraderv12());
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -275,6 +263,26 @@ public class GlobalSettings {
             }
         }
         return result;
+    }
+
+    /**
+     * Upgrades the settings from 11 -> 12
+     * get the value from keyguardPrivacy
+     * and map it to the new enum based options
+     */
+    public static class SettingsUpgraderv12 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            if ((Boolean)settings.get("keyguardPrivacy")) {
+                // current setting: only show subject when unlocked
+                settings.put("privacyMode", NotificationPrivacyMode.UNLOCKED_ONLY);
+            } else {
+                // always show subject
+                settings.put("privacyMode", NotificationPrivacyMode.ALWAYS);
+            }
+            return new HashSet<String>(Arrays.asList("privacyMode"));
+        }
     }
 
     /**
