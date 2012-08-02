@@ -327,7 +327,6 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_send">Send</string>
 
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
-    <string name="global_settings_notification_hide_subject_summary">When to hide the subject in the notification bar.</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>

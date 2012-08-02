@@ -217,8 +217,8 @@ public class Prefs extends K9PreferenceActivity {
                                             K9.confirmMarkAllAsRead()
                                         });
 
-        mNotificationHideSubject = (ListPreference) findPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT);
-        mNotificationHideSubject.setValue(K9.getNotificationHideSubject().toString());
+        mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
+                K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());

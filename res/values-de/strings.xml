@@ -324,7 +324,6 @@ http://k9mail.googlecode.com/.
     <string name="global_settings_confirm_action_send">Senden</string>
 
     <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
-    <string name="global_settings_notification_hide_subject_summary">Verbergen des Betreffes in Benachrichtigungen</string>
     <string name="global_settings_notification_hide_subject_never">Niemals</string>
     <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
     <string name="global_settings_notification_hide_subject_always">Immer</string>
