@@ -639,9 +639,15 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        String notificationHideSubject = sprefs.getString("notificationHideSubject",
-                NotificationHideSubject.NEVER.toString());
-        sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        if (notificationHideSubject == null) {
+            // If the "notificationHideSubject" setting couldn't be found, the app was probably
+            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
+            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+                    NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
+        } else {
+            sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        }
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
