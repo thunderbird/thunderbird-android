@@ -673,7 +673,7 @@ public class MessageList extends K9ListActivity implements
 
         mInflater = getLayoutInflater();
         mActionBar = getSupportActionBar();
-        if (mQueryString == null) initializeActionBar();
+        initializeActionBar();
         initializeLayout();
 
         // Only set "touchable" when we're first starting up the activity.
@@ -905,11 +905,14 @@ public class MessageList extends K9ListActivity implements
     }
 
     private void initializeActionBar() {
+        if (mQueryString == null) {
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
+            mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
+        }
+
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
-        mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     }
 
     private void initializeLayout() {
@@ -1448,7 +1451,11 @@ public class MessageList extends K9ListActivity implements
         int itemId = item.getItemId();
         switch (itemId) {
         case android.R.id.home: {
-            onShowFolderList();
+            if (mQueryString == null) {
+		onShowFolderList();
+            } else {
+		onAccounts();
+            }
             return true;
         }
         case R.id.compose: {
