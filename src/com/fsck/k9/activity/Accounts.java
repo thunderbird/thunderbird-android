@@ -360,7 +360,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         //onNewIntent(intent);
-
+        
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(integratedInboxAccount);
@@ -370,10 +370,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             finish();
             return;
         }
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        
         requestWindowFeature(Window.FEATURE_PROGRESS);
-
+        getSupportActionBar().setHomeButtonEnabled(false);
         setContentView(R.layout.accounts);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
