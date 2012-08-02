@@ -365,9 +365,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             return;
         }
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
-
+        getSupportActionBar().setHomeButtonEnabled(false);
         setContentView(R.layout.accounts);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
