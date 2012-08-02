@@ -160,19 +160,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
-            try {
-                mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
-            } catch (Exception e) {
-                // If wrapSetTitleBar() fails we put the header back. This isn't a very good
-                // fall-back but better than not displaying the message header at all.
-
-                // FIXME: Get rid of the setEmbeddedTitleBar-method and come up with something that
-                //        feels just like it but doesn't use undocumented methods.
-
-                mTitleBarHeaderContainer.removeView(mHeaderContainer);
-                mHeaderPlaceHolder.addView(mHeaderContainer);
-                mTitleBarHeaderContainer = null;
-            }
+            mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
         }
 
         mShowHiddenAttachments.setOnClickListener(this);

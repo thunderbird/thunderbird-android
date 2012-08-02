@@ -164,9 +164,15 @@ public class MessageWebView extends WebView {
         }
     }
 
-    public void wrapSetTitleBar(final View title) throws Exception {
-        Class<?> webViewClass = Class.forName("android.webkit.WebView");
-        Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
-        setEmbeddedTitleBar.invoke(this, title);
+    public void wrapSetTitleBar(final View title) {
+        try {
+            Class<?> webViewClass = Class.forName("android.webkit.WebView");
+            Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
+            setEmbeddedTitleBar.invoke(this, title);
+        }
+
+        catch (Exception e) {
+            Log.v(K9.LOG_TAG, "failed to find the  setEmbeddedTitleBar method",e);
+        }
     }
 }
