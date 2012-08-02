@@ -159,8 +159,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
+            mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
-            mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
         }
 
         mShowHiddenAttachments.setOnClickListener(this);
