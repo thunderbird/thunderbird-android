@@ -277,12 +277,12 @@ public class GlobalSettings {
             Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
             if (keyguardPrivacy != null && keyguardPrivacy) {
                 // current setting: only show subject when unlocked
-                settings.put("hideSubjectMode", NotificationHideSubject.WHEN_LOCKED);
+                settings.put("notificationHideSubjectMode", NotificationHideSubject.WHEN_LOCKED);
             } else {
                 // always show subject [old default]
-                settings.put("hideSubjectMode", NotificationHideSubject.NEVER);
+                settings.put("notificationHideSubjectMode", NotificationHideSubject.NEVER);
             }
-            return new HashSet<String>(Arrays.asList("hideSubjectMode"));
+            return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
         }
     }
 
