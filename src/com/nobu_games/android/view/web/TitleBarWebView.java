@@ -238,11 +238,6 @@ public class TitleBarWebView extends WebView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(Build.VERSION.SDK_INT >= 16) {
-            super.onDraw(canvas);
-            return;
-        }
-
         canvas.save();
 
         if(mTitleBar != null) {
