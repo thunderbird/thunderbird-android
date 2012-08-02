@@ -102,7 +102,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
-    private ListPreference mNotificationHideSubjectMode;
+    private ListPreference mNotificationHideSubject;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mHideSpecialAccounts;
@@ -217,8 +217,8 @@ public class Prefs extends K9PreferenceActivity {
                                             K9.confirmMarkAllAsRead()
                                         });
 
-        mNotificationHideSubjectMode = (ListPreference) findPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT);
-        mNotificationHideSubjectMode.setValue(K9.getNotificationHideSubjectMode().toString());
+        mNotificationHideSubject = (ListPreference) findPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT);
+        mNotificationHideSubject.setValue(K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -427,7 +427,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
         K9.setConfirmMarkAllAsRead(mConfirmActions.getCheckedItems()[3]);
-        K9.setNotificationHideSubjectMode(NotificationHideSubject.valueOf(mNotificationHideSubjectMode.getValue()));
+        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());

@@ -4179,7 +4179,10 @@ public class MessagingController implements Runnable {
         // GlobalPreference is ALWAYS hide subject
         // OR
         // If we could not set a per-message notification, revert to a default message
-        if ((K9.getNotificationHideSubjectMode() == NotificationHideSubject.WHEN_LOCKED && keyguardService.inKeyguardRestrictedInputMode()) || (K9.getNotificationHideSubjectMode() == NotificationHideSubject.ALWAYS) || messageNotice.length() == 0) {
+        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
+                    keyguardService.inKeyguardRestrictedInputMode()) ||
+                (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
+                messageNotice.length() == 0) {
             messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 

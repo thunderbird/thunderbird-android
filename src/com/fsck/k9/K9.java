@@ -155,11 +155,11 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static NotificationHideSubject mNotificationHideSubject = NotificationHideSubject.NEVER;
+
+    private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
+
     /**
-     * controls when to show the subject
-     * in the notification area
-     * -> Global Settings -> Privacy -> Notification
+     * Controls when to hide the subject in the notification area.
      */
     public enum NotificationHideSubject {
         ALWAYS,
@@ -475,7 +475,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putString("notificationHideSubjectMode", mNotificationHideSubject.toString());
+        editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -639,8 +639,10 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mNotificationHideSubject = NotificationHideSubject.valueOf(sprefs.getString("notificationHideSubjectMode", NotificationHideSubject.NEVER.toString()));
-        
+        String notificationHideSubject = sprefs.getString("notificationHideSubject",
+                NotificationHideSubject.NEVER.toString());
+        sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
@@ -1057,15 +1059,12 @@ public class K9 extends Application {
         mConfirmMarkAllAsRead = confirm;
     }
 
-    /**
-     * @return Whether privacy rules should be applied when system is locked
-     */
-    public static NotificationHideSubject getNotificationHideSubjectMode() {
-        return mNotificationHideSubject;
+    public static NotificationHideSubject getNotificationHideSubject() {
+        return sNotificationHideSubject;
     }
 
-    public static void setNotificationHideSubjectMode(final NotificationHideSubject mode) {
-        mNotificationHideSubject = mode;
+    public static void setNotificationHideSubject(final NotificationHideSubject mode) {
+        sNotificationHideSubject = mode;
     }
 
     public static boolean useCompactLayouts() {

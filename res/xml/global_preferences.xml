@@ -352,10 +352,10 @@
             android:persistent="false"
             android:key="notification_hide_subject"
             android:defaultValue="NEVER"
-            android:entries="@array/global_settings_notification_hide_subject_mode"
-            android:entryValues="@array/global_settings_notification_hide_subject_mode_values"
-            android:title="@string/global_settings_notification_hide_subject_mode_title"
-            android:summary="@string/global_settings_notification_hide_subject_mode_summary"/>
+            android:entries="@array/global_settings_notification_hide_subject_entries"
+            android:entryValues="@array/global_settings_notification_hide_subject_values"
+            android:title="@string/global_settings_notification_hide_subject_title"
+            android:summary="@string/global_settings_notification_hide_subject_summary"/>
 
     </PreferenceScreen>
 

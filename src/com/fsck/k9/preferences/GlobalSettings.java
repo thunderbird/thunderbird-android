@@ -50,7 +50,7 @@ public class GlobalSettings {
             ));
         s.put("compactLayouts", Settings.versions(
                 new V(1, new BooleanSetting(false))
-                ));
+            ));
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -231,14 +231,16 @@ public class GlobalSettings {
         s.put("batchButtonsUnselect", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));
-        s.put("notificationHideSubjectMode", Settings.versions(
-                new V(12, new EnumSetting(NotificationHideSubject.class, NotificationHideSubject.NEVER))
-                ));
+        s.put("notificationHideSubject", Settings.versions(
+                new V(12, new EnumSetting(NotificationHideSubject.class,
+                        NotificationHideSubject.NEVER))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
-        u.put(12, new SettingsUpgraderv12());
+        u.put(12, new SettingsUpgraderV12());
+
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -266,21 +268,21 @@ public class GlobalSettings {
     }
 
     /**
-     * Upgrades the settings from 11 -> 12
-     * get the value from keyguardPrivacy
-     * and map it to the new enum based options
+     * Upgrades the settings from version 11 to 12
+     *
+     * Map the 'keyguardPrivacy' value to the new NotificationHideSubject enum.
      */
-    public static class SettingsUpgraderv12 implements SettingsUpgrader {
+    public static class SettingsUpgraderV12 implements SettingsUpgrader {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
             Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
-            if (keyguardPrivacy != null && keyguardPrivacy) {
+            if (keyguardPrivacy != null && keyguardPrivacy.booleanValue()) {
                 // current setting: only show subject when unlocked
-                settings.put("notificationHideSubjectMode", NotificationHideSubject.WHEN_LOCKED);
+                settings.put("notificationHideSubject", NotificationHideSubject.WHEN_LOCKED);
             } else {
                 // always show subject [old default]
-                settings.put("notificationHideSubjectMode", NotificationHideSubject.NEVER);
+                settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
             }
             return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
         }

@@ -323,19 +323,11 @@ http://k9mail.googlecode.com/.
     <string name="global_settings_confirm_action_mark_all_as_read">Alle als gelesen markieren</string>
     <string name="global_settings_confirm_action_send">Senden</string>
 
-    <string name="global_settings_notification_hide_subject_mode_title">Betreff in Benachrichtigungen verbergen</string>
-    <string name="global_settings_notification_hide_subject_mode_summary">Verbergen des Betreffes in Benachrichtigungen</string>
-    <string-array name="global_settings_notification_hide_subject_mode">
-        <item name="1">Niemals verbergen</item>
-        <item name="2">Nur, wenn Gerät gesperrt ist</item>
-        <item name="3">Immer verbergen</item>
-    </string-array>
-    
-    <string-array name="global_settings_notification_hide_subject_mode_values">
-        <item name="1">NEVER</item>
-        <item name="2">WHEN_LOCKED</item>
-        <item name="3">ALWAYS</item>
-    </string-array>
+    <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
+    <string name="global_settings_notification_hide_subject_summary">Verbergen des Betreffes in Benachrichtigungen</string>
+    <string name="global_settings_notification_hide_subject_never">Niemals</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
+    <string name="global_settings_notification_hide_subject_always">Immer</string>
 
     <string name="global_settings_batch_buttons">Gruppenoperationen-Schaltflächen</string>
     <string name="global_settings_batch_buttons_summary">Zeige folgende Schaltflächen in der Nachrichtenliste an</string>
