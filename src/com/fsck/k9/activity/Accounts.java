@@ -127,6 +127,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount integratedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
 
+    private MenuItem mRefreshMenuItem;
     /**
      * Contains information about objects that need to be retained on configuration changes.
      *
@@ -190,13 +191,23 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 }
             });
         }
-
         public void progress(final boolean progress) {
+            // Make sure we don't try this before the menu is initialized
+            // this could happen while the activity is initialized.
+            if (mRefreshMenuItem == null) {
+                return;
+            }
+
             runOnUiThread(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(progress);
+			if (progress) {
+                        mRefreshMenuItem.setActionView(R.layout.actionbar_indeterminate_progress_actionview);
+                    } else {
+                        mRefreshMenuItem.setActionView(null);
+                    }
                 }
             });
+
         }
         public void progress(final int progress) {
             runOnUiThread(new Runnable() {
@@ -1250,6 +1261,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.accounts_option, menu);
+        mRefreshMenuItem = menu.findItem(R.id.check_mail);
         return true;
     }
 
