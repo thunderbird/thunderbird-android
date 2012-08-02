@@ -304,11 +304,10 @@ public class MessageList extends K9ListActivity implements
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
-    private View mActionBarProgressView;
-    private View mCustomRefreshView;
     private ActionBarNavigationSpinner mNavigationSpinner;
     private ActionBar mActionBar;
     private ActionMode mActionMode;
+    private View mActionBarProgressView;
     private Bundle mState = null;
 
     /**
@@ -543,14 +542,10 @@ public class MessageList extends K9ListActivity implements
             return;
         }
 
-        if (mQueryString == null) {
-            if (progress) {
-                mActionBar.setCustomView(mActionBarProgressView);
-            } else {
-                mActionBar.setCustomView(mCustomRefreshView);
-            }
+        if (progress) {
+            mRefreshMenuItem.setActionView(mActionBarProgressView);
         } else {
-
+            mRefreshMenuItem.setActionView(null);
         }
     }
 
@@ -670,6 +665,8 @@ public class MessageList extends K9ListActivity implements
     public void onCreate(Bundle savedInstanceState) {
         context = this;
         super.onCreate(savedInstanceState);
+
+        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         // need this for actionbar initialization
         mQueryString = getIntent().getStringExtra(EXTRA_QUERY);
@@ -908,21 +905,7 @@ public class MessageList extends K9ListActivity implements
     }
 
     private void initializeActionBar() {
-        mCustomRefreshView = mInflater.inflate(R.layout.actionbar_top_custom, null);
-        ImageButton mCustomRefresh = (ImageButton) mCustomRefreshView.findViewById(R.id.actionbar_refresh_button);
-        mCustomRefresh.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mFolderName != null) {
-	                checkMail(mAccount, mFolderName);
-				}
-			}
-		});
-
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setCustomView(mCustomRefreshView);
-        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-                                    ActionBar.DISPLAY_SHOW_CUSTOM);
         mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
@@ -939,8 +922,6 @@ public class MessageList extends K9ListActivity implements
         mListView.addFooterView(getFooterView(mListView));
 
         registerForContextMenu(mListView);
-
-        mActionBarProgressView = mInflater.inflate(R.layout.actionbar_indeterminate_progress, null);
     }
 
 
@@ -1473,6 +1454,10 @@ public class MessageList extends K9ListActivity implements
         case R.id.compose: {
             onCompose();
             return true;
+        }
+        case R.id.check_mail: {
+		checkMail(mAccount, mFolderName);
+		return true;
         }
         case R.id.set_sort_date: {
             changeSort(SortType.SORT_DATE);
