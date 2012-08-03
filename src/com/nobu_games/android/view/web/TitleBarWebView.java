@@ -58,7 +58,7 @@ public class TitleBarWebView extends WebView {
             if(!mTouchInTitleBar) {
                 return false;
             } else {
-                switch(ev.getActionMasked()) {
+                switch(ev.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         mTouchInTitleBar = false;
@@ -110,7 +110,7 @@ public class TitleBarWebView extends WebView {
             final float x = event.getX();
             float y = event.getY();
 
-            switch(event.getActionMasked()) {
+            switch(event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
                     if(y <= visTitleHeight) {
                         mTouchInTitleBar = true;
@@ -305,16 +305,12 @@ public class TitleBarWebView extends WebView {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0);
 
-            if(Build.VERSION.SDK_INT >= 16) {
-                TouchBlockView tbv = new TouchBlockView(getContext());
-                FrameLayout.LayoutParams tbvParams = new FrameLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                tbv.addView(v, tbvParams);
-                addView(tbv, vParams);
-                v = tbv;
-            } else {
-                addView(v, vParams);
-            }
+            TouchBlockView tbv = new TouchBlockView(getContext());
+            FrameLayout.LayoutParams tbvParams = new FrameLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            tbv.addView(v, tbvParams);
+            addView(tbv, vParams);
+            v = tbv;
         }
 
         mTitleBar = v;
