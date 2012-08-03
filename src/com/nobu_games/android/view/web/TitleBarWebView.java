@@ -3,6 +3,7 @@ package com.nobu_games.android.view.web;
 /*
  * Copyright (C) 2012 Thomas Werner
  * Portions Copyright (C) 2006 The Android Open Source Project
+ * Portions Copyright (C) 2012 The K-9 Dog Walkers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,20 +95,6 @@ public class TitleBarWebView extends WebView {
     public TitleBarWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
-    }
-
-    /**
-     * Gets the correct TitleBarWebView instance for the current API level.
-     *
-     * @param context
-     * @return
-     */
-    public static TitleBarWebView getInstance(Context context) {
-        if(Build.VERSION.SDK_INT >= 16) {
-            return new JBTitleBarWebView(context);
-        } else {
-            return new TitleBarWebView(context);
-        }
     }
 
     /**
