@@ -4,6 +4,7 @@ package com.fsck.k9.activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -11,6 +12,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,6 +61,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.BitmapSize;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
@@ -84,7 +89,12 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,6 +113,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 4;
     private static final int DIALOG_CHOOSE_IDENTITY = 5;
+    private static final int DIALOG_CHOOSE_IMAGE_RESIZING = 6;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -285,6 +296,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private boolean mSourceProcessed = false;
 
+    private ArrayList<Attachment> mAttachmentsToResize = new ArrayList<Attachment>();
+    private boolean[] mRequiredResizingOptions;
+    ProgressDialog mProgressDialog;
+    
     enum SimpleMessageFormat {
         TEXT,
         HTML
@@ -368,8 +383,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         public String contentType;
         public long size;
         public Uri uri;
+        public BitmapSize resizeSpec;
     }
 
+    static final BitmapSize[] mResizeOptions = new BitmapSize[] {
+        new BitmapSize(1280,1024),
+        new BitmapSize(1024,768),
+        new BitmapSize(800,600),
+        new BitmapSize(640,400)
+    };
+  
     /**
      * Compose a new message using the given account. If account is null the default account
      * will be used.
@@ -871,7 +894,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             startedByExternalIntent = true;
 
             /*
-             * Note: Here we allow a slight deviation from the documentated behavior.
+             * Note: Here we allow a slight deviation from the documented behavior.
              * EXTRA_TEXT is used as message body (if available) regardless of the MIME
              * type of the intent. In addition one or multiple attachments can be added
              * using EXTRA_STREAM.
@@ -886,7 +909,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (Intent.ACTION_SEND.equals(action)) {
                 Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (stream != null) {
-                    addAttachment(stream, type);
+                    addAttachment(stream, type, true, false);
                 }
             } else {
                 ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
@@ -894,8 +917,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     for (Parcelable parcelable : list) {
                         Uri stream = (Uri) parcelable;
                         if (stream != null) {
-                            addAttachment(stream, type);
+                            addAttachment(stream, type, true, true);
                         }
+                        resizeNewAttachments();
                     }
                 }
             }
@@ -1062,7 +1086,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mAttachments.removeAllViews();
         for (Parcelable p : attachments) {
             Uri uri = (Uri) p;
-            addAttachment(uri);
+            addAttachment(uri,false);
         }
 
         mReadReceipt = savedInstanceState
@@ -1409,7 +1433,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
 
             MimeBodyPart bp = new MimeBodyPart(
-                new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+                new LocalStore.LocalAttachmentBody(attachment.uri, attachment.resizeSpec, getApplication()));
 
             /*
              * Correctly encode the filename here. Otherwise the whole
@@ -1791,6 +1815,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
         toast.show();
     }
+
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
@@ -1827,11 +1852,158 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
-    private void addAttachment(Uri uri) {
-        addAttachment(uri, null);
+    /**
+     * @param uri
+     *   Attachment URI
+     * @param newAttachment
+     *   true if this is a new attachment from "outside";
+     *   this is used to trigger - in case attachment is an
+     *   image - a dialog to ask the user if he wants
+     *   to resize it; if false, the resizing process will
+     *   not get started.
+     */
+    private void addAttachment(Uri uri, boolean newAttachment) {
+        addAttachment(uri, null, newAttachment, false);
     }
 
-    private void addAttachment(Uri uri, String contentType) {
+    /**
+     * @param uri
+     *   Attachment URI
+     * @param contentType
+     *   mime-type of the attachment
+     * @param newAttachment
+     *   true if this is a new attachment from "outside";
+     *   this is used to trigger when the attachment is an
+     *   image to ask the user if he wants to resize it;
+     *   if false, no resizing will happen
+     * @param isPartOfAttachmentGroup
+     *   true if this attachment if part of a group of attachment
+     *   being added to the mail together and thus requiring a
+     *   group processing (for image resizing)
+     */
+    private void addAttachment(Uri uri, String contentType, boolean newAttachment, boolean isPartOfAttachmentGroup) {
+      Attachment attachment = addAttachment(uri, contentType);
+      if (newAttachment && attachment.contentType != null && attachment.contentType.startsWith("image/"))
+          mAttachmentsToResize.add(attachment);
+      if (!isPartOfAttachmentGroup)
+          resizeNewAttachments();
+    }
+
+    private void resizeNewAttachments() {
+        // 1st pass: determine the size of the attached images to see if resizing could be necessary
+        // TODO: CK: decide whether an analysis phase is interesting enough to spend the resources to
+        //       do it; but if we do it, then it should be done in a AsyncTask (current code does not).
+        boolean resizingRequired = mAttachmentsToResize.size() > 0;
+//        ArrayList<BitmapSize> sizes = getSizesOfAttachmentsToResize();
+//        mRequiredResizingOptions = getRequiredResizingOptions(sizes);
+//        for (boolean b : mRequiredResizingOptions) {
+//          if (b) {
+//            resizingRequired = true;
+//            break;
+//          }
+//        }
+        // if resizing is necessary, open up a dialog to ask the user what resizing to do (different resolutions or original size)
+        if (resizingRequired) {
+          Log.v(K9.LOG_TAG,"Found some image attachments that might require some resizing... asking the user");
+          showDialog(DIALOG_CHOOSE_IMAGE_RESIZING);
+        }
+        else
+          mAttachmentsToResize.clear(); // end of batch resizing, clearing the resize-batch-list.
+    }
+    
+//    private ArrayList<BitmapSize> getSizesOfAttachmentsToResize() {
+//        ArrayList<BitmapSize> sizes = new ArrayList<BitmapSize>();
+//        int cnt = 0;
+//        for (Attachment attachment : mAttachmentsToResize) {
+//            Log.d(K9.LOG_TAG,"Analysing attachment " + (++cnt));
+//            BitmapSize bitmapSize = null;
+//            Bitmap bmp = null;
+//            try {
+//              bmp = loadImage(attachment);
+//              if (bmp == null) continue;
+//              bitmapSize = new BitmapSize(bmp.getWidth(),bmp.getHeight());
+//              Log.d(K9.LOG_TAG,"Image size = " + bitmapSize);
+//            }
+//            finally {
+//              if (bmp != null) bmp.recycle();
+//            }
+//            sizes.add(bitmapSize);
+//        }
+//        return sizes;
+//    }
+//
+    /**
+     * This method assumes that a check has already been done
+     * on the mime type to ensure the attachment is an image.
+     * @param attachment Attachment object for which to load the size of the image
+     * @return The image in form of a Bitmap object
+     */
+    private BitmapSize getImageSize(Attachment attachment) {
+      InputStream is = null;
+      BitmapSize bitmapSize = null;
+      try {
+          is = getContentResolver().openInputStream(attachment.uri);
+          BitmapFactory.Options opts = new BitmapFactory.Options();
+          opts.inJustDecodeBounds = true;
+          BitmapFactory.decodeStream(is,null,opts);
+          bitmapSize = new BitmapSize(opts.outWidth,opts.outHeight);
+      }
+      catch (FileNotFoundException e) {
+          // ignore; we'll simply add a null to the list of sizes and ignore nulls in further processing
+      }
+      finally {
+          try {if (is!=null) is.close();} catch (IOException e) {/* ignore */}
+      }
+      return bitmapSize;
+    }
+
+//    private boolean[] getRequiredResizingOptions(ArrayList<BitmapSize> sizes) {
+//        boolean[] requiredResizingOptions = new boolean[mResizeOptions.length];
+//        for (BitmapSize bs : sizes) {
+//            if (bs==null) continue;
+//            for (int i=0; i<mResizeOptions.length; i++) {
+//                int bsLarge = bs.getLargeSide();
+//                int bsSmall = bs.getSmallSide();
+//                if (bsLarge>mResizeOptions[i].width || bsSmall>mResizeOptions[i].height)
+//                    requiredResizingOptions[i] = true;
+//            }
+//        }
+//        return requiredResizingOptions;
+//    }
+    
+    private void onImageResizing(int resizeOptionIndex) {
+        // if resizing is requested, resize each image (to a temporary file) and update the attachment object to point to that new file
+        if (resizeOptionIndex >= 0) { // -1 = keep original size
+          Log.v(K9.LOG_TAG,"Found some image attachments that might require some resizing... user answered yes, resize to " + mResizeOptions[resizeOptionIndex]);
+          if (mProgressDialog == null) {
+              mProgressDialog = new ProgressDialog(this);
+              mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+              mProgressDialog.setMessage(getString(R.string.message_compose_dialog_image_resizing_resizing)+"...");
+              mProgressDialog.setCancelable(false);
+          }
+          mProgressDialog.setMax(mAttachmentsToResize.size());
+          mProgressDialog.show();
+          new ResizeImageTask().execute(resizeOptionIndex);
+        }
+        else {
+          Log.v(K9.LOG_TAG,"Found some image attachments that might require some resizing... user answered no => keeping original attachment.");
+          mAttachmentsToResize.clear(); // end of batch resizing, clearing the resize-batch-list.
+    }
+    }
+    
+
+    /**
+     * Creates a new attachment object and its corresponding UI element needed
+     * to display it in this message-compose-view, and attaches them to the view.
+     * @param uri
+     *   Uri of the attachment
+     * @param contentType
+     *   Content-type of the attachment
+     * @return
+     *   The newly created Attachment object (returned for convenience
+     *   but can be ignored if no further processing is required)
+     */
+    private Attachment addAttachment(Uri uri, String contentType) {
         long size = -1;
         String name = null;
 
@@ -1895,6 +2067,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         delete.setTag(view);
         view.setTag(attachment);
         mAttachments.addView(view);
+        return attachment;
     }
 
     @Override
@@ -1913,7 +2086,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         switch (requestCode) {
         case ACTIVITY_REQUEST_PICK_ATTACHMENT:
-            addAttachment(data.getData());
+            addAttachment(data.getData(),true);
             mDraftNeedsSaving = true;
             break;
         case CONTACT_PICKER_TO:
@@ -2301,6 +2474,23 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             });
 
             return builder.create();
+        case DIALOG_CHOOSE_IMAGE_RESIZING:
+            context = new ContextWrapper(this);
+            context.setTheme(K9.getK9ThemeResourceId(K9.THEME_LIGHT));
+            builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.message_compose_dialog_image_resizing_title);
+            builder.setCancelable(false);
+            String[] items = new String[mResizeOptions.length+1];
+            items[0] = getString(R.string.message_compose_dialog_image_resizing_original_size);
+            for (int i=0; i<mResizeOptions.length; i++)
+                items[i+1] = mResizeOptions[i].toString();
+            builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                public void onClick(@SuppressWarnings("unused") DialogInterface dialog, int item) {
+                    dismissDialog(DIALOG_CHOOSE_IMAGE_RESIZING);
+                    onImageResizing(item-1);
+                }
+            });
+            return builder.create();
         }
         return super.onCreateDialog(id);
     }
@@ -2340,7 +2530,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        addAttachment(uri);
+                        addAttachment(uri,false);
                     }
                 });
             } else {
@@ -3292,6 +3482,38 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return null;
         }
     }
+
+    private class ResizeImageTask extends AsyncTask<Integer, Integer, Void> { // TODO: CK: decide if the temporary file name should be the one giving the name to the attachment or not; if yes, the Attachment class does not have to be changed, but the temp-file nameing scheme has to; otherwise, the Attachment class has to be modified to include the original file-name to name the attachment properly
+        @Override
+        protected Void doInBackground(Integer... params) {
+            // expecting a single integer which is the index into the mResizeOptions array
+            BitmapSize bitmapResizeSize = mResizeOptions[params[0]];
+            int progress = 0;
+            for (Attachment attachment : mAttachmentsToResize) {
+                attachment.resizeSpec = bitmapResizeSize;
+                Log.v(K9.LOG_TAG,"Marked attachment for resizing: " + attachment.uri);
+                publishProgress(++progress);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            mProgressDialog.setProgress(values[0]);
+        }
+    
+        @Override
+        protected void onPostExecute(Void result) {
+            mProgressDialog.dismiss();
+            mAttachmentsToResize.clear();
+        }
+        
+        @Override
+        protected void onCancelled() {
+            mProgressDialog.dismiss();
+            mAttachmentsToResize.clear();
+        }
+  }
 
     private static final int REPLY_WRAP_LINE_WIDTH = 72;
     private static final int QUOTE_BUFFER_LENGTH = 512; // amount of extra buffer to allocate to accommodate quoting headers or prefixes
