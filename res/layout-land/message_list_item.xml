@@ -10,10 +10,10 @@
                  android:id="@+id/flagged"
                  android:focusable="false"
                  android:button="@drawable/star"
-
+		  android:layout_marginRight="5dip"
                  android:layout_gravity="center_vertical"
                  android:layout_height="20dip"
-                 android:layout_width="20dip"
+                 android:layout_width="23dip"
                 android:layout_alignParentRight="true"
                 />
     <RelativeLayout

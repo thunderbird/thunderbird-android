@@ -898,7 +898,6 @@ public class MessageList
         setContentView(R.layout.message_list);
 
         mListView = (ListView) findViewById(R.id.message_list);
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
