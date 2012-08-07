@@ -1043,7 +1043,7 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <plurals name="settings_import_success">
         <item quantity="one">1 hesap</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> hesap</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
     <string name="settings_import_failure"><xliff:g id="filename">%s</xliff:g> dosyasından hiçbir ayar alınamadı</string>
     <string name="settings_export_success_header">Aktarma başarılı</string>
@@ -1055,13 +1055,13 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <plurals name="settings_import_server_passwords">
         <item quantity="one">sunucu şifresini</item>
         <item quantity="other">sunucu şifrelerini</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_import_incoming_server">Gelen sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Giden sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
         <item quantity="one">Şifreyi ayarlıyor…</item>
         <item quantity="other">Şifreler ayarlanıyor…</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_import_use_incoming_server_password">Gelen sunucu şifresini kullan</string>
     <string name="activate_account_action">Etkinleştir</string>
 
