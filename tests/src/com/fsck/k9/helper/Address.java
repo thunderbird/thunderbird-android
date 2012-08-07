@@ -34,4 +34,14 @@ public class Address extends TestCase {
         assertEquals("mark@twain.com", addresses[1].getAddress());
         assertEquals(null, addresses[1].getPersonal());
     }
+    
+    /**
+     * test mailto with valid email address
+     */
+    public void testMailtoWithValidEmail() {
+    	com.fsck.k9.mail.Address[] addresses =  com.fsck.k9.mail.Address.parseMailto("<mailto:musterlist@mann.com>");
+    	assertEquals(1, addresses.length);
+    	assertEquals("musterlist@mann.com", addresses[0].getAddress());
+    	assertEquals(null, addresses[0].getPersonal());
+    }
 }

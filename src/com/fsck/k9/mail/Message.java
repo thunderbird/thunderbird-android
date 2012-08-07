@@ -116,6 +116,8 @@ public abstract class Message implements Part, Body {
 
     public abstract void setReplyTo(Address[] from) throws MessagingException;
 
+    public abstract Address[] getMailinglistAddress();
+    
     public abstract String getMessageId() throws MessagingException;
 
     public abstract void setInReplyTo(String inReplyTo) throws MessagingException;

@@ -260,6 +260,11 @@ public class MimeMessage extends Message {
             mReplyTo = replyTo;
         }
     }
+    
+    @Override
+    public Address[] getMailinglistAddress() {
+    	return Address.parseMailto(MimeUtility.unfold(getFirstHeader("List-Post")));
+    }
 
     @Override
     public String getMessageId() throws MessagingException {

@@ -21,6 +21,8 @@ import org.apache.james.mime4j.MimeException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Address {
@@ -41,6 +43,8 @@ public class Address {
      * Immutable empty {@link Address} array
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
+    
+    private static final Pattern mailtoPattern = Pattern.compile("<mailto:(.+)>");
 
     String mAddress;
 
@@ -154,6 +158,28 @@ public class Address {
             addresses.add(new Address(null, addressList,false));
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
+    }
+    
+    /**
+     * Parse a header line containing an address in "&lt;mailto:list@example.com&gt;"
+     * format and return an array of one Address object.
+     * 
+     * @param mailto
+     * @return An array of one Address.
+     */
+    public static Address[] parseMailto(String mailto) {
+    	if (StringUtils.isNullOrEmpty(mailto)) {
+    		return EMPTY_ADDRESS_ARRAY;
+        }
+    	
+    	Matcher m = mailtoPattern.matcher(mailto);
+    	
+    	if (m.find()) {
+    		Address[] addresses = { new Address(m.group(1)) };
+    		return addresses;
+    	}
+    	
+        return EMPTY_ADDRESS_ARRAY;
     }
 
     @Override
