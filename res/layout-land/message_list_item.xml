@@ -4,18 +4,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingRight="1dip"
-    android:background="#cccccc"
-    >
-         <CheckBox
-                 android:id="@+id/flagged"
-                 android:focusable="false"
-                 android:button="@drawable/star"
-		  android:layout_marginRight="5dip"
-                 android:layout_gravity="center_vertical"
-                 android:layout_height="20dip"
-                 android:layout_width="23dip"
-                android:layout_alignParentRight="true"
-                />
+    android:background="#cccccc" >
+    <CheckBox
+        android:id="@+id/flagged"
+        android:focusable="false"
+        android:button="@drawable/star"
+        android:layout_marginRight="5dip"
+        android:layout_gravity="center_vertical"
+        android:layout_height="20dip"
+        android:layout_width="23dip"
+        android:layout_alignParentRight="true" />
     <RelativeLayout
         android:id="@+id/chip"
         android:background="@android:color/transparent"
@@ -23,23 +21,20 @@
         android:layout_marginRight="2dip"
         android:layout_height="20dip"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-    >
-          <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="12dip"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_small"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:focusable="false"
-                android:visibility="gone"
-                />
-                <View
-                    android:layout_width="4dip"
-                    android:layout_height="fill_parent"
-                />
-        </RelativeLayout>
+        android:layout_alignParentLeft="true" >
+        <CheckBox
+            android:id="@+id/selected_checkbox"
+            android:layout_width="12dip"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_small"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:focusable="false"
+            android:visibility="gone" />
+        <View
+            android:layout_width="4dip"
+            android:layout_height="fill_parent" />
+    </RelativeLayout>
     <TextView
         android:id="@+id/date"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -50,7 +45,7 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toLeftOf="@+id/flagged"/>
+        android:layout_toLeftOf="@+id/flagged" />
     <TextView
         android:id="@+id/from"
         android:ellipsize="end"
