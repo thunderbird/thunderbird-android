@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 Hesaplar</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 Okunmamış</string>
 
     <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
     <string name="remote_control_desc">Bu programın K-9 Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
@@ -17,23 +17,22 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-    <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+    <string name="app_copyright_fmt">Telif hakkı 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Telif hakkı 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_license">Apache License, Version 2.0 altında lisanslıdır.</string>
 
 
     <!-- Welcome message -->
     <!-- NEW: <string name="accounts_welcome">
-Welcome to K-9 Mail setup. K-9 is an open source mail client for Android originally based on the
-standard Android Mail client.
+K-9 Mail kurulumuna hoş geldiniz. K-9, standart Android E-Posta istemcisi üzerine kurulu açık kaynaklı bir e-posta istemcisidir.
 \n\n
-\nK-9\'s improved features include:
-\n * Push mail using IMAP IDLE
-\n * Better performance
+\nK-9\ iyileştirilmiş özellikleri şunlardır:
+\n * IMAP IDLE kullanılarak anlık e-posta
+\n * Daha iyi performans
 \n * Message refiling
-\n * Email signatures
-\n * Bcc-to-self
-\n * Folder subscriptions
-\n * All folder synchronization
+\n * E-posta imzaları
+\n * Kendine BCC (gizli karbon kopya)
+\n * Klasör abonelikleri
+\n * Tüm klasör senkronizasyonları
 \n * Return-address configuration
 \n * Keyboard shortcuts
 \n * Better IMAP support
@@ -51,14 +50,14 @@ http://k9mail.googlecode.com/
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \n Android için K-9 Posta\'dan gönderidi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_signature">-- \n Android için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
 
 
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">İçeri aktarma işlemini yürütecek uygun bir uygulama bulunamadı. Lütfen Google Play mağazasından bir dosya yönetici uygulaması edinin.</string>
+    <string name="open_market">Play Store\'u Aç</string>
 
 
 
@@ -67,14 +66,14 @@ http://k9mail.googlecode.com/
     <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revizyon Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <string name="app_emoji_icons">İfadeler: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
-    <string name="read_attachment_label">Eposta eklerini oku</string>
-    <string name="read_attachment_desc">Bu uygulamaya Eposta eklerinizi okumasına izin ver.</string>
-    <string name="read_messages_label">Epostaları oku</string>
-    <string name="read_messages_desc">Bu uygulamaya Epostalarınızı okumaya izin ver.</string>
-    <string name="delete_messages_label">Epostaları sil</string>
-    <string name="delete_messages_desc">Bu uygulamaya Epostalarınızı silmeye izin ver.</string>
+    <string name="read_attachment_label">E-posta eklerini oku</string>
+    <string name="read_attachment_desc">Bu uygulamaya E-posta eklerinizi okumasına izin ver.</string>
+    <string name="read_messages_label">E-postaları oku</string>
+    <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
+    <string name="delete_messages_label">E-postaları sil</string>
+    <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
 
     <string name="about_title_fmt">Hakkında <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Hesaplar</string>
