@@ -273,9 +273,9 @@ http://k9mail.googlecode.com/
     <string name="message_view_status_attachment_saved">Allegato salvato su scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
     <string name="message_view_show_pictures_action">Mostra immagini</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <string name="message_view_show_message_action">Mostra messaggio</string>
+    <string name="message_view_show_attachments_action">Mostra allecato</string>
+    <string name="message_view_show_more_attachments_action">Altro&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
     <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Scarica intero messaggio</string>
@@ -312,8 +312,8 @@ http://k9mail.googlecode.com/
     <string name="global_settings_messageview_fixedwidth_summary">Usa font a larghezza fissa quando mostri i messaggi di testo</string>
     <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
     <string name="global_settings_messageview_return_to_list_summary">Ritorna all\'elenco dei messaggi dopo l\'eliminazione del messaggio</string>
-    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
-    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+    <string name="global_settings_messageview_show_next_label">Mostra messaggio successivo dopo la cacellazione</string>
+    <string name="global_settings_messageview_show_next_summary">Mostra messaggio successivo</string>
 
     <string name="global_settings_confirm_actions_title">Conferma azioni</string>
     <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
@@ -321,7 +321,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">Segna tutti come già letti</string>
     <string name="global_settings_confirm_action_send">Invia</string>
 
     <string name="global_settings_privacy_mode_title">Notifiche con blocco dello schermo</string>
@@ -329,13 +329,13 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_mark_read">Seleziona letti/non letti</string>
+    <string name="global_settings_delete">Elimina</string>
+    <string name="global_settings_archive">Sposta in archivio</string>
+    <string name="global_settings_archive_disabled_reason">Nessun archivio.</string>
+    <string name="global_settings_move">Sposta</string>
+    <string name="global_settings_flag">Seleziona</string>
+    <string name="global_settings_unselect">Deseleziona</string>
 
     <string name="quiet_time">Silenzioso a tempo</string>
     <string name="quiet_time_description">Disabilita chiamata, vibrazione e lampeggi di notte</string>
@@ -521,8 +521,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Ricerca non letti quando Notifiche è aperto</string>
     <string name="account_settings_notification_unread_count_label">Vedi numero messaggi non letti</string>
     <string name="account_settings_notification_unread_count_summary">Mostra il numero dei messaggi non letti nella barra di notifica.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Segna messaggio come letto all\'apertura</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Segna messaggio come letto quando aperto</string>
 
     <string name="account_settings_enable_move_buttons_label">Abilita pulsanti archiviazione</string>
     <string name="account_settings_enable_move_buttons_summary">Mostra i pulsanti Archivia, Sposta e Spam.</string>
@@ -534,19 +534,19 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_composition">Composizione messaggio</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+    <string name="account_settings_default_quoted_text_shown_label">Quota messaggio originale alla risposta</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Quando risposndi a un messaggio, Inserisce messaggio originale nella risposta.</string>
 
     <string name="account_settings_reply_after_quote_label">Risposta dopo testo quotato</string>
     <string name="account_settings_reply_after_quote_summary">Quando si risponde ai messaggi, il messaggio originale viene visualizzato sopra la tua risposta.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <string name="account_settings_strip_signature_label">Rimuovi firma nella risposta quotata</string>
+    <string name="account_settings_strip_signature_summary">Quando rispondi a un mesaggio, la firma del testo quotato verrà rimossa</string>
 
     <string name="account_settings_message_format_label">Formato messaggio</string>
     <string name="account_settings_message_format_text">Plain Text (verranno rimosse immagini e formattazione)</string>
     <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <string name="account_settings_message_format_auto">Automatico (A meno che si risponda a un testo HTML)</string>
 
     <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
     <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
@@ -568,8 +568,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_crypto_app_not_available">non disponibile</string>
     <string name="account_settings_crypto_auto_signature">Accesso automatico</string>
     <string name="account_settings_crypto_auto_signature_summary">Utilizzare l\'indirizzo email dell\'account per dedurre la chiave di firma.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
+    <string name="account_settings_crypto_auto_encrypt">Auto-Cifratura</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Cripta automaticamente se la chiave pubblica corrisponde al destinatario</string>
 
     <string name="account_settings_mail_check_frequency_label">Frequenza verifica cartelle</string>
 
@@ -745,7 +745,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ordina per…</string>
     <string name="sort_by_date">Data</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Arrivo</string>
     <string name="sort_by_sender">Mittente</string>
     <string name="sort_by_subject">Oggetto</string>
     <string name="sort_by_flag">Stella</string>
@@ -890,8 +890,8 @@ http://k9mail.googlecode.com/
     <string name="count_search_title">Conta i risultati della ricerca</string>
     <string name="count_search_summary">Disattiva per una visualizzazione più veloce</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">Nascondi account speciali</string>
+    <string name="hide_special_accounts_summary">Nascondi inbox non definita i tutti messaggi accounts</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Con stella</string>
@@ -940,7 +940,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_date">Data</string>
     <string name="font_size_message_view_content">Corpo del messaggio</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
+    <string name="font_size_message_compose">Composizione messaggio</string>
     <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
     <string name="font_size_tiniest">Piccolissimo</string>
@@ -984,14 +984,14 @@ http://k9mail.googlecode.com/
     <string name="save_or_discard_draft_message_dlg_title">Salva bozza?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Salva o Rifiuta questo messaggio?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Elimina messagi?</string>
+    <string name="confirm_discard_draft_message">Sicuro di voler eliminare questo messaggio?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibilee salvare messaggio in bozze.</string>
     <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Continuare senza chiave pubblica?</string>
+    <string name="continue_without_public_key_instructions_fmt">Ono o piu destinatari non hanno una chiave pubblica salvata, continuare?</string>
 
     <string name="select_text_now">Seleziona il testo da copiare.</string>
 
@@ -1001,10 +1001,10 @@ http://k9mail.googlecode.com/
     <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
 
     <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Do you really want to move this message to the spam folder?</item>
-        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
-
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Vuoi veramente spostare il messaggio nella cartella spam?</item>
+        <item quantity="other">vuoi veramente spostare i messaggi <xliff:g id="message_count">%1$d</xliff:g> nella cartella spam?</item>
+<!--
   Translators:
 
   Please review how to handle pluralization for your language at (1) and ajust
@@ -1014,7 +1014,8 @@ http://k9mail.googlecode.com/
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
-    </plurals>-->
+-->
+    </plurals>
     <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
     <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
 
