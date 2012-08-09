@@ -377,7 +377,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_password_label">Salasana</string>
     <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
     <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
-    <string name="account_setup_incoming_webdav_server_label">Exchange (Exchange) -palvelin</string>
+    <string name="account_setup_incoming_webdav_server_label">Exchange (WebDAV) -palvelin</string>
     <string name="account_setup_incoming_port_label">Portti</string>
     <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
     <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
