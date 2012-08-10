@@ -2175,18 +2175,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
          * if the work-around for the Gallery bug is enabled (see Issue 1186).
          */
-        int found = 0;
-        for (int i = menu.size() - 1; i >= 0; i--) {
-            MenuItem item = menu.getItem(i);
-            int id = item.getItemId();
-            if ((id == R.id.add_attachment_image) ||
-                    (id == R.id.add_attachment_video)) {
-                item.setVisible(K9.useGalleryBugWorkaround());
-                found++;
-            }
+        menu.findItem(R.id.add_attachment_image).setVisible(K9.useGalleryBugWorkaround());
+        menu.findItem(R.id.add_attachment_video).setVisible(K9.useGalleryBugWorkaround());
 
-            // We found all the menu items we were looking for. So stop here.
-            if (found == 2) break;
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        // Disable the 'Add Cc/Bcc' menu option when both fields are visible
+        if (mCcWrapper.getVisibility() == View.VISIBLE &&
+                mBccWrapper.getVisibility() == View.VISIBLE) {
+            menu.findItem(R.id.add_cc_bcc).setEnabled(false);
         }
 
         return true;
@@ -3542,7 +3544,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
-        
+
         mMessageFormat = format;
     }
 
