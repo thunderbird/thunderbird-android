@@ -508,6 +508,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
         mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
+        if (mAccount.isAlwaysShowCcBcc()) {
+            onAddCcBcc();
+        }
+
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
 
@@ -2017,6 +2021,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             } else {
                 mAccount = account;
             }
+
+            // Show CC/BCC text input field when switching to an account that always wants them
+            // displayed.
+            // Please note that we're not hiding the fields if the user switches back to an account
+            // that doesn't have this setting checked.
+            if (mAccount.isAlwaysShowCcBcc()) {
+                onAddCcBcc();
+            }
+
             // not sure how to handle mFolder, mSourceMessage?
         }
 

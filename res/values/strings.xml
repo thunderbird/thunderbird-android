@@ -552,6 +552,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>
     <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>
 
+    <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>
+
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
 
