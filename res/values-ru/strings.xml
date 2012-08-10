@@ -318,8 +318,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Пометить как прочитанное</string>
     <string name="global_settings_confirm_action_send">Послать</string>
 
-    <string name="global_settings_privacy_mode_title">Уведомления при заблокированном экране</string>
-    <string name="global_settings_privacy_mode_summary">Не показывать тему письма в уведомлениях, когда система заблокирована</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -541,6 +543,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Обычный текст (изображения и форматирование не сохраняется)</string>
     <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
@@ -823,6 +828,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Всегда</string>
     <string name="background_ops_enabled">Когда \'Фоновый режим\' включен</string>
     <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Никаких сообщшний не выбранно</string>
 

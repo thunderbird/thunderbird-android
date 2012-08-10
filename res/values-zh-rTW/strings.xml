@@ -316,8 +316,10 @@
     <string name="global_settings_confirm_action_mark_all_as_read">全部標示為已讀取</string>
     <string name="global_settings_confirm_action_send">寄送</string>
 
-    <string name="global_settings_privacy_mode_title">手機上鎖通知</string>
-    <string name="global_settings_privacy_mode_summary">手機上鎖時不要在通知欄中顯示郵件主題</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <string name="global_settings_batch_buttons">批次按鈕</string>
     <string name="global_settings_batch_buttons_summary">批次配置訊息列表按鈕</string>
@@ -539,6 +541,9 @@
     <string name="account_settings_message_format_text">純文字 (圖片與格式編排會被移除)</string>
     <string name="account_settings_message_format_html">HTML (圖片與格式編排會被保留)</string>
     <string name="account_settings_message_format_auto">自動 (除非回覆HTML格式信件，否則以純文字處理)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">讀取回條</string>
     <string name="account_settings_message_read_receipt_summary">永遠要求讀取回條</string>
@@ -836,6 +841,7 @@
     <string name="background_ops_always">預設</string>
     <string name="background_ops_enabled">當「背景資料」被勾選</string>
     <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">沒有選擇任何郵件</string>
 

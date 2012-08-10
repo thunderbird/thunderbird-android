@@ -328,8 +328,10 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
     <string name="global_settings_confirm_action_send">Odesílání</string>
 
-    <string name="global_settings_privacy_mode_title">Oznámení při zamčené obrazovce</string>
-    <string name="global_settings_privacy_mode_summary">Nezobrazovat v oznámení předmět zpráv, když je systém zamčen</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -551,6 +553,9 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
     <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -835,6 +840,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Vždy</string>
     <string name="background_ops_enabled">Je-li \'Data na pozadí\' zaškrtnuto</string>
     <string name="background_ops_auto_sync">Jsou-li \'Data na pozadí\' a \'Aut. synchronizace\' zaškrtnuty</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Žádná zpráva není vybrána</string>
 

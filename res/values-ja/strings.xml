@@ -322,8 +322,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
 
-    <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
-    <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <string name="global_settings_batch_buttons">一括処理ボタン</string>
     <string name="global_settings_batch_buttons_summary">メッセージ選択時に表示する一括処理ボタンを設定する</string>
@@ -545,6 +547,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_message_format_text">テキスト(画像や書式は取り除く)</string>
     <string name="account_settings_message_format_html">HTML (画像や書式を保持)</string>
     <string name="account_settings_message_format_auto">自動 (HTMLメールに対する返信でなければテキスト)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">開封確認</string>
     <string name="account_settings_message_read_receipt_summary">常に開封確認を要求する</string>
@@ -824,6 +829,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="background_ops_always">常時利用</string>
     <string name="background_ops_enabled">バックグランドデータがチェックされた時</string>
     <string name="background_ops_auto_sync">バックグランドデータと自動同期がチェックされた時</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">メッセージが選択されていません</string>
 
