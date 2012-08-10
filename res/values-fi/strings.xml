@@ -552,6 +552,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (kuvat ja muotoilu säilytetään)</string>
     <string name="account_settings_message_format_auto">Automaattinen (pelkkä teksti, ellei vastata HTML-viestiin)</string>
 
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+
     <string name="account_settings_message_read_receipt_label">Vastaanottokuittaus</string>
     <string name="account_settings_message_read_receipt_summary">Pyydä aina vastaanottokuittaus</string>
 

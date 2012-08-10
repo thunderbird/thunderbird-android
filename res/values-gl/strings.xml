@@ -322,8 +322,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Marcar todos coma lidos</string>
     <string name="global_settings_confirm_action_send">Enviados</string>
 
-    <string name="global_settings_privacy_mode_title">Bloquear notificacións</string>
-    <string name="global_settings_privacy_mode_summary">Non amosar asunto da mensaxe na barra de notificacións cando o sistema está bloqueado.</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -545,6 +547,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Texto plano (borraránse imaxes e formato)</string>
     <string name="account_settings_message_format_html">HTML (mantéñense imaxes e formato)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -827,6 +832,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_enabled">Cando \'Sincronización en segundo plano\' esté activo</string>
     <string name="background_ops_auto_sync">Cando \'Sincronización en segundo plano\' e \'Sincronización automática\' estén activos</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">No foi seleccionada ningunha mensaxe</string>
 
