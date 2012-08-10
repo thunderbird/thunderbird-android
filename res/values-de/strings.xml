@@ -549,8 +549,8 @@ http://k9mail.googlecode.com/.
     <string name="account_settings_message_format_html">HTML (Bilder und Formatierungen bleiben erhalten)</string>
     <string name="account_settings_message_format_auto">Automatisch (Einfacher Text, es sei denn bei Antwort auf HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">CC/BCC immer anzeigen</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Zeige die CC/BCC-Texteingabefelder immer an</string>
 
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
@@ -834,7 +834,7 @@ http://k9mail.googlecode.com/.
     <string name="background_ops_always">Immer</string>
     <string name="background_ops_enabled">Wenn \'Hintergrunddaten\' aktiviert ist</string>
     <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
 
     <string name="no_message_seletected_toast">Keine Nachricht ausgewählt</string>
 
