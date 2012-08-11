@@ -324,8 +324,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">סמן הכל כנקרא</string>
     <string name="global_settings_confirm_action_send">שלח</string>
 
-    <string name="global_settings_privacy_mode_title">התראות במסך נעול</string>
-    <string name="global_settings_privacy_mode_summary">אל תציג את נושא ההודעה בשורת ההתראות כאשר המערכת נעולה</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -547,6 +549,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">טקסט רגיל (תמונות ועיצובים יוסרו)</string>
     <string name="account_settings_message_format_html">HTML (תמונות ועיצוב נשמרים)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
     <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
@@ -842,6 +847,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">תמיד</string>
     <string name="background_ops_enabled">"מתי ש\'נתונים ברקע\' מסומן "</string>
     <string name="background_ops_auto_sync">"מתי ש\'נתונים ברקע\' ו\'סינכרון אוטומטי\' מסומנים "</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">לא נבחרו הודעות</string>
 

@@ -320,8 +320,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Σήμανση ως αναγνωσμέων</string>
     <string name="global_settings_confirm_action_send">Αποστολή</string>
 
-    <string name="global_settings_privacy_mode_title">Ειδοποιήσεων κλειδώματος οθόνης</string>
-    <string name="global_settings_privacy_mode_summary">Μην προβάλεις το θέμα του μηνύματος στη γραμμή ειδοποιήσεων όταν το σύστημα είνια κλειδωμένο</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -543,6 +545,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Απλό κείμενο (αφαιρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο εκτός αν απαντά σε μήνυμα HTML)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
@@ -827,6 +832,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Πάντοτε</string>
     <string name="background_ops_enabled">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\'</string>
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Δεν επιλέχθηκε μήνυμα</string>
 

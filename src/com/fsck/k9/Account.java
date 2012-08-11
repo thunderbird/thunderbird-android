@@ -186,6 +186,7 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
+    private boolean mAlwaysShowCcBcc;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -276,6 +277,7 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = false;
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
+        mAlwaysShowCcBcc = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -441,6 +443,7 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -525,6 +528,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
+        editor.remove(mUuid + ".alwaysShowCcBcc");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -688,6 +692,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
+        editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -1622,5 +1627,13 @@ public class Account implements BaseAccount {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
+    }
+
+    public synchronized boolean isAlwaysShowCcBcc() {
+        return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
     }
 }
