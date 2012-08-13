@@ -32,6 +32,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClassic.TitleBarDelegate;
 import android.widget.FrameLayout;
 
 /**
@@ -43,7 +44,7 @@ import android.widget.FrameLayout;
  * Call {@link #setEmbeddedTitleBarCompat(View)} for setting a view as embedded
  * title bar on top of the displayed WebView page.
  */
-public class TitleBarWebView extends WebView {
+public class TitleBarWebView extends WebView implements TitleBarDelegate {
     /**
      * Internally used view wrapper for suppressing unwanted touch events on the
      * title bar view when WebView contents is being touched.
@@ -81,6 +82,13 @@ public class TitleBarWebView extends WebView {
     private Rect mClipBounds = new Rect();
     private Matrix mMatrix = new Matrix();
     private Method mNativeGetVisibleTitleHeightMethod;
+
+    /**
+     * This will always contain a reference to the title bar view no matter if
+     * {@code setEmbeddedTitleBar()} or the Jelly Bean workaround is used. We use this in
+     * {@link #getTitleHeight()}.
+     */
+    private View mTitleBarView;
 
     public TitleBarWebView(Context context) {
         super(context);
@@ -172,6 +180,8 @@ public class TitleBarWebView extends WebView {
                     "Native setEmbeddedTitleBar not available. Starting workaround");
             setEmbeddedTitleBarJellyBean(v);
         }
+
+        mTitleBarView = v;
     }
 
     @Override
@@ -225,6 +235,11 @@ public class TitleBarWebView extends WebView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            super.onDraw(canvas);
+            return;
+        }
+
         canvas.save();
 
         if(mTitleBar != null) {
@@ -264,8 +279,25 @@ public class TitleBarWebView extends WebView {
         scrollBar.draw(canvas);
     }
 
-    private int getTitleHeight() {
-        if(mTitleBar != null) return mTitleBar.getHeight();
+    /**
+     * Get the height of the title bar view.
+     *
+     * <p>
+     * In the Jelly Bean workaround we need this method because we have to implement the
+     * {@link TitleBarDelegate} interface. But by implementing this method we override the hidden
+     * {@code getTitleHeight()} of the {@link WebView}s in older Android versions.
+     * <br>
+     * What we should do, is return the title height on Jelly Bean and call through to the parent
+     * parent class on older Android versions. But this would require even more trickery, so we
+     * just inline the parent functionality which simply calls {@link View#getHeight()}. This is
+     * exactly what we do on Jelly Bean anyway.
+     * </p>
+     */
+    @Override
+    public int getTitleHeight() {
+        if (mTitleBarView != null) {
+            return mTitleBarView.getHeight();
+        }
         return 0;
     }
 
@@ -315,4 +347,7 @@ public class TitleBarWebView extends WebView {
 
         mTitleBar = v;
     }
+
+    @Override
+    public void onSetEmbeddedTitleBar(View title) { /* unused */ }
 }
