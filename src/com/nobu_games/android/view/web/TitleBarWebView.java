@@ -288,9 +288,9 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
      * {@code getTitleHeight()} of the {@link WebView}s in older Android versions.
      * <br>
      * What we should do, is return the title height on Jelly Bean and call through to the parent
-     * parent class on older Android versions. But this would require even more trickery, so we
-     * just inline the parent functionality which simply calls {@link View#getHeight()}. This is
-     * exactly what we do on Jelly Bean anyway.
+     * class on older Android versions. But this would require even more trickery, so we just
+     * inline the parent functionality which simply calls {@link View#getHeight()}. This is exactly
+     * what we do on Jelly Bean anyway.
      * </p>
      */
     @Override
