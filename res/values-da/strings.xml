@@ -825,8 +825,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Enkelkolonne layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformater HTML meddelelser til visning på små skærme</string>
-    <string name="settings_messageview_zoom_controls_label">Zoom kontrol</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktiver zoom widgets eller pinch-zoom hvis din enhed understøtter dette</string>
 
     <string name="setting_language_system">System standard</string>
 

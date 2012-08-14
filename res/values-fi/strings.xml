@@ -828,8 +828,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Yhden sarakkeen asettelu</string>
     <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
-    <string name="settings_messageview_zoom_controls_label">Järjestelmän zoomaussäätimet</string>
-    <string name="settings_messageview_zoom_controls_summary">Ota käyttöön vimpaimen zoomaus tai zoomaus nipistämällä, jos laite tukee</string>
 
     <string name="setting_language_system">Järjestelmän oletus</string>
 

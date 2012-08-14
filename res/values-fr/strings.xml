@@ -848,8 +848,6 @@ de plus</string>
 
     <string name="settings_messageview_mobile_layout_label">Disposition colonne unique</string>
     <string name="settings_messageview_mobile_layout_summary">Réarranger les messages HTML pour les petits écrans</string>
-    <string name="settings_messageview_zoom_controls_label">Zoom système</string>
-    <string name="settings_messageview_zoom_controls_summary">Activer les widgets zoom ou le pincer-zoomer si supporté par le système</string>
 
     <string name="setting_language_system">Langue du système</string>
 

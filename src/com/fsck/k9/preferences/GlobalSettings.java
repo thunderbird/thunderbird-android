@@ -209,10 +209,6 @@ public class GlobalSettings {
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("zoomControlsEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(4, new BooleanSetting(true))
-            ));
         s.put("batchButtonsMarkRead", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));

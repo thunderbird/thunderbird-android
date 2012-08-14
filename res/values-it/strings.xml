@@ -826,8 +826,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Layout a colonna singola</string>
     <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
-    <string name="settings_messageview_zoom_controls_label">Zoom di sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Abilita widgets dello zoom o pinch-zoom se il dispositivo lo supporta</string>
 
     <string name="setting_language_system">Impostazioni predefinite di sistema</string>
 

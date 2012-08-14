@@ -837,8 +837,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">פריסת עמודה יחידה</string>
     <string name="settings_messageview_mobile_layout_summary">אתחל הודעות HTML ותתאים אותם למסכים קטנים.</string>
-    <string name="settings_messageview_zoom_controls_label">בקרת זום מערכת</string>
-    <string name="settings_messageview_zoom_controls_summary">אפשר ווידג\'טי זום או זום על ידי צביטה אם המכשיר שלך תומך בזה</string>
 
     <string name="setting_language_system">ברירות מחדל מערכת</string>
 

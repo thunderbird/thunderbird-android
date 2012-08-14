@@ -819,8 +819,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="settings_messageview_mobile_layout_label">１列レイアウト</string>
     <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
-    <string name="settings_messageview_zoom_controls_label">ズーム制御</string>
-    <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にする</string>
 
     <string name="setting_language_system">システム設定</string>
 

@@ -825,8 +825,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Disposició sola columna</string>
     <string name="settings_messageview_mobile_layout_summary">Reformata missatges HTML missatges per a pantalles petites</string>
-    <string name="settings_messageview_zoom_controls_label">Controls zoom sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Habilita ginys de zoom or pica sobre el zoom si el teu aparell ho permet</string>
 
     <string name="setting_language_system">Per defecte del sistema</string>
 

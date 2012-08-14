@@ -818,8 +818,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Режим одной колонки</string>
     <string name="settings_messageview_mobile_layout_summary">Форматировать HTML сообщения для маленького экрана</string>
-    <string name="settings_messageview_zoom_controls_label">Системное управление зумом</string>
-    <string name="settings_messageview_zoom_controls_summary">Разрешить использование зума, если устройство его поддерживает</string>
 
     <string name="setting_language_system">По умолчанию</string>
 

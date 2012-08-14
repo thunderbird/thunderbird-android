@@ -854,8 +854,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Ułożenie z 1 kolumną</string>
     <string name="settings_messageview_mobile_layout_summary">Przeformatuj wiadomości HTML dla mniejszych ekranów</string>
-    <string name="settings_messageview_zoom_controls_label">Systemowe powiększenie</string>
-    <string name="settings_messageview_zoom_controls_summary">Użyj zoom widgets i pinch-zoom jeśli Twoje urzędzenie je obsługuje</string>  <!-- FIXME -->
 
     <string name="setting_language_system">Domyślny systemowy</string>
 

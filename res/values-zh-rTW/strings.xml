@@ -831,8 +831,6 @@
 
     <string name="settings_messageview_mobile_layout_label">單列佈局</string>
     <string name="settings_messageview_mobile_layout_summary">針對小尺寸螢幕重新排列HTML郵件格式</string>
-    <string name="settings_messageview_zoom_controls_label">系統放大控制</string>
-    <string name="settings_messageview_zoom_controls_summary">如果設備支援則啟用放大插件或多點觸碰放大</string>
 
     <string name="setting_language_system">系統預設值</string>
 

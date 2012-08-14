@@ -821,8 +821,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">1-kolom layout</string>
     <string name="settings_messageview_mobile_layout_summary">Herschik HTML berichten voor kleinere schermen</string>
-    <string name="settings_messageview_zoom_controls_label">Apparaat zoom</string>
-    <string name="settings_messageview_zoom_controls_summary">Gebruik zoom widgets of pinch-zoom als het apparaat dat ondersteunt</string>
 
     <string name="setting_language_system">Volgens systeem</string>
 

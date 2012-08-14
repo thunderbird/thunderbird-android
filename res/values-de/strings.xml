@@ -824,8 +824,6 @@ http://k9mail.googlecode.com/.
 
     <string name="settings_messageview_mobile_layout_label">Einfaches Layout</string>
     <string name="settings_messageview_mobile_layout_summary">HTML-Nachrichten werden für kleine Displays optimiert</string>
-    <string name="settings_messageview_zoom_controls_label">System Zoom</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktiviere Zoom-Widgets oder 2-Finger-Zoom, wenn vom Gerät unterstützt</string>
 
     <string name="setting_language_system">Systemvorgabe</string>
 

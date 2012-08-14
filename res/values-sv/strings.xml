@@ -825,8 +825,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">En-kolumns-layout</string>
     <string name="settings_messageview_mobile_layout_summary">Formatera om HTML-brev för mindre skärmar</string>
-    <string name="settings_messageview_zoom_controls_label">Kontroll av zoom</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktivera zoom-widgets eller nyp-zoom om din enhet stödjer det</string>
 
     <string name="setting_language_system">Systemstandard</string>
 
