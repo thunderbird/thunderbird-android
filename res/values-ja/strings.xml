@@ -277,7 +277,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="message_view_fetching_attachment_toast">添付ファイル取得中</string>
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>のビューワーが見つかりません</string>
     <string name="message_view_download_remainder">すべてダウンロード</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">ダウンロード中…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません。ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「ヘッダのダウンロード」をチェックしてください。</string>
@@ -325,15 +325,15 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
     <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">一括処理ボタン</string>
+    <string name="global_settings_batch_buttons_summary">メッセージ選択時に表示する一括処理ボタンを設定する</string>
+    <string name="global_settings_mark_read">既読/未読のマーク</string>
+    <string name="global_settings_delete">削除</string>
+    <string name="global_settings_archive">アーカイブ</string>
+    <string name="global_settings_archive_disabled_reason">アーカイブフォルダが設定されていません</string>
+    <string name="global_settings_move">移動</string>
+    <string name="global_settings_flag">スター</string>
+    <string name="global_settings_unselect">選択解除</string>
 
     <string name="quiet_time">夜間時間帯</string>
     <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定</string>
@@ -1071,7 +1071,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="import_dialog_error_title">ファイルマネージャがありません</string>
     <string name="close">閉じる</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">No text</string>
 
     <string name="webview_contextmenu_link_view_action">開く</string>
     <string name="webview_contextmenu_link_share_action">リンクを共有</string>
