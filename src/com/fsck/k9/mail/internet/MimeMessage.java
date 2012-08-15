@@ -1,24 +1,38 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-
-import org.apache.james.mime4j.stream.BodyDescriptor;
-import org.apache.james.mime4j.stream.RawField;
-import org.apache.james.mime4j.parser.ContentHandler;
-import org.apache.james.mime4j.io.EOLConvertingInputStream;
-import org.apache.james.mime4j.parser.MimeStreamParser;
-import org.apache.james.mime4j.stream.MimeEntityConfig;
-import org.apache.james.mime4j.dom.field.DateTimeField;
-import org.apache.james.mime4j.dom.field.Field;
-import org.apache.james.mime4j.field.DefaultFieldParser;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 
 import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.dom.field.DateTimeField;
+import org.apache.james.mime4j.dom.field.ParsedField;
+import org.apache.james.mime4j.field.DefaultFieldParser;
+import org.apache.james.mime4j.io.EOLConvertingInputStream;
+import org.apache.james.mime4j.parser.ContentHandler;
+import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.stream.BodyDescriptor;
+import org.apache.james.mime4j.stream.Field;
+import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.stream.RawField;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -73,7 +87,7 @@ public class MimeMessage extends Message {
 
         mBody = null;
 
-        MimeEntityConfig parserConfig  = new MimeEntityConfig();
+        MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
         parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
         // REALLY long References: headers
@@ -458,27 +472,8 @@ public class MimeMessage extends Message {
             expect(Part.class);
         }
 
-        public void field(RawField field) {
-            expect(Part.class);
-            try {
-                Field parsedField = DefaultFieldParser.parse(field.getRaw(), null);
-                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
-            } catch (MessagingException me) {
-                throw new Error(me);
-            } catch (MimeException me) {
-                throw new Error(me);
-            }
-        }
 
-        public void field(String fieldData) {
-            expect(Part.class);
-            try {
-                String[] tokens = fieldData.split(":", 2);
-                ((Part)stack.peek()).addHeader(tokens[0], tokens[1].trim());
-            } catch (MessagingException me) {
-                throw new Error(me);
-            }
-        }
+
 
         public void endHeader() {
             expect(Part.class);
@@ -551,6 +546,16 @@ public class MimeMessage extends Message {
 
         public void raw(InputStream is) throws IOException {
             throw new UnsupportedOperationException("Not supported");
+        }
+
+        @Override
+        public void field(Field parsedField) throws MimeException {
+            expect(Part.class);
+            try {
+                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+            } catch (MessagingException me) {
+                throw new Error(me);
+            }
         }
     }
 
