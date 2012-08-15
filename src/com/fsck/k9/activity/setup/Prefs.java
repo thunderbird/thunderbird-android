@@ -73,7 +73,6 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
-    private static final String PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED = "messageview_zoom_controls";
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
@@ -116,7 +115,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
-    private CheckBoxPreference mZoomControlsEnabled;
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
@@ -276,9 +274,6 @@ public class Prefs extends K9PreferenceActivity {
 
         mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
         mShowNext.setChecked(K9.messageViewShowNext());
-
-        mZoomControlsEnabled = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED);
-        mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
         if (!MessageWebView.isSingleColumnLayoutSupported()) {
@@ -455,7 +450,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setBatchButtonsFlag(mBatchButtonsFlag.isChecked());
         K9.setBatchButtonsUnselect(mBatchButtonsUnselect.isChecked());
 
-        K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());

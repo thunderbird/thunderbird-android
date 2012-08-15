@@ -824,8 +824,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">режим одного стовпця</string>
     <string name="settings_messageview_mobile_layout_summary">Форматування HTML повідомлення для маленького екрану</string>
-    <string name="settings_messageview_zoom_controls_label">Системне управління масштабом</string>
-    <string name="settings_messageview_zoom_controls_summary">Включити віджети масштабування або pinch-zoom якщо пристрій їх підтримує</string>
 
     <string name="setting_language_system">Системна по замовчуванню</string>
 

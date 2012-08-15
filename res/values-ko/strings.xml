@@ -822,8 +822,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="settings_messageview_mobile_layout_label">Single-column layout</string>
     <string name="settings_messageview_mobile_layout_summary">작은 스크린에서 HTML 메시지를 다시만듬(reformat)</string>
-    <string name="settings_messageview_zoom_controls_label">시스템 줌 컨트롤</string>
-    <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
 
     <string name="setting_language_system">시스템 기본값</string>
 

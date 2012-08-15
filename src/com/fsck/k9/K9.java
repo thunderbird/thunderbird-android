@@ -188,7 +188,6 @@ public class K9 extends Application {
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
@@ -433,7 +432,6 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
-        editor.putBoolean("zoomControlsEnabled", mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -601,7 +599,6 @@ public class K9 extends Application {
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
@@ -790,15 +787,6 @@ public class K9 extends Application {
     public static void setManageBack(boolean manageBack) {
         mManageBack = manageBack;
     }
-
-    public static boolean zoomControlsEnabled() {
-        return mZoomControlsEnabled;
-    }
-
-    public static void setZoomControlsEnabled(boolean zoomControlsEnabled) {
-        mZoomControlsEnabled = zoomControlsEnabled;
-    }
-
 
     public static boolean mobileOptimizedLayout() {
         return mMobileOptimizedLayout;

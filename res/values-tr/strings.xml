@@ -826,8 +826,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
     <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
     <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
-    <string name="settings_messageview_zoom_controls_label">Sistem yakınlaştırma kontrolleri</string>
-    <string name="settings_messageview_zoom_controls_summary">Yakınlaştırma araçlarını veya cihazınız onu destekliyorsa pinch-zoom\'u etkinleştir</string>
 
     <string name="setting_language_system">Sistem Varsayılanları</string>
 

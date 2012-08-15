@@ -813,8 +813,6 @@
 
     <string name="settings_messageview_mobile_layout_label">单列布局</string>
     <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
-    <string name="settings_messageview_zoom_controls_label">系统放大控制</string>
-    <string name="settings_messageview_zoom_controls_summary">如果设备支持则启用放大插件或多点触摸放大</string>
 
     <string name="setting_language_system">系统默认值</string>
 

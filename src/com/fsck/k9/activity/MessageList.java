@@ -2359,8 +2359,8 @@ public class MessageList
 
 
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
-            holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
-            view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+
+            view.getBackground().setAlpha(message.read ? 100 : 0);
 
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
                 holder.subject.setText(getText(R.string.general_no_subject));

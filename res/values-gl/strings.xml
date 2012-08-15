@@ -822,8 +822,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Columna única</string>
     <string name="settings_messageview_mobile_layout_summary">Reformatea mensaxes HTML para pantallas pequenas</string>
-    <string name="settings_messageview_zoom_controls_label">Controles do Zoom por sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Permitir opcións de zoom que soporta o propio dispositivo</string>
 
     <string name="setting_language_system">Configurado no sistema</string>
 

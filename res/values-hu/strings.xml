@@ -819,8 +819,6 @@
 
     <string name="settings_messageview_mobile_layout_label">Egy oszlopos elrendezés</string>
     <string name="settings_messageview_mobile_layout_summary">HTML üzenetek újraformázása a kisebb kijelzőkhöz.</string>
-    <string name="settings_messageview_zoom_controls_label">Rendszer nagyító használta</string>
-    <string name="settings_messageview_zoom_controls_summary">Engedélyezi a multi touch nagyítást és a nagyító widgeteket.</string>
 
     <string name="setting_language_system">Alapértelmezett</string>
 
