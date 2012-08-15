@@ -1,25 +1,32 @@
 
 package com.fsck.k9.mail.store;
 
-import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-import com.fsck.k9.K9;
-import com.fsck.k9.helper.DomainNameChecker;
-import org.apache.commons.io.IOUtils;
-
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.commons.io.IOUtils;
+
+import android.app.Application;
+import android.content.Context;
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.helper.DomainNameChecker;
 
 public final class TrustManagerFactory {
     private static final String LOG_TAG = "TrustManagerFactory";
@@ -47,8 +54,10 @@ public final class TrustManagerFactory {
             return null;
         }
     }
-
-    private static class SecureX509TrustManager implements X509TrustManager {
+    /** private
+     * but we have to access the class in the junit tests
+     **/
+    static class SecureX509TrustManager implements X509TrustManager {
         private static final Map<String, SecureX509TrustManager> mTrustManager =
             new HashMap<String, SecureX509TrustManager>();
 
@@ -83,7 +92,43 @@ public final class TrustManagerFactory {
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
             } catch (CertificateException e) {
-                localTrustManager.checkServerTrusted(new X509Certificate[] {chain[0]}, authType);
+                try {
+                    localTrustManager.checkServerTrusted(new X509Certificate[] {chain[0]}, authType);
+                } catch (Exception e1) {
+                    /*
+                     * on HTC phones there is an RSA lib bug which causes this
+                     * method to fail permanently with an strange error: E/k9
+                     * (25824): Caused by: java.lang.RuntimeException:
+                     * error:0407006A:rsa
+                     * routines:RSA_padding_check_PKCS1_type_1:block type is not
+                     * 01 (SHA-1)
+                     *
+                     * SO WE try a workaround: we use every pubkey from our
+                     * keystore and check if the chain validates against it.
+                     * http://code.google.com/p/k9mail/issues/detail?id=3976
+                     */
+                    try {
+                        Map<String, Certificate> aliasmap = new HashMap<String, Certificate>();
+                        Enumeration<String> eAliases;
+                        try {
+                            eAliases = keyStore.aliases();
+                            while (eAliases.hasMoreElements()) {
+                                String alias = eAliases.nextElement();
+                                aliasmap.put(alias, keyStore.getCertificate(alias));
+                            }
+                            checkServerTrustedHTCWorkaround(aliasmap, chain, authType);
+                        } catch (KeyStoreException e2) {
+                            throw new CertificateException(e2);
+                        }
+                    } catch (CertificateException e2) {
+                        /* workaround did not report trusted as well
+                         * -> throw original exception
+                         */
+                        throw new CertificateException("Certificate cannot be verified; KeyStore Exception: ", e);
+                    }
+                }
+
+
             }
             if (!DomainNameChecker.match(chain[0], mHost)) {
                 try {
@@ -98,6 +143,56 @@ public final class TrustManagerFactory {
                                                + mHost);
             }
         }
+
+        /**
+         * This method is an workaround for an HTC RSA lib bug.
+         *
+         * This method is only called by checkServerTrusted
+         * NEVER CALL THIS METHOD DIRECTLY.
+         *
+         * on HTC phones there is an RSA lib bug which causes this method to
+         * fail permanently with an strange error: E/k9 (25824): Caused by:
+         * java.lang.RuntimeException: error:0407006A:rsa
+         * routines:RSA_padding_check_PKCS1_type_1:block type is not 01 (SHA-1)
+         *
+         * SO WE try a workaround: we use every pubkey from our keystore and
+         * check if the chain validates against it.
+         * http://code.google.com/p/k9mail/issues/detail?id=3976
+         *
+         * @param aliases Alias -> Certificate mapping (get from keyStore)
+         * @param chain
+         * @param authType
+         * @throws CertificateException
+         */
+        public void checkServerTrustedHTCWorkaround(Map<String, Certificate> aliases , X509Certificate[] chain, String authType)
+        throws CertificateException {
+            Log.d(LOG_TAG, "SSL-connection HTC padding Bug workaround executing");
+            boolean verified = false;
+            try {
+                for (Entry<String, Certificate> alias : aliases.entrySet()) {
+                    Certificate cert = alias.getValue();
+                    try {
+                        /*
+                         * we only check the leaf of a certificate chain. during
+                         * import for selfsigned certs we also only import the
+                         * leaf of a chain.
+                         */
+                        chain[0].verify(cert.getPublicKey());
+                        verified = true;
+                        break;
+                    } catch (Exception e3) {
+                        Log.e(LOG_TAG, e3.toString());
+                    }
+                }
+            } catch (Exception e2) {
+                Log.e(LOG_TAG, "KeyStore Problem", e2);
+            }
+            if (!verified) {
+                /* no valid public key found so this connection isnot trusted */
+                throw new CertificateException();
+            }
+        }
+
 
         public X509Certificate[] getAcceptedIssuers() {
             return defaultTrustManager.getAcceptedIssuers();
