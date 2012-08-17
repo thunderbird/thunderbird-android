@@ -35,6 +35,7 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -2993,27 +2994,52 @@ public class LocalStore extends Store implements Serializable {
         }
 
         /**
-         * Fetch the message text for display. This always returns an HTML-ified version of the
-         * message, even if it was originally a text-only message.
+         * Fetch the message text for display. This will return an  HTML-ified version of the
+         * message, if displayMode = HTML
+         * @param displayMode the first try for display Mode. If html fails, it switches back to text
          * @return HTML version of message for display purposes or null.
          * @throws MessagingException
          */
-        public String getTextForDisplay() throws MessagingException {
+        public String getTextForDisplay(MessageDisplayMode displayMode) throws MessagingException {
+            return getTextForDisplayImpl(displayMode);
+        }
+
+        private String getTextForDisplayImpl(MessageDisplayMode displayMode) throws MessagingException {
             String text = null;    // First try and fetch an HTML part.
-            Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
-            if (part == null) {
-                // If that fails, try and get a text part.
-                part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
-                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+            Part part;
+            switch (displayMode) {
+                case HTML: {
+                    part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+                    if (part == null) {
+                        /*
+                         * If that fails, try and get a text part.
+                         * Fall back to the text mimepart
+                         */
+                        return this.getTextForDisplayImpl(MessageDisplayMode.TEXT);
+                    } else {
+                        // We successfully found an HTML part; do the necessary character set decoding.
+                        text = MimeUtility.getTextFromPart(part);
+                    }
+                    break;
                 }
-            } else {
-                // We successfully found an HTML part; do the necessary character set decoding.
-                text = MimeUtility.getTextFromPart(part);
+                case TEXT: {
+                    part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+                    if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                        if (this.getMimeType().equalsIgnoreCase("text/plain")) {
+                            //already htmlified in the database
+                            text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                        } else {
+                            text = HtmlConverter.textToHtml(((LocalStore.LocalTextBody) part.getBody()).getText(), true);
+                        }
+                    }
+                    break;
+                }
+                default: {
+                    text = "UNKNOWN MessageDisplayMode";
+                }
             }
             return text;
         }
-
 
         /* Custom version of writeTo that updates the MIME message based on localMessage
          * changes.
