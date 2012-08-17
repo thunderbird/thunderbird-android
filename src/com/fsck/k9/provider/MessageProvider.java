@@ -389,10 +389,10 @@ public class MessageProvider extends ContentProvider {
      * Retrieve the account list.
      */
     protected class AccountsQueryHandler implements QueryHandler {
-    	private static final String FIELD_ACCOUNT_NUMBER = "accountNumber";
-    	private static final String FIELD_ACCOUNT_NAME = "accountName";
-    	private static final String FIELD_ACCOUNT_UUID = "accountUuid";
-    	private static final String FIELD_ACCOUNT_COLOR = "accountColor";
+        private static final String FIELD_ACCOUNT_NUMBER = "accountNumber";
+        private static final String FIELD_ACCOUNT_NAME = "accountName";
+        private static final String FIELD_ACCOUNT_UUID = "accountUuid";
+        private static final String FIELD_ACCOUNT_COLOR = "accountColor";
     	
         @Override
         public String getPath() {
@@ -406,10 +406,10 @@ public class MessageProvider extends ContentProvider {
         }
 
         public Cursor getAllAccounts(String[] projection) {
-        	// Default projection
-        	if(projection == null) {
-        		projection = new String[] { FIELD_ACCOUNT_NUMBER, FIELD_ACCOUNT_NAME };        		
-        	}
+            // Default projection
+            if(projection == null) {
+                projection = new String[] { FIELD_ACCOUNT_NUMBER, FIELD_ACCOUNT_NAME };        		
+            }
             
 
             MatrixCursor ret = new MatrixCursor(projection);

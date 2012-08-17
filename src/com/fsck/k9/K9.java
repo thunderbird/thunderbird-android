@@ -567,7 +567,7 @@ public class K9 extends Application {
             public void folderStatusChanged(Account account, String folderName,
                     int unreadMessageCount) {
                 
-            	updateUnreadWidget();
+                updateUnreadWidget();
                 
                 // let observers know a change occurred 
                 Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
