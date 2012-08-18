@@ -86,27 +86,27 @@ public class MessageProvider extends ContentProvider {
          * <P>Type: TEXT</P>
          */
         String ACCOUNT = "account";
-        
+
         /**
          * <P>Type: INTEGER</P>
          */
         String ACCOUNT_NUMBER = "accountNumber";
-        
+
         /**
          * <P>Type: BOOLEAN</P>
          */
         String HAS_ATTACHMENTS = "hasAttachments";
-        
+
         /**
          * <P>Type: BOOLEAN</P>
          */
         String HAS_STAR = "hasStar";
-        
+
         /**
          * <P>Type: INTEGER</P>
          */
         String ACCOUNT_COLOR = "accountColor";
-        
+
         String URI = "uri";
         String DELETE_URI = "delUri";
 
