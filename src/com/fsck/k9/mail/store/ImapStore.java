@@ -122,7 +122,7 @@ public class ImapStore extends Store {
 
     private static int FETCH_WINDOW_SIZE = 100;
 
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
+    private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
 
     private static final String CAPABILITY_IDLE = "IDLE";
     private static final String COMMAND_IDLE = "IDLE";
@@ -897,27 +897,38 @@ public class ImapStore extends Store {
             // 2 OK [READ-WRITE] Select completed.
             try {
                 msgSeqUidMap.clear();
-                String command = String.format("%s %s", mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE",
-                                               encodeString(encodeFolderName(getPrefixedName())));
+                String command = String.format("%s %s", mode == OpenMode.READ_WRITE ? "SELECT"
+                        : "EXAMINE", encodeString(encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
 
                 /*
-                 * If the command succeeds we expect the folder has been opened read-write
-                 * unless we are notified otherwise in the responses.
+                 * If the command succeeds we expect the folder has been opened read-write unless we
+                 * are notified otherwise in the responses.
                  */
                 mMode = mode;
 
                 for (ImapResponse response : responses) {
-                    if (response.mTag != null && response.size() >= 2) {
+                    if (response.size() >= 2) {
                         Object bracketedObj = response.get(1);
-                        if (bracketedObj instanceof ImapList) {
-                            ImapList bracketed = (ImapList)bracketedObj;
+                        if (!(bracketedObj instanceof ImapList)) {
+                            continue;
+                        }
+                        ImapList bracketed = (ImapList) bracketedObj;
+                        if (bracketed.isEmpty()) {
+                            continue;
+                        }
 
-                            if (!bracketed.isEmpty()) {
-                                Object keyObj = bracketed.get(0);
-                                if (keyObj instanceof String) {
-                                    String key = (String)keyObj;
+                        ImapList flags = bracketed.getKeyedList("PERMANENTFLAGS");
+                        if (flags != null) {
+                            // parse: * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted
+                            // \Seen \Draft NonJunk $label1 \*)] Flags permitted.
+                            parseFlags(flags, mPermanentFlagsIndex);
+                        } else {
+                            Object keyObj = bracketed.get(0);
+                            if (keyObj instanceof String) {
+                                String key = (String) keyObj;
+                                if (response.mTag != null) {
 
                                     if ("READ-ONLY".equalsIgnoreCase(key)) {
                                         mMode = OpenMode.READ_ONLY;
@@ -927,10 +938,8 @@ public class ImapStore extends Store {
                                 }
                             }
                         }
-
                     }
                 }
-
                 mExists = true;
                 return responses;
             } catch (IOException ioe) {
@@ -939,7 +948,35 @@ public class ImapStore extends Store {
                 Log.e(K9.LOG_TAG, "Unable to open connection for " + getLogId(), me);
                 throw me;
             }
+        }
 
+        /**
+         * Parses an string like PERMANENTFLAGS (\Answered \Flagged \Deleted // \Seen \Draft NonJunk
+         * $label1 \*)
+         * @param flags
+         *            the imapflags as strings
+         * @param out
+         *            an already initialized Set which is used return the found flags
+         */
+        private void parseFlags(ImapList flags, Set<Flag> out) {
+            for (Object flag : flags) {
+                flag = flag.toString().toLowerCase();
+                if (flag.equals("permanentflags")) {
+                    continue;
+                } else if (flag.equals("\\deleted")) {
+                    out.add(Flag.DELETED);
+                } else if (flag.equals("\\answered")) {
+                    out.add(Flag.ANSWERED);
+                } else if (flag.equals("\\seen")) {
+                    out.add(Flag.SEEN);
+                } else if (flag.equals("\\flagged")) {
+                    out.add(Flag.FLAGGED);
+                } else if (flag.equals("$forwarded")) {
+                    out.add(Flag.FORWARDED);
+                } else if (flag.equals("\\*")) {
+                    mCanCreateKeywords = true;
+                }
+            }
         }
 
         @Override
@@ -1626,6 +1663,10 @@ public class ImapStore extends Store {
                             message.setFlagInternal(Flag.SEEN, true);
                         } else if (flag.equalsIgnoreCase("\\Flagged")) {
                             message.setFlagInternal(Flag.FLAGGED, true);
+                        } else if (flag.equalsIgnoreCase("$Forwarded")) {
+                            message.setFlagInternal(Flag.FORWARDED, true);
+                            /* a message contains FORWARDED FLAG -> so we can also create them */
+                            mPermanentFlagsIndex.add(Flag.FORWARDED);
                         }
                     }
                 }
@@ -1671,11 +1712,6 @@ public class ImapStore extends Store {
             }
 
             return result;
-        }
-
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
         }
 
         /**
@@ -2067,6 +2103,9 @@ public class ImapStore extends Store {
                     flagNames.add("\\Answered");
                 } else if (flag == Flag.FLAGGED) {
                     flagNames.add("\\Flagged");
+                } else if (flag == Flag.FORWARDED
+                        && (mCanCreateKeywords || mPermanentFlagsIndex.contains(Flag.FORWARDED))) {
+                    flagNames.add("$Forwarded");
                 }
 
             }

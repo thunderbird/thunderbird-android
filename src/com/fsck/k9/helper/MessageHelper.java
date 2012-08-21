@@ -59,6 +59,7 @@ public class MessageHelper {
 
             target.read = message.isSet(Flag.SEEN);
             target.answered = message.isSet(Flag.ANSWERED);
+            target.forwarded = message.isSet(Flag.FORWARDED);
             target.flagged = message.isSet(Flag.FLAGGED);
 
             Address[] addrs = message.getFrom();
