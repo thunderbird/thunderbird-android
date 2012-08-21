@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/single_message_options"
+        android:icon="@drawable/ic_action_single_message_options"
+        android:showAsAction="always"
+        android:title="@string/single_message_options_action">
+        <menu>
+            <item
+                android:id="@+id/forward"
+                android:title="@string/forward_action"/>
+            <item
+                android:id="@+id/reply_all"
+                android:title="@string/reply_all_action"/>
+            <item
+                android:id="@+id/reply"
+                android:title="@string/reply_action"/>
+            <item
+                android:id="@+id/send_again"
+                android:title="@string/send_again_action"/>
+            <item
+       			android:id="@+id/same_sender"
+        		android:title="@string/from_same_sender" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/delete"
         android:title="@string/delete_action"
         android:showAsAction="always"
