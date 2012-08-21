@@ -1156,6 +1156,22 @@ public class MessageList extends K9ListActivity implements
         }
     }
 
+    private void onReply(MessageInfoHolder holder) {
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false, null);
+    }
+
+    private void onReplyAll(MessageInfoHolder holder) {
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true, null);
+    }
+
+    private void onForward(MessageInfoHolder holder) {
+        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
+    }
+
+    private void onResendMessage(MessageInfoHolder message) {
+        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
+    }
+
     private void onEditPrefs() {
         Prefs.actionPrefs(this);
     }
@@ -2408,10 +2424,8 @@ public class MessageList extends K9ListActivity implements
         mAdapter.notifyDataSetChanged();
 		mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
 
-		if (mQueryString != null) {
-			// we might have to disable some options
-			mActionMode.invalidate();
-		}
+		// make sure the onPrepareActionMode is called
+		mActionMode.invalidate();
     }
 
     /**
@@ -2757,6 +2771,11 @@ public class MessageList extends K9ListActivity implements
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+			// enable or disable forward, reply,....
+            menu.findItem(R.id.single_message_options)
+					.setVisible(mSelectedCount > 1 ? false : true);
+
 			if (mQueryString != null) {
 				// show all
 	            menu.findItem(R.id.move).setVisible(true);
@@ -2801,6 +2820,14 @@ public class MessageList extends K9ListActivity implements
 			return true;
 		}
 
+		/**
+		 * Disables menu options based on if the account supports it or not.
+		 * It also checks the controller and for now the 'mode' the messagelist
+		 * is operation in ( query or not ).
+		 *
+		 * @param mAccount Account to check capabilities of.
+		 * @param menu Menu to adapt.
+		 */
 		private void setContextCapabilities(Account mAccount, Menu menu) {
 			/*
 			 * TODO get rid of this when we finally split the messagelist into
@@ -2867,6 +2894,8 @@ public class MessageList extends K9ListActivity implements
 				onToggleFlag(selection);
 				break;
 			}
+
+			// only if the account supports this
 			case R.id.archive: {
 				onArchive(selection);
 				mSelectedCount = 0;
@@ -2887,6 +2916,34 @@ public class MessageList extends K9ListActivity implements
 				mSelectedCount = 0;
 				break;
 			}
+
+			// only if a single message is selected
+	        case R.id.reply: {
+	            onReply(selection.get(0));
+				mSelectedCount = 0;
+	            break;
+	        }
+	        case R.id.reply_all: {
+	            onReplyAll(selection.get(0));
+				mSelectedCount = 0;
+	            break;
+	        }
+	        case R.id.forward: {
+	            onForward(selection.get(0));
+				mSelectedCount = 0;
+	            break;
+	        }
+	        case R.id.send_again: {
+	            onResendMessage(selection.get(0));
+				mSelectedCount = 0;
+	            break;
+	        }
+	        case R.id.same_sender: {
+	            MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender,
+				selection.get(0).senderAddress, false, null, null);
+				mSelectedCount = 0;
+	            break;
+	        }
 			}
 
 			if (mSelectedCount == 0) {
