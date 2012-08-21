@@ -42,18 +42,6 @@
         android:icon="@drawable/ic_action_archive"
     />
     <item
-        android:id="@+id/flag_toggle"
-        android:title="@string/flag_toggle_action"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_toggle_flag"
-    />
-    <item
-        android:id="@+id/spam"
-        android:title="@string/spam_action"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_spam"
-    />
-    <item
 		android:id="@+id/move_or_copy"
 	    android:title="@string/move_or_copy_action"
 	    android:showAsAction="ifRoom"
@@ -69,4 +57,16 @@
 		    />
 		</menu>
 	</item>
+	<item
+        android:id="@+id/flag_toggle"
+        android:title="@string/flag_toggle_action"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_toggle_flag"
+    />
+	<item
+        android:id="@+id/spam"
+        android:title="@string/spam_action"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_spam"
+    />
 </menu>
