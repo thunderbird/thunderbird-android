@@ -7,8 +7,4 @@
 
     <include layout="@layout/message"/>
 
-    <include layout="@layout/message_view_move_buttons"/>
-
-    <include layout="@layout/message_view_bottom_buttons"/>
-
 </LinearLayout>
