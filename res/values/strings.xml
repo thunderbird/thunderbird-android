@@ -146,7 +146,7 @@ http://k9mail.googlecode.com/
 
     <string name="accounts_action">Accounts</string>
     <string name="mark_as_read_action">Mark as read</string>
-    <string name="read_toggle_action">(un)read</string>
+    <string name="read_toggle_action">Toggle (un)read</string>
     <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 

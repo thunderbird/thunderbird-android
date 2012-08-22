@@ -1,68 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/reply"
-        android:alphabeticShortcut="r"
-        android:title="@string/reply_action"
-        android:icon="@drawable/ic_menu_reply"
+        android:id="@+id/next_message"
+        android:title="@string/next_action"
+        android:icon="@drawable/ic_action_next_message"
+        android:showAsAction="always"
     />
     <item
-        android:id="@+id/reply_all"
-        android:alphabeticShortcut="a"
-        android:title="@string/reply_all_action"
-        android:icon="@drawable/ic_menu_reply_all"
-    />
-    <item
-        android:id="@+id/forward"
-        android:alphabeticShortcut="f"
-        android:title="@string/forward_action"
-        android:icon="@drawable/ic_menu_forward_mail"
-    />
-    <item
-        android:id="@+id/mark_as_unread"
-        android:alphabeticShortcut="u"
-        android:title="@string/mark_as_unread_action"
-        android:icon="@drawable/ic_menu_mark"
+        android:id="@+id/previous_message"
+        android:title="@string/previous_action"
+        android:icon="@drawable/ic_action_previous_message"
+        android:showAsAction="always"
     />
     <item
         android:id="@+id/delete"
         android:alphabeticShortcut="q"
         android:title="@string/delete_action"
-        android:icon="@drawable/ic_menu_delete"
+        android:icon="@drawable/ic_action_delete"
+        android:showAsAction="always"
     />
     <item
-        android:id="@+id/show_full_header"
-        android:title="@string/show_full_header_action"
+        android:id="@+id/single_message_options"
+        android:icon="@drawable/ic_action_single_message_options"
+        android:showAsAction="ifRoom"
+        android:title="@string/single_message_options_action">
+        <menu>
+            <item
+                android:id="@+id/reply"
+                android:title="@string/reply_action"/>
+            <item
+                android:id="@+id/reply_all"
+                android:title="@string/reply_all_action"/>
+            <item
+                android:id="@+id/forward"
+                android:title="@string/forward_action"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/archive"
+        android:title="@string/archive_action"
+        android:icon="@drawable/ic_action_archive"
+        android:showAsAction="ifRoom"
+    />
+    <item
+        android:id="@+id/spam"
+        android:title="@string/spam_action"
+        android:icon="@drawable/ic_action_spam"
+        android:showAsAction="ifRoom"
+    />
+    <item
+		android:id="@+id/move_or_copy"
+	    android:title="@string/move_or_copy_action"
+	    android:showAsAction="ifRoom"
+	    android:icon="@drawable/ic_action_move_or_copy">
+	    <menu>
+		    <item
+		        android:id="@+id/move"
+		        android:title="@string/move_action"
+		    />
+		    <item
+		        android:id="@+id/copy"
+		        android:title="@string/copy_action"
+		    />
+		</menu>
+	</item>
+	<item
+        android:id="@+id/toggle_unread"
+        android:alphabeticShortcut="u"
+        android:title="@string/read_toggle_action"
+        android:icon="@drawable/ic_action_toggle_read"
+        android:showAsAction="never"
     />
     <item
         android:id="@+id/flag"
         android:alphabeticShortcut="s"
         android:title="@string/flag_action"
-        android:icon="@drawable/ic_menu_forward_mail"
-    />
-    <item
-        android:id="@+id/send_alternate"
-        android:title="@string/send_alternate_action"
-        android:icon="@drawable/ic_menu_forward_mail"
-    />
-    <item
-        android:id="@+id/archive"
-        android:title="@string/archive_action"
-    />
-    <item
-        android:id="@+id/spam"
-        android:title="@string/spam_action"
-    />
-    <item
-        android:id="@+id/move"
-        android:title="@string/move_action"
-    />
-    <item
-        android:id="@+id/copy"
-        android:title="@string/copy_action"
+        android:showAsAction="never"
     />
 	<item
 		android:id="@+id/select_text"
 		android:title="@string/select_text_action"
+		android:showAsAction="never"
 	/>
+	<item
+        android:id="@+id/share"
+        android:showAsAction="never"
+        android:title="@string/send_alternate_action"
+    />
 </menu>
