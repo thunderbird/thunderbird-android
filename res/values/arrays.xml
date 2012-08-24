@@ -502,6 +502,7 @@
         <item>dark</item>
     </string-array>
 
+    <!-- Note: If you change this make sure the code in Prefs.java is still working -->
     <string-array name="background_ops_entries">
         <item>@string/background_ops_enabled</item>
         <item>@string/background_ops_auto_sync</item>
@@ -664,6 +665,18 @@
         <item>TEXT</item>
         <item>HTML</item>
         <item>AUTO</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_hide_subject_entries">
+        <item name="1">@string/global_settings_notification_hide_subject_never</item>
+        <item name="2">@string/global_settings_notification_hide_subject_when_locked</item>
+        <item name="3">@string/global_settings_notification_hide_subject_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_hide_subject_values">
+        <item name="1">NEVER</item>
+        <item name="2">WHEN_LOCKED</item>
+        <item name="3">ALWAYS</item>
     </string-array>
 
 </resources>

@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -4174,8 +4176,13 @@ public class MessagingController implements Runnable {
 
         // If privacy mode active and keyguard active
         // OR
+        // GlobalPreference is ALWAYS hide subject
+        // OR
         // If we could not set a per-message notification, revert to a default message
-        if ((K9.keyguardPrivacy() && keyguardService.inKeyguardRestrictedInputMode()) || messageNotice.length() == 0) {
+        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
+                    keyguardService.inKeyguardRestrictedInputMode()) ||
+                (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
+                messageNotice.length() == 0) {
             messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 
@@ -4188,7 +4195,10 @@ public class MessagingController implements Runnable {
         builder.setTicker(messageNotice);
 
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
-        if (account.isNotificationShowsUnreadCount()) {
+        if (account.isNotificationShowsUnreadCount() ||
+                // Honeycomb and newer don't show the number as overlay on the notification icon.
+                // However, the number will appear in the detailed notification view.
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             builder.setNumber(unreadCount);
         }
 

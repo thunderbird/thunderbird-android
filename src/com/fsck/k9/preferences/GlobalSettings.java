@@ -2,8 +2,10 @@ package com.fsck.k9.preferences;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +17,7 @@ import android.os.Environment;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
@@ -47,7 +50,7 @@ public class GlobalSettings {
             ));
         s.put("compactLayouts", Settings.versions(
                 new V(1, new BooleanSetting(false))
-                ));
+            ));
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -131,7 +134,8 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("keyguardPrivacy", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(12, null)
             ));
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
@@ -227,10 +231,16 @@ public class GlobalSettings {
         s.put("batchButtonsUnselect", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));
+        s.put("notificationHideSubject", Settings.versions(
+                new V(12, new EnumSetting(NotificationHideSubject.class,
+                        NotificationHideSubject.NEVER))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        u.put(12, new SettingsUpgraderV12());
+
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -255,6 +265,27 @@ public class GlobalSettings {
             }
         }
         return result;
+    }
+
+    /**
+     * Upgrades the settings from version 11 to 12
+     *
+     * Map the 'keyguardPrivacy' value to the new NotificationHideSubject enum.
+     */
+    public static class SettingsUpgraderV12 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
+            if (keyguardPrivacy != null && keyguardPrivacy.booleanValue()) {
+                // current setting: only show subject when unlocked
+                settings.put("notificationHideSubject", NotificationHideSubject.WHEN_LOCKED);
+            } else {
+                // always show subject [old default]
+                settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
+            }
+            return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
+        }
     }
 
     /**
