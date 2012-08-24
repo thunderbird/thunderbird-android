@@ -191,6 +191,7 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
     private Set<String> mSpamBlacklist = new HashSet<String>();
+    private String mSpamLog;
     private boolean mSpamFilterEnabled;
 
     private CryptoProvider mCryptoProvider = null;
@@ -338,7 +339,7 @@ public class Account implements BaseAccount {
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
         mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
-        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
+		mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
@@ -451,6 +452,7 @@ public class Account implements BaseAccount {
         mSpamFilterEnabled = prefs.getBoolean(mUuid + ".spamFilterEnabled", false);
         String blacklistAsString = prefs.getString(mUuid + ".spamBlacklist", "");
         mSpamBlacklist = new HashSet<String>(Arrays.asList(blacklistAsString.split(";")));
+        mSpamLog = prefs.getString(mUuid + ".spamLog", "");
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -537,6 +539,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".markMessageAsReadOnView");
         editor.remove(mUuid + ".spamFilterEnabled");
         editor.remove(mUuid + ".spamBlacklist");
+        editor.remove(mUuid + ".spamLog");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -711,6 +714,7 @@ public class Account implements BaseAccount {
         
         String blacklistAsString = StringUtils.join(mSpamBlacklist, ";");
         editor.putString(mUuid + ".spamBlacklist", blacklistAsString);
+        editor.putString(mUuid + ".spamLog", mSpamLog);
         editor.putBoolean(mUuid + ".spamFilterEnabled", mSpamFilterEnabled);
 
         for (String type : networkTypes) {
@@ -1650,6 +1654,18 @@ public class Account implements BaseAccount {
     
     public Set<String> getSpamBlacklist() {
     	return mSpamBlacklist;
+    }
+    
+    public void addToSpamLog(String message) {
+    	mSpamLog += "\n" + new Date().toString() + " " + message;
+    }
+    
+    public String getSpamLog() {
+    	return mSpamLog;
+    }
+    
+    public void setSpamLog(String value) {
+    	mSpamLog = value;
     }
     
     public String getSpamBlacklistAsString() {

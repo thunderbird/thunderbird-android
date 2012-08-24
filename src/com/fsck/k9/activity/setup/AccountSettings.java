@@ -104,6 +104,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_SPAM_FILTER_ENABLED = "spam_filter_enabled";
     private static final String PREFERENCE_SPAM_BLACKLIST = "spam_blacklist";
+    private static final String PREFERENCE_SPAM_LOG = "spam_log";
 
 
 
@@ -167,6 +168,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mTrashFolder;
     private CheckBoxPreference mSpamFilterEnabled;
     private EditTextPreference mSpamBlacklist;
+    private EditTextPreference mSpamLog;
 
 
     public static void actionSettings(Context context, Account account) {
@@ -661,6 +663,8 @@ public class AccountSettings extends K9PreferenceActivity {
         mSpamFilterEnabled.setChecked(mAccount.isSpamFilterEnabled());
         mSpamBlacklist = (EditTextPreference) findPreference(PREFERENCE_SPAM_BLACKLIST);
         mSpamBlacklist.setText(mAccount.getSpamBlacklistAsString());
+        mSpamLog = (EditTextPreference) findPreference(PREFERENCE_SPAM_LOG);
+        mSpamLog.setText(mAccount.getSpamLog());
 
         handleCryptoAppDependencies();
     }
@@ -764,6 +768,7 @@ public class AccountSettings extends K9PreferenceActivity {
         
         mAccount.setIsSpamFilterEnabled(mSpamFilterEnabled.isChecked());
         mAccount.setSpamBlacklistAsString(mSpamBlacklist.getText());
+        mAccount.setSpamLog(mSpamLog.getText());
 
         if (mIsPushCapable) {
             boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
