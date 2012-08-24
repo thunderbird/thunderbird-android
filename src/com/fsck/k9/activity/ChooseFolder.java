@@ -16,8 +16,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -142,7 +143,7 @@ public class ChooseFolder extends K9ListActivity {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_PROGRESS: {
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                    setSupportProgressBarIndeterminateVisibility(msg.arg1 != 0);
                     break;
                 }
                 case MSG_SET_SELECTED_FOLDER: {

@@ -259,7 +259,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         public void progress(final boolean progress) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(progress);
+                    setSupportProgressBarIndeterminateVisibility(progress);
                 }
             });
         }
@@ -972,7 +972,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(false);
+                    setSupportProgressBarIndeterminateVisibility(false);
                     if (t instanceof IllegalArgumentException) {
                         mHandler.invalidIdError();
                     } else {
@@ -994,7 +994,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(false);
+                    setSupportProgressBarIndeterminateVisibility(false);
                     mMessageView.setShowDownloadButton(message);
                 }
             });
@@ -1008,7 +1008,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(true);
+                    setSupportProgressBarIndeterminateVisibility(true);
                 }
             });
         }

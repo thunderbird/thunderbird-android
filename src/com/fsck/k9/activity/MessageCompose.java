@@ -24,11 +24,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
@@ -323,10 +324,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_PROGRESS_ON:
-                setProgressBarIndeterminateVisibility(true);
+                setSupportProgressBarIndeterminateVisibility(true);
                 break;
             case MSG_PROGRESS_OFF:
-                setProgressBarIndeterminateVisibility(false);
+                setSupportProgressBarIndeterminateVisibility(false);
                 break;
             case MSG_UPDATE_TITLE:
                 updateTitle();
@@ -449,6 +450,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         context.startActivity(i);
     }
 
+    /*
+     * This is a workaround for an annoying ( temporarly? ) issue:
+     * https://github.com/JakeWharton/ActionBarSherlock/issues/449
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+    	super.onPostCreate(savedInstanceState);
+    	setSupportProgressBarIndeterminateVisibility(false);
+    }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
