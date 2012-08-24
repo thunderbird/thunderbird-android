@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+    android:versionCode="15016"
+    android:versionName="4.117_spamfilter" package="com.fsck.k9"
+=======
     android:versionCode="17001"
-    android:versionName="4.301_spamfilter" package="com.fsck.k9"
+    android:versionName="4.301" package="com.fsck.k9"
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
     >
     <uses-sdk
        android:minSdkVersion="7"

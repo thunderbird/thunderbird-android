@@ -21,7 +21,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -30,7 +29,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -521,6 +519,9 @@ public class MessagingController implements Runnable {
             List<Message> pendingMessages = new ArrayList<Message>();
 
 
+            int totalDone = 0;
+
+
             @Override
             public void messageStarted(String message, int number, int ofTotal) {}
             @Override
@@ -528,6 +529,7 @@ public class MessagingController implements Runnable {
 
                 if (!isMessageSuppressed(account, folder, message)) {
                     pendingMessages.add(message);
+                    totalDone++;
                     if (pendingMessages.size() > 10) {
                         addPendingMessages();
                     }
@@ -1403,6 +1405,15 @@ public class MessagingController implements Runnable {
                     }
                     
                     // Spam check
+<<<<<<< HEAD
+                    Log.d(K9.SPAM_FILTER_TAG, "Checking mail for spam...");
+                    Log.d(K9.SPAM_FILTER_TAG, account.isSpamFilterEnabled() ? "Spam filter enabled" : "Spam filter disabled");
+                    Log.d(K9.SPAM_FILTER_TAG, StringUtils.isNullOrEmpty(account.getSpamFolderName()) ? "Spam folder not set" : "Spam folder set to " + account.getSpamFolderName());
+                    if (account.isSpamFilterEnabled() && !StringUtils.isNullOrEmpty(account.getSpamFolderName())) {
+                        Log.d(K9.SPAM_FILTER_TAG, folder.equals(account.getInboxFolderName()) ? "Mail is in inbox" : "Mail is not in inbox (" + account.getInboxFolderName() + ", but in " + folder);
+                        if (folder.equals(account.getInboxFolderName()) && isSpamMessage(message)) {
+                            Log.d(K9.SPAM_FILTER_TAG, "Spam mail detected, moving to " + account.getSpamFolderName());
+=======
                     account.addToSpamLog("Checking mail for spam...");
                     account.addToSpamLog(account.isSpamFilterEnabled() ? "Spam filter enabled" : "Spam filter disabled");
                     account.addToSpamLog(StringUtils.isNullOrEmpty(account.getSpamFolderName()) ? "Spam folder not set" : "Spam folder set to " + account.getSpamFolderName());
@@ -1410,15 +1421,24 @@ public class MessagingController implements Runnable {
                         account.addToSpamLog(folder.equals(account.getInboxFolderName()) ? "Mail is in inbox" : "Mail is not in inbox (" + account.getInboxFolderName() + ", but in " + folder);
                         if (folder.equals(account.getInboxFolderName()) && isSpamMessage(message)) {
                             account.addToSpamLog("Spam mail detected, moving to " + account.getSpamFolderName());
+>>>>>>> spam-log
                             // moveOrCopyMessageSynchronous() would require a local copy of the message
                             queueMoveOrCopy(account, folder, account.getSpamFolderName(), false,
                                 new String[] {message.getUid() });
                             processPendingCommands(account);
+<<<<<<< HEAD
+                            Log.d(K9.SPAM_FILTER_TAG, "Spam mail successfully moved to spam folder");
+                            return; // do not include as small / large message to not show it in the view
+                        }
+                    }
+                    Log.d(K9.SPAM_FILTER_TAG, "Mail is no spam");
+=======
                             account.addToSpamLog("Spam mail successfully moved to spam folder");
                             return; // do not include as small / large message to not show it in the view
                         }
                     }
                     account.addToSpamLog("Mail is no spam");
+>>>>>>> spam-log
 
                     if (account.getMaximumAutoDownloadMessageSize() > 0 &&
                     message.getSize() > account.getMaximumAutoDownloadMessageSize()) {
@@ -2237,14 +2257,13 @@ public class MessagingController implements Runnable {
              * upto speed with the remote UIDs of remote destionation folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
-                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
+                Set<String> remoteSrcUids = remoteUidMap.keySet();
+                Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
 
-                while (remoteSrcEntriesIterator.hasNext()) {
-                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
-                    String remoteSrcUid = entry.getKey();
+                while (remoteSrcUidsIterator.hasNext()) {
+                    String remoteSrcUid = remoteSrcUidsIterator.next();
                     String localDestUid = localUidMap.get(remoteSrcUid);
-                    String newUid = entry.getValue();
+                    String newUid = remoteUidMap.get(remoteSrcUid);
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
@@ -3285,6 +3304,7 @@ public class MessagingController implements Runnable {
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
                             localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
+                        } else {
                         }
 
                         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -3569,9 +3589,15 @@ public class MessagingController implements Runnable {
      */
     private boolean isSpamMessage(Message message) {
         Set<String> spamBlacklist = message.getFolder().getAccount().getSpamBlacklist();
+<<<<<<< HEAD
+        Log.d(K9.SPAM_FILTER_TAG, "Blacklist: " + spamBlacklist.size() + " entries");
+        for (Address address : message.getFrom()) {
+            Log.d(K9.SPAM_FILTER_TAG, "From address: " + address.getAddress());
+=======
         message.getFolder().getAccount().addToSpamLog("Blacklist: " + spamBlacklist.size() + " entries");
         for (Address address : message.getFrom()) {
         	message.getFolder().getAccount().addToSpamLog("From address: " + address.getAddress());
+>>>>>>> spam-log
             if ((address.getAddress() != null) && !("".equals(address.getAddress()))
              && spamBlacklist.contains(address.getAddress().toLowerCase())) {
                 return true;
@@ -4251,13 +4277,8 @@ public class MessagingController implements Runnable {
 
         // If privacy mode active and keyguard active
         // OR
-        // GlobalPreference is ALWAYS hide subject
-        // OR
         // If we could not set a per-message notification, revert to a default message
-        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
-                    keyguardService.inKeyguardRestrictedInputMode()) ||
-                (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
-                messageNotice.length() == 0) {
+        if ((K9.keyguardPrivacy() && keyguardService.inKeyguardRestrictedInputMode()) || messageNotice.length() == 0) {
             messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 
@@ -4270,10 +4291,7 @@ public class MessagingController implements Runnable {
         builder.setTicker(messageNotice);
 
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
-        if (account.isNotificationShowsUnreadCount() ||
-                // Honeycomb and newer don't show the number as overlay on the notification icon.
-                // However, the number will appear in the detailed notification view.
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (account.isNotificationShowsUnreadCount()) {
             builder.setNumber(unreadCount);
         }
 

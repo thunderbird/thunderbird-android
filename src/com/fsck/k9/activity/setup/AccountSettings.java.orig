@@ -108,11 +108,14 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SENT_FOLDER = "sent_folder";
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
+<<<<<<< HEAD
     private static final String PREFERENCE_SPAM_FILTER_ENABLED = "spam_filter_enabled";
-    private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
     private static final String PREFERENCE_SPAM_BLACKLIST = "spam_blacklist";
     private static final String PREFERENCE_SPAM_LOG = "spam_log";
 
+=======
+    private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
 
 
     private Account mAccount;
@@ -173,10 +176,13 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mSentFolder;
     private ListPreference mSpamFolder;
     private ListPreference mTrashFolder;
-    private CheckBoxPreference mAlwaysShowCcBcc;
+<<<<<<< HEAD
     private CheckBoxPreference mSpamFilterEnabled;
     private EditTextPreference mSpamBlacklist;
     private EditTextPreference mSpamLog;
+=======
+    private CheckBoxPreference mAlwaysShowCcBcc;
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
 
 
     public static void actionSettings(Context context, Account account) {

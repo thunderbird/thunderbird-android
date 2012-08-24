@@ -696,6 +696,12 @@ http://k9mail.googlecode.com/.
 
     <string name="account_settings_identities_label">Identitäten verwalten</string>
     <string name="account_settings_identities_summary">Alternative Absenderadressen und Signaturen konfigurieren</string>
+    
+	<string name="account_settings_spam">Spam-Filter</string>
+	<string name="account_settings_spam_enable_label">Spam-Filter aktivieren</string>
+	<string name="account_settings_spam_enable_summary">Filtert Spam auf Basis einer Blacklist aus</string>
+	<string name="account_settings_spam_blacklist_label">Blacklist</string>
+	<string name="account_settings_spam_blacklist_summary">Jede Spam-Adresse in eine Zeile</string>
 
     <string name="manage_identities_title">Identitäten verwalten</string>
 

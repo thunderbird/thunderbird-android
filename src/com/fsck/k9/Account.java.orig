@@ -189,10 +189,13 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
-    private boolean mAlwaysShowCcBcc;
+<<<<<<< HEAD
     private Set<String> mSpamBlacklist = new HashSet<String>();
     private String mSpamLog;
     private boolean mSpamFilterEnabled;
+=======
+    private boolean mAlwaysShowCcBcc;
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -449,11 +452,15 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
-        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+<<<<<<< HEAD
+        
         mSpamFilterEnabled = prefs.getBoolean(mUuid + ".spamFilterEnabled", false);
         String blacklistAsString = prefs.getString(mUuid + ".spamBlacklist", "");
         mSpamBlacklist = new HashSet<String>(Arrays.asList(blacklistAsString.split(";")));
         mSpamLog = prefs.getString(mUuid + ".spamLog", "");
+=======
+        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -538,10 +545,13 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
-        editor.remove(mUuid + ".alwaysShowCcBcc");        
+<<<<<<< HEAD
         editor.remove(mUuid + ".spamFilterEnabled");
         editor.remove(mUuid + ".spamBlacklist");
         editor.remove(mUuid + ".spamLog");
+=======
+        editor.remove(mUuid + ".alwaysShowCcBcc");
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -1646,14 +1656,7 @@ public class Account implements BaseAccount {
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
     }
-
-    public synchronized boolean isAlwaysShowCcBcc() {
-        return mAlwaysShowCcBcc;
-    }
-
-    public synchronized void setAlwaysShowCcBcc(boolean show) {
-        mAlwaysShowCcBcc = show;
-    }
+<<<<<<< HEAD
     
     public boolean isSpamFilterEnabled() {
     	return mSpamFilterEnabled;
@@ -1685,5 +1688,14 @@ public class Account implements BaseAccount {
     
     public void setSpamBlacklistAsString(String str) {
     	mSpamBlacklist = new HashSet<String>(Arrays.asList(str.split("\n")));
+=======
+
+    public synchronized boolean isAlwaysShowCcBcc() {
+        return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
+>>>>>>> 5b4d2806abeafbcfab53d4f5a6454fbc25ce33ba
     }
 }
