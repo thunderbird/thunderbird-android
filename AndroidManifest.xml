@@ -92,6 +92,12 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.setup.WelcomeMessage"
+            android:label="@string/welcome_message_title"
+            android:configChanges="locale"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.setup.FontSizeSettings"
             android:label="@string/font_size_settings_title"
             android:configChanges="locale"

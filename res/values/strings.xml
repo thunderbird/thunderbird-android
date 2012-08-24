@@ -78,6 +78,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
+    <string name="welcome_message_title">Welcome to K-9 Mail!</string>
 	<string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
