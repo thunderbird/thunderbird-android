@@ -1405,15 +1405,22 @@ public class MessagingController implements Runnable {
                     }
                     
                     // Spam check
+                    account.addToSpamLog("Checking mail for spam...");
+                    account.addToSpamLog(account.isSpamFilterEnabled() ? "Spam filter enabled" : "Spam filter disabled");
+                    account.addToSpamLog(StringUtils.isNullOrEmpty(account.getSpamFolderName()) ? "Spam folder not set" : "Spam folder set to " + account.getSpamFolderName());
                     if (account.isSpamFilterEnabled() && !StringUtils.isNullOrEmpty(account.getSpamFolderName())) {
+                        account.addToSpamLog(folder.equals(account.getInboxFolderName()) ? "Mail is in inbox" : "Mail is not in inbox (" + account.getInboxFolderName() + ", but in " + folder);
                         if (folder.equals(account.getInboxFolderName()) && isSpamMessage(message)) {
+                            account.addToSpamLog("Spam mail detected, moving to " + account.getSpamFolderName());
                             // moveOrCopyMessageSynchronous() would require a local copy of the message
                             queueMoveOrCopy(account, folder, account.getSpamFolderName(), false,
                                 new String[] {message.getUid() });
                             processPendingCommands(account);
+                            account.addToSpamLog("Spam mail successfully moved to spam folder");
                             return; // do not include as small / large message to not show it in the view
                         }
                     }
+                    account.addToSpamLog("Mail is no spam");
 
                     if (account.getMaximumAutoDownloadMessageSize() > 0 &&
                     message.getSize() > account.getMaximumAutoDownloadMessageSize()) {
@@ -3564,7 +3571,9 @@ public class MessagingController implements Runnable {
      */
     private boolean isSpamMessage(Message message) {
         Set<String> spamBlacklist = message.getFolder().getAccount().getSpamBlacklist();
+        message.getFolder().getAccount().addToSpamLog("Blacklist: " + spamBlacklist.size() + " entries");
         for (Address address : message.getFrom()) {
+        	message.getFolder().getAccount().addToSpamLog("From address: " + address.getAddress());
             if ((address.getAddress() != null) && !("".equals(address.getAddress()))
              && spamBlacklist.contains(address.getAddress().toLowerCase())) {
                 return true;
