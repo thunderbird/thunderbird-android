@@ -73,6 +73,7 @@ import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
@@ -93,7 +94,7 @@ import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 
 
-public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
+public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     /**
      * Immutable empty {@link BaseAccount} array
@@ -361,6 +362,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Intent intent = getIntent();
         //onNewIntent(intent);
         
+        // see if we should show the welcome message
+        if (accounts.length < 1) {
+        	WelcomeMessage.showWelcomeMessage(this);
+        	finish();
+        }
+        
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(integratedInboxAccount);
@@ -377,9 +384,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
         listView.setItemsCanFocus(false);
-        listView.setEmptyView(findViewById(R.id.empty));
         listView.setScrollingCacheEnabled(false);
-        findViewById(R.id.next).setOnClickListener(this);
         registerForContextMenu(listView);
 
         if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
@@ -487,6 +492,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void refresh() {
         accounts = Preferences.getPreferences(this).getAccounts();
 
+        // see if we should show the welcome message
+        if (accounts.length < 1) {
+        	WelcomeMessage.showWelcomeMessage(this);
+        	finish();
+        }
+        
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts() && accounts.length > 0) {
             if (integratedInboxAccount == null || unreadAccount == null) {
@@ -919,12 +930,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (mRemainingAccounts.size() > 0) {
                 activity.promptForServerPasswords(mRemainingAccounts);
             }
-        }
-    }
-
-    public void onClick(View view) {
-        if (view.getId() == R.id.next) {
-            onAddNewAccount();
         }
     }
 
