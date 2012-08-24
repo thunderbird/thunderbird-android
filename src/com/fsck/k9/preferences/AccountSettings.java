@@ -222,7 +222,7 @@ public class AccountSettings {
                 new V(10, new StringSetting(""))
             ));
         s.put("spamFilterEnabled", Settings.versions(
-                new V(10, new BooleanSetting(false))
+                new V(10, new BooleanSetting(true))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);
