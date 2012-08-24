@@ -1649,6 +1649,11 @@ public class Account implements BaseAccount {
 
     public synchronized boolean isAlwaysShowCcBcc() {
         return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
+    }
     
     public boolean isSpamFilterEnabled() {
     	return mSpamFilterEnabled;
@@ -1656,9 +1661,6 @@ public class Account implements BaseAccount {
     
     public void setIsSpamFilterEnabled(boolean value) {
     	mSpamFilterEnabled = value;
-
-    public synchronized void setAlwaysShowCcBcc(boolean show) {
-        mAlwaysShowCcBcc = show;
     }
     
     public Set<String> getSpamBlacklist() {
