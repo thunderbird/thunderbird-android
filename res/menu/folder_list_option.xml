@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+   	<item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="@drawable/ic_action_refresh"
+		android:showAsAction="always"
+	/>
    <item
 		android:id="@+id/compose"
         android:alphabeticShortcut="c"
@@ -50,13 +57,6 @@
         android:alphabeticShortcut="e"
 		android:title="@string/empty_trash_action"
 		android:icon="@drawable/ic_menu_delete"
-	/>
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_action_refresh"
-		android:showAsAction="always"
 	/>
     <item
         android:id="@+id/settings"
