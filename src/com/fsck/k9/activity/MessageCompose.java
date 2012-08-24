@@ -282,6 +282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String mReferences;
     private String mInReplyTo;
+    private Menu mMenu;
 
     private boolean mSourceProcessed = false;
 
@@ -1783,6 +1784,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onAddCcBcc() {
         mCcWrapper.setVisibility(View.VISIBLE);
         mBccWrapper.setVisibility(View.VISIBLE);
+        mMenu.findItem(R.id.add_cc_bcc).setVisible(false);
     }
 
     private void onReadReceipt() {
@@ -2181,6 +2183,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        mMenu = menu;
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
