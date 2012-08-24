@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
@@ -33,6 +34,7 @@ import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.view.MessageWebView;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -55,7 +57,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MANAGE_BACK = "manage_back";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
-    private static final String PREFERENCE_PRIVACY_MODE = "privacy_mode";
+    private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts";
@@ -71,7 +73,6 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
-    private static final String PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED = "messageview_zoom_controls";
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
@@ -100,7 +101,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
-    private CheckBoxPreference mPrivacyMode;
+    private ListPreference mNotificationHideSubject;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mHideSpecialAccounts;
@@ -114,7 +115,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
-    private CheckBoxPreference mZoomControlsEnabled;
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
@@ -215,8 +215,8 @@ public class Prefs extends K9PreferenceActivity {
                                             K9.confirmMarkAllAsRead()
                                         });
 
-        mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
-        mPrivacyMode.setChecked(K9.keyguardPrivacy());
+        mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
+                K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -275,16 +275,13 @@ public class Prefs extends K9PreferenceActivity {
         mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
         mShowNext.setChecked(K9.messageViewShowNext());
 
-        mZoomControlsEnabled = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED);
-        mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
-
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Build.VERSION.SDK_INT <= 7) {
+        if (!MessageWebView.isSingleColumnLayoutSupported()) {
             mMobileOptimizedLayout.setEnabled(false);
+            mMobileOptimizedLayout.setChecked(false);
+        } else {
+            mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         }
-
-
-        mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
@@ -315,6 +312,33 @@ public class Prefs extends K9PreferenceActivity {
 
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
+        // In ICS+ there is no 'background data' setting that apps can chose to ignore anymore. So
+        // we hide that option for "Background Sync".
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            CharSequence[] oldEntries = mBackgroundOps.getEntries();
+            CharSequence[] newEntries = new CharSequence[3];
+            // Use "When 'Auto-sync' is checked" instead of "When 'Background data' & 'Auto-sync'
+            // are checked" as description.
+            newEntries[0] = getString(R.string.background_ops_auto_sync_only);
+            newEntries[1] = oldEntries[2];
+            newEntries[2] = oldEntries[3];
+
+            CharSequence[] oldValues = mBackgroundOps.getEntryValues();
+            CharSequence[] newValues = new CharSequence[3];
+            newValues[0] = oldValues[1];
+            newValues[1] = oldValues[2];
+            newValues[2] = oldValues[3];
+
+            mBackgroundOps.setEntries(newEntries);
+            mBackgroundOps.setEntryValues(newValues);
+
+            // Since ConnectivityManager.getBackgroundDataSetting() always returns 'true' on ICS+
+            // we map WHEN_CHECKED to ALWAYS.
+            if (K9.getBackgroundOps() == K9.BACKGROUND_OPS.WHEN_CHECKED) {
+                mBackgroundOps.setValue(K9.BACKGROUND_OPS.ALWAYS.toString());
+                mBackgroundOps.setSummary(mBackgroundOps.getEntry());
+            }
+        }
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
@@ -354,7 +378,7 @@ public class Prefs extends K9PreferenceActivity {
                 }
             };
         });
-        
+
         mBatchButtonsMarkRead = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MARK_READ);
         mBatchButtonsDelete = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_DELETE);
         mBatchButtonsArchive = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_ARCHIVE);
@@ -398,7 +422,8 @@ public class Prefs extends K9PreferenceActivity {
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
         K9.setConfirmMarkAllAsRead(mConfirmActions.getCheckedItems()[3]);
-        K9.setKeyguardPrivacy(mPrivacyMode.isChecked());
+        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
+
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
         K9.setHideSpecialAccounts(mHideSpecialAccounts.isChecked());
@@ -425,7 +450,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setBatchButtonsFlag(mBatchButtonsFlag.isChecked());
         K9.setBatchButtonsUnselect(mBatchButtonsUnselect.isChecked());
 
-        K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());

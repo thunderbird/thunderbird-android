@@ -156,7 +156,17 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static boolean mKeyguardPrivacy = false;
+
+    private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
+
+    /**
+     * Controls when to hide the subject in the notification area.
+     */
+    public enum NotificationHideSubject {
+        ALWAYS,
+        WHEN_LOCKED,
+        NEVER
+    }
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -179,7 +189,6 @@ public class K9 extends Application {
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
@@ -193,7 +202,7 @@ public class K9 extends Application {
     private static boolean mBatchButtonsMove = false;
     private static boolean mBatchButtonsFlag = true;
     private static boolean mBatchButtonsUnselect = true;
-    
+
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
 
@@ -424,7 +433,6 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
-        editor.putBoolean("zoomControlsEnabled", mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -453,7 +461,7 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsMove", mBatchButtonsMove);
         editor.putBoolean("batchButtonsFlag", mBatchButtonsFlag);
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
-        
+
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
@@ -463,7 +471,10 @@ public class K9 extends Application {
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
 
-        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+        editor.putString("sortTypeEnum", mSortType.name());
+        editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
+
+        editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -475,9 +486,6 @@ public class K9 extends Application {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
-
-        mSortType = Account.DEFAULT_SORT_TYPE;
-        mSortAscending.put(Account.DEFAULT_SORT_TYPE, Account.DEFAULT_SORT_ASCENDING);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -592,7 +600,6 @@ public class K9 extends Application {
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
@@ -612,7 +619,7 @@ public class K9 extends Application {
         mBatchButtonsMove = sprefs.getBoolean("batchButtonsMove", true);
         mBatchButtonsFlag = sprefs.getBoolean("batchButtonsFlag", true);
         mBatchButtonsUnselect = sprefs.getBoolean("batchButtonsUnselect", true);
-        
+
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
@@ -620,8 +627,25 @@ public class K9 extends Application {
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
         mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
 
+        try {
+            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            mSortType = SortType.valueOf(value);
+        } catch (Exception e) {
+            mSortType = Account.DEFAULT_SORT_TYPE;
+        }
 
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        mSortAscending.put(mSortType, sortAscending);
+
+        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        if (notificationHideSubject == null) {
+            // If the "notificationHideSubject" setting couldn't be found, the app was probably
+            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
+            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+                    NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
+        } else {
+            sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        }
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -764,15 +788,6 @@ public class K9 extends Application {
     public static void setManageBack(boolean manageBack) {
         mManageBack = manageBack;
     }
-
-    public static boolean zoomControlsEnabled() {
-        return mZoomControlsEnabled;
-    }
-
-    public static void setZoomControlsEnabled(boolean zoomControlsEnabled) {
-        mZoomControlsEnabled = zoomControlsEnabled;
-    }
-
 
     public static boolean mobileOptimizedLayout() {
         return mMobileOptimizedLayout;
@@ -1039,15 +1054,12 @@ public class K9 extends Application {
         mConfirmMarkAllAsRead = confirm;
     }
 
-    /**
-     * @return Whether privacy rules should be applied when system is locked
-     */
-    public static boolean keyguardPrivacy() {
-        return mKeyguardPrivacy;
+    public static NotificationHideSubject getNotificationHideSubject() {
+        return sNotificationHideSubject;
     }
 
-    public static void setKeyguardPrivacy(final boolean state) {
-        mKeyguardPrivacy = state;
+    public static void setNotificationHideSubject(final NotificationHideSubject mode) {
+        sNotificationHideSubject = mode;
     }
 
     public static boolean useCompactLayouts() {
@@ -1059,47 +1071,47 @@ public class K9 extends Application {
     }
 
     public static boolean batchButtonsMarkRead() {
-    	return mBatchButtonsMarkRead;
+        return mBatchButtonsMarkRead;
     }
     public static void setBatchButtonsMarkRead(final boolean state) {
-    	mBatchButtonsMarkRead = state;
+        mBatchButtonsMarkRead = state;
     }
-    
+
     public static boolean batchButtonsDelete() {
-    	return mBatchButtonsDelete;
+        return mBatchButtonsDelete;
     }
     public static void setBatchButtonsDelete(final boolean state) {
-    	mBatchButtonsDelete = state;
+        mBatchButtonsDelete = state;
     }
-    
+
     public static boolean batchButtonsArchive() {
-    	return mBatchButtonsArchive;
+        return mBatchButtonsArchive;
     }
     public static void setBatchButtonsArchive(final boolean state) {
-    	mBatchButtonsArchive = state;
+        mBatchButtonsArchive = state;
     }
-    
+
     public static boolean batchButtonsMove() {
-    	return mBatchButtonsMove;
+        return mBatchButtonsMove;
     }
     public static void setBatchButtonsMove(final boolean state) {
-    	mBatchButtonsMove = state;
+        mBatchButtonsMove = state;
     }
-    
+
     public static boolean batchButtonsFlag() {
-    	return mBatchButtonsFlag;
+        return mBatchButtonsFlag;
     }
     public static void setBatchButtonsFlag(final boolean state) {
-    	mBatchButtonsFlag = state;
+        mBatchButtonsFlag = state;
     }
-    
+
     public static boolean batchButtonsUnselect() {
-    	return mBatchButtonsUnselect;
+        return mBatchButtonsUnselect;
     }
     public static void setBatchButtonsUnselect(final boolean state) {
-    	mBatchButtonsUnselect = state;
+        mBatchButtonsUnselect = state;
     }
-    
+
     /**
      * Check if this system contains a buggy Gallery 3D package.
      *

@@ -13,9 +13,9 @@
     <!--
     This declares that this application uses the instrumentation test runner targeting
     the package of com.fsck.k9.  To run the tests use the command:
-    "adb shell am instrument -w com.fsck.k9.tests/android.test.InstrumentationTestRunner"
+    "adb shell am instrument -w com.fsck.k9.tests/com.zutubi.android.junitreport.JUnitReportTestRunner"
     -->
-    <instrumentation android:name="android.test.InstrumentationTestRunner"
+    <instrumentation android:name="com.zutubi.android.junitreport.JUnitReportTestRunner"
                      android:targetPackage="com.fsck.k9"
                      android:label="Tests for com.fsck.k9"/>
 </manifest>

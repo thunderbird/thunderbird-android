@@ -956,7 +956,7 @@ public class MimeUtility {
         header = header.replaceAll("\r|\n", "");
         String[] parts = header.split(";");
         if (name == null && parts.length > 0) {
-            return parts[0];
+            return parts[0].trim();
         }
         for (String part : parts) {
             if (part.trim().toLowerCase(Locale.US).startsWith(name.toLowerCase(Locale.US))) {
@@ -3324,6 +3324,7 @@ public class MimeUtility {
             String bodyText = getTextFromPart(part);
             if (bodyText != null) {
                 text = fixDraftTextBody(bodyText);
+                html = HtmlConverter.textToHtml(text, false);
             }
         } else if (part.isMimeType("multipart/alternative") &&
                 firstBody instanceof MimeMultipart) {

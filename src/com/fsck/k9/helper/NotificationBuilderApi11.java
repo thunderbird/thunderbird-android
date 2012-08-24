@@ -1,5 +1,6 @@
 package com.fsck.k9.helper;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.net.Uri;
 /**
  * Create notifications using the new {@link android.app.Notification.Builder} class.
  */
+@TargetApi(11)
 public class NotificationBuilderApi11 extends NotificationBuilder {
     private Notification.Builder mBuilder;
 

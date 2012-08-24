@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="notification_new_title">Nouveau courriel</string>
-    <string name="notification_new_scrolling">Nouveau courriel de <xliff:g id="sender">%s</xliff:g></string>
 
     <string name="accounts_welcome">Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
   \n
@@ -17,14 +16,13 @@
   \n * Sauver les pièces jointes sur la carte SD
   \n * Vider la corbeille
   \n * Trier les messages
-  \n * ...et bien plus encore
+  \n * …et bien plus encore
   \n
   \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
   \n
   \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http://k9mail.googlecode.com/ (en anglais)
     </string>
     <string name="account_setup_basics_email_hint">Adresse courriel</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> n\'est pas une adresse courriel valide.</string>
     <string name="account_settings_notify_label">Nouveaux courriels</string>
     <string name="account_settings_email_label">Votre adresse courriel</string>
     <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un courriel</string>

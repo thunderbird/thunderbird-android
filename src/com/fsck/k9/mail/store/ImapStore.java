@@ -811,12 +811,12 @@ public class ImapStore extends Store {
     class ImapFolder extends Folder {
         private String mName;
         protected volatile int mMessageCount = -1;
-        protected volatile int uidNext = -1;
+        protected volatile long uidNext = -1L;
         protected volatile ImapConnection mConnection;
         private OpenMode mMode;
         private volatile boolean mExists;
         private ImapStore store = null;
-        Map<Integer, String> msgSeqUidMap = new ConcurrentHashMap<Integer, String>();
+        Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
 
 
         public ImapFolder(ImapStore nStore, String name) {
@@ -1246,7 +1246,7 @@ public class ImapStore extends Store {
             return getRemoteMessageCount("FLAGGED NOT DELETED");
         }
 
-        protected int getHighestUid() {
+        protected long getHighestUid() {
             try {
                 ImapSearcher searcher = new ImapSearcher() {
                     public List<ImapResponse> search() throws IOException, MessagingException {
@@ -1255,12 +1255,12 @@ public class ImapStore extends Store {
                 };
                 Message[] messages = search(searcher, null);
                 if (messages.length > 0) {
-                    return Integer.parseInt(messages[0].getUid());
+                    return Long.parseLong(messages[0].getUid());
                 }
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
             }
-            return -1;
+            return -1L;
 
         }
 
@@ -1305,7 +1305,7 @@ public class ImapStore extends Store {
             return search(searcher, listener);
 
         }
-        protected Message[] getMessages(final List<Integer> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected Message[] getMessages(final List<Long> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
@@ -1330,13 +1330,13 @@ public class ImapStore extends Store {
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
-                ArrayList<Integer> uids = new ArrayList<Integer>();
+                ArrayList<Long> uids = new ArrayList<Long>();
                 List<ImapResponse> responses = searcher.search(); //
                 for (ImapResponse response : responses) {
                     if (response.mTag == null) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
-                                uids.add(Integer.parseInt(response.getString(i)));
+                                uids.add(response.getLong(i));
                             }
                         }
                     }
@@ -1345,10 +1345,11 @@ public class ImapStore extends Store {
                 // Sort the uids in numerically ascending order
                 Collections.sort(uids);
                 for (int i = 0, count = uids.size(); i < count; i++) {
+                    String uid = uids.get(i).toString();
                     if (listener != null) {
-                        listener.messageStarted("" + uids.get(i), i, count);
+                        listener.messageStarted(uid, i, count);
                     }
-                    ImapMessage message = new ImapMessage("" + uids.get(i), this);
+                    ImapMessage message = new ImapMessage(uid, this);
                     messages.add(message);
                     if (listener != null) {
                         listener.messageFinished(message, i, count);
@@ -1472,7 +1473,7 @@ public class ImapStore extends Store {
                         if (response.mTag == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                             ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                             String uid = fetchList.getKeyedString("UID");
-                            int msgSeq = response.getNumber(0);
+                            long msgSeq = response.getLong(0);
                             if (uid != null) {
                                 try {
                                     msgSeqUidMap.put(msgSeq, uid);
@@ -1699,7 +1700,7 @@ public class ImapStore extends Store {
                         if (keyObj instanceof String) {
                             String key = (String)keyObj;
                             if ("UIDNEXT".equalsIgnoreCase(key)) {
-                                uidNext = bracketed.getNumber(1);
+                                uidNext = bracketed.getLong(1);
                                 if (K9.DEBUG)
                                     Log.d(K9.LOG_TAG, "Got UidNext = " + uidNext + " for " + getLogId());
                             }
@@ -2091,10 +2092,10 @@ public class ImapStore extends Store {
         public String getNewPushState(String oldPushStateS, Message message) {
             try {
                 String messageUidS = message.getUid();
-                int messageUid = Integer.parseInt(messageUidS);
+                long messageUid = Long.parseLong(messageUidS);
                 ImapPushState oldPushState = ImapPushState.parse(oldPushStateS);
                 if (messageUid >= oldPushState.uidNext) {
-                    int uidNext = messageUid + 1;
+                    long uidNext = messageUid + 1;
                     ImapPushState newPushState = new ImapPushState(uidNext);
                     return newPushState.toString();
                 } else {
@@ -2204,21 +2205,19 @@ public class ImapStore extends Store {
                     capabilityList = response;
                 }
 
-                if (capabilityList != null) {
-                    if (!capabilityList.isEmpty() && ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                if (capabilityList != null && !capabilityList.isEmpty() &&
+                        ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
+                    if (K9.DEBUG) {
+                        Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                    }
+                    for (Object capability : capabilityList) {
+                        if (capability instanceof String) {
+//                            if (K9.DEBUG)
+//                            {
+//                                Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
+//                            }
+                            capabilities.add(((String)capability).toUpperCase(Locale.US));
                         }
-                        for (Object capability : capabilityList) {
-                            if (capability instanceof String) {
-//                                if (K9.DEBUG)
-//                                {
-//                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
-//                                }
-                                capabilities.add(((String)capability).toUpperCase(Locale.US));
-                            }
-                        }
-
                     }
                 }
             }
@@ -2792,7 +2791,7 @@ public class ImapStore extends Store {
 
                     while (!stop.get()) {
                         try {
-                            int oldUidNext = -1;
+                            long oldUidNext = -1L;
                             try {
                                 String pushStateS = receiver.getPushState(getName());
                                 ImapPushState pushState = ImapPushState.parse(pushStateS);
@@ -2828,16 +2827,16 @@ public class ImapStore extends Store {
                             if (stop.get()) {
                                 continue;
                             }
-                            int startUid = oldUidNext;
+                            long startUid = oldUidNext;
 
-                            int newUidNext = uidNext;
+                            long newUidNext = uidNext;
 
                             if (newUidNext == -1) {
                                 if (K9.DEBUG) {
                                     Log.d(K9.LOG_TAG, "uidNext is -1, using search to find highest UID");
                                 }
-                                int highestUid = getHighestUid();
-                                if (highestUid != -1) {
+                                long highestUid = getHighestUid();
+                                if (highestUid != -1L) {
                                     if (K9.DEBUG)
                                         Log.d(K9.LOG_TAG, "highest UID = " + highestUid);
                                     newUidNext = highestUid + 1;
@@ -2858,7 +2857,7 @@ public class ImapStore extends Store {
                                 if (K9.DEBUG)
                                     Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUidNext + " for " + getLogId());
                                 List<Message> messages = new ArrayList<Message>();
-                                for (int uid = startUid; uid < newUidNext; uid++) {
+                                for (long uid = startUid; uid < newUidNext; uid++) {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                                     messages.add(message);
                                 }
@@ -2958,7 +2957,7 @@ public class ImapStore extends Store {
             if (oldMessageCount == -1) {
                 skipSync = true;
             }
-            List<Integer> flagSyncMsgSeqs = new ArrayList<Integer>();
+            List<Long> flagSyncMsgSeqs = new ArrayList<Long>();
             List<String> removeMsgUids = new LinkedList<String>();
 
             for (ImapResponse response : responses) {
@@ -2984,7 +2983,7 @@ public class ImapStore extends Store {
         }
 
         private void syncMessages(int end, boolean newArrivals) throws MessagingException {
-            int oldUidNext = -1;
+            long oldUidNext = -1L;
             try {
                 String pushStateS = receiver.getPushState(getName());
                 ImapPushState pushState = ImapPushState.parse(pushStateS);
@@ -2997,10 +2996,10 @@ public class ImapStore extends Store {
 
             Message[] messageArray = getMessages(end, end, null, true, null);
             if (messageArray != null && messageArray.length > 0) {
-                int newUid = Integer.parseInt(messageArray[0].getUid());
+                long newUid = Long.parseLong(messageArray[0].getUid());
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
-                int startUid = oldUidNext;
+                long startUid = oldUidNext;
                 if (startUid < newUid - 10) {
                     startUid = newUid - 10;
                 }
@@ -3012,8 +3011,8 @@ public class ImapStore extends Store {
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUid + " for " + getLogId());
                     List<Message> messages = new ArrayList<Message>();
-                    for (int uid = startUid; uid <= newUid; uid++) {
-                        ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
+                    for (long uid = startUid; uid <= newUid; uid++) {
+                        ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
                         messages.add(message);
                     }
                     if (!messages.isEmpty()) {
@@ -3023,7 +3022,7 @@ public class ImapStore extends Store {
             }
         }
 
-        private void syncMessages(List<Integer> flagSyncMsgSeqs) {
+        private void syncMessages(List<Long> flagSyncMsgSeqs) {
             try {
                 Message[] messageArray = null;
 
@@ -3066,7 +3065,7 @@ public class ImapStore extends Store {
 
         }
 
-        protected int processUntaggedResponse(int oldMessageCount, ImapResponse response, List<Integer> flagSyncMsgSeqs, List<String> removeMsgUids) {
+        protected int processUntaggedResponse(long oldMessageCount, ImapResponse response, List<Long> flagSyncMsgSeqs, List<String> removeMsgUids) {
             super.handleUntaggedResponse(response);
             int messageCountDelta = 0;
             if (response.mTag == null && response.size() > 1) {
@@ -3074,7 +3073,7 @@ public class ImapStore extends Store {
                     Object responseType = response.get(1);
                     if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")) {
                         Log.i(K9.LOG_TAG, "Got FETCH " + response);
-                        int msgSeq = response.getNumber(0);
+                        long msgSeq = response.getLong(0);
 
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
@@ -3084,17 +3083,17 @@ public class ImapStore extends Store {
                         }
                     }
                     if (ImapResponseParser.equalsIgnoreCase(responseType, "EXPUNGE")) {
-                        int msgSeq = response.getNumber(0);
+                        long msgSeq = response.getLong(0);
                         if (msgSeq <= oldMessageCount) {
                             messageCountDelta = -1;
                         }
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
 
-                        List<Integer> newSeqs = new ArrayList<Integer>();
-                        Iterator<Integer> flagIter = flagSyncMsgSeqs.iterator();
+                        List<Long> newSeqs = new ArrayList<Long>();
+                        Iterator<Long> flagIter = flagSyncMsgSeqs.iterator();
                         while (flagIter.hasNext()) {
-                            Integer flagMsg = flagIter.next();
+                            long flagMsg = flagIter.next();
                             if (flagMsg >= msgSeq) {
                                 flagIter.remove();
                                 if (flagMsg > msgSeq) {
@@ -3105,14 +3104,13 @@ public class ImapStore extends Store {
                         flagSyncMsgSeqs.addAll(newSeqs);
 
 
-                        List<Integer> msgSeqs = new ArrayList<Integer>(msgSeqUidMap.keySet());
+                        List<Long> msgSeqs = new ArrayList<Long>(msgSeqUidMap.keySet());
                         Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
 
-                        for (Integer msgSeqNumI : msgSeqs) {
+                        for (long msgSeqNum : msgSeqs) {
                             if (K9.DEBUG) {
-                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNumI);
+                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
                             }
-                            int msgSeqNum = msgSeqNumI;
                             if (msgSeqNum == msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
                                 if (K9.DEBUG) {
@@ -3294,12 +3292,12 @@ public class ImapStore extends Store {
     }
 
     protected static class ImapPushState {
-        protected int uidNext;
-        protected ImapPushState(int nUidNext) {
+        protected long uidNext;
+        protected ImapPushState(long nUidNext) {
             uidNext = nUidNext;
         }
         protected static ImapPushState parse(String pushState) {
-            int newUidNext = -1;
+            long newUidNext = -1L;
             if (pushState != null) {
                 StringTokenizer tokenizer = new StringTokenizer(pushState, ";");
                 while (tokenizer.hasMoreTokens()) {
@@ -3310,8 +3308,8 @@ public class ImapStore extends Store {
                         if ("uidNext".equalsIgnoreCase(key) && thisState.hasMoreTokens()) {
                             String value = thisState.nextToken();
                             try {
-                                newUidNext = Integer.parseInt(value);
-                            } catch (Exception e) {
+                                newUidNext = Long.parseLong(value);
+                            } catch (NumberFormatException e) {
                                 Log.e(K9.LOG_TAG, "Unable to part uidNext value " + value, e);
                             }
 

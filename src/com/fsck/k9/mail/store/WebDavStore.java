@@ -1992,11 +1992,6 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public int hashCode() {
-            return super.hashCode();
-        }
-
-        @Override
         public String getUidFromMessageId(Message message) throws MessagingException {
             Log.e(K9.LOG_TAG,
                   "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "

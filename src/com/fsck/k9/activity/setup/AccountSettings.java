@@ -1,10 +1,12 @@
 
 package com.fsck.k9.activity.setup;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.*;
@@ -39,6 +41,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
+    private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
+    private static final int DIALOG_COLOR_PICKER_LED = 2;
+
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
@@ -46,6 +51,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
+    private static final String PREFERENCE_SCREEN_NOTIFICATIONS = "notifications";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
@@ -103,6 +109,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_SPAM_FILTER_ENABLED = "spam_filter_enabled";
+    private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
     private static final String PREFERENCE_SPAM_BLACKLIST = "spam_blacklist";
     private static final String PREFERENCE_SPAM_LOG = "spam_log";
 
@@ -166,6 +173,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mSentFolder;
     private ListPreference mSpamFolder;
     private ListPreference mTrashFolder;
+    private CheckBoxPreference mAlwaysShowCcBcc;
     private CheckBoxPreference mSpamFilterEnabled;
     private EditTextPreference mSpamBlacklist;
     private EditTextPreference mSpamLog;
@@ -222,6 +230,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mAlwaysShowCcBcc = (CheckBoxPreference) findPreference(PREFERENCE_ALWAYS_SHOW_CC_BCC);
+        mAlwaysShowCcBcc.setChecked(mAccount.isAlwaysShowCcBcc());
 
         mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
         mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
@@ -574,8 +585,23 @@ public class AccountSettings extends K9PreferenceActivity {
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-        mNotificationUnreadCount = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
-        mNotificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
+        CheckBoxPreference notificationUnreadCount =
+                (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
+
+        /*
+         * Honeycomb and newer don't show the notification number as overlay on the notification
+         * icon in the status bar, so we hide the setting.
+         *
+         * See http://code.google.com/p/android/issues/detail?id=21477
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            PreferenceScreen notificationsPrefs =
+                    (PreferenceScreen) findPreference(PREFERENCE_SCREEN_NOTIFICATIONS);
+            notificationsPrefs.removePreference(notificationUnreadCount);
+        } else {
+            notificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
+            mNotificationUnreadCount = notificationUnreadCount;
+        }
 
         new PopulateFolderPrefsTask().execute();
 
@@ -699,7 +725,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
-        mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
+        if (mNotificationUnreadCount != null) {
+            mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
+        }
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         if (mIsExpungeCapable) {
@@ -709,6 +737,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
@@ -826,21 +855,60 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     public void onChooseChipColor() {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener() {
-            public void colorChanged(int color) {
-                mAccount.setChipColor(color);
-            }
-        },
-        mAccount.getChipColor()).show();
+        showDialog(DIALOG_COLOR_PICKER_ACCOUNT);
     }
 
+
     public void onChooseLedColor() {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener() {
-            public void colorChanged(int color) {
-                mAccount.getNotificationSetting().setLedColor(color);
+        showDialog(DIALOG_COLOR_PICKER_LED);
+    }
+
+    @Override
+    public Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+            case DIALOG_COLOR_PICKER_ACCOUNT: {
+                dialog = new ColorPickerDialog(this,
+                        new ColorPickerDialog.OnColorChangedListener() {
+                            public void colorChanged(int color) {
+                                mAccount.setChipColor(color);
+                            }
+                        },
+                        mAccount.getChipColor());
+
+                break;
             }
-        },
-        mAccount.getNotificationSetting().getLedColor()).show();
+            case DIALOG_COLOR_PICKER_LED: {
+                dialog = new ColorPickerDialog(this,
+                        new ColorPickerDialog.OnColorChangedListener() {
+                            public void colorChanged(int color) {
+                                mAccount.getNotificationSetting().setLedColor(color);
+                            }
+                        },
+                        mAccount.getNotificationSetting().getLedColor());
+
+                break;
+            }
+        }
+
+        return dialog;
+    }
+
+    @Override
+    public void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case DIALOG_COLOR_PICKER_ACCOUNT: {
+                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+                colorPicker.setColor(mAccount.getChipColor());
+                break;
+            }
+            case DIALOG_COLOR_PICKER_LED: {
+                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+                colorPicker.setColor(mAccount.getNotificationSetting().getLedColor());
+                break;
+            }
+        }
     }
 
     public void onChooseAutoExpandFolder() {

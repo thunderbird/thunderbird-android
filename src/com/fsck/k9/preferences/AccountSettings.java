@@ -30,6 +30,12 @@ public class AccountSettings {
          * and use that for whatever you add here.
          */
 
+        s.put("alwaysBcc", Settings.versions(
+                new V(11, new StringSetting(""))
+            ));
+        s.put("alwaysShowCcBcc", Settings.versions(
+                new V(13, new BooleanSetting(false))
+            ));
         s.put("archiveFolderName", Settings.versions(
                 new V(1, new StringSetting("Archive"))
             ));
