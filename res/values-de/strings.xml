@@ -339,7 +339,7 @@ http://k9mail.googlecode.com/.
     <string name="global_settings_unselect">Alle deselektieren</string>
 
     <string name="quiet_time">Ruhezeit</string>
-    <string name="quiet_time_description">Deaktivere Klingeln, Vibrieren und Leuchten in der Nacht</string>
+    <string name="quiet_time_description">Deaktiviere Klingeln, Vibrieren und Leuchten in der Nacht</string>
     <string name="quiet_time_starts">Ruhezeit startet</string>
     <string name="quiet_time_ends">Ruhezeit endet</string>
 
@@ -699,7 +699,7 @@ http://k9mail.googlecode.com/.
 
     <string name="manage_identities_title">Identitäten verwalten</string>
 
-    <string name="manage_identities_context_menu_title">Identität berarbeiten</string>
+    <string name="manage_identities_context_menu_title">Identität bearbeiten</string>
 
     <string name="edit_identity_title">Identität bearbeiten</string>
     <string name="new_identity_action">Neue Identität erstellen</string>
@@ -912,7 +912,7 @@ http://k9mail.googlecode.com/.
     <string name="folder_settings_include_in_integrated_inbox_label">Integration in gemeinsamen Posteingang</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Ungelesene Nachrichten im gemeinsamen Posteingang anzeigen</string>
 
-    <string name="account_settings_searchable_label">Ordner duchsuchen</string>
+    <string name="account_settings_searchable_label">Ordner durchsuchen</string>
     <string name="account_settings_searchable_all">Alle</string>
     <string name="account_settings_searchable_displayable">Angezeigte</string>
     <string name="account_settings_searchable_none">Keine</string>
