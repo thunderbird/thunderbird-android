@@ -521,7 +521,10 @@ public class MessageList extends K9ListActivity implements
         private void setWindowTitle() {
             // regular folder content display
             if (mFolderName != null) {
-                mNavigationSpinner.setTitle(mFolderName);
+                String displayName = FolderInfoHolder.getDisplayName(MessageList.this, mAccount,
+                        mFolderName);
+
+                mNavigationSpinner.setTitle(displayName);
                 mNavigationSpinner.setSubTitle(mAccount.getEmail());
 
             // query result display
