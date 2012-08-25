@@ -34,19 +34,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -60,7 +59,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.misc.ActionBarNavigationSpinner;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -84,8 +82,7 @@ import com.fsck.k9.mail.store.StorageManager;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9ListActivity implements
-        AdapterView.OnItemClickListener, OnNavigationListener,
+public class MessageList extends K9ListActivity implements OnItemClickListener,
         OnSwipeGestureListener {
 
     /**
@@ -304,7 +301,6 @@ public class MessageList extends K9ListActivity implements
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
-    private ActionBarNavigationSpinner mNavigationSpinner;
     private ActionBar mActionBar;
     private ActionMode mActionMode;
     private View mActionBarProgressView;
@@ -323,6 +319,10 @@ public class MessageList extends K9ListActivity implements
     MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    private TextView mActionBarTitle;
+    private TextView mActionBarSubTitle;
+    private TextView mActionBarUnread;
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
@@ -518,9 +518,15 @@ public class MessageList extends K9ListActivity implements
             String displayName = FolderInfoHolder.getDisplayName(MessageList.this, mAccount,
                 mFolderName);
 
-            mNavigationSpinner.setTitle(displayName);
-            mNavigationSpinner.setSubTitle(mAccount.getEmail());
+            mActionBarTitle.setText(displayName);
+            mActionBarSubTitle.setText(mAccount.getEmail());
 
+            if (mUnreadMessageCount == 0) {
+                mActionBarUnread.setVisibility(View.GONE);
+            } else {
+                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                mActionBarUnread.setVisibility(View.VISIBLE);
+            }
         // query result display
         } else if (mQueryString != null) {
             if (mTitle != null) {
@@ -902,10 +908,13 @@ public class MessageList extends K9ListActivity implements
 
     private void initializeActionBar() {
         if (mQueryString == null) {
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-            mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
-            mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setCustomView(R.layout.actionbar_custom);
+
+            View customView = mActionBar.getCustomView();
+            mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
+            mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
+            mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
         }
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -2728,19 +2737,6 @@ public class MessageList extends K9ListActivity implements
         }
 
         return account;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_FOLDERS) {
-            onShowFolderList();
-            return true;
-        } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
-            onAccounts();
-            return true;
-        }
-
-        return false;
     }
 
     private boolean handleContextRelatedClick(int position){
