@@ -2378,7 +2378,7 @@ public class MessageList extends K9ListActivity implements
     }
 
     private void toggleAllSelected() {
-	boolean newState = true;
+        boolean newState = true;
 
         synchronized (mAdapter.messages) {
             if (mSelectedCount > 0) {
@@ -2939,9 +2939,9 @@ public class MessageList extends K9ListActivity implements
 	            break;
 	        }
 	        case R.id.same_sender: {
-	            MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender,
-				selection.get(0).senderAddress, false, null, null);
-				mSelectedCount = 0;
+                MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender,
+                    selection.get(0).senderAddress, false, null, null);
+                mSelectedCount = 0;
 	            break;
 	        }
 			}
