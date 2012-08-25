@@ -521,13 +521,7 @@ public class MessageList extends K9ListActivity implements
         private void setWindowTitle() {
             // regular folder content display
             if (mFolderName != null) {
-            	String folderNameProc = mFolderName;
-
-            	if (folderNameProc.length() > 15) {
-            		folderNameProc = mFolderName.substring(0, 15) + "...";
-            	}
-
-                mNavigationSpinner.setTitle(folderNameProc+" ["+mUnreadMessageCount+"]");
+                mNavigationSpinner.setTitle(mFolderName);
                 mNavigationSpinner.setSubTitle(mAccount.getEmail());
 
             // query result display
