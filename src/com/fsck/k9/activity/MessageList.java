@@ -522,11 +522,11 @@ public class MessageList extends K9ListActivity implements
             // regular folder content display
             if (mFolderName != null) {
             	String folderNameProc = mFolderName;
-            	
+
             	if (folderNameProc.length() > 15) {
             		folderNameProc = mFolderName.substring(0, 15) + "...";
             	}
-            	
+
                 mNavigationSpinner.setTitle(folderNameProc+" ["+mUnreadMessageCount+"]");
                 mNavigationSpinner.setSubTitle(mAccount.getEmail());
 
@@ -546,7 +546,7 @@ public class MessageList extends K9ListActivity implements
             if (mRefreshMenuItem == null) {
                 return;
             }
-            
+
             runOnUiThread(new Runnable() {
                 public void run() {
                 	if (progress) {
@@ -678,7 +678,7 @@ public class MessageList extends K9ListActivity implements
         super.onCreate(savedInstanceState);
 
         mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
-        
+
         // need this for actionbar initialization
         mQueryString = getIntent().getStringExtra(EXTRA_QUERY);
 
@@ -916,14 +916,14 @@ public class MessageList extends K9ListActivity implements
 
     }
 
-    private void initializeActionBar() { 
+    private void initializeActionBar() {
     	if (mQueryString == null) {
 	        mActionBar.setDisplayShowTitleEnabled(false);
 	        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 	        mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
 	        mActionBar.setListNavigationCallbacks(mNavigationSpinner, this);
     	}
-    	
+
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -1180,11 +1180,11 @@ public class MessageList extends K9ListActivity implements
     private void onForward(MessageInfoHolder holder) {
         MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
     }
-    
+
     private void onResendMessage(MessageInfoHolder message) {
         MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
     }
-    
+
     private void onEditPrefs() {
         Prefs.actionPrefs(this);
     }
@@ -2291,19 +2291,19 @@ public class MessageList extends K9ListActivity implements
 
     private void toggleAllSelected() {
     	boolean newState = true;
-        
+
         synchronized (mAdapter.messages) {
             if (mSelectedCount > 0) {
             	newState = false;
             }
-            
+
             mSelectedCount = 0;
-            
+
             for (MessageInfoHolder holder : mAdapter.messages) {
                 holder.selected = newState;
                 mSelectedCount += (newState ? 1 : 0);
             }
-            
+
             if (newState) {
             	mActionMode = MessageList.this.startActionMode(mActionModeCallback);
             	mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
@@ -2314,7 +2314,7 @@ public class MessageList extends K9ListActivity implements
         }
         mAdapter.notifyDataSetChanged();
     }
-    
+
     private void setSelected(final List<MessageInfoHolder> holders, final boolean newState) {
         for (final MessageInfoHolder holder : holders) {
             if (holder.selected != newState) {
@@ -2681,11 +2681,11 @@ public class MessageList extends K9ListActivity implements
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			
+
 			// enable or disable forward, reply,....
             menu.findItem(R.id.single_message_options)
 					.setVisible(mSelectedCount > 1 ? false : true);
-            
+
 			if (mQueryString != null) {
 				// show all
 	            menu.findItem(R.id.move).setVisible(true);
@@ -2693,7 +2693,7 @@ public class MessageList extends K9ListActivity implements
 	            menu.findItem(R.id.spam).setVisible(true);
 	            menu.findItem(R.id.copy).setVisible(true);
 	            menu.findItem(R.id.move_or_copy).setVisible(true);
-	            
+
 	            // hide uncapable
 				/*
 				 *  TODO think of a better way then looping over all
@@ -2734,26 +2734,26 @@ public class MessageList extends K9ListActivity implements
 		 * Disables menu options based on if the account supports it or not.
 		 * It also checks the controller and for now the 'mode' the messagelist
 		 * is operation in ( query or not ).
-		 * 
+		 *
 		 * @param mAccount Account to check capabilities of.
 		 * @param menu Menu to adapt.
 		 */
 		private void setContextCapabilities(Account mAccount, Menu menu) {
 			/*
-			 * TODO get rid of this when we finally split the messagelist into 
+			 * TODO get rid of this when we finally split the messagelist into
 			 * a folder content display and a search result display
 			 */
 			if (mQueryString != null) {
 	            menu.findItem(R.id.move).setVisible(false);
 	            menu.findItem(R.id.copy).setVisible(false);
 	            menu.findItem(R.id.move_or_copy).setVisible(false);
-	            
+
 	            menu.findItem(R.id.archive).setVisible(false);
 	            menu.findItem(R.id.spam).setVisible(false);
-	            
+
 	            return;
 			}
-			
+
 			// hide unsupported
 	        if (!mController.isCopyCapable(mAccount)) {
 	            menu.findItem(R.id.copy).setVisible(false);
@@ -2769,7 +2769,7 @@ public class MessageList extends K9ListActivity implements
 	        		&& !mController.isCopyCapable(mAccount)) {
 	            menu.findItem(R.id.move_or_copy).setVisible(false);
 	        }
-	        
+
 	        if (!mAccount.hasArchiveFolder()) {
 	            menu.findItem(R.id.archive).setVisible(false);
 	        }
@@ -2804,7 +2804,7 @@ public class MessageList extends K9ListActivity implements
 				onToggleFlag(selection);
 				break;
 			}
-			
+
 			// only if the account supports this
 			case R.id.archive: {
 				onArchive(selection);
@@ -2826,7 +2826,7 @@ public class MessageList extends K9ListActivity implements
 				mSelectedCount = 0;
 				break;
 			}
-			
+
 			// only if a single message is selected
 	        case R.id.reply: {
 	            onReply(selection.get(0));
@@ -2849,7 +2849,7 @@ public class MessageList extends K9ListActivity implements
 	            break;
 	        }
 	        case R.id.same_sender: {
-	            MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender, 
+	            MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender,
 	            		selection.get(0).senderAddress, false, null, null);
 				mSelectedCount = 0;
 	            break;
