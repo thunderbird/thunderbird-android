@@ -34,6 +34,9 @@
             <item
                 android:id="@+id/forward"
                 android:title="@string/forward_action"/>    
+		    <item
+		        android:id="@+id/share"
+		        android:title="@string/send_alternate_action" />
         </menu>
     </item>
     <item
@@ -82,9 +85,4 @@
 		android:title="@string/select_text_action"
 		android:showAsAction="never"
 	/>
-	<item
-        android:id="@+id/share"
-        android:showAsAction="never"
-        android:title="@string/send_alternate_action"
-    />
 </menu>
