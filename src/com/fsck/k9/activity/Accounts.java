@@ -35,6 +35,8 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ContextMenu;
+
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
@@ -135,6 +137,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
+    private ActionBar mActionBar;
+    
+    private TextView mActionBarTitle;
+    private TextView mActionBarSubTitle;
+    private TextView mActionBarUnread;
+    
     /**
      * Contains information about objects that need to be retained on configuration changes.
      *
@@ -147,9 +155,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
-            String dispString = mListener.formatHeader(Accounts.this, getString(R.string.accounts_title), mUnreadMessageCount, getTimeFormat());
-
-            setTitle(dispString);
+        	mActionBarTitle.setText(" "+getString(R.string.accounts_title));
+            mActionBarUnread.setText(String.valueOf(mUnreadMessageCount));
+            
+            String operation = mListener.getOperation(Accounts.this, getTimeFormat());
+            operation.trim();
+            if (operation.length() < 1) {
+            	mActionBarSubTitle.setVisibility(View.GONE);
+            } else {
+            	mActionBarSubTitle.setVisibility(View.VISIBLE);
+            	mActionBarSubTitle.setText(operation);
+            }
         }
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
@@ -379,7 +395,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
         
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        getSupportActionBar().setHomeButtonEnabled(false);
+        mActionBar = getSupportActionBar();
+        initializeActionBar();
         setContentView(R.layout.accounts);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
@@ -401,6 +418,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
     }
 
+    private void initializeActionBar() {
+    	mActionBar.setDisplayShowCustomEnabled(true);
+	    mActionBar.setCustomView(R.layout.actionbar_custom);
+	    
+	    View customView = mActionBar.getCustomView();
+	    mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
+	    mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
+	    mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
+
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+    }
+    
     /**
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
