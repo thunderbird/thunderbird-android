@@ -267,6 +267,7 @@
         <activity android:name="com.fsck.k9.activity.Search"
                   android:label="@string/search_action"
                   android:configChanges="locale"
+                  android:uiOptions="splitActionBarWhenNarrow"
                   >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
