@@ -521,19 +521,21 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             mActionBarTitle.setText(displayName);
             mActionBarSubTitle.setText(mAccount.getEmail());
 
-            if (mUnreadMessageCount == 0) {
-                mActionBarUnread.setVisibility(View.GONE);
-            } else {
-                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
-                mActionBarUnread.setVisibility(View.VISIBLE);
-            }
         // query result display
         } else if (mQueryString != null) {
             if (mTitle != null) {
-                setTitle(mTitle);
+                mActionBarTitle.setText(mTitle);
             } else {
-                setTitle(getString(R.string.search_results));
+                mActionBarTitle.setText(getString(R.string.search_results));
             }
+        }
+
+        // set unread count
+        if (mUnreadMessageCount == 0) {
+            mActionBarUnread.setVisibility(View.GONE);
+        } else {
+            mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+            mActionBarUnread.setVisibility(View.VISIBLE);
         }
     }
 
@@ -907,14 +909,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     }
 
     private void initializeActionBar() {
-        if (mQueryString == null) {
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setCustomView(R.layout.actionbar_custom);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(R.layout.actionbar_custom);
 
-            View customView = mActionBar.getCustomView();
-            mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-            mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-            mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
+        View customView = mActionBar.getCustomView();
+        mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
+        mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
+        mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
+
+        if (mQueryString != null) {
+            mActionBarSubTitle.setVisibility(View.GONE);
         }
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
