@@ -704,7 +704,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         mPreviewLines = K9.messageListPreviewLines();
 
         initializeMessageList(getIntent(), true);
-
+        getListView().setVerticalFadingEdgeEnabled(false);
+        
         // Enable gesture detection for MessageLists
         mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
 
