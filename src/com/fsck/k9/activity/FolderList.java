@@ -19,16 +19,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -40,11 +38,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.AccountStats;
@@ -55,7 +52,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.FolderList.FolderListAdapter.FolderListFilter;
-import com.fsck.k9.activity.misc.ActionBarNavigationSpinner;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -76,7 +72,7 @@ import com.fsck.k9.service.MailService;
  * Activity shows list of the Account's folders
  */
 
-public class FolderList extends K9ListActivity implements OnNavigationListener {
+public class FolderList extends K9ListActivity {
     /*
      * Constants for showDialog() etc.
      */
@@ -103,6 +99,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     private int mUnreadMessageCount;
 
+    private FolderInfoHolder mSelectedContextFolder = null;
+    
     private FontSizes mFontSizes = K9.getFontSizes();
     private Context context;
     
@@ -306,6 +304,27 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                 onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);
             }
         });
+        
+        // Enable context action bar behaviour
+        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+                // is already in selection mode we ignore the next long presses
+                if (mSelectedContextFolder != null) {
+                    return false;
+                }
+
+                // this cast will always be safe
+                mSelectedContextFolder = (FolderInfoHolder) mAdapter.getItem(position);
+
+                mActionMode = FolderList.this.startActionMode(mActionModeCallback);
+                mActionMode.invalidate();
+                mActionMode.setTitle(String.format(getString(R.string.actionbar_string_selected),
+                                                   mSelectedContextFolder.displayName));
+                return true;
+			}});
+        
         registerForContextMenu(mListView);
 
         mListView.setSaveEnabled(true);
@@ -327,19 +346,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
-    }
-    
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_INBOX) {
-            onOpenFolder(mAccount.getInboxFolderName());
-            return true;
-        } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
-            onAccounts();
-            return true;
-        }
-
-        return false;
     }
     
     @Override
@@ -660,54 +666,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         return true;
     }
 
-    @Override public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
-        FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
-
-        switch (item.getItemId()) {
-        case R.id.open_folder:
-            onOpenFolder(folder.name);
-            break;
-
-        case R.id.mark_all_as_read:
-            onMarkAllAsRead(mAccount, folder.name);
-            break;
-
-        case R.id.send_messages:
-            sendMail(mAccount);
-
-            break;
-
-        case R.id.check_mail:
-            checkMail(folder);
-
-            break;
-
-        case R.id.folder_settings:
-            onEditFolder(mAccount, folder.name);
-
-            break;
-
-        case R.id.empty_trash:
-            onEmptyTrash(mAccount);
-
-            break;
-        case R.id.expunge:
-            onExpunge(mAccount, folder.name);
-
-            break;
-
-        case R.id.clear_local_folder:
-            onClearFolder(mAccount, folder.name);
-            break;
-        }
-
-        return super.onContextItemSelected(item);
-    }
-
-    private FolderInfoHolder mSelectedContextFolder = null;
-
-
     private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextFolder = mAdapter.getFolder(folder);
         if (K9.confirmMarkAllAsRead()) {
@@ -818,39 +776,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             super.onPrepareDialog(id, dialog);
         }
         }
-    }
-
-    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        getMenuInflater().inflate(R.menu.folder_context, menu);
-
-        FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
-
-        menu.setHeaderTitle(folder.displayName);
-
-        if (!folder.name.equals(mAccount.getTrashFolderName()))
-            menu.findItem(R.id.empty_trash).setVisible(false);
-
-        if (folder.name.equals(mAccount.getOutboxFolderName())) {
-            menu.findItem(R.id.check_mail).setVisible(false);
-        } else {
-            menu.findItem(R.id.send_messages).setVisible(false);
-        }
-        if (K9.ERROR_FOLDER_NAME.equals(folder.name)) {
-            menu.findItem(R.id.expunge).setVisible(false);
-        }
-
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount)) {
-            // FIXME: Really we want to do this for all local-only folders
-            if (!mAccount.getInboxFolderName().equals(folder.name)) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            }
-
-            menu.findItem(R.id.expunge).setVisible(false);
-        }
-
-        menu.setHeaderTitle(folder.displayName);
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
@@ -1459,4 +1384,93 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         MessageList.actionHandle(context, description, searchSpec);
     }
 
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        	FolderInfoHolder folder = mSelectedContextFolder;
+
+            menu.findItem(R.id.empty_trash).setVisible(
+            		folder.name.equals(mAccount.getTrashFolderName()) ? false : true);
+            
+            if (folder.name.equals(mAccount.getOutboxFolderName())) {
+                menu.findItem(R.id.check_mail).setVisible(false);
+                menu.findItem(R.id.send_messages).setVisible(true);
+            } else {
+                menu.findItem(R.id.send_messages).setVisible(false);
+                menu.findItem(R.id.check_mail).setVisible(true);
+            }
+            
+            menu.findItem(R.id.expunge).setVisible(
+            		K9.ERROR_FOLDER_NAME.equals(folder.name) ? false : true);
+
+            if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount)) {
+                // FIXME: Really we want to do this for all local-only folders
+                if (!mAccount.getInboxFolderName().equals(folder.name)) {
+                    menu.findItem(R.id.check_mail).setVisible(false);
+                } else {
+                	menu.findItem(R.id.check_mail).setVisible(true);
+                }
+
+                menu.findItem(R.id.expunge).setVisible(false);
+            } else {
+                menu.findItem(R.id.expunge).setVisible(true);
+            }
+            
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+        	mSelectedContextFolder = null;
+            mActionMode = null;
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.folder_context, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {;
+            FolderInfoHolder folder= mSelectedContextFolder;
+
+            switch (item.getItemId()) {
+            case R.id.mark_all_as_read:
+                onMarkAllAsRead(mAccount, folder.name);
+                break;
+
+            case R.id.send_messages:
+                sendMail(mAccount);
+
+                break;
+
+            case R.id.check_mail:
+                checkMail(folder);
+
+                break;
+
+            case R.id.folder_settings:
+                onEditFolder(mAccount, folder.name);
+
+                break;
+
+            case R.id.empty_trash:
+                onEmptyTrash(mAccount);
+
+                break;
+            case R.id.expunge:
+                onExpunge(mAccount, folder.name);
+
+                break;
+
+            case R.id.clear_local_folder:
+                onClearFolder(mAccount, folder.name);
+                break;
+            }
+            return true;
+        }
+    };
 }
