@@ -322,10 +322,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_confirm_action_mark_all_as_read">すべて既読にする</string>
     <string name="global_settings_confirm_action_send">送信</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">通知時にメールの題名を隠すか</string>
+    <string name="global_settings_notification_hide_subject_never">常に表示する</string>
+    <string name="global_settings_notification_hide_subject_when_locked">ロック時のみ隠す</string>
+    <string name="global_settings_notification_hide_subject_always">常に隠す</string>
 
     <string name="global_settings_batch_buttons">一括処理ボタン</string>
     <string name="global_settings_batch_buttons_summary">メッセージ選択時に表示する一括処理ボタンを設定する</string>
@@ -829,7 +829,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="background_ops_always">常時利用</string>
     <string name="background_ops_enabled">バックグランドデータがチェックされた時</string>
     <string name="background_ops_auto_sync">バックグランドデータと自動同期がチェックされた時</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">自動同期がチェックされた時</string>
 
     <string name="no_message_seletected_toast">メッセージが選択されていません</string>
 
@@ -1004,6 +1004,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
         <item quantity="one">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
         <item quantity="other">本当にこれら<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを迷惑メールフォルダに移動しますか？</item>
 <!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
   Possible values for 'quantity': zero, one, two, few, many, other
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
