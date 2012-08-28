@@ -519,8 +519,13 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 mFolderName);
 
             mActionBarTitle.setText(displayName);
-            mActionBarSubTitle.setText(mAccount.getEmail());
 
+            String operation = mAdapter.mListener.getOperation(MessageList.this, getTimeFormat()).trim();
+            if (operation.length() < 1) {
+                mActionBarSubTitle.setText(mAccount.getEmail());
+            } else {
+                mActionBarSubTitle.setText(operation);
+            }
         // query result display
         } else if (mQueryString != null) {
             if (mTitle != null) {
