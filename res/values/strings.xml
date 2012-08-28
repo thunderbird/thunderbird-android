@@ -101,6 +101,7 @@ http://k9mail.googlecode.com/
     <string name="status_syncing_off">\u0020(Syncing disabled)</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
+    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g> account selected</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Previous</string> <!-- Used as part of a multi-step process -->
