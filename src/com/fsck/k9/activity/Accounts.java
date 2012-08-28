@@ -1033,6 +1033,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         .deleteAccount(realAccount);
                         K9.setServicesEnabled(Accounts.this);
                         refresh();
+                        mActionMode.finish();
                     }
                 }
             });
