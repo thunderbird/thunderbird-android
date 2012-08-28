@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -104,17 +105,30 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     private FontSizes mFontSizes = K9.getFontSizes();
     private Context context;
+
 	private MenuItem mRefreshMenuItem;
 	private View mActionBarProgressView;
-	private ActionBarNavigationSpinner mNavigationSpinner;
+    private ActionBar mActionBar;
+    private ActionMode mActionMode;
+
+    private TextView mActionBarTitle;
+    private TextView mActionBarSubTitle;
+    private TextView mActionBarUnread;
 
     class FolderListHandler extends Handler {
 
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    mNavigationSpinner.setTitle(getString(R.string.folders_title) + " [" + mUnreadMessageCount + "]");
-                    mNavigationSpinner.setSubTitle(mAccount.getEmail());
+			mActionBarTitle.setText(getString(R.string.folders_title));
+                    mActionBarUnread.setText(String.valueOf(mUnreadMessageCount));
+
+                    String operation = mAdapter.mListener.getOperation(FolderList.this, getTimeFormat()).trim();
+                    if (operation.length() < 1) {
+                        mActionBarSubTitle.setText(mAccount.getEmail());
+                    } else {
+                        mActionBarSubTitle.setText(operation);
+                    }
                 }
             });
         }
@@ -279,6 +293,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
+        mActionBar = getSupportActionBar();
         initializeActionBar();
         setContentView(R.layout.folder_list);
         mListView = getListView();
@@ -303,17 +318,15 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     }
 
     private void initializeActionBar() {
-        requestWindowFeature(Window.FEATURE_PROGRESS);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(R.layout.actionbar_custom);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        View customView = mActionBar.getCustomView();
+        mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
+        mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
+        mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
 
-        mNavigationSpinner = ActionBarNavigationSpinner.getDefaultSpinner(this);
-        actionBar.setListNavigationCallbacks(mNavigationSpinner, this);
-
-        actionBar.setSelectedNavigationItem(1);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
