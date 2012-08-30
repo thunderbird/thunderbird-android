@@ -923,7 +923,7 @@ public class ImapStore extends Store {
                         if (flags != null) {
                             // parse: * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted
                             // \Seen \Draft NonJunk $label1 \*)] Flags permitted.
-                            parseFlags(flags, mPermanentFlagsIndex);
+                            parseFlags(flags);
                         } else {
                             Object keyObj = bracketed.get(0);
                             if (keyObj instanceof String) {
@@ -953,26 +953,24 @@ public class ImapStore extends Store {
         /**
          * Parses an string like PERMANENTFLAGS (\Answered \Flagged \Deleted // \Seen \Draft NonJunk
          * $label1 \*)
+         *
+         * the parsed flags are stored in the mPermanentFlagsIndex
          * @param flags
          *            the imapflags as strings
-         * @param out
-         *            an already initialized Set which is used return the found flags
          */
-        private void parseFlags(ImapList flags, Set<Flag> out) {
+        private void parseFlags(ImapList flags) {
             for (Object flag : flags) {
                 flag = flag.toString().toLowerCase();
-                if (flag.equals("permanentflags")) {
-                    continue;
-                } else if (flag.equals("\\deleted")) {
-                    out.add(Flag.DELETED);
+                if (flag.equals("\\deleted")) {
+                    mPermanentFlagsIndex.add(Flag.DELETED);
                 } else if (flag.equals("\\answered")) {
-                    out.add(Flag.ANSWERED);
+                    mPermanentFlagsIndex.add(Flag.ANSWERED);
                 } else if (flag.equals("\\seen")) {
-                    out.add(Flag.SEEN);
+                    mPermanentFlagsIndex.add(Flag.SEEN);
                 } else if (flag.equals("\\flagged")) {
-                    out.add(Flag.FLAGGED);
+                    mPermanentFlagsIndex.add(Flag.FLAGGED);
                 } else if (flag.equals("$forwarded")) {
-                    out.add(Flag.FORWARDED);
+                    mPermanentFlagsIndex.add(Flag.FORWARDED);
                 } else if (flag.equals("\\*")) {
                     mCanCreateKeywords = true;
                 }
