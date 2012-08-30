@@ -2029,11 +2029,15 @@ public class MessageList
         }
 
         private Drawable mAttachmentIcon;
+        private Drawable mForwardedIcon;
         private Drawable mAnsweredIcon;
+        private Drawable mForwardedAnsweredIcon;
 
         MessageListAdapter() {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
+            mForwardedIcon = getResources().getDrawable(R.drawable.ic_email_forwarded_small);
+            mForwardedAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
         }
 
         public void markAllMessagesAsDirty() {
@@ -2405,11 +2409,19 @@ public class MessageList
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
-            holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                message.answered ? mAnsweredIcon : null, // left
-                null, // top
-                message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                null); // bottom
+
+            Drawable statusHolder = null;
+            if (message.forwarded && message.answered) {
+                statusHolder = mForwardedAnsweredIcon;
+            } else if (message.answered) {
+                statusHolder = mAnsweredIcon;
+            } else if (message.forwarded) {
+                statusHolder = mForwardedIcon;
+            }
+            holder.subject.setCompoundDrawablesWithIntrinsicBounds(statusHolder, // left
+                    null, // top
+                    message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                    null); // bottom
             holder.position = position;
         }
 

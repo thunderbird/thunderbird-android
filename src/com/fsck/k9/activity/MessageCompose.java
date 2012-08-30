@@ -753,6 +753,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mToView.requestFocus();
         }
 
+        if (mAction == Action.FORWARD) {
+            mMessageReference.flag = Flag.FORWARDED;
+        }
 
         mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);

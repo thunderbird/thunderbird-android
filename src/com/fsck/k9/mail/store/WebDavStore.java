@@ -70,8 +70,6 @@ public class WebDavStore extends Store {
     private static final short AUTH_TYPE_BASIC = 1;
     private static final short AUTH_TYPE_FORM_BASED = 2;
 
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
-
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
@@ -1844,11 +1842,6 @@ public class WebDavStore extends Store {
                     listener.messageFinished(messages[i], i, count);
                 }
             }
-        }
-
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
         }
 
         @Override
