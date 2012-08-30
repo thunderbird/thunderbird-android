@@ -2688,12 +2688,6 @@ public class LocalStore extends Store implements Serializable {
             return mName.hashCode();
         }
 
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
-        }
-
-
         private void deleteAttachments(final long messageId) throws MessagingException {
             open(OpenMode.READ_WRITE);
             database.execute(false, new DbCallback<Void>() {
