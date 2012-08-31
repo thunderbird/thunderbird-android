@@ -965,7 +965,7 @@ public class MessageProvider extends ContentProvider {
 
                 MessagingController.getInstance(application).addListener(new MessagingListener() {
                     @Override
-                    public void searchStats(final AccountStats stats) {
+                    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
                         application.getContentResolver().notifyChange(CONTENT_URI, null);
                     }
                 });
