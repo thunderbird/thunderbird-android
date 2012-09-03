@@ -566,13 +566,15 @@ public class K9 extends Application {
             @Override
             public void folderStatusChanged(Account account, String folderName,
                     int unreadMessageCount) {
+                
                 updateUnreadWidget();
-            }
+                
+                // let observers know a change occurred 
+                Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderName);
+                K9.this.sendBroadcast(intent);
 
-            @Override
-            public void searchStats(final AccountStats stats) {
-                // let observers know a fetch occurred
-                K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
             }
 
         });
