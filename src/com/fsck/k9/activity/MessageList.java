@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
@@ -348,215 +349,262 @@ public class MessageList
         }
     }
 
-    class MessageListHandler {
+    class MessageListHandler extends Handler {
+        private static final int ACTION_REMOVE_MESSAGES = 1;
+        private static final int ACTION_ADD_MESSAGES = 2;
+        private static final int ACTION_RESET_UNREAD_COUNT = 3;
+        private static final int ACTION_SORT_MESSAGES = 4;
+        private static final int ACTION_FOLDER_LOADING = 5;
+        private static final int ACTION_REFRESH_TITLE = 6;
+        private static final int ACTION_PROGRESS = 7;
+
+
         /**
          * @param messages Never {@code null}.
          */
         public void removeMessages(final List<MessageInfoHolder> messages) {
-            if (messages.isEmpty()) {
-                return;
-            }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (MessageInfoHolder message : messages) {
-                        if (message != null && (mFolderName == null || (
-                                message.folder != null &&
-                                message.folder.name.equals(mFolderName)))) {
-                            if (message.selected && mSelectedCount > 0) {
-                                mSelectedCount--;
-                            }
-                            mAdapter.messages.remove(message);
-                        }
-                    }
-                    resetUnreadCountOnThread();
-
-                    mAdapter.notifyDataSetChanged();
-                    toggleBatchButtons();
-                }
-            });
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGES, messages);
+            sendMessage(msg);
         }
 
         /**
          * @param messages Never {@code null}.
          */
         public void addMessages(final List<MessageInfoHolder> messages) {
-            if (messages.isEmpty()) {
-                return;
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_ADD_MESSAGES, messages);
+            sendMessage(msg);
+        }
+
+        public void resetUnreadCount() {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESET_UNREAD_COUNT);
+            sendMessage(msg);
+        }
+
+        public void sortMessages() {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_SORT_MESSAGES);
+            sendMessage(msg);
+        }
+
+        public void folderLoading(String folder, boolean loading) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
+                    (loading) ? 1 : 0, 0, folder);
+            sendMessage(msg);
+        }
+
+        public void refreshTitle() {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_REFRESH_TITLE);
+            sendMessage(msg);
+        }
+
+        public void progress(final boolean progress) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_PROGRESS,
+                    (progress) ? 1 : 0, 0);
+            sendMessage(msg);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case ACTION_REMOVE_MESSAGES: {
+                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
+                    MessageList.this.removeMessages(messages);
+                    break;
+                }
+                case ACTION_ADD_MESSAGES: {
+                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
+                    MessageList.this.addMessages(messages);
+                    break;
+                }
+                case ACTION_RESET_UNREAD_COUNT: {
+                    MessageList.this.resetUnreadCount();
+                    break;
+                }
+                case ACTION_SORT_MESSAGES: {
+                    MessageList.this.sortMessages();
+                    break;
+                }
+                case ACTION_FOLDER_LOADING: {
+                    String folder = (String) msg.obj;
+                    boolean loading = (msg.arg1 == 1);
+                    MessageList.this.folderLoading(folder, loading);
+                    break;
+                }
+                case ACTION_REFRESH_TITLE: {
+                    MessageList.this.refreshTitle();
+                    break;
+                }
+                case ACTION_PROGRESS: {
+                    boolean progress = (msg.arg1 == 1);
+                    MessageList.this.progress(progress);
+                    break;
+                }
             }
-            final boolean wasEmpty = mAdapter.messages.isEmpty();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (final MessageInfoHolder message : messages) {
-                        if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                            int index;
-                            synchronized (mAdapter.messages) {
-                                index = Collections.binarySearch(mAdapter.messages, message, getComparator());
-                            }
+        }
+    }
 
-                            if (index < 0) {
-                                index = (index * -1) - 1;
-                            }
-
-                            mAdapter.messages.add(index, message);
-                        }
-                    }
-
-                    if (wasEmpty) {
-                        mListView.setSelection(0);
-                    }
-                    resetUnreadCountOnThread();
-
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+    private void removeMessages(final List<MessageInfoHolder> messages) {
+        if (messages.isEmpty()) {
+            return;
         }
 
-        private void resetUnreadCount() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    resetUnreadCountOnThread();
+        for (MessageInfoHolder message : messages) {
+            if (message != null && (mFolderName == null || (
+                    message.folder != null &&
+                    message.folder.name.equals(mFolderName)))) {
+                if (message.selected && mSelectedCount > 0) {
+                    mSelectedCount--;
                 }
-            });
+                mAdapter.messages.remove(message);
+            }
+        }
+        resetUnreadCount();
+
+        mAdapter.notifyDataSetChanged();
+        toggleBatchButtons();
+    }
+
+    private void addMessages(final List<MessageInfoHolder> messages) {
+        if (messages.isEmpty()) {
+            return;
         }
 
-        private void resetUnreadCountOnThread() {
-            if (mQueryString != null) {
-                int unreadCount = 0;
+        final boolean wasEmpty = mAdapter.messages.isEmpty();
+
+        for (final MessageInfoHolder message : messages) {
+            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
+                int index;
                 synchronized (mAdapter.messages) {
-                    for (MessageInfoHolder holder : mAdapter.messages) {
-                        unreadCount += holder.read ? 0 : 1;
-                    }
+                    index = Collections.binarySearch(mAdapter.messages, message, getComparator());
                 }
-                mUnreadMessageCount = unreadCount;
-                refreshTitleOnThread();
+
+                if (index < 0) {
+                    index = (index * -1) - 1;
+                }
+
+                mAdapter.messages.add(index, message);
             }
         }
 
-        private void sortMessages() {
-            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+        if (wasEmpty) {
+            mListView.setSelection(0);
+        }
+        resetUnreadCount();
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (mAdapter.messages) {
-                        Collections.sort(mAdapter.messages, chainComparator);
-                    }
-                    mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void resetUnreadCount() {
+        if (mQueryString != null) {
+            int unreadCount = 0;
+            synchronized (mAdapter.messages) {
+                for (MessageInfoHolder holder : mAdapter.messages) {
+                    unreadCount += holder.read ? 0 : 1;
                 }
-            });
+            }
+            mUnreadMessageCount = unreadCount;
+            refreshTitle();
+        }
+    }
+
+    private void sortMessages() {
+        final Comparator<MessageInfoHolder> chainComparator = getComparator();
+
+        synchronized (mAdapter.messages) {
+            Collections.sort(mAdapter.messages, chainComparator);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * @return The comparator to use to display messages in an ordered
+     *         fashion. Never <code>null</code>.
+     */
+    protected Comparator<MessageInfoHolder> getComparator() {
+        final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */);
+
+        {
+            // add the specified comparator
+            final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(mSortType);
+            if (mSortAscending) {
+                chain.add(comparator);
+            } else {
+                chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+            }
         }
 
-        /**
-         * @return The comparator to use to display messages in an ordered
-         *         fashion. Never <code>null</code>.
-         */
-        protected Comparator<MessageInfoHolder> getComparator() {
-            final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */);
-
-            {
-                // add the specified comparator
-                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(mSortType);
-                if (mSortAscending) {
+        {
+            // add the date comparator if not already specified
+            if (mSortType != SortType.SORT_DATE && mSortType != SortType.SORT_ARRIVAL) {
+                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
+                if (mSortDateAscending) {
                     chain.add(comparator);
                 } else {
                     chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
                 }
             }
+        }
 
-            {
-                // add the date comparator if not already specified
-                if (mSortType != SortType.SORT_DATE && mSortType != SortType.SORT_ARRIVAL) {
-                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
-                    if (mSortDateAscending) {
-                        chain.add(comparator);
-                    } else {
-                        chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
-                    }
+        // build the comparator chain
+        final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
+
+        return chainComparator;
+    }
+
+    private void folderLoading(String folder, boolean loading) {
+        if (mCurrentFolder != null && mCurrentFolder.name.equals(folder)) {
+            mCurrentFolder.loading = loading;
+        }
+        updateFooterView();
+    }
+
+    private void refreshTitle() {
+        setWindowTitle();
+        setWindowProgress();
+    }
+
+    private void setWindowProgress() {
+        int level = Window.PROGRESS_END;
+
+        if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0) {
+            int divisor = mAdapter.mListener.getFolderTotal();
+            if (divisor != 0) {
+                level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
+                if (level > Window.PROGRESS_END) {
+                    level = Window.PROGRESS_END;
                 }
             }
-
-            // build the comparator chain
-            final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
-
-            return chainComparator;
         }
 
-        public void folderLoading(String folder, boolean loading) {
-            if (mCurrentFolder != null && mCurrentFolder.name.equals(folder)) {
-                mCurrentFolder.loading = loading;
-            }
-            runOnUiThread(new Runnable() {
-                @Override public void run() {
-                    updateFooterView();
-                }
-            });
-        }
+        getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
+    }
 
-        private void refreshTitle() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    refreshTitleOnThread();
-                }
-            });
-        }
+    private void setWindowTitle() {
+        String displayName;
 
-        private void refreshTitleOnThread() {
-            setWindowTitle();
-            setWindowProgress();
-        }
+        if (mFolderName != null) {
+            displayName  = mFolderName;
 
-        private void setWindowProgress() {
-            int level = Window.PROGRESS_END;
-
-            if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0) {
-                int divisor = mAdapter.mListener.getFolderTotal();
-                if (divisor != 0) {
-                    level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
-                    if (level > Window.PROGRESS_END) {
-                        level = Window.PROGRESS_END;
-                    }
-                }
+            if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_inbox);
+            } else if (mAccount.getOutboxFolderName().equals(displayName)) {
+                displayName = getString(R.string.special_mailbox_name_outbox);
             }
 
-            getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
-        }
-
-        private void setWindowTitle() {
-            String displayName;
-
-            if (mFolderName != null) {
-                displayName  = mFolderName;
-
-                if (mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_inbox);
-                } else if (mAccount.getOutboxFolderName().equals(displayName)) {
-                    displayName = getString(R.string.special_mailbox_name_outbox);
-                }
-
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
+            String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
+            setTitle(dispString);
+        } else if (mQueryString != null) {
+            if (mTitle != null) {
+                String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
                 setTitle(dispString);
-            } else if (mQueryString != null) {
-                if (mTitle != null) {
-                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
-                    setTitle(dispString);
-                } else {
-                    setTitle(getString(R.string.search_results) + ": " + mQueryString);
-                }
+            } else {
+                setTitle(getString(R.string.search_results) + ": " + mQueryString);
             }
         }
+    }
 
-        public void progress(final boolean progress) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showProgressIndicator(progress);
-                }
-            });
-        }
+    private void progress(final boolean progress) {
+        showProgressIndicator(progress);
     }
 
     /**
