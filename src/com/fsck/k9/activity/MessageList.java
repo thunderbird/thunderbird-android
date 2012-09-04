@@ -349,6 +349,9 @@ public class MessageList
         }
     }
 
+    /**
+     * FIXME
+     */
     class MessageListHandler extends Handler {
         private static final int ACTION_REMOVE_MESSAGES = 1;
         private static final int ACTION_ADD_MESSAGES = 2;
@@ -408,20 +411,20 @@ public class MessageList
             switch (msg.what) {
                 case ACTION_REMOVE_MESSAGES: {
                     List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
-                    MessageList.this.removeMessages(messages);
+                    mAdapter.removeMessages(messages);
                     break;
                 }
                 case ACTION_ADD_MESSAGES: {
                     List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
-                    MessageList.this.addMessages(messages);
+                    mAdapter.addMessages(messages);
                     break;
                 }
                 case ACTION_RESET_UNREAD_COUNT: {
-                    MessageList.this.resetUnreadCount();
+                    mAdapter.resetUnreadCount();
                     break;
                 }
                 case ACTION_SORT_MESSAGES: {
-                    MessageList.this.sortMessages();
+                    mAdapter.sortMessages();
                     break;
                 }
                 case ACTION_FOLDER_LOADING: {
@@ -441,79 +444,6 @@ public class MessageList
                 }
             }
         }
-    }
-
-    private void removeMessages(final List<MessageInfoHolder> messages) {
-        if (messages.isEmpty()) {
-            return;
-        }
-
-        for (MessageInfoHolder message : messages) {
-            if (message != null && (mFolderName == null || (
-                    message.folder != null &&
-                    message.folder.name.equals(mFolderName)))) {
-                if (message.selected && mSelectedCount > 0) {
-                    mSelectedCount--;
-                }
-                mAdapter.messages.remove(message);
-            }
-        }
-        resetUnreadCount();
-
-        mAdapter.notifyDataSetChanged();
-        toggleBatchButtons();
-    }
-
-    private void addMessages(final List<MessageInfoHolder> messages) {
-        if (messages.isEmpty()) {
-            return;
-        }
-
-        final boolean wasEmpty = mAdapter.messages.isEmpty();
-
-        for (final MessageInfoHolder message : messages) {
-            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                int index;
-                synchronized (mAdapter.messages) {
-                    index = Collections.binarySearch(mAdapter.messages, message, getComparator());
-                }
-
-                if (index < 0) {
-                    index = (index * -1) - 1;
-                }
-
-                mAdapter.messages.add(index, message);
-            }
-        }
-
-        if (wasEmpty) {
-            mListView.setSelection(0);
-        }
-        resetUnreadCount();
-
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private void resetUnreadCount() {
-        if (mQueryString != null) {
-            int unreadCount = 0;
-            synchronized (mAdapter.messages) {
-                for (MessageInfoHolder holder : mAdapter.messages) {
-                    unreadCount += holder.read ? 0 : 1;
-                }
-            }
-            mUnreadMessageCount = unreadCount;
-            refreshTitle();
-        }
-    }
-
-    private void sortMessages() {
-        final Comparator<MessageInfoHolder> chainComparator = getComparator();
-
-        synchronized (mAdapter.messages) {
-            Collections.sort(mAdapter.messages, chainComparator);
-        }
-        mAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -1985,7 +1915,7 @@ public class MessageList
                 if (holder == null) {
                     Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
                 } else {
-                    removeMessages(Collections.singletonList(holder));
+                    mHandler.removeMessages(Collections.singletonList(holder));
                 }
             }
 
@@ -2025,7 +1955,7 @@ public class MessageList
             public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
                 MessageInfoHolder holder = getMessage(message);
                 if (holder != null) {
-                    removeMessages(Collections.singletonList(holder));
+                    mHandler.removeMessages(Collections.singletonList(holder));
                 }
             }
 
@@ -2103,18 +2033,101 @@ public class MessageList
                             mSelectedCount--;
                             toggleBatchButtons();
                         }
-                        mAdapter.removeMessages(Collections.singletonList(holder));
+                        mHandler.removeMessages(Collections.singletonList(holder));
                     }
                 }
             }
         }
 
         /**
+         * Note: Only call this from the UI thread!
+         *
          * @param holders
          *            Never {@code null}.
          */
-        public void removeMessages(List<MessageInfoHolder> holders) {
-            mHandler.removeMessages(holders);
+        public void removeMessages(final List<MessageInfoHolder> messages) {
+            if (messages.isEmpty()) {
+                return;
+            }
+
+            for (MessageInfoHolder message : messages) {
+                if (message != null && (mFolderName == null || (
+                        message.folder != null &&
+                        message.folder.name.equals(mFolderName)))) {
+                    if (message.selected && mSelectedCount > 0) {
+                        mSelectedCount--;
+                    }
+                    mAdapter.messages.remove(message);
+                }
+            }
+            resetUnreadCount();
+
+            notifyDataSetChanged();
+            toggleBatchButtons();
+        }
+
+        /**
+         * Note: Only call this from the UI thread!
+         *
+         * @param messages
+         */
+        public void addMessages(final List<MessageInfoHolder> messages) {
+            if (messages.isEmpty()) {
+                return;
+            }
+
+            final boolean wasEmpty = mAdapter.messages.isEmpty();
+
+            for (final MessageInfoHolder message : messages) {
+                if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
+                    int index;
+                    synchronized (mAdapter.messages) {
+                        index = Collections.binarySearch(mAdapter.messages, message, getComparator());
+                    }
+
+                    if (index < 0) {
+                        index = (index * -1) - 1;
+                    }
+
+                    mAdapter.messages.add(index, message);
+                }
+            }
+
+            if (wasEmpty) {
+                mListView.setSelection(0);
+            }
+            resetUnreadCount();
+
+            notifyDataSetChanged();
+        }
+
+        /**
+         * Note: Only call this from the UI thread!
+         */
+        public void resetUnreadCount() {
+            if (mQueryString != null) {
+                int unreadCount = 0;
+                synchronized (mAdapter.messages) {
+                    for (MessageInfoHolder holder : mAdapter.messages) {
+                        unreadCount += holder.read ? 0 : 1;
+                    }
+                }
+                mUnreadMessageCount = unreadCount;
+                refreshTitle();
+            }
+        }
+
+        /**
+         * Note: Only call this from the UI thread!
+         */
+        public void sortMessages() {
+            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+
+            synchronized (mAdapter.messages) {
+                Collections.sort(mAdapter.messages, chainComparator);
+            }
+
+            notifyDataSetChanged();
         }
 
         private void addOrUpdateMessage(Account account, String folderName, Message message, boolean verifyAgainstSearch) {
@@ -2180,7 +2193,7 @@ public class MessageList
             }
 
             if (!messagesToRemove.isEmpty()) {
-                removeMessages(messagesToRemove);
+                mHandler.removeMessages(messagesToRemove);
             }
 
             if (!messagesToAdd.isEmpty()) {
@@ -2719,7 +2732,7 @@ public class MessageList
                 }
             }
         }
-        mAdapter.removeMessages(removeHolderList);
+        mHandler.removeMessages(removeHolderList);
 
         if (!messageList.isEmpty()) {
             if (v == mBatchDeleteButton) {
