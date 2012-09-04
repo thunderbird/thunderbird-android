@@ -56,7 +56,7 @@ http://k9mail.googlecode.com/
     <!-- === App Store-specific strings ======================================================= -->
 
     <string name="import_dialog_error_message">Nessuna applicazione presente per gestire l'importazione. Installa un file manager da Google Play Store.</string>
-    <string name="open_market">Apri il Play Store</string>-->
+    <string name="open_market">Apri il Play Store</string>
 
 
 
@@ -253,13 +253,13 @@ http://k9mail.googlecode.com/
     <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
     <string name="error_contact_address_not_found">Nessun indirizzo email trovato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
-    <string name="message_compose_show_quoted_text_action">Quota</string>-->
-    <string name="message_compose_description_add_to">Aggiungi destinatario (To)</string>-->
-    <string name="message_compose_description_add_cc">Aggiungi destinatario (CC)</string>-->
-    <string name="message_compose_description_add_bcc">Aggiungi destinatario (BCC)</string>-->
-    <string name="message_compose_description_delete_quoted_text">Elimina testo quotato</string>-->
-    <string name="message_compose_description_edit_quoted_text">Modifica testo quotato</string>-->
-
+    <string name="message_compose_show_quoted_text_action">Quota</string>
+    <string name="message_compose_description_add_to">Aggiungi destinatario (To)</string>
+    <string name="message_compose_description_add_cc">Aggiungi destinatario (CC)</string>
+    <string name="message_compose_description_add_bcc">Aggiungi destinatario (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Elimina testo quotato</string>
+    <string name="message_compose_description_edit_quoted_text">Modifica testo quotato</string>
+    
     <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">A:</string>
     <string name="message_view_cc_label">Cc:</string>
@@ -319,7 +319,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
     <string name="global_settings_confirm_action_archive">Archivia</string>
     <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
-    <string name="global_settings_confirm_action_delete_starred">Elimina messaggi con la stella (solo messaggi visualizzati)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Elimina messaggi con la stella (solo messaggi visualizzati)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Segna tutti come già letti</string>
     <string name="global_settings_confirm_action_send">Invia</string>
@@ -551,7 +551,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_auto">Automatico (A meno che si risponda a un testo HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Mostra sempre CC/BCC</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Mostra sempre i campi CC/BCC</string>-->
+    <string name="account_settings_always_show_cc_bcc_summary">Mostra sempre i campi CC/BCC</string>
 
     <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
     <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
@@ -836,7 +836,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_enabled">Quando \'Dati in background\' è selezionato</string>
     <string name="background_ops_auto_sync">Quando \'Dati in background\' &amp; \'Sincronizzazione automatica\' sono selezionati</string>
-    <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>-->
+    <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>
 
     <string name="no_message_seletected_toast">Nessun messaggio selezionato</string>
 
@@ -994,7 +994,7 @@ http://k9mail.googlecode.com/
     <string name="confirm_discard_draft_message">Sicuro di voler eliminare questo messaggio?</string>
 
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibile salvare messaggio in bozze.</string>
-    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Impossibile salvare messaggio criptato in bozze.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Impossibile salvare messaggio criptato in bozze.</string>
 
     <string name="continue_without_public_key_dlg_title">Continuare senza chiave pubblica?</string>
     <string name="continue_without_public_key_instructions_fmt">Ono o piu destinatari non hanno una chiave pubblica salvata, continuare?</string>
@@ -1025,7 +1025,7 @@ http://k9mail.googlecode.com/
     <string name="dialog_confirm_spam_confirm_button">Sì</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
 
-    <string name="dialog_attachment_progress_title">Download allegato</string>-->
+    <string name="dialog_attachment_progress_title">Download allegato</string>
 
     <string name="debug_logging_enabled">Registrazione dei log per il debug di Android abilitata</string>
 
@@ -1074,7 +1074,7 @@ http://k9mail.googlecode.com/
 
     <string name="settings_unknown_version">Impossibile utilizzare file della versione <xliff:g id="version">%s</xliff:g></string>
 
-    <string name="account_unavailable">L'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controllare lo spazio di archiviazione</string>-->
+    <string name="account_unavailable">L'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controllare lo spazio di archiviazione</string>
 
     <string name="settings_attachment_default_path">Salva allegati in…</string>
     <string name="attachment_save_title">Salva allegato</string>
