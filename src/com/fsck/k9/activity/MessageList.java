@@ -743,7 +743,7 @@ public class MessageList
         final ActivityState previousData = getLastNonConfigurationInstance();
 
         if (previousData != null) {
-            mAdapter.messages.addAll(previousData.messages);
+            mAdapter.restoreMessages(previousData.messages);
             mActiveMessages = previousData.activeMessages;
         }
     }
@@ -821,7 +821,7 @@ public class MessageList
             mController.notifyAccountCancel(this, accountWithNotification);
         }
 
-        if (mAdapter.messages.isEmpty()) {
+        if (mAdapter.isEmpty()) {
             if (mFolderName != null) {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
                 // Hide the archive button if we don't have an archive folder.
@@ -930,7 +930,7 @@ public class MessageList
     @Override
     public ActivityState onRetainNonConfigurationInstance() {
         final ActivityState state = new ActivityState();
-        state.messages = mAdapter.messages;
+        state.messages = mAdapter.getMessages();
         state.activeMessages = mActiveMessages;
         return state;
     }
@@ -1121,12 +1121,11 @@ public class MessageList
             // Need to get the list before the sort starts
             ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
-            synchronized (mAdapter.messages) {
-                for (MessageInfoHolder holder : mAdapter.messages) {
-                    MessageReference ref = holder.message.makeMessageReference();
-                    messageRefs.add(ref);
-                }
+            for (MessageInfoHolder holder : mAdapter.getMessages()) {
+                MessageReference ref = holder.message.makeMessageReference();
+                messageRefs.add(ref);
             }
+
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
@@ -1331,10 +1330,8 @@ public class MessageList
         try {
             mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
 
-            synchronized (mAdapter.messages) {
-                for (MessageInfoHolder holder : mAdapter.messages) {
-                    holder.read = true;
-                }
+            for (MessageInfoHolder holder : mAdapter.getMessages()) {
+                holder.read = true;
             }
             mAdapter.sortMessages();
         } catch (Exception e) {
@@ -1864,7 +1861,8 @@ public class MessageList
     }
 
     class MessageListAdapter extends BaseAdapter {
-        private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
+        private final List<MessageInfoHolder> mMessages =
+                Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private final ActivityListener mListener = new ActivityListener() {
 
@@ -2007,6 +2005,14 @@ public class MessageList
             }
         }
 
+        public List<MessageInfoHolder> getMessages() {
+            return mMessages;
+        }
+
+        public void restoreMessages(List<MessageInfoHolder> messages) {
+            mMessages.addAll(messages);
+        }
+
         private Drawable mAttachmentIcon;
         private Drawable mForwardedIcon;
         private Drawable mAnsweredIcon;
@@ -2020,13 +2026,14 @@ public class MessageList
         }
 
         public void markAllMessagesAsDirty() {
-            for (MessageInfoHolder holder : mAdapter.messages) {
+            for (MessageInfoHolder holder : mMessages) {
                 holder.dirty = true;
             }
         }
+
         public void pruneDirtyMessages() {
-            synchronized (mAdapter.messages) {
-                Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
+            synchronized (mMessages) {
+                Iterator<MessageInfoHolder> iter = mMessages.iterator();
                 while (iter.hasNext()) {
                     MessageInfoHolder holder = iter.next();
                     if (holder.dirty) {
@@ -2058,7 +2065,7 @@ public class MessageList
                     if (message.selected && mSelectedCount > 0) {
                         mSelectedCount--;
                     }
-                    mAdapter.messages.remove(message);
+                    mMessages.remove(message);
                 }
             }
             resetUnreadCount();
@@ -2077,20 +2084,20 @@ public class MessageList
                 return;
             }
 
-            final boolean wasEmpty = mAdapter.messages.isEmpty();
+            final boolean wasEmpty = mMessages.isEmpty();
 
             for (final MessageInfoHolder message : messages) {
                 if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
                     int index;
-                    synchronized (mAdapter.messages) {
-                        index = Collections.binarySearch(mAdapter.messages, message, getComparator());
+                    synchronized (mMessages) {
+                        index = Collections.binarySearch(mMessages, message, getComparator());
                     }
 
                     if (index < 0) {
                         index = (index * -1) - 1;
                     }
 
-                    mAdapter.messages.add(index, message);
+                    mMessages.add(index, message);
                 }
             }
 
@@ -2108,8 +2115,8 @@ public class MessageList
         public void resetUnreadCount() {
             if (mQueryString != null) {
                 int unreadCount = 0;
-                synchronized (mAdapter.messages) {
-                    for (MessageInfoHolder holder : mAdapter.messages) {
+                synchronized (mMessages) {
+                    for (MessageInfoHolder holder : mMessages) {
                         unreadCount += holder.read ? 0 : 1;
                     }
                 }
@@ -2124,8 +2131,8 @@ public class MessageList
         public void sortMessages() {
             final Comparator<MessageInfoHolder> chainComparator = getComparator();
 
-            synchronized (mAdapter.messages) {
-                Collections.sort(mAdapter.messages, chainComparator);
+            synchronized (mMessages) {
+                Collections.sort(mMessages, chainComparator);
             }
 
             notifyDataSetChanged();
@@ -2212,8 +2219,8 @@ public class MessageList
 
         // XXX TODO - make this not use a for loop
         public MessageInfoHolder getMessage(MessageReference messageReference) {
-            synchronized (mAdapter.messages) {
-                for (MessageInfoHolder holder : mAdapter.messages) {
+            synchronized (mMessages) {
+                for (MessageInfoHolder holder : mMessages) {
                     /*
                      * 2010-06-21 - cketti
                      * Added null pointer check. Not sure what's causing 'holder'
@@ -2257,7 +2264,7 @@ public class MessageList
 
         @Override
         public int getCount() {
-            return messages.size();
+            return mMessages.size();
         }
 
         @Override
@@ -2280,13 +2287,13 @@ public class MessageList
         @Override
         public Object getItem(int position) {
             try {
-                synchronized (mAdapter.messages) {
-                    if (position < mAdapter.messages.size()) {
-                        return mAdapter.messages.get(position);
+                synchronized (mMessages) {
+                    if (position < mMessages.size()) {
+                        return mMessages.get(position);
                     }
                 }
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
+                Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mMessages.size(), e);
             }
             return null;
         }
@@ -2506,11 +2513,7 @@ public class MessageList
         }
 
         public boolean isItemSelectable(int position) {
-            if (position < mAdapter.messages.size()) {
-                return true;
-            } else {
-                return false;
-            }
+            return (position < mMessages.size());
         }
     }
 
@@ -2659,34 +2662,32 @@ public class MessageList
     private boolean computeBatchDirection(boolean flagged) {
         boolean newState = false;
 
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (flagged) {
-                        if (!holder.flagged) {
-                            newState = true;
-                            break;
-                        }
-                    } else {
-                        if (!holder.read) {
-                            newState = true;
-                            break;
-                        }
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            if (holder.selected) {
+                if (flagged) {
+                    if (!holder.flagged) {
+                        newState = true;
+                        break;
+                    }
+                } else {
+                    if (!holder.read) {
+                        newState = true;
+                        break;
                     }
                 }
             }
         }
+
         return newState;
     }
 
     private boolean anySelected() {
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    return true;
-                }
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            if (holder.selected) {
+                return true;
             }
         }
+
         return false;
     }
 
@@ -2719,18 +2720,16 @@ public class MessageList
             return;
         }
 
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    if (v == mBatchDeleteButton) {
-                        removeHolderList.add(holder);
-                    } else if (v == mBatchFlagButton) {
-                        holder.flagged = newState;
-                    } else if (v == mBatchReadButton) {
-                        holder.read = newState;
-                    }
-                    messageList.add(holder.message);
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            if (holder.selected) {
+                if (v == mBatchDeleteButton) {
+                    removeHolderList.add(holder);
+                } else if (v == mBatchFlagButton) {
+                    holder.flagged = newState;
+                } else if (v == mBatchReadButton) {
+                    holder.read = newState;
                 }
+                messageList.add(holder.message);
             }
         }
 
@@ -2768,12 +2767,12 @@ public class MessageList
 
     private void setAllSelected(boolean isSelected) {
         mSelectedCount = 0;
-        synchronized (mAdapter.messages) {
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                holder.selected = isSelected;
-                mSelectedCount += (isSelected ? 1 : 0);
-            }
+
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            holder.selected = isSelected;
+            mSelectedCount += (isSelected ? 1 : 0);
         }
+
         mAdapter.notifyDataSetChanged();
         toggleBatchButtons();
     }
@@ -2973,13 +2972,13 @@ public class MessageList
      */
     private List<MessageInfoHolder> getSelectionFromCheckboxes() {
         final List<MessageInfoHolder> selection = new ArrayList<MessageInfoHolder>();
-        synchronized (mAdapter.messages) {
-            for (final MessageInfoHolder holder : mAdapter.messages) {
-                if (holder.selected) {
-                    selection.add(holder);
-                }
+
+        for (final MessageInfoHolder holder : mAdapter.getMessages()) {
+            if (holder.selected) {
+                selection.add(holder);
             }
         }
+
         return selection;
     }
 
