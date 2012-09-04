@@ -867,9 +867,10 @@ public class MessageList
         if (mAccount != null && mFolderName != null) {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
-        mHandler.refreshTitle();
 
+        refreshTitle();
     }
+
     private void initializeLayout() {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
@@ -1232,7 +1233,7 @@ public class MessageList
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
 
-        mHandler.sortMessages();
+        mAdapter.sortMessages();
     }
 
     private void onCycleSort() {
@@ -1264,7 +1265,7 @@ public class MessageList
         for (MessageInfoHolder holder : holders) {
             messagesToRemove.add(holder.message);
         }
-        mHandler.removeMessages(holders);
+        mAdapter.removeMessages(holders);
         mController.deleteMessages(messagesToRemove.toArray(EMPTY_MESSAGE_ARRAY), null);
     }
 
@@ -1335,7 +1336,7 @@ public class MessageList
                     holder.read = true;
                 }
             }
-            mHandler.sortMessages();
+            mAdapter.sortMessages();
         } catch (Exception e) {
             // Ignore
         }
@@ -1430,7 +1431,7 @@ public class MessageList
         String folderName = folder.getName();
         mController.setFlag(account, folderName, new Message[] { message }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
-        mHandler.sortMessages();
+        mAdapter.sortMessages();
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
@@ -1440,7 +1441,7 @@ public class MessageList
         String folderName = folder.getName();
         mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
-        mHandler.sortMessages();
+        mAdapter.sortMessages();
     }
 
     private void checkMail(Account account, String folderName) {
@@ -2040,7 +2041,7 @@ public class MessageList
         }
 
         /**
-         * Note: Only call this from the UI thread!
+         * Note: Must be called from the UI thread!
          *
          * @param holders
          *            Never {@code null}.
@@ -2067,7 +2068,7 @@ public class MessageList
         }
 
         /**
-         * Note: Only call this from the UI thread!
+         * Note: Must be called from the UI thread!
          *
          * @param messages
          */
@@ -2102,7 +2103,7 @@ public class MessageList
         }
 
         /**
-         * Note: Only call this from the UI thread!
+         * Note: Must be called from the UI thread!
          */
         public void resetUnreadCount() {
             if (mQueryString != null) {
@@ -2118,7 +2119,7 @@ public class MessageList
         }
 
         /**
-         * Note: Only call this from the UI thread!
+         * Note: Must be called from the UI thread!
          */
         public void sortMessages() {
             final Comparator<MessageInfoHolder> chainComparator = getComparator();
@@ -2732,7 +2733,8 @@ public class MessageList
                 }
             }
         }
-        mHandler.removeMessages(removeHolderList);
+
+        mAdapter.removeMessages(removeHolderList);
 
         if (!messageList.isEmpty()) {
             if (v == mBatchDeleteButton) {
@@ -2746,7 +2748,8 @@ public class MessageList
             // Should not happen
             Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
         }
-        mHandler.sortMessages();
+
+        mAdapter.sortMessages();
     }
 
     @Override
@@ -2811,7 +2814,7 @@ public class MessageList
             }
         }
         mController.setFlag(messageList, flag, newState);
-        mHandler.sortMessages();
+        mAdapter.sortMessages();
     }
 
     /**
@@ -3005,6 +3008,8 @@ public class MessageList
      * {@link #move(List, String)}. This method was added mainly because those 2
      * methods share common behavior.
      *
+     * Note: Must be called from the UI thread!
+     *
      * @param holders
      *            Never {@code null}.
      * @param destination
@@ -3054,7 +3059,7 @@ public class MessageList
         if (operation == FolderOperation.MOVE) {
             mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
                                      null);
-            mHandler.removeMessages(holders);
+            mAdapter.removeMessages(holders);
         } else {
             mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
                                      null);
