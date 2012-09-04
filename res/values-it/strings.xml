@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">Account di K-9</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 nuovi messaggi</string>
 
     <string name="remote_control_label">Controllo remoto di K-9 Mail</string>
     <string name="remote_control_desc">Consenti a questa applicazione di controllare le attività e le impostazioni di K-9 Mail.</string>
@@ -55,8 +55,8 @@ http://k9mail.googlecode.com/
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">Nessuna applicazione presente per gestire l'importazione. Installa un file manager da Google Play Store.</string>
+    <string name="open_market">Apri il Play Store</string>-->
 
 
 
@@ -114,7 +114,7 @@ http://k9mail.googlecode.com/
     <string name="forward_action">Inoltra</string>
     <string name="move_action">Sposta</string>
     <string name="continue_action">Continua</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Indietro</string>
     <string name="done_action">Fatto</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Ignora</string>
     <string name="save_draft_action">Salva come bozza</string>
@@ -124,7 +124,7 @@ http://k9mail.googlecode.com/
     <string name="send_messages_action">Invia messaggi</string>
     <string name="list_folders_action">Elenca cartelle</string>
     <string name="refresh_folders_action">Aggiorna cartelle</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Trova cartella</string>
     <string name="mark_all_as_read_action">Segna tutti come letti</string>
     <string name="add_account_action">Aggiungi account</string>
     <string name="compose_action">Componi</string>
@@ -242,7 +242,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">Ccn</string>
     <string name="message_compose_subject_hint">Oggetto</string>
     <string name="message_compose_content_hint">Testo del messaggio</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Firma</string>
     <string name="message_compose_quote_header_separator">-------- Messaggio originale --------</string>
     <string name="message_compose_quote_header_subject">Oggetto:</string>
     <string name="message_compose_quote_header_send_date">Inviato il:</string>
@@ -251,14 +251,14 @@ http://k9mail.googlecode.com/
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
     <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
+    <string name="error_contact_address_not_found">Nessun indirizzo email trovato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
-    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_show_quoted_text_action">Quota</string>-->
+    <string name="message_compose_description_add_to">Aggiungi destinatario (To)</string>-->
+    <string name="message_compose_description_add_cc">Aggiungi destinatario (CC)</string>-->
+    <string name="message_compose_description_add_bcc">Aggiungi destinatario (BCC)</string>-->
+    <string name="message_compose_description_delete_quoted_text">Elimina testo quotato</string>-->
+    <string name="message_compose_description_edit_quoted_text">Modifica testo quotato</string>-->
 
     <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">A:</string>
@@ -279,7 +279,7 @@ http://k9mail.googlecode.com/
     <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
     <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Scarica intero messaggio</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Download in corso…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrivo per abilitare questa funzionalità.</string>
@@ -319,15 +319,15 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
     <string name="global_settings_confirm_action_archive">Archivia</string>
     <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Elimina messaggi con la stella (solo messaggi visualizzati)</string>-->
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Segna tutti come già letti</string>
     <string name="global_settings_confirm_action_send">Invia</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Nascondi l'oggetto della mail nelle notifiche</string>
+    <string name="global_settings_notification_hide_subject_never">Mai</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Quanto lo schermo è bloccato</string>
+    <string name="global_settings_notification_hide_subject_always">Sempre</string>
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -408,7 +408,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
     <string name="account_setup_expunge_policy_manual">Solo manualmente</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">Imposta automaticamente il percorso IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
 
     <string name="drafts_folder_label">Cartella Bozze</string>
@@ -550,8 +550,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (immagini e formattazione verranno preservate)</string>
     <string name="account_settings_message_format_auto">Automatico (A meno che si risponda a un testo HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Mostra sempre CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Mostra sempre i campi CC/BCC</string>-->
 
     <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
     <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
@@ -771,12 +771,12 @@ http://k9mail.googlecode.com/
         indirizzo email e password corretti, è possibile che non sia stato pagato un account
         \"Plus\". Esegui il browser Internet per acquistare l\'accesso a questo
         genere di account e-mail.</string>
-    <string name="provider_note_yahoojp">Se si desidera utilizzare POP3 per questo provider, si deve consentire l\'utilizzo di POP3 sulla pagina delle impostazioni di Yahoo.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
+    <string name="provider_note_yahoojp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Yahoo.</string>
+    <string name="provider_note_auonejp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di au one mail.</string>
+    <string name="provider_note_naver">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Naver mail.</string>
+    <string name="provider_note_hanmail">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Hanmail(Daum).</string>
+    <string name="provider_note_paran">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Paran mail.</string>
+    <string name="provider_note_nate">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Nate mail.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
@@ -799,7 +799,7 @@ http://k9mail.googlecode.com/
     Q - Ritorna agli Account\u000A
     S - Modifica le impostazioni dell\'account</string>
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">il nome della cartella contiene</string>
 
     <string name="folder_list_display_mode_label">Cartelle</string>
     <string name="folder_list_display_mode_all">Visualizza tutte le cartelle</string>
@@ -836,7 +836,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_enabled">Quando \'Dati in background\' è selezionato</string>
     <string name="background_ops_auto_sync">Quando \'Dati in background\' &amp; \'Sincronizzazione automatica\' sono selezionati</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>-->
 
     <string name="no_message_seletected_toast">Nessun messaggio selezionato</string>
 
@@ -947,7 +947,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_content">Corpo del messaggio</string>
 
     <string name="font_size_message_compose">Composizione messaggio</string>
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose_input">Campi di testo</string>
 
     <string name="font_size_tiniest">Piccolissimo</string>
     <string name="font_size_tiny">Molto piccolo</string>
@@ -993,8 +993,8 @@ http://k9mail.googlecode.com/
     <string name="confirm_discard_draft_message_title">Elimina messagi?</string>
     <string name="confirm_discard_draft_message">Sicuro di voler eliminare questo messaggio?</string>
 
-    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibilee salvare messaggio in bozze.</string>
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibile salvare messaggio in bozze.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Impossibile salvare messaggio criptato in bozze.</string>-->
 
     <string name="continue_without_public_key_dlg_title">Continuare senza chiave pubblica?</string>
     <string name="continue_without_public_key_instructions_fmt">Ono o piu destinatari non hanno una chiave pubblica salvata, continuare?</string>
@@ -1006,7 +1006,7 @@ http://k9mail.googlecode.com/
     <string name="dialog_confirm_delete_confirm_button">Elimina</string>
     <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
+    <string name="dialog_confirm_spam_title">Conferma spam</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Vuoi veramente spostare il messaggio nella cartella spam?</item>
         <item quantity="other">vuoi veramente spostare i messaggi <xliff:g id="message_count">%1$d</xliff:g> nella cartella spam?</item>
@@ -1022,10 +1022,10 @@ http://k9mail.googlecode.com/
 
 -->
     </plurals>
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_confirm_button">Sì</string>
+    <string name="dialog_confirm_spam_cancel_button">No</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">Download allegato</string>-->
 
     <string name="debug_logging_enabled">Registrazione dei log per il debug di Android abilitata</string>
 
@@ -1063,56 +1063,56 @@ http://k9mail.googlecode.com/
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
     </plurals>-->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <string name="settings_import_incoming_server">Server di posta in arrivo (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Server di posta in uscita (<xliff:g id="hostname">%s</xliff:g>):</string>
     <!-- NEW: <plurals name="settings_import_setting_passwords">
         <item quantity="one">Setting password…</item>
         <item quantity="other">Setting passwords…</item>
     </plurals>-->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+    <string name="settings_import_use_incoming_server_password">Usa la password del server di posta in arrivo</string>
+    <string name="activate_account_action">Abilita</string>
 
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+    <string name="settings_unknown_version">Impossibile utilizzare file della versione <xliff:g id="version">%s</xliff:g></string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">L'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controllare lo spazio di archiviazione</string>-->
 
-    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to…</string>-->
-    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="settings_attachment_default_path">Salva allegati in…</string>
+    <string name="attachment_save_title">Salva allegato</string>
+    <string name="attachment_save_desc">Nessun file manager presente. Qual è il percorso del salvataggio degli allegati?</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
+    <string name="manage_accounts_move_up_action">Sposta in alto</string>
+    <string name="manage_accounts_move_down_action">Sposta in basso</string>
+    <string name="manage_accounts_moving_message">Spostamento account in corso…</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+    <string name="unread_widget_select_account">Mostra messaggi non letti per…</string>
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="import_dialog_error_title">Nessun file manager presente</string>
+    <string name="close">Chiudi</string>
 
     <!-- NEW: <string name="webview_empty_message">No text</string>-->
 
     <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
+    <string name="webview_contextmenu_link_share_action">Condividi link</string>
+    <string name="webview_contextmenu_link_copy_action">Copia link negli appunti</string>
     <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Immagine</string>
+    <string name="webview_contextmenu_image_view_action">Mostra immagine</string>
+    <string name="webview_contextmenu_image_save_action">Salva immagine</string>
+    <string name="webview_contextmenu_image_download_action">Scarica immagine</string>
+    <string name="webview_contextmenu_image_copy_action">Copia link negli appunti</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL dell'immagine</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Chiama</string>
+    <string name="webview_contextmenu_phone_save_action">Salva nei contatti</string>
+    <string name="webview_contextmenu_phone_copy_action">Copia il numero negli appunti</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Numero di telefono</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Invia mail</string>
+    <string name="webview_contextmenu_email_save_action">Salva nei contatti</string>
+    <string name="webview_contextmenu_email_copy_action">Copia l\'indirizzo negli appunti</string>
+    <string name="webview_contextmenu_email_clipboard_label">Indirizzo mail</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Immagine salvata in \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Errore nel salvataggio dell\'immagine.</string>
 </resources>
