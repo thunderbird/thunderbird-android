@@ -55,7 +55,7 @@ http://k9mail.googlecode.com/
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <string name="import_dialog_error_message">Nessuna applicazione presente per gestire l'importazione. Installa un file manager da Google Play Store.</string>
+    <string name="import_dialog_error_message">Nessuna applicazione presente per gestire l\'importazione. Installa un file manager da Google Play Store.</string>
     <string name="open_market">Apri il Play Store</string>
 
 
@@ -324,7 +324,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Segna tutti come già letti</string>
     <string name="global_settings_confirm_action_send">Invia</string>
 
-    <string name="global_settings_notification_hide_subject_title">Nascondi l'oggetto della mail nelle notifiche</string>
+    <string name="global_settings_notification_hide_subject_title">Nascondi l\'oggetto della mail nelle notifiche</string>
     <string name="global_settings_notification_hide_subject_never">Mai</string>
     <string name="global_settings_notification_hide_subject_when_locked">Quanto lo schermo è bloccato</string>
     <string name="global_settings_notification_hide_subject_always">Sempre</string>
@@ -1072,7 +1072,7 @@ http://k9mail.googlecode.com/
 
     <string name="settings_unknown_version">Impossibile utilizzare file della versione <xliff:g id="version">%s</xliff:g></string>
 
-    <string name="account_unavailable">L'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controllare lo spazio di archiviazione</string>
+    <string name="account_unavailable">L\'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controllare lo spazio di archiviazione</string>
 
     <string name="settings_attachment_default_path">Salva allegati in…</string>
     <string name="attachment_save_title">Salva allegato</string>
@@ -1099,7 +1099,7 @@ http://k9mail.googlecode.com/
     <string name="webview_contextmenu_image_save_action">Salva immagine</string>
     <string name="webview_contextmenu_image_download_action">Scarica immagine</string>
     <string name="webview_contextmenu_image_copy_action">Copia link negli appunti</string>
-    <string name="webview_contextmenu_image_clipboard_label">URL dell'immagine</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL dell\'immagine</string>
 
     <string name="webview_contextmenu_phone_call_action">Chiama</string>
     <string name="webview_contextmenu_phone_save_action">Salva nei contatti</string>
