@@ -360,6 +360,7 @@ public class MessageList
         private static final int ACTION_FOLDER_LOADING = 5;
         private static final int ACTION_REFRESH_TITLE = 6;
         private static final int ACTION_PROGRESS = 7;
+        private static final int ACTION_REMOVE_MESSAGE = 8;
 
 
         /**
@@ -405,6 +406,37 @@ public class MessageList
             sendMessage(msg);
         }
 
+        public void removeMessage(MessageReference messageReference) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGE,
+                    messageReference);
+            sendMessage(msg);
+        }
+
+        public void changeMessageUid(final MessageReference ref, final String newUid) {
+            // Instead of creating a container to be able to pass both arguments in a Message we
+            // post a Runnable to the message queue.
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.changeMessageUid(ref, newUid);
+                }
+            });
+        }
+
+        public void addOrUpdateMessages(final Account account, final String folderName,
+                final List<Message> providedMessages, final boolean verifyAgainstSearch) {
+            // We copy the message list because it's later modified by MessagingController
+            final List<Message> messages = new ArrayList<Message>(providedMessages);
+
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.addOrUpdateMessages(account, folderName, messages,
+                            verifyAgainstSearch);
+                }
+            });
+        }
+
         @SuppressWarnings("unchecked")
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -440,6 +472,11 @@ public class MessageList
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
                     MessageList.this.progress(progress);
+                    break;
+                }
+                case ACTION_REMOVE_MESSAGE: {
+                    MessageReference messageReference = (MessageReference) msg.obj;
+                    mAdapter.removeMessage(messageReference);
                     break;
                 }
             }
@@ -838,22 +875,21 @@ public class MessageList
             // reread the selected date format preference in case it has changed
             mMessageHelper.refresh();
 
+            mAdapter.markAllMessagesAsDirty();
+
             new Thread() {
                 @Override
                 public void run() {
-                    mAdapter.markAllMessagesAsDirty();
-
                     if (mFolderName != null) {
                         mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
                     } else if (mQueryString != null) {
                         mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
                     }
 
-
-                    mAdapter.pruneDirtyMessages();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mAdapter.pruneDirtyMessages();
                             mAdapter.notifyDataSetChanged();
                             restoreListState();
                         }
@@ -1905,17 +1941,12 @@ public class MessageList
 
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
-                addOrUpdateMessage(account, folder, message, true);
+                mHandler.addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
             }
 
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder == null) {
-                    Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
-                } else {
-                    mHandler.removeMessages(Collections.singletonList(holder));
-                }
+                mHandler.removeMessage(message.makeMessageReference());
             }
 
             @Override
@@ -1952,20 +1983,17 @@ public class MessageList
 
             @Override
             public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder != null) {
-                    mHandler.removeMessages(Collections.singletonList(holder));
-                }
+                mHandler.removeMessage(message.makeMessageReference());
             }
 
             @Override
             public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
-                addOrUpdateMessages(account, folder, messages, false);
+                mHandler.addOrUpdateMessages(account, folder, messages, false);
             }
 
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
-                addOrUpdateMessage(account, folder, message, false);
+                mHandler.addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
             }
 
             @Override
@@ -1989,11 +2017,7 @@ public class MessageList
                 ref.folderName = folder;
                 ref.uid = oldUid;
 
-                MessageInfoHolder holder = getMessage(ref);
-                if (holder != null) {
-                    holder.uid = newUid;
-                    holder.message.setUid(newUid);
-                }
+                mHandler.changeMessageUid(ref, newUid);
             }
         };
 
@@ -2032,27 +2056,26 @@ public class MessageList
         }
 
         public void pruneDirtyMessages() {
-            synchronized (mMessages) {
-                Iterator<MessageInfoHolder> iter = mMessages.iterator();
-                while (iter.hasNext()) {
-                    MessageInfoHolder holder = iter.next();
-                    if (holder.dirty) {
-                        if (holder.selected) {
-                            mSelectedCount--;
-                            toggleBatchButtons();
-                        }
-                        mHandler.removeMessages(Collections.singletonList(holder));
-                    }
+            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+
+            for (MessageInfoHolder holder : mMessages) {
+                if (holder.dirty) {
+                    messagesToRemove.add(holder);
                 }
+            }
+            removeMessages(messagesToRemove);
+        }
+
+        public void removeMessage(MessageReference messageReference) {
+            MessageInfoHolder holder = getMessage(messageReference);
+            if (holder == null) {
+                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " +
+                        messageReference.uid);
+            } else {
+                removeMessages(Collections.singletonList(holder));
             }
         }
 
-        /**
-         * Note: Must be called from the UI thread!
-         *
-         * @param holders
-         *            Never {@code null}.
-         */
         public void removeMessages(final List<MessageInfoHolder> messages) {
             if (messages.isEmpty()) {
                 return;
@@ -2074,11 +2097,6 @@ public class MessageList
             toggleBatchButtons();
         }
 
-        /**
-         * Note: Must be called from the UI thread!
-         *
-         * @param messages
-         */
         public void addMessages(final List<MessageInfoHolder> messages) {
             if (messages.isEmpty()) {
                 return;
@@ -2088,10 +2106,7 @@ public class MessageList
 
             for (final MessageInfoHolder message : messages) {
                 if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                    int index;
-                    synchronized (mMessages) {
-                        index = Collections.binarySearch(mMessages, message, getComparator());
-                    }
+                    int index = Collections.binarySearch(mMessages, message, getComparator());
 
                     if (index < 0) {
                         index = (index * -1) - 1;
@@ -2109,45 +2124,37 @@ public class MessageList
             notifyDataSetChanged();
         }
 
-        /**
-         * Note: Must be called from the UI thread!
-         */
+        public void changeMessageUid(MessageReference ref, String newUid) {
+            MessageInfoHolder holder = getMessage(ref);
+            if (holder != null) {
+                holder.uid = newUid;
+                holder.message.setUid(newUid);
+            }
+        }
+
         public void resetUnreadCount() {
             if (mQueryString != null) {
                 int unreadCount = 0;
-                synchronized (mMessages) {
-                    for (MessageInfoHolder holder : mMessages) {
-                        unreadCount += holder.read ? 0 : 1;
-                    }
+
+                for (MessageInfoHolder holder : mMessages) {
+                    unreadCount += holder.read ? 0 : 1;
                 }
+
                 mUnreadMessageCount = unreadCount;
                 refreshTitle();
             }
         }
 
-        /**
-         * Note: Must be called from the UI thread!
-         */
         public void sortMessages() {
             final Comparator<MessageInfoHolder> chainComparator = getComparator();
 
-            synchronized (mMessages) {
-                Collections.sort(mMessages, chainComparator);
-            }
+            Collections.sort(mMessages, chainComparator);
 
             notifyDataSetChanged();
         }
 
-        private void addOrUpdateMessage(Account account, String folderName, Message message, boolean verifyAgainstSearch) {
-            List<Message> messages = new ArrayList<Message>();
-            messages.add(message);
-            addOrUpdateMessages(account, folderName, messages, verifyAgainstSearch);
-        }
-
-        private void addOrUpdateMessages(final Account account, final String folderName, final List<Message> providedMessages, final boolean verifyAgainstSearch) {
-            // we copy the message list because the callback doesn't expect
-            // the callbacks to mutate it.
-            final List<Message> messages = new ArrayList<Message>(providedMessages);
+        public void addOrUpdateMessages(final Account account, final String folderName,
+                final List<Message> messages, final boolean verifyAgainstSearch) {
 
             boolean needsSort = false;
             final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
@@ -2169,7 +2176,9 @@ public class MessageList
                     if (m == null) {
                         if (updateForMe(account, folderName)) {
                             m = new MessageInfoHolder();
-                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                            FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
+                                    MessageList.this, messageFolder, messageAccount);
+                            messageHelper.populate(m, message, folderInfoHolder, messageAccount);
                             messagesToAdd.add(m);
                         } else {
                             if (mQueryString != null) {
@@ -2177,63 +2186,71 @@ public class MessageList
                                     messagesToSearch.add(message);
                                 } else {
                                     m = new MessageInfoHolder();
-                                    messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                    FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
+                                            MessageList.this, messageFolder, messageAccount);
+                                    messageHelper.populate(m, message, folderInfoHolder,
+                                            messageAccount);
                                     messagesToAdd.add(m);
                                 }
                             }
                         }
                     } else {
                         m.dirty = false; // as we reload the message, unset its dirty flag
-                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(MessageList.this,
+                                messageFolder, account);
+                        messageHelper.populate(m, message, folderInfoHolder, account);
                         needsSort = true;
                     }
                 }
             }
 
             if (!messagesToSearch.isEmpty()) {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                mController.searchLocalMessages(mAccountUuids, mFolderNames,
+                        messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate,
+                        mQueryFlags, mForbiddenFlags,
                 new MessagingListener() {
                     @Override
-                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
-                        addOrUpdateMessages(account, folder, messages, false);
+                    public void listLocalMessagesAddMessages(Account account, String folder,
+                            List<Message> messages) {
+                        mHandler.addOrUpdateMessages(account, folder, messages, false);
                     }
                 });
             }
 
             if (!messagesToRemove.isEmpty()) {
-                mHandler.removeMessages(messagesToRemove);
+                removeMessages(messagesToRemove);
             }
 
             if (!messagesToAdd.isEmpty()) {
-                mHandler.addMessages(messagesToAdd);
+                addMessages(messagesToAdd);
             }
 
             if (needsSort) {
-                mHandler.sortMessages();
-                mHandler.resetUnreadCount();
+                sortMessages();
+                resetUnreadCount();
             }
         }
-        public MessageInfoHolder getMessage(Message message) {
+
+        private MessageInfoHolder getMessage(Message message) {
             return getMessage(message.makeMessageReference());
         }
 
         // XXX TODO - make this not use a for loop
-        public MessageInfoHolder getMessage(MessageReference messageReference) {
-            synchronized (mMessages) {
-                for (MessageInfoHolder holder : mMessages) {
-                    /*
-                     * 2010-06-21 - cketti
-                     * Added null pointer check. Not sure what's causing 'holder'
-                     * to be null. See log provided in issue 1749, comment #15.
-                     *
-                     * Please remove this comment once the cause was found and the
-                     * bug(?) fixed.
-                     */
-                    if ((holder != null) && holder.message.equalsReference(messageReference)) {
-                        return holder;
-                    }
+        private MessageInfoHolder getMessage(MessageReference messageReference) {
+            for (MessageInfoHolder holder : mMessages) {
+                /*
+                 * 2010-06-21 - cketti
+                 * Added null pointer check. Not sure what's causing 'holder'
+                 * to be null. See log provided in issue 1749, comment #15.
+                 *
+                 * Please remove this comment once the cause was found and the
+                 * bug(?) fixed.
+                 */
+                if ((holder != null) && holder.message.equalsReference(messageReference)) {
+                    return holder;
                 }
             }
+
             return null;
         }
 
@@ -2287,10 +2304,8 @@ public class MessageList
         @Override
         public Object getItem(int position) {
             try {
-                synchronized (mMessages) {
-                    if (position < mMessages.size()) {
-                        return mMessages.get(position);
-                    }
+                if (position < mMessages.size()) {
+                    return mMessages.get(position);
                 }
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mMessages.size(), e);
