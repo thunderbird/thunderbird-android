@@ -3,10 +3,12 @@
 
     <style name="Theme.K9.Light" parent="Theme.Sherlock.Light">
         <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+        <item name="toggleFlaggedMessages">@drawable/ic_action_toggle_flag</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.Sherlock">
         <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+        <item name="toggleFlaggedMessages">@drawable/ic_action_toggle_flag_dark</item>
     </style>
 
 </resources>
