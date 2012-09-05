@@ -1061,7 +1061,18 @@ public class MimeUtility {
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
                     InputStream in = part.getBody().getInputStream();
-                    return readToString(in, charset);
+                    try {
+                        String text = readToString(in, charset);
+
+                        // Replace the body with a TextBody that already contains the decoded text
+                        part.setBody(new TextBody(text));
+
+                        return text;
+                    } finally {
+                        try {
+                            in.close();
+                        } catch (IOException e) { /* Ignore */ }
+                    }
                 }
             }
 
