@@ -350,37 +350,26 @@ public class MessageList
     }
 
     /**
-     * FIXME
+     * This class is used to run operations that modify UI elements in the UI thread.
+     *
+     * <p>We are using convenience methods that add a {@link android.os.Message} instance or a
+     * {@link Runnable} to the message queue.</p>
+     *
+     * <p><strong>Note:</strong> If you add a method to this class make sure you don't accidentally
+     * perform the operation in the calling thread.</p>
      */
     class MessageListHandler extends Handler {
-        private static final int ACTION_REMOVE_MESSAGES = 1;
-        private static final int ACTION_ADD_MESSAGES = 2;
-        private static final int ACTION_RESET_UNREAD_COUNT = 3;
-        private static final int ACTION_SORT_MESSAGES = 4;
-        private static final int ACTION_FOLDER_LOADING = 5;
-        private static final int ACTION_REFRESH_TITLE = 6;
-        private static final int ACTION_PROGRESS = 7;
-        private static final int ACTION_REMOVE_MESSAGE = 8;
+        private static final int ACTION_REMOVE_MESSAGE = 1;
+        private static final int ACTION_RESET_UNREAD_COUNT = 2;
+        private static final int ACTION_SORT_MESSAGES = 3;
+        private static final int ACTION_FOLDER_LOADING = 4;
+        private static final int ACTION_REFRESH_TITLE = 5;
+        private static final int ACTION_PROGRESS = 6;
 
 
-        /**
-         * @param messages Never {@code null}.
-         */
-        public void removeMessages(final List<MessageInfoHolder> messages) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGES, messages);
-            sendMessage(msg);
-        }
-
-        /**
-         * @param messages Never {@code null}.
-         */
-        public void addMessages(final List<MessageInfoHolder> messages) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_ADD_MESSAGES, messages);
-            sendMessage(msg);
-        }
-
-        public void resetUnreadCount() {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESET_UNREAD_COUNT);
+        public void removeMessage(MessageReference messageReference) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGE,
+                    messageReference);
             sendMessage(msg);
         }
 
@@ -406,15 +395,9 @@ public class MessageList
             sendMessage(msg);
         }
 
-        public void removeMessage(MessageReference messageReference) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGE,
-                    messageReference);
-            sendMessage(msg);
-        }
-
         public void changeMessageUid(final MessageReference ref, final String newUid) {
-            // Instead of creating a container to be able to pass both arguments in a Message we
-            // post a Runnable to the message queue.
+            // Instead of explicitly creating a container to be able to pass both arguments in a
+            // Message we post a Runnable to the message queue.
             post(new Runnable() {
                 @Override
                 public void run() {
@@ -437,18 +420,12 @@ public class MessageList
             });
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-                case ACTION_REMOVE_MESSAGES: {
-                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
-                    mAdapter.removeMessages(messages);
-                    break;
-                }
-                case ACTION_ADD_MESSAGES: {
-                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>) msg.obj;
-                    mAdapter.addMessages(messages);
+                case ACTION_REMOVE_MESSAGE: {
+                    MessageReference messageReference = (MessageReference) msg.obj;
+                    mAdapter.removeMessage(messageReference);
                     break;
                 }
                 case ACTION_RESET_UNREAD_COUNT: {
@@ -472,11 +449,6 @@ public class MessageList
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
                     MessageList.this.progress(progress);
-                    break;
-                }
-                case ACTION_REMOVE_MESSAGE: {
-                    MessageReference messageReference = (MessageReference) msg.obj;
-                    mAdapter.removeMessage(messageReference);
                     break;
                 }
             }
@@ -2297,10 +2269,6 @@ public class MessageList
             return -1;
         }
 
-        public Object getItem(long position) {
-            return getItem((int)position);
-        }
-
         @Override
         public Object getItem(int position) {
             try {
@@ -2519,16 +2487,9 @@ public class MessageList
             }
         }
 
-
-
-
         @Override
         public boolean hasStableIds() {
             return true;
-        }
-
-        public boolean isItemSelectable(int position) {
-            return (position < mMessages.size());
         }
     }
 
