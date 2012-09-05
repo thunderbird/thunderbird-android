@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/single_message_options"
-        android:icon="@drawable/ic_action_single_message_options"
+        android:icon="?attr/iconActionSingleMessageOptions"
         android:showAsAction="always"
         android:title="@string/single_message_options_action">
         <menu>
@@ -27,7 +27,7 @@
         android:id="@+id/delete"
         android:title="@string/delete_action"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="?attr/iconActionDelete"
     />
     <item
         android:id="@+id/read_toggle"
@@ -39,13 +39,13 @@
         android:id="@+id/archive"
         android:title="@string/archive_action"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_archive"
+        android:icon="?attr/iconActionArchive"
     />
     <item
 		android:id="@+id/move_or_copy"
 	    android:title="@string/move_or_copy_action"
 	    android:showAsAction="ifRoom"
-	    android:icon="@drawable/ic_action_move_or_copy">
+	    android:icon="?attr/iconActionMoveOrCopy">
 	    <menu>
 		    <item
 		        android:id="@+id/move"
@@ -61,12 +61,12 @@
         android:id="@+id/flag_toggle"
         android:title="@string/flag_toggle_action"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_toggle_flag"
+        android:icon="?attr/iconActionToggleFlag"
     />
 	<item
         android:id="@+id/spam"
         android:title="@string/spam_action"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_spam"
+        android:icon="?attr/iconActionSpam"
     />
 </menu>

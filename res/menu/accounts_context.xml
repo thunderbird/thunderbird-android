@@ -3,17 +3,17 @@
     <item android:id="@+id/check_mail"
         android:title="@string/check_mail_action"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_refresh" />
+        android:icon="?attr/iconActionRefresh" />
     
     <item android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_delete" />
+        android:icon="?attr/iconActionDelete" />
     
     <item android:id="@+id/edit_account"
         android:title="@string/account_settings_action" 
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_settings"/>
+        android:icon="?attr/iconActionSettings"/>
     
     <item
         android:id="@+id/compact"

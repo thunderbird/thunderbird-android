@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/check_mail"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="?attr/iconActionRefresh"
         android:showAsAction="always"
         android:title="@string/check_mail_action"/>
     <item
         android:id="@+id/empty_trash"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="?attr/iconActionDelete"
         android:showAsAction="always"
         android:title="@string/empty_trash_action"/>
     <item
         android:id="@+id/folder_settings"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="?attr/iconActionSettings"
         android:showAsAction="always"
         android:title="@string/folder_settings_action"/>
     <item
         android:id="@+id/mark_all_as_read"
-        android:icon="@drawable/ic_action_read"
+        android:icon="?attr/iconActionRead"
         android:showAsAction="always"
         android:title="@string/mark_all_as_read_action"/>
     <item

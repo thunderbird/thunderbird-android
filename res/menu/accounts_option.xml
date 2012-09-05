@@ -4,26 +4,26 @@
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
 		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_action_refresh"
+		android:icon="?attr/iconActionRefresh"
 		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/search"
 		android:title="@string/search_action"
-		android:icon="@drawable/ic_action_search"
+		android:icon="?attr/iconActionSearch"
 		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:title="@string/compose_action"
-		android:icon="@drawable/ic_action_compose"
+		android:icon="?attr/iconActionCompose"
 		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/add_new_account"
 		android:title="@string/add_account_action"
-		android:icon="@drawable/ic_menu_add"
+		android:icon="?attr/iconMenuAdd"
 	/>
     <item
         android:id="@+id/about"

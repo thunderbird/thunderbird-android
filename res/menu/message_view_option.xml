@@ -3,25 +3,25 @@
     <item
         android:id="@+id/next_message"
         android:title="@string/next_action"
-        android:icon="@drawable/ic_action_next_message"
+        android:icon="?attr/iconActionNextMessage"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
-        android:icon="@drawable/ic_action_previous_message"
+        android:icon="?attr/iconActionPreviousMessage"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/delete"
         android:alphabeticShortcut="q"
         android:title="@string/delete_action"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="?attr/iconActionDelete"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/single_message_options"
-        android:icon="@drawable/ic_action_single_message_options"
+        android:icon="?attr/iconActionSingleMessageOptions"
         android:showAsAction="ifRoom"
         android:title="@string/single_message_options_action">
         <menu>
@@ -42,20 +42,20 @@
     <item
         android:id="@+id/archive"
         android:title="@string/archive_action"
-        android:icon="@drawable/ic_action_archive"
+        android:icon="?attr/iconActionArchive"
         android:showAsAction="ifRoom"
     />
     <item
         android:id="@+id/spam"
         android:title="@string/spam_action"
-        android:icon="@drawable/ic_action_spam"
+        android:icon="?attr/iconActionSpam"
         android:showAsAction="ifRoom"
     />
     <item
 		android:id="@+id/move_or_copy"
 	    android:title="@string/move_or_copy_action"
 	    android:showAsAction="ifRoom"
-	    android:icon="@drawable/ic_action_move_or_copy">
+	    android:icon="?attr/iconActionMoveOrCopy">
 	    <menu>
 		    <item
 		        android:id="@+id/move"
@@ -71,7 +71,7 @@
         android:id="@+id/toggle_unread"
         android:alphabeticShortcut="u"
         android:title="@string/read_toggle_action"
-        android:icon="@drawable/ic_action_toggle_read"
+        android:icon="?attr/iconActionToggleRead"
         android:showAsAction="never"
     />
     <item

@@ -4,13 +4,12 @@
     <style name="Theme.K9.Light" parent="Theme.Sherlock.Light">
         <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
 		<item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
-		<item name="iconMenuPreferences">@android:drawable/ic_menu_preferences</item>
 		<item name="iconActionAddAttachment">@drawable/ic_action_add_attachment</item>
 		<item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bbc</item>
 		<item name="iconActionArchive">@drawable/ic_action_archive</item>
 		<item name="iconActionCompose">@drawable/ic_action_compose</item>
 		<item name="iconActionDelete">@drawable/ic_action_delete</item>
-		<item name="iconActionMoveCopy">@drawable/ic_action_move_or_copy</item>
+		<item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy</item>
 		<item name="iconActionNextMessage">@drawable/ic_action_next_message</item>
 		<item name="iconActionPreviousMessage">@drawable/ic_action_previous_message</item>
 		<item name="iconActionRead">@drawable/ic_action_read</item>
@@ -44,13 +43,12 @@
     <style name="Theme.K9.Dark" parent="Theme.Sherlock">
         <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
 		<item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
-		<item name="iconMenuPreferences">@android:drawable/ic_menu_preferences</item>
 		<item name="iconActionAddAttachment">@drawable/ic_action_add_attachment</item>
 		<item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bbc</item>
 		<item name="iconActionArchive">@drawable/ic_action_archive</item>
 		<item name="iconActionCompose">@drawable/ic_action_compose</item>
 		<item name="iconActionDelete">@drawable/ic_action_delete</item>
-		<item name="iconActionMoveCopy">@drawable/ic_action_move_or_copy</item>
+		<item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy</item>
 		<item name="iconActionNextMessage">@drawable/ic_action_next_message</item>
 		<item name="iconActionPreviousMessage">@drawable/ic_action_previous_message</item>
 		<item name="iconActionRead">@drawable/ic_action_read</item>

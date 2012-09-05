@@ -4,13 +4,13 @@
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:title="@string/compose_action"
-        android:icon="@drawable/ic_action_compose"
+        android:icon="?attr/iconActionCompose"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/set_sort"
         android:title="@string/sort_by"
-        android:icon="@drawable/ic_action_sort"
+        android:icon="?attr/iconActionSort"
         android:showAsAction="always" >      
 		<menu>
             <item
@@ -46,39 +46,39 @@
     <item
         android:id="@+id/select_all"
         android:title="@string/batch_select_all"
-        android:icon="@drawable/ic_menu_select_all"
+        android:icon="?attr/iconMenuSelectAll"
         android:showAsAction="never"
     />
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:title="@string/send_messages_action"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="?attr/iconActionRefresh"
         android:showAsAction="never"
     />
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:title="@string/check_mail_action"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="?attr/iconActionRefresh"
         android:showAsAction="always"
     />
     <item
         android:id="@+id/mark_all_as_read"
         android:title="@string/mark_all_as_read_action"
-        android:icon="@drawable/ic_menu_inbox"
+        android:icon="?attr/iconMenuInbox"
         android:showAsAction="never"
     />
     <item
         android:id="@+id/settings"
         android:title="@string/preferences_action"
-        android:icon="@drawable/ic_menu_preferences"
+        android:icon="?attr/iconMenuPreferences"
         android:showAsAction="never">
         <menu>
             <item
                 android:id="@+id/folder_settings"
                 android:title="@string/folder_settings_action"
-                android:icon="@drawable/ic_menu_preferences"
+                android:icon="?attr/iconMenuPreferences"
             />
             <item
                 android:id="@+id/account_settings"
