@@ -33,7 +33,7 @@
         android:id="@+id/read_toggle"
         android:title="@string/read_toggle_action"
         android:showAsAction="always"
-        android:icon="?attr/toggleFlaggedMessages"
+        android:icon="?attr/iconActionToggleFlag"
     />
     <item
         android:id="@+id/archive"
