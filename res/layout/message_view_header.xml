@@ -34,17 +34,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Subject -->
-                    <TextView
-                        android:id="@+id/subject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    <!-- Subject is shown on the actionbar -->
 
                     <!-- From -->
                     <LinearLayout
@@ -163,25 +153,35 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/date"
+                    <LinearLayout
+                        android:id="@+id/date_time_container"
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:ellipsize="none"
-                        android:textSize="10sp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+                        android:gravity="right">
 
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:singleLine="true"
-                        android:ellipsize="none"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:ellipsize="none"
+                            android:textSize="10sp"
+                            android:paddingRight="3dip"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:singleLine="true"
+                            android:ellipsize="none"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

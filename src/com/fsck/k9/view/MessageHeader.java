@@ -44,7 +44,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private TextView mTimeView;
     private TextView mToView;
     private TextView mCcView;
-    private TextView mSubjectView;
     private DateFormat mDateFormat;
     private DateFormat mTimeFormat;
 
@@ -52,7 +51,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private View mChip2;
     private View mChip3;
     private CheckBox mFlagged;
-    private int defaultSubjectColor;
     private LinearLayout mToContainerView;
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
@@ -97,7 +95,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mCcView = (TextView) findViewById(R.id.cc);
         mToContainerView = (LinearLayout) findViewById(R.id.to_container);
         mCcContainerView = (LinearLayout) findViewById(R.id.cc_container);
-        mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
         mChip2 = findViewById(R.id.chip2);
@@ -107,8 +104,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mFlagged = (CheckBox) findViewById(R.id.flagged);
         mShowAdditionalHeadersIcon = (ImageView) findViewById(R.id.show_additional_headers_icon);
 
-        defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
         mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
@@ -238,13 +233,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAccount = account;
 
         initializeLayout();
-        String subject = message.getSubject();
-        if (subject == null || subject.equals("")) {
-            mSubjectView.setText(mContext.getText(R.string.general_no_subject));
-        } else {
-            mSubjectView.setText(subject);
-        }
-        mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
         mFromView.setText(from);
 
