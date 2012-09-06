@@ -2203,23 +2203,57 @@ public class MessageList
             }
         }
 
+        /**
+         * Find a specific message in the message list.
+         *
+         * <p><strong>Note:</strong>
+         * This method was optimized because it is called a lot. Don't change it unless you know
+         * what you are doing.</p>
+         *
+         * @param message
+         *         A {@link Message} instance describing the message to look for.
+         *
+         * @return The corresponding {@link MessageInfoHolder} instance if the message was found in
+         *         the message list. {@code null} otherwise.
+         */
         private MessageInfoHolder getMessage(Message message) {
-            return getMessage(message.makeMessageReference());
+            String uid;
+            Folder folder;
+            for (MessageInfoHolder holder : mMessages) {
+                uid = message.getUid();
+                if (holder.uid == uid || uid.equals(holder.uid)) {
+                    folder = message.getFolder();
+                     if (holder.folder.name.equals(folder.getName()) &&
+                             holder.account.equals(folder.getAccount().getUuid())) {
+                         return holder;
+                     }
+                }
+            }
+
+            return null;
         }
 
-        // XXX TODO - make this not use a for loop
+        /**
+         * Find a specific message in the message list.
+         *
+         * <p><strong>Note:</strong>
+         * This method was optimized because it is called a lot. Don't change it unless you know
+         * what you are doing.</p>
+         *
+         * @param messageReference
+         *         A {@link MessageReference} instance describing the message to look for.
+         *
+         * @return The corresponding {@link MessageInfoHolder} instance if the message was found in
+         *         the message list. {@code null} otherwise.
+         */
         private MessageInfoHolder getMessage(MessageReference messageReference) {
+            String uid;
             for (MessageInfoHolder holder : mMessages) {
-                /*
-                 * 2010-06-21 - cketti
-                 * Added null pointer check. Not sure what's causing 'holder'
-                 * to be null. See log provided in issue 1749, comment #15.
-                 *
-                 * Please remove this comment once the cause was found and the
-                 * bug(?) fixed.
-                 */
-                if ((holder != null) && holder.message.equalsReference(messageReference)) {
-                    return holder;
+                uid = messageReference.uid;
+                if ((holder.uid == uid || uid.equals(holder.uid)) &&
+                        holder.folder.name.equals(messageReference.folderName) &&
+                        holder.account.equals(messageReference.accountUuid)) {
+                     return holder;
                 }
             }
 
