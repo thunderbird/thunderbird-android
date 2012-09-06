@@ -526,11 +526,13 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             } else {
                 mActionBarSubTitle.setText(operation);
             }
-        // query result display
         } else if (mQueryString != null) {
+            // query result display.  This may be for a search folder as opposed to a user-initiated search.
             if (mTitle != null) {
+                // This was a search folder; the search folder has overridden our title.
                 mActionBarTitle.setText(mTitle);
             } else {
+                // This is a search result; set it to the default search result line.
                 mActionBarTitle.setText(getString(R.string.search_results));
             }
         }
@@ -539,8 +541,14 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         if (mUnreadMessageCount == 0) {
             mActionBarUnread.setVisibility(View.GONE);
         } else {
-            mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
-            mActionBarUnread.setVisibility(View.VISIBLE);
+            if (mQueryString != null && mTitle == null) {
+                // This is a search result.  The unread message count is easily confused
+                // with total number of messages in the search result, so let's hide it.
+                mActionBarUnread.setVisibility(View.GONE);
+            } else {
+                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                mActionBarUnread.setVisibility(View.VISIBLE);
+            }
         }
     }
 
