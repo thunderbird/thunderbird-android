@@ -34,12 +34,16 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/classes" />
     <output-test url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/test-classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library">
       <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/r" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/gen" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/combined-assets" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/combined-resources" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/extracted-dependencies" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/test-classes" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.0.1.2" level="project" />
