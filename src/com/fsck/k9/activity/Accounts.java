@@ -325,22 +325,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     public static final String EXTRA_STARTUP = "startup";
 
 
-    public static void actionLaunch(Context context) {
-        Intent intent = new Intent(context, Accounts.class);
-        intent.putExtra(EXTRA_STARTUP, true);
-        context.startActivity(intent);
-    }
-
     public static void listAccounts(Context context) {
         Intent intent = new Intent(context, Accounts.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(EXTRA_STARTUP, false);
-        context.startActivity(intent);
-    }
-
-    public static void listAccountsClearTop(Context context) {
-        Intent intent = new Intent(context, Accounts.class);
-        intent.putExtra(EXTRA_STARTUP, false);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 
@@ -1341,6 +1330,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
 

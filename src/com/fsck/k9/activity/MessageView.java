@@ -245,18 +245,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            if (mMessageListExtras != null) {
-                MessageList.actionHandleFolder(this, mMessageListExtras);
-            }
-            finish();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
     class MessageViewHandler extends Handler {
 
         public void progress(final boolean progress) {
@@ -301,10 +289,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     public static void actionView(Context context, MessageReference messRef,
             ArrayList<MessageReference> messReferences, Bundle messageListExtras) {
         Intent i = new Intent(context, MessageView.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra(EXTRA_MESSAGE_LIST_EXTRAS, messageListExtras);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
 

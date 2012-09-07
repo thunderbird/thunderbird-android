@@ -38,7 +38,6 @@ public class LauncherShortcuts extends AccountList {
                     true);
         }
 
-        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         String description = account.getDescription();

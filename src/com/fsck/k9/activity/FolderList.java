@@ -241,16 +241,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         sendMail(mAccount);
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account) {
-        return actionHandleAccountIntent(context, account, null, false);
-    }
-
-    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
-        return actionHandleAccountIntent(context, account, initialFolder, false);
-    }
-
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut) {
         Intent intent = new Intent(context, FolderList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
         if (initialFolder != null) {
@@ -264,13 +257,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         return intent;
     }
 
-    private static void actionHandleAccount(Context context, Account account, String initialFolder) {
-        Intent intent = actionHandleAccountIntent(context, account, initialFolder);
-        context.startActivity(intent);
-    }
-
     public static void actionHandleAccount(Context context, Account account) {
-        actionHandleAccount(context, account, null);
+        Intent intent = actionHandleAccountIntent(context, account, null, false);
+        context.startActivity(intent);
     }
 
     public static Intent actionHandleNotification(Context context, Account account, String initialFolder) {
@@ -279,7 +268,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             Uri.parse("email://accounts/" + account.getAccountNumber()),
             context,
             FolderList.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(EXTRA_FROM_NOTIFICATION, true);
 
@@ -418,7 +407,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         if (!mAccount.isAvailable(this)) {
             Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
-            startActivity(new Intent(this, Accounts.class));
+            Accounts.listAccounts(this);
             finish();
             return;
         }
@@ -432,16 +421,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         onRefresh(!REFRESH_REMOTE);
 
         MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            onAccounts();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -643,9 +622,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     private void onOpenFolder(String folder) {
         MessageList.actionHandleFolder(this, mAccount, folder);
-        if (K9.manageBack()) {
-            finish();
-        }
     }
 
     private void onCompact(Account account) {

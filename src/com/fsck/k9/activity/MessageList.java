@@ -588,24 +588,27 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
      */
     public static void actionHandleFolder(Context context, Bundle extras) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtras(extras);
         intent.putExtra(EXTRA_RETURN_FROM_MESSAGE_VIEW, true);
         context.startActivity(intent);
     }
 
     public static void actionHandleFolder(Context context, Account account, String folder) {
-        Intent intent = actionHandleFolderIntent(context, account, folder);
+        Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
+
+        if (folder != null) {
+            intent.putExtra(EXTRA_FOLDER, folder);
+        }
         context.startActivity(intent);
     }
 
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
         if (folder != null) {
@@ -616,6 +619,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
     public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags) {
         Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(EXTRA_QUERY, queryString);
         if (flags != null) {
             intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(flags, ','));
@@ -625,9 +629,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         }
         intent.putExtra(EXTRA_INTEGRATE, integrate);
         intent.putExtra(EXTRA_TITLE, title);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
 
@@ -990,19 +991,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     @Override
     public ActivityState getLastNonConfigurationInstance() {
         return (ActivityState) super.getLastNonConfigurationInstance();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            if (mQueryString == null) {
-                onShowFolderList();
-            } else {
-                onAccounts();
-            }
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
