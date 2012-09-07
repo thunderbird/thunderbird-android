@@ -2528,6 +2528,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         mQuoteStyle = QuoteStyle.HEADER;
 
+        // "Be Like Thunderbird" - on forwarded messages, set the message ID
+        // of the forwarded message in the references and the reply to.  TB
+        // only includes ID of the message being forwarded in the reference,
+        // even if there are multiple references.
+        if (!StringUtils.isNullOrEmpty(message.getMessageId())) {
+            mInReplyTo = message.getMessageId();
+            mReferences = mInReplyTo;
+        } else {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "could not get Message-ID.");
+            }
+        }
+
         // Quote the message and setup the UI.
         populateUIWithQuotedMessage(true);
 
