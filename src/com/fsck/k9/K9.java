@@ -42,6 +42,10 @@ import com.fsck.k9.service.StorageGoneReceiver;
 public class K9 extends Application {
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
+    /**
+     * Dark Theme but white background in msg view
+     */
+    public static final int THEME_DARK_WHITE_MSG = 2;
 
     /**
      * Components that are interested in knowing when the K9 instance is
@@ -668,7 +672,11 @@ public class K9 extends Application {
         if (theme == THEME_DARK || theme == android.R.style.Theme) {
             theme = THEME_DARK;
         } else {
-            theme = THEME_LIGHT;
+            if(theme == THEME_DARK_WHITE_MSG) {
+                theme = THEME_DARK_WHITE_MSG;
+            } else {
+                theme = THEME_LIGHT;
+            }
         }
         K9.setK9Theme(theme);
     }

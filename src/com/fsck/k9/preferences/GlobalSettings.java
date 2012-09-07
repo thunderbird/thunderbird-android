@@ -356,6 +356,7 @@ public class GlobalSettings {
     public static class ThemeSetting extends SettingsDescription {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
+        private static final String THEME_DARK_WHITE_MSG = "darkwhite";
 
         public ThemeSetting(int defaultValue) {
             super(defaultValue);
@@ -373,6 +374,8 @@ public class GlobalSettings {
                     return K9.THEME_LIGHT;
                 } else if (theme == K9.THEME_DARK || theme == android.R.style.Theme) {
                     return K9.THEME_DARK;
+                } else if (theme == K9.THEME_DARK_WHITE_MSG) {
+                    return K9.THEME_DARK_WHITE_MSG;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
 
@@ -385,6 +388,8 @@ public class GlobalSettings {
                 return K9.THEME_LIGHT;
             } else if (THEME_DARK.equals(value)) {
                 return K9.THEME_DARK;
+            } else if (THEME_DARK_WHITE_MSG.equals(value)) {
+                return K9.THEME_DARK_WHITE_MSG;
             }
 
             throw new InvalidSettingValueException();
