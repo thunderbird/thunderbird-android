@@ -495,11 +495,13 @@
     <string-array name="settings_theme_entries">
         <item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_darkwhite</item>
     </string-array>
 
     <string-array name="settings_theme_values">
         <item>light</item>
         <item>dark</item>
+        <item>darkwhite</item>
     </string-array>
 
     <!-- Note: If you change this make sure the code in Prefs.java is still working -->

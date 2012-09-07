@@ -821,6 +821,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_signature__location_before_quoted_text">Before quoted text</string>
     <string name="account_settings_signature__location_after_quoted_text">After quoted text</string>
     <string name="setting_theme_dark">Dark</string>
+    <string name="setting_theme_darkwhite">Dark w. white msg view</string>
     <string name="setting_theme_light">Light</string>
     <string name="display_preferences">Display</string>
     <string name="global_preferences">Global</string>
