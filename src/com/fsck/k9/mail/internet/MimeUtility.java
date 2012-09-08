@@ -1060,8 +1060,15 @@ public class MimeUtility {
                      * Now we read the part into a buffer for further processing. Because
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
-                    InputStream in = part.getBody().getInputStream();
-                    return readToString(in, charset);
+                    InputStream in = null;
+                    try {
+                        in = part.getBody().getInputStream();
+                        return readToString(in, charset);
+                    } finally {
+                        if (in != null) {
+                            in.close();
+                        }
+                    }
                 }
             }
 
