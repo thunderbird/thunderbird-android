@@ -102,6 +102,11 @@ public class FontSizes {
     private int messageViewAdditionalHeaders;
 
     /**
+     * Font size of the message subject in the message view activity.
+     */
+    private int messageViewSubject;
+
+    /**
      * Font size of the message time in the message view activity.
      */
     private int messageViewTime;
@@ -143,6 +148,7 @@ public class FontSizes {
         messageViewTo = FONT_12SP;
         messageViewCC = FONT_12SP;
         messageViewAdditionalHeaders = FONT_12SP;
+        messageViewSubject = FONT_12SP;
         messageViewTime = FONT_10SP;
         messageViewDate = FONT_10SP;
 
@@ -170,6 +176,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_TO, messageViewTo);
         editor.putInt(MESSAGE_VIEW_CC, messageViewCC);
         editor.putInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
+        editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_TIME, messageViewTime);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
@@ -198,6 +205,7 @@ public class FontSizes {
         messageViewTo = prefs.getInt(MESSAGE_VIEW_TO, messageViewTo);
         messageViewCC = prefs.getInt(MESSAGE_VIEW_CC, messageViewCC);
         messageViewAdditionalHeaders = prefs.getInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
+        messageViewSubject = prefs.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewTime = prefs.getInt(MESSAGE_VIEW_TIME, messageViewTime);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
@@ -299,6 +307,14 @@ public class FontSizes {
 
     public void setMessageViewAdditionalHeaders(int messageViewAdditionalHeaders) {
         this.messageViewAdditionalHeaders = messageViewAdditionalHeaders;
+    }
+
+    public int getMessageViewSubject() {
+        return messageViewSubject;
+    }
+
+    public void setMessageViewSubject(int messageViewSubject) {
+        this.messageViewSubject = messageViewSubject;
     }
 
     public int getMessageViewTime() {

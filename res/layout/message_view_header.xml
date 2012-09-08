@@ -34,7 +34,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Subject is shown on the actionbar -->
+                    <!-- Subject -->
+                    <TextView
+                        android:id="@+id/subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:visibility="gone"/>
 
                     <!-- From -->
                     <LinearLayout

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -40,6 +41,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
+import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.SingleMessageView;
 
 public class MessageView extends K9Activity implements OnClickListener {
@@ -52,6 +54,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
     private SingleMessageView mMessageView;
+    private MessageTitleView mTitleView;
 
     private PgpData mPgpData;
     private Menu mMenu;
@@ -311,8 +314,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.message_view);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
         //set a callback for the attachment view. With this callback the attachmentview
@@ -343,6 +344,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         });
 
         mMessageView.initialize(this);
+
+        initializeActionBar();
 
         setTitle("");
         final Intent intent = getIntent();
@@ -413,6 +416,18 @@ public class MessageView extends K9Activity implements OnClickListener {
         super.onRestoreInstanceState(savedInstanceState);
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
+    }
+
+    private void initializeActionBar() {
+        final ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.actionbar_message_view);
+
+        final View customView = actionBar.getCustomView();
+        mTitleView = (MessageTitleView) customView.findViewById(android.R.id.title);
+        mTitleView.setMessageHeader(mMessageView.getMessageHeaderView());
     }
 
     private void displayMessage(MessageReference ref) {
@@ -1081,5 +1096,15 @@ public class MessageView extends K9Activity implements OnClickListener {
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
+    }
+
+    /**
+     * Set the title of the view.  Since we're using a custom ActionBar view, the normal setTitle() doesn't do what we
+     * think.  This version sets the text value into the proper ActionBar title view.
+     * @param title Title to set.
+     */
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitleView.setText(title);
     }
 }
