@@ -70,5 +70,9 @@ public class BinaryTempFileBody implements Body {
                 mFile.delete();
             }
         }
+
+        public void closeWithoutDeleting() throws IOException {
+            super.close();
+        }
     }
 }
