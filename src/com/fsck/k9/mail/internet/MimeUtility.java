@@ -1059,16 +1059,15 @@ public class MimeUtility {
                     /*
                      * Now we read the part into a buffer for further processing. Because
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
+                     *
+                     * We can't wrap this in a try-finally to close the InputStream.  It looks like
+                     * we depend on the underlying temp file to exist across calls, and closing it
+                     * deletes the file, which isn't what we want.  We should figure out if this
+                     * is really the right way to be doing things, since it's triggering strict
+                     * mode warnings.
                      */
-                    InputStream in = null;
-                    try {
-                        in = part.getBody().getInputStream();
-                        return readToString(in, charset);
-                    } finally {
-                        if (in != null) {
-                            in.close();
-                        }
-                    }
+                    InputStream in = part.getBody().getInputStream();
+                    return readToString(in, charset);
                 }
             }
 
