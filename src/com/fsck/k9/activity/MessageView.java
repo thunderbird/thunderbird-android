@@ -731,6 +731,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             setTitle(subject);
+            updateUnreadToggleTitle();
         }
     }
 
@@ -837,13 +838,14 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         if (mPreviousMessage != null) {
-
             menu.findItem(R.id.previous_message).setEnabled(true);
             menu.findItem(R.id.previous_message).getIcon().setAlpha(255);
         } else {
             menu.findItem(R.id.previous_message).getIcon().setAlpha(127);
             menu.findItem(R.id.previous_message).setEnabled(false);
         }
+
+        updateUnreadToggleTitle();
 
         // comply with the setting
         if (!mAccount.getEnableMoveButtons()) {
@@ -871,6 +873,19 @@ public class MessageView extends K9Activity implements OnClickListener {
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.archive).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
+            }
+        }
+    }
+
+    /**
+     * Set the title of the "Toggle Unread" menu item based upon the current read state of the message.
+     */
+    public void updateUnreadToggleTitle() {
+        if (mMessage != null && mMenu != null) {
+            if (mMessage.isSet(Flag.SEEN)) {
+                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
+            } else {
+                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
             }
         }
     }
@@ -988,6 +1003,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                         mMessage = message;
                         mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
                                 mController, mListener);
+                        updateUnreadToggleTitle();
 
                     } catch (MessagingException e) {
                         Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
