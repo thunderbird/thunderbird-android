@@ -1446,15 +1446,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
         int i = 0;
         for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder h = iterator.next();
-            message = h.message;
+            final MessageInfoHolder messageInfo = iterator.next();
+            message = messageInfo.message;
             folder = message.getFolder();
             account = folder.getAccount();
             folderName = message.getFolder().getName();
 
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.SEEN, !h.read);
+            mController.setFlag(account, folderName, new Message[]{message}, Flag.SEEN, !messageInfo.read);
 
-            h.read = !h.read;
+            messageInfo.read = !messageInfo.read;
             mAdapter.sortMessages();
         }
     }
@@ -1467,15 +1467,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
         int i = 0;
         for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder h = iterator.next();
-            message = h.message;
+            final MessageInfoHolder messageInfo = iterator.next();
+            message = messageInfo.message;
             folder = message.getFolder();
             account = folder.getAccount();
             folderName = message.getFolder().getName();
 
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.FLAGGED, !h.flagged);
+            mController.setFlag(account, folderName, new Message[]{message}, Flag.FLAGGED, !messageInfo.flagged);
 
-            h.flagged = !h.flagged;
+            messageInfo.flagged = !messageInfo.flagged;
             mAdapter.sortMessages();
         }
     }
