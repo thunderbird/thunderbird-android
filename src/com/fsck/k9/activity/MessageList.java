@@ -1849,6 +1849,18 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             notifyDataSetChanged();
         }
 
+        /**
+         * Set the selection state for all messages at once.
+         * @param selected Selection state to set.
+         */
+        public void setSelectionForAllMesages(final boolean selected) {
+            for (MessageInfoHolder message : mMessages) {
+                message.selected = selected;
+            }
+
+            notifyDataSetChanged();
+        }
+
         public void addMessages(final List<MessageInfoHolder> messages) {
             if (messages.isEmpty()) {
                 return;
@@ -2400,30 +2412,28 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Toggle all selected message states.  Sort of.  If anything selected, unselect everything.  If nothing is
+     * selected, select everything.
+     */
     private void toggleAllSelected() {
         boolean newState = true;
 
-        synchronized (mAdapter.messages) {
-            if (mSelectedCount > 0) {
-		newState = false;
-            }
-
-            mSelectedCount = 0;
-
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                holder.selected = newState;
-                mSelectedCount += (newState ? 1 : 0);
-            }
-
-            if (newState) {
-		mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-		mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
-            } else {
-		mActionMode.finish();
-		mSelectedCount = 0;
-            }
+        // If there was anything selected, unselect everything.
+        if (mSelectedCount > 0) {
+            newState = false;
         }
-        mAdapter.notifyDataSetChanged();
+
+        mAdapter.setSelectionForAllMesages(newState);
+
+        if (newState) {
+            mSelectedCount = mAdapter.getCount();
+            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+            mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
+        } else {
+            mSelectedCount = 0;
+            mActionMode.finish();
+        }
     }
 
     private void setSelected(final List<MessageInfoHolder> holders, final boolean newState) {
