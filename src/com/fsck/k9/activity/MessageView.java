@@ -344,7 +344,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         });
 
         mMessageView.initialize(this);
-
+        mMessageView.downloadRemainderButton().setOnClickListener(this);
         initializeActionBar();
 
         setTitle("");
