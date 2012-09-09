@@ -52,21 +52,15 @@
         android:showAsAction="ifRoom"
     />
     <item
-		android:id="@+id/move_or_copy"
-	    android:title="@string/move_or_copy_action"
-	    android:showAsAction="ifRoom"
-	    android:icon="?attr/iconActionMoveOrCopy">
-	    <menu>
-		    <item
-		        android:id="@+id/move"
-		        android:title="@string/move_action"
-		    />
-		    <item
-		        android:id="@+id/copy"
-		        android:title="@string/copy_action"
-		    />
-		</menu>
-	</item>
+        android:id="@+id/move"
+            android:showAsAction="ifRoom"
+                android:icon="?attr/iconActionMoveOrCopy"
+        android:title="@string/move_action"
+    />
+    <item
+        android:id="@+id/copy"
+        android:title="@string/copy_action"
+    />
 	<item
         android:id="@+id/toggle_unread"
         android:alphabeticShortcut="u"

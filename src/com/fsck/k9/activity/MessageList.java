@@ -2792,7 +2792,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 	            menu.findItem(R.id.archive).setVisible(true);
 	            menu.findItem(R.id.spam).setVisible(true);
 	            menu.findItem(R.id.copy).setVisible(true);
-	            menu.findItem(R.id.move_or_copy).setVisible(true);
 
 	            // hide uncapable
 				/*
@@ -2846,7 +2845,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			if (mQueryString != null) {
 	            menu.findItem(R.id.move).setVisible(false);
 	            menu.findItem(R.id.copy).setVisible(false);
-	            menu.findItem(R.id.move_or_copy).setVisible(false);
 
 	            menu.findItem(R.id.archive).setVisible(false);
 	            menu.findItem(R.id.spam).setVisible(false);
@@ -2863,11 +2861,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 	            menu.findItem(R.id.move).setVisible(false);
 	            menu.findItem(R.id.archive).setVisible(false);
 	            menu.findItem(R.id.spam).setVisible(false);
-	        }
-
-	        if (!mController.isMoveCapable(mAccount)
-				&& !mController.isCopyCapable(mAccount)) {
-	            menu.findItem(R.id.move_or_copy).setVisible(false);
 	        }
 
 	        if (!mAccount.hasArchiveFolder()) {
