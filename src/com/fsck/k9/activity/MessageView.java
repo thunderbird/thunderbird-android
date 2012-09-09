@@ -761,11 +761,11 @@ public class MessageView extends K9Activity implements OnClickListener {
             finish();
             break;
         case R.id.next_message:
-		onNext();
-		break;
+            onNext();
+            break;
         case R.id.previous_message:
-		onPrevious();
-		break;
+            onPrevious();
+            break;
         case R.id.delete:
             onDelete();
             break;
@@ -814,35 +814,35 @@ public class MessageView extends K9Activity implements OnClickListener {
         return true;
     }
 
-    private void configureMenu(Menu menu){
-	// first run displayMessage() gets called before onCreateOptionMenu()
-	if (menu == null) {
-		return;
-	}
-
-	// enable them all
-	menu.findItem(R.id.copy).setVisible(true);
-	menu.findItem(R.id.move).setVisible(true);
-	menu.findItem(R.id.archive).setVisible(true);
-	menu.findItem(R.id.spam).setVisible(true);
-        toggleActionsState(menu, true);
-
-        if (mNextMessage != null ) {
-
-	    menu.findItem(R.id.next_message).setEnabled(true);
-	    menu.findItem(R.id.next_message).getIcon().setAlpha(255);
-        } else {
-	    menu.findItem(R.id.next_message).getIcon().setAlpha(127);
-	    menu.findItem(R.id.next_message).setEnabled(false);
+    private void configureMenu(Menu menu) {
+        // first run displayMessage() gets called before onCreateOptionMenu()
+        if (menu == null) {
+            return;
         }
 
-        if (mPreviousMessage != null ) {
+        // enable them all
+        menu.findItem(R.id.copy).setVisible(true);
+        menu.findItem(R.id.move).setVisible(true);
+        menu.findItem(R.id.archive).setVisible(true);
+        menu.findItem(R.id.spam).setVisible(true);
+        toggleActionsState(menu, true);
 
-	    menu.findItem(R.id.previous_message).setEnabled(true);
-	    menu.findItem(R.id.previous_message).getIcon().setAlpha(255);
+        if (mNextMessage != null) {
+
+            menu.findItem(R.id.next_message).setEnabled(true);
+            menu.findItem(R.id.next_message).getIcon().setAlpha(255);
         } else {
-	    menu.findItem(R.id.previous_message).getIcon().setAlpha(127);
-	    menu.findItem(R.id.previous_message).setEnabled(false);
+            menu.findItem(R.id.next_message).getIcon().setAlpha(127);
+            menu.findItem(R.id.next_message).setEnabled(false);
+        }
+
+        if (mPreviousMessage != null) {
+
+            menu.findItem(R.id.previous_message).setEnabled(true);
+            menu.findItem(R.id.previous_message).getIcon().setAlpha(255);
+        } else {
+            menu.findItem(R.id.previous_message).getIcon().setAlpha(127);
+            menu.findItem(R.id.previous_message).setEnabled(false);
         }
 
         // comply with the setting
@@ -851,7 +851,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
         } else {
-		// check message, folder capability
+            // check message, folder capability
             if (!mController.isCopyCapable(mAccount)) {
                 menu.findItem(R.id.copy).setVisible(false);
             }
@@ -860,25 +860,25 @@ public class MessageView extends K9Activity implements OnClickListener {
                 menu.findItem(R.id.move).setVisible(true);
 
                 menu.findItem(R.id.archive).setVisible(
-				!mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
-				&& mAccount.hasArchiveFolder());
+                    !mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
+                        && mAccount.hasArchiveFolder());
 
                 menu.findItem(R.id.spam).setVisible(
-				!mMessageReference.folderName.equals(mAccount.getSpamFolderName())
-				&& mAccount.hasSpamFolder());
+                    !mMessageReference.folderName.equals(mAccount.getSpamFolderName())
+                        && mAccount.hasSpamFolder());
             } else {
-		menu.findItem(R.id.copy).setVisible(false);
-		menu.findItem(R.id.move).setVisible(false);
-		menu.findItem(R.id.archive).setVisible(false);
-		menu.findItem(R.id.spam).setVisible(false);
+                menu.findItem(R.id.copy).setVisible(false);
+                menu.findItem(R.id.move).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
             }
         }
     }
 
-    private void toggleActionsState(Menu menu, boolean state){
-	for(int i=0; i<menu.size(); ++i) {
-		menu.getItem(i).setEnabled(state);
-	}
+    private void toggleActionsState(Menu menu, boolean state) {
+        for (int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).setEnabled(state);
+        }
     }
 
     // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
