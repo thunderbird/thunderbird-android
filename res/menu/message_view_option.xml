@@ -68,12 +68,6 @@
         android:icon="?attr/iconActionToggleRead"
         android:showAsAction="never"
     />
-    <item
-        android:id="@+id/flag"
-        android:alphabeticShortcut="s"
-        android:title="@string/flag_action"
-        android:showAsAction="never"
-    />
 	<item
 		android:id="@+id/select_text"
 		android:title="@string/select_text_action"

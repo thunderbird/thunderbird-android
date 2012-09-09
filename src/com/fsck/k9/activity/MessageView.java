@@ -778,9 +778,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.forward:
             onForward();
             break;
-        case R.id.flag:
-            onFlag();
-            break;
         case R.id.share:
             onSendAlternate();
             break;
