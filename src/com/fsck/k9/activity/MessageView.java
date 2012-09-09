@@ -827,8 +827,23 @@ public class MessageView extends K9Activity implements OnClickListener {
 	menu.findItem(R.id.spam).setVisible(true);
         toggleActionsState(menu, true);
 
-	menu.findItem(R.id.next_message).setVisible(mNextMessage != null);
-	menu.findItem(R.id.previous_message).setVisible(mPreviousMessage != null);
+        if (mNextMessage != null ) {
+
+	    menu.findItem(R.id.next_message).setEnabled(true);
+	    menu.findItem(R.id.next_message).getIcon().setAlpha(255);
+        } else {
+	    menu.findItem(R.id.next_message).getIcon().setAlpha(127);
+	    menu.findItem(R.id.next_message).setEnabled(false);
+        }
+
+        if (mPreviousMessage != null ) {
+
+	    menu.findItem(R.id.previous_message).setEnabled(true);
+	    menu.findItem(R.id.previous_message).getIcon().setAlpha(255);
+        } else {
+	    menu.findItem(R.id.previous_message).getIcon().setAlpha(127);
+	    menu.findItem(R.id.previous_message).setEnabled(false);
+        }
 
         // comply with the setting
         if (!mAccount.getEnableMoveButtons()) {
