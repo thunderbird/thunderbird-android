@@ -683,7 +683,8 @@ public class ImapStore extends Store {
                     } else if (attribute.equals("\\Sent")) {
                         mAccount.setSentFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
-                    } else if (attribute.equals("\\Spam")) {
+                    } else if (attribute.equals("\\Spam") || attribute.equals("\\Junk")) {
+                        //rfc6154 just mentions \Junk
                         mAccount.setSpamFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Trash")) {
