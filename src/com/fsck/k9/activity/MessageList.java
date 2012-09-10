@@ -255,7 +255,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
     private ListView mListView;
 
-    private boolean mTouchView = true;
     private int mPreviewLines = 0;
 
 
@@ -694,9 +693,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         initializeActionBar();
         initializeLayout();
 
-        // Only set "touchable" when we're first starting up the activity.
-        // Otherwise we get force closes when the user toggles it midstream.
-        mTouchView = K9.messageListTouchable();
         mPreviewLines = K9.messageListPreviewLines();
 
         initializeMessageList(getIntent(), true);
@@ -2103,13 +2099,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
                 view = convertView;
             } else {
-                if (mTouchView) {
-                    view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
-                    view.setId(R.layout.message_list_item);
-                } else {
-                    view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                    view.setId(R.layout.message_list_item);
-                }
+                view = mInflater.inflate(R.layout.message_list_item, parent, false);
+                view.setId(R.layout.message_list_item);
             }
 
             MessageViewHolder holder = (MessageViewHolder) view.getTag();
@@ -2140,13 +2131,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
                 holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
-                if (mTouchView) {
-                    holder.preview.setLines(mPreviewLines);
-                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
+                holder.preview.setLines(mPreviewLines);
+                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
 
-                } else {
-                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
-                }
 
                 view.setTag(holder);
             }
@@ -2248,8 +2235,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
             if (holder.preview != null) {
                 /*
-                 * In the touchable UI, we have previews. Otherwise, we
-                 * have just a "from" line.
                  * Because text views can't wrap around each other(?) we
                  * compose a custom view containing the preview and the
                  * from.

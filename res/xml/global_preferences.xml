@@ -108,12 +108,6 @@
             android:title="@string/messagelist_preferences"
             android:key="messagelist_preferences">
 
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="messagelist_touchable"
-                android:title="@string/global_settings_touchable_label"
-                android:summary="@string/global_settings_touchable_summary" />
-
             <ListPreference
                 android:persistent="false"
                 android:key="messagelist_preview_lines"
@@ -121,7 +115,7 @@
                 android:entries="@array/settings_preview_lines_entries"
                 android:entryValues="@array/settings_preview_lines_values"
                 android:dialogTitle="@string/global_settings_preview_lines_label"
-                android:dependency="messagelist_touchable" />
+                />
 
 
             <CheckBoxPreference
