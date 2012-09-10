@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/check_mail"
-        android:icon="?attr/iconActionRefresh"
-        android:showAsAction="always"
-        android:title="@string/check_mail_action"/>
-    <item
-        android:id="@+id/empty_trash"
-        android:icon="?attr/iconActionDelete"
-        android:showAsAction="always"
-        android:title="@string/empty_trash_action"/>
-    <item
-        android:id="@+id/folder_settings"
-        android:icon="?attr/iconActionSettings"
-        android:showAsAction="always"
-        android:title="@string/folder_settings_action"/>
+        android:id="@+id/open_folder"
+        android:title="@string/open_action"
+    />
     <item
         android:id="@+id/mark_all_as_read"
-        android:icon="?attr/iconActionRead"
-        android:showAsAction="always"
-        android:title="@string/mark_all_as_read_action"/>
+        android:title="@string/mark_all_as_read_action"
+    />
+    <item
+        android:id="@+id/empty_trash"
+        android:title="@string/empty_trash_action"
+    />
+    <item
+        android:id="@+id/check_mail"
+        android:title="@string/check_mail_action"
+    />
     <item
         android:id="@+id/send_messages"
-        android:showAsAction="never"
-        android:title="@string/send_messages_action"/>
+        android:title="@string/send_messages_action"
+    />
+       <item       
+        android:id="@+id/folder_settings"
+		android:title="@string/folder_settings_action"
+    />
     <item
         android:id="@+id/clear_local_folder"
-        android:showAsAction="never"
-        android:title="@string/clear_local_folder_action"/>
+        android:title="@string/clear_local_folder_action"
+    />
     <item
         android:id="@+id/expunge"
-        android:showAsAction="never"
-        android:title="@string/expunge_action"/>
-
+        android:title="@string/expunge_action"
+    />
+	
 </menu>
