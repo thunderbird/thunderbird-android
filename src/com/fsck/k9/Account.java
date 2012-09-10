@@ -190,6 +190,9 @@ public class Account implements BaseAccount {
 
     private CryptoProvider mCryptoProvider = null;
 
+    private ColorChip mUnreadColorChip;
+    private ColorChip mReadColorChip;
+
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
      *
@@ -749,6 +752,8 @@ public class Account implements BaseAccount {
 
     public synchronized void setChipColor(int color) {
         mChipColor = color;
+        mUnreadColorChip = null;
+        mReadColorChip = null;
     }
 
     public synchronized int getChipColor() {
@@ -757,7 +762,17 @@ public class Account implements BaseAccount {
 
 
     public ColorChip generateColorChip(boolean messageRead) {
-        return new ColorChip(mChipColor, messageRead);
+        if (messageRead) {
+            if (mReadColorChip == null) {
+                mReadColorChip = new ColorChip(mChipColor, true);
+            }
+            return mReadColorChip;
+        } else {
+            if (mUnreadColorChip == null) {
+                mUnreadColorChip = new ColorChip(mChipColor, false);
+            }
+            return mUnreadColorChip;
+        }
     }
 
     public ColorChip generateColorChip() {
