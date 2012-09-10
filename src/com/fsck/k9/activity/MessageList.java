@@ -1704,8 +1704,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
         private final ActivityListener mListener = new ActivityListener() {
 
-            // TODO achen - may need to add a setSupportProgress to mHandler to run on the UI thread.
-
             @Override
             public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
 
@@ -1715,7 +1713,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                     setSupportProgress(Window.PROGRESS_END);
                 }
 
-                addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
+                mHandler.addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
             }
 
             @Override

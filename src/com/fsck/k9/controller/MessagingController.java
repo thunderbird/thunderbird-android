@@ -855,6 +855,7 @@ public class MessagingController implements Runnable {
 
 
         } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Could not complete remote search", e);
             if (listener != null) {
                 listener.remoteSearchFailed(acct, null, e.getMessage());
             }
