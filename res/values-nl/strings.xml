@@ -877,9 +877,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Bericht beeld</string>
     <string name="volume_navigation_list">Variabele lijst beelden</string>
 
-    <string name="manage_back_title">Beheer \"Terug\" knop</string>
-    <string name="manage_back_summary">Laat \"Terug\" altijd 1 niveau omhoog gaan</string>
-
     <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
     <string name="start_integrated_inbox_summary">Laat de geïntegreerde Inbox zien na opstarten</string>
 

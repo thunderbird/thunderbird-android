@@ -79,7 +79,7 @@ http://k9mail.googlecode.com/
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
     <string name="welcome_message_title">Welcome to K-9 Mail!</string>
-	<string name="folders_title">Folders</string>
+    <string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -891,9 +891,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_summary">Flip through items using the volume controls</string>
     <string name="volume_navigation_message">Message view</string>
     <string name="volume_navigation_list">Various list views</string>
-
-    <string name="manage_back_title">Manage \"Back\" button</string>
-    <string name="manage_back_summary">Make \"Back\" always go up a level</string>
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
     <string name="start_integrated_inbox_summary">Show the Unified Inbox after startup</string>

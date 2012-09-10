@@ -24,7 +24,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.helper.DateFormatter;
@@ -54,7 +53,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_GESTURES = "gestures";
     private static final String PREFERENCE_VOLUME_NAVIGATION = "volumeNavigation";
-    private static final String PREFERENCE_MANAGE_BACK = "manage_back";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
     private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
@@ -97,7 +95,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
     private CheckBoxListPreference mVolumeNavigation;
-    private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
     private ListPreference mNotificationHideSubject;
@@ -192,9 +189,6 @@ public class Prefs extends K9PreferenceActivity {
         mVolumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
         mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
         mVolumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
-
-        mManageBack = (CheckBoxPreference)findPreference(PREFERENCE_MANAGE_BACK);
-        mManageBack.setChecked(K9.manageBack());
 
         mStartIntegratedInbox = (CheckBoxPreference)findPreference(PREFERENCE_START_INTEGRATED_INBOX);
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
@@ -412,7 +406,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setCompactLayouts(compactLayouts.isChecked());
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
-        K9.setManageBack(mManageBack.isChecked());
         K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
@@ -469,16 +462,6 @@ public class Prefs extends K9PreferenceActivity {
     protected void onPause() {
         saveSettings();
         super.onPause();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            Accounts.listAccounts(this);
-            finish();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     private void onFontSizeSettings() {

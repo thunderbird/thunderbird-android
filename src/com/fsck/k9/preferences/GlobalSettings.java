@@ -140,9 +140,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
             ));
-        s.put("manageBack", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("measureAccounts", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));

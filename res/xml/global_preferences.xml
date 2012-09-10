@@ -205,12 +205,6 @@
 
         <CheckBoxPreference
             android:persistent="false"
-            android:key="manage_back"
-            android:title="@string/manage_back_title"
-            android:summary="@string/manage_back_summary" />
-
-        <CheckBoxPreference
-            android:persistent="false"
             android:key="messageview_return_to_list"
             android:title="@string/global_settings_messageview_return_to_list_label"
             android:summary="@string/global_settings_messageview_return_to_list_summary" />
@@ -230,48 +224,48 @@
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
 
-		<PreferenceScreen
-			android:title="@string/global_settings_batch_buttons"
-			android:summary="@string/global_settings_batch_buttons_summary"
-			android:key="batch_buttons_settings">
+        <PreferenceScreen
+            android:title="@string/global_settings_batch_buttons"
+            android:summary="@string/global_settings_batch_buttons_summary"
+            android:key="batch_buttons_settings">
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_mark_read"
-				android:title="@string/global_settings_mark_read"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_mark_read"
+                android:title="@string/global_settings_mark_read"
+            />
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_delete"
-				android:title="@string/global_settings_delete"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_delete"
+                android:title="@string/global_settings_delete"
+            />
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_archive"
-				android:title="@string/global_settings_archive"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_archive"
+                android:title="@string/global_settings_archive"
+            />
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_move"
-				android:title="@string/global_settings_move"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_move"
+                android:title="@string/global_settings_move"
+            />
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_flag"
-				android:title="@string/global_settings_flag"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_flag"
+                android:title="@string/global_settings_flag"
+            />
 
-			<CheckBoxPreference
-				android:persistent="false"
-				android:key="batch_buttons_unselect"
-				android:title="@string/global_settings_unselect"
-			/>
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="batch_buttons_unselect"
+                android:title="@string/global_settings_unselect"
+            />
 
-		</PreferenceScreen>
+        </PreferenceScreen>
 
     </PreferenceScreen>
 
@@ -325,11 +319,11 @@
             android:title="@string/misc_preferences_attachment_title"
             android:summary="@string/misc_preferences_attachment_description" />
 
-		<Preference
-			android:persistent="false"
-			android:title="@string/settings_attachment_default_path"
-			android:key="attachment_default_path"
-			android:summary="- PATH - set by activty -"/>
+        <Preference
+            android:persistent="false"
+            android:title="@string/settings_attachment_default_path"
+            android:key="attachment_default_path"
+            android:summary="- PATH - set by activty -"/>
     </PreferenceScreen>
 
     <PreferenceScreen

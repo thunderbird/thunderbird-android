@@ -259,7 +259,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_description_add_bcc">Aggiungi destinatario (Ccn)</string>
     <string name="message_compose_description_delete_quoted_text">Elimina testo citato</string>
     <string name="message_compose_description_edit_quoted_text">Modifica testo citato</string>
-    
+
     <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">A:</string>
     <string name="message_view_cc_label">Cc:</string>
@@ -881,9 +881,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
     <string name="volume_navigation_message">Visualizzazione messaggi</string>
     <string name="volume_navigation_list">Diverse visualizzazioni di elenco</string>
-
-    <string name="manage_back_title">Gestisci pulsante \"Indietro\"</string>
-    <string name="manage_back_summary">\"Indietro\" sale sempre di un livello</string>
 
     <string name="start_integrated_inbox_title">Avvia in Posta in arrivo unificata</string>
     <string name="start_integrated_inbox_summary">Visualizza la Posta in arrivo unificata dopo l\'avvio</string>

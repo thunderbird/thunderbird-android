@@ -880,9 +880,6 @@ http://k9mail.googlecode.com/.
     <string name="volume_navigation_message">Nachrichtenansicht</string>
     <string name="volume_navigation_list">Diverse Listenansichten</string>
 
-    <string name="manage_back_title">\"Zurück\"-Taste</string>
-    <string name="manage_back_summary">Die \"Zurück\"-Taste bringt Sie eine Ebene nach oben</string>
-
     <string name="start_integrated_inbox_title">Gemeinsamer Posteingang bei Start</string>
     <string name="start_integrated_inbox_summary">Zeige gemeinsamen Posteingang beim Programmstart</string>
 

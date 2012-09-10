@@ -878,9 +878,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Vista de mensaxe</string>
     <string name="volume_navigation_list">Listas de mensaxes</string>
 
-    <string name="manage_back_title">Controlar botón \"Atras\" </string>
-    <string name="manage_back_summary">Facer \"Atras\" sempre un nivel superior</string>
-
     <string name="start_integrated_inbox_title">Iniciar na Bandexa unificada</string>
     <string name="start_integrated_inbox_summary">Amosar a Bandexa de Entrada unificada ao inicio</string>
 

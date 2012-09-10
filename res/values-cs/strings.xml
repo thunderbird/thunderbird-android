@@ -886,9 +886,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Zobrazení zpráv</string>
     <string name="volume_navigation_list">Různá zobrazení seznamů</string>
 
-    <string name="manage_back_title">Ovládání tlačítka \"Zpět\"</string>
-    <string name="manage_back_summary">Tlačítkem \"Zpět\" jít vždy o úroveň výše</string>
-
     <string name="start_integrated_inbox_title">Začít v Integrovaná doručené poště</string>
     <string name="start_integrated_inbox_summary">Po startu zobrazit Integrovanou doručenou poštu</string>
 
