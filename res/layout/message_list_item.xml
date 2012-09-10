@@ -12,29 +12,26 @@
 
     <RelativeLayout
         android:id="@+id/chip"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:minHeight="38dip"
+        android:layout_width="16dip"
+        android:layout_height="16dip"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="2dip"
+        android:layout_marginRight="0dip"
+        android:layout_marginLeft="6dip"
         android:background="@android:color/transparent" >
+    </RelativeLayout>
 
-        <View
-            android:layout_width="6dip"
-            android:layout_height="fill_parent" />
 
         <CheckBox
             android:id="@+id/selected_checkbox"
-            android:layout_width="24dip"
+            android:layout_width="30dip"
+            android:paddingRight="5dip"
+            android:paddingLeft="7dip"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:button="@drawable/checkbox"
             android:focusable="false"
             android:visibility="gone" />
-
-    </RelativeLayout>
     
     <LinearLayout
         android:layout_width="fill_parent"

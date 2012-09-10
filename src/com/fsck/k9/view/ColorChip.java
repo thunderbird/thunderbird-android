@@ -9,12 +9,7 @@ public class ColorChip {
 
     static {
 
-        CHIP_PATH.lineTo(6, 0);
-
-        CHIP_PATH.cubicTo(8f, 0f, 10f, 0f, 10f, 2f);
-        CHIP_PATH.lineTo(10, 8);
-        CHIP_PATH.cubicTo(10f, 9f, 10f, 10f, 6f, 10f);
-        CHIP_PATH.lineTo(0, 10);
+        CHIP_PATH.addCircle(8,8,8f,Path.Direction.CW);
         CHIP_PATH.close();
     }
 
@@ -23,7 +18,7 @@ public class ColorChip {
 
     public ColorChip(int color) {
 
-        mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 10, 10));
+        mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 16f, 16f));
         mDrawable.getPaint().setColor(color);
 
 
