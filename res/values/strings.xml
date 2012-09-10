@@ -627,6 +627,10 @@ http://k9mail.googlecode.com/
     <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
 
+    <string name="account_settings_message_display_mode_label">Message display format</string>
+    <string name="account_settings_message_display_mode_html">HTML</string>
+    <string name="account_settings_message_display_mode_plain">Plain text</string>
+
     <string name="account_settings_folder_sync_mode_label">Poll folders</string>
     <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>

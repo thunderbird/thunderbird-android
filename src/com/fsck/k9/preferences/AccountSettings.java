@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import android.content.SharedPreferences;
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -67,6 +68,10 @@ public class AccountSettings {
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                         R.array.account_settings_display_count_values))
+            ));
+        s.put("defaultDisplayMode", Settings.versions(
+                new V(15, new EnumSetting(Account.MessageDisplayMode.class,
+                        MessageDisplayMode.HTML))
             ));
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting("Drafts"))
