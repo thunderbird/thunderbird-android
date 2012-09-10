@@ -28,18 +28,21 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -48,12 +51,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
@@ -79,6 +80,7 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -86,7 +88,6 @@ import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
 import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
-import com.fsck.k9.view.ColorChip;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener {
@@ -131,7 +132,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private MenuItem mRefreshMenuItem;
     private ActionBar mActionBar;
-    private ActionMode mActionMode;
 
     private TextView mActionBarTitle;
     private TextView mActionBarSubTitle;
@@ -398,33 +398,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         listView.setScrollingCacheEnabled(false);
         registerForContextMenu(listView);
 
-        // Enable context action bar behaviour
-        getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view,
-            int position, long id) {
-
-                // is already in selection mode we ignore the next ones
-                if (mSelectedContextAccount != null) {
-                    return false;
-                }
-
-                mSelectedContextAccount = mAdapter.getItem(position);
-
-                // we only handle real accounts this way
-                if (mSelectedContextAccount instanceof SearchAccount) {
-                    mSelectedContextAccount = null;
-                    return false;
-                }
-
-                mSelectedContextAccount = mAdapter.getItem(position);
-                mActionMode = Accounts.this.startActionMode(mActionModeCallback);
-                mActionMode.invalidate();
-                mActionMode.setTitle(String.format(getString(R.string.actionbar_string_selected),
-                                                   mSelectedContextAccount.getDescription()));
-                return true;
-            }
-        });
 
         if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
             String accountUuid = icicle.getString("selectedContextAccount");
@@ -441,8 +414,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void initializeActionBar() {
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setCustomView(R.layout.actionbar_custom);
+	    mActionBar.setDisplayShowCustomEnabled(true);
+	    mActionBar.setCustomView(R.layout.actionbar_custom);
 
         View customView = mActionBar.getCustomView();
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
@@ -646,11 +619,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * @return false if unsuccessfull
      */
     private boolean onOpenAccount(BaseAccount account) {
-        // if we are still in a selection finish it
-        if (mSelectedContextAccount != null) {
-            mActionMode.finish();
-        }
-
         if (account instanceof SearchAccount) {
             SearchAccount searchAccount = (SearchAccount)account;
             MessageList.actionHandle(this, searchAccount.getDescription(), searchAccount);
@@ -1027,7 +995,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         .deleteAccount(realAccount);
                         K9.setServicesEnabled(Accounts.this);
                         refresh();
-                        mActionMode.finish();
                     }
                 }
             });
@@ -1123,6 +1090,64 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         super.onPrepareDialog(id, d);
     }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
+        // submenus don't actually set the menuInfo, so the "advanced"
+        // submenu wouldn't work.
+        if (menuInfo != null) {
+            mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
+        }
+        Account realAccount = null;
+        if (mSelectedContextAccount instanceof Account) {
+            realAccount = (Account)mSelectedContextAccount;
+        }
+        switch (item.getItemId()) {
+        case R.id.delete_account:
+            onDeleteAccount(realAccount);
+            break;
+        case R.id.edit_account:
+            onEditAccount(realAccount);
+            break;
+        case R.id.open:
+            onOpenAccount(mSelectedContextAccount);
+            break;
+        case R.id.activate:
+            onActivateAccount(realAccount);
+            break;
+        case R.id.check_mail:
+            onCheckMail(realAccount);
+            break;
+        case R.id.clear_pending:
+            onClearCommands(realAccount);
+            break;
+        case R.id.empty_trash:
+            onEmptyTrash(realAccount);
+            break;
+        case R.id.compact:
+            onCompact(realAccount);
+            break;
+        case R.id.clear:
+            onClear(realAccount);
+            break;
+        case R.id.recreate:
+            onRecreate(realAccount);
+            break;
+        case R.id.export:
+            onExport(false, realAccount);
+            break;
+        case R.id.move_up:
+            onMove(realAccount, true);
+            break;
+        case R.id.move_down:
+            onMove(realAccount, false);
+            break;
+        }
+        return true;
+    }
+
+
 
     private void onCompact(Account account) {
         mHandler.workingAccount(account, R.string.compacting_account);
@@ -1263,12 +1288,55 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return version;
     }
 
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.accounts_option, menu);
         mRefreshMenuItem = menu.findItem(R.id.check_mail);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle(R.string.accounts_context_menu_title);
+
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        BaseAccount account =  mAdapter.getItem(info.position);
+
+        if ((account instanceof Account) && !((Account) account).isEnabled()) {
+            getMenuInflater().inflate(R.menu.disabled_accounts_context, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.accounts_context, menu);
+        }
+
+        if (account instanceof SearchAccount) {
+            for (int i = 0; i < menu.size(); i++) {
+                android.view.MenuItem item = menu.getItem(i);
+                if (item.getItemId() != R.id.open) {
+                    item.setVisible(false);
+                }
+            }
+        }
+        else {
+            EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(account);
+            if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
+                menu.findItem(R.id.move_up).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_up).setEnabled(true);
+            }
+            if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
+                menu.findItem(R.id.move_down).setEnabled(false);
+            }
+            else {
+                menu.findItem(R.id.move_down).setEnabled(true);
+            }
+        }
     }
 
     private void onImport() {
@@ -1785,88 +1853,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
     }
-
-    /*
-     * Assume this will only be used for REAL ACCOUNTS. This means not the
-     * unified inbox, all messages ( and whatever may come in the future ).
-     */
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(mSelectedContextAccount);
-            if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
-                menu.findItem(R.id.move_up).setVisible(false);
-            } else {
-                menu.findItem(R.id.move_up).setVisible(true);
-            }
-            if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
-                menu.findItem(R.id.move_down).setVisible(false);
-            } else {
-                menu.findItem(R.id.move_down).setVisible(true);
-            }
-
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mSelectedContextAccount = null;
-            mActionMode = null;
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.accounts_context, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Account realAccount = (Account)mSelectedContextAccount;
-
-            switch (item.getItemId()) {
-            case R.id.delete_account:
-                onDeleteAccount(realAccount);
-                break;
-            case R.id.edit_account:
-                onEditAccount(realAccount);
-                break;
-            case R.id.activate:
-                onActivateAccount(realAccount);
-                break;
-            case R.id.check_mail:
-                onCheckMail(realAccount);
-                break;
-            case R.id.clear_pending:
-                onClearCommands(realAccount);
-                break;
-            case R.id.empty_trash:
-                onEmptyTrash(realAccount);
-                break;
-            case R.id.compact:
-                onCompact(realAccount);
-                break;
-            case R.id.clear:
-                onClear(realAccount);
-                break;
-            case R.id.recreate:
-                onRecreate(realAccount);
-                break;
-            case R.id.export:
-                onExport(false, realAccount);
-                break;
-            case R.id.move_up:
-                onMove(realAccount, true);
-                break;
-            case R.id.move_down:
-                onMove(realAccount, false);
-                break;
-            }
-            return true;
-        }
-    };
 
     public void onExport(final boolean includeGlobals, final Account account) {
 
