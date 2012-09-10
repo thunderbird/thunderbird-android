@@ -2766,7 +2766,9 @@ public class MessagingController implements Runnable {
                         localFolder.fetch(new Message[] { message }, fp, null);
 
                         // Mark that this message is now fully synched
-                        message.setFlag(Flag.SEEN, true);
+                        if (account.isMarkMessageAsReadOnView()) {
+                            message.setFlag(Flag.SEEN, true);
+                        }
                         message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     }
 
