@@ -81,21 +81,6 @@ public class LocalStore extends Store implements Serializable {
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
-    private static final Set<String> HEADERS_TO_SAVE;
-    static {
-        Set<String> set = new HashSet<String>();
-        set.add(K9.IDENTITY_HEADER);
-        set.add("To");
-        set.add("Cc");
-        set.add("From");
-        set.add("In-Reply-To");
-        set.add("References");
-        set.add(MimeHeader.HEADER_CONTENT_ID);
-        set.add(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        set.add("User-Agent");
-        HEADERS_TO_SAVE = Collections.unmodifiableSet(set);
-    }
-
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
@@ -2314,12 +2299,9 @@ public class LocalStore extends Store implements Serializable {
             database.execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    boolean saveAllHeaders = mAccount.saveAllHeaders();
-                    boolean gotAdditionalHeaders = false;
 
                     deleteHeaders(id);
                     for (String name : message.getHeaderNames()) {
-                        if (saveAllHeaders || HEADERS_TO_SAVE.contains(name)) {
                             String[] values = message.getHeader(name);
                             for (String value : values) {
                                 ContentValues cv = new ContentValues();
@@ -2328,22 +2310,17 @@ public class LocalStore extends Store implements Serializable {
                                 cv.put("value", value);
                                 db.insert("headers", "name", cv);
                             }
-                        } else {
-                            gotAdditionalHeaders = true;
-                        }
                     }
 
-                    if (!gotAdditionalHeaders) {
-                        // Remember that all headers for this message have been saved, so it is
-                        // not necessary to download them again in case the user wants to see all headers.
-                        List<Flag> appendedFlags = new ArrayList<Flag>();
-                        appendedFlags.addAll(Arrays.asList(message.getFlags()));
-                        appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
+                    // Remember that all headers for this message have been saved, so it is
+                    // not necessary to download them again in case the user wants to see all headers.
+                    List<Flag> appendedFlags = new ArrayList<Flag>();
+                    appendedFlags.addAll(Arrays.asList(message.getFlags()));
+                    appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
-                        db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
-                                   new Object[]
-                                   { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
-                    }
+                    db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
+                               new Object[]
+                               { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
                     return null;
                 }
             });
