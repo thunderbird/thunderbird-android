@@ -2240,7 +2240,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 
 
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read).drawable());
             // TODO: Make these colors part of the theme
             if (K9.getK9Theme() == K9.THEME_LIGHT) {
                 // Light theme: light grey background for read messages

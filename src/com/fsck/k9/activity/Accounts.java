@@ -1747,7 +1747,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
 
             } else {
-                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999).drawable());
+                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false).drawable());
             }
 
 

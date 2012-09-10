@@ -756,8 +756,12 @@ public class Account implements BaseAccount {
     }
 
 
+    public ColorChip generateColorChip(boolean messageRead) {
+        return new ColorChip(mChipColor, messageRead);
+    }
+
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor);
+        return new ColorChip(mChipColor, false);
     }
 
 
