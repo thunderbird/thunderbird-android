@@ -59,6 +59,10 @@
         android:showAsAction="never"
         android:title="@string/mark_all_as_read_action"/>
     <item
+        android:id="@+id/expunge"
+        android:showAsAction="never"
+        android:title="@string/expunge_action"/>
+    <item
         android:id="@+id/settings"
         android:icon="?attr/iconMenuPreferences"
         android:showAsAction="never"
@@ -78,9 +82,5 @@
                 android:title="@string/global_settings_action"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/expunge"
-        android:showAsAction="never"
-        android:title="@string/expunge_action"/>
 
 </menu>

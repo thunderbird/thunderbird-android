@@ -31,11 +31,6 @@
         android:title="@string/search_action" />
     -->
     <item
-        android:id="@+id/edit_prefs"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:showAsAction="never"
-        android:title="@string/preferences_action"/>
-    <item
         android:id="@+id/import_export"
         android:title="@string/import_export_action">
         <menu>
@@ -47,5 +42,10 @@
                 android:title="@string/settings_import"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/edit_prefs"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:showAsAction="never"
+        android:title="@string/preferences_action"/>
 
 </menu>

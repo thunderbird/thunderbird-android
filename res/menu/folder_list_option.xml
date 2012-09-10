@@ -49,6 +49,20 @@
         android:icon="?attr/iconMenuDelete"
         android:title="@string/empty_trash_action"/>
     <item
+        android:id="@+id/send_messages"
+        android:icon="?attr/iconMenuRefresh"
+        android:title="@string/send_messages_action"/>
+    <item
+        android:id="@+id/advanced"
+        android:title="@string/advanced">
+        <menu>
+            <item
+                android:id="@+id/compact"
+                android:icon="?attr/iconMenuCompact"
+                android:title="@string/compact_action"/>
+        </menu>
+    </item>
+    <item
         android:id="@+id/settings"
         android:icon="?attr/iconMenuPreferences"
         android:showAsAction="never"
@@ -62,20 +76,6 @@
                 android:id="@+id/app_settings"
                 android:icon="@android:drawable/ic_menu_preferences"
                 android:title="@string/global_settings_action"/>
-        </menu>
-    </item>
-    <item
-        android:id="@+id/send_messages"
-        android:icon="?attr/iconMenuRefresh"
-        android:title="@string/send_messages_action"/>
-    <item
-        android:id="@+id/advanced"
-        android:title="@string/advanced">
-        <menu>
-            <item
-                android:id="@+id/compact"
-                android:icon="?attr/iconMenuCompact"
-                android:title="@string/compact_action"/>
         </menu>
     </item>
 
