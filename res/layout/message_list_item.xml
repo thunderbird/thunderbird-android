@@ -8,12 +8,18 @@
     android:paddingRight="3dip"
     android:background="#ccc" >
 
+    <LinearLayout
+        android:id="@+id/chip_wrapper"
+        android:layout_alignTop="@+id/subject"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:layout_width="36dip"
+        android:layout_height="fill_parent"
+        >
     <RelativeLayout
         android:id="@+id/chip"
         android:layout_width="16dip"
         android:layout_height="16dip"
-        android:layout_alignTop="@+id/subject"
-        android:layout_alignParentLeft="true"
         android:layout_marginTop="6dip"
         android:layout_marginRight="8dip"
         android:layout_marginLeft="8dip"
@@ -24,15 +30,13 @@
         <CheckBox
             android:id="@+id/selected_checkbox"
             android:layout_width="30dip"
-            android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
             android:paddingRight="7dip"
             android:paddingLeft="7dip"
             android:paddingBottom="6dip"
             android:focusable="false"
             android:visibility="gone" />
-
+    </LinearLayout>
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
@@ -64,7 +68,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/date"
-        android:layout_toRightOf="@+id/selected_checkbox"
+        android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="1dip"
         android:paddingBottom="1dip"
@@ -79,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/subject"
         android:layout_toLeftOf="@+id/flagged"
-        android:layout_toRightOf="@+id/selected_checkbox"
+        android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="0dip"
         android:singleLine="false"
