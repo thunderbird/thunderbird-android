@@ -19,27 +19,21 @@
         <menu>
             <item
                 android:id="@+id/display_all"
-                android:icon="?attr/iconMenuClear"
                 android:title="@string/folder_list_display_mode_all"/>
             <item
                 android:id="@+id/display_1st_class"
-                android:icon="?attr/iconMenuClear"
                 android:title="@string/folder_list_display_mode_first_class"/>
             <item
                 android:id="@+id/display_1st_and_2nd_class"
-                android:icon="?attr/iconMenuClear"
                 android:title="@string/folder_list_display_mode_first_and_second_class"/>
             <item
                 android:id="@+id/display_not_second_class"
-                android:icon="?attr/iconMenuClear"
                 android:title="@string/folder_list_display_mode_not_second_class"/>
             <item
                 android:id="@+id/list_folders"
-                android:icon="?attr/iconMenuRefresh"
                 android:title="@string/refresh_folders_action"/>
             <item
                 android:id="@+id/filter_folders"
-                android:icon="?attr/iconMenuSearch"
                 android:title="@string/filter_folders_action"/>
         </menu>
     </item>
@@ -65,11 +59,9 @@
         <menu>
             <item
                 android:id="@+id/account_settings"
-                android:icon="@android:drawable/ic_menu_preferences"
                 android:title="@string/account_settings_action"/>
             <item
                 android:id="@+id/app_settings"
-                android:icon="@android:drawable/ic_menu_preferences"
                 android:title="@string/global_settings_action"/>
         </menu>
     </item>

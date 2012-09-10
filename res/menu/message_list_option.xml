@@ -70,15 +70,12 @@
         <menu>
             <item
                 android:id="@+id/folder_settings"
-                android:icon="?attr/iconMenuPreferences"
                 android:title="@string/folder_settings_action"/>
             <item
                 android:id="@+id/account_settings"
-                android:icon="@android:drawable/ic_menu_preferences"
                 android:title="@string/account_settings_action"/>
             <item
                 android:id="@+id/app_settings"
-                android:icon="@android:drawable/ic_menu_preferences"
                 android:title="@string/global_settings_action"/>
         </menu>
     </item>
