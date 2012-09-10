@@ -78,6 +78,8 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
+    <string name="welcome_message_title">Welcome to K-9 Mail!</string>
+	<string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -98,6 +100,8 @@ http://k9mail.googlecode.com/
     <string name="status_next_poll">\u0020(Next poll @ <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_syncing_off">\u0020(Syncing disabled)</string>
 
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
+    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g> selected</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Previous</string> <!-- Used as part of a multi-step process -->
@@ -115,6 +119,8 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Clear folder</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
+    <string name="move_or_copy_action">Move or Copy</string>
+    <string name="single_message_options_action">Message Options</string>
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
@@ -142,6 +148,7 @@ http://k9mail.googlecode.com/
 
     <string name="accounts_action">Accounts</string>
     <string name="mark_as_read_action">Mark as read</string>
+    <string name="read_toggle_action">Toggle (un)read</string>
     <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 
@@ -150,6 +157,7 @@ http://k9mail.googlecode.com/
     messages in the folder that are not displayed in K-9)</string>
 
     <string name="flag_action">Add star</string>
+    <string name="flag_toggle_action">(Un)star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
     <string name="show_full_header_action">Show full header</string>

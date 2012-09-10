@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item
-		android:id="@+id/compose"
-        android:alphabeticShortcut="c"
-        android:title="@string/compose_action"
-		android:icon="@drawable/ic_menu_compose"
+    <item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="?attr/iconActionRefresh"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/search"
 		android:title="@string/search_action"
-		android:icon="@android:drawable/ic_search_category_default"
+		android:icon="?attr/iconActionSearch"
+		android:showAsAction="always"
+	/>
+	<item
+		android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+        android:title="@string/compose_action"
+		android:icon="?attr/iconActionCompose"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/add_new_account"
 		android:title="@string/add_account_action"
-		android:icon="@drawable/ic_menu_add"
+		android:icon="?attr/iconMenuAdd"
 	/>
     <item
         android:id="@+id/about"
         android:title="@string/about_action"
         android:icon="@android:drawable/ic_menu_info_details"
     />
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
 	<!-- 
 		<item android:id="@+id/search"
 		android:title="@string/search_action" />
@@ -34,6 +37,7 @@
         <item android:id="@+id/edit_prefs"
         android:title="@string/preferences_action" 
         android:icon="@android:drawable/ic_menu_preferences"
+        android:showAsAction="never"
     />
         <item android:id="@+id/import_export"
             android:title="@string/import_export_action">

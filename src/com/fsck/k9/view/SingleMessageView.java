@@ -495,6 +495,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Fetch the message header view.  This is not the same as the message headers; this is the View shown at the top
+     * of messages.
+     * @return MessageHeader View.
+     */
+    public MessageHeader getMessageHeaderView() {
+        return mHeaderContainer;
+    }
+
     public void setHeaders(final Message message, Account account) {
         try {
             mHeaderContainer.populate(message, account);

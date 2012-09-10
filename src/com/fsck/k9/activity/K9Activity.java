@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -15,10 +14,12 @@ import android.view.MotionEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+
+import com.actionbarsherlock.app.SherlockActivity;
 import com.fsck.k9.K9;
 
 
-public class K9Activity extends Activity {
+public class K9Activity extends SherlockActivity {
     protected static final int BEZEL_SWIPE_THRESHOLD = 20;
 
     protected GestureDetector mGestureDetector;

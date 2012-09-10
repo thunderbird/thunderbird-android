@@ -22,13 +22,14 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
@@ -282,6 +283,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String mReferences;
     private String mInReplyTo;
+    private Menu mMenu;
 
     private boolean mSourceProcessed = false;
 
@@ -322,10 +324,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_PROGRESS_ON:
-                setProgressBarIndeterminateVisibility(true);
+                setSupportProgressBarIndeterminateVisibility(true);
                 break;
             case MSG_PROGRESS_OFF:
-                setProgressBarIndeterminateVisibility(false);
+                setSupportProgressBarIndeterminateVisibility(false);
                 break;
             case MSG_UPDATE_TITLE:
                 updateTitle();
@@ -446,6 +448,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         i.setAction(ACTION_EDIT_DRAFT);
         context.startActivity(i);
+    }
+
+    /*
+     * This is a workaround for an annoying ( temporarly? ) issue:
+     * https://github.com/JakeWharton/ActionBarSherlock/issues/449
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+	super.onPostCreate(savedInstanceState);
+	setSupportProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -1783,6 +1795,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onAddCcBcc() {
         mCcWrapper.setVisibility(View.VISIBLE);
         mBccWrapper.setVisibility(View.VISIBLE);
+        mMenu.findItem(R.id.add_cc_bcc).setVisible(false);
     }
 
     private void onReadReceipt() {
@@ -2180,7 +2193,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_compose_option, menu);
+        getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        mMenu = menu;
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
