@@ -940,7 +940,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
     private void initializeLayout() {
         mListView = getListView();
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+        mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
