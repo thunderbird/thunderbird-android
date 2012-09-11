@@ -98,7 +98,13 @@ public class MessageWebView extends WebView {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
-        if (Integer.parseInt(Build.VERSION.SDK) >= 9 ) {
+        /*
+         * Build.VERSION.SDK is deprecated cause it just returns the
+         * "its raw String representation"
+         *  http://developer.android.com/reference/android/os/Build.VERSION_CODES.html#GINGERBREAD
+         *  http://developer.android.com/reference/android/os/Build.VERSION.html#SDK
+         */
+        if (Build.VERSION.SDK_INT >= 9) {
             setOverScrollMode(OVER_SCROLL_NEVER);
         }
 

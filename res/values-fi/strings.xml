@@ -229,8 +229,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="debug_enable_sensitive_logging_title">Kirjoita lokiin arkaluontoisia tietoja</string>
     <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
 
-    <string name="message_header_mua">K-9 Mail Androidille</string>
-
     <string name="combined_inbox_title">Kaikki postit</string>
     <string name="combined_inbox_label">Viimeisimmät viestit kaikilta tileiltä</string>
     <string name="combined_inbox_list_title">Saapuneet</string>

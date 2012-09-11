@@ -223,8 +223,6 @@
     <string name="debug_enable_sensitive_logging_title">Запись конфиденциальной информации</string>
     <string name="debug_enable_sensitive_logging_summary">Разрешает запись паролей в журнал</string>
 
-    <string name="message_header_mua">K-9 Mail для Android</string>
-
     <string name="combined_inbox_title">Вся почта</string>
     <string name="combined_inbox_label">Последние сообщения из всех почтовых ящиков</string>
     <string name="combined_inbox_list_title">Все Входящие Сообщения</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
@@ -1034,7 +1032,7 @@
     <string name="error_unable_to_connect">Не получается соединиться.</string>
 
     <string name="import_export_action">Импорт и экспорт настроек</string>
-    
+
     <string name="settings_export_account">Экспортировать настройки учетной записи</string>
     <string name="settings_export_all">Экспортировать настройки и учетные записи</string>
     <string name="settings_import_dialog_title">Импорт</string>

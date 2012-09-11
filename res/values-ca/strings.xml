@@ -233,8 +233,6 @@ Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per An
     <string name="debug_enable_sensitive_logging_title">Registra info sensible</string>
     <string name="debug_enable_sensitive_logging_summary">Pot mostrar les contrasenyes en els registres.</string>
 
-    <string name="message_header_mua">K-9 Mail per Android</string>
-
     <string name="combined_inbox_title">Tot el correu</string>
     <string name="combined_inbox_label">Missatges recents de tots els comptes</string>
     <string name="combined_inbox_list_title">Tot el correu de la Bústia d’entrada</string>

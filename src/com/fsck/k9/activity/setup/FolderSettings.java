@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.util.Log;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Folder;
@@ -80,8 +81,10 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
+        //ASH Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         PreferenceCategory category = (PreferenceCategory)findPreference(PREFERENCE_TOP_CATERGORY);
-        category.setTitle(folderName);
+        String displayName = FolderInfoHolder.getDisplayName(this, mFolder);
+        category.setTitle(displayName); // ASH folderName
 
 
         mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);

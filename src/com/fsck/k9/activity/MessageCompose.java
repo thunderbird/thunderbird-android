@@ -1550,7 +1550,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded() {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
-                mEncryptCheckbox.isChecked() || isDraftsFolderDisabled()) {
+                mEncryptCheckbox.isChecked() || !mAccount.hasDraftsFolder()) {
             return;
         }
 
@@ -2033,7 +2033,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
-        if (isDraftsFolderDisabled()) {
+        if (!mAccount.hasDraftsFolder()) {
             menu.findItem(R.id.save).setEnabled(false);
         }
 
@@ -2063,7 +2063,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mDraftNeedsSaving) {
             if (mEncryptCheckbox.isChecked()) {
                 showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-            } else if (isDraftsFolderDisabled()) {
+            } else if (!mAccount.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
             } else {
                 showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
@@ -2076,10 +2076,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 super.onBackPressed();
             }
         }
-    }
-
-    private boolean isDraftsFolderDisabled() {
-        return mAccount.getDraftsFolderName().equals(K9.FOLDER_NONE);
     }
 
     @Override

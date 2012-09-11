@@ -454,7 +454,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                     !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
             // Only enable the button if the Spam folder is not the current folder and not NONE.
             mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+                    //ASH !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+                    mAccount.hasSpamFolder());
             mMove.setEnabled(true);
         } else {
             disableMoveButtons();
@@ -864,7 +865,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
             menu.findItem(R.id.archive).setVisible(false);
         }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName())) {
+        if (!mAccount.hasSpamFolder()) {
             menu.findItem(R.id.spam).setVisible(false);
         }
         try {

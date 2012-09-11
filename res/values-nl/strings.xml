@@ -231,8 +231,6 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
     <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
 
-    <string name="message_header_mua">K-9 Mail voor Android</string>
-
     <string name="combined_inbox_title">Alle Mail</string>
     <string name="combined_inbox_label">Recente berichten voor alle accounts</string>
     <string name="combined_inbox_list_title">Alle Mail Inbox</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
