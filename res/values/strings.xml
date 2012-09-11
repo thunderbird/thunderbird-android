@@ -297,6 +297,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
     <string name="message_view_show_pictures_instructions">Select \"Show pictures\" to display embedded pictures.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
+    <string name="message_view_show_message_action">Show message</string>
+    <string name="message_view_show_attachments_action">Show attachments</string>
+    <string name="message_view_show_more_attachments_action">More&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
 
@@ -559,14 +562,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_notification_unread_count_label">Show unread count</string>
     <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>
 
-    <string name="account_settings_hide_buttons_label">Scroll navigation buttons</string>
-    <string name="account_settings_hide_buttons_never">Never</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">When keyboard is available</string>
-    <string name="account_settings_hide_buttons_always">Always</string>
-
     <string name="account_settings_enable_move_buttons_label">Enable refile buttons</string>
     <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam buttons.</string>
-    <string name="account_settings_hide_move_buttons_label">Scroll refile buttons</string>
 
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_show_pictures_never">No</string>

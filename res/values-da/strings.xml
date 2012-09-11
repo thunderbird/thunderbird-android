@@ -545,14 +545,8 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_notification_unread_count_label">Vis antal ulæste mails</string>
     <string name="account_settings_notification_unread_count_summary">Vis antallet af ulæste mails i statusbar.</string>
 
-    <string name="account_settings_hide_buttons_label">Scroll navigations knapper</string>
-    <string name="account_settings_hide_buttons_never">Aldrig</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Når tastatur er tilgængeligt</string>
-    <string name="account_settings_hide_buttons_always">Altid</string>
-
     <string name="account_settings_enable_move_buttons_label">Aktiver Flyt knapper</string>
     <string name="account_settings_enable_move_buttons_summary">Vis Arkiver, Flyt og Spam knapper.</string>
-    <string name="account_settings_hide_move_buttons_label">Scroll Flyt knapper</string>
 
     <string name="account_settings_show_pictures_label">Vis altid billeder</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>

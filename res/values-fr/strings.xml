@@ -567,14 +567,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_notification_unread_count_label">Afficher le nombre de messages non lus</string>
     <string name="account_settings_notification_unread_count_summary">Afficher le nombre de messages non lus dans la barre de notification</string>
 
-    <string name="account_settings_hide_buttons_label">Défiler les boutons de navigation</string>
-    <string name="account_settings_hide_buttons_never">Jamais</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Lorsque le clavier est disponible</string>
-    <string name="account_settings_hide_buttons_always">Toujours</string>
-
     <string name="account_settings_enable_move_buttons_label">Activer les boutons de déplacement</string>
     <string name="account_settings_enable_move_buttons_summary">Afficher les boutons Archiver, Déplacer ou Spam</string>
-    <string name="account_settings_hide_move_buttons_label">Défiler les boutons de déplacement</string>
 
     <string name="account_settings_show_pictures_label">Afficher automatiquement les images</string>
     <string name="account_settings_show_pictures_never">Jamais</string>
@@ -589,13 +583,13 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
     <string name="account_settings_reply_after_quote_summary">Faire précéder la réponse par le texte d\'origine</string>
 
-	<string name="account_settings_strip_signature_label">Retirer signature dans réponse citée</string>
+    <string name="account_settings_strip_signature_label">Retirer signature dans réponse citée</string>
     <string name="account_settings_strip_signature_summary">Lorsque vous répondez à des messages, la signature du texte cité sera éffacée</string>
 
     <string name="account_settings_message_format_label">Format du message</string>
     <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_text">Text brut (formattage et images omis)</string>
-	<string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
+    <string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
 
     <string name="account_settings_message_read_receipt_label">Accusé de réception</string>
     <string name="account_settings_message_read_receipt_summary">Toujours demander un accusé de réception</string>
@@ -617,9 +611,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_crypto_app_not_available">Non disponible</string>
     <string name="account_settings_crypto_auto_signature">Signature automatique</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
-	<string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
-	<string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
-	
+    <string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
+
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
     <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
 
@@ -1045,12 +1039,12 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
-	<string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer des brouillons.</string>
-	<string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme crypté.</string>
-	
-	<string name="continue_without_public_key_dlg_title">Continuer sans clé publique?</string>
-	<string name="continue_without_public_key_instructions_fmt">Un ou plusieurs destinataires n\'ont pas de clé publique enregistrée. Continuer?</string>
-	
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer des brouillons.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme crypté.</string>
+
+    <string name="continue_without_public_key_dlg_title">Continuer sans clé publique?</string>
+    <string name="continue_without_public_key_instructions_fmt">Un ou plusieurs destinataires n\'ont pas de clé publique enregistrée. Continuer?</string>
+
     <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
 
     <string name="select_text_now">Sélectionnez le texte à copier</string>

@@ -154,7 +154,7 @@
     <string name="special_mailbox_name_spam_fmt">%s</string>
     <string name="send_failure_subject">Néhány üzenetet nem sikerült elküldeni</string>
     <string name="send_failure_body_abbrev">Nézze meg a %s mappát a részletekért.</string>
-    <string name="send_failure_body_fmt">"A K-9 hibát észlelt üzenetküldés közben. A probléma miatt elképzelhető, hogy a levél nem érkezik meg, de az is lehet hogy igen. 
+    <string name="send_failure_body_fmt">"A K-9 hibát észlelt üzenetküldés közben. A probléma miatt elképzelhető, hogy a levél nem érkezik meg, de az is lehet hogy igen.
 
 Az ilyen hibás leveleket csillag jelzi a postázandó mappában. Ha eltávolítja a csillagot a K-9 megpróbálja újból elküldeni a levelet. Hosszan a Postázatlan mappára kattintva válassza az Üzenetek küldését.
 
@@ -162,26 +162,26 @@ Az ilyen hibás leveleket csillag jelzi a postázandó mappában. Ha eltávolít
     <string name="alert_header">K-9 riasztás</string>
     <string name="no_connection_alert">A szinkronizáció és a levélküldés felfüggesztve, hálozati kapcsolat hiánya miatt.</string>
     <string name="end_of_folder">Nincs több üzenet</string>
-    <string name="accounts_welcome">"Üdvözöljük a K-9 Mail beállításokban. A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve. 
- 
-K-9 továbbfejlesztett funkciói: 
- * Push mail using IMAP IDLE 
- * Jobb teljesítmény 
- * Message refiling 
- * E-mail aláírások 
- * Titkos másolat 
- * Mappa-előfizetések 
- * Minden mappa szinkronizálása 
- * Válasz cím beállítása 
- * Gyorsbillentyűk 
- * Jobb IMAP támogatás 
- * Mellékletek mentése a memóriakártyára 
- * Kuka ürítése 
- * Üzenetek válogatás 
+    <string name="accounts_welcome">"Üdvözöljük a K-9 Mail beállításokban. A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve.
+
+K-9 továbbfejlesztett funkciói:
+ * Push mail using IMAP IDLE
+ * Jobb teljesítmény
+ * Message refiling
+ * E-mail aláírások
+ * Titkos másolat
+ * Mappa-előfizetések
+ * Minden mappa szinkronizálása
+ * Válasz cím beállítása
+ * Gyorsbillentyűk
+ * Jobb IMAP támogatás
+ * Mellékletek mentése a memóriakártyára
+ * Kuka ürítése
+ * Üzenetek válogatás
  * ...és még sok más
 
-Magyarította: Deák Tamás (maya98) és RootRulez  
- 
+Magyarította: Deák Tamás (maya98) és RootRulez
+
 Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot és még sok más klienst. Történnek furcsaságok, ha Microsoft Exchange-el kommunikál.
  Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel http://k9mail.googlecode.com/"</string>
     <string name="debug_version_fmt">Verzió: %s</string>
@@ -218,7 +218,7 @@ Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot 
     <string name="message_compose_quoted_text_label">Idézet</string>
     <string name="message_compose_error_no_recipients">Legalább egy címzetted adjon meg.</string>
     <string name="error_contact_address_not_found">E-mail cím nem található.</string>
-	<string name="message_compose_downloading_attachments_toast">Néhány melléklet nem lett letöltve. Levélküldés előtt automatikusan letöltődnek.</string>
+    <string name="message_compose_downloading_attachments_toast">Néhány melléklet nem lett letöltve. Levélküldés előtt automatikusan letöltődnek.</string>
     <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
     <string name="message_view_from_format" formatted="false">Feladó: %s &lt;%s></string>
     <string name="message_to_label">Címzett:</string>
@@ -278,7 +278,7 @@ Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot 
     <string name="global_settings_confirm_action_delete">Törlés (csak üzenetek nézet)</string>
     <string name="global_settings_confirm_action_spam">Levélszemét</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Összes megjelölése olvasottként</string>
-	<string name="global_settings_confirm_action_send">Küldés</string>
+    <string name="global_settings_confirm_action_send">Küldés</string>
     <string name="global_settings_privacy_mode_title">Képernyőzár értesítések</string>
     <string name="global_settings_privacy_mode_summary">Lezárt képernyőnél ne mutassa a levelek tárgyát a állapotsoron</string>
     <string name="quiet_time">Csendes mód</string>
@@ -450,13 +450,8 @@ Levelek letöltése…"</string>
     <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
     <string name="account_settings_notification_unread_count_label">Olvasatlanok kijelzése</string>
     <string name="account_settings_notification_unread_count_summary">Olvasatlan levelek száma az állapotsoron.</string>
-    <string name="account_settings_hide_buttons_label">Görgetés iránygombokkal</string>
-    <string name="account_settings_hide_buttons_never">Soha</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Ha van billentyűzet</string>
-    <string name="account_settings_hide_buttons_always">Mindig</string>
     <string name="account_settings_enable_move_buttons_label">Művelet gombok megjelenítése</string>
     <string name="account_settings_enable_move_buttons_summary">Mutassa a Mozgatás, Archív és Levélszemét gombokat</string>
-    <string name="account_settings_hide_move_buttons_label">Művelet gombok görgetése</string>
     <string name="account_settings_show_pictures_label">Képek megjelenítése</string>
     <string name="account_settings_show_pictures_never">Soha</string>
     <string name="account_settings_show_pictures_only_from_contacts">Csak az ismerősökét</string>
@@ -611,7 +606,7 @@ Levelek letöltése…"</string>
     <string name="account_settings_signature_use_label">Aláírás használata</string>
     <string name="account_settings_signature_label">Aláírás</string>
     <string name="account_settings_signature_summary">Az aláírás hozzáfűzése minden elküldött levélhez</string>
-    <string name="default_signature">"-- 
+    <string name="default_signature">"--
 Ezt a levelet mobiltelefonról küldtem, K-9 Mail-el. Elnézést a levél rövidségéért és az esetleges hibákért."</string>
     <string name="default_identity_description">Elsődleges személyazonosságom</string>
     <string name="choose_identity">Személyazonosság választása</string>
@@ -654,7 +649,7 @@ Ezt a levelet mobiltelefonról küldtem, K-9 Mail-el. Elnézést a levél rövid
     <string name="provider_note_hanmail">Ha POP3-at vagy IMAP-ot szeretne használni ehhez a szolgáltatóhoz, akkor engedélyeznie kell az IMAP vagy POP3 beállításokat a Hanmail(Daum) oldalán.</string>
     <string name="provider_note_paran">Ha POP3-at vagy IMAP-ot szeretne használni ehhez a szolgáltatóhoz, akkor engedélyeznie kell az IMAP vagy POP3 beállításokat a Paran oldalán.</string>
     <string name="provider_note_nate">Ha POP3-at vagy IMAP-ot szeretne használni ehhez a szolgáltatóhoz, akkor engedélyeznie kell az IMAP vagy POP3 beállításokat a Nate oldalán.</string>
-	<string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
     <string name="message_help_key">"Del (or D) - Delete
@@ -752,7 +747,7 @@ S - Select/deselect"</string>
     <string name="gestures_summary">Engedélyezi a kézmozdulakkal való vezérlést.</string>
     <string name="compact_layouts_title">Kompakt elrendezés</string>
     <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
-	<string name="volume_navigation_title">Hangerő gomb vezérlés</string>
+    <string name="volume_navigation_title">Hangerő gomb vezérlés</string>
     <string name="volume_navigation_summary">Léptetés az hangerő gombokkal</string>
     <string name="volume_navigation_message">Leveleknél</string>
     <string name="volume_navigation_list">Lista nézetek váltása</string>
@@ -766,7 +761,7 @@ S - Select/deselect"</string>
     <string name="count_search_summary">Kikcsapcsolva gyorsabb műkodés</string>
     <string name="hide_special_accounts_title">Különleges fiókok elrejtése</string>
     <string name="hide_special_accounts_summary">Egységesen elrejti a fiókok bejövő mappáit</string>
-	<string name="search_title" formatted="false">%s %s</string>
+    <string name="search_title" formatted="false">%s %s</string>
     <string name="flagged_modifier">- Csillagos</string>
     <string name="unread_modifier">- Olvasatlan</string>
     <string name="search_all_messages_title">Minden levél</string>
@@ -846,11 +841,11 @@ S - Select/deselect"</string>
     <string name="dialog_confirm_spam_confirm_button">Igen</string>
     <string name="dialog_confirm_spam_cancel_button">Nem</string>
     <string name="dialog_attachment_progress_title">Csatolmányok letöltése</string>
-	<string name="debug_logging_enabled">Hibakereső naplózás bekapcsolva</string>
+    <string name="debug_logging_enabled">Hibakereső naplózás bekapcsolva</string>
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Nem lehet kapcsolódni.</string>
-	<string name="account_unavailable"> \"%s\" fiók nem elérhető ellenőríze a tárhelyet</string>
+    <string name="account_unavailable"> \"%s\" fiók nem elérhető ellenőríze a tárhelyet</string>
     <string name="settings_attachment_default_path">Csatolményok mentése ide:</string>
     <string name="attachment_save_title">Csatolményok mentése</string>
     <string name="attachment_save_desc">Nincs fájlkezelő. Hova szeretné mentni a csatolmányt?</string>

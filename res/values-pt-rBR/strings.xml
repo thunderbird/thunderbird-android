@@ -539,14 +539,8 @@ Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código
     <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
     <string name="account_settings_notification_unread_count_summary">Mostrar o número de mensagens não lidas na barra de notificação.</string>
 
-    <string name="account_settings_hide_buttons_label">Navegação com botões de scroll</string>
-    <string name="account_settings_hide_buttons_never">Nunca</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Quando teclado estiver disponível</string>
-    <string name="account_settings_hide_buttons_always">Sempre</string>
-
     <string name="account_settings_enable_move_buttons_label">Habilitar botão de ações</string>
     <string name="account_settings_enable_move_buttons_summary">Mostrar botões de Arquivar, Mover e Span.</string>
-    <string name="account_settings_hide_move_buttons_label">Scroll para botões de ação </string>
 
     <string name="account_settings_show_pictures_label">Sempre mostrar imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>

@@ -12,7 +12,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.Account.ScrollButtons;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
@@ -81,12 +80,6 @@ public class AccountSettings {
             ));
         s.put("goToUnreadMessageSearch", Settings.versions(
                 new V(1, new BooleanSetting(false))
-            ));
-        s.put("hideButtonsEnum", Settings.versions(
-                new V(1, new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER))
-            ));
-        s.put("hideMoveButtonsEnum", Settings.versions(
-                new V(1, new EnumSetting(ScrollButtons.class, ScrollButtons.NEVER))
             ));
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))

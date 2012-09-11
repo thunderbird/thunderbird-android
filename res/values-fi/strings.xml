@@ -537,14 +537,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiak
     <string name="account_settings_notification_unread_count_label">Näytä lukemattomien viestien määrä</string>
     <string name="account_settings_notification_unread_count_summary">Näytä lukemattomien viestien määrä osoiterivillä.</string>
 
-    <string name="account_settings_hide_buttons_label">Selauksen painikkeet</string>
-    <string name="account_settings_hide_buttons_never">Ei koskaan</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Kun näppäimistö on käytettävissä</string>
-    <string name="account_settings_hide_buttons_always">Aina</string>
-
     <string name="account_settings_enable_move_buttons_label">Ota käyttöön Siirrä-painikkeet</string>
     <string name="account_settings_enable_move_buttons_summary">Näytä Arkistoi-, Siirrä- ja Roskaposti-painikkeet.</string>
-    <string name="account_settings_hide_move_buttons_label">Vieritä Siirrä painikkeet</string>
 
     <string name="account_settings_show_pictures_label">Näytä kuvat automaattisesti</string>
     <string name="account_settings_show_pictures_never">Ei koskaan</string>

@@ -71,6 +71,7 @@
     <string name="send_messages_action">メール送信</string>
     <string name="list_folders_action">フォルダ一覧</string>
     <string name="refresh_folders_action">フォルダ再読込</string>
+    <string name="filter_folders_action">フォルダを探す</string>
     <string name="mark_all_as_read_action">すべてのメールを既読にする</string>
     <string name="add_account_action">アカウント追加</string>
     <string name="compose_action">作成</string>
@@ -544,14 +545,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_notification_unread_count_label">未読件数の表示</string>
     <string name="account_settings_notification_unread_count_summary">通知バーに未読メッセージの件数を表示する</string>
 
-    <string name="account_settings_hide_buttons_label">ナビゲーションボタンのスクロール</string>
-    <string name="account_settings_hide_buttons_never">しない</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">キーボード利用時</string>
-    <string name="account_settings_hide_buttons_always">常に</string>
-
     <string name="account_settings_enable_move_buttons_label">メール整理ボタンを有効にする</string>
     <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
-    <string name="account_settings_hide_move_buttons_label">メール整理ボタンをスクロール</string>
 
     <string name="account_settings_show_pictures_label">画像を自動で表示</string>
     <string name="account_settings_show_pictures_never">しない</string>
@@ -822,6 +817,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
       Q - アカウント設定に戻る\u000A
       S - アカウント設定編集</string>
 
+    <string name="folder_list_filter_hint">フォルダ名に含まれる文字</string>
+
     <string name="folder_list_display_mode_label">フォルダ表示</string>
     <string name="folder_list_display_mode_all">全フォルダ表示</string>
     <string name="folder_list_display_mode_first_class">1st クラスフォルダ表示</string>
@@ -973,6 +970,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="font_size_message_view_date">日付</string>
     <string name="font_size_message_view_content">本文</string>
 
+    <string name="font_size_message_compose">メッセージ作成</string>
+    <string name="font_size_message_compose_input">入力テキスト</string>
+
     <string name="font_size_tiniest">極小</string>
     <string name="font_size_tiny">かなり小</string>
     <string name="font_size_smaller">やや小</string>
@@ -1013,6 +1013,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
     <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
+
+    <string name="confirm_discard_draft_message_title">メッセージ破棄？</string>
+    <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
 
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">下書き保存の拒否</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">暗号化したメッセージは下書き保存できません</string>
@@ -1102,4 +1105,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="manage_accounts_move_down_action">下に移動</string>
     <string name="manage_accounts_moving_message">アカウントを移動しています</string>
 
+    <string name="unread_widget_label">未読件数</string>
+    <string name="unread_widget_select_account">アカウントの未読件数を表示</string>
+
+    <string name="import_dialog_error_title">ファイルマネージャがありません</string>
+    <string name="import_dialog_error_message">設定をインポートするためのアプリケーションがありません。Androidマーケットからファイルマネージャをインストールしてください。</string>
+    <string name="open_market">マーケット</string>
+    <string name="close">閉じる</string>
 </resources>

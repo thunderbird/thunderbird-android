@@ -516,14 +516,8 @@
     <string name="account_settings_notification_unread_count_label">Okunmamış sayısını göster</string>
     <string name="account_settings_notification_unread_count_summary">Bildirim çubuğunda okunmamış mesaj numarasını göster.</string>
 
-    <string name="account_settings_hide_buttons_label">Gezinme tuşlarını kaydırma</string>
-    <string name="account_settings_hide_buttons_never">Asla</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Klavye olduğu zaman</string>
-    <string name="account_settings_hide_buttons_always">Daima</string>
-
     <string name="account_settings_enable_move_buttons_label">İşaretleme düğmelerini etkinleştir</string>
     <string name="account_settings_enable_move_buttons_summary">Arşiv, Taşıma ve Spam düğmelerini göster.</string>
-    <string name="account_settings_hide_move_buttons_label">İşaretleme düğmelerini kaydır</string>
 
     <string name="account_settings_show_pictures_label">Daima imajları göster</string>
     <string name="account_settings_show_pictures_never">Hayır</string>

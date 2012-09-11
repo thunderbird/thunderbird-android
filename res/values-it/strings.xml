@@ -543,14 +543,8 @@ Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta ope
     <string name="account_settings_notification_unread_count_label">Vedi numero messaggi non letti</string>
     <string name="account_settings_notification_unread_count_summary">Mostra il numero dei messaggi non letti nella barra di notifica.</string>
 
-    <string name="account_settings_hide_buttons_label">Scorri pulsanti navigazione</string>
-    <string name="account_settings_hide_buttons_never">Mai</string>
-    <string name="account_settings_hide_buttons_keyboard_avail">Quando la tastiera è disponibile</string>
-    <string name="account_settings_hide_buttons_always">Sempre</string>
-
     <string name="account_settings_enable_move_buttons_label">Abilita pulsanti archiviazione</string>
     <string name="account_settings_enable_move_buttons_summary">Mostra i pulsanti Archivia, Sposta e Spam.</string>
-    <string name="account_settings_hide_move_buttons_label">Scorri pulsanti archiviazione</string>
 
     <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
     <string name="account_settings_show_pictures_never">No</string>

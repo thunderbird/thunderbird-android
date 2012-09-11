@@ -1727,9 +1727,7 @@ public class MessagingController implements Runnable {
                  * right now, attachments will be left for later.
                  */
 
-                ArrayList<Part> viewables = new ArrayList<Part>();
-                ArrayList<Part> attachments = new ArrayList<Part>();
-                MimeUtility.collectParts(message, viewables, attachments);
+                Set<Part> viewables = MimeUtility.collectTextParts(message);
 
                 /*
                  * Now download the parts we're interested in storing.
@@ -2943,9 +2941,7 @@ public class MessagingController implements Runnable {
                 try {
                     LocalStore localStore = account.getLocalStore();
 
-                    ArrayList<Part> viewables = new ArrayList<Part>();
-                    ArrayList<Part> attachments = new ArrayList<Part>();
-                    MimeUtility.collectParts(message, viewables, attachments);
+                    List<Part> attachments = MimeUtility.collectAttachments(message);
                     for (Part attachment : attachments) {
                         attachment.setBody(null);
                     }
@@ -3348,6 +3344,36 @@ public class MessagingController implements Runnable {
 
         put("getFolderUnread:" + account.getDescription() + ":" + folderName, l, unreadRunnable);
     }
+
+    // ASH i seem to have deleted the four below isMoveCapable/isCopyCapable methods:
+    public boolean isMoveCapable(Message message) {
+        return !message.getUid().startsWith(K9.LOCAL_UID_PREFIX);
+    }/*
+    public boolean isCopyCapable(Message message) {
+        return isMoveCapable(message);
+    }*/
+
+    public boolean isMoveCapable(final Account account) {
+        try {
+            Store localStore = account.getLocalStore();
+            Store remoteStore = account.getRemoteStore();
+            return localStore.isMoveCapable() && remoteStore.isMoveCapable();
+        } catch (MessagingException me) {
+
+            Log.e(K9.LOG_TAG, "Exception while ascertaining move capability", me);
+            return false;
+        }
+    }/*
+    public boolean isCopyCapable(final Account account) {
+        try {
+            Store localStore = account.getLocalStore();
+            Store remoteStore = account.getRemoteStore();
+            return localStore.isCopyCapable() && remoteStore.isCopyCapable();
+        } catch (MessagingException me) {
+            Log.e(K9.LOG_TAG, "Exception while ascertaining copy capability", me);
+            return false;
+        }
+    }*/
 
     public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
                              final MessagingListener listener) {

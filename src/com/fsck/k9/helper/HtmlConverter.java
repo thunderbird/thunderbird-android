@@ -125,19 +125,41 @@ public class HtmlConverter {
 
     private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
 
+    public static final String getHtmlHeader() {
+        return "<html><head/><body>";
+    }
+
+    public static final String getHtmlFooter() {
+        return "</body></html>";
+    }
+
     /**
-     * Naively convert a text string into an HTML document.  This method avoids using regular expressions on the entire
-     * message body to save memory.
-     * @param text Plain text string.
+     * Naively convert a text string into an HTML document.
+     *
+     * <p>
+     * This method avoids using regular expressions on the entire message body to save memory.
+     * </p>
+     *
+     * @param text
+     *         Plain text string.
+     * @param useHtmlTag
+     *         If {@code true} this method adds headers and footers to create a proper HTML
+     *         document.
+     *
      * @return HTML string.
      */
-    private static String simpleTextToHtml(String text) {
+    private static String simpleTextToHtml(String text, boolean useHtmlTag) {
         // Encode HTML entities to make sure we don't display something evil.
         text = TextUtils.htmlEncode(text);
 
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        buff.append("<html><head/><body>");
+
+        if (useHtmlTag) {
+            buff.append(getHtmlHeader());
+        }
+
+        buff.append(htmlifyMessageHeader());
 
         int c;
         try {
@@ -159,25 +181,39 @@ public class HtmlConverter {
             Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
         }
 
-        buff.append("</body></html>");
+        buff.append(htmlifyMessageFooter());
+
+        if (useHtmlTag) {
+            buff.append(getHtmlFooter());
+        }
 
         return buff.toString();
     }
 
     /**
-     * Convert a text string into an HTML document. Attempts to do smart replacement for large
-     * documents to prevent OOM errors. This method adds headers and footers to create a proper HTML
-     * document. To convert to a fragment, use {@link #textToHtmlFragment(String)}.
-     * @param text Plain text string.
+     * Convert a text string into an HTML document.
+     *
+     * <p>
+     * Attempts to do smart replacement for large documents to prevent OOM errors. This method
+     * optionally adds headers and footers to create a proper HTML document. To convert to a
+     * fragment, use {@link #textToHtmlFragment(String)}.
+     * </p>
+     *
+     * @param text
+     *         Plain text string.
+     * @param useHtmlTag
+     *         If {@code true} this method adds headers and footers to create a proper HTML
+     *         document.
+     *
      * @return HTML string.
      */
-    public static String textToHtml(String text) {
+    public static String textToHtml(String text, boolean useHtmlTag) {
         // Our HTMLification code is somewhat memory intensive
         // and was causing lots of OOM errors on the market
         // if the message is big and plain text, just do
         // a trivial htmlification
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
-            return simpleTextToHtml(text);
+            return simpleTextToHtml(text, useHtmlTag);
         }
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
@@ -221,11 +257,19 @@ public class HtmlConverter {
         text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\n\n");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        sb.append("<html><head></head><body>");
+
+        if (useHtmlTag) {
+            sb.append(getHtmlHeader());
+        }
+
         sb.append(htmlifyMessageHeader());
         linkifyText(text, sb);
         sb.append(htmlifyMessageFooter());
-        sb.append("</body></html>");
+
+        if (useHtmlTag) {
+            sb.append(getHtmlFooter());
+        }
+
         text = sb.toString();
 
         return text;

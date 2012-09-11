@@ -124,8 +124,6 @@ public class Account implements BaseAccount {
     private boolean mAutoUploadOnMove;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
-    private ScrollButtons mScrollMessageViewButtons;
-    private ScrollButtons mScrollMessageViewMoveButtons;
     private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
@@ -183,10 +181,6 @@ public class Account implements BaseAccount {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
-    public enum ScrollButtons {
-        NEVER, ALWAYS, KEYBOARD_AVAILABLE
-    }
-
     public enum ShowPictures {
         NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
@@ -220,8 +214,6 @@ public class Account implements BaseAccount {
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        mScrollMessageViewButtons = ScrollButtons.NEVER;
-        mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
@@ -343,20 +335,6 @@ public class Account implements BaseAccount {
                                   (random.nextInt(0x70) * 0xff) +
                                   (random.nextInt(0x70) * 0xffff) +
                                   0xff000000);
-
-        try {
-            mScrollMessageViewButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
-                                        ScrollButtons.NEVER.name()));
-        } catch (Exception e) {
-            mScrollMessageViewButtons = ScrollButtons.NEVER;
-        }
-
-        try {
-            mScrollMessageViewMoveButtons = ScrollButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
-                                            ScrollButtons.NEVER.name()));
-        } catch (Exception e) {
-            mScrollMessageViewMoveButtons = ScrollButtons.NEVER;
-        }
 
         try {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
@@ -624,8 +602,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
-        editor.putString(mUuid + ".hideButtonsEnum", mScrollMessageViewButtons.name());
-        editor.putString(mUuid + ".hideMoveButtonsEnum", mScrollMessageViewMoveButtons.name());
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -1071,22 +1047,6 @@ Log.d("ASH", "setTrashFolderName() attempting change of folder.setLocalOnly()");
 
     public synchronized void setShowOngoing(boolean showOngoing) {
         this.mNotifySync = showOngoing;
-    }
-
-    public synchronized ScrollButtons getScrollMessageViewButtons() {
-        return mScrollMessageViewButtons;
-    }
-
-    public synchronized void setScrollMessageViewButtons(ScrollButtons scrollMessageViewButtons) {
-        mScrollMessageViewButtons = scrollMessageViewButtons;
-    }
-
-    public synchronized ScrollButtons getScrollMessageViewMoveButtons() {
-        return mScrollMessageViewMoveButtons;
-    }
-
-    public synchronized void setScrollMessageViewMoveButtons(ScrollButtons scrollMessageViewButtons) {
-        mScrollMessageViewMoveButtons = scrollMessageViewButtons;
     }
 
     public synchronized ShowPictures getShowPictures() {

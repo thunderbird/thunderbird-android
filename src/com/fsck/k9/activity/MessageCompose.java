@@ -2709,7 +2709,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (part != null) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
-                return HtmlConverter.textToHtml(MimeUtility.getTextFromPart(part));
+                return HtmlConverter.textToHtml(MimeUtility.getTextFromPart(part), true);
             }
         } else if (format == MessageFormat.TEXT) {
             // Text takes precedence, then html.

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.view.MessageHeader
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header_container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Message header area -->
+        <TableLayout
+            android:id="@+id/top_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:shrinkColumns="1"
+            android:background="@color/message_view_header_background">
+
+            <TableRow>
+
+                <!-- Color chip -->
+                <View
+                    android:id="@+id/chip"
+                    android:layout_marginRight="6dip"
+                    android:layout_width="6dip"
+                    android:layout_height="fill_parent"/>
+
+                <LinearLayout
+                    android:paddingTop="2dip"
+                    android:layout_column="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Subject -->
+                    <TextView
+                        android:id="@+id/subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <!-- From -->
+                    <LinearLayout
+                        android:id="@+id/from_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="6dip"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
+
+                    <!-- To -->
+                    <LinearLayout
+                        android:id="@+id/to_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="true">
+
+                        <TextView
+                            android:id="@+id/to_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="4dip"
+                            android:text="@string/message_to_label"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorSecondary"/>
+
+                        <TextView
+                            android:id="@+id/to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:textSize="10sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
+
+                    <!-- CC -->
+                    <LinearLayout
+                        android:id="@+id/cc_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="true">
+
+                        <TextView
+                            android:id="@+id/cc_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="4dip"
+                            android:text="@string/message_view_cc_label"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorSecondary"/>
+
+                        <TextView
+                            android:id="@+id/cc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:textSize="10sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/additional_headers_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="false"
+                        android:ellipsize="none"
+                        android:textSize="10sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                </LinearLayout>
+
+
+                <!-- Date/Time + Icons -->
+                <LinearLayout
+                    android:id="@+id/topright_container"
+                    android:layout_marginTop="2dip"
+                    android:layout_marginRight="6dip"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:gravity="right">
+
+                    <LinearLayout
+                        android:id="@+id/icons_container"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <View
+                            android:id="@+id/answered"
+                            android:layout_width="22sp"
+                            android:layout_height="22sp"
+                            android:paddingRight="4dip"
+                            android:background="@drawable/ic_email_answered_small"/>
+
+                        <CheckBox
+                            android:id="@+id/flagged"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            style="?android:attr/starStyle"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="none"
+                        android:textSize="10sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:singleLine="true"
+                        android:ellipsize="none"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
+        <!-- Separator -->
+        <!-- This layout has an explicit height because otherwise there will be strange
+             display issues when the additional headers are shown. -->
+        <LinearLayout
+            android:id="@+id/show_additional_headers_area"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="21.5dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/separator_area_background">
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp">
+
+                <!-- Color chip 2 -->
+                <View
+                    android:id="@+id/chip2"
+                    android:layout_marginRight="6dip"
+                    android:layout_width="6dip"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"/>
+
+                <!-- Show more/less indicator -->
+                <ImageView
+                    android:id="@+id/show_additional_headers_icon"
+                    android:src="@drawable/show_more"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="12dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="fill_parent"
+                android:layout_height="1.5dp"
+                android:background="#59000000"/>
+
+        </LinearLayout>
+
+        <!-- Button area -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="4dip"
+            android:baselineAligned="false">
+
+            <Button
+                android:id="@+id/show_pictures"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="6dip"
+                android:layout_marginBottom="4dip"
+                android:layout_height="wrap_content"
+                android:text="@string/message_view_show_pictures_action"
+                style="?android:attr/buttonStyleSmall"/>
+
+            <Button
+                android:id="@+id/show_attachments"
+                android:visibility="gone"
+                android:layout_marginLeft="6dip"
+                android:layout_marginBottom="4dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/message_view_show_attachments_action"
+                style="?android:attr/buttonStyleSmall"/>
+
+            <Button
+                android:id="@+id/show_message"
+                android:visibility="gone"
+                android:layout_marginLeft="6dip"
+                android:layout_marginBottom="4dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/message_view_show_message_action"
+                style="?android:attr/buttonStyleSmall"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/message_view_crypto_layout"/>
+
+    </LinearLayout>
+
+</com.fsck.k9.view.MessageHeader>

@@ -3,27 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    <com.fsck.k9.view.ToggleScrollView
-        android:id="@+id/top_view"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:scrollbarStyle="outsideInset"
-        android:fillViewport="true"
-        android:background="@android:color/transparent"
-        android:fadingEdge="none">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:background="@android:color/transparent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <include layout="@layout/message" />
-            <include layout="@layout/message_view_scrolling_buttons"/>
-        </LinearLayout>
-    </com.fsck.k9.view.ToggleScrollView>
+    android:layout_height="fill_parent">
+
+    <include layout="@layout/message"/>
+
     <include layout="@layout/message_view_move_buttons"/>
+
     <include layout="@layout/message_view_bottom_buttons"/>
+
 </LinearLayout>
