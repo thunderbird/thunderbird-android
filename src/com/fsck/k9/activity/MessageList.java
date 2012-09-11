@@ -669,7 +669,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
         if (mSelectedCount > 0) {
-        handleContextRelatedClick(position);
+            toggleMessageSelect(position);
         } else {
             onOpenMessage(message);
         }
@@ -700,7 +700,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                return handleContextRelatedClick(position);
+                toggleMessageSelect(position);
+                return true;
             }});
 
         // Correcting for screen rotation when in ActionMode
@@ -2288,24 +2289,12 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (position != -1) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-                if (message.selected != isChecked) {
-                    if (isChecked) {
-                        mSelectedCount++;
-                    } else if (mSelectedCount > 0) {
-                        mSelectedCount--;
+                    toggleMessageSelect(message);
+                    if (!mCheckboxes) {
+                         selected.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                     }
 
-                    // We must set the flag before showing the buttons as the
-                    // buttons text depends on what is selected.
-                    message.selected = isChecked;
-                    if (!mCheckboxes) {
-                        if (isChecked) {
-                            selected.setVisibility(View.VISIBLE);
-                        } else {
-                            selected.setVisibility(View.GONE);
-                        }
-                    }
-                }
+
             }
         }
     }
@@ -2399,7 +2388,23 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void toggleMessageSelect(int position){
+        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(position);
+        toggleMessageSelect(holder);
+    }
+
     private void toggleMessageSelect(final MessageInfoHolder holder){
+        if (mActionMode != null) {
+            if (mSelectedCount == 1 && holder.selected) {
+                mActionMode.finish();
+                return;
+            }
+        } else {
+            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+     }
+
+
+
     if (holder.selected) {
         holder.selected = false;
         mSelectedCount -= 1;
@@ -2720,25 +2725,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         return account;
     }
 
-    private boolean handleContextRelatedClick(int position){
-    MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(position);
-        if (mActionMode != null) {
-            if (mSelectedCount > 1) {
-                toggleMessageSelect(holder);
-            } else {
-                if (holder.selected) {
-                    mActionMode.finish();
-                } else {
-                    toggleMessageSelect(holder);
-                }
-            }
-        } else {
-            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-            toggleMessageSelect(holder);
-        }
-
-        return true;
-    }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
