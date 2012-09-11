@@ -398,10 +398,14 @@ public class SingleMessageView extends LinearLayout implements OnClickListener {
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
 
-            if (view.populateFromPart(part, message, account, controller, listener)) {
-                addAttachment(view);
-            } else {
-                addHiddenAttachment(view);
+            try {
+                if (view.populateFromPart(part, message, account, controller, listener)) {
+                    addAttachment(view);
+                } else {
+                    addHiddenAttachment(view);
+                }
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Error adding attachment view", e);
             }
         }
     }
