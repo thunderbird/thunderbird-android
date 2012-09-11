@@ -893,9 +893,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">הצגת הודעה</string>
     <string name="volume_navigation_list">רשימת תצוגות שונות</string>
 
-    <string name="manage_back_title">נהל כפתור \'חזור\'</string>
-    <string name="manage_back_summary">הגדר שכפתור \"חזור\" תמיד יחזור דף אחד</string>
-
     <string name="start_integrated_inbox_title">התחל בתיבת דואר נכנס אחידה</string>
     <string name="start_integrated_inbox_summary">הצג את תיבת הדואר הנכנס האחידה בהפעלה</string>
 

@@ -16,10 +16,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -151,7 +152,7 @@ public class ChooseFolder extends K9ListActivity {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_PROGRESS: {
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                    setSupportProgressBarIndeterminateVisibility(msg.arg1 != 0);
                     break;
                 }
                 case MSG_SET_SELECTED_FOLDER: {
@@ -179,7 +180,7 @@ public class ChooseFolder extends K9ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.folder_select_option, menu);
+        getSupportMenuInflater().inflate(R.menu.folder_select_option, menu);
         if (mAccount.getStoreUri().startsWith("webdav")) {
             menu.findItem(R.id.create_folder).setVisible(false);
         }

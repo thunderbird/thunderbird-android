@@ -25,6 +25,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -237,8 +238,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAccount = account;
 
         initializeLayout();
-        String subject = message.getSubject();
-        if (subject == null || subject.equals("")) {
+        final String subject = message.getSubject();
+        if (StringUtils.isNullOrEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
         } else {
             mSubjectView.setText(subject);
@@ -431,5 +432,12 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         if (mOnLayoutChangedListener != null) {
             mOnLayoutChangedListener.onLayoutChanged();
         }
+    }
+
+    /**
+     * The subject line defaults to GONE.  Make it visible.
+     */
+    public void showSubjectLine() {
+        mSubjectView.setVisibility(VISIBLE);
     }
 }

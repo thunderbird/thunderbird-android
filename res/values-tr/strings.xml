@@ -881,9 +881,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="volume_navigation_message">Mesaj görünümü</string>
     <string name="volume_navigation_list">Çeşitli liste görünümleri</string>
 
-    <string name="manage_back_title">\"Geri\" düğmesini yönet</string>
-    <string name="manage_back_summary">\"Geri\" düğmesi daima bir üst seviyeye çıkartır</string>
-
     <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
     <string name="start_integrated_inbox_summary">Başlangıçta Birleşik Gelen Kutusunu göster</string>
 

@@ -887,9 +887,6 @@
     <string name="volume_navigation_message">訊息檢視</string>
     <string name="volume_navigation_list">不同的訊息檢視列表</string>
 
-    <string name="manage_back_title">管理「返回」按鈕</string>
-    <string name="manage_back_summary">每次點擊「返回」按鈕時返回上一個頁面</string>
-
     <string name="start_integrated_inbox_title">從全域收件匣啟動</string>
     <string name="start_integrated_inbox_summary">啟動後顯示全域收件匣</string>
 

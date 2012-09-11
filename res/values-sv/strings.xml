@@ -881,9 +881,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">E-post-vy</string>
     <string name="volume_navigation_list">Diverse listvyer</string>
 
-    <string name="manage_back_title">Hantera \"Tillbaka\"-knappen</string>
-    <string name="manage_back_summary">\"Tillbaka\"-knappen går alltid upp en nivå</string>
-
     <string name="start_integrated_inbox_title">Integrerad inkorg vid start</string>
     <string name="start_integrated_inbox_summary">Visa den integrerade inkorgen vid start</string>
 

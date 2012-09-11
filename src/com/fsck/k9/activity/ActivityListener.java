@@ -23,6 +23,13 @@ public class ActivityListener extends MessagingListener {
 
 
     public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat) {
+	String operation = getOperation(context, timeFormat);
+        return context.getString(R.string.activity_header_format, activityPrefix,
+                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
+                                 operation);
+    }
+
+    public String getOperation(Context context, DateFormat timeFormat){
         String operation = null;
         String progress = null;
         if (mLoadingAccountDescription  != null
@@ -66,11 +73,7 @@ public class ActivityListener extends MessagingListener {
             }
         }
 
-        return context.getString(R.string.activity_header_format, activityPrefix,
-                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
-                                 operation);
-
-
+        return operation;
     }
 
     public void informUserOfStatus() {

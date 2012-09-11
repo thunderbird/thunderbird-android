@@ -877,9 +877,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Visualizar mensagem</string>
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
 
-    <string name="manage_back_title">Gerenciar botão \"Voltar\"</string>
-    <string name="manage_back_summary">Tormar \"Voltar\" padrão para subir um nível</string>
-
     <string name="start_integrated_inbox_title">Iniciar com Caixas de Entrada Unificadas</string>
     <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
 

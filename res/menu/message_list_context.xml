@@ -1,53 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/open"
-        android:title="@string/open_action"
-    />
-    <item
-        android:id="@+id/select"
-        android:title="@string/select_action"
-    />
-    <item
-        android:id="@+id/deselect"
-        android:visible="false"
-        android:title="@string/deselect_action"
-    />
+        android:id="@+id/single_message_options"
+        android:icon="?attr/iconActionSingleMessageOptions"
+        android:showAsAction="always"
+        android:title="@string/single_message_options_action">
+        <menu>
+            <item
+                android:id="@+id/forward"
+                android:title="@string/forward_action"/>
+            <item
+                android:id="@+id/reply_all"
+                android:title="@string/reply_all_action"/>
+            <item
+                android:id="@+id/reply"
+                android:title="@string/reply_action"/>
+            <item
+                android:id="@+id/send_again"
+                android:title="@string/send_again_action"/>
+            <item
+			android:id="@+id/same_sender"
+			android:title="@string/from_same_sender" />
+        </menu>
+    </item>
     <item
         android:id="@+id/delete"
         android:title="@string/delete_action"
+        android:showAsAction="always"
+        android:icon="?attr/iconActionDelete"
     />
     <item
-        android:id="@+id/forward"
-        android:title="@string/forward_action"
-    />
-    <item
-        android:id="@+id/reply_all"
-        android:title="@string/reply_all_action"
-    />
-    <item
-        android:id="@+id/reply"
-        android:title="@string/reply_action"
-    />
-    <item
-        android:id="@+id/send_again"
-        android:title="@string/send_again_action"
-    />
-    <item
-        android:id="@+id/mark_as_read"
-        android:title="@string/mark_as_read_action"
-    />
-    <item
-        android:id="@+id/flag"
-        android:title="@string/flag_action"
+        android:id="@+id/read_toggle"
+        android:title="@string/read_toggle_action"
+        android:showAsAction="always"
+        android:icon="?attr/iconActionToggleRead"
     />
     <item
         android:id="@+id/archive"
         android:title="@string/archive_action"
+        android:showAsAction="always"
+        android:icon="?attr/iconActionArchive"
     />
     <item
+		android:id="@+id/move_or_copy"
+	    android:title="@string/move_or_copy_action"
+	    android:showAsAction="ifRoom"
+	    android:icon="?attr/iconActionMoveOrCopy">
+	    <menu>
+		    <item
+		        android:id="@+id/move"
+		        android:title="@string/move_action"
+		    />
+		    <item
+		        android:id="@+id/copy"
+		        android:title="@string/copy_action"
+		    />
+		</menu>
+	</item>
+	<item
+        android:id="@+id/flag_toggle"
+        android:title="@string/flag_toggle_action"
+        android:showAsAction="ifRoom"
+        android:icon="?attr/iconActionToggleFlag"
+    />
+	<item
         android:id="@+id/spam"
         android:title="@string/spam_action"
+        android:showAsAction="ifRoom"
+        android:icon="?attr/iconActionSpam"
     />
     <item
         android:id="@+id/move"

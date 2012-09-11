@@ -878,9 +878,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="volume_navigation_message">메시지 뷰</string>
     <string name="volume_navigation_list">다양한 리스트 뷰</string>
 
-    <string name="manage_back_title"> \"뒤로\" 버튼 관리</string>
-    <string name="manage_back_summary">\"뒤로\" 버튼이 항상 위로</string>
-
     <string name="start_integrated_inbox_title">통합 편지함으로 시작</string>
     <string name="start_integrated_inbox_summary">통합 편지함을 시작시 보여줍니다</string>
 

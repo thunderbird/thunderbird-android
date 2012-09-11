@@ -59,7 +59,8 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                 unreadCount = stats.unreadMessageCount;
                 accountName = account.getDescription();
                 if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {
-                    clickIntent = FolderList.actionHandleAccountIntent(context, account, null);
+                    clickIntent = FolderList.actionHandleAccountIntent(context, account, null,
+                            false);
                 } else {
                     clickIntent = MessageList.actionHandleFolderIntent(context, account,
                             account.getAutoExpandFolderName());

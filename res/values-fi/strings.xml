@@ -887,9 +887,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Viestinäkymä</string>
     <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
 
-    <string name="manage_back_title">Määritä Takaisin-painike</string>
-    <string name="manage_back_summary">Pakota Takaisin-painike siirtämään aina ylemmälle tasolle</string>
-
     <string name="start_integrated_inbox_title">Aloita yhdistetystä Saapuneet-kansiosta</string>
     <string name="start_integrated_inbox_summary">Näytä Yhdistetty Saapuneet-kansio ohjelman käynnistyksen jälkeen</string>
 

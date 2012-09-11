@@ -85,7 +85,7 @@ public class MessageHelper {
 
             target.uid = message.getUid();
 
-            target.account = account.getDescription();
+            target.account = account.getUuid();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();
 
         } catch (MessagingException me) {

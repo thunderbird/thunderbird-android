@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
-		android:id="@+id/send"
-        android:alphabeticShortcut="s"
-		android:title="@string/send_action"
-		android:icon="@drawable/ic_menu_send"
-	/>
-	<item
 		android:id="@+id/add_cc_bcc"
         android:alphabeticShortcut="c"
 		android:title="@string/add_cc_bcc_action"
-		android:icon="@drawable/ic_menu_cc"
+		android:icon="?attr/iconActionAddCcBcc"
+		android:showAsAction="always"
 	/>
 	<item
 		android:id="@+id/add_attachment"
         android:alphabeticShortcut="n"
 		android:title="@string/add_attachment_action"
-        android:icon="@drawable/ic_menu_attachment"
+        android:icon="?attr/iconActionAddAttachment"
+        android:showAsAction="always"
     />
+	<item
+		android:id="@+id/send"
+        android:alphabeticShortcut="s"
+		android:title="@string/send_action"
+		android:icon="?attr/iconActionSend"
+		android:showAsAction="always"
+	/>
 	<item
 		android:id="@+id/save"
         android:alphabeticShortcut="d"
 		android:title="@string/save_draft_action"
-		android:icon="@drawable/ic_menu_save_draft"
+		android:icon="?attr/iconMenuSaveDraft"
 	/>
 	<item
 		android:id="@+id/discard"
         android:alphabeticShortcut="q"
 		android:title="@string/discard_action"
-		android:icon="@drawable/ic_menu_close_clear_cancel"
+		android:icon="?attr/iconMenuCloseClearCancel"
 	/>
 	<item
 		android:id="@+id/read_receipt"
         android:alphabeticShortcut="r"
         android:title="@string/read_receipt"
-        android:icon="@drawable/ic_menu_reply_receipt"
+        android:icon="?attr/iconMenuReplyReceipt"
 	/>
 	<item
 		android:id="@+id/add_attachment_image"
 		android:title="@string/add_attachment_action_image"
-        android:icon="@drawable/ic_menu_attachment"
+        android:icon="?attr/iconMenuAttachment"
         android:visible="false" 
     />
 	<item
 		android:id="@+id/add_attachment_video"
 		android:title="@string/add_attachment_action_video"
-        android:icon="@drawable/ic_menu_attachment"
+        android:icon="?attr/iconMenuAttachment"
         android:visible="false"
     />
 </menu>

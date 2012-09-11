@@ -81,10 +81,9 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
-        //ASH Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
+        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getName());
         PreferenceCategory category = (PreferenceCategory)findPreference(PREFERENCE_TOP_CATERGORY);
-        String displayName = FolderInfoHolder.getDisplayName(this, mFolder);
-        category.setTitle(displayName); // ASH folderName
+        category.setTitle(displayName);
 
 
         mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);

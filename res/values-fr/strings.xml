@@ -904,9 +904,6 @@ de plus</string>
     <string name="volume_navigation_message">Visualisation d\'un message</string>
     <string name="volume_navigation_list">Différents écrans à liste</string>
 
-    <string name="manage_back_title">Gérer la touche «\u00A0Retour\u00A0»</string>
-    <string name="manage_back_summary">La touche «\u00A0Retour\u00A0» remonte toujours un niveau</string>
-
     <string name="start_integrated_inbox_title">Boîte de messagerie unifiée au démarrage</string>
     <string name="start_integrated_inbox_summary">Afficher la boîte de messagerie unifiée au démarrage</string>
 
