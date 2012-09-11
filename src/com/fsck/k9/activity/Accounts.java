@@ -150,7 +150,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     class AccountsHandler extends Handler {
         private void setViewTitle() {
             mActionBarTitle.setText(" " + getString(R.string.accounts_title));
-            mActionBarUnread.setText(String.valueOf(mUnreadMessageCount));
+
+            if (mUnreadMessageCount == 0) {
+                mActionBarUnread.setVisibility(View.GONE);
+            } else {
+                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                mActionBarUnread.setVisibility(View.VISIBLE);
+            }
 
             String operation = mListener.getOperation(Accounts.this, getTimeFormat());
             operation.trim();

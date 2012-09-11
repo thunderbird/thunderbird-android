@@ -119,7 +119,13 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             runOnUiThread(new Runnable() {
                 public void run() {
                     mActionBarTitle.setText(getString(R.string.folders_title));
-                    mActionBarUnread.setText(String.valueOf(mUnreadMessageCount));
+
+                    if (mUnreadMessageCount == 0) {
+                        mActionBarUnread.setVisibility(View.GONE);
+                    } else {
+                        mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                        mActionBarUnread.setVisibility(View.VISIBLE);
+                    }
 
                     String operation = mAdapter.mListener.getOperation(FolderList.this, getTimeFormat()).trim();
                     if (operation.length() < 1) {
