@@ -25,22 +25,11 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 public class EmailAddressAdapter extends ResourceCursorAdapter {
-    private static EmailAddressAdapter sInstance;
-
-    public static EmailAddressAdapter getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new EmailAddressAdapter(context);
-        }
-
-        return sInstance;
-    }
-
-
     private final Contacts mContacts;
 
-    private EmailAddressAdapter(Context context) {
+    public EmailAddressAdapter(Context context) {
         super(context, R.layout.recipient_dropdown_item, null);
-        mContacts = Contacts.getInstance(context);
+        mContacts = Contacts.getInstance(context.getApplicationContext());
     }
 
     @Override

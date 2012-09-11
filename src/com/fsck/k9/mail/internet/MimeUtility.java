@@ -15,6 +15,7 @@ import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -1033,6 +1035,25 @@ public class MimeUtility {
                      * We've got a text part, so let's see if it needs to be processed further.
                      */
                     String charset = getHeaderParameter(part.getContentType(), "charset");
+                    /*
+                     * determine the charset from HTML message.
+                     */
+                    if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
+                        InputStreamReader in = new InputStreamReader(part.getBody().getInputStream(),
+                                "US-ASCII");
+                        char[] buf = new char[256];
+                        in.read(buf, 0, buf.length);
+                        String str = new String(buf);
+
+                        if (str.length() == 0) {
+                            return "";
+                        }
+                        Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
+                        Matcher m = p.matcher(str);
+                        if (m.find()) {
+                            charset = m.group(1);
+                        }
+                    }
                     charset = fixupCharset(charset, getMessageFromPart(part));
 
                     /*

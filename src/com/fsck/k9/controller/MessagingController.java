@@ -135,46 +135,11 @@ public class MessagingController implements Runnable {
     private Thread mThread;
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
 
-    private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
-
     private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
     ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
-
-    public enum SORT_TYPE {
-        SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
-        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
-        SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
-        SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
-        SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
-
-        private int ascendingToast;
-        private int descendingToast;
-        private boolean defaultAscending;
-
-        SORT_TYPE(int ascending, int descending, boolean ndefaultAscending) {
-            ascendingToast = ascending;
-            descendingToast = descending;
-            defaultAscending = ndefaultAscending;
-        }
-
-        public int getToast(boolean ascending) {
-            if (ascending) {
-                return ascendingToast;
-            } else {
-                return descendingToast;
-            }
-        }
-        public boolean isDefaultAscending() {
-            return defaultAscending;
-        }
-    }
-
-    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
     private MessagingListener checkMailListener = null;
 
@@ -3498,10 +3463,10 @@ public class MessagingController implements Runnable {
     // ASH i seem to have deleted the four below isMoveCapable/isCopyCapable methods:
     public boolean isMoveCapable(Message message) {
         return !message.getUid().startsWith(K9.LOCAL_UID_PREFIX);
-    }/*
+    }
     public boolean isCopyCapable(Message message) {
         return isMoveCapable(message);
-    }*/
+    }
 
     public boolean isMoveCapable(final Account account) {
         try {
@@ -3513,7 +3478,7 @@ public class MessagingController implements Runnable {
             Log.e(K9.LOG_TAG, "Exception while ascertaining move capability", me);
             return false;
         }
-    }/*
+    }
     public boolean isCopyCapable(final Account account) {
         try {
             Store localStore = account.getLocalStore();
@@ -3523,7 +3488,7 @@ public class MessagingController implements Runnable {
             Log.e(K9.LOG_TAG, "Exception while ascertaining copy capability", me);
             return false;
         }
-    }*/
+    }
 
     public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
                              final MessagingListener listener) {
@@ -4785,25 +4750,6 @@ public class MessagingController implements Runnable {
         if (this.checkMailListener != null) {
             addListener(this.checkMailListener);
         }
-    }
-
-    public SORT_TYPE getSortType() {
-        return sortType;
-    }
-
-    public void setSortType(SORT_TYPE sortType) {
-        this.sortType = sortType;
-    }
-
-    public boolean isSortAscending(SORT_TYPE sortType) {
-        Boolean sortAsc = sortAscending.get(sortType);
-        if (sortAsc == null) {
-            return sortType.isDefaultAscending();
-        } else return sortAsc;
-    }
-
-    public void setSortAscending(SORT_TYPE sortType, boolean nsortAscending) {
-        sortAscending.put(sortType, nsortAscending);
     }
 
     public Collection<Pusher> getPushers() {

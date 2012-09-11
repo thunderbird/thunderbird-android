@@ -22,6 +22,11 @@ public class IdentitySettings {
         Map<String, TreeMap<Integer, SettingsDescription>> s =
             new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
 
+        /**
+         * When adding new settings here, be sure to increment {@link Settings.VERSION}
+         * and use that for whatever you add here.
+         */
+
         s.put("signature", Settings.versions(
                 new V(1, new SignatureSetting())
             ));

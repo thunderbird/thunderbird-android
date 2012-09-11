@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.K9.Light" parent="android:Theme.Light">
+        <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+    </style>
+
+    <style name="Theme.K9.Dark" parent="@android:style/Theme">
+        <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+    </style>
+
+</resources>

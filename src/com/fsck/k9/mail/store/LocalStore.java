@@ -35,6 +35,7 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.controller.MessagingController;
@@ -1761,23 +1762,26 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
                                                 MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
                                                 mp.addBodyPart(bp);
                                             }
-                                            if (htmlContent != null) {
-                                                TextBody body = new TextBody(htmlContent);
-                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                                mp.addBodyPart(bp);
-                                            }
 
-                                            // If we have both text and html content and our MIME type
-                                            // isn't multipart/alternative, then corral them into a new
-                                            // multipart/alternative part and put that into the parent.
-                                            // If it turns out that this is the only part in the parent
-                                            // MimeMultipart, it'll get fixed below before we attach to
-                                            // the message.
-                                            if (textContent != null && htmlContent != null && !mimeType.equalsIgnoreCase("multipart/alternative")) {
-                                                MimeMultipart alternativeParts = mp;
-                                                alternativeParts.setSubType("alternative");
-                                                mp = new MimeMultipart();
-                                                mp.addBodyPart(new MimeBodyPart(alternativeParts));
+                                            if (mAccount.getMessageFormat() == MessageFormat.HTML) {
+                                                if (htmlContent != null) {
+                                                    TextBody body = new TextBody(htmlContent);
+                                                    MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                                                    mp.addBodyPart(bp);
+                                                }
+    
+                                                // If we have both text and html content and our MIME type
+                                                // isn't multipart/alternative, then corral them into a new
+                                                // multipart/alternative part and put that into the parent.
+                                                // If it turns out that this is the only part in the parent
+                                                // MimeMultipart, it'll get fixed below before we attach to
+                                                // the message.
+                                                if (textContent != null && htmlContent != null && !mimeType.equalsIgnoreCase("multipart/alternative")) {
+                                                    MimeMultipart alternativeParts = mp;
+                                                    alternativeParts.setSubType("alternative");
+                                                    mp = new MimeMultipart();
+                                                    mp.addBodyPart(new MimeBodyPart(alternativeParts));
+                                                }
                                             }
                                         } else if (mimeType != null && mimeType.equalsIgnoreCase("text/plain")) {
                                             // If it's text, add only the plain part. The MIME
@@ -2983,6 +2987,8 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
             text = text.replaceAll("(?m)^On .*wrote.?$", "");
             // Remove a more generic quote header from the preview
             text = text.replaceAll("(?m)^.*\\w+:$", "");
+            // Remove horizontal rules.
+            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", " ");
 
             // URLs in the preview should just be shown as "..." - They're not
             // clickable and they usually overwhelm the preview
@@ -2991,6 +2997,9 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
             text = text.replaceAll("(\\r|\\n)+", " ");
             // Collapse whitespace in the preview
             text = text.replaceAll("\\s+", " ");
+            // Remove any whitespace at the beginning and end of the string.
+            text = text.trim();
+
             if (text.length() <= 512) {
                 return text;
             } else {

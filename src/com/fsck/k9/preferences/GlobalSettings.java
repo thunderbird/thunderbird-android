@@ -26,6 +26,11 @@ public class GlobalSettings {
         Map<String, TreeMap<Integer, SettingsDescription>> s =
             new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
 
+        /**
+         * When adding new settings here, be sure to increment {@link Settings.VERSION}
+         * and use that for whatever you add here.
+         */
+
         s.put("animations", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -199,6 +204,24 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false)),
                 new V(4, new BooleanSetting(true))
             ));
+        s.put("batchButtonsMarkRead", Settings.versions(
+        		new V(8, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsDelete", Settings.versions(
+        		new V(8, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsArchive", Settings.versions(
+        		new V(8, new BooleanSetting(false))
+        	));
+        s.put("batchButtonsMove", Settings.versions(
+        		new V(8, new BooleanSetting(false))
+        	));
+        s.put("batchButtonsFlag", Settings.versions(
+        		new V(8, new BooleanSetting(true))
+        	));
+        s.put("batchButtonsUnselect", Settings.versions(
+        		new V(8, new BooleanSetting(true))
+        	));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

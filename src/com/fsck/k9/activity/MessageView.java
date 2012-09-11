@@ -447,13 +447,18 @@ public class MessageView extends K9Activity implements OnClickListener {
         mDelete.setEnabled(true);
         mNext.setEnabled(mNextMessage != null);
         mPrevious.setEnabled(mPreviousMessage != null);
-        // Only enable the button if the Archive folder is not the current folder and not NONE.
-        mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
-        // Only enable the button if the Spam folder is not the current folder and not NONE.
-        mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
-        mMove.setEnabled(true);
+        // If moving isn't support at all, then all of them must be disabled anyway.
+        if (mController.isMoveCapable(mAccount)) {
+            // Only enable the button if they have an archive folder and it's not the current folder.
+            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()));
+            // Only enable the button if the Spam folder is not the current folder and not NONE.
+            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
+            mMove.setEnabled(true);
+        } else {
+            disableMoveButtons();
+        }
     }
 
     private void disableButtons() {
@@ -848,6 +853,14 @@ public class MessageView extends K9Activity implements OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
+        if (!mController.isCopyCapable(mAccount)) {
+            menu.findItem(R.id.copy).setVisible(false);
+        }
+        if (!mController.isMoveCapable(mAccount)) {
+            menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+        }
         if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName())) {
             menu.findItem(R.id.archive).setVisible(false);
         }
@@ -959,7 +972,8 @@ public class MessageView extends K9Activity implements OnClickListener {
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                             !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/downloading.html");
+                        String text = getString(R.string.message_view_downloading);
+                        mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
                     mMessageView.setOnFlagListener(new OnClickListener() {
@@ -1012,7 +1026,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                     }
                     if ((MessageView.this.mMessage == null) ||
                     !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.loadBodyFromUrl("file:///android_asset/empty.html");
+                        mMessageView.showStatusMessage(getString(R.string.webview_empty_message));
                     }
                 }
             });
