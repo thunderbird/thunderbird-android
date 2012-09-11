@@ -82,6 +82,17 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:title="@string/interaction_preferences">
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="mark_message_as_read_on_view"
+            android:title="@string/account_settings_mark_message_as_read_on_view_label"
+            android:summary="@string/account_settings_mark_message_as_read_on_view_summary" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:title="@string/account_settings_sync"
         android:key="incoming_prefs">
 

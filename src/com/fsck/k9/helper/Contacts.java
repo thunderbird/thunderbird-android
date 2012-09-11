@@ -105,6 +105,14 @@ public abstract class Contacts {
     public abstract void createContact(Address email);
 
     /**
+     * Start the activity to add a phone number to an existing contact or add a new one.
+     *
+     * @param phoneNumber
+     *         The phone number to add to a contact, or to use when creating a new contact.
+     */
+    public abstract void addPhoneContact(String phoneNumber);
+
+    /**
      * Check whether the provided email address belongs to one of the contacts.
      *
      * @param emailAddress The email address to look for.

@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -398,5 +399,11 @@ public class Storage implements SharedPreferences {
         if (result == -1) {
             Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
         }
+    }
+
+
+    @Override
+    public Set<String> getStringSet(String arg0, Set<String> arg1) {
+        throw new RuntimeException("Not implemented");
     }
 }

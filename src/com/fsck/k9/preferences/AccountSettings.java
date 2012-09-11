@@ -96,6 +96,9 @@ public class AccountSettings {
         s.put("localStorageProvider", Settings.versions(
                 new V(1, new StorageProviderSetting())
             ));
+        s.put("markMessageAsReadOnView", Settings.versions(
+                new V(7, new BooleanSetting(true))
+            ));
         s.put("maxPushFolders", Settings.versions(
                 new V(1, new IntegerRangeSetting(0, 100, 10))
             ));

@@ -1,18 +1,5 @@
 package com.fsck.k9.provider;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -46,6 +33,19 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class MessageProvider extends ContentProvider {
 
     public static interface MessageColumns extends BaseColumns {
@@ -60,7 +60,7 @@ public class MessageProvider extends ContentProvider {
          * <P>Type: TEXT</P>
          */
         String SENDER = "sender";
-        
+
         /**
          * <P>Type: TEXT</P>
          */
@@ -245,7 +245,7 @@ public class MessageProvider extends ContentProvider {
             final BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-            final SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null, null);
+            final SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(getContext());
             final MessagingController msgController = MessagingController.getInstance(K9.app);
 
             msgController.searchLocalMessages(integratedInboxAccount, null,
@@ -713,6 +713,12 @@ public class MessageProvider extends ContentProvider {
         public void unregisterDataSetObserver(DataSetObserver observer) {
             checkClosed();
             mCursor.unregisterDataSetObserver(observer);
+        }
+
+        @Override
+        public int getType(int columnIndex) {
+            checkClosed();
+            return mCursor.getType(columnIndex);
         }
     }
 

@@ -43,27 +43,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
-    /**
-     * Regular expression that represents characters we won't allow in file names.
-     *
-     * <p>
-     * Allowed are:
-     * <ul>
-     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
-     *   <li>spaces: {@code " "}</li>
-     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
-     *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
-     *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
-     * </ul></p>
-     */
-    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]+";
-
-    /**
-     * Invalid characters in a file name are replaced by this character.
-     */
-    private static final String REPLACEMENT_CHARACTER = "_";
-
-
     private Context mContext;
     public Button viewButton;
     public Button downloadButton;
@@ -259,7 +238,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      */
     public void writeFile(File directory) {
         try {
-            String filename = sanitizeFilename(name);
+            String filename = Utility.sanitizeFilename(name);
             File file = Utility.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
@@ -276,18 +255,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             }
             attachmentNotSaved();
         }
-    }
-
-    /**
-     * Replace characters we don't allow in file names with a replacement character.
-     *
-     * @param filename
-     *         The original file name.
-     *
-     * @return The sanitized file name containing only allowed characters.
-     */
-    private String sanitizeFilename(String filename) {
-        return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
     }
 
     /**

@@ -152,6 +152,7 @@ public class Account implements BaseAccount {
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
+    private boolean mMarkMessageAsReadOnView;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -240,6 +241,7 @@ public class Account implements BaseAccount {
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
         mEnabled = true;
+        mMarkMessageAsReadOnView = true;
 
         searchableFolders = Searchable.ALL;
 
@@ -396,6 +398,7 @@ public class Account implements BaseAccount {
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
+        mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -478,6 +481,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".enabled");
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
+        editor.remove(mUuid + ".markMessageAsReadOnView");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -639,6 +643,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
         editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
+        editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -1556,5 +1561,13 @@ Log.d("ASH", "setTrashFolderName() attempting change of folder.setLocalOnly()");
 
     public synchronized void setEnabled(boolean enabled) {
         mEnabled = enabled;
+    }
+
+    public synchronized boolean isMarkMessageAsReadOnView() {
+        return mMarkMessageAsReadOnView;
+    }
+
+    public synchronized void setMarkMessageAsReadOnView(boolean value) {
+        mMarkMessageAsReadOnView = value;
     }
 }

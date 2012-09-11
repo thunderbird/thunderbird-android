@@ -50,6 +50,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
     private View mChip;
     private View mChip2;
+    private View mChip3;
     private CheckBox mFlagged;
     private LinearLayout mToContainerView;
     private LinearLayout mCcContainerView;
@@ -61,6 +62,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private Contacts mContacts;
     private ImageView mShowAdditionalHeadersIcon;
     private SavedState mSavedState;
+
+    private OnLayoutChangedListener mOnLayoutChangedListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -95,6 +98,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
         mChip2 = findViewById(R.id.chip2);
+        mChip3 = findViewById(R.id.chip3);
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
@@ -115,12 +119,16 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
         findViewById(R.id.show_additional_headers_area).setOnClickListener(this);
+        findViewById(R.id.additional_headers_row).setOnClickListener(this);
         mFromView.setOnClickListener(this);
+        mToView.setOnClickListener(this);
+        mCcView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.additional_headers_row:
             case R.id.show_additional_headers_area: {
                 onShowAdditionalHeaders();
                 break;
@@ -128,6 +136,11 @@ public class MessageHeader extends ScrollView implements OnClickListener {
             case R.id.from: {
                 onAddSenderToContacts();
                 break;
+            }
+            case R.id.to:
+            case R.id.cc: {
+                expand((TextView)view, ((TextView)view).getEllipsize() != null);
+                layoutChanged();
             }
         }
     }
@@ -254,6 +267,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mChip.getBackground().setAlpha(chipColorAlpha);
         mChip2.setBackgroundColor(chipColor);
         mChip2.getBackground().setAlpha(chipColorAlpha);
+        mChip3.setBackgroundColor(chipColor);
+        mChip3.getBackground().setAlpha(chipColorAlpha);
 
         setVisibility(View.VISIBLE);
 
@@ -271,9 +286,27 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         int currentVisibility = mAdditionalHeadersView.getVisibility();
         if (currentVisibility == View.VISIBLE) {
             hideAdditionalHeaders();
+            expand(mToView, false);
+            expand(mCcView, false);
         } else {
             showAdditionalHeaders();
+            expand(mToView, true);
+            expand(mCcView, true);
         }
+        layoutChanged();
+    }
+
+    /**
+     * Expand or collapse a TextView by removing or adding the 2 lines limitation
+     */
+    private void expand(TextView v, boolean expand) {
+       if (expand) {
+           v.setMaxLines(Integer.MAX_VALUE);
+           v.setEllipsize(null);
+       } else {
+           v.setMaxLines(2);
+           v.setEllipsize(android.text.TextUtils.TruncateAt.END);
+       }
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
@@ -378,6 +411,20 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
+        }
+    }
+
+    public interface OnLayoutChangedListener {
+        void onLayoutChanged();
+    }
+
+    public void setOnLayoutChangedListener(OnLayoutChangedListener listener) {
+        mOnLayoutChangedListener = listener;
+    }
+
+    private void layoutChanged() {
+        if (mOnLayoutChangedListener != null) {
+            mOnLayoutChangedListener.onLayoutChanged();
         }
     }
 }

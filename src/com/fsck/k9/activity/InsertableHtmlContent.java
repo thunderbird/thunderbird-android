@@ -32,11 +32,20 @@ class InsertableHtmlContent implements Serializable {
     }
 
     public void setHeaderInsertionPoint(int headerInsertionPoint) {
-        this.headerInsertionPoint = headerInsertionPoint;
+        if (headerInsertionPoint < 0 || headerInsertionPoint > quotedContent.length()) {
+            this.headerInsertionPoint = 0;
+        } else {
+            this.headerInsertionPoint = headerInsertionPoint;
+        }
     }
 
     public void setFooterInsertionPoint(int footerInsertionPoint) {
-        this.footerInsertionPoint = footerInsertionPoint;
+        int len = quotedContent.length();
+        if (footerInsertionPoint < 0 || footerInsertionPoint > len) {
+            this.footerInsertionPoint = len;
+        } else {
+            this.footerInsertionPoint = footerInsertionPoint;
+        }
     }
 
     /**

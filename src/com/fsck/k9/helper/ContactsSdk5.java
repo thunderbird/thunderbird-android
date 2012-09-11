@@ -9,6 +9,8 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
 import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.Intents.Insert;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.K9;
 
@@ -83,6 +85,15 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
         }
 
         mContext.startActivity(contactIntent);
+    }
+
+    @Override
+    public void addPhoneContact(final String phoneNumber) {
+        Intent addIntent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+        addIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+        addIntent.putExtra(Insert.PHONE, Uri.decode(phoneNumber));
+        addIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(addIntent);
     }
 
     @Override

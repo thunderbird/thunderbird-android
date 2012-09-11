@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/jzlib-1.0.7.jar"/>
 	<classpathentry kind="lib" path="libs/jutf7-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="libs/htmlcleaner-2.2.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

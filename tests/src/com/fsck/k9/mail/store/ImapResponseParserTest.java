@@ -59,6 +59,36 @@ public class ImapResponseParserTest extends TestCase {
         assertEquals("token2", respTextCode.get(1));
     }
 
+    public void testImapListMethods() throws IOException {
+        ImapList list = new ImapList();
+        list.add("ONE");
+        list.add("TWO");
+        list.add("THREE");
+
+        assertTrue(list.containsKey("ONE"));
+        assertTrue(list.containsKey("TWO"));
+        assertFalse(list.containsKey("THREE"));
+        assertFalse(list.containsKey("nonexistent"));
+
+        assertEquals("TWO", list.getKeyedValue("ONE"));
+        assertEquals("THREE", list.getKeyedValue("TWO"));
+        assertNull(list.getKeyedValue("THREE"));
+        assertNull(list.getKeyedValue("nonexistent"));
+
+        assertEquals(0, list.getKeyIndex("ONE"));
+        assertEquals(1, list.getKeyIndex("TWO"));
+
+        try {
+            list.getKeyIndex("THREE");
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) { /* do nothing */ }
+
+        try {
+            list.getKeyIndex("nonexistent");
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) { /* do nothing */ }
+    }
+
     private ImapResponseParser createParser(String response) {
         ByteArrayInputStream in = new ByteArrayInputStream(response.getBytes());
         PeekableInputStream pin = new PeekableInputStream(in);

@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class Pop3Store extends Store {
     public static final String STORE_TYPE = "POP3";
@@ -889,7 +890,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+            return null;
         }
 
         @Override

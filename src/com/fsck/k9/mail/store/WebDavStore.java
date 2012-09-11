@@ -1339,13 +1339,15 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), false);
+            return null;
         }
 
         @Override
-        public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), true);
+            return null;
         }
 
         @Override
@@ -1920,8 +1922,9 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
             appendWebDavMessages(messages);
+            return null;
         }
 
         public Message[] appendWebDavMessages(Message[] messages) throws MessagingException {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class Editor implements android.content.SharedPreferences.Editor {
     private Storage storage;
@@ -136,6 +137,11 @@ public class Editor implements android.content.SharedPreferences.Editor {
     public android.content.SharedPreferences.Editor remove(String key) {
         removals.add(key);
         return this;
+    }
+
+    @Override
+    public android.content.SharedPreferences.Editor putStringSet(String arg0, Set<String> arg1) {
+        throw new RuntimeException("Not implemented");
     }
 
 }

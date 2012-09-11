@@ -49,6 +49,7 @@ public class MessageHelper {
         try {
             LocalMessage message = (LocalMessage) m;
             target.message = message;
+            target.compareArrival = message.getInternalDate();
             target.compareDate = message.getSentDate();
             if (target.compareDate == null) {
                 target.compareDate = message.getInternalDate();

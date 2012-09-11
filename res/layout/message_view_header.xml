@@ -122,16 +122,6 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/additional_headers_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:singleLine="false"
-                        android:ellipsize="none"
-                        android:textSize="10sp"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
-
                 </LinearLayout>
 
 
@@ -192,6 +182,31 @@
 
             </TableRow>
 
+            <TableRow
+                android:id="@+id/additional_headers_row">
+
+                <!-- Color chip 2 -->
+                <View
+                    android:id="@+id/chip2"
+                    android:layout_marginRight="6dip"
+                    android:layout_width="6dip"
+                    android:layout_height="fill_parent"/>
+
+                <!-- Additional headers -->
+                <TextView
+                    android:layout_span="2"
+                    android:id="@+id/additional_headers_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="false"
+                    android:ellipsize="none"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+
         </TableLayout>
 
         <!-- Separator -->
@@ -201,19 +216,19 @@
             android:id="@+id/show_additional_headers_area"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="21.5dp"
+            android:layout_height="21dp"
             android:focusable="true"
             android:clickable="true"
-            android:background="@drawable/separator_area_background">
+            android:background="@drawable/message_view_header_background">
 
             <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="20dp">
 
-                <!-- Color chip 2 -->
+                <!-- Color chip 3 -->
                 <View
-                    android:id="@+id/chip2"
+                    android:id="@+id/chip3"
                     android:layout_marginRight="6dip"
                     android:layout_width="6dip"
                     android:layout_height="fill_parent"
@@ -233,10 +248,9 @@
             </RelativeLayout>
 
             <View
-                android:id="@+id/separator"
                 android:layout_width="fill_parent"
-                android:layout_height="1.5dp"
-                android:background="#59000000"/>
+                android:layout_height="1dip"
+                android:background="@drawable/divider_horizontal_email" />
 
         </LinearLayout>
 

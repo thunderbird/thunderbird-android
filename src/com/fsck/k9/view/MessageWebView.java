@@ -72,6 +72,12 @@ public class MessageWebView extends WebView {
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
         this.setLongClickable(true);
 
+        if (K9.getK9Theme() == K9.THEME_DARK) {
+            // Black theme should get a black webview background
+            // we'll set the background of the messages on load
+            this.setBackgroundColor(0xff000000);
+        }
+
         final WebSettings webSettings = this.getSettings();
 
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -102,6 +108,19 @@ public class MessageWebView extends WebView {
         // Disable network images by default.  This is overridden by preferences.
         blockNetworkData(true);
 
+    }
+
+    public void setText(String text, String contentType) {
+        String content = text;
+        if (K9.getK9Theme() == K9.THEME_DARK)  {
+            // It's a little wrong to just throw in the <style> before the opening <html>
+            // but it's less wrong than trying to edit the html stream
+            content = "<style>* { background: black ! important; color: white !important }" +
+                   ":link, :link * { color: #CCFF33 !important }" +
+                   ":visited, :visited * { color: #551A8B !important }</style> "
+                   + content;
+        }
+        loadDataWithBaseURL("http://", content, contentType, "utf-8", null);
     }
 
     /*
