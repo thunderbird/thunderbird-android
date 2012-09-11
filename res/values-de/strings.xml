@@ -549,6 +549,9 @@ http://k9mail.googlecode.com/.
     <string name="account_settings_message_format_html">HTML (Bilder und Formatierungen bleiben erhalten)</string>
     <string name="account_settings_message_format_auto">Automatisch (Einfacher Text, es sei denn bei Antwort auf HTML)</string>
 
+    <string name="account_settings_always_show_cc_bcc_label">CC/BCC immer anzeigen</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Zeige die CC/BCC-Texteingabefelder immer an</string>
+
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
 
@@ -821,8 +824,6 @@ http://k9mail.googlecode.com/.
 
     <string name="settings_messageview_mobile_layout_label">Einfaches Layout</string>
     <string name="settings_messageview_mobile_layout_summary">HTML-Nachrichten werden für kleine Displays optimiert</string>
-    <string name="settings_messageview_zoom_controls_label">System Zoom</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktiviere Zoom-Widgets oder 2-Finger-Zoom, wenn vom Gerät unterstützt</string>
 
     <string name="setting_language_system">Systemvorgabe</string>
 
@@ -831,6 +832,7 @@ http://k9mail.googlecode.com/.
     <string name="background_ops_always">Immer</string>
     <string name="background_ops_enabled">Wenn \'Hintergrunddaten\' aktiviert ist</string>
     <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
+    <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
 
     <string name="no_message_seletected_toast">Keine Nachricht ausgewählt</string>
 

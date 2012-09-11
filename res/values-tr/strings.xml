@@ -324,8 +324,10 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="global_settings_confirm_action_mark_all_as_read">Hepsini okundu olarak işaretle</string>
     <string name="global_settings_confirm_action_send">Gönder</string>
 
-    <string name="global_settings_privacy_mode_title">Ekran-kilidi bildirimleri</string>
-    <string name="global_settings_privacy_mode_summary">Sistem kilitlendiğinde bildirim çubuğunda mesaj konusunu gösterme</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <string name="global_settings_batch_buttons">Toplu işlem düğmeleri</string>
     <string name="global_settings_batch_buttons_summary">Mesaj listesi toplu mesaj düğmelerini yapılandır</string>
@@ -547,6 +549,9 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="account_settings_message_format_text">Düz Metin (resimler ve biçimler kaldırılacak)</string>
     <string name="account_settings_message_format_html">HTML (resimler ve biçimler korunacak)</string>
     <string name="account_settings_message_format_auto">Otomatik (HTML mesajına yanıt verilmiyorsa düz metin)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Okundu raporu</string>
     <string name="account_settings_message_read_receipt_summary">Daima bir okuma raporu iste</string>
@@ -821,8 +826,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
     <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
     <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
-    <string name="settings_messageview_zoom_controls_label">Sistem yakınlaştırma kontrolleri</string>
-    <string name="settings_messageview_zoom_controls_summary">Yakınlaştırma araçlarını veya cihazınız onu destekliyorsa pinch-zoom\'u etkinleştir</string>
 
     <string name="setting_language_system">Sistem Varsayılanları</string>
 
@@ -831,6 +834,7 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="background_ops_always">Daima</string>
     <string name="background_ops_enabled">\'Arkaplan verisi\' işaretli olduğu zaman</string>
     <string name="background_ops_auto_sync">\'Arkaplan verisi\' &amp; \'Oto. Senk.\' işaretli olduğu zaman</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Mesaj Seçilmedi</string>
 

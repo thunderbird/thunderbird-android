@@ -109,7 +109,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SENT_FOLDER = "sent_folder";
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
-
+    private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
 
 
     private Account mAccount;
@@ -172,6 +172,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mSentFolder;
     private ListPreference mSpamFolder;
     private ListPreference mTrashFolder;
+    private CheckBoxPreference mAlwaysShowCcBcc;
 
 
     public static void actionSettings(Context context, Account account) {
@@ -225,6 +226,9 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mAlwaysShowCcBcc = (CheckBoxPreference) findPreference(PREFERENCE_ALWAYS_SHOW_CC_BCC);
+        mAlwaysShowCcBcc.setChecked(mAccount.isAlwaysShowCcBcc());
 
         mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
         mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
@@ -731,6 +735,7 @@ Log.d("ASH", "Have set delete policy to " + mAccount.getDeletePolicy());
         mAccount.setAutoUploadOnMove(mAutoUploadOnMove.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());

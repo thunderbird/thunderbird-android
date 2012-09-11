@@ -60,8 +60,6 @@ public class MessageHelper {
             target.read = message.isSet(Flag.SEEN);
             target.answered = message.isSet(Flag.ANSWERED);
             target.flagged = message.isSet(Flag.FLAGGED);
-            target.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-            target.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
 
             Address[] addrs = message.getFrom();
 

@@ -324,8 +324,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Maca\'ls tots com a llegits</string>
     <string name="global_settings_confirm_action_send">Envia</string>
 
-    <string name="global_settings_privacy_mode_title">Bloca notificacions</string>
-    <string name="global_settings_privacy_mode_summary">No mostris l’assumpte del missatge a la barra de notificacions quan el telèfon estigui blocat</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -546,6 +548,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Text net (es trauran el format i les imatges)</string>
     <string name="account_settings_message_format_html">HTML (es conservaran el format i les imatges)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -820,8 +825,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Disposició sola columna</string>
     <string name="settings_messageview_mobile_layout_summary">Reformata missatges HTML missatges per a pantalles petites</string>
-    <string name="settings_messageview_zoom_controls_label">Controls zoom sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Habilita ginys de zoom or pica sobre el zoom si el teu aparell ho permet</string>
 
     <string name="setting_language_system">Per defecte del sistema</string>
 
@@ -830,6 +833,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_enabled">Quan s’està comprovant \'Dades en segon pla\'</string>
     <string name="background_ops_auto_sync">Quan s’està comprovant \'Dades en segon pla\' i \'Auto sincronització\'</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">No s’ha seleccionat cap missatge</string>
 

@@ -322,8 +322,10 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="global_settings_confirm_action_mark_all_as_read">모든 편지를 읽음으로 표시</string>
     <string name="global_settings_confirm_action_send">보내기</string>
 
-    <string name="global_settings_privacy_mode_title">잠긴화면에서 알림</string>
-    <string name="global_settings_privacy_mode_summary">화면이 잠겨있을경우 메시지 수신시 제목을 화면에 보여주지 않습니다.</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -545,6 +547,9 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="account_settings_message_format_text">일반 텍스트(Plain) (이미지와 꾸밈format은 없어집니다)</string>
     <string name="account_settings_message_format_html">HTML (이미지와 꾸밈format이 보존됩니다)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -817,8 +822,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="settings_messageview_mobile_layout_label">Single-column layout</string>
     <string name="settings_messageview_mobile_layout_summary">작은 스크린에서 HTML 메시지를 다시만듬(reformat)</string>
-    <string name="settings_messageview_zoom_controls_label">시스템 줌 컨트롤</string>
-    <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
 
     <string name="setting_language_system">시스템 기본값</string>
 
@@ -827,6 +830,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="background_ops_always">항상</string>
     <string name="background_ops_enabled">\'백그라운드 데이타\'가 선택된 경우</string>
     <string name="background_ops_auto_sync">\'백그라운드 데이타\'와 \'Auto-sync\'가 선택된 경우</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">선택된 메시지가 없습니다.</string>
 

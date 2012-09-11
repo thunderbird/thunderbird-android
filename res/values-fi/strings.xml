@@ -552,6 +552,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (kuvat ja muotoilu säilytetään)</string>
     <string name="account_settings_message_format_auto">Automaattinen (pelkkä teksti, ellei vastata HTML-viestiin)</string>
 
+    <string name="account_settings_always_show_cc_bcc_label">Näytä aina Kopio/Piilokopio</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Näytä aina Kopio/Piilokopio-tekstinsyöttökentät</string>
+
     <string name="account_settings_message_read_receipt_label">Vastaanottokuittaus</string>
     <string name="account_settings_message_read_receipt_summary">Pyydä aina vastaanottokuittaus</string>
 
@@ -825,6 +828,7 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Yhden sarakkeen asettelu</string>
     <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
+
     <string name="settings_messageview_zoom_controls_label">Järjestelmän zoomaussäätimet</string>
     <string name="settings_messageview_zoom_controls_summary">Ota käyttöön vimpaimen zoomaus tai zoomaus nipistämällä, jos laite tukee</string>
 

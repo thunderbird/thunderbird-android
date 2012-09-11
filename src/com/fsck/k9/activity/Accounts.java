@@ -4,13 +4,7 @@ package com.fsck.k9.activity;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1195,7 +1189,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onAbout() {
         String appName = getString(R.string.app_name);
-        String year = "2012";
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         WebView wv = new WebView(this);
         StringBuilder html = new StringBuilder()
         .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")

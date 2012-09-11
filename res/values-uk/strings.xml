@@ -324,8 +324,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Відмітити усі як прочитані</string>
     <string name="global_settings_confirm_action_send">Надіслати</string>
 
-    <string name="global_settings_privacy_mode_title">Повідомлення при заблокованому екрані</string>
-    <string name="global_settings_privacy_mode_summary">Не відображати тему повідомлення в рядку сповіщень, коли система заблокована</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <string name="global_settings_batch_buttons">Групові кнопки</string>
     <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>
@@ -547,6 +549,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Звичайний текст (не зберігати зображення та форматування)</string>
     <string name="account_settings_message_format_html">HTML (зберігати зображення та форматування)</string>
     <string name="account_settings_message_format_auto">Автоматичний (plain text unless replying to an HTML message)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Повідомлення про прочитання</string>
     <string name="account_settings_message_read_receipt_summary">Завжди запитувати повідомлення про прочитання</string>
@@ -819,8 +824,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">режим одного стовпця</string>
     <string name="settings_messageview_mobile_layout_summary">Форматування HTML повідомлення для маленького екрану</string>
-    <string name="settings_messageview_zoom_controls_label">Системне управління масштабом</string>
-    <string name="settings_messageview_zoom_controls_summary">Включити віджети масштабування або pinch-zoom якщо пристрій їх підтримує</string>
 
     <string name="setting_language_system">Системна по замовчуванню</string>
 
@@ -829,6 +832,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Завжди</string>
     <string name="background_ops_enabled">Коли \'Фонові дані\' включено</string>
     <string name="background_ops_auto_sync">Коли \'Фонові дані\' та \'Автосинхронізація\' включено</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Жодних повідомлень не вибрано</string>
 

@@ -17,8 +17,6 @@ public class MessageInfoHolder {
     public boolean read;
     public boolean answered;
     public boolean flagged;
-    public boolean downloaded;
-    public boolean partially_downloaded;
     public boolean dirty;
     public LocalMessage message;
     public FolderInfoHolder folder;

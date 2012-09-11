@@ -322,8 +322,10 @@
     <string name="global_settings_confirm_action_mark_all_as_read">Összes megjelölése olvasottként</string>
     <string name="global_settings_confirm_action_send">Küldés</string>
 
-    <string name="global_settings_privacy_mode_title">Képernyőzár értesítések</string>
-    <string name="global_settings_privacy_mode_summary">Lezárt képernyőnél ne mutassa a levelek tárgyát a állapotsoron</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -544,6 +546,9 @@
     <string name="account_settings_message_format_text">Sima szöveg (képek és formázás nélkül)</string>
     <string name="account_settings_message_format_html">HTML (képekkel és formázással)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -814,8 +819,6 @@
 
     <string name="settings_messageview_mobile_layout_label">Egy oszlopos elrendezés</string>
     <string name="settings_messageview_mobile_layout_summary">HTML üzenetek újraformázása a kisebb kijelzőkhöz.</string>
-    <string name="settings_messageview_zoom_controls_label">Rendszer nagyító használta</string>
-    <string name="settings_messageview_zoom_controls_summary">Engedélyezi a multi touch nagyítást és a nagyító widgeteket.</string>
 
     <string name="setting_language_system">Alapértelmezett</string>
 
@@ -824,6 +827,7 @@
     <string name="background_ops_always">Mindig</string>
     <string name="background_ops_enabled">"Ha a 'Háttéradatok' bekapcsolva"</string>
     <string name="background_ops_auto_sync">"Ha a 'Háttéradatok' és 'Auto-szink' bekapcsolva"</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Nincs levél kiválasztva</string>
 

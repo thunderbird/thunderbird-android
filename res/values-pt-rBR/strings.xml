@@ -320,8 +320,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Marcar todas como lidas</string>
     <string name="global_settings_confirm_action_send">Enviar</string>
 
-    <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>
-    <string name="global_settings_privacy_mode_summary">Não mostrar assunto da mensagem na barra de status do sistema quando estiver bloqueado</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -543,6 +545,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Texto (imagens e formatação serão removidas)</string>
     <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
@@ -816,8 +821,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Layout de coluna única</string>
     <string name="settings_messageview_mobile_layout_summary">Formatar o HTML de mensagens para telas pequenas</string>
-    <string name="settings_messageview_zoom_controls_label">Controle de zoom do sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Habilitar widgets de zoom se o telefone suportar</string>
 
     <string name="setting_language_system">Padrões de sistema</string>
 
@@ -826,6 +829,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_enabled">Quando \'Dados de segundo plado\' estiver checado</string>
     <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' &amp; \'Auto-sinc\' estiverem checados</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Nenhuma mensagem selecionada</string>
 

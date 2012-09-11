@@ -508,6 +508,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
         mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
+        if (mAccount.isAlwaysShowCcBcc()) {
+            onAddCcBcc();
+        }
+
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
 
@@ -2017,6 +2021,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             } else {
                 mAccount = account;
             }
+
+            // Show CC/BCC text input field when switching to an account that always wants them
+            // displayed.
+            // Please note that we're not hiding the fields if the user switches back to an account
+            // that doesn't have this setting checked.
+            if (mAccount.isAlwaysShowCcBcc()) {
+                onAddCcBcc();
+            }
+
             // not sure how to handle mFolder, mSourceMessage?
         }
 
@@ -2175,18 +2188,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
          * if the work-around for the Gallery bug is enabled (see Issue 1186).
          */
-        int found = 0;
-        for (int i = menu.size() - 1; i >= 0; i--) {
-            MenuItem item = menu.getItem(i);
-            int id = item.getItemId();
-            if ((id == R.id.add_attachment_image) ||
-                    (id == R.id.add_attachment_video)) {
-                item.setVisible(K9.useGalleryBugWorkaround());
-                found++;
-            }
+        menu.findItem(R.id.add_attachment_image).setVisible(K9.useGalleryBugWorkaround());
+        menu.findItem(R.id.add_attachment_video).setVisible(K9.useGalleryBugWorkaround());
 
-            // We found all the menu items we were looking for. So stop here.
-            if (found == 2) break;
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        // Disable the 'Add Cc/Bcc' menu option when both fields are visible
+        if (mCcWrapper.getVisibility() == View.VISIBLE &&
+                mBccWrapper.getVisibility() == View.VISIBLE) {
+            menu.findItem(R.id.add_cc_bcc).setEnabled(false);
         }
 
         return true;
@@ -3542,7 +3557,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
-        
+
         mMessageFormat = format;
     }
 

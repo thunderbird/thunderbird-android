@@ -316,8 +316,10 @@
     <string name="global_settings_confirm_action_mark_all_as_read">全部标记为已读</string>
     <string name="global_settings_confirm_action_send">发送</string>
 
-    <string name="global_settings_privacy_mode_title">锁屏通知</string>
-    <string name="global_settings_privacy_mode_summary">屏幕锁定时不要在通知栏中显示邮件主题</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -539,6 +541,9 @@
     <string name="account_settings_message_format_text">纯文本（图片和排版将被删除）</string>
     <string name="account_settings_message_format_html">HTML（图片和排版将被保留）</string>
     <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">已读回执</string>
     <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
@@ -808,8 +813,6 @@
 
     <string name="settings_messageview_mobile_layout_label">单列布局</string>
     <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
-    <string name="settings_messageview_zoom_controls_label">系统放大控制</string>
-    <string name="settings_messageview_zoom_controls_summary">如果设备支持则启用放大插件或多点触摸放大</string>
 
     <string name="setting_language_system">系统默认值</string>
 
@@ -818,6 +821,7 @@
     <string name="background_ops_always">总是</string>
     <string name="background_ops_enabled">当“后台数据”被选中</string>
     <string name="background_ops_auto_sync">当“后台数据”&amp;“自动同步”被选中</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">没有选择任何邮件</string>
 

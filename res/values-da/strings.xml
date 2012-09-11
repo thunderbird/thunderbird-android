@@ -324,8 +324,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Marker alle som læst</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
-    <string name="global_settings_privacy_mode_title">Meddelelse på låst skærm</string>
-    <string name="global_settings_privacy_mode_summary">Vis ikke mailens emne i telefonens statuslinie når systemet er låst</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -547,6 +549,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_text">Ren tekst (billeder og formattering vil blive fjernet)</string>
     <string name="account_settings_message_format_html">HTML (billeder og formattering bevares)</string>
     <string name="account_settings_message_format_auto">Automatisk (ren tekst med mindre mail som besvares er i HTML format)</string>
+
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
     <string name="account_settings_message_read_receipt_label">Kvittering for modtagelse</string>
     <string name="account_settings_message_read_receipt_summary">Anmod altid om kvittering for modtagelse</string>
@@ -820,8 +825,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Enkelkolonne layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformater HTML meddelelser til visning på små skærme</string>
-    <string name="settings_messageview_zoom_controls_label">Zoom kontrol</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktiver zoom widgets eller pinch-zoom hvis din enhed understøtter dette</string>
 
     <string name="setting_language_system">System standard</string>
 
@@ -830,6 +833,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Altid</string>
     <string name="background_ops_enabled">Når \"Baggrundsdata\" er aktiveret</string>
     <string name="background_ops_auto_sync">Når \"Baggrundsdata\" &amp; \"Auto-sync\" er aktiveret</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">Ingen mail valgt</string>
 

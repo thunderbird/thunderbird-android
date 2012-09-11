@@ -2394,6 +2394,8 @@ public class MessageList
 
 
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip().drawable());
+/* UI stuff is all changing
+<<<<<<< HEAD
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
             // ASH funky bug is here?
@@ -2401,6 +2403,10 @@ public class MessageList
                 view.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
                 view.getBackground().setAlpha(31);
             }
+=======
+*/
+            view.getBackground().setAlpha(message.read ? 100 : 0);
+//>>>>>>> 4.301
 
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
                 holder.subject.setText(getText(R.string.general_no_subject));
