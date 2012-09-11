@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import java.lang.reflect.Method;
-
-public class MessageWebView extends WebView {
+import com.nobu_games.android.view.web.TitleBarWebView;
+public class MessageWebView extends TitleBarWebView {
 
 
     /**
@@ -164,9 +164,4 @@ public class MessageWebView extends WebView {
         }
     }
 
-    public void wrapSetTitleBar(final View title) throws Exception {
-        Class<?> webViewClass = Class.forName("android.webkit.WebView");
-        Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
-        setEmbeddedTitleBar.invoke(this, title);
-    }
 }

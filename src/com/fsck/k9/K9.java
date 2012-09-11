@@ -155,7 +155,17 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmMarkAllAsRead = true;
-    private static boolean mKeyguardPrivacy = false;
+
+    private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
+
+    /**
+     * Controls when to hide the subject in the notification area.
+     */
+    public enum NotificationHideSubject {
+        ALWAYS,
+        WHEN_LOCKED,
+        NEVER
+    }
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -466,7 +476,7 @@ public class K9 extends Application {
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
-        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+        editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
 
         editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -631,7 +641,15 @@ public class K9 extends Application {
         boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
+        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        if (notificationHideSubject == null) {
+            // If the "notificationHideSubject" setting couldn't be found, the app was probably
+            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
+            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+                    NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
+        } else {
+            sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        }
 
         compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -1050,15 +1068,12 @@ public class K9 extends Application {
         mConfirmMarkAllAsRead = confirm;
     }
 
-    /**
-     * @return Whether privacy rules should be applied when system is locked
-     */
-    public static boolean keyguardPrivacy() {
-        return mKeyguardPrivacy;
+    public static NotificationHideSubject getNotificationHideSubject() {
+        return sNotificationHideSubject;
     }
 
-    public static void setKeyguardPrivacy(final boolean state) {
-        mKeyguardPrivacy = state;
+    public static void setNotificationHideSubject(final NotificationHideSubject mode) {
+        sNotificationHideSubject = mode;
     }
 
     public static boolean useCompactLayouts() {

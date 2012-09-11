@@ -337,8 +337,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
-    <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>
-    <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>
+    <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
+    <string name="global_settings_notification_hide_subject_never">Never</string>
+    <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>
+    <string name="global_settings_notification_hide_subject_always">Always</string>
 
     <string name="global_settings_batch_buttons">Batch buttons</string>
     <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>
