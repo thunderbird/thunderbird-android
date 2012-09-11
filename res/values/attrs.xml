@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="K9Styles">
+        <attr name="listDivider" format="reference" />
+		<attr name="iconListItemMenu" format="reference" />
 		<attr name="iconMenuInfoDetails" format="reference" />
 		<attr name="iconActionAddAttachment" format="reference" />
 		<attr name="iconActionAddCcBcc" format="reference" />
