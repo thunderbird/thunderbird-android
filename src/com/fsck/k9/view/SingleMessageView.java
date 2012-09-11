@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -140,7 +141,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
-        if (isScreenReaderActive(activity)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+                isScreenReaderActive(activity)) {
+            // Only use the special screen reader mode on pre-ICS devices with active screen reader
             mAccessibleMessageContentView.setVisibility(View.VISIBLE);
             mMessageContentView.setVisibility(View.GONE);
             mScreenReaderEnabled = true;
@@ -156,7 +159,19 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
-            mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
+            try {
+                mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
+            } catch (Exception e) {
+                // If wrapSetTitleBar() fails we put the header back. This isn't a very good
+                // fall-back but better than not displaying the message header at all.
+
+                // FIXME: Get rid of the setEmbeddedTitleBar-method and come up with something that
+                //        feels just like it but doesn't use undocumented methods.
+
+                mTitleBarHeaderContainer.removeView(mHeaderContainer);
+                mHeaderPlaceHolder.addView(mHeaderContainer);
+                mTitleBarHeaderContainer = null;
+            }
         }
 
         mShowHiddenAttachments.setOnClickListener(this);
