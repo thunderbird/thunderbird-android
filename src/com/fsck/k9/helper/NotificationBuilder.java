@@ -14,31 +14,26 @@ import android.os.Vibrator;
  * @see NotificationBuilderApi11
  */
 public abstract class NotificationBuilder {
-    /**
-     * Instance of the API-specific class that is used to create system notifications
-     */
-    private static NotificationBuilder sInstance = null;
 
     /**
-     * Get API-specific instance of the {@code NotificationBuilder} class
+     * Create instance of an API-specific {@code NotificationBuilder} subclass.
      *
      * @param context
      *         A {@link Context} instance.
      *
      * @return Appropriate {@link NotificationBuilder} instance for this device.
      */
-    public static NotificationBuilder getInstance(Context context) {
+    public static NotificationBuilder createInstance(Context context) {
         Context appContext = context.getApplicationContext();
 
-        if (sInstance == null) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                sInstance = new NotificationBuilderApi1(appContext);
-            } else {
-                sInstance = new NotificationBuilderApi11(appContext);
-            }
+        NotificationBuilder instance;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            instance = new NotificationBuilderApi1(appContext);
+        } else {
+            instance = new NotificationBuilderApi11(appContext);
         }
 
-        return sInstance;
+        return instance;
     }
 
 

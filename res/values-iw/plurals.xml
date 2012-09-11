@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="other">אתה בטוח שאתה רוצה להעביר %1$d הודעות לתיקיית דואר הזבל?</item>
+    <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
+  </plurals>
+  <plurals name="settings_import_success">
+    <item quantity="other">%s חשבונות</item>
+    <item quantity="one">חשבון 1</item>
+  </plurals>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="other">סיסמת שרת</item>
+    <item quantity="one">סיסמת שרת</item>
+  </plurals>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="other">מגדיר סיסמא....</item>
+    <item quantity="one">מגדיר סיסמא....</item>
+  </plurals>
+</resources>

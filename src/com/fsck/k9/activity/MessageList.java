@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -834,15 +835,18 @@ public class MessageList
         mController.addListener(mAdapter.mListener);
 
         Account[] accountsWithNotification;
-        if (mAccount != null) {
-            accountsWithNotification = new Account[] { mAccount };
-            mSortType = mAccount.getSortType();
-            mSortAscending = mAccount.isSortAscending(mSortType);
-            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
+
+        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        Account account = getCurrentAccount(prefs);
+
+        if (account != null) {
+            accountsWithNotification = new Account[] { account };
+            mSortType = account.getSortType();
+            mSortAscending = account.isSortAscending(mSortType);
+            mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
         } else {
-            Preferences preferences = Preferences.getPreferences(this);
-            accountsWithNotification = preferences.getAccounts();
-            mSortType = K9.getSortType(); // ASH
+            accountsWithNotification = prefs.getAccounts();
+            mSortType = K9.getSortType();
             mSortAscending = K9.isSortAscending(mSortType);
             mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
@@ -1053,7 +1057,7 @@ public class MessageList
             return true;
         }
         case KeyEvent.KEYCODE_I: {
-            onToggleSortAscending();
+            changeSort(mSortType);
             return true;
         }
         case KeyEvent.KEYCODE_H: {
@@ -1206,22 +1210,55 @@ public class MessageList
     }
 
     private void changeSort(SortType sortType) {
-        if (mSortType == sortType) {
-            onToggleSortAscending();
-        } else {
-            mSortType = sortType;
-            if (mAccount != null) {
-                mAccount.setSortType(mSortType);
-                mSortAscending = mAccount.isSortAscending(mSortType);
-                mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-                mAccount.save(Preferences.getPreferences(this));
+        Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
+        changeSort(sortType, sortAscending);
+    }
+
+    /**
+     * Change the sort type and sort order used for the message list.
+     *
+     * @param sortType
+     *         Specifies which field to use for sorting the message list.
+     * @param sortAscending
+     *         Specifies the sort order. If this argument is {@code null} the default search order
+     *         for the sort type is used.
+     */
+    // FIXME: Don't save the changes in the UI thread
+    private void changeSort(SortType sortType, Boolean sortAscending) {
+        mSortType = sortType;
+
+        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        Account account = getCurrentAccount(prefs);
+
+        if (account != null) {
+            account.setSortType(mSortType);
+
+            if (sortAscending == null) {
+                mSortAscending = account.isSortAscending(mSortType);
             } else {
-                K9.setSortType(mSortType);
-                mSortAscending = K9.isSortAscending(mSortType);
-                mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
+                mSortAscending = sortAscending;
             }
-            reSort();
+            account.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
+
+            account.save(prefs);
+        } else {
+            K9.setSortType(mSortType);
+
+            if (sortAscending == null) {
+                mSortAscending = K9.isSortAscending(mSortType);
+            } else {
+                mSortAscending = sortAscending;
+            }
+            K9.setSortAscending(mSortType, mSortAscending);
+            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
+
+            Editor editor = prefs.getPreferences().edit();
+            K9.save(editor);
+            editor.commit();
         }
+
+        reSort();
     }
 
     private void reSort() {
@@ -1251,19 +1288,6 @@ public class MessageList
         }
 
         changeSort(sorts[curIndex]);
-    }
-
-    private void onToggleSortAscending() {
-        mSortAscending = !mSortAscending;
-        if (mAccount != null) {
-            mAccount.setSortAscending(mSortType, mSortAscending);
-            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
-            mAccount.save(Preferences.getPreferences(this));
-        } else {
-            K9.setSortAscending(mSortType, mSortAscending);
-            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
-        }
-        reSort();
     }
 
     /**
@@ -2978,4 +3002,25 @@ public class MessageList
         Accounts.listAccounts(this);
     }
 
+    /**
+     * Return the currently "open" account if available.
+     *
+     * @param prefs
+     *         A {@link Preferences} instance that might be used to retrieve the current
+     *         {@link Account}.
+     *
+     * @return The {@code Account} all displayed messages belong to.
+     */
+    private Account getCurrentAccount(Preferences prefs) {
+        Account account = null;
+        if (mQueryString != null && !mIntegrate && mAccountUuids != null &&
+                mAccountUuids.length == 1) {
+            String uuid = mAccountUuids[0];
+            account = prefs.getAccount(uuid);
+        } else if (mAccount != null) {
+            account = mAccount;
+        }
+
+        return account;
+    }
 }
