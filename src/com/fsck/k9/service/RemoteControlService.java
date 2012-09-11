@@ -123,7 +123,9 @@ public class RemoteControlService extends CoreService {
 
                         String theme = intent.getStringExtra(K9_THEME);
                         if (theme != null) {
-                            K9.setK9Theme(K9RemoteControl.K9_THEME_DARK.equals(theme) ? K9.THEME_DARK : K9.THEME_LIGHT);
+                            K9.setK9Theme(K9RemoteControl.K9_THEME_DARK.equals(theme) ? K9.THEME_DARK
+                                    : K9RemoteControl.K9_THEME_LIGHT.equals(theme) ? K9.THEME_LIGHT
+                                            : K9.THEME_DARK_WHITE_MSG);
                         }
 
                         SharedPreferences sPrefs = preferences.getPreferences();
