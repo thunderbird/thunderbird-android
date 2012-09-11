@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -1099,10 +1098,6 @@ public class FolderList extends K9ListActivity {
                 if (account.equals(mAccount)) {
 
                     mHandler.progress(false);
-
-                    if (Config.LOGV) {
-                        Log.v(K9.LOG_TAG, "listFoldersFailed " + message);
-                    }
                 }
                 super.listFoldersFailed(account, message);
             }

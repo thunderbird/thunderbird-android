@@ -104,6 +104,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private LinearLayout mInsideAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
+    private String mText;
 
 
     public void initialize(Activity activity) {
@@ -400,7 +401,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                 break;
             }
             case R.id.show_pictures: {
+                // Allow network access first...
                 setLoadPictures(true);
+                // ...then re-populate the WebView with the message text
+                loadBodyFromText(mText, "text/html");
                 break;
             }
         }
@@ -538,27 +542,19 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
 
-        String type;
         String text = null;
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
         }
         if (text != null) {
-            type = "text/html";
             text = "<html><body><pre>" + text + "</pre></body></html>";
         } else {
             // getTextForDisplay() always returns HTML-ified content.
             text = message.getTextForDisplay();
-            type = "text/html";
         }
-        if (text != null) {
-            final String emailText = text;
-            final String contentType = type;
-            loadBodyFromText(emailText, contentType);
-            updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
-        } else {
-            showStatusMessage(getContext().getString(R.string.webview_empty_message));
-        }
+
+        // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
+        mText = text;
 
         mHasAttachments = message.hasAttachments();
 
@@ -606,6 +602,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                     showShowPicturesAction(true);
                 }
             }
+        }
+
+        if (text != null) {
+            loadBodyFromText(text, "text/html");
+            updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
+        } else {
+            showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
     }
 

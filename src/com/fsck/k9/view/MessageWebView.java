@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -23,6 +24,27 @@ public class MessageWebView extends WebView {
      * to call the method.
      */
     public static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
+
+    /**
+     * Check whether the single column layout algorithm can be used on this version of Android.
+     *
+     * <p>
+     * Single column layout was broken on Android < 2.2 (see
+     * <a href="http://code.google.com/p/android/issues/detail?id=5024">issue 5024</a>).
+     * </p>
+     *
+     * <p>
+     * Android versions >= 3.0 have problems with unclickable links when single column layout is
+     * enabled (see
+     * <a href="http://code.google.com/p/android/issues/detail?id=34886">issue 34886</a>
+     * in Android's bug tracker, and
+     * <a href="http://code.google.com/p/k9mail/issues/detail?id=3820">issue 3820</a>
+     * in K-9 Mail's bug tracker).
+     */
+    public static boolean isSingleColumnLayoutSupported() {
+        return (Build.VERSION.SDK_INT > 7 && Build.VERSION.SDK_INT < 11);
+    }
+
 
     public MessageWebView(Context context) {
         super(context);
@@ -90,30 +112,26 @@ public class MessageWebView extends WebView {
             webSettings.setBuiltInZoomControls(true);
         }
 
-        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
-        // administratively disable it
-        if (Build.VERSION.SDK_INT > 7 && K9.mobileOptimizedLayout()) {
+        if (isSingleColumnLayoutSupported() && K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         } else {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
-        /*
-         * Build.VERSION.SDK is deprecated cause it just returns the
-         * "its raw String representation"
-         *  http://developer.android.com/reference/android/os/Build.VERSION_CODES.html#GINGERBREAD
-         *  http://developer.android.com/reference/android/os/Build.VERSION.html#SDK
-         */
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
-
+        disableOverscrolling();
 
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
         // Disable network images by default.  This is overridden by preferences.
         blockNetworkData(true);
 
+    }
+
+    @TargetApi(9)
+    private void disableOverscrolling() {
+        if (Build.VERSION.SDK_INT >= 9) {
+            setOverScrollMode(OVER_SCROLL_NEVER);
+        }
     }
 
     public void setText(String text, String contentType) {

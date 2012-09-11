@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -534,9 +535,6 @@ public class MessagingController implements Runnable {
             List<Message> pendingMessages = new ArrayList<Message>();
 
 
-            int totalDone = 0;
-
-
             @Override
             public void messageStarted(String message, int number, int ofTotal) {}
             @Override
@@ -544,7 +542,6 @@ public class MessagingController implements Runnable {
 
                 if (!isMessageSuppressed(account, folder, message)) {
                     pendingMessages.add(message);
-                    totalDone++;
                     if (pendingMessages.size() > 10) {
                         addPendingMessages();
                     }
@@ -2317,13 +2314,14 @@ public class MessagingController implements Runnable {
              * upto speed with the remote UIDs of remote destionation folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<String> remoteSrcUids = remoteUidMap.keySet();
-                Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
+                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
+                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
 
-                while (remoteSrcUidsIterator.hasNext()) {
-                    String remoteSrcUid = remoteSrcUidsIterator.next();
+                while (remoteSrcEntriesIterator.hasNext()) {
+                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
+                    String remoteSrcUid = entry.getKey();
                     String localDestUid = localUidMap.get(remoteSrcUid);
-                    String newUid = remoteUidMap.get(remoteSrcUid);
+                    String newUid = entry.getValue();
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
@@ -3433,7 +3431,6 @@ public class MessagingController implements Runnable {
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
                             localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
-                        } else {
                         }
 
                         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -4562,7 +4559,10 @@ public class MessagingController implements Runnable {
         builder.setTicker(messageNotice);
 
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
-        if (account.isNotificationShowsUnreadCount()) {
+        if (account.isNotificationShowsUnreadCount() ||
+                // Honeycomb and newer don't show the number as overlay on the notification icon.
+                // However, the number will appear in the detailed notification view.
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             builder.setNumber(unreadCount);
         }
 
