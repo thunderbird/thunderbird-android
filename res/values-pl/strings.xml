@@ -14,9 +14,67 @@
 <!--  #################################################################################### -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">Konta K-9</string>
+    <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
+
+    <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
+    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
+
+
+    <!-- Used in the about dialog -->
+    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Wszelkie prawa zastrzeżone</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
+\n\n
+\n * Obsługa Push Mail z użyciem IMAP IDLE
+\n * Lepsza wydajność
+\n * Message refiling
+\n * Obsługa sygnaturek
+\n * Kopia UDW-do-siebie
+\n * Subscrypcja wybranych folderów
+\n * Synchronizacja wszystkich folderów
+\n * Konfiguracja adresu zwrotnego
+\n * Skróty klawiszowe
+\n * Lepsza obsługa protokołu IMAP
+\n * Zapisywanie załączników na kartę SD
+\n * Opróźnianie folderu \"Trash\"
+\n * Sortowanie wiadomości
+\n * … i wiele innych
+\n
+\nK-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
+\n
+\nWszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
+http://k9mail.googlecode.com/
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
+    <string name="open_market">Otwórz Google Play</string>
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -33,14 +91,11 @@
     <string name="accounts_title">Konta</string>
     <string name="advanced">Zaawansowane</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">Konta K-9</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Nie</string>
-    <string name="debug_title">Debuguj</string>
     <string name="choose_folder_title">Wybierz folder</string>
-    <string name="choose_color_title">Wybierz kolor</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -74,7 +129,6 @@
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
     <string name="done_action">Gotowe</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">Skasuj</string>
     <string name="discard_action">Usuń</string>
     <string name="save_draft_action">Zapisz jako szkic</string>
     <string name="retry_action">Ponów</string>
@@ -98,9 +152,6 @@
     <string name="clear_pending_action">Anuluj oczekujące zadania (niebezpieczne!)</string>
 
     <string name="accounts_action">Konta</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Otwórz</string>
     <string name="mark_as_read_action">Oznacz jako przeczytane</string>
     <string name="send_alternate_action">Prześlij dalej (alternatywne)</string>
     <string name="send_alternate_chooser_title">Wybierz nadawcę</string>
@@ -116,39 +167,28 @@
     <string name="select_text_action">Zaznacz tekst</string>
 
     <string name="mark_as_unread_action">Jako nieprzeczytane</string>
-    <string name="move_to_action">Przenieś do</string>
-    <string name="folders_action">Foldery</string>
-    <string name="view_hide_details_action">Pokaż/ukryj szczegóły</string>
     <string name="add_cc_bcc_action">Dodaj DW/UDW</string>
-    <string name="edit_subject_action">Edytuj temat</string>
     <string name="read_receipt">Powiadomienie o przeczytaniu</string>
     <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
     <string name="read_receipt_disabled">Nie wymagaj powiadomienia o przeczytaniu</string>
     <string name="add_attachment_action">Dodaj załącznik</string>
     <string name="add_attachment_action_image">Dodaj załącznik (Zdjęcie)</string>
     <string name="add_attachment_action_video">Dodaj załącznik (Film)</string>
-    <string name="dump_settings_action">Zapisz ustawienia</string>
     <string name="empty_trash_action">Opróżnij kosz</string>
     <string name="expunge_action">Wyczyść</string>
     <string name="clear_local_folder_action">Wyczyść wiadomości lokalne</string>
-    <string name="set_sort_action">Wybierz sortowanie</string>
-    <string name="reverse_sort_action">Sortuj malejąco</string>
     <string name="about_action">O programie</string>
 
     <string name="prefs_title">Ustawienia</string>
     <string name="accounts_context_menu_title">Ustawienia konta</string>
-    <string name="folder_context_menu_title">Opcje folderu</string>
 
     <string name="general_no_subject">(Brak tematu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Brak daty</string>
     <string name="general_no_sender">Brak nadawcy</string>
     <string name="status_loading">Sprawdzanie <xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_loading_folder">(Sprawdzam <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Wczytuję wiadomości…</string>
     <string name="status_network_error">Błąd połączenia</string>
     <string name="status_invalid_id_error">Nie znaleziono wiadomości</string>
-    <string name="status_error">Błąd</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Wysyłam</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Spróbuj wczytać wiadomości ponownie</string>
 
@@ -167,11 +207,7 @@
     <string name="recreating_account">Odtwarzam konto \"<xliff:g id="account">%s</xliff:g>\"</string> <!-- FIXME -->
 
     <string name="notification_new_title">Nowa wiadomość</string>
-    <string name="notification_new_scrolling">Nowa wiadomość od <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt">Nowych: <xliff:g id="new_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">na <xliff:g id="number_accounts">%d</xliff:g> kontach</string>
-    <string name="notification_unsent_title">Wiadomość nie została wysłana</string>
 
     <string name="notification_bg_sync_ticker">Sprawdzam: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Sprawdzam</string>
@@ -195,46 +231,8 @@
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
-    <string name="send_failure_body_abbrev">Dalsze informacje znajdziesz w folderze <xliff:g id="errorFolder">%s</xliff:g>.</string>
-    <string name="send_failure_body_fmt">K-9 napotkał na problemy podczas wysyłki niektórych wiadomości.
-    Niestety, z powodu natury problemu, K-9 nie jest w stanie ocenić czy wiadomość została wysłana
-    czy też nie (odbiorcy mogli otrzymać kopie wysyłanych wiadomości).
-    \u000a\u000aWiadomości przy których ten problem wystąpił zostały oznaczone gwiazdką w folderze
-    poczty wychodzącej (Wychodzące). Jeśli usuniesz z nich gwiazdkę, K-9 spróbuje wysłac te wiadomości
-    raz jeszcze. Wciśnij i przytrzymaj folder Wychodzące a następnie wybierz Wyślij wiadomości, aby
-    zainicjować kolejną próbę wysyłki.\u000a\u000a
-    Folder <xliff:g id="errorFolder">%s</xliff:g> moze zawierać komunikaty błędów dot. tego problemu.</string>
-
-    <string name="alert_header">Alarm K-9</string>
-    <string name="no_connection_alert">Synchronizacja oraz wysyłka zostały zawieszone z powodu braku dostępu do sieci.</string>
 
     <string name="end_of_folder">Nie ma więcej wiadomości</string>
-
-    <string name="accounts_welcome">
-Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
-\n
-\n * Obsługa Push Mail z użyciem IMAP IDLE
-\n * Lepsza wydajność
-\n * Message refiling
-\n * Obsługa sygnaturek
-\n * Kopia UDW-do-siebie
-\n * Subscrypcja wybranych folderów
-\n * Synchronizacja wszystkich folderów
-\n * Konfiguracja adresu zwrotnego
-\n * Skróty klawiszowe
-\n * Lepsza obsługa protokołu IMAP
-\n * Zapisywanie załączników na kartę SD
-\n * Opróźnianie folderu \"Trash\"
-\n * Sortowanie wiadomości
-\n * … i wiele innych
-\n
-\nK-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
-\n
-\nWszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-\n
-\nhttp://k9mail.googlecode.com/
-
-</string>
 
     <string name="debug_version_fmt">Wersja <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Włącz logowanie</string>
@@ -242,22 +240,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>
     <string name="debug_enable_sensitive_logging_summary">Logi mogą zawierać Twoje hasła</string>
 
-    <string name="combined_inbox_title">Wszystkie wiadomości</string>
-    <string name="combined_inbox_label">Ostatnie wiadomości ze wszystkich kont</string>
-    <string name="combined_inbox_list_title">Wszystkie odebrane</string>
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Pobierz więcej wiadomości</string>
     <string name="message_to_fmt">Do:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Usuń</string>
-    <string name="message_list_mark_read_action">Przecz.</string>
-    <string name="message_list_mark_unread_action">Nieprz.</string>
-    <string name="message_list_flag_action">Dodaj *</string>
-    <string name="message_list_unflag_action">Usuń *</string>
 
     <string name="message_compose_to_hint">Do</string>
     <string name="message_compose_cc_hint">DW</string>
@@ -272,10 +256,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_compose_quote_header_to">Do:</string>
     <string name="message_compose_quote_header_cc">DW:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
-    <string name="message_compose_quoted_text_label">Cytowany tekst</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
     <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
-    <string name="message_compose_downloading_attachments_toast">Niektóre załączniki nie zostały pobrane. Zostaną pobrane automatycznie przed wysłaniem tej wiadomości.</string>
     <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
     <string name="message_compose_show_quoted_text_action">Cytuj wiadomość</string>
     <string name="message_compose_description_add_to">Dodaj odbiorcę (Do)</string>
@@ -294,10 +276,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_view_archive_action">Archiwizuj</string>
     <string name="message_view_move_action">Przenieś</string>
     <string name="message_view_spam_action">Spam</string>
-    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Załącznik zapisano na karcie SD jako <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Zapisywanie załącznika na karcie SD nie powiodło się.</string>
-    <string name="message_view_show_pictures_instructions">Wybierz \"Wyświetl grafikę\" aby wyświetlić osadzoną w treści grafikę.</string>
     <string name="message_view_show_pictures_action">Wyświetl grafikę</string>
     <string name="message_view_show_message_action">Pokaż wiadomość</string>
     <string name="message_view_show_attachments_action">Pokaż załączniki</string>
@@ -312,24 +292,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
     <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówkow nie powiodło się.</string>
 
-    <string name="mailbox_select_dlg_title">Foldery</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Nowy folder</string>
-
-    <string name="new_mailbox_dlg_title">Nazwa folderu</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Więcej od tego nadawcy</string>
 
-    <string name="message_copied_toast">Wiadomość skopiowana</string>
-    <string name="message_moved_toast">Wiadomość przeniesiona</string>
-    <string name="message_deleted_toast">Wiadomość sksowana</string>
     <string name="message_discarded_toast">Wiadomość usunięta</string>
     <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
-    <string name="message_delete_failed">Nie moge skasować wiadomości</string>
-
-    <string name="about_header"><xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Wersja <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
     <string name="global_settings_flag_summary">Gwiazka wskazuje oznakowane wiadomości</string>
@@ -382,10 +350,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_setup_basics_title">Dodaj konto</string>
     <string name="account_setup_basics_instructions">Wpisz dane konta</string>
-    <string name="account_setup_basics_instructions2_fmt">(Możesz utworzyć <xliff:g id="number_accounts">%d</xliff:g> dodatkowych kont.)</string>
     <string name="account_setup_basics_email_hint">Adres email</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> nie jest poprawnym adresem email.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> jest już zdefiniowany.</string>
     <string name="account_setup_basics_password_hint">Hasło</string>
     <string name="account_setup_basics_default_label">Domyślnie wysyłaj z tego konta</string>
     <string name="account_setup_basics_manual_setup_action">Ustaw ręcznie</string>
@@ -396,15 +361,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzam ustawienia serwera…</string>
     <string name="account_setup_check_settings_authenticate">Autentyfikacja…</string>
     <string name="account_setup_check_settings_fetch">Pobieranie ustawień konta…</string>
-    <string name="account_setup_check_settings_finishing_msg">Kończę…</string>
     <string name="account_setup_check_settings_canceling_msg">Przerywam…</string>
 
     <string name="account_setup_names_title">Prawie gotowe!</string>
     <string name="account_setup_names_instructions">Ustawienia są już gotowe i maile są w drodze!</string>
     <string name="account_setup_names_account_name_label">Wpisz nazwę (opcjonalną) tego konta:</string>
     <string name="account_setup_names_user_name_label">Twoje imię i nazwisko (pojawi się w wysyłanych wiadomościach):</string>
-
-    <string name="account_setup_finished_toast">Konto skonfigurowane!\n\nPobieram wiadomości…</string>
 
     <string name="account_setup_account_type_title">Rodzaj konta</string>
     <string name="account_setup_account_type_instructions">Jakiego typu serwer obsługuje to konto?</string>
@@ -429,7 +391,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Po 7 dniach</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Oznacz jako przeczytane na serwerze</string>
 
@@ -528,7 +489,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="idle_refresh_period_48min">Co 48 minut</string>
     <string name="idle_refresh_period_60min">Co 60 minut</string>
 
-    <string name="account_setup_options_default_label">Domyślnie wysyłaj wiadomości z tego konta</string>
     <string name="account_setup_options_notify_label">Powiadamiaj o nowej poczcie</string>
     <string name="account_setup_options_notify_sync_label">Powiadamiaj o sprawdzaniu konta</string>
 
@@ -554,7 +514,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_settings_push_advanced_title">Zaawansowane</string>
     <string name="account_settings_title_fmt">Ustawienia ogólne</string>
-    <string name="account_settings_default">Konto domyślne</string>
     <string name="account_settings_default_label">Konto domyślne</string>
     <string name="account_settings_default_summary">Domyślnie wysyłaj wiadomości z tego konta</string>
     <string name="account_settings_notify_label">Nowe wiadomości</string>
@@ -562,7 +521,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_email_label">Twój adres email</string>
     <string name="account_settings_notify_summary">Powiadomiaj na pasku statusu, gdy jest nowa wiadomość</string>
     <string name="account_settings_notify_sync_summary">Powiadomiaj na pasku status, gdy przeprowadzasz sprawdzanie tego konta</string>
-    <string name="account_settings_show_combined_label">Pokaż łączoną Odbiorczą</string>
     <string name="account_settings_notify_self_label">Moje wiadomości</string>
     <string name="account_settings_notify_self_summary">Powiadamiaj również o wiadomościach, które sam wysłałem</string>
     <string name="account_settings_notification_opens_unread_label">Nowe nieprzeczytane</string>
@@ -620,7 +578,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_crypto_auto_encrypt_summary">Automatycznie używaj szyfrowania, gdy publiczny klucz pasuje do odbiorcy</string>
 
     <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
-    <string name="account_settings_second_class_check_frequency_label">Cykliczne sprawdzanie folderów klasy 2</string>
 
     <string name="account_settings_storage_title">Przechowanie</string>
 
@@ -718,11 +675,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
     <string name="account_settings_outgoing_label">Poczta wychodząca</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
-    <string name="account_settings_add_account_label">Dodaj kolejne konto</string>
     <string name="account_settings_description_label">Nazwa konta</string>
     <string name="account_settings_name_label">Twoje imię i nazwisko</string>
     <string name="notifications_title">Powiadomienia</string>
-    <string name="account_settings_ring_summary">Odtwórz dzwięk, gdy są nowe wiadomości</string>
     <string name="account_settings_vibrate_enable">Wibracja</string>
     <string name="account_settings_vibrate_summary">Wibruj, gdy są nowe wiadomości</string>
     <string name="account_settings_vibrate_pattern_label">Schematy wibracji</string>
@@ -736,8 +691,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_ringtone">Sygnał dzwiękowy</string>
     <string name="account_settings_led_label">Mrugaj diodą</string>
     <string name="account_settings_led_summary">Zamrugaj diodą przy nowej wiadomości</string>
-
-    <string name="account_settings_servers">Ustawienia serwera</string>
 
     <string name="account_settings_composition_title">Opcje tworzenia wiadomości</string>
     <string name="account_settings_composition_label">Tworzenie wiadomości</string>
@@ -754,7 +707,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="new_identity_action">Nowa tożsamość</string>
 
     <string name="account_settings_always_bcc_label">Adres UDW dla wysyłanych wiadomości (opcja)</string>
-    <string name="account_settings_always_bcc_summary">Na ten adres będzie wysyłana kopia każdej wiadomości wychodzącej</string>
 
     <string name="manage_identities_edit_action">Edytuj</string>
     <string name="manage_identities_move_up_action">Przesuń w górę</string>
@@ -775,19 +727,14 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="account_settings_signature_use_label">Używaj sygnatury</string>
     <string name="account_settings_signature_label">Sygnatura</string>
-    <string name="account_settings_signature_summary">Dodawaj sygnaturę do każdej wysyłanej wiadomości</string>
 
-    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
     <string name="default_identity_description">Tożsamość domyślna</string>
-    <string name="choose_identity">Wybierz tożsamość</string>
     <string name="choose_identity_title">Wybierz tożsamość</string>
     <string name="choose_account_title">Wybierz konto/tożsamość</string>
     <string name="send_as">Wyślij jako</string>
 
-    <string name="no_identities">Przejdź do Ustawienia Konta -&gt; Tożsamości, aby utworzyć tożsamość</string>
     <string name="no_removable_identity">Nie możesz usunąć jedynej tożsamości</string>
     <string name="identity_has_no_email">Nie możesz użyć tożsamości bez podanego adresu email</string>
-    <string name="identity_will_not_be_saved">Wybór tożsamości oraz zmiany w sygnaturze nie będą zapisane z kopią roboczą</string>
 
     <string name="sort_earliest_first">Najstarsze wiadomości na początku</string>
     <string name="sort_latest_first">Najnowsze wiadomości na początku</string>
@@ -810,7 +757,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="sort_by_flag">Gwiazdek</string>
     <string name="sort_by_unread">Przeczytane/nieprzeczytane</string>
     <string name="sort_by_attach">Załącznikach</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Usuwanie</string>
     <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
@@ -850,7 +796,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
         Shift-Z - Powiększ\n
         G - Gwiazdka
     </string>
-
     <string name="message_list_help_key">
         Del lub D - Usuń\n
         R - Odpowiedz\n
@@ -870,13 +815,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     </string>
 
     <string name="folder_list_help_key">
-        1 - Wyśw. tylko foldery 1szej klasy\n
-        2 - Wyśw. foldery 1szej i 2giej klasy\n
-        3 - Wyśw. wszystkie poza folderami 2giej klasy\n
-        4 - Wyświetl wszystkie foldery\n
-        Q - Lista kont\n
-        S - Edytuj ustawienia konta
-    </string>
+    1 - Wyśw. tylko foldery 1szej klasy\n
+    2 - Wyśw. foldery 1szej i 2giej klasy\n
+    3 - Wyśw. wszystkie poza folderami 2giej klasy\n
+    4 - Wyświetl wszystkie foldery\n
+    Q - Lista kont\n
+    S - Edytuj ustawienia konta</string>
 
     <string name="folder_list_filter_hint">Wpisz nazwę folderu</string>
 
@@ -923,10 +867,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">SHORT</string>
-    <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Operacje grupowe</string>
     <string name="batch_delete_op">Usuń zaznaczone</string>
@@ -939,7 +880,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="batch_move_op">Przenieś</string>
     <string name="batch_copy_op">Skopiuj</string>
     <string name="batch_flag_mode">Tryb gwiadzki</string>
-    <string name="batch_select_mode">Tryb zaznaczania</string>
     <string name="batch_plain_mode">Tryb zwykły</string>
     <string name="batch_select_all">Zaznacz wszystko</string>
     <string name="batch_deselect_all">Usuń zaznaczenie</string>
@@ -1000,9 +940,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_searchable_all">Wszystkie</string>
     <string name="account_settings_searchable_displayable">Wyświetlane</string>
     <string name="account_settings_searchable_none">Żaden</string>
-
-    <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
-    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
 
     <string name="font_size_settings_title">Rozmiar czcionki</string>
     <string name="font_size_settings_description">Ustawienia rozmiarów czcionek</string>
@@ -1084,8 +1021,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="continue_without_public_key_dlg_title">Kontynuować bez klucza publicznego?</string>
     <string name="continue_without_public_key_instructions_fmt">Jeden lub wiele odbiorców nie ma zapisanego klucza publicznego. Kontynuować?</string>
 
-    <string name="charset_not_found">Nie można wyświetlić wiadomości, ponieważ kodowanie \"<xliff:g id="charset">%s</xliff:g>\" nie zostało znalezione.</string>
-
     <string name="select_text_now">Wybierz tekst do skopiowania.</string>
 
     <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
@@ -1160,12 +1095,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="manage_accounts_move_down_action">Przenieś w dół</string>
     <string name="manage_accounts_moving_message">Przenoszenie konta…</string>
 
-    <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
 
     <string name="import_dialog_error_title">Brakuje aplikacji zarządania plikami</string>
-    <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
-    <string name="open_market">Otwórz Google Play</string>
     <string name="close">Zamknij</string>
 
     <string name="webview_empty_message">Brak tekstu</string>

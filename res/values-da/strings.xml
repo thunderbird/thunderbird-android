@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">K-9 Konti</string>
+    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+
+    <string name="remote_control_label">K-9 Mail fjernkontrol</string>
+    <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licenseret under the Apache License, Version 2.0.</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
+\n\n
+\nK-9\'s forbedrede funktioner inkluderer:
+\n * Push mail ved hjælp af IMAP IDLE
+\n * Bedre performance
+\n * Omflytning af mails
+\n * Mailsignaturer
+\n * Bcc til dig selv
+\n * Mappe subscriptions
+\n * Synkronisering af alle mapper
+\n * Indstil afsender-adresse
+\n * Tastatur genveje
+\n * Bedre IMAP understøttelse
+\n * Gem vedhæftninger til SD kort
+\n * Tøm papirkurv
+\n * Sortering af mails
+\n * …og mere
+\n
+\nBemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
+\n
+\nVær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
+http://k9mail.googlecode.com/
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nSendt fra min Android telefon med K-9 Mail. Undskyld hvis jeg er lidt kortfattet.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
+    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Ophavsmænd: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revisions information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">Vi anvender følgende 3je parts biblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -21,14 +78,11 @@
     <string name="accounts_title">Konti</string>
     <string name="advanced">Advanceret</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">K-9 Konti</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Skriv</string>
-    <string name="debug_title">Fejlsøg</string>
     <string name="choose_folder_title">Vælg en mappe</string>
-    <string name="choose_color_title">Vælg en farve</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -60,8 +114,8 @@
     <string name="forward_action">Videresend</string>
     <string name="move_action">Flyt</string>
     <string name="continue_action">Fortsæt</string>
+    <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Afslut</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">Fjern</string>
     <string name="discard_action">Slet</string>
     <string name="save_draft_action">Gem som kladde</string>
     <string name="retry_action">Forsøg igen</string>
@@ -70,6 +124,7 @@
     <string name="send_messages_action">Send mails</string>
     <string name="list_folders_action">Mappeliste</string>
     <string name="refresh_folders_action">Genindlæs mapper</string>
+    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
     <string name="mark_all_as_read_action">Marker alle mails som læst</string>
     <string name="add_account_action">Tilføj konto</string>
     <string name="compose_action">Skriv</string>
@@ -84,9 +139,6 @@
     <string name="clear_pending_action">Afbryd igangværende handlinger (farligt!)</string>
 
     <string name="accounts_action">Konti</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Læs</string>
     <string name="mark_as_read_action">Marker som læst</string>
     <string name="send_alternate_action">Del</string>
     <string name="send_alternate_chooser_title">Vælg afsender</string>
@@ -103,39 +155,28 @@
     <string name="select_text_action">Vælg tekst</string>
 
     <string name="mark_as_unread_action">Marker som ulæst</string>
-    <string name="move_to_action">Flyt til</string>
-    <string name="folders_action">Mapper</string>
-    <string name="view_hide_details_action">Vis/skjul detaljer</string>
     <string name="add_cc_bcc_action">Tilføj Cc/Bcc</string>
-    <string name="edit_subject_action">Rediger emne</string>
     <string name="read_receipt">Kvittering for modtagelse</string>
     <string name="read_receipt_enabled">Der vil blive anmodet om kvittering for modtagelse</string>
     <string name="read_receipt_disabled">Der vil ikke blive anmodet om kvittering for modtagelse</string>
     <string name="add_attachment_action">Vedhæft fil</string>
     <string name="add_attachment_action_image">Vedhæft (billede)</string>
     <string name="add_attachment_action_video">Vedhæft (Video)</string>
-    <string name="dump_settings_action">Dump indstillinger</string>
     <string name="empty_trash_action">Tøm papirkurv</string>
     <string name="expunge_action">Ryd helt</string>
     <string name="clear_local_folder_action">Fjern lokalt lagrede mails</string>
-    <string name="set_sort_action">Vælg sortering</string>
-    <string name="reverse_sort_action">Omvendt sortering</string>
     <string name="about_action">Om</string>
 
     <string name="prefs_title">Indstillinger</string>
     <string name="accounts_context_menu_title">Kontoindstillinger</string>
-    <string name="folder_context_menu_title">Mappeindstillinger</string>
 
     <string name="general_no_subject">(Intet emne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Ingen dato</string>
     <string name="general_no_sender">Ingen afsender</string>
     <string name="status_loading">Synkroniserer</string>
-    <string name="status_loading_folder">(Synkroniserer <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Henter mails\u2026</string>
     <string name="status_network_error">Tilslutningsfejl</string>
     <string name="status_invalid_id_error">Mail ikke fundet</string>
-    <string name="status_error">Fejl</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Sender</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Forsøg at hente flere mails igen</string>
 
@@ -159,11 +200,7 @@
     <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Ny mail</string>
-    <string name="notification_new_scrolling">Ny mail fra <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> ny(e) mail(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> konti</string>
-    <string name="notification_unsent_title">Mail blev ikke sendt</string>
 
     <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Synkroniserer mail</string>
@@ -188,44 +225,8 @@
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Mislykkedes med at sende nogle mails</string>
-    <string name="send_failure_body_abbrev">Se mappen <xliff:g id="errorFolder">%s</xliff:g> for detaljer.</string>
-    <string name="send_failure_body_fmt">K-9 havde et problem med at sende nogle af dine mails.
-    Typen af fejl gør at K-9 ikke kan afgøre om disse mails blev sendt
-    eller ej. Modtagerne har muligvis allerede modtaget kopi af mail(s).
-    \u000a\u000aDe mails som er berørt af denne fejl, er blevet markeret med stjerne i din udbakke.
-    Hvis du fjerner stjernemarkering, vil K-9 forsøge at sende mailen igen.
-    Langt-tryk på udbakket og klik på \"Send mail\" for at initiere et nyt forsøg på at sende.\u000A\u000a
-    Mappen <xliff:g id="errorFolder">%s</xliff:g> kan evt indeholde fejlmeddelelser vedrørende problemet.</string>
-
-    <string name="alert_header">K-9 advarsel</string>
-    <string name="no_connection_alert">Synkronisering og afsendelse er afbrudt pga. manglende netværksforbindelse.</string>
 
     <string name="end_of_folder">Ikke flere mails</string>
-
-    <string name="accounts_welcome">
-Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-\n
-\n\nK-9\'s forbedrede funktioner inkluderer:
-\n * Push mail ved hjælp af IMAP IDLE
-\n * Bedre performance
-\n * Omflytning af mails
-\n * Mailsignaturer
-\n * Bcc til dig selv
-\n * Mappe subscriptions
-\n * Synkronisering af alle mapper
-\n * Indstil afsender-adresse
-\n * Tastatur genveje
-\n * Bedre IMAP understøttelse
-\n * Gem vedhæftninger til SD kort
-\n * Tøm papirkurv
-\n * Sortering af mails
-\n * ...og mere
-\n
-\nBemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-\n
-\n Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til http://k9mail.googlecode.com/
-
-</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Aktiver fejllogning</string>
@@ -233,28 +234,15 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="debug_enable_sensitive_logging_title">Log sensitiv information</string>
     <string name="debug_enable_sensitive_logging_summary">Kan eksponere passwords i logs.</string>
 
-    <string name="combined_inbox_title">Alle mails</string>
-    <string name="combined_inbox_label">Nye mails fra alle konti</string>
-    <string name="combined_inbox_list_title">Indbakke med alle nye mails</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Hent flere mails</string>
     <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Slet</string>
-    <string name="message_list_mark_read_action">Marker som læst</string>
-    <string name="message_list_mark_unread_action">Marker som ulæst</string>
-    <string name="message_list_flag_action">Tilføj stjernemarkering</string>
-    <string name="message_list_unflag_action">Fjern stjernemarkering</string>
 
     <string name="message_compose_to_hint">Til</string>
     <string name="message_compose_cc_hint">Cc</string>
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Emne</string>
     <string name="message_compose_content_hint">Meddelelsestekst</string>
+    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
     <string name="message_compose_quote_header_separator">-------- Original meddelelse --------</string>
     <string name="message_compose_quote_header_subject">Emne:</string>
     <string name="message_compose_quote_header_send_date">Sendt:</string>
@@ -262,12 +250,15 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="message_compose_quote_header_to">Til:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n\n</string>
-    <string name="message_compose_quoted_text_label">Citeret tekst</string>
     <string name="message_compose_error_no_recipients">Du skal angive mindst én modtager.</string>
     <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
-    <string name="message_compose_downloading_attachments_toast">Nogle vedhæftninger blev ikke hentet. De vil blive hentet automatisk før denne mail bliver sendt.</string>
     <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>
     <string name="message_compose_show_quoted_text_action">Citer meddelelse</string>
+    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
+    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
+    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
 
     <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Til:</string>
@@ -279,39 +270,28 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="message_view_archive_action">Arkiver</string>
     <string name="message_view_move_action">Flyt</string>
     <string name="message_view_spam_action">Spam</string>
-    <string name="message_view_datetime_fmt">dd MMM yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Vedhæftning gemt på SD kort som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan ikke gemme vedhæftning på SD kort.</string>
-    <string name="message_view_show_pictures_instructions">vælg \"Vis billeder\" for at se billeder.</string>
     <string name="message_view_show_pictures_action">Vis billeder</string>
+    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
+    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
     <string name="message_view_fetching_attachment_toast">Henter vedhæftede filer.</string>
     <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
-
     <string name="message_view_download_remainder">Hent hele meddelelsen</string>
+    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Ikke alle mail headers blev hentet eller gemt. Vælg \"Gem alle headers lokalt\" under kontoens indstillinger for indgående server, for at aktivere denne funktion fremover.</string>
     <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
     <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
 
-    <string name="mailbox_select_dlg_title">Mapper</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Ny mappe</string>
-
-    <string name="new_mailbox_dlg_title">Navn på ny mappe</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Flere fra denne afsender</string>
 
-    <string name="message_copied_toast">Mail kopieret</string>
-    <string name="message_moved_toast">Mail flyttet</string>
-    <string name="message_deleted_toast">Mail slettet</string>
     <string name="message_discarded_toast">Mail kasseret</string>
     <string name="message_saved_toast">Mail gemt som kladde</string>
-    <string name="message_delete_failed">Kunne ikke slette mail</string>
-
-    <string name="about_header">Om <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Vis stjerner</string>
     <string name="global_settings_flag_summary">Stjerne indikerer mails med flag</string>
@@ -347,6 +327,16 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="global_settings_privacy_mode_title">Meddelelse på låst skærm</string>
     <string name="global_settings_privacy_mode_summary">Vis ikke mailens emne i telefonens statuslinie når systemet er låst</string>
 
+    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
+    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
+    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
+    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
+    <!-- NEW: <string name="global_settings_move">Move</string>-->
+    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
+    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+
     <string name="quiet_time">Tidsrum med stilhed</string>
     <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
     <string name="quiet_time_starts">Start tid</string>
@@ -354,10 +344,7 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
 
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
     <string name="account_setup_basics_instructions">Indtast denne konto\'s mail-addresse:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Du kan tilføje yderligere <xliff:g id="number_accounts">%d</xliff:g> konti.)</string>
     <string name="account_setup_basics_email_hint">Mail addresse</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> er ikke en valid email addresse.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> er allerede tilføjet.</string>
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_default_label">Send mail fra denne konto som standard</string>
     <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
@@ -368,15 +355,12 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer indstillinger for udgående server\u2026</string>
     <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
     <string name="account_setup_check_settings_fetch">Henter kontoindstillinger\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Afslutter\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Afbryder\u2026</string>
 
     <string name="account_setup_names_title">Næsten færdig!</string>
     <string name="account_setup_names_instructions">Din konto er nu konfigureret, og mails er på vej!</string>
     <string name="account_setup_names_account_name_label">Giv denne konto et navn (frivilligt):</string>
     <string name="account_setup_names_user_name_label">Indtast dit navn (vises på udgående mails):</string>
-
-    <string name="account_setup_finished_toast">Din konto er nu konfigureret!\n\nHenter mails\u2026</string>
 
     <string name="account_setup_account_type_title">Kontotype</string>
     <string name="account_setup_account_type_instructions">Hvilken type konto er dette?</string>
@@ -401,7 +385,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
 
     <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
     <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Efter 7 dage</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Marker som læst på server</string>
 
@@ -500,7 +483,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="idle_refresh_period_48min">Hver 48 minut</string>
     <string name="idle_refresh_period_60min">Hver 60 minut</string>
 
-    <string name="account_setup_options_default_label">Send mail fra denne konto som standard</string>
     <string name="account_setup_options_notify_label">Vis meddelelse når mails ankommer</string>
     <string name="account_setup_options_notify_sync_label">Vis meddelelse når mail hentes</string>
 
@@ -526,7 +508,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
 
     <string name="account_settings_push_advanced_title">Avanceret</string>
     <string name="account_settings_title_fmt">Kontoindstillinger</string>
-    <string name="account_settings_default">Standard konto</string>
     <string name="account_settings_default_label">Standard konto</string>
     <string name="account_settings_default_summary">Send mail fra denne konto som standard</string>
     <string name="account_settings_notify_label">Vis besked når ny mail er modtaget</string>
@@ -534,13 +515,14 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_email_label">Din mailaddresse</string>
     <string name="account_settings_notify_summary">Vis besked i statusbar når mail ankommer</string>
     <string name="account_settings_notify_sync_summary">Vis i statusbar mens mail hentes</string>
-    <string name="account_settings_show_combined_label">Vis kombineret indbakke</string>
     <string name="account_settings_notify_self_label">Medtag udgående mails</string>
     <string name="account_settings_notify_self_summary">Vis besked for mails sendt af mig</string>
     <string name="account_settings_notification_opens_unread_label">Klik på besked, viser ulæste mails</string>
     <string name="account_settings_notification_opens_unread_summary">Søger efter ulæste mails når besked vises</string>
     <string name="account_settings_notification_unread_count_label">Vis antal ulæste mails</string>
     <string name="account_settings_notification_unread_count_summary">Vis antallet af ulæste mails i statusbar.</string>
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
     <string name="account_settings_enable_move_buttons_label">Aktiver Flyt knapper</string>
     <string name="account_settings_enable_move_buttons_summary">Vis Arkiver, Flyt og Spam knapper.</string>
@@ -586,9 +568,10 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_crypto_app_not_available">ikke tilgængelig</string>
     <string name="account_settings_crypto_auto_signature">Auto signering</string>
     <string name="account_settings_crypto_auto_signature_summary">Benyt kontoens mail addresse til at gætte signaturnøgle.</string>
+    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
+    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
-    <string name="account_settings_second_class_check_frequency_label">Frekvens for hentning af sekundære mapper</string>
 
     <string name="account_settings_storage_title">Lagring</string>
 
@@ -686,11 +669,9 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_incoming_summary">Konfigurer indgående mail server</string>
     <string name="account_settings_outgoing_label">Udgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurer udgående mail (SMTP) server</string>
-    <string name="account_settings_add_account_label">Tilføj en anden konto</string>
     <string name="account_settings_description_label">Kontonavn</string>
     <string name="account_settings_name_label">Dit navn</string>
     <string name="notifications_title">Notifikationer</string>
-    <string name="account_settings_ring_summary">Ringetone når mail ankommer</string>
     <string name="account_settings_vibrate_enable">Vibrer</string>
     <string name="account_settings_vibrate_summary">Vibrer når mail ankommer</string>
     <string name="account_settings_vibrate_pattern_label">Vibrations mønstre</string>
@@ -704,8 +685,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_ringtone">Ringetone ved ny mail</string>
     <string name="account_settings_led_label">Blinkende LED</string>
     <string name="account_settings_led_summary">Blinkende LED når mail ankommer</string>
-
-    <string name="account_settings_servers">Serverindstillinger</string>
 
     <string name="account_settings_composition_title">Indstillinger for skrivning af mail</string>
     <string name="account_settings_composition_label">Standardindstillinger</string>
@@ -722,7 +701,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="new_identity_action">Ny identitet</string>
 
     <string name="account_settings_always_bcc_label">Send altid Bcc til</string>
-    <string name="account_settings_always_bcc_summary">Send kopi af alle udgående mails til denne addresse</string>
 
     <string name="manage_identities_edit_action">Rediger</string>
     <string name="manage_identities_move_up_action">Flyt op</string>
@@ -743,19 +721,14 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
 
     <string name="account_settings_signature_use_label">Benyt signatur</string>
     <string name="account_settings_signature_label">Signatur</string>
-    <string name="account_settings_signature_summary">Tilføj signature til alle mails jeg sender</string>
 
-    <string name="default_signature">-- \nSendt fra min Android telefon med K-9 Mail. Undskyld hvis jeg er lidt kortfattet.</string>
     <string name="default_identity_description">Oprindelige identitet</string>
-    <string name="choose_identity">Vælg identitet</string>
     <string name="choose_identity_title">Vælg identitet</string>
     <string name="choose_account_title">Vælg konto/identitet</string>
     <string name="send_as">Send som</string>
 
-    <string name="no_identities">Gå til konto-indstillinger -&gt; Håndter identiteter for at skabe en identitet</string>
     <string name="no_removable_identity">Du kan ikke slette din eneste identitet</string>
     <string name="identity_has_no_email">Du kan ikke benytte en identitet uden mailaddresse</string>
-    <string name="identity_will_not_be_saved">Dit valg af identitet og ændringer i signatur, vil ikke blive gemt i kladde</string>
 
     <string name="sort_earliest_first">Ældste mails ført</string>
     <string name="sort_latest_first">Nyeste mails først</string>
@@ -770,14 +743,14 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="sort_attach_first">Mail med vedhæftede filer først</string>
     <string name="sort_unattached_first">Mail uden vedhæftede filer først</string>
 
-    <string name="sort_by">Sorter efter...</string>
+    <string name="sort_by">Sorter efter…</string>
     <string name="sort_by_date">Dato</string>
+    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_sender">Afsender</string>
     <string name="sort_by_subject">Emne</string>
     <string name="sort_by_flag">Stjernemarkering</string>
     <string name="sort_by_unread">Læst/ulæst</string>
     <string name="sort_by_attach">Vedhæftning</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Fjern konto</string>
     <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
@@ -792,8 +765,8 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
         som er nødvendig for at kunne tilgå konto. Hvis du ikke kan logge ind på trods af
         korrekt mail addresse og password, kan det skyldes at du ikke har
         \"Plus\" konto. Benyt venligst en Internet browser til disse konti.</string>
-
     <string name="provider_note_yahoojp">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade POP3 i Yahoo\'s indstillinger for mail.</string>
+    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
     <string name="provider_note_naver">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Naver\'s indstillinger for mail.</string>
     <string name="provider_note_hanmail">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Hanmail\'s(Daum)indstillinger for mail.</string>
     <string name="provider_note_paran">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Paran\'s indstillinger for mail.</string>
@@ -819,6 +792,8 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     4 - Vis alle mapper\u000A
     Q - Returner til Konti\u000A
     S - Rediger kontoindstillinger</string>
+
+    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
 
     <string name="folder_list_display_mode_label">Mapper</string>
     <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -863,10 +838,7 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">SHORT</string>
-    <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Batch operationer</string>
     <string name="batch_delete_op">Slet valgte</string>
@@ -879,7 +851,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="batch_move_op">Flyt valgte</string>
     <string name="batch_copy_op">Kopier valgte</string>
     <string name="batch_flag_mode">Stjerne tilstand</string>
-    <string name="batch_select_mode">Vælg tilstand</string>
     <string name="batch_plain_mode">Standard tilstand</string>
     <string name="batch_select_all">Vælg alle</string>
     <string name="batch_deselect_all">Fravælg alle</string>
@@ -941,9 +912,6 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="account_settings_searchable_displayable">Viste</string>
     <string name="account_settings_searchable_none">Ingen</string>
 
-    <string name="remote_control_label">K-9 Mail fjernkontrol</string>
-    <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
-
     <string name="font_size_settings_title">Tegnstørrelse</string>
     <string name="font_size_settings_description">Konfigurer tegnstørrelse</string>
 
@@ -970,6 +938,9 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="font_size_message_view_time">Tid</string>
     <string name="font_size_message_view_date">Dato</string>
     <string name="font_size_message_view_content">Indhold</string>
+
+    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
+    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
     <string name="font_size_tiniest">Mindst</string>
     <string name="font_size_tiny">Mindre</string>
@@ -1012,7 +983,14 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="save_or_discard_draft_message_dlg_title">Gem kladde?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Gem eller fortryd denne meddelelse?</string>
 
-    <string name="charset_not_found">Denne meddelelse kan ikke vises fordi tegnsættet \"<xliff:g id="charset">%s</xliff:g>\" ikke blev fundet.</string>
+    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
+    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+
+    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
+    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+
+    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
+    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
 
     <string name="select_text_now">Vælg tekst som skal kopieres.</string>
 
@@ -1056,9 +1034,9 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="settings_import">Importer indstillinger</string>
     <string name="settings_import_selection">Importer det valgte</string>
     <string name="settings_import_global_settings">Globale indstillinger</string>
-    <string name="settings_exporting">Ekporterer indstillinger...</string>
-    <string name="settings_importing">Importerer indstillinger...</string>
-    <string name="settings_import_scanning_file">Skanner fil...</string>
+    <string name="settings_exporting">Ekporterer indstillinger…</string>
+    <string name="settings_importing">Importerer indstillinger…</string>
+    <string name="settings_import_scanning_file">Skanner fil…</string>
     <string name="settings_export_success">Indstillinger gemt som <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importerede globale indstillinger fra <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importerede <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
@@ -1073,7 +1051,7 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="settings_import_success_header">Import succes</string>
     <string name="settings_import_failed_header">Import fejlede</string>
     <string name="settings_import_activate_account_header">Aktiver konto</string>
-    <string name="settings_import_activate_account_intro">Hvis du skal kunne benytte konto \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">Hvis du skal kunne benytte konto \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
@@ -1081,8 +1059,8 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
     <string name="settings_import_incoming_server">Indgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Udgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Angiver password...</item>
-        <item quantity="other">Angiver passwords...</item>
+        <item quantity="one">Angiver password…</item>
+        <item quantity="other">Angiver passwords…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Benyt samme password som benyttes til indgående server</string>
     <string name="activate_account_action">Aktiver</string>
@@ -1091,12 +1069,43 @@ Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Androi
 
     <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" kunne ikke findes; kontroller lager</string>
 
-    <string name="settings_attachment_default_path">Gem vedhæftning ...</string>
+    <string name="settings_attachment_default_path">Gem vedhæftning …</string>
     <string name="attachment_save_title">Gem vedhæftning</string>
     <string name="attachment_save_desc">Kunne ikke finde en Stifinder. Hvor ønsker du gemme denne vedhæftning?</string>
 
     <string name="manage_accounts_move_up_action">Flyt op</string>
     <string name="manage_accounts_move_down_action">Flyt ned</string>
-    <string name="manage_accounts_moving_message">Flytter konto...</string>
+    <string name="manage_accounts_moving_message">Flytter konto…</string>
 
+    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+
+    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
+    <!-- NEW: <string name="close">Close</string>-->
+
+    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+
+    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
+    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
 </resources>

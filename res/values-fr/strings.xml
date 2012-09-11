@@ -24,11 +24,66 @@ ArtfulBits Inc. (c) 2005-2009 (http://www.artfulbits.com)
 Android Localizer (aiLocalizer)
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">Comptes K-9</string>
+    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+
+    <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
+    <string name="remote_control_desc">Permettre à cette application de contrôler les paramètres et activités de K-9 Mail</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
+\n\n
+\nVoici ce que K-9 Mail apporte de plus\u00A0:
+\n * La technologie PUSH en passant par le protocole IMAP
+\n * De meilleures performances
+\n * Signer ses messages
+\n * S\'envoyer une copie des messages automatiquement
+\n * Choisir les dossiers à synchroniser
+\n * Choisir l\'adresse e-mail de réponse
+\n * Des raccourcis clavier
+\n * Un meilleur support de l\'IMAP
+\n * Sauver les pièces jointes sur la carte SD
+\n * Vider la corbeille
+\n * Trier les messages
+\n * …et bien plus encore
+\n
+\nVeuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
+\n
+\nSi vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0:
+http://k9mail.googlecode.com/ (en anglais)
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
+    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
     <string name="app_libraries">Tierces librairies utilisées\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -45,14 +100,11 @@ Android Localizer (aiLocalizer)
     <string name="accounts_title">Comptes</string>
     <string name="advanced">Avancé</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
-    <string name="shortcuts_title">Comptes K-9</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title">Composer</string>
-    <string name="debug_title">Déboguer</string>
     <string name="choose_folder_title">Choisir un dossier</string>
-    <string name="choose_color_title">Choisir une couleur</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -86,7 +138,6 @@ Android Localizer (aiLocalizer)
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
-    <string name="remove_action">Supprimer</string>
     <string name="discard_action">Abandonner</string>
     <string name="save_draft_action">Enregistrer dans les brouillons</string>
     <string name="retry_action">Réessayer</string>
@@ -95,6 +146,7 @@ Android Localizer (aiLocalizer)
     <string name="send_messages_action">Envoyer les messages</string>
     <string name="list_folders_action">Liste des dossiers</string>
     <string name="refresh_folders_action">Rafraîchir les dossiers</string>
+    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
     <string name="mark_all_as_read_action">Marquer tous les messages comme lus</string>
     <string name="add_account_action">Ajouter un compte</string>
     <string name="compose_action">Composer</string>
@@ -109,9 +161,6 @@ Android Localizer (aiLocalizer)
     <string name="clear_pending_action">Annuler les actions en attente (Danger\u00A0!)</string>
 
     <string name="accounts_action">Comptes</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Lire</string>
     <string name="mark_as_read_action">Marquer comme lu</string>
     <string name="send_alternate_action">Transférer avec une autre application</string>
     <string name="send_alternate_chooser_title">Choisir l\'expéditeur</string>
@@ -128,39 +177,28 @@ Android Localizer (aiLocalizer)
     <string name="select_text_action">Sélection de texte</string>
 
     <string name="mark_as_unread_action">Marquer comme non lu</string>
-    <string name="move_to_action">Déplacer vers</string>
-    <string name="folders_action">Dossiers</string>
-    <string name="view_hide_details_action">Afficher/masquer les détails</string>
     <string name="add_cc_bcc_action">Ajouter Cc/Cci</string>
-    <string name="edit_subject_action">Modifier l\'objet</string>
     <string name="read_receipt">Accusé de réception</string>
     <string name="read_receipt_enabled">Un accusé de réception sera demandé</string>
     <string name="read_receipt_disabled">Un accusé de réception ne sera pas demandé</string>
     <string name="add_attachment_action">Ajouter une pièce jointe</string>
     <string name="add_attachment_action_image">Joindre une image</string>
     <string name="add_attachment_action_video">Joindre une vidéo</string>
-    <string name="dump_settings_action">Paramètres de décharge</string>
     <string name="empty_trash_action">Vider la corbeille</string>
     <string name="expunge_action">Éliminer les messages supprimés</string>
     <string name="clear_local_folder_action">Effacer les messages locaux</string>
-    <string name="set_sort_action">Choisir le tri</string>
-    <string name="reverse_sort_action">Inverser le tri</string>
     <string name="about_action">À propos</string>
 
     <string name="prefs_title">Préférences</string>
     <string name="accounts_context_menu_title">Options du compte</string>
-    <string name="folder_context_menu_title">Options du dossier</string>
 
     <string name="general_no_subject">(Aucun objet)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Pas de date</string>
     <string name="general_no_sender">Aucun expéditeur</string>
     <string name="status_loading">Récupération\u2026</string>
-    <string name="status_loading_folder">(Récupération <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Chargement des messages\u2026</string>
     <string name="status_network_error">Erreur de connexion</string>
     <string name="status_invalid_id_error">Message non trouvé</string>
-    <string name="status_error">Erreur</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Envoi\u2026</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Réessayer de charger plus de messages</string>
 
@@ -184,11 +222,7 @@ de plus</string>
     <string name="recreating_account">Recréation du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
 
     <string name="notification_new_title">Nouvel e-mail</string>
-    <string name="notification_new_scrolling">Nouvel e-mail de <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_new_multi_account_fmt">dans les comptes <xliff:g id="number_accounts">%d</xliff:g></string>
-    <string name="notification_unsent_title">Message non envoyé</string>
 
     <string name="notification_bg_sync_ticker">Vérification des messages\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Vérification des messages</string>
@@ -213,42 +247,8 @@ de plus</string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spams)</string>
 
     <string name="send_failure_subject">Échec d\'envoi de certains messages</string>
-    <string name="send_failure_body_abbrev">Voir le dossier <xliff:g id="errorFolder">%s</xliff:g> pour les détails.</string>
-    <string name="send_failure_body_fmt">K-9 a rencontré un problème lors de l\'envoi de certains messages.
-    Cependant, dû à la nature de ce problème, K-9 ne peut être certain si les messages
-    ont été envoyés. Les destinataires ont peut-être déjà reçu une copie des messages.
-    \u000a\u000aLes messages qui sont touchés par ce problème sont maintenant marqués d\'une étoile dans votre boîte d\'envoi.
-    Si vous enlevez ces étoiles, K-9 essaiera de les envoyer de nouveau.
-    Maintenez votre doigt sur la boîte d\'envoi et sélectionnez «\u00A0Envoyer les messages\u00A0» pour initier l\'envoi.\u000A\u000a
-    Le dossier <xliff:g id="errorFolder">%s</xliff:g> pourrait contenir des messages d\'erreur à propos de ces échecs.</string>
-
-    <string name="alert_header">Alerte K-9</string>
-    <string name="no_connection_alert">Synchronisation et envoi suspendus dû au réseau inaccessible.</string>
 
     <string name="end_of_folder">Aucun message</string>
-
-    <string name="accounts_welcome">
-Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
-    \n
-    \n\nVoici ce que K-9 Mail apporte de plus\u00A0:
-    \n * La technologie PUSH en passant par le protocole IMAP
-    \n * De meilleures performances
-    \n * Signer ses messages
-    \n * S\'envoyer une copie des messages automatiquement
-    \n * Choisir les dossiers à synchroniser
-    \n * Choisir l\'adresse e-mail de réponse
-    \n * Des raccourcis clavier
-    \n * Un meilleur support de l\'IMAP
-    \n * Sauver les pièces jointes sur la carte SD
-    \n * Vider la corbeille
-    \n * Trier les messages
-    \n * ...et bien plus encore
-    \n
-    \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
-    \n
-    \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http://k9mail.googlecode.com/ (en anglais)
-
-</string>
 
     <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
@@ -256,28 +256,15 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="debug_enable_sensitive_logging_title">Journaliser les informations personnelles</string>
     <string name="debug_enable_sensitive_logging_summary">Vos mots de passe pourront se retrouver dans le journal</string>
 
-    <string name="combined_inbox_title">Tous les messages</string>
-    <string name="combined_inbox_label">Messages récents de tous les comptes</string>
-    <string name="combined_inbox_list_title">Toutes les boîtes de réception</string>
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Charger plus de messages</string>
     <string name="message_to_fmt">Pour\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Supprimer</string>
-    <string name="message_list_mark_read_action">Marquer comme lu</string>
-    <string name="message_list_mark_unread_action">Marquer comme non lu</string>
-    <string name="message_list_flag_action">Ajouter une étoile</string>
-    <string name="message_list_unflag_action">Enlever l\'étoile</string>
 
     <string name="message_compose_to_hint">Pour</string>
     <string name="message_compose_cc_hint">Cc</string>
     <string name="message_compose_bcc_hint">Cci</string>
     <string name="message_compose_subject_hint">Objet</string>
     <string name="message_compose_content_hint">Texte du message</string>
+    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
     <string name="message_compose_quote_header_separator">-------- Message d\'origine --------</string>
     <string name="message_compose_quote_header_subject">Objet\u00A0:</string>
     <string name="message_compose_quote_header_send_date">Envoyé:</string>
@@ -285,12 +272,15 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="message_compose_quote_header_to">À\u00A0:</string>
     <string name="message_compose_quote_header_cc">Cc\u00A0:</string>
     <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
-    <string name="message_compose_quoted_text_label">Texte cité</string>
     <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
     <string name="error_contact_address_not_found">Aucune adresse e-mail trouvée</string>
-    <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>
     <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
     <string name="message_compose_show_quoted_text_action">Citer le message</string>
+    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
+    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
+    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
 
     <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Pour\u00A0:</string>
@@ -302,39 +292,28 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="message_view_archive_action">Archiver</string>
     <string name="message_view_move_action">Déplacer</string>
     <string name="message_view_spam_action">Spam</string>
-    <string name="message_view_datetime_fmt">MMM jj aaaa hh:mm a</string>
     <string name="message_view_status_attachment_saved">Pièce jointe enregistrée sur la carte SD en tant que <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
-    <string name="message_view_show_pictures_instructions">Sélectionnez «\u00A0Afficher les images\u00A0» pour afficher les images intégrées.</string>
     <string name="message_view_show_pictures_action">Afficher les images</string>
+    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
+    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
     <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
     <string name="message_view_no_viewer">Impossible de trouver un visualisateur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
-
     <string name="message_view_download_remainder">Télécharger le message complet</string>
+    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
     <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
     <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur a échouée.</string>
 
-    <string name="mailbox_select_dlg_title">Dossiers</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Nouveau dossier</string>
-
-    <string name="new_mailbox_dlg_title">Nouveau nom de dossier</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Plus de cet expéditeur</string>
 
-    <string name="message_copied_toast">Message copié</string>
-    <string name="message_moved_toast">Message déplacé</string>
-    <string name="message_deleted_toast">Message supprimé</string>
     <string name="message_discarded_toast">Message abandonné</string>
     <string name="message_saved_toast">Message enregistré comme brouillon</string>
-    <string name="message_delete_failed">Le message n\'a pû être supprimé</string>
-
-    <string name="about_header">À propos de <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Étoiles des messages</string>
     <string name="global_settings_flag_summary">Les étoiles indiquent des messages suivis</string>
@@ -370,6 +349,16 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
     <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verrouillé</string>
 
+    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
+    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
+    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
+    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
+    <!-- NEW: <string name="global_settings_move">Move</string>-->
+    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
+    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+
     <string name="quiet_time">Heures silencieuses</string>
     <string name="quiet_time_description">Désactiver les sons, vibrations et éclairage DEL aux heures programmées</string>
     <string name="quiet_time_starts">Début des heures silencieuses</string>
@@ -377,10 +366,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="account_setup_basics_title">Configurer la messagerie</string>
     <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Vous pouvez ajouter %d comptes supplémentaires.)</string>
     <string name="account_setup_basics_email_hint">Adresse e-mail</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> n\'est pas une adresse e-mail valide.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> est déjà ajouté.</string>
     <string name="account_setup_basics_password_hint">Mot de passe</string>
     <string name="account_setup_basics_default_label">Envoyer les messages de ce compte par défaut.</string>
     <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
@@ -391,15 +377,12 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
     <string name="account_setup_check_settings_authenticate">Authentification\u2026</string>
     <string name="account_setup_check_settings_fetch">Récupération des paramètres du compte\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Finition\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Annulation\u2026</string>
 
     <string name="account_setup_names_title">Presque terminé\u00A0!</string>
     <string name="account_setup_names_instructions">Votre compte est configuré et les messages sont en route\u00A0!</string>
     <string name="account_setup_names_account_name_label">Donnez un nom à ce compte (optionnel)\u00A0:</string>
     <string name="account_setup_names_user_name_label">Saisissez votre nom (s\'affiche sur les messages sortants)\u00A0:</string>
-
-    <string name="account_setup_finished_toast">Votre compte est configuré\u00A0!\n\nRécupération des messages\u2026</string>
 
     <string name="account_setup_account_type_title">Ajouter un nouveau compte de messagerie</string>
     <string name="account_setup_account_type_instructions">Quel type de compte est-ce\u00A0?</string>
@@ -424,7 +407,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="account_setup_incoming_delete_policy_label">Supprimer les messages du serveur\u00A0:</string>
     <string name="account_setup_incoming_delete_policy_never_label">Jamais</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Après 7 jours</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Lorsque je supprime de la boîte de réception</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Marquer comme lu sur le serveur</string>
 
@@ -523,7 +505,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
     <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
 
-    <string name="account_setup_options_default_label">Envoyer les messages de ce compte par défaut</string>
     <string name="account_setup_options_notify_label">Me notifier à l\'arrivée de messages</string>
     <string name="account_setup_options_notify_sync_label">M\'avertir pendant la vérification des messages</string>
 
@@ -549,7 +530,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="account_settings_push_advanced_title">Paramètres Push</string>
     <string name="account_settings_title_fmt">Paramètres du compte</string>
-    <string name="account_settings_default">Compte par défaut</string>
     <string name="account_settings_default_label">Compte par défaut</string>
     <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
     <string name="account_settings_notify_label">Nouveaux e-mails</string>
@@ -557,13 +537,14 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_notify_sync_label">Synchronisation</string>
     <string name="account_settings_notify_sync_summary">Afficher une notification dans la barre d\'état à la vérification de nouveaux messages</string>
     <string name="account_settings_email_label">Votre adresse e-mail</string>
-    <string name="account_settings_show_combined_label">Afficher la boîte de réception combinée</string>
     <string name="account_settings_notify_self_label">Messages dont je suis l\'expéditeur</string>
     <string name="account_settings_notify_self_summary">Afficher une notification dans la barre d\'état même lors d\'un envoi à partir d\'une identité reliée à un compte</string>
     <string name="account_settings_notification_opens_unread_label">Ouvrir message non lu via notification</string>
     <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus après un accès à partir des notifications</string>
     <string name="account_settings_notification_unread_count_label">Afficher le nombre de messages non lus</string>
     <string name="account_settings_notification_unread_count_summary">Afficher le nombre de messages non lus dans la barre de notification</string>
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
     <string name="account_settings_enable_move_buttons_label">Activer les boutons de déplacement</string>
     <string name="account_settings_enable_move_buttons_summary">Afficher les boutons Archiver, Déplacer ou Spam</string>
@@ -613,7 +594,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
 
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
-    <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
 
     <string name="account_settings_storage_title">Stockage</string>
 
@@ -711,11 +691,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_incoming_summary">Configurer le serveur de messagerie entrant</string>
     <string name="account_settings_outgoing_label">Paramètres sortants</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de messagerie sortant</string>
-    <string name="account_settings_add_account_label">Ajouter un autre compte</string>
     <string name="account_settings_description_label">Nom du compte</string>
     <string name="account_settings_name_label">Votre nom</string>
     <string name="notifications_title">Paramètres de notification</string>
-    <string name="account_settings_ring_summary">Sonner lorsqu\'un message arrive</string>
     <string name="account_settings_vibrate_enable">Vibreur</string>
     <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un e-mail</string>
     <string name="account_settings_vibrate_pattern_label">Type de vibration</string>
@@ -729,8 +707,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_ringtone">Sonnerie</string>
     <string name="account_settings_led_label">Clignotement DEL</string>
     <string name="account_settings_led_summary">Clignotement de la DEL quand un message arrive</string>
-
-    <string name="account_settings_servers">Paramètres du serveur</string>
 
     <string name="account_settings_composition_title">Options de composition</string>
     <string name="account_settings_composition_label">Défauts pour la composition</string>
@@ -747,7 +723,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="new_identity_action">Nouvelle identité</string>
 
     <string name="account_settings_always_bcc_label">Envoyer une copie de tous les messages à</string>
-    <string name="account_settings_always_bcc_summary">Envoyer une copie de tous les messages envoyés à cette adresse</string>
 
     <string name="manage_identities_edit_action">Éditer</string>
     <string name="manage_identities_move_up_action">Monter</string>
@@ -768,19 +743,14 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="account_settings_signature_use_label">Utiliser la signature</string>
     <string name="account_settings_signature_label">Signature</string>
-    <string name="account_settings_signature_summary">Ajouter une signature à chaque message envoyé</string>
 
-    <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
     <string name="default_identity_description">Identité initiale</string>
-    <string name="choose_identity">Choisir l\'identité</string>
     <string name="choose_identity_title">Choisir l\'identité</string>
     <string name="choose_account_title">Choisir le compte/l\'identité</string>
     <string name="send_as">Envoyer en tant que</string>
 
-    <string name="no_identities">Aller dans Paramètres du compte &gt; Gérer les identités pour créer des identités</string>
     <string name="no_removable_identity">Vous ne pouvez votre seule identité</string>
     <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse e-mail</string>
-    <string name="identity_will_not_be_saved">Votre choix d\'identité et vos changements de signature ne seront pas enregistrés avec un brouillon</string>
 
     <string name="sort_earliest_first">Plus ancient en premier</string>
     <string name="sort_latest_first">Plus récents en premier</string>
@@ -795,14 +765,14 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="sort_attach_first">Messages avec pièces jointes en premier</string>
     <string name="sort_unattached_first">Messages sans pièces jointes en premier</string>
 
-    <string name="sort_by">Trier...</string>
+    <string name="sort_by">Trier…</string>
     <string name="sort_by_date">Date</string>
+    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_sender">Expéditeur</string>
     <string name="sort_by_subject">Sujet</string>
     <string name="sort_by_flag">Étoile</string>
     <string name="sort_by_unread">Lu/Non lu</string>
     <string name="sort_by_attach">Pièces jointes</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Supprimer</string>
     <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
@@ -819,6 +789,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     il est possible que vous n\'ayez pas payé un compte «\u00A0Plus\u00A0». Veuillez
     lancer le navigateur Web pour accéder à ces comptes de messagerie.</string>
     <string name="provider_note_yahoojp">Pour utiliser POP3 avec ce fournisseur, vous devez activer POP3 dans les paramètres Yahoo Mail.</string>
+    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
     <string name="provider_note_naver">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Naver Mail.</string>
     <string name="provider_note_hanmail">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Hanmail(Daum) mail.</string>
     <string name="provider_note_paran">Pour utiliser IMAP ou POP3 avec ce fournisseur, veuillez vous assurer que les options IMAP ou POP3 soient activées dans les paramètres de Paran mail.</string>
@@ -828,7 +799,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter le certificat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejetter le certificat</string>
 
-  <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
+    <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
     Répondre\u000AA - Répondre à tous\u000AF - Transférer\u000AJ ou P - Message
     précédent\u000AK, N - Prochain message\u000AM - Déplacer\u000AY - Copier\u000AZ - Zoom arrière\u000AShift-Z -
     Zoom avant\u000aG - Étoile</string>
@@ -844,6 +815,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     4 - Afficher tous les dossiers\u000A
     Q - Retourner au comptes\u000A
     S - Éditer les paramètres du compte</string>
+
+    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
 
     <string name="folder_list_display_mode_label">Dossiers</string>
     <string name="folder_list_display_mode_all">Afficher tous les dossiers</string>
@@ -888,10 +861,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">SHORT</string>
-    <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Opérations groupées</string>
     <string name="batch_delete_op">Supprimer la sélection</string>
@@ -904,7 +874,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="batch_move_op">Déplacer la sélection</string>
     <string name="batch_copy_op">Copier la sélection</string>
     <string name="batch_flag_mode">Mode étoile</string>
-    <string name="batch_select_mode">Mode sélection</string>
     <string name="batch_plain_mode">Mode normal</string>
     <string name="batch_select_all">Sélectionner tout</string>
     <string name="batch_deselect_all">Désélectionner tout</string>
@@ -966,9 +935,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="account_settings_searchable_displayable">Affichables</string>
     <string name="account_settings_searchable_none">Aucuns</string>
 
-    <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
-    <string name="remote_control_desc">Permettre à cette application de contrôler les paramètres et activités de K-9 Mail</string>
-
     <string name="font_size_settings_title">Taille de police</string>
     <string name="font_size_settings_description">Configurer la taille de police</string>
 
@@ -976,7 +942,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="font_size_account_name">Nom du compte</string>
     <string name="font_size_account_description">Description du compte</string>
 
-   <string name="font_size_folder_list">Liste des dossiers</string>
+    <string name="font_size_folder_list">Liste des dossiers</string>
     <string name="font_size_folder_name">Nom du dossier</string>
     <string name="font_size_folder_status">Status du dossier</string>
 
@@ -995,6 +961,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="font_size_message_view_time">Heure du message</string>
     <string name="font_size_message_view_date">Date du message</string>
     <string name="font_size_message_view_content">Contenu du message</string>
+
+    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
+    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
     <string name="font_size_tiniest">Plus minuscule</string>
     <string name="font_size_tiny">Minuscule</string>
@@ -1037,13 +1006,14 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
+    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
+    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer des brouillons.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme crypté.</string>
 
     <string name="continue_without_public_key_dlg_title">Continuer sans clé publique?</string>
     <string name="continue_without_public_key_instructions_fmt">Un ou plusieurs destinataires n\'ont pas de clé publique enregistrée. Continuer?</string>
-
-    <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
 
     <string name="select_text_now">Sélectionnez le texte à copier</string>
 
@@ -1056,17 +1026,6 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
         <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
-    <!--
-    Translators:
-
-    Please review how to handle pluralization for your language at (1) and ajust
-    the <item> elements accordingly
-
-    Possible values for 'quantity': zero, one, two, few, many, other
-
-    (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
@@ -1087,9 +1046,9 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="settings_import">Importer les paramètres</string>
     <string name="settings_import_selection">Importer la sélection</string>
     <string name="settings_import_global_settings">Paramètres globaux</string>
-    <string name="settings_exporting">Exportation des paramètres...</string>
-    <string name="settings_importing">Importation des paramètres...</string>
-    <string name="settings_import_scanning_file">Balayage des fichiers...</string>
+    <string name="settings_exporting">Exportation des paramètres…</string>
+    <string name="settings_importing">Importation des paramètres…</string>
+    <string name="settings_import_scanning_file">Balayage des fichiers…</string>
     <string name="settings_export_success">Paramètres exportés vers <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Paramètres globaux importés depuis <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importés <xliff:g id="accounts">%s</xliff:g> depuis <xliff:g id="filename">%s</xliff:g></string>
@@ -1104,7 +1063,7 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="settings_import_success_header">Importation réussi</string>
     <string name="settings_import_failed_header">Importation échoué</string>
     <string name="settings_import_activate_account_header">Activer le compte</string>
-    <string name="settings_import_activate_account_intro">Pour pouvoir utiliser le compte \"<xliff:g id="account">%s</xliff:g>\" vous devez fournir le <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">Pour pouvoir utiliser le compte \"<xliff:g id="account">%s</xliff:g>\" vous devez fournir le <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">mot de passe serveur</item>
         <item quantity="other">mots de passe serveur</item>
@@ -1112,8 +1071,8 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
     <string name="settings_import_incoming_server">Serveur entrant (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Serveur sortant (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Réglage du mot de passe...</item>
-        <item quantity="other">Réglages des mots de passe...</item>
+        <item quantity="one">Réglage du mot de passe…</item>
+        <item quantity="other">Réglages des mots de passe…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Utilisez le mot de passe du serveur entrant</string>
     <string name="activate_account_action">Activer</string>
@@ -1128,6 +1087,37 @@ Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messageri
 
     <string name="manage_accounts_move_up_action">Déplacer haut</string>
     <string name="manage_accounts_move_down_action">Déplacer bas</string>
-    <string name="manage_accounts_moving_message">Déplacer compte...</string>
+    <string name="manage_accounts_moving_message">Déplacer compte…</string>
 
+    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+
+    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
+    <!-- NEW: <string name="close">Close</string>-->
+
+    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+
+    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+
+    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
+    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
 </resources>

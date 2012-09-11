@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
+
+    <string name="shortcuts_title">K-9 Облікові записи</string>
+    <string name="unread_widget_label">K-9 Непрочитані</string>
+
+    <string name="remote_control_label">Дситанційне управління K-9 Mail</string>
+    <string name="remote_control_desc">Дозволяє цій програмі управляти діяльністю та налаштуваннями K-9 Mail.</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Ліцензія Apache License, Version 2.0.</string>
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+Ласкаво просимо до налаштувань K-9 Mail.  K-9 це поштовий клієнт з відкритим вихідним кодом для Android, який базується на основі стадартної програми Android Mail client.
+\n\n
+\nПокращені можливості K-9 включають:
+\n * Push mail при використання IMAP IDLE
+\n * Краща швидкодія
+\n * Систематизація повідомлень
+\n * Електронні підписи у пошті
+\n * Прихована копія собі
+\n * Підписки до папок
+\n * Синхронізація всіх папок
+\n * Налаштування зворотньої адреси
+\n * Клавіатурні скорочення
+\n * Краща підтримка IMAP
+\n * Збереження вкладень на карту пам’яті
+\n * Очищення кошика
+\n * Упорядкування повідомлень
+\n * …і більше
+\n
+\nЗауважимо, що K-9 не підтримує більшіть безкоштовних облікових записів hotmail та, як і інші поштові програми, має деякі дивацтва при роботі з Microsoft Exchange.
+\n
+\nБудь ласка, надсилайте звіти про помилки, запити про розробку нових функцій та задавайте питання на
+http://k9mail.googlecode.com/
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \nНадіслано з мого Android телефону програмою K-9 Mail. Будь ласка, вибачте за стислість.</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту. Будь ласка інсталюйте файловий менеджер з Play Google.</string>
+    <string name="open_market">Відкрити Play Google</string>
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Інформація про зміни: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">Ми використовуємо такі бібліотеки третіх сторін: <xliff:g id="app_libraries_list">%s</xliff:g></string>
@@ -21,14 +78,11 @@
     <string name="accounts_title">Облікові записи</string>
     <string name="advanced">Додатково</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-    <string name="shortcuts_title">K-9 Облікові записи</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Написати новий лист</string>
-    <string name="debug_title">Виправлення помилок</string>
     <string name="choose_folder_title">Вибрати папку</string>
-    <string name="choose_color_title">Вибрати колір</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -62,7 +116,6 @@
     <string name="continue_action">Продовжити</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">Видалити</string>
     <string name="discard_action">Відкинути зміни</string>
     <string name="save_draft_action">Зберегти як чернетку</string>
     <string name="retry_action">Повторити</string>
@@ -86,9 +139,6 @@
     <string name="clear_pending_action">Зупинити незавершені дії (небезпечно!)</string>
 
     <string name="accounts_action">Облікові записи</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">Прочитати</string>
     <string name="mark_as_read_action">Відмітити як прочитаний</string>
     <string name="send_alternate_action">Переслати</string>
     <string name="send_alternate_chooser_title">Вибрати відправника</string>
@@ -105,39 +155,28 @@
     <string name="select_text_action">Вибрати текст</string>
 
     <string name="mark_as_unread_action">Відмітити як прочитаний</string>
-    <string name="move_to_action">Перемісти до</string>
-    <string name="folders_action">Папки</string>
-    <string name="view_hide_details_action">Переглянути/приховати подробиці</string>
     <string name="add_cc_bcc_action">Додати копію/приховану</string>
-    <string name="edit_subject_action">Редагувати тему</string>
     <string name="read_receipt">Повідомлення про прочитання</string>
     <string name="read_receipt_enabled">Включити запит повідомлень про прочитання</string>
     <string name="read_receipt_disabled">Вимкнути запит повідомлень про прочитання</string>
     <string name="add_attachment_action">Додати вкладення</string>
     <string name="add_attachment_action_image">Додати вкладення (зображення)</string>
     <string name="add_attachment_action_video">Додати вкладення (Відео)</string>
-    <string name="dump_settings_action">Скинути налаштування</string>
     <string name="empty_trash_action">Очистити Кошик</string>
     <string name="expunge_action">Витерти</string>
     <string name="clear_local_folder_action">Видалити локальні повідомлення</string>
-    <string name="set_sort_action">Вибрати упорядкування</string>
-    <string name="reverse_sort_action">Обернений порядок сортування</string>
     <string name="about_action">Про</string>
 
     <string name="prefs_title">Налаштування</string>
     <string name="accounts_context_menu_title">Параметри облікових записів</string>
-    <string name="folder_context_menu_title">Параметри папок</string>
 
     <string name="general_no_subject">(Немає теми)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Немає дати</string>
     <string name="general_no_sender">Немає відправника</string>
     <string name="status_loading">Завантаження</string>
-    <string name="status_loading_folder">(Запит <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Завантажуються повідомлення\u2026</string>
     <string name="status_network_error">Помилка з’єднання</string>
     <string name="status_invalid_id_error">Повідомлення не знайдено</string>
-    <string name="status_error">Помилка</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Надсилається</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">Спробуйте ще раз завантажити повідомлення</string>
 
@@ -161,11 +200,7 @@
     <string name="recreating_account">Відновлення облікового запису\"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Нова пошта</string>
-    <string name="notification_new_scrolling">Нова пошта від <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитане (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> Нові повідомлення (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">в <xliff:g id="number_accounts">%d</xliff:g> адресах</string>
-    <string name="notification_unsent_title">Повідомлення не надіслано</string>
 
     <string name="notification_bg_sync_ticker">Перевірка пошти: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Перевірка пошти</string>
@@ -190,43 +225,8 @@
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
-    <string name="send_failure_body_abbrev">Перегляньте папку <xliff:g id="errorFolder">%s</xliff:g> за подробицями.</string>
-    <string name="send_failure_body_fmt">У K-9 виникла проблема при надсиланні деяких ваших повідомлень.
-    Проте K-9 не знає, чи були вони відіслані чи ні. Адресати, можливо, отримали копії повідомлень.
-    \u000a\u000aПовідомлення з такою проблемою позначені зірочкою у папці „Вихідні“.
-    Якщо ви знімете зірочку, то K-9 знову спробує надіслати їх.
-    Натисніть та папку „Вихідін“ та виберіть „Відправити повідомлення“ для повторного надсилання.\u000A\u000a
-    Папка <xliff:g id="errorFolder">%s</xliff:g> може містити повідомлення про невдачу.</string>
-
-    <string name="alert_header">Попердження K-9</string>
-    <string name="no_connection_alert">Синхронізація та надсилання перервані через відсутність мережі.</string>
 
     <string name="end_of_folder">Повідомлень більше немає</string>
-
-    <string name="accounts_welcome">
-Ласкаво просимо до налаштувань K-9 Mail.  K-9 це поштовий клієнт з відкритим вихідним кодом для Android, який базується на основі стадартної програми Android Mail client.
-\n
-\n\n Покращені можливості K-9 включають:
-\n * Push mail при використання IMAP IDLE
-\n * Краща швидкодія
-\n * Систематизація повідомлень
-\n * Електронні підписи у пошті
-\n * Прихована копія собі
-\n * Підписки до папок
-\n * Синхронізація всіх папок
-\n * Налаштування зворотньої адреси
-\n * Клавіатурні скорочення
-\n * Краща підтримка IMAP
-\n * Збереження вкладень на карту пам’яті
-\n * Очищення кошика
-\n * Упорядкування повідомлень
-\n * ...і більше
-\n
-\nЗауважимо, що K-9 не підтримує більшіть безкоштовних облікових записів hotmail та, як і інші поштові програми, має деякі дивацтва при роботі з Microsoft Exchange.
-\n
-\n Будь ласка, надсилайте звіти про помилки, запити про розробку нових функцій та задавайте питання на http://k9mail.googlecode.com/
-
-</string>
 
     <string name="debug_version_fmt">Версія: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>
@@ -234,22 +234,8 @@
     <string name="debug_enable_sensitive_logging_title">Запис конфіденційної інформації</string>
     <string name="debug_enable_sensitive_logging_summary">Можна записувати паролі в журнали.</string>
 
-    <string name="combined_inbox_title">Уся пошта</string>
-    <string name="combined_inbox_label">Останні повідомлення з усіх поштових скриньок</string>
-    <string name="combined_inbox_list_title">Усі вхідні повідомлення</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Завантажити більше повідомлень</string>
     <string name="message_to_fmt">До:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">Видалити</string>
-    <string name="message_list_mark_read_action">Позначити як прочитане</string>
-    <string name="message_list_mark_unread_action">Позначити як непрочитане</string>
-    <string name="message_list_flag_action">Додати зірочку</string>
-    <string name="message_list_unflag_action">Вилучити зірочку</string>
 
     <string name="message_compose_to_hint">Кому</string>
     <string name="message_compose_cc_hint">Копія</string>
@@ -264,10 +250,8 @@
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копія:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написав(ла):\n\n</string>
-    <string name="message_compose_quoted_text_label">Цитований текст</string>
     <string name="message_compose_error_no_recipients">Вам необхідно додати хоча б одного одержувача.</string>
     <string name="error_contact_address_not_found">Не знайденої адреси електронної пошти.</string>
-    <string name="message_compose_downloading_attachments_toast">Деякі вкладення не завантажено. Вони будуть автоматично завантажені перед надсиланням цього повідомлення.</string>
     <string name="message_compose_attachments_skipped_toast">Деякі вкладення не можуть бути переслані бо вони не завантажилися.</string>
     <string name="message_compose_show_quoted_text_action">Цитувати повідомлення</string>
     <string name="message_compose_description_add_to">Додати одержувача (Кому)</string>
@@ -286,10 +270,8 @@
     <string name="message_view_archive_action">Архівувати</string>
     <string name="message_view_move_action">Перемістити</string>
     <string name="message_view_spam_action">Спам</string>
-    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Вкладення збережено на карту пам’яті як <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення на карту пам’яті.</string>
-    <string name="message_view_show_pictures_instructions">Виберіть \"Показати зображення\" для показу вбудованих малюнків.</string>
     <string name="message_view_show_pictures_action">Показати зобарження</string>
     <string name="message_view_show_message_action">Показати повідомлення</string>
     <string name="message_view_show_attachments_action">Показати вкладення</string>
@@ -304,24 +286,12 @@
     <string name="message_no_additional_headers_available">Всі заголовки завантажено, нема додаткових заголовків для відображення.</string>
     <string name="message_additional_headers_retrieval_failed">Не вдалося завантажити додаткові заголовки з бази даних або поштового сервера.</string>
 
-    <string name="mailbox_select_dlg_title">Папки</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">Нова папка</string>
-
-    <string name="new_mailbox_dlg_title">Ім’я нової папки</string>
-
     <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Більше від цього відправника</string>
 
-    <string name="message_copied_toast">Повідомлення скопійовано</string>
-    <string name="message_moved_toast">Повідомлення переміщено</string>
-    <string name="message_deleted_toast">Повідомлення видалено</string>
     <string name="message_discarded_toast">Повідомлення скасовано</string>
     <string name="message_saved_toast">Повідомлення збережено як чернетка</string>
-    <string name="message_delete_failed">Не можна видалити повідомлення</string>
-
-    <string name="about_header">Про <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">Версія: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Показувати зірочки</string>
     <string name="global_settings_flag_summary">Зірочки показують відмічені повідомлення</string>
@@ -374,10 +344,7 @@
 
     <string name="account_setup_basics_title">Налаштувати новий обліковий запис</string>
     <string name="account_setup_basics_instructions">Введіть адресу електронної пошти:</string>
-    <string name="account_setup_basics_instructions2_fmt">(Ви можете додати <xliff:g id="number_accounts">%d</xliff:g> електронних адрес.)</string>
     <string name="account_setup_basics_email_hint">Адреса електронної пошти</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> є не дійсною адресою електронної пошти.</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> вже додано.</string>
     <string name="account_setup_basics_password_hint">Пароль</string>
     <string name="account_setup_basics_default_label">Надсилати пошту з цієї адреси за замовчуванням.</string>
     <string name="account_setup_basics_manual_setup_action">Ручне налаштування</string>
@@ -388,15 +355,12 @@
     <string name="account_setup_check_settings_check_outgoing_msg">Перевірка налаштувань вихідного сервера\u2026</string>
     <string name="account_setup_check_settings_authenticate">Автентифікація\u2026</string>
     <string name="account_setup_check_settings_fetch">Отримання налаштувань облікового запису\u2026</string>
-    <string name="account_setup_check_settings_finishing_msg">Завершення\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Скасування\u2026</string>
 
     <string name="account_setup_names_title">Вже готово!</string>
     <string name="account_setup_names_instructions">Ваш обліковий запис створено, завантажується пошта.</string>
     <string name="account_setup_names_account_name_label">Дайте ім’я цьому обліковому запису (необов’язково):</string>
     <string name="account_setup_names_user_name_label">Введіть ваше ім’я (відображається у вихідних повідомленнях):</string>
-
-    <string name="account_setup_finished_toast">Ваша скринька створена!\n\n Завантажується пошта\u2026</string>
 
     <string name="account_setup_account_type_title">Тип поштової скриньки</string>
     <string name="account_setup_account_type_instructions">Виберіть тип поштової скриньки</string>
@@ -421,7 +385,6 @@
 
     <string name="account_setup_incoming_delete_policy_label">Коли повідомлення видалено</string>
     <string name="account_setup_incoming_delete_policy_never_label">Не видаляти на сервері</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">Після 7 днів</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Видаляти на сервері</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Позначити як прочитане на сервері</string>
 
@@ -520,7 +483,6 @@
     <string name="idle_refresh_period_48min">Кожні 48 хвилин</string>
     <string name="idle_refresh_period_60min">Кожні 60 хвилин</string>
 
-    <string name="account_setup_options_default_label">Надсилати повідомлення з цієї скриньки за замовчуванням</string>
     <string name="account_setup_options_notify_label">Сповіщати мене про прибуття нової пошти</string>
     <string name="account_setup_options_notify_sync_label">Сповіщати мене, коли триває перевірка пошти</string>
 
@@ -546,7 +508,6 @@
 
     <string name="account_settings_push_advanced_title">Додатково</string>
     <string name="account_settings_title_fmt">Параметри облікового запису</string>
-    <string name="account_settings_default">Типова скринька</string>
     <string name="account_settings_default_label">Типова скринька</string>
     <string name="account_settings_default_summary">Надсилати пошту з цього запису за замовчуванням</string>
     <string name="account_settings_notify_label">Сповіщення про нову пошту</string>
@@ -554,7 +515,6 @@
     <string name="account_settings_email_label">Адреса вашої електронної пошти/string>
     <string name="account_settings_notify_summary">Сповіщати у рядку стану про нові повідомлення</string>
     <string name="account_settings_notify_sync_summary">Сповіщати у рядку стану про перевірку пошти</string>
-    <string name="account_settings_show_combined_label">Показати комбіновану папку Вхідних повідомлень</string>
     <string name="account_settings_notify_self_label">Включаючи надіслані повідомлення</string>
     <string name="account_settings_notify_self_summary">Показати сповіщення про надіслані мною повідомлення</string>
     <string name="account_settings_notification_opens_unread_label">Сповіщати про відкриття непрочитаних повідомлень</string>
@@ -612,7 +572,6 @@
     <string name="account_settings_crypto_auto_encrypt_summary">Автоматична установка шифрування, якщо співпадає відкритий ключ одержувача.</string>
 
     <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
-    <string name="account_settings_second_class_check_frequency_label">Частота перевірки папок 2-го класу.</string>
 
     <string name="account_settings_storage_title">Пам’ять</string>
 
@@ -710,11 +669,9 @@
     <string name="account_settings_incoming_summary">Налаштування сервера вхідної погти</string>
     <string name="account_settings_outgoing_label">Сервер вихідної пошти</string>
     <string name="account_settings_outgoing_summary">Налаштування сервера вихідної пошти (SMTP)</string>
-    <string name="account_settings_add_account_label">Додати інший обліковий запис</string>
     <string name="account_settings_description_label">Ім’я облікового запису</string>
     <string name="account_settings_name_label">Ваше ім’я</string>
     <string name="notifications_title">Сповіщення</string>
-    <string name="account_settings_ring_summary">Дзвінок при нових повідомленнях</string>
     <string name="account_settings_vibrate_enable">Вібрація</string>
     <string name="account_settings_vibrate_summary">Вібрація при нових повідомленнях</string>
     <string name="account_settings_vibrate_pattern_label">Шаблони для вібрації</string>
@@ -728,8 +685,6 @@
     <string name="account_settings_ringtone">Вибір мелодії для нової пошти</string>
     <string name="account_settings_led_label">Блимання</string>
     <string name="account_settings_led_summary">Блимання при нових повідомленнях</string>
-
-    <string name="account_settings_servers">Налаштування сервера</string>
 
     <string name="account_settings_composition_title">Параметри створення повідомлень</string>
     <string name="account_settings_composition_label">За замовчуванням</string>
@@ -746,7 +701,6 @@
     <string name="new_identity_action">Нова особа</string>
 
     <string name="account_settings_always_bcc_label">Прихована копія усіх повідомлень до </string>
-    <string name="account_settings_always_bcc_summary">Надсилати на цю адресу копії всіх вихідних повідомлень</string>
 
     <string name="manage_identities_edit_action">Редагувати</string>
     <string name="manage_identities_move_up_action">Пересунути вище</string>
@@ -767,19 +721,14 @@
 
     <string name="account_settings_signature_use_label">Використовувати підпис</string>
     <string name="account_settings_signature_label">Підпис</string>
-    <string name="account_settings_signature_summary">Додати підпис до кожного повідомлення, яке надсилається</string>
 
-    <string name="default_signature">-- \nНадіслано з мого Android телефону програмою K-9 Mail. Будь ласка, вибачте за стислість.</string>
     <string name="default_identity_description">Первісна особа</string>
-    <string name="choose_identity">Вибрати особу</string>
     <string name="choose_identity_title">Вибрати особу</string>
     <string name="choose_account_title">Вибрати обліковий запис/особу</string>
     <string name="send_as">Надіслати як</string>
 
-    <string name="no_identities">Перейти до Параметрів облікового запису -&gt; Управління особами, щоб створити особу</string>
     <string name="no_removable_identity">Не можна видалити єдину особу</string>
     <string name="identity_has_no_email">Не можна використовувати особу без електронної пошти</string>
-    <string name="identity_will_not_be_saved">Ваш вибір особи та зміни підпису не будуть збережені як чернетки</string>
 
     <string name="sort_earliest_first">Спершу старі повідомлення</string>
     <string name="sort_latest_first">Спершу нові повідомлення</string>
@@ -802,7 +751,6 @@
     <string name="sort_by_flag">Зірочкою</string>
     <string name="sort_by_unread">Прочитані/непрочитані</string>
     <string name="sort_by_attach">Вкладенням</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Видалити обліковий запис</string>
     <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
@@ -889,10 +837,7 @@
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
-    <string name="date_format_short">SHORT</string>
-    <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">Групові операції</string>
     <string name="batch_delete_op">Вилучити вибране</string>
@@ -905,7 +850,6 @@
     <string name="batch_move_op">Перемістити вибране</string>
     <string name="batch_copy_op">Копіювати вибране</string>
     <string name="batch_flag_mode">Режим зірочок</string>
-    <string name="batch_select_mode">Режим вибору</string>
     <string name="batch_plain_mode">Простий режим</string>
     <string name="batch_select_all">Вибрати усе</string>
     <string name="batch_deselect_all">Зняти усі виділення</string>
@@ -966,9 +910,6 @@
     <string name="account_settings_searchable_all">Всі</string>
     <string name="account_settings_searchable_displayable">Тільки у видимих</string>
     <string name="account_settings_searchable_none">Нічого</string>
-
-    <string name="remote_control_label">Дситанційне управління K-9 Mail</string>
-    <string name="remote_control_desc">Дозволяє цій програмі управляти діяльністю та налаштуваннями K-9 Mail.</string>
 
     <string name="font_size_settings_title">Розмір шрифту</string>
     <string name="font_size_settings_description">Налаштувати розмір шрифту</string>
@@ -1050,8 +991,6 @@
     <string name="continue_without_public_key_dlg_title">Продовжити без публічного ключа?</string>
     <string name="continue_without_public_key_instructions_fmt">Один чи більше одержувачів не мають публічного ключа. Продовжити?</string>
 
-    <string name="charset_not_found">Це повідомлення не може бути відображено тому, що таблиця кодування \"<xliff:g id="charset">%s</xliff:g>\" не знайдена.</string>
-
     <string name="select_text_now">Виберіть текст для копіювання.</string>
 
     <string name="dialog_confirm_delete_title">Підтвердіть вилучення</string>
@@ -1112,7 +1051,7 @@
     <string name="settings_import_success_header">Імпорт успішний</string>
     <string name="settings_import_failed_header">Імпорт не вдався</string>
     <string name="settings_import_activate_account_header">Активувати обліковий запис</string>
-    <string name="settings_import_activate_account_intro">Щоб використовувати обліковий запис \"<xliff:g id="account">%s</xliff:g>\" вам необхідно вказати <xliff:g id="server_passwords">%s.</xliff:g></string>
+    <string name="settings_import_activate_account_intro">Щоб використовувати обліковий запис \"<xliff:g id="account">%s</xliff:g>\" вам необхідно вказати <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">пароль сервера</item>
         <item quantity="few">паролі сервера</item>
@@ -1139,13 +1078,9 @@
     <string name="manage_accounts_move_down_action">Перемістити вниз</string>
     <string name="manage_accounts_moving_message">Переміщення облікового запису…</string>
 
-    <string name="unread_widget_label">K-9 Непрочитані</string>
     <string name="unread_widget_select_account">Показати кількість непрочитаних для…</string>
 
     <string name="import_dialog_error_title">Відсутній файловий менеджер</string>
-    <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту.
-    Будь ласка інсталюйте файловий менеджер з Play Google.</string>
-    <string name="open_market">Відкрити Play Google</string>
     <string name="close">Закрити</string>
 
     <string name="webview_empty_message">Нема тексту</string>
