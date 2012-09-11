@@ -156,6 +156,8 @@ public class MessagingController implements Runnable {
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
 
+    private static final Flag[] SYNC_FLAGS = new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED };
+
     private String createMessageKey(Account account, String folder, Message message) {
         return createMessageKey(account, folder, message.getUid());
     }
@@ -1799,7 +1801,7 @@ public class MessagingController implements Runnable {
                 messageChanged = true;
             }
         } else {
-            for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED }) {
+            for (Flag flag : MessagingController.SYNC_FLAGS) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;

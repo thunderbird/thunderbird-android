@@ -38,6 +38,7 @@ import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -533,11 +534,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         String text = null;
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
+            if (text != null) {
+                text = HtmlConverter.textToHtml(text, true);
+            }
         }
-        if (text != null) {
-            text = "<html><body><pre>" + text + "</pre></body></html>";
-        } else {
-            // getTextForDisplay() always returns HTML-ified content.
+
+        if (text == null) {
             text = message.getTextForDisplay();
         }
 

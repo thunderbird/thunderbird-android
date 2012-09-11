@@ -2881,12 +2881,6 @@ Log.v("ASH", mAccount.getDescription() + ":" + name + " is " + (localOnly == 1 ?
             return mName.hashCode();
         }
 
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
-        }
-
-
         private void deleteAttachments(final long messageId) throws MessagingException {
             open(OpenMode.READ_WRITE);
             database.execute(false, new DbCallback<Void>() {

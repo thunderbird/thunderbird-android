@@ -137,10 +137,15 @@ public abstract class Folder {
 
     public abstract String getName();
 
-    public abstract Flag[] getPermanentFlags();
 
     /**
-     *
+     * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
+     * new keywords may be created
+     */
+    protected boolean mCanCreateKeywords = false;
+
+    /**
+     * 
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is

@@ -16,6 +16,7 @@ public class MessageInfoHolder {
     public String uid;
     public boolean read;
     public boolean answered;
+    public boolean forwarded;
     public boolean flagged;
     public boolean dirty;
     public LocalMessage message;
