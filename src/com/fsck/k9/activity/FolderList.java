@@ -44,7 +44,6 @@ import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.AccountStats;
@@ -106,10 +105,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     private FontSizes mFontSizes = K9.getFontSizes();
     private Context context;
 
-	private MenuItem mRefreshMenuItem;
-	private View mActionBarProgressView;
+    private MenuItem mRefreshMenuItem;
+    private View mActionBarProgressView;
     private ActionBar mActionBar;
-    private ActionMode mActionMode;
 
     private TextView mActionBarTitle;
     private TextView mActionBarSubTitle;
@@ -120,7 +118,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
-			mActionBarTitle.setText(getString(R.string.folders_title));
+                    mActionBarTitle.setText(getString(R.string.folders_title));
                     mActionBarUnread.setText(String.valueOf(mUnreadMessageCount));
 
                     String operation = mAdapter.mListener.getOperation(FolderList.this, getTimeFormat()).trim();
@@ -189,7 +187,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
             runOnUiThread(new Runnable() {
                 public void run() {
-			if (progress) {
+                    if (progress) {
                         mRefreshMenuItem.setActionView(mActionBarProgressView);
                     } else {
                         mRefreshMenuItem.setActionView(null);

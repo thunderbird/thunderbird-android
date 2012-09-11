@@ -403,8 +403,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void initializeActionBar() {
-	    mActionBar.setDisplayShowCustomEnabled(true);
-	    mActionBar.setCustomView(R.layout.actionbar_custom);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(R.layout.actionbar_custom);
 
         View customView = mActionBar.getCustomView();
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
