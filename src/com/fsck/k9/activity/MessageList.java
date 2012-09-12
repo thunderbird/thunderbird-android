@@ -74,6 +74,8 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
 /**
@@ -252,6 +254,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     }
 
     private ListView mListView;
+    private PullToRefreshListView mPullToRefreshView;
 
     private int mPreviewLines = 0;
 
@@ -552,14 +555,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     private void progress(final boolean progress) {
         // Make sure we don't try this before the menu is initialized
         // this could happen while the activity is initialized.
-        if (mRefreshMenuItem == null) {
-            return;
+        if (mRefreshMenuItem != null) {
+            if (progress) {
+                mRefreshMenuItem.setActionView(mActionBarProgressView);
+            } else {
+                mRefreshMenuItem.setActionView(null);
+            }
         }
 
-        if (progress) {
-            mRefreshMenuItem.setActionView(mActionBarProgressView);
-        } else {
-            mRefreshMenuItem.setActionView(null);
+        if (mPullToRefreshView != null && !progress) {
+            mPullToRefreshView.onRefreshComplete();
         }
     }
 
@@ -668,9 +673,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             return;
         }
 
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+        final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
         if (mSelectedCount > 0) {
-            toggleMessageSelect(position);
+            toggleMessageSelect(message);
         } else {
             onOpenMessage(message);
         }
@@ -680,11 +685,14 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     public void onCreate(Bundle savedInstanceState) {
         context = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.message_list);
 
         mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         // need this for actionbar initialization
         mQueryString = getIntent().getStringExtra(EXTRA_QUERY);
+
+        mPullToRefreshView = (PullToRefreshListView) findViewById(R.id.message_list);
 
         mInflater = getLayoutInflater();
         mActionBar = getSupportActionBar();
@@ -694,14 +702,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         mPreviewLines = K9.messageListPreviewLines();
 
         initializeMessageList(getIntent(), true);
-        getListView().setVerticalFadingEdgeEnabled(false);
+        mListView.setVerticalFadingEdgeEnabled(false);
 
         // Enable context action bar behaviour
-        getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                toggleMessageSelect(position);
+                final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
+                toggleMessageSelect(message);
                 return true;
             }});
 
@@ -843,6 +852,18 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
+        // TODO Add support for pull to fresh on searches.
+        if(mQueryString == null) {
+            mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+                @Override
+                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                    checkMail(mAccount, mFolderName);
+                }
+            });
+        } else {
+            mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
+        }
+
         mController.addListener(mAdapter.mListener);
 
         Account[] accountsWithNotification;
@@ -932,7 +953,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     }
 
     private void initializeLayout() {
-        mListView = getListView();
+        mListView = mPullToRefreshView.getRefreshableView();
         mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
@@ -2398,11 +2419,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
         mAdapter.notifyDataSetChanged();
-    }
-
-    private void toggleMessageSelect(int position){
-        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(position);
-        toggleMessageSelect(holder);
     }
 
     private void toggleMessageSelect(final MessageInfoHolder holder){
