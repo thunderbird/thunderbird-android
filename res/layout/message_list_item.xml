@@ -1,94 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingRight="3dip"
-    android:background="#ccc" >
+    android:paddingTop="5dip" >
 
-    <LinearLayout
-        android:id="@+id/chip_wrapper"
-        android:layout_alignTop="@+id/subject"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical"
-        android:layout_width="36dip"
-        android:layout_height="fill_parent"
-        >
     <RelativeLayout
-        android:id="@+id/chip"
-        android:layout_width="16dip"
-        android:layout_height="16dip"
-        android:layout_marginTop="6dip"
-        android:layout_marginRight="8dip"
-        android:layout_marginLeft="8dip"
-        android:background="@android:color/transparent" >
-    </RelativeLayout>
-
+        android:id="@+id/checkbox_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:textColor="?android:attr/textColorPrimary" >
 
         <CheckBox
             android:id="@+id/selected_checkbox"
-            android:layout_width="30dip"
-            android:layout_height="wrap_content"
-            android:paddingRight="7dip"
-            android:paddingLeft="7dip"
-            android:paddingBottom="6dip"
+            android:layout_width="36dip"
+            android:layout_height="fill_parent"
             android:focusable="false"
-            android:visibility="gone" />
-    </LinearLayout>
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+            android:gravity="center_vertical|center"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/chip"
+        android:layout_width="16dip"
+        android:layout_height="16dip"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="3dip"
-        android:paddingLeft="5dip"
-        android:singleLine="true"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textAppearance="?android:attr/textAppearanceSmall"  />
-
-    <CheckBox
-        android:id="@+id/flagged"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:layout_marginRight="3dip"
-        android:layout_below="@+id/date"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="4dip"
         android:layout_marginTop="3dip"
-        style="?android:attr/starStyle"
-        android:focusable="false" />
-
+        android:layout_toRightOf="@+id/checkbox_wrapper"
+        android:background="@android:color/transparent" />
 
     <TextView
         android:id="@+id/subject"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/date"
-        android:layout_toRightOf="@+id/chip_wrapper"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="1dip"
         android:layout_marginLeft="1dip"
-        android:layout_marginRight="1dip"
-        android:paddingBottom="1dip"
-        android:singleLine="true"
+        android:layout_toLeftOf="@+id/date"
+        android:layout_toRightOf="@+id/chip"
         android:ellipsize="marquee"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/preview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chip"
         android:layout_below="@+id/subject"
-        android:layout_toLeftOf="@+id/flagged"
-        android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_marginLeft="1dip"
-        android:layout_marginRight="0dip"
-        android:singleLine="false"
+        android:layout_toLeftOf="@+id/flagged"
         android:bufferType="spannable"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:singleLine="false"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary" />
+
+    <ImageButton
+        android:id="@+id/item_menu"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        style="?android:attr/borderlessButtonStyle"
+        android:src="?attr/iconListItemMenu" />
+
+    <CheckBox
+        android:id="@+id/flagged"
+        style="?android:attr/starStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/divider"
+        android:focusable="false"
+        android:gravity="top|right" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/subject"
+        android:layout_toLeftOf="@+id/divider"
+        android:paddingLeft="5dip"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary" />
+
+    <ImageView
+        android:id="@+id/divider"
+          android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dip"
+            android:layout_marginTop="4dip"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@+id/item_menu"
+        />
 
 </RelativeLayout>
