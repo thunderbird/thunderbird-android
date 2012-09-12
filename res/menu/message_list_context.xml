@@ -18,9 +18,6 @@
             <item
                 android:id="@+id/send_again"
                 android:title="@string/send_again_action"/>
-            <item
-			android:id="@+id/same_sender"
-			android:title="@string/from_same_sender" />
         </menu>
     </item>
     <item
@@ -42,21 +39,15 @@
         android:icon="?attr/iconActionArchive"
     />
     <item
-		android:id="@+id/move_or_copy"
-	    android:title="@string/move_or_copy_action"
+        android:id="@+id/move"
+        android:title="@string/move_action"
 	    android:showAsAction="ifRoom"
-	    android:icon="?attr/iconActionMoveOrCopy">
-	    <menu>
-		    <item
-		        android:id="@+id/move"
-		        android:title="@string/move_action"
-		    />
-		    <item
-		        android:id="@+id/copy"
-		        android:title="@string/copy_action"
-		    />
-		</menu>
-	</item>
+        android:icon="?attr/iconActionMoveOrCopy"
+    />
+    <item
+        android:id="@+id/copy"
+        android:title="@string/copy_action"
+    />
 	<item
         android:id="@+id/flag_toggle"
         android:title="@string/flag_toggle_action"
@@ -69,4 +60,7 @@
         android:showAsAction="ifRoom"
         android:icon="?attr/iconActionSpam"
     />
+    <item
+		android:id="@+id/same_sender"
+		android:title="@string/from_same_sender" />
 </menu>
