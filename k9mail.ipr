@@ -114,6 +114,8 @@
       <directory url="file://$PROJECT_DIR$/gen" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library/gen" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/r" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugins/Android-PullToRefresh/library/gen" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugins/Android-PullToRefresh/library/target/generated-sources/r" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
@@ -141,12 +143,14 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plugins/Android-PullToRefresh/library" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="android" url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library" />
+    <file type="android" url="file://$PROJECT_DIR$/plugins/Android-PullToRefresh/library" />
   </component>
   <component name="IdProvider" IDEtalkID="71055AFE08650FC251AC52E23DE3F795" />
   <component name="InspectionProjectProfileManager">
@@ -199,6 +203,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/plugins/ActionBarSherlock/library/pom.xml" />
+        <option value="$PROJECT_DIR$/plugins/Android-PullToRefresh/library/pom.xml" />
       </list>
     </option>
     <option name="activeProfiles">
@@ -389,6 +394,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ActionBarSherlock.iml" filepath="$PROJECT_DIR$/ActionBarSherlock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-PullToRefresh.iml" filepath="$PROJECT_DIR$/Android-PullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/k9mail.iml" filepath="$PROJECT_DIR$/k9mail.iml" />
     </modules>
   </component>
@@ -412,6 +418,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/plugins/ActionBarSherlock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/plugins/Android-PullToRefresh" vcs="Git" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -472,6 +479,17 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/main/java" />
         <root url="jar://$PROJECT_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/test/java" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.android:android:2.2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.google.android:android:4.0.1.2">
@@ -652,3 +670,4 @@
     </library>
   </component>
 </project>
+

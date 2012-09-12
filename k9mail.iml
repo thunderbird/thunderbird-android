@@ -41,6 +41,7 @@
     <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="compile-only-libs" level="project" />
     <orderEntry type="module" module-name="ActionBarSherlock" />
+    <orderEntry type="module" module-name="Android-PullToRefresh" />
     <orderEntry type="inheritedJdk" />
   </component>
 </module>
