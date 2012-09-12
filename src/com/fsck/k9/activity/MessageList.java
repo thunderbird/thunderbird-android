@@ -1990,7 +1990,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             Folder folder;
             for (MessageInfoHolder holder : mMessages) {
                 uid = message.getUid();
-                if (holder.uid == uid || uid.equals(holder.uid)) {
+                if (uid != null && (holder.uid == uid || uid.equals(holder.uid))) {
                     folder = message.getFolder();
                      if (holder.folder.name.equals(folder.getName()) &&
                              holder.account.equals(folder.getAccount().getUuid())) {
