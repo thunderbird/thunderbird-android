@@ -40,6 +40,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -2029,6 +2030,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 onToggleFlag(Arrays.asList(new MessageInfoHolder[]{message}));
             }
         };
+        
+        private final OnClickListener itemMenuClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Perform action on clicks
+                setAllSelected(false);
+                openContextMenu(v);
+            }
+        };
 
         @Override
         public int getCount() {
@@ -2083,8 +2093,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
-
+                holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
                 holder.flagged.setOnClickListener(flagClickListener);
+                holder.itemMenu.setOnClickListener(itemMenuClickListener);
 
                 if (!mStars) {
                     holder.flagged.setVisibility(View.GONE);
@@ -2102,7 +2113,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
                 holder.preview.setLines(mPreviewLines);
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
-
+                holder.itemMenu.setFocusable(false);
 
                 view.setTag(holder);
             }
@@ -2283,6 +2294,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         public CheckBox flagged;
         public View chip;
         public CheckBox selected;
+        public ImageButton itemMenu;
         public int position = -1;
 
         @Override
