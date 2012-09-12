@@ -47,6 +47,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.internal.view.menu.MenuBuilder;
+import com.actionbarsherlock.internal.view.menu.MenuPopupHelper;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -2051,13 +2053,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 onToggleFlag(Arrays.asList(new MessageInfoHolder[]{message}));
             }
         };
-        
+
         private final OnClickListener itemMenuClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Perform action on clicks
-                setAllSelected(false);
-                openContextMenu(v);
+//                setAllSelected(false);
+//                openContextMenu(v);
+                MenuBuilder menu = new MenuBuilder(MessageList.this);
+                menu.add("something");
+                new MenuPopupHelper(MessageList.this, menu, v).show();
             }
         };
 

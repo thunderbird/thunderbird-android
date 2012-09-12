@@ -61,7 +61,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary" />
 
-    <ImageButton
+    <com.fsck.k9.view.ImageButtonAnchor
         android:id="@+id/item_menu"
         android:layout_width="36dp"
         android:layout_height="wrap_content"
