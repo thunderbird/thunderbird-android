@@ -14,7 +14,6 @@
         <attr name="iconActionMoveOrCopy" format="reference" />
         <attr name="iconActionNextMessage" format="reference" />
         <attr name="iconActionPreviousMessage" format="reference" />
-        <attr name="iconActionRead" format="reference" />
         <attr name="iconActionRefresh" format="reference" />
         <attr name="iconActionSearch" format="reference" />
         <attr name="iconActionSend" format="reference" />
@@ -22,8 +21,10 @@
         <attr name="iconActionSingleMessageOptions" format="reference" />
         <attr name="iconActionSort" format="reference" />
         <attr name="iconActionSpam" format="reference" />
-        <attr name="iconActionToggleFlag" format="reference" />
-        <attr name="iconActionToggleRead" format="reference" />
+        <attr name="iconActionFlag" format="reference" />
+        <attr name="iconActionUnflag" format="reference" />
+        <attr name="iconActionMarkAsRead" format="reference" />
+        <attr name="iconActionMarkAsUnread" format="reference" />
         <attr name="iconMenuAdd" format="reference" />
         <attr name="iconMenuAttachment" format="reference" />
         <attr name="iconMenuClear" format="reference" />

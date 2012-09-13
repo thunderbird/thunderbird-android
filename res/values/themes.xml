@@ -15,7 +15,6 @@
         <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_light</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_light</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_light</item>
-        <item name="iconActionRead">@drawable/ic_action_read_light</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_light</item>
         <item name="iconActionSearch">@drawable/ic_action_search_light</item>
         <item name="iconActionSend">@drawable/ic_action_send_light</item>
@@ -23,8 +22,10 @@
         <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_light</item>
         <item name="iconActionSort">@drawable/ic_action_sort_light</item>
         <item name="iconActionSpam">@drawable/ic_action_spam_light</item>
-        <item name="iconActionToggleFlag">@drawable/ic_action_toggle_flag_light</item>
-        <item name="iconActionToggleRead">@drawable/ic_action_toggle_read_light</item>
+        <item name="iconActionFlag">@drawable/ic_action_flag_light</item>
+        <item name="iconActionUnflag">@drawable/ic_action_unflag_light</item>
+        <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_light</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_light</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
         <item name="iconMenuClear">@drawable/ic_menu_clear</item>
@@ -55,7 +56,6 @@
         <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_dark</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_dark</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_dark</item>
-        <item name="iconActionRead">@drawable/ic_action_read_dark</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_dark</item>
         <item name="iconActionSearch">@drawable/ic_action_search_dark</item>
         <item name="iconActionSend">@drawable/ic_action_send_dark</item>
@@ -63,8 +63,10 @@
         <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_dark</item>
         <item name="iconActionSort">@drawable/ic_action_sort_dark</item>
         <item name="iconActionSpam">@drawable/ic_action_spam_dark</item>
-        <item name="iconActionToggleFlag">@drawable/ic_action_toggle_flag_dark</item>
-        <item name="iconActionToggleRead">@drawable/ic_action_toggle_read_dark</item>
+        <item name="iconActionFlag">@drawable/ic_action_flag_light</item>
+        <item name="iconActionUnflag">@drawable/ic_action_unflag_light</item>
+        <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_light</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_light</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
         <item name="iconMenuClear">@drawable/ic_menu_clear</item>

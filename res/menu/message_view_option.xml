@@ -34,9 +34,9 @@
             <item
                 android:id="@+id/forward"
                 android:title="@string/forward_action"/>
-		    <item
-		        android:id="@+id/share"
-		        android:title="@string/send_alternate_action" />
+            <item
+                android:id="@+id/share"
+                android:title="@string/send_alternate_action" />
         </menu>
     </item>
     <item
@@ -61,16 +61,15 @@
         android:id="@+id/copy"
         android:title="@string/copy_action"
     />
-	<item
+    <item
         android:id="@+id/toggle_unread"
         android:alphabeticShortcut="u"
         android:title="@string/read_toggle_action"
-        android:icon="?attr/iconActionToggleRead"
         android:showAsAction="never"
     />
-	<item
-		android:id="@+id/select_text"
-		android:title="@string/select_text_action"
-		android:showAsAction="never"
-	/>
+    <item
+        android:id="@+id/select_text"
+        android:title="@string/select_text_action"
+        android:showAsAction="never"
+    />
 </menu>

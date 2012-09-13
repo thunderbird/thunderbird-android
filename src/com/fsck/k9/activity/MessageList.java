@@ -26,10 +26,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -1402,6 +1400,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             messageInfo.flagged = !messageInfo.flagged;
             mAdapter.sortMessages();
         }
+
+        computeBatchDirection();
     }
 
     private void checkMail(Account account, String folderName) {
@@ -2368,6 +2368,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mSelectedCount += (isSelected ? 1 : 0);
         }
 
+        computeBatchDirection();
         mAdapter.notifyDataSetChanged();
 
         if (isSelected) {
@@ -2395,6 +2396,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
             updateActionModeTitle();
             computeSelectAllVisibility();
+            computeBatchDirection();
         } else {
             mSelectedCount = 0;
             mActionMode.finish();
@@ -2408,8 +2410,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 return;
             }
         } else {
-            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-         }
+            mActionMode = startActionMode(mActionModeCallback);
+        }
 
         if (holder.selected) {
             holder.selected = false;
@@ -2419,6 +2421,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mSelectedCount += 1;
         }
         mAdapter.notifyDataSetChanged();
+
+        computeBatchDirection();
         updateActionModeTitle();
 
         // make sure the onPrepareActionMode is called
@@ -2433,6 +2437,29 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
     private void computeSelectAllVisibility() {
         mActionModeCallback.showSelectAll(mSelectedCount != mAdapter.getCount());
+    }
+
+    private void computeBatchDirection() {
+        boolean isBatchFlag = false;
+        boolean isBatchRead = false;
+
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            if (holder.selected) {
+                if (!holder.flagged) {
+                    isBatchFlag = true;
+                }
+                if (!holder.read) {
+                    isBatchRead = true;
+                }
+
+                if (isBatchFlag && isBatchRead) {
+                    break;
+                }
+            }
+        }
+
+        mActionModeCallback.showMarkAsRead(isBatchRead);
+        mActionModeCallback.showFlag(isBatchFlag);
     }
 
     /**
@@ -2744,10 +2771,18 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
     class ActionModeCallback implements ActionMode.Callback {
         private MenuItem mSelectAll;
+        private MenuItem mMarkAsRead;
+        private MenuItem mMarkAsUnread;
+        private MenuItem mFlag;
+        private MenuItem mUnflag;
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             mSelectAll = menu.findItem(R.id.select_all);
+            mMarkAsRead = menu.findItem(R.id.mark_as_read);
+            mMarkAsUnread = menu.findItem(R.id.mark_as_unread);
+            mFlag = menu.findItem(R.id.flag);
+            mUnflag = menu.findItem(R.id.unflag);
 
             if (mQueryString != null) {
                 // show all
@@ -2777,6 +2812,10 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             mSelectAll = null;
+            mMarkAsRead = null;
+            mMarkAsUnread = null;
+            mFlag = null;
+            mUnflag = null;
             setAllSelected(false);
         }
 
@@ -2842,6 +2881,20 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
+        public void showMarkAsRead(boolean show) {
+            if (mActionMode != null) {
+                mMarkAsRead.setVisible(show);
+                mMarkAsUnread.setVisible(!show);
+            }
+        }
+
+        public void showFlag(boolean show) {
+            if (mActionMode != null) {
+                mFlag.setVisible(show);
+                mUnflag.setVisible(!show);
+            }
+        }
+
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
@@ -2859,12 +2912,24 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 mSelectedCount = 0;
                 break;
             }
-            case R.id.read_toggle: {
-                onToggleRead(selection);
+            case R.id.mark_as_read: {
+                setFlag(selection, Flag.SEEN, true);
+                computeBatchDirection();
                 break;
             }
-            case R.id.flag_toggle: {
-                onToggleFlag(selection);
+            case R.id.mark_as_unread: {
+                setFlag(selection, Flag.SEEN, false);
+                computeBatchDirection();
+                break;
+            }
+            case R.id.flag: {
+                setFlag(selection, Flag.FLAGGED, true);
+                computeBatchDirection();
+                break;
+            }
+            case R.id.unflag: {
+                setFlag(selection, Flag.FLAGGED, false);
+                computeBatchDirection();
                 break;
             }
             case R.id.select_all: {
@@ -2900,6 +2965,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
             return true;
         }
-    };
+    }
 }
 
