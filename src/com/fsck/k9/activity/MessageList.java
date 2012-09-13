@@ -1081,7 +1081,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                         return true;
                     }
                     case KeyEvent.KEYCODE_S: {
-                        setSelected(selection, !message.selected);
+                        toggleMessageSelect(message);
                         return true;
                     }
                     case KeyEvent.KEYCODE_D: {
@@ -2485,18 +2485,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mSelectedCount = 0;
             mActionMode.finish();
         }
-    }
-
-    private void setSelected(final List<MessageInfoHolder> holders, final boolean newState) {
-        for (final MessageInfoHolder holder : holders) {
-            if (holder.selected != newState) {
-                holder.selected = newState;
-                mSelectedCount += (newState ? 1 : -1);
-            }
-        }
-        mAdapter.notifyDataSetChanged();
-        updateActionModeTitle();
-        computeSelectAllVisibility();
     }
 
     private void toggleMessageSelect(final MessageInfoHolder holder){
