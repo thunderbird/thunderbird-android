@@ -18,11 +18,22 @@
         android:layout_width="16dip"
         android:layout_height="16dip"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="3dip"
+        android:layout_marginTop="5dip"
         android:gravity="center"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:background="@android:color/transparent" />
+    <CheckBox
+        android:id="@+id/flagged"
+        android:button="@drawable/star"
+        android:layout_width="36dip"
+        android:layout_marginLeft="7dip"
+        android:layout_marginRight="4dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="top|center"
+        android:focusable="false"
+        />
 
         <CheckBox
             android:id="@+id/selected_checkbox"
@@ -57,7 +68,7 @@
         android:layout_marginLeft="1dip"
         android:layout_marginBottom="3dip"
         android:layout_marginRight="16dip"
-        android:layout_toLeftOf="@+id/flagged"
+        android:layout_alignParentRight="true"
         android:bufferType="spannable"
         android:singleLine="false"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -75,24 +86,10 @@
         android:textColor="?android:attr/textColorSecondary" />
 
 
-    <CheckBox
-        android:id="@+id/flagged"
-        android:button="@drawable/star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="3dip"
-        android:layout_marginLeft="0dip"
-        android:layout_marginRight="12dip"
-        android:focusable="false"
-        />
 
-    <!-- This comes after the flagged checkbox so that it layers on top and gets
-         clicks first -->
     <com.fsck.k9.view.ImageButtonAnchor
         android:id="@+id/item_menu"
-        android:layout_width="30dp"
+        android:layout_width="48dp"
         android:layout_height="fill_parent"
         android:gravity="bottom|right"
         android:layout_marginBottom="0dip"
