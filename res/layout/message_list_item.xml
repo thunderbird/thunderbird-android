@@ -7,32 +7,32 @@
     android:paddingTop="5dip" >
 
     <RelativeLayout
-        android:id="@+id/checkbox_wrapper"
-        android:layout_width="wrap_content"
+        android:id="@+id/chip_wrapper"
+        android:layout_width="36dip"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:textColor="?android:attr/textColorPrimary" >
-
-        <CheckBox
-            android:id="@+id/selected_checkbox"
-            android:layout_width="36dip"
-            android:layout_height="fill_parent"
-            android:focusable="false"
-            android:gravity="center_vertical|center"
-            android:visibility="visible" />
-    </RelativeLayout>
 
     <View
         android:id="@+id/chip"
         android:layout_width="16dip"
         android:layout_height="16dip"
         android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_marginLeft="8dip"
-        android:layout_marginRight="4dip"
         android:layout_marginTop="3dip"
-        android:layout_toRightOf="@+id/checkbox_wrapper"
+        android:gravity="center"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:background="@android:color/transparent" />
+
+        <CheckBox
+            android:id="@+id/selected_checkbox"
+            android:layout_width="36dip"
+            android:layout_below="@+id/chip"
+            android:layout_height="fill_parent"
+            android:focusable="false"
+            android:gravity="bottom|center"
+            android:visibility="visible" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/subject"
@@ -42,7 +42,7 @@
         android:layout_marginBottom="1dip"
         android:layout_marginLeft="1dip"
         android:layout_toLeftOf="@+id/date"
-        android:layout_toRightOf="@+id/chip"
+        android:layout_toRightOf="@+id/chip_wrapper"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -52,7 +52,7 @@
         android:id="@+id/preview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/chip"
+        android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_below="@+id/subject"
         android:layout_marginLeft="1dip"
         android:layout_toLeftOf="@+id/flagged"
