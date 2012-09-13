@@ -2764,10 +2764,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 
-            // enable or disable forward, reply,....
-            menu.findItem(R.id.single_message_options)
-                    .setVisible(mSelectedCount > 1 ? false : true);
-
             if (mQueryString != null) {
                 // show all
                 menu.findItem(R.id.move).setVisible(true);
@@ -2901,36 +2897,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 mSelectedCount = 0;
                 break;
             }
-
-            // only if a single message is selected
-            case R.id.reply: {
-                onReply(selection.get(0));
-                mSelectedCount = 0;
-                break;
             }
-            case R.id.reply_all: {
-                onReplyAll(selection.get(0));
-                mSelectedCount = 0;
-                break;
-            }
-            case R.id.forward: {
-                onForward(selection.get(0));
-                mSelectedCount = 0;
-                break;
-            }
-            case R.id.send_again: {
-                onResendMessage(selection.get(0));
-                mSelectedCount = 0;
-                break;
-            }
-            case R.id.same_sender: {
-                MessageList.actionHandle(MessageList.this, "From " + selection.get(0).sender,
-                    selection.get(0).senderAddress, false, null, null);
-                mSelectedCount = 0;
-                break;
-            }
-            }
-
             if (mSelectedCount == 0) {
                 mActionMode.finish();
             }
