@@ -722,9 +722,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         mSelectedCount = getSelectionFromCheckboxes().size();
         if (mSelectedCount > 0) {
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-            mActionMode.setTitle(String.format(
-                    getString(R.string.actionbar_selected),
-                    mSelectedCount));
+            updateActionModeTitle();
         }
     }
 
@@ -2457,7 +2455,11 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
 
         mAdapter.notifyDataSetChanged();
-        computeSelectAllVisibility();
+
+        if (isSelected) {
+            updateActionModeTitle();
+            computeSelectAllVisibility();
+        }
     }
 
     /**
@@ -2477,7 +2479,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         if (newState) {
             mSelectedCount = mAdapter.getCount();
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-            mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
+            updateActionModeTitle();
             computeSelectAllVisibility();
         } else {
             mSelectedCount = 0;
@@ -2493,6 +2495,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
         mAdapter.notifyDataSetChanged();
+        updateActionModeTitle();
         computeSelectAllVisibility();
     }
 
@@ -2514,12 +2517,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mSelectedCount += 1;
         }
         mAdapter.notifyDataSetChanged();
-        mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
+        updateActionModeTitle();
 
         // make sure the onPrepareActionMode is called
         mActionMode.invalidate();
 
         computeSelectAllVisibility();
+    }
+
+    private void updateActionModeTitle() {
+        mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
     }
 
     private void computeSelectAllVisibility() {
