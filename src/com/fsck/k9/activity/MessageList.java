@@ -326,6 +326,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     private TextView mActionBarSubTitle;
     private TextView mActionBarUnread;
 
+    private ActionModeCallback mActionModeCallback = new ActionModeCallback();
+
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
         public void onUnmount(String providerId) {
@@ -1824,6 +1826,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             resetUnreadCount();
 
             notifyDataSetChanged();
+            computeSelectAllVisibility();
         }
 
         /**
@@ -1863,6 +1866,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             resetUnreadCount();
 
             notifyDataSetChanged();
+            computeSelectAllVisibility();
         }
 
         public void changeMessageUid(MessageReference ref, String newUid) {
@@ -2045,8 +2049,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
-            
-            
         private final OnClickListener flagClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2104,7 +2106,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                                 onToggleFlag(selection);
                                 break;
                             }
-                
+
                             // only if the account supports this
                             case R.id.archive: {
                                 onArchive(selection);
@@ -2455,6 +2457,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
 
         mAdapter.notifyDataSetChanged();
+        computeSelectAllVisibility();
     }
 
     /**
@@ -2475,6 +2478,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mSelectedCount = mAdapter.getCount();
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
             mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
+            computeSelectAllVisibility();
         } else {
             mSelectedCount = 0;
             mActionMode.finish();
@@ -2489,6 +2493,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
         mAdapter.notifyDataSetChanged();
+        computeSelectAllVisibility();
     }
 
     private void toggleMessageSelect(final MessageInfoHolder holder){
@@ -2499,22 +2504,26 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         } else {
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-     }
+         }
 
-
-
-    if (holder.selected) {
-        holder.selected = false;
-        mSelectedCount -= 1;
-    } else {
-        holder.selected = true;
-        mSelectedCount += 1;
-    }
+        if (holder.selected) {
+            holder.selected = false;
+            mSelectedCount -= 1;
+        } else {
+            holder.selected = true;
+            mSelectedCount += 1;
+        }
         mAdapter.notifyDataSetChanged();
         mActionMode.setTitle(String.format(getString(R.string.actionbar_selected), mSelectedCount));
 
         // make sure the onPrepareActionMode is called
         mActionMode.invalidate();
+
+        computeSelectAllVisibility();
+    }
+
+    private void computeSelectAllVisibility() {
+        mActionModeCallback.showSelectAll(mSelectedCount != mAdapter.getCount());
     }
 
     /**
@@ -2824,10 +2833,12 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     }
 
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    class ActionModeCallback implements ActionMode.Callback {
+        private MenuItem mSelectAll;
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            mSelectAll = menu.findItem(R.id.select_all);
 
             if (mQueryString != null) {
                 // show all
@@ -2856,6 +2867,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
+            mSelectAll = null;
             setAllSelected(false);
         }
 
@@ -2915,6 +2927,12 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
+        public void showSelectAll(boolean show) {
+            if (mActionMode != null) {
+                mSelectAll.setVisible(show);
+            }
+        }
+
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
@@ -2938,6 +2956,10 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
             case R.id.flag_toggle: {
                 onToggleFlag(selection);
+                break;
+            }
+            case R.id.select_all: {
+                setAllSelected(true);
                 break;
             }
 
