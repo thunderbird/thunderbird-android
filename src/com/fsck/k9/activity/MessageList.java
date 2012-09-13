@@ -48,7 +48,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.internal.view.menu.MenuBuilder;
-import com.actionbarsherlock.internal.view.menu.MenuPopupHelper;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -67,6 +66,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.MenuPopup;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
@@ -2045,6 +2045,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
+            
+            
         private final OnClickListener flagClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2058,13 +2060,75 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 // Perform action on clicks
-//                setAllSelected(false);
-//                openContextMenu(v);
-                MenuBuilder menu = new MenuBuilder(MessageList.this);
-                menu.add("something");
-                new MenuPopupHelper(MessageList.this, menu, v).show();
+                final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+                final MenuBuilder menu = new MenuBuilder(MessageList.this);
+                getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
+                MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
+                popup.setOnMenuItemClickListener( new MenuPopup.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(int itemId){
+                        MenuItem item = menu.getItem(itemId);
+                        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
+                        switch (item.getItemId()) {
+                            case R.id.reply: {
+                                onReply(message);
+                                break;
+                            }
+                            case R.id.reply_all: {
+                                onReplyAll(message);
+                                break;
+                            }
+                            case R.id.forward: {
+                                onForward(message);
+                                break;
+                            }
+                            case R.id.send_again: {
+                                onResendMessage(message);
+                                mSelectedCount = 0;
+                                break;
+                            }
+                            case R.id.same_sender: {
+                                MessageList.actionHandle(MessageList.this, "From " + message.sender,
+                                    message.senderAddress, false, null, null);
+                                break;
+                            }
+                            case R.id.delete: {
+                                onDelete(selection);
+                                break;
+                            }
+                            case R.id.read_toggle: {
+                                onToggleRead(selection);
+                                break;
+                            }
+                            case R.id.flag_toggle: {
+                                onToggleFlag(selection);
+                                break;
+                            }
+                
+                            // only if the account supports this
+                            case R.id.archive: {
+                                onArchive(selection);
+                                break;
+                            }
+                            case R.id.spam: {
+                                onSpam(selection);
+                                break;
+                            }
+                            case R.id.move: {
+                                onMove(selection);
+                                break;
+                            }
+                            case R.id.copy: {
+                                onCopy(selection);
+                                break;
+                            }
+                        }
+
+                } } );
+                popup.show();
             }
         };
+
 
         @Override
         public int getCount() {
@@ -2208,6 +2272,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
             holder.flagged.setTag(position);
+            holder.itemMenu.setTag(position);
             holder.flagged.setChecked(message.flagged);
 
             // So that the mSelectedCount is only incremented/decremented
@@ -2906,3 +2971,4 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
     };
 }
+
