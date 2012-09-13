@@ -565,10 +565,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         AccountSetupBasics.actionNewAccount(this);
     }
 
-    private void onEditAccount(Account account) {
-        AccountSettings.actionSettings(this, account);
-    }
-
     private void onEditPrefs() {
         Prefs.actionPrefs(this);
     }
@@ -592,11 +588,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private void onClearCommands(Account account) {
         MessagingController.getInstance(getApplication()).clearAllPending(account);
     }
-
-    private void onEmptyTrash(Account account) {
-        MessagingController.getInstance(getApplication()).emptyTrash(account, null);
-    }
-
 
     private void onCompose() {
         Account defaultAccount = Preferences.getPreferences(this).getDefaultAccount();
@@ -1102,26 +1093,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.delete_account:
             onDeleteAccount(realAccount);
             break;
-        case R.id.edit_account:
-            onEditAccount(realAccount);
-            break;
-        case R.id.open:
-            onOpenAccount(mSelectedContextAccount);
-            break;
         case R.id.activate:
             onActivateAccount(realAccount);
             break;
-        case R.id.check_mail:
-            onCheckMail(realAccount);
-            break;
         case R.id.clear_pending:
             onClearCommands(realAccount);
-            break;
-        case R.id.empty_trash:
-            onEmptyTrash(realAccount);
-            break;
-        case R.id.compact:
-            onCompact(realAccount);
             break;
         case R.id.clear:
             onClear(realAccount);
@@ -1143,11 +1119,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
 
-
-    private void onCompact(Account account) {
-        mHandler.workingAccount(account, R.string.compacting_account);
-        MessagingController.getInstance(getApplication()).compact(account, null);
-    }
 
     private void onClear(Account account) {
         showDialog(DIALOG_CLEAR_ACCOUNT);
@@ -1313,9 +1284,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (account instanceof SearchAccount) {
             for (int i = 0; i < menu.size(); i++) {
                 android.view.MenuItem item = menu.getItem(i);
-                if (item.getItemId() != R.id.open) {
                     item.setVisible(false);
-                }
             }
         }
         else {

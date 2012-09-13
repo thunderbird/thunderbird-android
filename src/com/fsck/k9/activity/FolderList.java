@@ -500,10 +500,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         AccountSettings.actionSettings(this, mAccount);
     }
 
-    private void onEditFolder(Account account, String folderName) {
-        FolderSettings.actionSettings(this, account, folderName);
-    }
-
     private void onAccounts() {
         Accounts.listAccounts(this);
         finish();
@@ -644,34 +640,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
         switch (item.getItemId()) {
-        case R.id.open_folder:
-            onOpenFolder(folder.name);
-            break;
-
-        case R.id.send_messages:
-            sendMail(mAccount);
-
-            break;
-
-        case R.id.check_mail:
-            checkMail(folder);
-
-            break;
-
-        case R.id.folder_settings:
-            onEditFolder(mAccount, folder.name);
-
-            break;
-
-        case R.id.empty_trash:
-            onEmptyTrash(mAccount);
-
-            break;
-        case R.id.expunge:
-            onExpunge(mAccount, folder.name);
-
-            break;
-
         case R.id.clear_local_folder:
             onClearFolder(mAccount, folder.name);
             break;
@@ -763,29 +731,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         getMenuInflater().inflate(R.menu.folder_context, menu);
 
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
-
-        menu.setHeaderTitle(folder.displayName);
-
-        if (!folder.name.equals(mAccount.getTrashFolderName()))
-            menu.findItem(R.id.empty_trash).setVisible(false);
-
-        if (folder.name.equals(mAccount.getOutboxFolderName())) {
-            menu.findItem(R.id.check_mail).setVisible(false);
-        } else {
-            menu.findItem(R.id.send_messages).setVisible(false);
-        }
-        if (K9.ERROR_FOLDER_NAME.equals(folder.name)) {
-            menu.findItem(R.id.expunge).setVisible(false);
-        }
-
-        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount)) {
-            // FIXME: Really we want to do this for all local-only folders
-            if (!mAccount.getInboxFolderName().equals(folder.name)) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            }
-
-            menu.findItem(R.id.expunge).setVisible(false);
-        }
 
         menu.setHeaderTitle(folder.displayName);
     }
