@@ -33,10 +33,10 @@
 
         <ImageButton
             android:id="@+id/folders"
-            android:layout_alignParentTop="true" 
-            android:layout_gravity="top"
+            android:gravity="center_vertical"
             android:focusable="false"
-            android:background="@drawable/ic_show_folders"
+            android:layout_marginRight="3dip"
+            android:background="?attr/iconFolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
