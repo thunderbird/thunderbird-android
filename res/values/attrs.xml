@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="K9Styles">
+        <attr name="iconFolder" format="reference"/>
         <attr name="listDivider" format="reference" />
 		<attr name="iconListItemMenu" format="reference" />
 		<attr name="iconMenuInfoDetails" format="reference" />
