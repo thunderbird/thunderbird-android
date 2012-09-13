@@ -154,7 +154,6 @@ public class K9 extends Application {
     private static boolean mConfirmDelete = false;
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
-    private static boolean mConfirmMarkAllAsRead = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -464,7 +463,6 @@ public class K9 extends Application {
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
-        editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -620,7 +618,6 @@ public class K9 extends Application {
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
 
         try {
             String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -1023,14 +1020,6 @@ public class K9 extends Application {
 
     public static void setConfirmSpam(final boolean confirm) {
         mConfirmSpam = confirm;
-    }
-
-    public static boolean confirmMarkAllAsRead() {
-        return mConfirmMarkAllAsRead;
-    }
-
-    public static void setConfirmMarkAllAsRead(final boolean confirm) {
-        mConfirmMarkAllAsRead = confirm;
     }
 
     public static NotificationHideSubject getNotificationHideSubject() {

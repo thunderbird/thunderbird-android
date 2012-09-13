@@ -79,7 +79,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     /*
      * Constants for showDialog() etc.
      */
-    private static final int DIALOG_MARK_ALL_AS_READ = 1;
     private static final int DIALOG_FIND_FOLDER = 2;
 
     private static final String EXTRA_ACCOUNT = "account";
@@ -649,10 +648,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             onOpenFolder(folder.name);
             break;
 
-        case R.id.mark_all_as_read:
-            onMarkAllAsRead(mAccount, folder.name);
-            break;
-
         case R.id.send_messages:
             sendMail(mAccount);
 
@@ -687,41 +682,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     private FolderInfoHolder mSelectedContextFolder = null;
 
-
-    private void onMarkAllAsRead(final Account account, final String folder) {
-        mSelectedContextFolder = mAdapter.getFolder(folder);
-        if (K9.confirmMarkAllAsRead()) {
-            showDialog(DIALOG_MARK_ALL_AS_READ);
-        } else {
-            markAllAsRead();
-        }
-    }
-
-    private void markAllAsRead() {
-        try {
-            MessagingController.getInstance(getApplication())
-            .markAllMessagesRead(mAccount, mSelectedContextFolder.name);
-            mSelectedContextFolder.unreadMessageCount = 0;
-            mHandler.dataChanged();
-        } catch (Exception e) {
-            /* Ignore */
-        }
-    }
-
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ:
-            return ConfirmationDialog.create(this, id, R.string.mark_all_as_read_dlg_title,
-                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                                     mSelectedContextFolder.displayName),
-                                             R.string.okay_action, R.string.cancel_action,
-            new Runnable() {
-                @Override
-                public void run() {
-                    markAllAsRead();
-                }
-            });
         case DIALOG_FIND_FOLDER: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.filter_folders_action);
@@ -776,12 +739,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     @Override
     public void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ: {
-            AlertDialog alertDialog = (AlertDialog) dialog;
-            alertDialog.setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                             mSelectedContextFolder.displayName));
-            break;
-        }
         case DIALOG_FIND_FOLDER: {
             AlertDialog alertDialog = (AlertDialog) dialog;
             EditText input = (EditText) alertDialog.findViewById(R.id.filter_folders);

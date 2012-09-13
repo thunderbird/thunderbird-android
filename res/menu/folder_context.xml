@@ -5,10 +5,6 @@
         android:title="@string/open_action"
     />
     <item
-        android:id="@+id/mark_all_as_read"
-        android:title="@string/mark_all_as_read_action"
-    />
-    <item
         android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action"
     />

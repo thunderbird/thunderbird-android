@@ -54,11 +54,6 @@
         android:showAsAction="always"
         android:title="@string/check_mail_action"/>
     <item
-        android:id="@+id/mark_all_as_read"
-        android:icon="?attr/iconMenuInbox"
-        android:showAsAction="never"
-        android:title="@string/mark_all_as_read_action"/>
-    <item
         android:id="@+id/expunge"
         android:showAsAction="never"
         android:title="@string/expunge_action"/>

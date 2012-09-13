@@ -57,9 +57,6 @@ public class GlobalSettings {
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
             ));
-        s.put("confirmMarkAllAsRead", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("confirmSpam", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));

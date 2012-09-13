@@ -217,7 +217,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
      */
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
-    private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -1338,26 +1337,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    private void onMarkAllAsRead(final Account account, final String folder) {
-        if (K9.confirmMarkAllAsRead()) {
-            showDialog(DIALOG_MARK_ALL_AS_READ);
-        } else {
-            markAllAsRead();
-        }
-    }
-
-    private void markAllAsRead() {
-        try {
-            mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
-
-            for (MessageInfoHolder holder : mAdapter.getMessages()) {
-                holder.read = true;
-            }
-            mAdapter.sortMessages();
-        } catch (Exception e) {
-            // Ignore
-        }
-    }
 
     private void onExpunge(final Account account, String folderName) {
         mController.expunge(account, folderName, null);
@@ -1366,19 +1345,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ:
-            return ConfirmationDialog.create(this, id,
-                                             R.string.mark_all_as_read_dlg_title,
-                                             getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                                     mCurrentFolder.displayName),
-                                             R.string.okay_action,
-                                             R.string.cancel_action,
-            new Runnable() {
-                @Override
-                public void run() {
-                    markAllAsRead();
-                }
-            });
         case R.id.dialog_confirm_spam:
             return ConfirmationDialog.create(this, id,
                                              R.string.dialog_confirm_spam_title,
@@ -1415,13 +1381,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     @Override
     public void onPrepareDialog(final int id, final Dialog dialog) {
         switch (id) {
-        case DIALOG_MARK_ALL_AS_READ: {
-            if (mCurrentFolder != null) {
-                ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                                 mCurrentFolder.displayName));
-            }
-            break;
-        }
         case R.id.dialog_confirm_spam: {
             // mActiveMessages can be null if Android restarts the activity
             // while this dialog is not actually shown (but was displayed at
@@ -1556,12 +1515,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             mController.sendPendingMessages(mAccount, mAdapter.mListener);
             return true;
         }
-        case R.id.mark_all_as_read: {
-            if (mFolderName != null) {
-                onMarkAllAsRead(mAccount, mFolderName);
-            }
-            return true;
-        }
         case R.id.folder_settings: {
             if (mFolderName != null) {
                 FolderSettings.actionSettings(this, mAccount, mFolderName);
@@ -1596,7 +1549,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         if (mQueryString != null) {
-            menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.send_messages).setVisible(false);

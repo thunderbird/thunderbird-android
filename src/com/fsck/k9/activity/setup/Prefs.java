@@ -198,13 +198,11 @@ public class Prefs extends K9PreferenceActivity {
                                      getString(R.string.global_settings_confirm_action_delete),
                                      getString(R.string.global_settings_confirm_action_delete_starred),
                                      getString(R.string.global_settings_confirm_action_spam),
-                                     getString(R.string.global_settings_confirm_action_mark_all_as_read)
                                  });
         mConfirmActions.setCheckedItems(new boolean[] {
                                             K9.confirmDelete(),
                                             K9.confirmDeleteStarred(),
                                             K9.confirmSpam(),
-                                            K9.confirmMarkAllAsRead()
                                         });
 
         mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
@@ -410,7 +408,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
-        K9.setConfirmMarkAllAsRead(mConfirmActions.getCheckedItems()[3]);
         K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
