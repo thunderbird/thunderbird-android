@@ -1086,6 +1086,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccWrapper.setVisibility(savedInstanceState
                                   .getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
 
+        // This method is called after the action bar menu has already been created and prepared.
+        // So compute the visibility of the "Add Cc/Bcc" menu item again.
+        computeAddCcBccVisibility();
+
         showOrHideQuotedText(
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
@@ -1791,7 +1795,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onAddCcBcc() {
         mCcWrapper.setVisibility(View.VISIBLE);
         mBccWrapper.setVisibility(View.VISIBLE);
-        if (mMenu != null) {
+        computeAddCcBccVisibility();
+    }
+
+    /**
+     * Hide the 'Add Cc/Bcc' menu item when both fields are visible.
+     */
+    private void computeAddCcBccVisibility() {
+        if (mMenu != null && mCcWrapper.getVisibility() == View.VISIBLE &&
+                mBccWrapper.getVisibility() == View.VISIBLE) {
             mMenu.findItem(R.id.add_cc_bcc).setVisible(false);
         }
     }
@@ -2215,11 +2227,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        // Disable the 'Add Cc/Bcc' menu option when both fields are visible
-        if (mCcWrapper.getVisibility() == View.VISIBLE &&
-                mBccWrapper.getVisibility() == View.VISIBLE) {
-            menu.findItem(R.id.add_cc_bcc).setEnabled(false);
-        }
+        computeAddCcBccVisibility();
 
         return true;
     }
