@@ -78,6 +78,7 @@ public class K9 extends Application {
 
     private static String language = "";
     private static int theme = THEME_LIGHT;
+    private static int messageViewTheme = THEME_LIGHT;
 
     private static final FontSizes fontSizes = new FontSizes();
 
@@ -458,6 +459,7 @@ public class K9 extends Application {
 
         editor.putString("language", language);
         editor.putInt("theme", theme);
+        editor.putInt("messageViewTheme", messageViewTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
@@ -661,6 +663,8 @@ public class K9 extends Application {
             theme = THEME_LIGHT;
         }
         K9.setK9Theme(theme);
+
+        K9.setK9MessageViewTheme(sprefs.getInt("messageViewTheme", THEME_LIGHT));
     }
 
     private void maybeSetupStrictMode() {
@@ -727,12 +731,20 @@ public class K9 extends Application {
         return getK9ThemeResourceId(theme);
     }
 
+    public static int getK9MessageViewTheme() {
+        return messageViewTheme;
+    }
+
     public static int getK9Theme() {
         return theme;
     }
 
     public static void setK9Theme(int ntheme) {
         theme = ntheme;
+    }
+
+    public static void setK9MessageViewTheme(int nMessageViewTheme) {
+        messageViewTheme = nMessageViewTheme;
     }
 
     public static BACKGROUND_OPS getBackgroundOps() {

@@ -9,7 +9,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -71,6 +73,8 @@ public class MessageView extends K9Activity implements OnClickListener {
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    private MenuItem mToggleMessageViewMenu;
 
     /** this variable is used to save the calling AttachmentView
      *  until the onActivityResult is called.
@@ -602,6 +606,26 @@ public class MessageView extends K9Activity implements OnClickListener {
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
+    private void onToggleColors() {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+            K9.setK9MessageViewTheme(K9.THEME_LIGHT);
+        } else {
+            K9.setK9MessageViewTheme(K9.THEME_DARK);
+        }
+
+        new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                Preferences prefs = Preferences.getPreferences(getApplicationContext());
+                Editor editor = prefs.getPreferences().edit();
+                K9.save(editor);
+                editor.commit();
+                return null;
+            }
+        }.execute();
+        displayMessage(mMessageReference);
+    }
+
     private void startRefileActivity(int activity) {
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
@@ -788,6 +812,9 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.select_text:
             mMessageView.beginSelectingText();
             break;
+        case R.id.toggle_message_view_theme:
+            onToggleColors();
+            break;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -814,6 +841,14 @@ public class MessageView extends K9Activity implements OnClickListener {
         menu.findItem(R.id.move).setVisible(true);
         menu.findItem(R.id.archive).setVisible(true);
         menu.findItem(R.id.spam).setVisible(true);
+
+        mToggleMessageViewMenu = menu.findItem(R.id.toggle_message_view_theme);
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+            mToggleMessageViewMenu.setTitle(R.string.message_view_theme_action_light);
+        } else {
+            mToggleMessageViewMenu.setTitle(R.string.message_view_theme_action_dark);
+        }
+
         toggleActionsState(menu, true);
 
         if (mNextMessage != null) {
