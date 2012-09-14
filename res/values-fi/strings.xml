@@ -11,7 +11,7 @@
     <string name="shortcuts_title">K-9-tilit</string>
     <string name="unread_widget_label">K-9-lukematon</string>
 
-    <string name="remote_control_label">K-9 Mail:n etäkäyttö</string>
+    <string name="remote_control_label">K-9 Mailin etäkäyttö</string>
     <string name="remote_control_desc">Antaa sovellukselle luvan käyttää K-9 Mailin toimintoja ja asetuksia.</string>
 
 
@@ -78,6 +78,8 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Tilit</string>
+    <string name="welcome_message_title">Tervetuloa K-9 Mailiin!</string>
+    <string name="folders_title">Kansiot</string>
     <string name="advanced">Lisäasetukset</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -98,6 +100,8 @@ http://k9mail.googlecode.com/
     <string name="status_next_poll">\u0020(Seuraava tarkistus @ <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_syncing_off">\u0020(Synkronointi pois päältä)</string>
 
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
+    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g> valittu</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Seuraava</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Edellinen</string> <!-- Used as part of a multi-step process -->
@@ -115,6 +119,8 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Tyhjennä kansio</string>
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
+    <string name="move_or_copy_action">Siirrä tai kopioi</string>
+    <string name="single_message_options_action">Viestin asetukset</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>
     <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->
@@ -142,14 +148,16 @@ http://k9mail.googlecode.com/
 
     <string name="accounts_action">Tilit</string>
     <string name="mark_as_read_action">Merkitse luetuksi</string>
+    <string name="read_toggle_action">Vaihda lukemattomaksi/luetuksi</string>
     <string name="send_alternate_action">Jaa</string>
     <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
 
-    <string name="mark_all_as_read_dlg_title">Merkitse kaikki viestit luetuksi</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Merkitäänkö kaikki viestit kansiossa \'<xliff:g id="folder">%s</xliff:g>\' luetuksi? (myös
+    <string name="mark_all_as_read_dlg_title">Merkitse kaikki viestit luetuiksi</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Merkitäänkö kaikki viestit kansiossa \'<xliff:g id="folder">%s</xliff:g>\' luetuiksi? (myös
       viestit, jotka ovat kansioissa, joita ei näytetä K-9:ssä)</string>
 
     <string name="flag_action">Lisää tähti</string>
+    <string name="flag_toggle_action">Poista/lisää tähti</string>
     <string name="unflag_action">Poista tähti</string>
     <string name="copy_action">Kopio</string>
     <string name="show_full_header_action">Näytä täydet otsikkotiedot</string>
@@ -323,7 +331,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_delete">Poista (vain viestinäkymässä)</string>
     <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (vain viestinäkymässä)</string>
     <string name="global_settings_confirm_action_spam">Roskaposti</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Merkitse kaikki luetuksi</string>
+    <string name="global_settings_confirm_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
     <string name="global_settings_confirm_action_send">Lähetä</string>
 
     <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
