@@ -39,6 +39,8 @@
         <attr name="iconMenuSearch" format="reference" />
         <attr name="iconMenuSelectAll" format="reference" />
         <attr name="iconMenuShowFolders" format="reference" />
+        <attr name="textColorPrimaryRecipientDropdown" format="reference" />
+        <attr name="textColorSecondaryRecipientDropdown" format="reference" />
     </declare-styleable>
 
 </resources>
