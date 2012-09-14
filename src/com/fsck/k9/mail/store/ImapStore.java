@@ -1138,14 +1138,12 @@ public class ImapStore extends Store {
                 String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
-                mConnection.sendCommand(String.format("UID COPY %s %s",
+                List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
                                                       Utility.combine(uids, ','),
-                                                      remoteDestName), false);
-                ImapResponse response;
-                do {
-                    response = mConnection.readResponse();
-                    handleUntaggedResponse(response);
-                } while (response.mTag == null);
+                                                      remoteDestName));
+
+                // Get the tagged response for the UID COPY command
+                ImapResponse response = responses.get(responses.size() - 1);
 
                 Map<String, String> uidMap = null;
                 if (response.size() > 1) {
@@ -2659,7 +2657,7 @@ public class ImapStore extends Store {
 
         public List<ImapResponse> executeSimpleCommand(String command) throws IOException,
             ImapException, MessagingException {
-            return executeSimpleCommand(command, false);
+            return executeSimpleCommand(command, false, null);
         }
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
