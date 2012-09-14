@@ -456,8 +456,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-	super.onPostCreate(savedInstanceState);
-	setSupportProgressBarIndeterminateVisibility(false);
+        super.onPostCreate(savedInstanceState);
+        setSupportProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -743,11 +743,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             }
-
-            /*
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "action = " + action + ", account = " + mMessageReference.accountUuid + ", folder = " + mMessageReference.folderName + ", sourceMessageUid = " + mMessageReference.uid);
-            */
 
             updateTitle();
         }
@@ -1689,6 +1684,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void sendMessage() {
         new SendMessageTask().execute();
     }
+
     private void saveMessage() {
         new SaveMessageTask().execute();
     }
@@ -1811,6 +1807,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
         toast.show();
     }
+
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
@@ -3023,6 +3020,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
+
     /**
      * <p>Find the start and end positions of the HTML in the string. This should be the very top
      * and bottom of the displayable message. It returns a {@link InsertableHtmlContent}, which
