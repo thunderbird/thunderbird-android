@@ -881,9 +881,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Mail-visning</string>
     <string name="volume_navigation_list">Diverse listevisninger</string>
 
-    <string name="manage_back_title">Håndter \"Tilbageknap\"</string>
-    <string name="manage_back_summary">\"Tilbageknap\" går altid et niveau op</string>
-
     <string name="start_integrated_inbox_title">Start i fælles indbakke</string>
     <string name="start_integrated_inbox_summary">Vis indhold af fælles indbakke ved opstart</string>
 

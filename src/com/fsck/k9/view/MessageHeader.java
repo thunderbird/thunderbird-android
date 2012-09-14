@@ -25,6 +25,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -57,6 +58,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
+    private View mForwardedIcon;
     private Message mMessage;
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -90,6 +92,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
     private void initializeLayout() {
         mAnsweredIcon = findViewById(R.id.answered);
+        mForwardedIcon= findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
         mCcView = (TextView) findViewById(R.id.cc);
@@ -113,6 +116,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         hideAdditionalHeaders();
 
         mAnsweredIcon.setVisibility(View.GONE);
+        mForwardedIcon.setVisibility(View.GONE);
+
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
@@ -234,8 +239,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAccount = account;
 
         initializeLayout();
-        String subject = message.getSubject();
-        if (subject == null || subject.equals("")) {
+        final String subject = message.getSubject();
+        if (StringUtils.isNullOrEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
         } else {
             mSubjectView.setText(subject);
@@ -256,6 +261,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mCcContainerView.setVisibility((cc != null && cc.length() > 0) ? View.VISIBLE : View.GONE);
         mCcView.setText(cc);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
+        mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
         int chipColor = mAccount.getChipColor();
@@ -423,5 +429,12 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         if (mOnLayoutChangedListener != null) {
             mOnLayoutChangedListener.onLayoutChanged();
         }
+    }
+
+    /**
+     * The subject line defaults to GONE.  Make it visible.
+     */
+    public void showSubjectLine() {
+        mSubjectView.setVisibility(VISIBLE);
     }
 }

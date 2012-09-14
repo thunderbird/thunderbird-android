@@ -878,9 +878,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Προβολή μηνύματος</string>
     <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
 
-    <string name="manage_back_title">Λειτουργία πλήκτρου \'Πίσω\'</string>
-    <string name="manage_back_summary">Το πλήκτρο \'Πίσω\' να ανεβαίνει ένα επίπεδο πάνω</string>
-
     <string name="start_integrated_inbox_title">Εκκίνηση στα ενιαία εισερχόμενα</string>
     <string name="start_integrated_inbox_summary">Προβολή των \'Ενιαίων Εισερχόμενων\' κατά την εκκίνηση</string>
 

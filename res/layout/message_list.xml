@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/message_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -12,5 +12,4 @@
         android:layout_weight="5"
 
     />
-    <include layout="@layout/message_list_batch_buttons"/>
 </LinearLayout>

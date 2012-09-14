@@ -1,5 +1,10 @@
 package com.fsck.k9.activity;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,29 +13,40 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.*;
+import android.view.GestureDetector;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
-import com.fsck.k9.*;
+import android.widget.Toast;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.view.AttachmentView;
-import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
-
-import java.io.File;
-import java.util.*;
+import com.fsck.k9.view.MessageTitleView;
+import com.fsck.k9.view.SingleMessageView;
 
 public class MessageView extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
-    private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
     private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
     private static final String STATE_PGP_DATA = "pgpData";
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -38,15 +54,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
     private SingleMessageView mMessageView;
+    private MessageTitleView mTitleView;
 
     private PgpData mPgpData;
-
-    private View mNext;
-    private View mPrevious;
-    private View mDelete;
-    private View mArchive;
-    private View mMove;
-    private View mSpam;
+    private Menu mMenu;
     private Account mAccount;
     private MessageReference mMessageReference;
     private ArrayList<MessageReference> mMessageReferences;
@@ -234,24 +245,12 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            if (mMessageListExtras != null) {
-                MessageList.actionHandleFolder(this, mMessageListExtras);
-            }
-            finish();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
     class MessageViewHandler extends Handler {
 
         public void progress(final boolean progress) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(progress);
+                    setSupportProgressBarIndeterminateVisibility(progress);
                 }
             });
         }
@@ -290,10 +289,10 @@ public class MessageView extends K9Activity implements OnClickListener {
     public static void actionView(Context context, MessageReference messRef,
             ArrayList<MessageReference> messReferences, Bundle messageListExtras) {
         Intent i = new Intent(context, MessageView.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra(EXTRA_MESSAGE_LIST_EXTRAS, messageListExtras);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
 
@@ -301,7 +300,6 @@ public class MessageView extends K9Activity implements OnClickListener {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.message_view);
 
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
@@ -334,6 +332,8 @@ public class MessageView extends K9Activity implements OnClickListener {
         });
 
         mMessageView.initialize(this);
+        mMessageView.downloadRemainderButton().setOnClickListener(this);
+        initializeActionBar();
 
         setTitle("");
         final Intent intent = getIntent();
@@ -383,49 +383,12 @@ public class MessageView extends K9Activity implements OnClickListener {
         }
 
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
-        if (intent.getBooleanExtra(EXTRA_NEXT, false)) {
-            mNext.requestFocus();
-        }
-
         mScreenWidthInPixels = getResources().getDisplayMetrics().widthPixels;
 
         // Enable gesture detection for MessageViews
         mGestureDetector = new GestureDetector(new MyGestureDetector(false));
 
-        setupButtonViews();
         displayMessage(mMessageReference);
-    }
-
-    private void setupButtonViews() {
-        setOnClickListener(R.id.from);
-        setOnClickListener(R.id.reply);
-        setOnClickListener(R.id.reply_all);
-        setOnClickListener(R.id.delete);
-        setOnClickListener(R.id.forward);
-        setOnClickListener(R.id.next);
-        setOnClickListener(R.id.previous);
-        setOnClickListener(R.id.archive);
-        setOnClickListener(R.id.move);
-        setOnClickListener(R.id.spam);
-        setOnClickListener(R.id.download_remainder);
-
-
-        mNext = findViewById(R.id.next);
-        mPrevious = findViewById(R.id.previous);
-        mDelete = findViewById(R.id.delete);
-
-        mArchive = findViewById(R.id.archive);
-        mMove = findViewById(R.id.move);
-        mSpam = findViewById(R.id.spam);
-
-        if (!mAccount.getEnableMoveButtons()) {
-            View buttons = findViewById(R.id.move_buttons);
-            buttons.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -443,6 +406,18 @@ public class MessageView extends K9Activity implements OnClickListener {
         mMessageView.updateCryptoLayout(mAccount.getCryptoProvider(), mPgpData, mMessage);
     }
 
+    private void initializeActionBar() {
+        final ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.actionbar_message_view);
+
+        final View customView = actionBar.getCustomView();
+        mTitleView = (MessageTitleView) customView.findViewById(android.R.id.title);
+        mTitleView.setMessageHeader(mMessageView.getMessageHeaderView());
+    }
+
     private void displayMessage(MessageReference ref) {
         mMessageReference = ref;
         if (K9.DEBUG)
@@ -457,46 +432,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         mMessageView.resetHeaderView();
 
         mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
-        setupDisplayMessageButtons();
-    }
-
-    private void setupDisplayMessageButtons() {
-        mDelete.setEnabled(true);
-        mNext.setEnabled(mNextMessage != null);
-        mPrevious.setEnabled(mPreviousMessage != null);
-        // If moving isn't support at all, then all of them must be disabled anyway.
-        if (mController.isMoveCapable(mAccount)) {
-            // Only enable the button if they have an archive folder and it's not the current folder.
-            mArchive.setEnabled(!mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
-                                mAccount.hasArchiveFolder());
-            // Only enable the button if the Spam folder is not the current folder and not NONE.
-            mSpam.setEnabled(!mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
-                             mAccount.hasSpamFolder());
-            mMove.setEnabled(true);
-        } else {
-            disableMoveButtons();
-        }
-    }
-
-    private void disableButtons() {
-        mMessageView.setLoadPictures(false);
-        disableMoveButtons();
-        mNext.setEnabled(false);
-        mPrevious.setEnabled(false);
-        mDelete.setEnabled(false);
-    }
-
-    private void disableMoveButtons() {
-        mArchive.setEnabled(false);
-        mMove.setEnabled(false);
-        mSpam.setEnabled(false);
-    }
-
-    private void setOnClickListener(int viewCode) {
-        View thisView = findViewById(viewCode);
-        if (thisView != null) {
-            thisView.setOnClickListener(this);
-        }
+        configureMenu(mMenu);
     }
 
     private void findSurroundingMessagesUid() {
@@ -547,7 +483,7 @@ public class MessageView extends K9Activity implements OnClickListener {
         if (mMessage != null) {
             // Disable the delete button after it's tapped (to try to prevent
             // accidental clicks)
-            disableButtons();
+            mMenu.findItem(R.id.delete).setEnabled(false);
             Message messageToDelete = mMessage;
             showNextMessageOrReturn();
             mController.deleteMessages(new Message[] {messageToDelete}, null);
@@ -755,12 +691,11 @@ public class MessageView extends K9Activity implements OnClickListener {
             return;
         }
         mLastDirection = NEXT;
-        disableButtons();
+        //toggleActionsState(mMenu, false);
         if (K9.showAnimations()) {
             mMessageView.startAnimation(outToLeftAnimation());
         }
         displayMessage(mNextMessage);
-        mNext.requestFocus();
     }
 
     protected void onPrevious() {
@@ -770,12 +705,11 @@ public class MessageView extends K9Activity implements OnClickListener {
             return;
         }
         mLastDirection = PREVIOUS;
-        disableButtons();
+        //toggleActionsState(mMenu, false);
         if (K9.showAnimations()) {
             mMessageView.startAnimation(inFromRightAnimation());
         }
         displayMessage(mPreviousMessage);
-        mPrevious.requestFocus();
     }
 
     private void onToggleRead() {
@@ -785,6 +719,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             setTitle(subject);
+            updateUnreadToggleTitle();
         }
     }
 
@@ -799,33 +734,6 @@ public class MessageView extends K9Activity implements OnClickListener {
 
     public void onClick(View view) {
         switch (view.getId()) {
-        case R.id.reply:
-            onReply();
-            break;
-        case R.id.reply_all:
-            onReplyAll();
-            break;
-        case R.id.delete:
-            onDelete();
-            break;
-        case R.id.forward:
-            onForward();
-            break;
-        case R.id.archive:
-            onRefile(mAccount.getArchiveFolderName());
-            break;
-        case R.id.spam:
-            onRefile(mAccount.getSpamFolderName());
-            break;
-        case R.id.move:
-            onMove();
-            break;
-        case R.id.next:
-            onNext();
-            break;
-        case R.id.previous:
-            onPrevious();
-            break;
         case R.id.download:
             ((AttachmentView)view).saveFile();
             break;
@@ -838,6 +746,15 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case android.R.id.home:
+            finish();
+            break;
+        case R.id.next_message:
+            onNext();
+            break;
+        case R.id.previous_message:
+            onPrevious();
+            break;
         case R.id.delete:
             onDelete();
             break;
@@ -850,14 +767,11 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.forward:
             onForward();
             break;
-        case R.id.send_alternate:
+        case R.id.share:
             onSendAlternate();
             break;
-        case R.id.mark_as_unread:
+        case R.id.toggle_unread:
             onToggleRead();
-            break;
-        case R.id.flag:
-            onFlag();
             break;
         case R.id.archive:
             onRefile(mAccount.getArchiveFolderName());
@@ -871,14 +785,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         case R.id.copy:
             onCopy();
             break;
-        case R.id.show_full_header:
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mMessageView.showAllHeaders();
-                }
-            });
-            break;
         case R.id.select_text:
             mMessageView.beginSelectingText();
             break;
@@ -891,22 +797,91 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_view_option, menu);
-        if (!mController.isCopyCapable(mAccount)) {
-            menu.findItem(R.id.copy).setVisible(false);
+        getSupportMenuInflater().inflate(R.menu.message_view_option, menu);
+        mMenu = menu;
+        configureMenu(menu);
+        return true;
+    }
+
+    private void configureMenu(Menu menu) {
+        // first run displayMessage() gets called before onCreateOptionMenu()
+        if (menu == null) {
+            return;
         }
-        if (!mController.isMoveCapable(mAccount)) {
+
+        // enable them all
+        menu.findItem(R.id.copy).setVisible(true);
+        menu.findItem(R.id.move).setVisible(true);
+        menu.findItem(R.id.archive).setVisible(true);
+        menu.findItem(R.id.spam).setVisible(true);
+        toggleActionsState(menu, true);
+
+        if (mNextMessage != null) {
+
+            menu.findItem(R.id.next_message).setEnabled(true);
+            menu.findItem(R.id.next_message).getIcon().setAlpha(255);
+        } else {
+            menu.findItem(R.id.next_message).getIcon().setAlpha(127);
+            menu.findItem(R.id.next_message).setEnabled(false);
+        }
+
+        if (mPreviousMessage != null) {
+            menu.findItem(R.id.previous_message).setEnabled(true);
+            menu.findItem(R.id.previous_message).getIcon().setAlpha(255);
+        } else {
+            menu.findItem(R.id.previous_message).getIcon().setAlpha(127);
+            menu.findItem(R.id.previous_message).setEnabled(false);
+        }
+
+        updateUnreadToggleTitle();
+
+        // comply with the setting
+        if (!mAccount.getEnableMoveButtons()) {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
+        } else {
+            // check message, folder capability
+            if (!mController.isCopyCapable(mAccount)) {
+                menu.findItem(R.id.copy).setVisible(false);
+            }
+
+            if (mController.isMoveCapable(mAccount)) {
+                menu.findItem(R.id.move).setVisible(true);
+
+                menu.findItem(R.id.archive).setVisible(
+                    !mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
+                        && mAccount.hasArchiveFolder());
+
+                menu.findItem(R.id.spam).setVisible(
+                    !mMessageReference.folderName.equals(mAccount.getSpamFolderName())
+                        && mAccount.hasSpamFolder());
+            } else {
+                menu.findItem(R.id.copy).setVisible(false);
+                menu.findItem(R.id.move).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
+            }
         }
-        if (!mAccount.hasArchiveFolder()) {
-            menu.findItem(R.id.archive).setVisible(false);
+    }
+
+    /**
+     * Set the title of the "Toggle Unread" menu item based upon the current read state of the message.
+     */
+    public void updateUnreadToggleTitle() {
+        if (mMessage != null && mMenu != null) {
+            if (mMessage.isSet(Flag.SEEN)) {
+                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
+            } else {
+                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
+            }
         }
-        if (!mAccount.hasSpamFolder()) {
-            menu.findItem(R.id.spam).setVisible(false);
+    }
+
+    private void toggleActionsState(Menu menu, boolean state) {
+        for (int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).setEnabled(state);
         }
-        return true;
     }
 
     // TODO: when switching to API version 8, override onCreateDialog(int, Bundle)
@@ -953,28 +928,6 @@ public class MessageView extends K9Activity implements OnClickListener {
         return super.onCreateDialog(id);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (menu != null) {
-            MenuItem flagItem = menu.findItem(R.id.flag);
-            if (flagItem != null && mMessage != null) {
-                flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
-            }
-            MenuItem additionalHeadersItem = menu.findItem(R.id.show_full_header);
-            if (additionalHeadersItem != null) {
-                additionalHeadersItem.setTitle(mMessageView.additionalHeadersVisible() ?
-                                               R.string.hide_full_header_action : R.string.show_full_header_action);
-            }
-
-            if (mMessage != null) {
-                int actionTitle = mMessage.isSet(Flag.SEEN) ?
-                        R.string.mark_as_unread_action : R.string.mark_as_read_action;
-                menu.findItem(R.id.mark_as_unread).setTitle(actionTitle);
-            }
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     class Listener extends MessagingListener {
         @Override
         public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
@@ -1006,6 +959,12 @@ public class MessageView extends K9Activity implements OnClickListener {
                         mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
+                    final String subject = clonedMessage.getSubject();
+                    if (subject == null || subject.equals("")) {
+                        setTitle(getString(R.string.general_no_subject));
+                    } else {
+                        setTitle(clonedMessage.getSubject());
+                    }
                     mMessageView.setOnFlagListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1032,6 +991,7 @@ public class MessageView extends K9Activity implements OnClickListener {
                         mMessage = message;
                         mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
                                 mController, mListener);
+                        updateUnreadToggleTitle();
 
                     } catch (MessagingException e) {
                         Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
@@ -1048,7 +1008,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(false);
+                    setSupportProgressBarIndeterminateVisibility(false);
                     if (t instanceof IllegalArgumentException) {
                         mHandler.invalidIdError();
                     } else {
@@ -1070,7 +1030,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(false);
+                    setSupportProgressBarIndeterminateVisibility(false);
                     mMessageView.setShowDownloadButton(message);
                 }
             });
@@ -1084,7 +1044,7 @@ public class MessageView extends K9Activity implements OnClickListener {
             }
             mHandler.post(new Runnable() {
                 public void run() {
-                    setProgressBarIndeterminateVisibility(true);
+                    setSupportProgressBarIndeterminateVisibility(true);
                 }
             });
         }
@@ -1152,5 +1112,15 @@ public class MessageView extends K9Activity implements OnClickListener {
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
+    }
+
+    /**
+     * Set the title of the view.  Since we're using a custom ActionBar view, the normal setTitle() doesn't do what we
+     * think.  This version sets the text value into the proper ActionBar title view.
+     * @param title Title to set.
+     */
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitleView.setText(title);
     }
 }

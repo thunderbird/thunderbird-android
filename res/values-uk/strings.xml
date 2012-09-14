@@ -880,9 +880,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Перегляд повідомлень</string>
     <string name="volume_navigation_list">Різноманітні списки елементів</string>
 
-    <string name="manage_back_title">Управління кнопкою „Назад“</string>
-    <string name="manage_back_summary">„Назад“ завжди повертає на рівень вгору</string>
-
     <string name="start_integrated_inbox_title">При запуску відкривати спільну папку „Вхідні“</string>
     <string name="start_integrated_inbox_summary">Показати спільну папку „Вхідні“ після запуску</string>
 

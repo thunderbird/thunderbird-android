@@ -910,9 +910,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Wygląd wiadomości</string>
     <string name="volume_navigation_list">Różne widoki list</string>
 
-    <string name="manage_back_title">Przycisk \"Cofnij\"</string>
-    <string name="manage_back_summary">Przycisk \"Cofnij\" zawsze cofa o jeden poziom wyżej</string>
-
     <string name="start_integrated_inbox_title">Pokaż zintegrowaną</string>
     <string name="start_integrated_inbox_summary">Wyświetl \"Zintegrowana odbiorcza\" po uruchomieniu programu</string>
 

@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
@@ -9,28 +10,27 @@ public class ColorChip {
 
     static {
 
-        CHIP_PATH.lineTo(6, 0);
-
-        CHIP_PATH.cubicTo(8f, 0f, 10f, 0f, 10f, 2f);
-        CHIP_PATH.lineTo(10, 8);
-        CHIP_PATH.cubicTo(10f, 9f, 10f, 10f, 6f, 10f);
-        CHIP_PATH.lineTo(0, 10);
+        CHIP_PATH.addCircle(8,8,7f,Path.Direction.CW);
         CHIP_PATH.close();
     }
 
 
     private ShapeDrawable mDrawable;
 
-    public ColorChip(int color) {
+    public ColorChip(int color, boolean messageRead) {
 
-        mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 10, 10));
+        mDrawable = new ShapeDrawable(new PathShape(CHIP_PATH, 16f, 16f));
+        mDrawable.getPaint().setStrokeWidth(2);
+        if (messageRead) {
+            // Read messages get an outlined circle
+            mDrawable.getPaint().setStyle(Paint.Style.STROKE);
+        }
         mDrawable.getPaint().setColor(color);
 
 
     }
 
     public ShapeDrawable drawable() {
-
         return mDrawable;
     }
 

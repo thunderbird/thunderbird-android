@@ -875,9 +875,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="volume_navigation_message">メッセージ表示</string>
     <string name="volume_navigation_list">各種一覧表示</string>
 
-    <string name="manage_back_title">\"戻る\" ボタンの制御</string>
-    <string name="manage_back_summary">\"戻る\" ボタンで常に一つ前に戻る</string>
-
     <string name="start_integrated_inbox_title">統合フォルダで始める</string>
     <string name="start_integrated_inbox_summary">起動後に統合フォルダを表示する</string>
 

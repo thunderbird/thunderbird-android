@@ -869,9 +869,6 @@
     <string name="volume_navigation_message">信息视图</string>
     <string name="volume_navigation_list">不同的列表视图</string>
 
-    <string name="manage_back_title">管理“返回”按钮</string>
-    <string name="manage_back_summary">每次点击“返回”按钮时都向上返回一个层次</string>
-
     <string name="start_integrated_inbox_title">从全局收件箱启动</string>
     <string name="start_integrated_inbox_summary">启动后显示全局收件箱</string>
 

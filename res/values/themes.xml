@@ -1,12 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.K9.Light" parent="android:Theme.Light">
-        <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+    <style name="Theme.K9.Light.Base" parent="Theme.Sherlock.Light">
+        <item name="iconFolder">@drawable/folder_light</item>
+        <item name="listDivider">@drawable/divider_light</item>
+        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_light</item>
+        <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
+        <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_light</item>
+        <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bbc_light</item>
+        <item name="iconActionArchive">@drawable/ic_action_archive_light</item>
+        <item name="iconActionCompose">@drawable/ic_action_compose_light</item>
+        <item name="iconActionDelete">@drawable/ic_action_delete_light</item>
+        <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_light</item>
+        <item name="iconActionNextMessage">@drawable/ic_action_next_message_light</item>
+        <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_light</item>
+        <item name="iconActionRefresh">@drawable/ic_action_refresh_light</item>
+        <item name="iconActionSearch">@drawable/ic_action_search_light</item>
+        <item name="iconActionSend">@drawable/ic_action_send_light</item>
+        <item name="iconActionSettings">@drawable/ic_action_settings_light</item>
+        <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_light</item>
+        <item name="iconActionSort">@drawable/ic_action_sort_light</item>
+        <item name="iconActionSpam">@drawable/ic_action_spam_light</item>
+        <item name="iconActionFlag">@drawable/ic_action_flag_light</item>
+        <item name="iconActionUnflag">@drawable/ic_action_unflag_light</item>
+        <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_light</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_light</item>
+        <item name="iconMenuAdd">@drawable/ic_menu_add</item>
+        <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
+        <item name="iconMenuClear">@drawable/ic_menu_clear</item>
+        <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
+        <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
+        <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
+        <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
+        <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
+        <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
+        <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
+        <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
+        <item name="iconMenuSearch">@drawable/ic_menu_search</item>
+        <item name="iconMenuSelectAll">@drawable/ic_menu_select_all</item>
+        <item name="iconMenuShowFolders">@drawable/ic_show_folders</item>
+        <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
+        <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
     </style>
 
-    <style name="Theme.K9.Dark" parent="@android:style/Theme">
+    <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
+        <item name="iconFolder">@drawable/folder_dark</item>
+        <item name="listDivider">@drawable/divider_dark</item>
+        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
+        <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
+        <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_dark</item>
+        <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bcc_dark</item>
+        <item name="iconActionArchive">@drawable/ic_action_archive_dark</item>
+        <item name="iconActionCompose">@drawable/ic_action_compose_dark</item>
+        <item name="iconActionDelete">@drawable/ic_action_delete_dark</item>
+        <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_dark</item>
+        <item name="iconActionNextMessage">@drawable/ic_action_next_message_dark</item>
+        <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_dark</item>
+        <item name="iconActionRefresh">@drawable/ic_action_refresh_dark</item>
+        <item name="iconActionSearch">@drawable/ic_action_search_dark</item>
+        <item name="iconActionSend">@drawable/ic_action_send_dark</item>
+        <item name="iconActionSettings">@drawable/ic_action_settings_dark</item>
+        <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_dark</item>
+        <item name="iconActionSort">@drawable/ic_action_sort_dark</item>
+        <item name="iconActionSpam">@drawable/ic_action_spam_dark</item>
+        <item name="iconActionFlag">@drawable/ic_action_flag_light</item>
+        <item name="iconActionUnflag">@drawable/ic_action_unflag_light</item>
+        <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_light</item>
+        <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_light</item>
+        <item name="iconMenuAdd">@drawable/ic_menu_add</item>
+        <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
+        <item name="iconMenuClear">@drawable/ic_menu_clear</item>
+        <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
+        <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
+        <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
+        <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
+        <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
+        <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
+        <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
+        <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
+        <item name="iconMenuSearch">@drawable/ic_menu_search</item>
+        <item name="iconMenuSelectAll">@drawable/ic_menu_select_all</item>
+        <item name="iconMenuShowFolders">@drawable/ic_show_folders</item>
+        <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
+        <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
+    </style>
+
+    <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">
+    </style>
+
+    <!-- Work around some oddities -->
+    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
         <item name="android:autoCompleteTextViewStyle">@style/Widget.K9.AutoCompleteTextView</item>
+        <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
+        <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
     </style>
 
 </resources>

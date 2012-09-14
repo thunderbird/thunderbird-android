@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="K9Styles">
+        <attr name="iconFolder" format="reference" />
+        <attr name="listDivider" format="reference" />
+        <attr name="iconListItemMenu" format="reference" />
+        <attr name="iconMenuInfoDetails" format="reference" />
+        <attr name="iconActionAddAttachment" format="reference" />
+        <attr name="iconActionAddCcBcc" format="reference" />
+        <attr name="iconActionArchive" format="reference" />
+        <attr name="iconActionCompose" format="reference" />
+        <attr name="iconActionDelete" format="reference" />
+        <attr name="iconActionMoveOrCopy" format="reference" />
+        <attr name="iconActionNextMessage" format="reference" />
+        <attr name="iconActionPreviousMessage" format="reference" />
+        <attr name="iconActionRefresh" format="reference" />
+        <attr name="iconActionSearch" format="reference" />
+        <attr name="iconActionSend" format="reference" />
+        <attr name="iconActionSettings" format="reference" />
+        <attr name="iconActionSingleMessageOptions" format="reference" />
+        <attr name="iconActionSort" format="reference" />
+        <attr name="iconActionSpam" format="reference" />
+        <attr name="iconActionFlag" format="reference" />
+        <attr name="iconActionUnflag" format="reference" />
+        <attr name="iconActionMarkAsRead" format="reference" />
+        <attr name="iconActionMarkAsUnread" format="reference" />
+        <attr name="iconMenuAdd" format="reference" />
+        <attr name="iconMenuAttachment" format="reference" />
+        <attr name="iconMenuClear" format="reference" />
+        <attr name="iconMenuCloseClearCancel" format="reference" />
+        <attr name="iconMenuCompact" format="reference" />
+        <attr name="iconMenuDelete" format="reference" />
+        <attr name="iconMenuInbox" format="reference" />
+        <attr name="iconMenuPreferences" format="reference" />
+        <attr name="iconMenuRefresh" format="reference" />
+        <attr name="iconMenuReplyReceipt" format="reference" />
+        <attr name="iconMenuSaveDraft" format="reference" />
+        <attr name="iconMenuSearch" format="reference" />
+        <attr name="iconMenuSelectAll" format="reference" />
+        <attr name="iconMenuShowFolders" format="reference" />
+        <attr name="textColorPrimaryRecipientDropdown" format="reference" />
+        <attr name="textColorSecondaryRecipientDropdown" format="reference" />
+    </declare-styleable>
+
+</resources>

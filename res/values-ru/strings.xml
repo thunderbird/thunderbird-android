@@ -874,9 +874,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Сообщение</string>
     <string name="volume_navigation_list">Различные списки элементов</string>
 
-    <string name="manage_back_title">Использовать кнопку \"Назад\"</string>
-    <string name="manage_back_summary">\"Назад\" всегда возвращает на уровень вверх</string>
-
     <string name="start_integrated_inbox_title">Входить в общий ящик при запуске</string>
     <string name="start_integrated_inbox_summary">Показать общий ящик сообщений после запуска</string>
 

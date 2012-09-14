@@ -8,6 +8,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
@@ -15,7 +16,6 @@ import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1039,19 +1039,34 @@ public class MimeUtility {
                      * determine the charset from HTML message.
                      */
                     if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
-                        InputStreamReader in = new InputStreamReader(part.getBody().getInputStream(),
-                                "US-ASCII");
-                        char[] buf = new char[256];
-                        in.read(buf, 0, buf.length);
-                        String str = new String(buf);
+                        InputStream in = part.getBody().getInputStream();
+                        try {
+                            byte[] buf = new byte[256];
+                            in.read(buf, 0, buf.length);
+                            String str = new String(buf, "US-ASCII");
 
-                        if (str.length() == 0) {
-                            return "";
-                        }
-                        Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
-                        Matcher m = p.matcher(str);
-                        if (m.find()) {
-                            charset = m.group(1);
+                            if (str.length() == 0) {
+                                return "";
+                            }
+                            Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
+                            Matcher m = p.matcher(str);
+                            if (m.find()) {
+                                charset = m.group(1);
+                            }
+                        } finally {
+                            try {
+                                if (in instanceof BinaryTempFileBodyInputStream) {
+                                    /*
+                                     * If this is a BinaryTempFileBodyInputStream, calling close()
+                                     * will delete the file. But we can't let that happen because
+                                     * the file needs to be opened again by the code a few lines
+                                     * down.
+                                     */
+                                    ((BinaryTempFileBodyInputStream) in).closeWithoutDeleting();
+                                } else {
+                                    in.close();
+                                }
+                            } catch (Exception e) { /* ignore */ }
                         }
                     }
                     charset = fixupCharset(charset, getMessageFromPart(part));
@@ -1061,7 +1076,23 @@ public class MimeUtility {
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
                     InputStream in = part.getBody().getInputStream();
-                    return readToString(in, charset);
+                    try {
+                        String text = readToString(in, charset);
+
+                        // Replace the body with a TextBody that already contains the decoded text
+                        part.setBody(new TextBody(text));
+
+                        return text;
+                    } finally {
+                        try {
+                            /*
+                             * This time we don't care if it's a BinaryTempFileBodyInputStream. We
+                             * replaced the body with a TextBody instance and hence don't need the
+                             * file anymore.
+                             */
+                            in.close();
+                        } catch (IOException e) { /* Ignore */ }
+                    }
                 }
             }
 

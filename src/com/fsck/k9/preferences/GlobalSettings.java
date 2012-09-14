@@ -57,9 +57,6 @@ public class GlobalSettings {
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
             ));
-        s.put("confirmMarkAllAsRead", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("confirmSpam", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -140,9 +137,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
             ));
-        s.put("manageBack", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("measureAccounts", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));
@@ -154,9 +148,6 @@ public class GlobalSettings {
             ));
         s.put("messageListStars", Settings.versions(
                 new V(1, new BooleanSetting(true))
-            ));
-        s.put("messageListTouchable", Settings.versions(
-                new V(1, new BooleanSetting(false))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))

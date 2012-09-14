@@ -22,13 +22,14 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
@@ -282,6 +283,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String mReferences;
     private String mInReplyTo;
+    private Menu mMenu;
 
     private boolean mSourceProcessed = false;
 
@@ -322,10 +324,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_PROGRESS_ON:
-                setProgressBarIndeterminateVisibility(true);
+                setSupportProgressBarIndeterminateVisibility(true);
                 break;
             case MSG_PROGRESS_OFF:
-                setProgressBarIndeterminateVisibility(false);
+                setSupportProgressBarIndeterminateVisibility(false);
                 break;
             case MSG_UPDATE_TITLE:
                 updateTitle();
@@ -446,6 +448,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         i.setAction(ACTION_EDIT_DRAFT);
         context.startActivity(i);
+    }
+
+    /*
+     * This is a workaround for an annoying ( temporarly? ) issue:
+     * https://github.com/JakeWharton/ActionBarSherlock/issues/449
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setSupportProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -732,11 +744,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
 
-            /*
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "action = " + action + ", account = " + mMessageReference.accountUuid + ", folder = " + mMessageReference.folderName + ", sourceMessageUid = " + mMessageReference.uid);
-            */
-
             updateTitle();
         }
 
@@ -753,6 +760,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mToView.requestFocus();
         }
 
+        if (mAction == Action.FORWARD) {
+            mMessageReference.flag = Flag.FORWARDED;
+        }
 
         mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
@@ -1075,6 +1085,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                  : View.GONE);
         mBccWrapper.setVisibility(savedInstanceState
                                   .getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
+
+        // This method is called after the action bar menu has already been created and prepared.
+        // So compute the visibility of the "Add Cc/Bcc" menu item again.
+        computeAddCcBccVisibility();
 
         showOrHideQuotedText(
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
@@ -1674,6 +1688,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void sendMessage() {
         new SendMessageTask().execute();
     }
+
     private void saveMessage() {
         new SaveMessageTask().execute();
     }
@@ -1780,6 +1795,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onAddCcBcc() {
         mCcWrapper.setVisibility(View.VISIBLE);
         mBccWrapper.setVisibility(View.VISIBLE);
+        computeAddCcBccVisibility();
+    }
+
+    /**
+     * Hide the 'Add Cc/Bcc' menu item when both fields are visible.
+     */
+    private void computeAddCcBccVisibility() {
+        if (mMenu != null && mCcWrapper.getVisibility() == View.VISIBLE &&
+                mBccWrapper.getVisibility() == View.VISIBLE) {
+            mMenu.findItem(R.id.add_cc_bcc).setVisible(false);
+        }
     }
 
     private void onReadReceipt() {
@@ -1795,6 +1821,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
         toast.show();
     }
+
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
@@ -2177,7 +2204,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_compose_option, menu);
+        getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        mMenu = menu;
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
@@ -2198,11 +2227,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        // Disable the 'Add Cc/Bcc' menu option when both fields are visible
-        if (mCcWrapper.getVisibility() == View.VISIBLE &&
-                mBccWrapper.getVisibility() == View.VISIBLE) {
-            menu.findItem(R.id.add_cc_bcc).setEnabled(false);
-        }
+        computeAddCcBccVisibility();
 
         return true;
     }
@@ -2524,6 +2549,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSubjectView.setText(subject);
         }
         mQuoteStyle = QuoteStyle.HEADER;
+
+        // "Be Like Thunderbird" - on forwarded messages, set the message ID
+        // of the forwarded message in the references and the reply to.  TB
+        // only includes ID of the message being forwarded in the reference,
+        // even if there are multiple references.
+        if (!StringUtils.isNullOrEmpty(message.getMessageId())) {
+            mInReplyTo = message.getMessageId();
+            mReferences = mInReplyTo;
+        } else {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "could not get Message-ID.");
+            }
+        }
 
         // Quote the message and setup the UI.
         populateUIWithQuotedMessage(true);
@@ -2992,6 +3030,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
+
     /**
      * <p>Find the start and end positions of the HTML in the string. This should be the very top
      * and bottom of the displayable message. It returns a {@link InsertableHtmlContent}, which

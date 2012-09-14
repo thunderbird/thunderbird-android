@@ -881,9 +881,6 @@ http://k9mail.googlecode.com/
     <string name="volume_navigation_message">Vista del missatge</string>
     <string name="volume_navigation_list">Vista de diverses de llistes</string>
 
-    <string name="manage_back_title">Gestiona botó d’\"Enrere\"</string>
-    <string name="manage_back_summary">Fes que \"Enrere\" faci anar un nivell amunt</string>
-
     <string name="start_integrated_inbox_title">Comença bústia unificada</string>
     <string name="start_integrated_inbox_summary">Mostra la bústia unificada després de començar</string>
 

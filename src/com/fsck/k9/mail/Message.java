@@ -52,9 +52,9 @@ public abstract class Message implements Part, Body {
             return false;
         }
         Message other = (Message)o;
-        return (mFolder.getName().equals(other.getFolder().getName())
-                && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid())
-                && mUid.equals(other.getUid()));
+        return (mUid.equals(other.getUid())
+                && mFolder.getName().equals(other.getFolder().getName())
+                && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid()));
     }
 
     @Override
