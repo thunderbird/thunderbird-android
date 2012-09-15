@@ -98,9 +98,6 @@ public class MessageWebView extends TitleBarWebView {
             // Black theme should get a black webview background
             // we'll set the background of the messages on load
             this.setBackgroundColor(0xff000000);
-        } else {
-            // multitoggle requires reset to white
-            this.setBackgroundColor(0xffffffff);
         }
 
         final WebSettings webSettings = this.getSettings();
