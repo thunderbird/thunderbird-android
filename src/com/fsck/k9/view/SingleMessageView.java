@@ -720,7 +720,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         showShowPicturesAction(false);
         mAttachments.removeAllViews();
         mHiddenAttachments.removeAllViews();
-
+        mMessageContentView.configure();
         /*
          * Clear the WebView content
          *
