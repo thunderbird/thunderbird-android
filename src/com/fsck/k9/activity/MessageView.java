@@ -303,6 +303,7 @@ public class MessageView extends K9Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        setTheme(K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.message_view);
 
@@ -623,7 +624,14 @@ public class MessageView extends K9Activity implements OnClickListener {
                 return null;
             }
         }.execute();
-        displayMessage(mMessageReference);
+
+        // restart the current activity, so that the theme change can be applied
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0); // disable animations to speed up the switch
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private void startRefileActivity(int activity) {
