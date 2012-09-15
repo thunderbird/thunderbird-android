@@ -1414,10 +1414,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         int itemId = item.getItemId();
         switch (itemId) {
         case android.R.id.home: {
-            if (mQueryString == null) {
-        onShowFolderList();
+            if (mIntegrate) {
+                // If we were in one of the integrated mailboxes (think All Mail or Integrated Inbox), then
+                // go to accounts.
+                onAccounts();
+            } else if (mQueryString != null) {
+                // We did a search of some sort.  Go back to wherever the user searched from.
+                onBackPressed();
             } else {
-        onAccounts();
+                // In a standard message list of a folder.  Go to folder list.
+                onShowFolderList();
             }
             return true;
         }
@@ -1426,8 +1432,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             return true;
         }
         case R.id.check_mail: {
-        checkMail(mAccount, mFolderName);
-        return true;
+            checkMail(mAccount, mFolderName);
+            return true;
         }
         case R.id.set_sort_date: {
             changeSort(SortType.SORT_DATE);
@@ -1457,9 +1463,10 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             changeSort(SortType.SORT_ATTACHMENT);
             return true;
         }
-        case R.id.select_all:
-        toggleAllSelected();
-        return true;
+        case R.id.select_all: {
+            toggleAllSelected();
+            return true;
+        }
         case R.id.app_settings: {
             onEditPrefs();
             return true;
