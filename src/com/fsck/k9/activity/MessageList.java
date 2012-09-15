@@ -1414,10 +1414,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         int itemId = item.getItemId();
         switch (itemId) {
         case android.R.id.home: {
-            if (mQueryString == null) {
-                onShowFolderList();
-            } else {
+            if (mIntegrate) {
+                // If we were in one of the integrated mailboxes (think All Mail or Integrated Inbox), then
+                // go to accounts.
                 onAccounts();
+            } else if (mQueryString != null) {
+                // We did a search of some sort.  Go back to wherever the user searched from.
+                onBackPressed();
+            } else {
+                // In a standard message list of a folder.  Go to folder list.
+                onShowFolderList();
             }
             return true;
         }
