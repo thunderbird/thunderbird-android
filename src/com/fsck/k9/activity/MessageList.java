@@ -1571,9 +1571,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         switch (itemId) {
         case android.R.id.home: {
             if (mQueryString == null) {
-        onShowFolderList();
+                onShowFolderList();
             } else {
-        onAccounts();
+                onAccounts();
             }
             return true;
         }
@@ -1582,8 +1582,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             return true;
         }
         case R.id.check_mail: {
-        checkMail(mAccount, mFolderName);
-        return true;
+            checkMail(mAccount, mFolderName);
+            return true;
         }
         case R.id.set_sort_date: {
             changeSort(SortType.SORT_DATE);
@@ -1613,9 +1613,10 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             changeSort(SortType.SORT_ATTACHMENT);
             return true;
         }
-        case R.id.select_all:
-        toggleAllSelected();
-        return true;
+        case R.id.select_all: {
+            toggleAllSelected();
+            return true;
+        }
         case R.id.app_settings: {
             onEditPrefs();
             return true;
