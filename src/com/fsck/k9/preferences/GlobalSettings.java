@@ -191,6 +191,9 @@ public class GlobalSettings {
         s.put("theme", Settings.versions(
                 new V(1, new ThemeSetting(K9.THEME_LIGHT))
             ));
+        s.put("messageViewTheme", Settings.versions(
+                new V(16, new ThemeSetting(K9.THEME_LIGHT))
+            ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
             ));

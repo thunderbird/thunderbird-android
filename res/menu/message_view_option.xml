@@ -72,4 +72,9 @@
         android:title="@string/select_text_action"
         android:showAsAction="never"
     />
+    <item
+        android:id="@+id/toggle_message_view_theme"
+        android:title="@string/message_view_theme_action_dark"
+        android:showAsAction="never"
+    />
 </menu>

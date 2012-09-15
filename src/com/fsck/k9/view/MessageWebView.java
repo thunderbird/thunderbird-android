@@ -94,10 +94,13 @@ public class MessageWebView extends TitleBarWebView {
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
         this.setLongClickable(true);
 
-        if (K9.getK9Theme() == K9.THEME_DARK) {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
             // Black theme should get a black webview background
             // we'll set the background of the messages on load
             this.setBackgroundColor(0xff000000);
+        } else {
+            // multitoggle requires reset to white
+            this.setBackgroundColor(0xffffffff);
         }
 
         final WebSettings webSettings = this.getSettings();
@@ -152,7 +155,7 @@ public class MessageWebView extends TitleBarWebView {
 
     public void setText(String text, String contentType) {
         String content = text;
-        if (K9.getK9Theme() == K9.THEME_DARK)  {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK)  {
             // It's a little wrong to just throw in the <style> before the opening <html>
             // but it's less wrong than trying to edit the html stream
             content = "<style>* { background: black ! important; color: white !important }" +
