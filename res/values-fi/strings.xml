@@ -164,8 +164,8 @@ http://k9mail.googlecode.com/
     <string name="hide_full_header_action">Piilota täydet otsikkotiedot</string>
     <string name="select_text_action">Valitse teksti</string>
 
-    <string name="message_view_theme_action_dark">Muuta tausta mustaksi</string>
-    <string name="message_view_theme_action_light">Muuta tausta valkoiseksi</string>
+    <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
+    <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
 
     <string name="mark_as_unread_action">Merkitse Lukemattomaksi</string>
     <string name="add_cc_bcc_action">Lisää kopio/piilokopio</string>
