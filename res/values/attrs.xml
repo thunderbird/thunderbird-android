@@ -41,6 +41,7 @@
         <attr name="iconMenuShowFolders" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
+        <attr name="backgroundColorChooseAccountHeader" format="color" />
     </declare-styleable>
 
 </resources>

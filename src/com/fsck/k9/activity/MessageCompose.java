@@ -2328,7 +2328,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             .create();
         case DIALOG_CHOOSE_IDENTITY:
             Context context = new ContextThemeWrapper(this,
-                    K9.getK9ThemeResourceId(K9.THEME_LIGHT));
+                    (K9.getK9Theme() == K9.THEME_LIGHT) ?
+                            R.style.Theme_K9_Dialog_Light :
+                            R.style.Theme_K9_Dialog_Dark);
             Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.send_as);
             final IdentityAdapter adapter = new IdentityAdapter(context);
