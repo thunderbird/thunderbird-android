@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.helper.BitmapSize;
 import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 
@@ -27,7 +28,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -2353,6 +2359,7 @@ public class LocalStore extends Store implements Serializable {
                         try {
                             long attachmentId = -1;
                             Uri contentUri = null;
+                            BitmapSize resizeSpec = null;
                             int size = -1;
                             File tempAttachmentFile = null;
 
@@ -2365,6 +2372,17 @@ public class LocalStore extends Store implements Serializable {
                                 Body body = attachment.getBody();
                                 if (body instanceof LocalAttachmentBody) {
                                     contentUri = ((LocalAttachmentBody) body).getContentUri();
+                                    resizeSpec = ((LocalAttachmentBody) body).getResizeSpec();
+                                    if (resizeSpec != null) { // resizing might be needed
+                                        tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
+                                        if (((LocalAttachmentBody) body).copyResizedTo(tempAttachmentFile)) {
+                                            size = (int) (tempAttachmentFile.length() & 0x7FFFFFFFL);
+                                        } else if (tempAttachmentFile != null) {
+                                            // resizing was not necessary, so we must delete the temporary file and fall back to the normal process
+                                            tempAttachmentFile.delete();
+                                            tempAttachmentFile = null;
+                                        }
+                                    }
                                 } else if (body instanceof Message) {
                                     // It's a message, so use Message.writeTo() to output the
                                     // message including all children.
@@ -3385,10 +3403,20 @@ public class LocalStore extends Store implements Serializable {
         private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
         private Application mApplication;
         private Uri mUri;
+        private BitmapSize mResizeSpec;
+        private boolean mWasResized; // will be set after a call to writeTo
+        private int mRotation;
 
         public LocalAttachmentBody(Uri uri, Application application) {
             mApplication = application;
             mUri = uri;
+            mResizeSpec = null;
+        }
+
+        public LocalAttachmentBody(Uri uri, BitmapSize resizeSpec, Application application) {
+            mApplication = application;
+            mUri = uri;
+            mResizeSpec = resizeSpec;
         }
 
         public InputStream getInputStream() throws MessagingException {
@@ -3404,6 +3432,8 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public void writeTo(OutputStream out) throws IOException, MessagingException {
+            if (mResizeSpec != null)
+                Log.e(K9.LOG_TAG,"LocalAttachmentBody.writeTo() called for an image that should be resized; copyResizedTo should have been called instead.",new Exception("copyResizedTo should have been called; image will not be resized."));
             InputStream in = getInputStream();
             Base64OutputStream base64Out = new Base64OutputStream(out);
             try {
@@ -3413,8 +3443,96 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
+        public boolean copyResizedTo(File outFile) throws IOException, MessagingException {
+          mWasResized = false; // reinitialize on each call of writeTo because this is actually an output parameter of writeTo.
+          if (mResizeSpec == null) return mWasResized;
+          InputStream in = getInputStream();
+          Bitmap image = null;
+          Bitmap scaledImage = null;
+          FileOutputStream out = null;
+          try {
+              out = new FileOutputStream(outFile);
+              image = BitmapFactory.decodeStream(in); // load the image;
+              BitmapSize bitmapSize = new BitmapSize(image.getWidth(),image.getHeight());
+              if (!bitmapSize.includedIn(mResizeSpec)) { // write only if resized
+                  int targetWidth = mResizeSpec.width;
+                  int targetHeight = mResizeSpec.height;
+                  if (!bitmapSize.isSameOrientationThan(mResizeSpec)) {
+                      targetWidth = mResizeSpec.height;
+                      targetHeight = mResizeSpec.width;
+                  }
+                  retrieveImageInformation();
+                  scaledImage = resizeImage(image, targetWidth, targetHeight, mRotation);
+                  scaledImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                  Log.v(K9.LOG_TAG,"Resized attachment " + mUri);
+                  mWasResized = true;
+              }
+          }
+          finally {
+              try {if (image != null) image.recycle();} catch (Exception e) { e.printStackTrace(); }
+              try {if (scaledImage != null) scaledImage.recycle();} catch (Exception e) { e.printStackTrace(); }
+              try {if (scaledImage != null) scaledImage.recycle();} catch (Exception e) { e.printStackTrace(); }
+              try {if (out != null) out.close();} catch (Exception e) { e.printStackTrace(); }
+              try {in.close();} catch (Exception e) { e.printStackTrace(); }
+          }
+          return mWasResized;
+      }
+
+        private Bitmap resizeImage(Bitmap image, int targetWidth, int targetHeight, int rotation) {
+            Bitmap scaledImage;
+            int imgWidth = image.getWidth();
+            int imgHeight = image.getHeight();
+    
+            // Constrain to given size but keep aspect ratio
+            float scaleFactor = Math.min(((float) targetWidth) / imgWidth, ((float) targetHeight) / imgHeight);
+            Log.d(K9.LOG_TAG,"Resizing image by factor " + scaleFactor);
+    
+            Matrix scale = new Matrix();
+            scale.postScale(scaleFactor, scaleFactor);
+            scale.postRotate(rotation);
+            scaledImage = Bitmap.createBitmap(image,0,0,imgWidth,imgHeight,scale,true);
+            return scaledImage;
+        }
+
+        final String[] mediaStoreFields = new String[] {MediaStore.Images.ImageColumns.ORIENTATION};
+        
+        private void retrieveImageInformation() {
+            // note: MediaStore.Images.ImageColumns.DATA can be used to retrieve full path name
+            Cursor cursor = mApplication.getContentResolver().query(mUri, mediaStoreFields, null, null, null);
+            try {
+                cursor.moveToFirst(); 
+                mRotation = cursor.getInt(0);
+                Log.d(K9.LOG_TAG,"Source image orientation (rotation in degrees) = " + mRotation);
+            }
+            finally {
+                cursor.close();
+            }
+        }
+        
+        private void setOrientation(File outFile) throws IOException {
+            ExifInterface exifOut = new ExifInterface(outFile.getAbsolutePath());
+            int orientation = ExifInterface.ORIENTATION_NORMAL;
+            switch (mRotation) {
+                case   0: orientation = ExifInterface.ORIENTATION_NORMAL; break;
+                case  90: orientation = ExifInterface.ORIENTATION_ROTATE_90; break;
+                case 180: orientation = ExifInterface.ORIENTATION_ROTATE_180; break;
+                case 270: orientation = ExifInterface.ORIENTATION_ROTATE_270; break;
+                default: Log.w(K9.LOG_TAG,"Invalid rotation value:" + mRotation + "; ignoring.");
+            }
+            Log.d(K9.LOG_TAG,"Output image orientation (exif tag) = " + orientation);
+            exifOut.setAttribute(ExifInterface.TAG_ORIENTATION,""+orientation);
+        }
+        
         public Uri getContentUri() {
             return mUri;
+        }
+
+        public BitmapSize getResizeSpec() {
+          return mResizeSpec;
+        }
+        
+        public boolean wasResized() {
+          return mWasResized;
         }
     }
 }
