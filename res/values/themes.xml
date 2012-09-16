@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.K9.Light.Base" parent="Theme.Sherlock.Light">
         <item name="iconFolder">@drawable/folder_light</item>
@@ -94,5 +94,12 @@
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
     </style>
+
+    <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
+        <item name="backgroundColorChooseAccountHeader">#cccccc</item>
+    </style>
+
+    <!-- Prior to Honeycomb we always use the light theme for dialogs -->
+    <style name="Theme.K9.Dialog.Dark" parent="Theme.K9.Dialog.Light" />
 
 </resources>
