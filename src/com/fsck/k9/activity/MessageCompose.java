@@ -6,7 +6,6 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -26,6 +25,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -2327,11 +2327,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             })
             .create();
         case DIALOG_CHOOSE_IDENTITY:
-            Context context = new ContextWrapper(this);
-            context.setTheme(K9.getK9ThemeResourceId(K9.THEME_LIGHT));
+            Context context = new ContextThemeWrapper(this,
+                    K9.getK9ThemeResourceId(K9.THEME_LIGHT));
             Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.send_as);
-            final IdentityAdapter adapter = new IdentityAdapter(context, getLayoutInflater());
+            final IdentityAdapter adapter = new IdentityAdapter(context);
             builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -3487,8 +3487,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         private LayoutInflater mLayoutInflater;
         private List<Object> mItems;
 
-        public IdentityAdapter(Context context, LayoutInflater layoutInflater) {
-            mLayoutInflater = layoutInflater;
+        public IdentityAdapter(Context context) {
+            mLayoutInflater = (LayoutInflater) context.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
 
             List<Object> items = new ArrayList<Object>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
