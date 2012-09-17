@@ -289,7 +289,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         initializeActionBar();
         setContentView(R.layout.folder_list);
         mListView = getListView();
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+        mListView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
