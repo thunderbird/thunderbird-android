@@ -1984,6 +1984,19 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
                 final MenuBuilder menu = new MenuBuilder(MessageList.this);
                 getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
+
+                if (message.read) {
+                    menu.findItem(R.id.mark_as_read).setVisible(false);
+                } else {
+                    menu.findItem(R.id.mark_as_unread).setVisible(false);
+                }
+
+                if (message.flagged) {
+                    menu.findItem(R.id.flag).setVisible(false);
+                } else {
+                    menu.findItem(R.id.unflag).setVisible(false);
+                }
+
                 MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
                 popup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -2016,12 +2029,20 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                                 onDelete(selection);
                                 break;
                             }
-                            case R.id.read_toggle: {
-                                onToggleRead(selection);
+                            case R.id.mark_as_read: {
+                                setFlag(selection, Flag.SEEN, true);
                                 break;
                             }
-                            case R.id.flag_toggle: {
-                                onToggleFlag(selection);
+                            case R.id.mark_as_unread: {
+                                setFlag(selection, Flag.SEEN, false);
+                                break;
+                            }
+                            case R.id.flag: {
+                                setFlag(selection, Flag.FLAGGED, true);
+                                break;
+                            }
+                            case R.id.unflag: {
+                                setFlag(selection, Flag.FLAGGED, false);
                                 break;
                             }
 

@@ -148,7 +148,6 @@ http://k9mail.googlecode.com/
 
     <string name="accounts_action">Tilit</string>
     <string name="mark_as_read_action">Merkitse luetuksi</string>
-    <string name="read_toggle_action">Vaihda lukemattomaksi/luetuksi</string>
     <string name="send_alternate_action">Jaa</string>
     <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
 
@@ -157,7 +156,6 @@ http://k9mail.googlecode.com/
       viestit, jotka ovat kansioissa, joita ei näytetä K-9:ssä)</string>
 
     <string name="flag_action">Lisää tähti</string>
-    <string name="flag_toggle_action">Poista/lisää tähti</string>
     <string name="unflag_action">Poista tähti</string>
     <string name="copy_action">Kopio</string>
     <string name="show_full_header_action">Näytä täydet otsikkotiedot</string>
