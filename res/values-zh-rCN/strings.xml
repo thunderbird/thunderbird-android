@@ -861,9 +861,6 @@
     <string name="gestures_title">手势</string>
     <string name="gestures_summary">接收手势控制</string>
 
-    <string name="compact_layouts_title">紧凑布局</string>
-    <string name="compact_layouts_summary">对每个页面调整布局以显示更多内容</string>
-
     <string name="volume_navigation_title">音量键导航</string>
     <string name="volume_navigation_summary">利用音量键选择项目</string>
     <string name="volume_navigation_message">信息视图</string>

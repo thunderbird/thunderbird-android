@@ -867,9 +867,6 @@
     <string name="gestures_title">Kézmozdulatok</string>
     <string name="gestures_summary">Engedélyezi a kézmozdulakkal való vezérlést.</string>
 
-    <string name="compact_layouts_title">Kompakt elrendezés</string>
-    <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
-
     <string name="volume_navigation_title">Hangerő gomb vezérlés</string>
     <string name="volume_navigation_summary">Léptetés az hangerő gombokkal</string>
     <string name="volume_navigation_message">Leveleknél</string>

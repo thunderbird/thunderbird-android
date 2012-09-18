@@ -873,9 +873,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestos</string>
     <string name="gestures_summary">Accepta el control de gestos</string>
 
-    <string name="compact_layouts_title">Compacta formats</string>
-    <string name="compact_layouts_summary">Adjusta formats per mostrar més a cada pàgina</string>
-
     <string name="volume_navigation_title">Navegació botons de volum</string>
     <string name="volume_navigation_summary">Canvia a través dels elements utilitzant els botons de volum</string>
     <string name="volume_navigation_message">Vista del missatge</string>

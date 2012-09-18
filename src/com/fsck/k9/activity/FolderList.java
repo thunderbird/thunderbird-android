@@ -1122,9 +1122,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             } else {
                 holder.flaggedMessageCount.setVisibility(View.GONE);
             }
-            if (K9.useCompactLayouts() && holder.folderListItemLayout != null) {
-                holder.folderListItemLayout.setMinimumHeight(0);
-            }
+
             holder.activeIcons.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);

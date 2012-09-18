@@ -874,9 +874,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestione con tocco</string>
     <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
 
-    <string name="compact_layouts_title">Disposizione compatta</string>
-    <string name="compact_layouts_summary">Regola la disposizione per visualizzare di più in ogni pagina</string>
-
     <string name="volume_navigation_title">Navigazione tasti volume</string>
     <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
     <string name="volume_navigation_message">Visualizzazione messaggi</string>

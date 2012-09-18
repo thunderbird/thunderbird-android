@@ -873,9 +873,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="gestures_title">Hareketleri</string>
     <string name="gestures_summary">Hareket kontrolünü kabul et</string>
 
-    <string name="compact_layouts_title">Kompakt düzen</string>
-    <string name="compact_layouts_summary">Herbir sayfada daha fazlasını görüntülemek için düzeni ayarla</string>
-
     <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
     <string name="volume_navigation_summary">Ses kontrollerini kullanarak ürün sayfalarını çevir</string>
     <string name="volume_navigation_message">Mesaj görünümü</string>

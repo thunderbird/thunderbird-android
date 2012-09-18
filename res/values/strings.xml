@@ -885,9 +885,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
 
-    <string name="compact_layouts_title">Compact layouts</string>
-    <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>
-
     <string name="volume_navigation_title">Volume key navigation</string>
     <string name="volume_navigation_summary">Flip through items using the volume controls</string>
     <string name="volume_navigation_message">Message view</string>

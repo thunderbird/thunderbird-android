@@ -885,9 +885,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Eleet</string>
     <string name="gestures_summary">Hyväksy eleohjaus</string>
 
-    <string name="compact_layouts_title">Tiiviit ulkoasut</string>
-    <string name="compact_layouts_summary">Säädä ulkoasuja näyttämään enemmän kullakin sivulla</string>
-
     <string name="volume_navigation_title">Navigointi äänenvoimakkuusnäppäimillä</string>
     <string name="volume_navigation_summary">Selaa käyttämällä äänenvoimakkuusnäppäimiä</string>
     <string name="volume_navigation_message">Viestinäkymä</string>
