@@ -1985,10 +1985,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 final MenuBuilder menu = new MenuBuilder(MessageList.this);
                 getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
                 MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
-                popup.setOnMenuItemClickListener( new MenuPopup.OnMenuItemClickListener() {
+                popup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
-                    public void onMenuItemClick(int itemId){
-                        MenuItem item = menu.getItem(itemId);
+                    public boolean onMenuItemClick(MenuItem item) {
                         final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
                         switch (item.getItemId()) {
                             case R.id.reply: {
@@ -2045,7 +2044,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                             }
                         }
 
-                } } );
+                        return true;
+                    }
+                });
                 popup.show();
             }
         };

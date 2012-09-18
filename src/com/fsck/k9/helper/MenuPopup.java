@@ -1,33 +1,24 @@
-
 package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.AdapterView;
 import com.actionbarsherlock.internal.view.menu.MenuBuilder;
 import com.actionbarsherlock.internal.view.menu.MenuPopupHelper;
+import com.actionbarsherlock.view.MenuItem;
+
 public class MenuPopup extends MenuPopupHelper {
 
-    OnMenuItemClickListener onMenuItemClickListener;
+    private MenuBuilder mMenu;
+
 
     public MenuPopup(Context context, MenuBuilder menu, View anchorView) {
         super(context, menu, anchorView);
+        mMenu = menu;
     }
 
-    public void setOnMenuItemClickListener(
-            OnMenuItemClickListener onMenuItemClickListener) {
-        this.onMenuItemClickListener = onMenuItemClickListener;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
-        super.onItemClick(parent, view, position, id);
-        if (onMenuItemClickListener != null)
-            onMenuItemClickListener.onMenuItemClick(position);
-    }
-
-    public interface OnMenuItemClickListener{
-        public void onMenuItemClick(int itemID);
+    public void setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener listener) {
+        for (int i = 0, end = mMenu.size(); i < end; i++) {
+            mMenu.getItem(i).setOnMenuItemClickListener(listener);
+        }
     }
 }
