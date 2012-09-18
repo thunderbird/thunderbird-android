@@ -1464,7 +1464,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             return true;
         }
         case R.id.select_all: {
-            toggleAllSelected();
+            setSelectionState(true);
             return true;
         }
         case R.id.app_settings: {
@@ -1980,7 +1980,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         private final OnClickListener itemMenuClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Perform action on clicks
+                // Deselect all messages
+                setSelectionState(false);
+
                 final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
                 final MenuBuilder menu = new MenuBuilder(MessageList.this);
                 getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
@@ -2407,20 +2409,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     }
 
     /**
-     * Toggle all selected message states.  Sort of.  If anything selected, unselect everything.  If nothing is
-     * selected, select everything.
+     * Set selection state for all messages.
+     *
+     * @param selected
+     *         If {@code true} all messages get selected. Otherwise, all messages get deselected and
+     *         action mode is finished.
      */
-    private void toggleAllSelected() {
-        boolean newState = true;
+    private void setSelectionState(boolean selected) {
+        mAdapter.setSelectionForAllMesages(selected);
 
-        // If there was anything selected, unselect everything.
-        if (mSelectedCount > 0) {
-            newState = false;
-        }
-
-        mAdapter.setSelectionForAllMesages(newState);
-
-        if (newState) {
+        if (selected) {
             mSelectedCount = mAdapter.getCount();
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
             updateActionModeTitle();
@@ -2428,7 +2426,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             computeBatchDirection();
         } else {
             mSelectedCount = 0;
-            mActionMode.finish();
+            if (mActionMode != null) {
+                mActionMode.finish();
+            }
         }
     }
 
