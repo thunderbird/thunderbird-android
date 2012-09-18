@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -1360,46 +1359,17 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    private void onToggleRead(final List<MessageInfoHolder> holders) {
-        LocalMessage message;
-        Folder folder;
-        Account account;
-        String folderName;
+    private void onToggleFlag(MessageInfoHolder messageInfo) {
+        LocalMessage message = messageInfo.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getName();
 
-        int i = 0;
-        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder messageInfo = iterator.next();
-            message = messageInfo.message;
-            folder = message.getFolder();
-            account = folder.getAccount();
-            folderName = message.getFolder().getName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED,
+                !messageInfo.flagged);
 
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.SEEN, !messageInfo.read);
-
-            messageInfo.read = !messageInfo.read;
-            mAdapter.sortMessages();
-        }
-    }
-
-    private void onToggleFlag(final List<MessageInfoHolder> holders) {
-        LocalMessage message;
-        Folder folder;
-        Account account;
-        String folderName;
-
-        int i = 0;
-        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder messageInfo = iterator.next();
-            message = messageInfo.message;
-            folder = message.getFolder();
-            account = folder.getAccount();
-            folderName = message.getFolder().getName();
-
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.FLAGGED, !messageInfo.flagged);
-
-            messageInfo.flagged = !messageInfo.flagged;
-            mAdapter.sortMessages();
-        }
+        messageInfo.flagged = !messageInfo.flagged;
+        mAdapter.sortMessages();
 
         computeBatchDirection();
     }
@@ -1973,7 +1943,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             public void onClick(View v) {
                 // Perform action on clicks
                 MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                onToggleFlag(Arrays.asList(new MessageInfoHolder[]{message}));
+                onToggleFlag(message);
             }
         };
 
