@@ -309,6 +309,8 @@ public class MessageView extends K9Activity implements OnClickListener {
 
         mMessageView = (SingleMessageView) findViewById(R.id.message_view);
 
+        mMessageView.setBackgroundColor(K9.getK9MessageViewTheme() == K9.THEME_DARK ? 0xFF000000 : 0xFFFFFFFF);
+
         //set a callback for the attachment view. With this callback the attachmentview
         //request the start of a filebrowser activity.
         mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
