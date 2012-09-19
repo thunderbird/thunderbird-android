@@ -215,6 +215,16 @@ public class AccountSettings {
                 new V(1, new IntegerResourceSetting(5,
                 R.array.account_settings_vibrate_times_label))
             ));
+        s.put("allowRemoteSearch", Settings.versions(
+                new V(16, new BooleanSetting(false))
+            ));
+        s.put("remoteSearchNumResults", Settings.versions(
+                new V(16, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                R.array.account_settings_remote_search_num_results_values))
+            ));
+        s.put("remoteSearchFullText", Settings.versions(
+                new V(16, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
