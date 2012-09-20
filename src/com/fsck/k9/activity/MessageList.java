@@ -26,8 +26,10 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -1575,7 +1577,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         mListView.getLocationOnScreen(listPosition);
         int position = mListView.pointToPosition((int) downMotion.getRawX() - listPosition[0], (int) downMotion.getRawY() - listPosition[1]);
         if (position != AdapterView.INVALID_POSITION) {
-            handleContextRelatedClick(position);
+            final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(position);
+            toggleMessageSelect(message);
         }
     }
 
