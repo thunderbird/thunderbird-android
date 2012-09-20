@@ -59,6 +59,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.activity.misc.SwipeGestureDetector;
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -83,7 +85,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9ListActivity implements OnItemClickListener {
+public class MessageList extends K9ListActivity implements OnItemClickListener,
+        OnSwipeGestureListener {
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -675,6 +678,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
         initializeMessageList(getIntent(), true);
         mListView.setVerticalFadingEdgeEnabled(false);
+
+        // Enable gesture detection for MessageLists
+        mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
 
         // Enable context action bar behaviour
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -1545,6 +1551,32 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
 
         return true;
+    }
+
+    @Override
+    public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
+        // Handle right-to-left as an un-select
+        handleSwipe(e1, false);
+    }
+
+    @Override
+    public void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+        // Handle left-to-right as a select.
+        handleSwipe(e1, true);
+    }
+
+    /**
+     * Handle a select or unselect swipe event
+     * @param downMotion Event that started the swipe
+     * @param selected true if this was an attempt to select (i.e. left to right).
+     */
+    private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
+        int[] listPosition = new int[2];
+        mListView.getLocationOnScreen(listPosition);
+        int position = mListView.pointToPosition((int) downMotion.getRawX() - listPosition[0], (int) downMotion.getRawY() - listPosition[1]);
+        if (position != AdapterView.INVALID_POSITION) {
+            handleContextRelatedClick(position);
+        }
     }
 
     class MessageListAdapter extends BaseAdapter {
