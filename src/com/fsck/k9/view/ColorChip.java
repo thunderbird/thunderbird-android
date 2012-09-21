@@ -18,14 +18,13 @@ public class ColorChip {
         CIRCULAR_CHIP_PATH.close();
 
         RIGHT_POINTING_CHIP_PATH.addArc(new RectF(0f,0f,15f,15f) , 90, 180);
-        LEFT_POINTING_CHIP_PATH.moveTo(8f, 0f);
-        RIGHT_POINTING_CHIP_PATH.lineTo(16f,8f);
+        RIGHT_POINTING_CHIP_PATH.lineTo(16f,7f);
         RIGHT_POINTING_CHIP_PATH.lineTo(8f, 15f);
         RIGHT_POINTING_CHIP_PATH.close();
 
         LEFT_POINTING_CHIP_PATH.addArc(new RectF(0f,0f,15f,15f) , 270, 180);
         LEFT_POINTING_CHIP_PATH.moveTo(8f, 0f);
-        LEFT_POINTING_CHIP_PATH.lineTo(0f,8f);
+        LEFT_POINTING_CHIP_PATH.lineTo(0f,7f);
         LEFT_POINTING_CHIP_PATH.lineTo(8f, 15f);
         LEFT_POINTING_CHIP_PATH.close();
 
