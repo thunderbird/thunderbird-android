@@ -295,7 +295,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
 
-    private boolean mStars = true;
     private int mSelectedCount = 0;
 
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -814,8 +813,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
-
-        mStars = K9.messageListStars();
 
         // TODO Add support for pull to fresh on searches.
         if(mQueryString == null) {
