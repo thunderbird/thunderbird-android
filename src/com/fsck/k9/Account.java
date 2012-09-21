@@ -198,6 +198,7 @@ public class Account implements BaseAccount {
     private ColorChip mToMeReadColorChip;
     private ColorChip mFromMeUnreadColorChip;
     private ColorChip mFromMeReadColorChip;
+    private ColorChip mCheckmarkChip;
 
 
     /**
@@ -763,15 +764,21 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void cacheChips() {
-        mReadColorChip = new ColorChip(mChipColor, true, false, false, false);
-        mUnreadColorChip = new ColorChip(mChipColor, false, false, false, false);
-        mToMeReadColorChip = new ColorChip(mChipColor, true, true, false, false);
-        mToMeUnreadColorChip = new ColorChip(mChipColor, false,true, false, false);
-        mFromMeReadColorChip = new ColorChip(mChipColor, true, false, true, false);
-        mFromMeUnreadColorChip = new ColorChip(mChipColor, false, false, true, false);
-        mFlaggedReadColorChip = new ColorChip(mChipColor, true, false, false, true);
-        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, false, false, true);
+        mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
+        mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
     }
+
+    public ColorChip getCheckmarkChip() {
+        return mCheckmarkChip;
+    }
+
     public synchronized int getChipColor() {
         return mChipColor;
     }
@@ -809,7 +816,7 @@ public class Account implements BaseAccount {
     }
 
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor, false, false, false, false);
+        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
 

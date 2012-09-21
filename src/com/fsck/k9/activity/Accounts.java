@@ -1713,7 +1713,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
 
             } else {
-                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, false, false, false).drawable());
+                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
             }
 
 
