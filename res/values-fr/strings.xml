@@ -896,9 +896,6 @@ de plus</string>
     <string name="gestures_title">Interface gestuelle</string>
     <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
 
-    <string name="compact_layouts_title">Agencement compact</string>
-    <string name="compact_layouts_summary">Modifier l\'agencement pour afficher plus d\'éléments par page</string>
-
     <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
     <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
     <string name="volume_navigation_message">Visualisation d\'un message</string>

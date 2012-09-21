@@ -867,9 +867,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="gestures_title">ジェスチャー</string>
     <string name="gestures_summary">ジェスチャー制御の許可</string>
 
-    <string name="compact_layouts_title">コンパクトレイアウト</string>
-    <string name="compact_layouts_summary">ページの表示レイアウトを調整</string>
-
     <string name="volume_navigation_title">ボリュームキー操作</string>
     <string name="volume_navigation_summary">ボリュームキーを使ってメッセージを切り替え</string>
     <string name="volume_navigation_message">メッセージ表示</string>

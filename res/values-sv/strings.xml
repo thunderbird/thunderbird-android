@@ -873,9 +873,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gester</string>
     <string name="gestures_summary">Acceptera gestkontroll</string>
 
-    <string name="compact_layouts_title">Komprimera vyer</string>
-    <string name="compact_layouts_summary">Tryck ihop vyer för att kunna visa mer på varje sida</string>
-
     <string name="volume_navigation_title">Volym upp/ner-navigering</string>
     <string name="volume_navigation_summary">Växla mellan val med hjälp av volymkontrollerna</string>
     <string name="volume_navigation_message">E-post-vy</string>

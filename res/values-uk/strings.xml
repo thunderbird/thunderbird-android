@@ -872,9 +872,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Жести</string>
     <string name="gestures_summary">Приймати управління жестами</string>
 
-    <string name="compact_layouts_title">Компактне розташування</string>
-    <string name="compact_layouts_summary">Налаштувати розташування для максимального відображення на кожній сторінці</string>
-
     <string name="volume_navigation_title">Використовувати управління гучністю для навігації</string>
     <string name="volume_navigation_summary">Прокручування елементів за допомогою клавіш управління гучності</string>
     <string name="volume_navigation_message">Перегляд повідомлень</string>

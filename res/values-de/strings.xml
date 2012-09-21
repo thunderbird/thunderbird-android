@@ -872,9 +872,6 @@ http://k9mail.googlecode.com/.
     <string name="gestures_title">Gesten</string>
     <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
 
-    <string name="compact_layouts_title">Kompakte Darstellung</string>
-    <string name="compact_layouts_summary">Darstellung anpassen, um mehr auf jeder Seite zu zeigen</string>
-
     <string name="volume_navigation_title">Lauter/Leiser Scrolling</string>
     <string name="volume_navigation_summary">Mittels Lauter/Leiser-Tasten durch Listen scrollen</string>
     <string name="volume_navigation_message">Nachrichtenansicht</string>

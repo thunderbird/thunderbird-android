@@ -70,13 +70,6 @@
                 android:title="@string/animations_title"
                 android:summary="@string/animations_summary" />
 
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="compact_layouts"
-                android:title="@string/compact_layouts_title"
-                android:summary="@string/compact_layouts_summary" />
-
-
         </PreferenceCategory>
 
         <PreferenceCategory

@@ -870,9 +870,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestos</string>
     <string name="gestures_summary">Aceptar controles gestuales</string>
 
-    <string name="compact_layouts_title">Disposición compacta</string>
-    <string name="compact_layouts_summary">Ajustar disposición para mostrar más mensajes en cada página</string>
-
     <string name="volume_navigation_title">Navegación con teclas de volumen</string>
     <string name="volume_navigation_summary">Permite moverse por las opciones utilizando los botones de volumen</string>
     <string name="volume_navigation_message">Vista de mensaje</string>

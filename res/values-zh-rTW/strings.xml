@@ -879,9 +879,6 @@
     <string name="gestures_title">手勢</string>
     <string name="gestures_summary">接收手勢控制</string>
 
-    <string name="compact_layouts_title">精簡格式</string>
-    <string name="compact_layouts_summary">在一頁上顯示最多的訊息</string>
-
     <string name="volume_navigation_title">音量鍵導航</string>
     <string name="volume_navigation_summary">利用音量鍵選擇項目</string>
     <string name="volume_navigation_message">訊息檢視</string>

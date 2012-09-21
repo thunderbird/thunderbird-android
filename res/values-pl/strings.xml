@@ -902,9 +902,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gesty</string>
     <string name="gestures_summary">Pozwól na sterowanie gestami</string>
 
-    <string name="compact_layouts_title">Wygląd kompaktowy</string>
-    <string name="compact_layouts_summary">Dostosuj wygląd, aby wyświetlać więcej na stronie</string>
-
     <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
     <string name="volume_navigation_summary">Przeskakuj między rzeczami używając przycisków głośności</string>
     <string name="volume_navigation_message">Wygląd wiadomości</string>

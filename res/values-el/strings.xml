@@ -870,9 +870,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Χειρονομίες</string>
     <string name="gestures_summary">Αποδοχή ελέγχου με χειρονομίες</string>
 
-    <string name="compact_layouts_title">Συνοπτική εμφάνιση</string>
-    <string name="compact_layouts_summary">Προσαρμογή της εμφάνισης για να προβάλει περισσότερα σε κάθε σελίδα</string>
-
     <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
     <string name="volume_navigation_summary">Μετακίνηση στις επιλογές με χρήση του πλήκτρου έντασης</string>
     <string name="volume_navigation_message">Προβολή μηνύματος</string>

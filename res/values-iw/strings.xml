@@ -885,9 +885,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">מחוות</string>
     <string name="gestures_summary">קבל כפתור מחווה</string>
 
-    <string name="compact_layouts_title">פריסות קומפקטיות</string>
-    <string name="compact_layouts_summary">התאם את הפריסה כדי שיהיה ניתן להציג יותר פרטים בכל דף</string>
-
     <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
     <string name="volume_navigation_summary">לדפדף בין הפריטים באמצעות מקשי הווליום</string>
     <string name="volume_navigation_message">הצגת הודעה</string>

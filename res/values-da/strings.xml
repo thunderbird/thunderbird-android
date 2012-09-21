@@ -873,9 +873,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Benyt gesture kontrol</string>
 
-    <string name="compact_layouts_title">Kompakt layout</string>
-    <string name="compact_layouts_summary">Juster layout så der vises mere på hver side</string>
-
     <string name="volume_navigation_title">Volume-knap navigation</string>
     <string name="volume_navigation_summary">Skift mellem valg vha. volume-knapper</string>
     <string name="volume_navigation_message">Mail-visning</string>

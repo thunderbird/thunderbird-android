@@ -190,7 +190,6 @@ public class K9 extends Application {
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
-    private static boolean compactLayouts = false;
     private static String mAttachmentDefaultPath = "";
 
     private static boolean mBatchButtonsMarkRead = true;
@@ -471,7 +470,6 @@ public class K9 extends Application {
 
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
 
-        editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         fontSizes.save(editor);
     }
@@ -641,7 +639,6 @@ public class K9 extends Application {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
 
-        compactLayouts = sprefs.getBoolean("compactLayouts", false);
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         fontSizes.load(sprefs);
 
@@ -1040,14 +1037,6 @@ public class K9 extends Application {
 
     public static void setNotificationHideSubject(final NotificationHideSubject mode) {
         sNotificationHideSubject = mode;
-    }
-
-    public static boolean useCompactLayouts() {
-        return compactLayouts;
-    }
-
-    public static void setCompactLayouts(boolean compactLayouts) {
-        K9.compactLayouts = compactLayouts;
     }
 
     public static boolean batchButtonsMarkRead() {

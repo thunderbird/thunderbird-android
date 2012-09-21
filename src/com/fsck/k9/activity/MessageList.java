@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -26,8 +25,10 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.activity.misc.SwipeGestureDetector;
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -83,7 +86,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9ListActivity implements OnItemClickListener {
+public class MessageList extends K9ListActivity implements OnItemClickListener,
+        OnSwipeGestureListener {
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -675,6 +679,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
         initializeMessageList(getIntent(), true);
         mListView.setVerticalFadingEdgeEnabled(false);
+
+        // Enable gesture detection for MessageLists
+        mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
 
         // Enable context action bar behaviour
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -1360,46 +1367,17 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    private void onToggleRead(final List<MessageInfoHolder> holders) {
-        LocalMessage message;
-        Folder folder;
-        Account account;
-        String folderName;
+    private void onToggleFlag(MessageInfoHolder messageInfo) {
+        LocalMessage message = messageInfo.message;
+        Folder folder = message.getFolder();
+        Account account = folder.getAccount();
+        String folderName = folder.getName();
 
-        int i = 0;
-        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder messageInfo = iterator.next();
-            message = messageInfo.message;
-            folder = message.getFolder();
-            account = folder.getAccount();
-            folderName = message.getFolder().getName();
+        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED,
+                !messageInfo.flagged);
 
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.SEEN, !messageInfo.read);
-
-            messageInfo.read = !messageInfo.read;
-            mAdapter.sortMessages();
-        }
-    }
-
-    private void onToggleFlag(final List<MessageInfoHolder> holders) {
-        LocalMessage message;
-        Folder folder;
-        Account account;
-        String folderName;
-
-        int i = 0;
-        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder messageInfo = iterator.next();
-            message = messageInfo.message;
-            folder = message.getFolder();
-            account = folder.getAccount();
-            folderName = message.getFolder().getName();
-
-            mController.setFlag(account, folderName, new Message[]{message}, Flag.FLAGGED, !messageInfo.flagged);
-
-            messageInfo.flagged = !messageInfo.flagged;
-            mAdapter.sortMessages();
-        }
+        messageInfo.flagged = !messageInfo.flagged;
+        mAdapter.sortMessages();
 
         computeBatchDirection();
     }
@@ -1464,7 +1442,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             return true;
         }
         case R.id.select_all: {
-            toggleAllSelected();
+            setSelectionState(true);
             return true;
         }
         case R.id.app_settings: {
@@ -1545,6 +1523,33 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         }
 
         return true;
+    }
+
+    @Override
+    public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
+        // Handle right-to-left as an un-select
+        handleSwipe(e1, false);
+    }
+
+    @Override
+    public void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
+        // Handle left-to-right as a select.
+        handleSwipe(e1, true);
+    }
+
+    /**
+     * Handle a select or unselect swipe event
+     * @param downMotion Event that started the swipe
+     * @param selected true if this was an attempt to select (i.e. left to right).
+     */
+    private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
+        int[] listPosition = new int[2];
+        mListView.getLocationOnScreen(listPosition);
+        int position = mListView.pointToPosition((int) downMotion.getRawX() - listPosition[0], (int) downMotion.getRawY() - listPosition[1]);
+        if (position != AdapterView.INVALID_POSITION) {
+            final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(position);
+            toggleMessageSelect(message);
+        }
     }
 
     class MessageListAdapter extends BaseAdapter {
@@ -1968,27 +1973,32 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
-        private final OnClickListener flagClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Perform action on clicks
-                MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                onToggleFlag(Arrays.asList(new MessageInfoHolder[]{message}));
-            }
-        };
-
         private final OnClickListener itemMenuClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Perform action on clicks
+                // Deselect all messages
+                setSelectionState(false);
+
                 final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
                 final MenuBuilder menu = new MenuBuilder(MessageList.this);
                 getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
+
+                if (message.read) {
+                    menu.findItem(R.id.mark_as_read).setVisible(false);
+                } else {
+                    menu.findItem(R.id.mark_as_unread).setVisible(false);
+                }
+
+                if (message.flagged) {
+                    menu.findItem(R.id.flag).setVisible(false);
+                } else {
+                    menu.findItem(R.id.unflag).setVisible(false);
+                }
+
                 MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
-                popup.setOnMenuItemClickListener( new MenuPopup.OnMenuItemClickListener() {
+                popup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
-                    public void onMenuItemClick(int itemId){
-                        MenuItem item = menu.getItem(itemId);
+                    public boolean onMenuItemClick(MenuItem item) {
                         final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
                         switch (item.getItemId()) {
                             case R.id.reply: {
@@ -2017,12 +2027,20 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                                 onDelete(selection);
                                 break;
                             }
-                            case R.id.read_toggle: {
-                                onToggleRead(selection);
+                            case R.id.mark_as_read: {
+                                setFlag(selection, Flag.SEEN, true);
                                 break;
                             }
-                            case R.id.flag_toggle: {
-                                onToggleFlag(selection);
+                            case R.id.mark_as_unread: {
+                                setFlag(selection, Flag.SEEN, false);
+                                break;
+                            }
+                            case R.id.flag: {
+                                setFlag(selection, Flag.FLAGGED, true);
+                                break;
+                            }
+                            case R.id.unflag: {
+                                setFlag(selection, Flag.FLAGGED, false);
                                 break;
                             }
 
@@ -2045,7 +2063,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                             }
                         }
 
-                } } );
+                        return true;
+                    }
+                });
                 popup.show();
             }
         };
@@ -2103,14 +2123,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-                holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
                 holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
-                holder.flagged.setOnClickListener(flagClickListener);
                 holder.itemMenu.setOnClickListener(itemMenuClickListener);
-
-                if (!mStars) {
-                    holder.flagged.setVisibility(View.GONE);
-                }
 
                 if (mCheckboxes) {
                     holder.selected.setVisibility(View.VISIBLE);
@@ -2166,7 +2180,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 if (!mCheckboxes) {
                     holder.selected.setVisibility(View.GONE);
                 }
-                holder.flagged.setChecked(false);
             }
 
 
@@ -2192,9 +2205,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.flagged.setTag(position);
             holder.itemMenu.setTag(position);
-            holder.flagged.setChecked(message.flagged);
 
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
@@ -2207,7 +2218,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
 
 
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read).drawable());
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
             // TODO: Make these colors part of the theme
 
 //            if (K9.getK9Theme() == K9.THEME_LIGHT) {
@@ -2303,7 +2314,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         public TextView from;
         public TextView time;
         public TextView date;
-        public CheckBox flagged;
         public View chip;
         public CheckBox selected;
         public ImageButton itemMenu;
@@ -2385,20 +2395,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     }
 
     /**
-     * Toggle all selected message states.  Sort of.  If anything selected, unselect everything.  If nothing is
-     * selected, select everything.
+     * Set selection state for all messages.
+     *
+     * @param selected
+     *         If {@code true} all messages get selected. Otherwise, all messages get deselected and
+     *         action mode is finished.
      */
-    private void toggleAllSelected() {
-        boolean newState = true;
+    private void setSelectionState(boolean selected) {
+        mAdapter.setSelectionForAllMesages(selected);
 
-        // If there was anything selected, unselect everything.
-        if (mSelectedCount > 0) {
-            newState = false;
-        }
-
-        mAdapter.setSelectionForAllMesages(newState);
-
-        if (newState) {
+        if (selected) {
             mSelectedCount = mAdapter.getCount();
             mActionMode = MessageList.this.startActionMode(mActionModeCallback);
             updateActionModeTitle();
@@ -2406,7 +2412,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             computeBatchDirection();
         } else {
             mSelectedCount = 0;
-            mActionMode.finish();
+            if (mActionMode != null) {
+                mActionMode.finish();
+            }
         }
     }
 

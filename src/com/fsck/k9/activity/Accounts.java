@@ -1713,18 +1713,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
 
             } else {
-                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false).drawable());
+                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, false, false, false).drawable());
             }
 
 
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
             holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
 
-            if (K9.useCompactLayouts()) {
-                holder.accountsItemLayout.setMinimumHeight(0);
-            }
-            if (account instanceof SearchAccount || K9.useCompactLayouts()) {
-
+            if (account instanceof SearchAccount) {
                 holder.folders.setVisibility(View.GONE);
             } else {
                 holder.folders.setVisibility(View.VISIBLE);

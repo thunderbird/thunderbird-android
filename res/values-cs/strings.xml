@@ -878,9 +878,6 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gesta</string>
     <string name="gestures_summary">Používat ovládání gesty</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
-
     <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
     <string name="volume_navigation_summary">Přeskakovat přes položky při použití ovladačů hlasitosti</string>
     <string name="volume_navigation_message">Zobrazení zpráv</string>

@@ -870,9 +870,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="gestures_title">제스쳐</string>
     <string name="gestures_summary">제스쳐를 이용합니다</string>
 
-    <string name="compact_layouts_title">레이아웃 최적화(Compact)</string>
-    <string name="compact_layouts_summary">각 페이지에 더 많은 내용을 보여주기위해 레이아웃을 조절</string>
-
     <string name="volume_navigation_title">볼륨키 네비게이션</string>
     <string name="volume_navigation_summary">볼륨키를 이용하여 메시지 목록의 각 항목을 넘김</string>
     <string name="volume_navigation_message">메시지 뷰</string>

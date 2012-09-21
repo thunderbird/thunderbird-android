@@ -48,9 +48,6 @@ public class GlobalSettings {
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("compactLayouts", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
