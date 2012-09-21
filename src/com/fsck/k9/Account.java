@@ -192,6 +192,14 @@ public class Account implements BaseAccount {
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
 
+    private ColorChip mFlaggedUnreadColorChip;
+    private ColorChip mFlaggedReadColorChip;
+    private ColorChip mToMeUnreadColorChip;
+    private ColorChip mToMeReadColorChip;
+    private ColorChip mFromMeUnreadColorChip;
+    private ColorChip mFromMeReadColorChip;
+
+
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
      *
@@ -444,6 +452,9 @@ public class Account implements BaseAccount {
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+
+        cacheChips();
+
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -747,31 +758,58 @@ public class Account implements BaseAccount {
 
     public synchronized void setChipColor(int color) {
         mChipColor = color;
-        mUnreadColorChip = null;
-        mReadColorChip = null;
+        cacheChips();
+
     }
 
+    public synchronized void cacheChips() {
+        mReadColorChip = new ColorChip(mChipColor, true, false, false, false);
+        mUnreadColorChip = new ColorChip(mChipColor, false, false, false, false);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, true, false, false);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,true, false, false);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, false, true, false);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false, false, true, false);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, false, false, true);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, false, false, true);
+    }
     public synchronized int getChipColor() {
         return mChipColor;
     }
 
 
-    public ColorChip generateColorChip(boolean messageRead) {
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean fromMe, boolean messageFlagged) {
+
         if (messageRead) {
-            if (mReadColorChip == null) {
-                mReadColorChip = new ColorChip(mChipColor, true);
+            if (messageFlagged) {
+                return mFlaggedReadColorChip;
+            } else if (toMe) {
+                return mToMeReadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeReadColorChip;
+            } else {
+                return mReadColorChip;
             }
-            return mReadColorChip;
+
         } else {
-            if (mUnreadColorChip == null) {
-                mUnreadColorChip = new ColorChip(mChipColor, false);
+            if (messageFlagged) {
+                return mFlaggedUnreadColorChip;
+            } else if (toMe) {
+                return mToMeUnreadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeUnreadColorChip;
+            } else {
+                return mUnreadColorChip;
             }
-            return mUnreadColorChip;
+
+
         }
+
     }
 
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor, false);
+        return new ColorChip(mChipColor, false, false, false, false);
     }
 
 

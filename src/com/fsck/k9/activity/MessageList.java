@@ -1938,15 +1938,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             }
         }
 
-        private final OnClickListener flagClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Perform action on clicks
-                MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                onToggleFlag(message);
-            }
-        };
-
         private final OnClickListener itemMenuClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2097,14 +2088,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-                holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
                 holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
-                holder.flagged.setOnClickListener(flagClickListener);
                 holder.itemMenu.setOnClickListener(itemMenuClickListener);
-
-                if (!mStars) {
-                    holder.flagged.setVisibility(View.GONE);
-                }
 
                 if (mCheckboxes) {
                     holder.selected.setVisibility(View.VISIBLE);
@@ -2160,7 +2145,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
                 if (!mCheckboxes) {
                     holder.selected.setVisibility(View.GONE);
                 }
-                holder.flagged.setChecked(false);
             }
 
 
@@ -2186,9 +2170,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
             // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.flagged.setTag(position);
             holder.itemMenu.setTag(position);
-            holder.flagged.setChecked(message.flagged);
 
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
@@ -2201,7 +2183,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
 
 
 
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read).drawable());
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
             // TODO: Make these colors part of the theme
 
 //            if (K9.getK9Theme() == K9.THEME_LIGHT) {
@@ -2297,7 +2279,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         public TextView from;
         public TextView time;
         public TextView date;
-        public CheckBox flagged;
         public View chip;
         public CheckBox selected;
         public ImageButton itemMenu;

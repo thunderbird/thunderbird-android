@@ -11,39 +11,27 @@
         android:layout_width="36dip"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:textColor="?android:attr/textColorPrimary" >
 
     <View
         android:id="@+id/chip"
         android:layout_width="16dip"
         android:layout_height="16dip"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dip"
-        android:gravity="center"
+        android:layout_gravity="center|center_vertical"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:background="@android:color/transparent" />
-    <CheckBox
-        android:id="@+id/flagged"
-        android:button="@drawable/star"
-        android:layout_width="36dip"
-        android:layout_marginLeft="7dip"
-        android:layout_marginRight="4dip"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:gravity="top|center"
-        android:focusable="false"
-        />
-
+    </RelativeLayout>
         <CheckBox
             android:id="@+id/selected_checkbox"
             android:layout_width="36dip"
-            android:layout_below="@+id/chip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
             android:layout_height="fill_parent"
             android:focusable="false"
             android:gravity="bottom|center"
             android:visibility="visible" />
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/subject"
