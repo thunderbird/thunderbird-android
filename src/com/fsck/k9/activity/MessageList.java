@@ -36,7 +36,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
@@ -297,7 +296,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     private boolean mSortDateAscending = false;
 
     private boolean mStars = true;
-    private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -818,7 +816,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
 
         mStars = K9.messageListStars();
-        mCheckboxes = K9.messageListCheckboxes();
 
         // TODO Add support for pull to fresh on searches.
         if(mQueryString == null) {
@@ -2122,17 +2119,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
-                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
                 holder.itemMenu.setOnClickListener(itemMenuClickListener);
 
-                if (mCheckboxes) {
-                    holder.selected.setVisibility(View.VISIBLE);
-                }
-
-                if (holder.selected != null) {
-                    holder.selected.setOnCheckedChangeListener(holder);
-                }
                 holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
                 holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
@@ -2175,11 +2164,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
-                holder.selected.setChecked(false);
-
-                if (!mCheckboxes) {
-                    holder.selected.setVisibility(View.GONE);
-                }
             }
 
 
@@ -2210,15 +2194,17 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
             holder.position = -1;
-            holder.selected.setChecked(message.selected);
 
-            if (!mCheckboxes) {
-                holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
+
+            if (message.selected) {
+
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().getCheckmarkChip().drawable());
             }
 
-
-
+            else {
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
+
+            }
             // TODO: Make these colors part of the theme
 
 //            if (K9.getK9Theme() == K9.THEME_LIGHT) {
@@ -2315,7 +2301,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         public TextView time;
         public TextView date;
         public View chip;
-        public CheckBox selected;
         public ImageButton itemMenu;
         public int position = -1;
 
@@ -2324,9 +2309,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             if (position != -1) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
                     toggleMessageSelect(message);
-                    if (!mCheckboxes) {
-                         selected.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                    }
 
 
             }
