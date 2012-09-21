@@ -45,6 +45,7 @@ public class ColorChip {
 
         CHECKMARK.moveTo(0f,10f);
         CHECKMARK.lineTo(6f,16f);
+        CHECKMARK.moveTo(6f,15f);
         CHECKMARK.lineTo(16f,2f);
     }
 
@@ -55,7 +56,11 @@ public class ColorChip {
 
         mDrawable = new ShapeDrawable(new PathShape(shape, 16f, 16f));
 
-        mDrawable.getPaint().setStrokeWidth(1);
+        if (shape.equals(CHECKMARK)) {
+            mDrawable.getPaint().setStrokeWidth(3);
+        } else {
+            mDrawable.getPaint().setStrokeWidth(1);
+        }
         if (messageRead) {
             // Read messages get an outlined circle
             mDrawable.getPaint().setStyle(Paint.Style.STROKE);
