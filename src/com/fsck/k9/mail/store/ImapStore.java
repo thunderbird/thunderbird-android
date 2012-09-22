@@ -3518,7 +3518,7 @@ public class ImapStore extends Store {
             return folder.search(searcher, null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(K9.LOG_TAG, "Exception caught during remote search", e);
             throw new MessagingException("Error during search: " + e.toString());
         }
 
