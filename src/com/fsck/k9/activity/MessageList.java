@@ -12,8 +12,8 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -28,10 +28,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -926,14 +924,34 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        // TODO Add support for pull to fresh on searches.
-        if(mQueryString == null) {
+        final Preferences prefs = Preferences.getPreferences(getApplicationContext());
+
+        boolean allowRemoteSearch = false;
+        if (mSearchAccount != null) {
+            final Account searchAccount = prefs.getAccount(mSearchAccount);
+            if (searchAccount != null) {
+                allowRemoteSearch = searchAccount.allowRemoteSearch();
+            }
+        }
+
+        if (mQueryString == null) {
             mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
                 @Override
                 public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                     checkMail(mAccount, mFolderName);
                 }
             });
+        } else if (allowRemoteSearch && !mRemoteSearch && !mIntegrate) {
+            // mQueryString != null is implied if we get this far.
+            mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+                @Override
+                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                    mPullToRefreshView.onRefreshComplete();
+                    onRemoteSearchRequested(true);
+                }
+            });
+            mPullToRefreshView.setPullLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_pull));
+            mPullToRefreshView.setReleaseLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_release));
         } else {
             mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
@@ -943,7 +961,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         //Cancel pending new mail notifications when we open an account
         Account[] accountsWithNotification;
 
-        Preferences prefs = Preferences.getPreferences(getApplicationContext());
         Account account = getCurrentAccount(prefs);
 
         if (account != null) {
@@ -1285,43 +1302,46 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         AccountSettings.actionSettings(this, mAccount);
     }
 
-    @Override
-    public boolean onSearchRequested() {
-
-        if (mAccount != null && mCurrentFolder != null && mAccount.allowRemoteSearch()) {
-            //if in a remote searchable folder, ask user what they want.
-            //TODO: Add ability to remember selection?
-            final CharSequence[] items = new CharSequence[2];
-            items[0] = getString(R.string.search_mode_local_all);
-            items[1] = getString(R.string.search_mode_remote);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.search_mode_title));
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-
-                    Bundle appData = null;
-                    if (item == 1) {
-                        appData = new Bundle();
-                        appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-                        appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
-                        appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
-                    }
-                    //else do regular search, which doesn't require any special parameter setup
-
-                    startSearch(null, false, appData, false);
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            return true;
+    /**
+     * User has requested a remote search.  Setup the bundle and start the intent.
+     * @param fromLocalSearch true if this is being called from a local search result screen.  This affects
+     *                        where we pull the account and folder info used for the next search.
+     */
+    public void onRemoteSearchRequested(final boolean fromLocalSearch) {
+        final Bundle appData = new Bundle();
+        if (fromLocalSearch) {
+            appData.putString(EXTRA_SEARCH_ACCOUNT, mSearchAccount);
+            appData.putString(EXTRA_SEARCH_FOLDER, mSearchFolder);
+        } else {
+            appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+            appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
         }
+        appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
 
-        startSearch(null, false, null, false);
-        return true;
+        final Intent intent = new Intent(Intent.ACTION_SEARCH);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(SearchManager.QUERY, mQueryString);
+        intent.putExtra(SearchManager.APP_DATA, appData);
+        intent.setComponent(new ComponentName(context.getApplicationContext(), MessageList.class));
+        context.startActivity(intent);
     }
 
+
+    @Override
+    public boolean onSearchRequested() {
+        // If this search was started from a MessageList of a single folder, pass along that folder info
+        // so that we can enable remote search.
+        if (mAccount != null && mCurrentFolder != null) {
+            final Bundle appData = new Bundle();
+            appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+            appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
+            startSearch(null, false, appData, false);
+        } else {
+            // TODO Handle the case where we're searching from within a search result.
+            startSearch(null, false, null, false);
+        }
+        return true;
+    }
 
     private void changeSort(SortType sortType) {
         Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
@@ -1627,6 +1647,10 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             onEditPrefs();
             return true;
         }
+        case R.id.search_remote: {
+            onRemoteSearchRequested(true);
+            return true;
+        }
         }
 
         if (mQueryString != null) {
@@ -1679,6 +1703,21 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
             menu.findItem(R.id.send_messages).setVisible(false);
             menu.findItem(R.id.folder_settings).setVisible(false);
             menu.findItem(R.id.account_settings).setVisible(false);
+            // If this is an explicit local search, show the option to search the cloud.
+
+            final Preferences prefs = Preferences.getPreferences(getApplicationContext());
+
+            boolean allowRemoteSearch = false;
+            if (mSearchAccount != null) {
+                final Account searchAccount = prefs.getAccount(mSearchAccount);
+                if (searchAccount != null) {
+                    allowRemoteSearch = searchAccount.allowRemoteSearch();
+                }
+            }
+
+            if (allowRemoteSearch && mQueryString != null && !mRemoteSearch && !mIntegrate && mSearchFolder != null) {
+                menu.findItem(R.id.search_remote).setVisible(true);
+            }
         } else {
             if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
                 menu.findItem(R.id.check_mail).setVisible(false);

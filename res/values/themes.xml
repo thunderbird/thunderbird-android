@@ -25,6 +25,7 @@
 		<item name="iconActionSpam">@drawable/ic_action_spam_light</item>
 		<item name="iconActionToggleFlag">@drawable/ic_action_toggle_flag_light</item>
 		<item name="iconActionToggleRead">@drawable/ic_action_toggle_read_light</item>
+        <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_light</item>
 		<item name="iconMenuAdd">@drawable/ic_menu_add</item>
 		<item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
 		<item name="iconMenuClear">@drawable/ic_menu_clear</item>
@@ -67,6 +68,7 @@
 		<item name="iconActionSpam">@drawable/ic_action_spam_dark</item>
 		<item name="iconActionToggleFlag">@drawable/ic_action_toggle_flag_dark</item>
 		<item name="iconActionToggleRead">@drawable/ic_action_toggle_read_dark</item>
+        <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_dark</item>
 		<item name="iconMenuAdd">@drawable/ic_menu_add</item>
 		<item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
 		<item name="iconMenuClear">@drawable/ic_menu_clear</item>

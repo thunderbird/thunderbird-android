@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/search_remote"
+        android:icon="?attr/iconActionRemoteSearch"
+        android:showAsAction="always"
+        android:title="@string/action_remote_search"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
