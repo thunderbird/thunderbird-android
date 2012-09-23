@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.fragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.SingleMessageView;
 
-public class MessageView extends K9Activity implements OnClickListener {
+public class MessageViewFragment extends K9Activity implements OnClickListener {
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
