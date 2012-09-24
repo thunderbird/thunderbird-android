@@ -25,6 +25,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
@@ -679,16 +682,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
         // Enable gesture detection for MessageLists
         mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
-
-        // Enable context action bar behaviour
-        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
-                toggleMessageSelect(message);
-                return true;
-            }});
 
         // Correcting for screen rotation when in ActionMode
         mSelectedCount = getSelectionFromCheckboxes().size();
@@ -1477,6 +1470,124 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         }
         }
     }
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+
+
+        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
+            switch (item.getItemId()) {
+                case R.id.reply: {
+                    onReply(message);
+                    break;
+                }
+                case R.id.reply_all: {
+                    onReplyAll(message);
+                    break;
+                }
+                case R.id.forward: {
+                    onForward(message);
+                    break;
+                }
+                case R.id.send_again: {
+                    onResendMessage(message);
+                    mSelectedCount = 0;
+                    break;
+                }
+                case R.id.same_sender: {
+                    MessageList.actionHandle(MessageList.this, "From " + message.sender,
+                        message.senderAddress, false, null, null);
+                    break;
+                }
+                case R.id.delete: {
+                    onDelete(selection);
+                    break;
+                }
+                case R.id.mark_as_read: {
+                    setFlag(selection, Flag.SEEN, true);
+                    break;
+                }
+                case R.id.mark_as_unread: {
+                    setFlag(selection, Flag.SEEN, false);
+                    break;
+                }
+                case R.id.flag: {
+                    setFlag(selection, Flag.FLAGGED, true);
+                    break;
+                }
+                case R.id.unflag: {
+                    setFlag(selection, Flag.FLAGGED, false);
+                    break;
+                }
+
+                // only if the account supports this
+                case R.id.archive: {
+                    onArchive(selection);
+                    break;
+                }
+                case R.id.spam: {
+                    onSpam(selection);
+                    break;
+                }
+                case R.id.move: {
+                    onMove(selection);
+                    break;
+                }
+                case R.id.copy: {
+                    onCopy(selection);
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+
+        if (message == null) {
+            return;
+        }
+
+        getMenuInflater().inflate(R.menu.message_list_item_context, menu);
+
+        menu.setHeaderTitle(message.message.getSubject());
+
+        if (message.read) {
+            menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
+        }
+
+        if (message.flagged) {
+            menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
+        }
+
+        Account account = message.message.getFolder().getAccount();
+        if (!mController.isCopyCapable(account)) {
+            menu.findItem(R.id.copy).setVisible(false);
+        }
+
+        if (!mController.isMoveCapable(account)) {
+            menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
+        if (!account.hasArchiveFolder()) {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+
+        if (!account.hasSpamFolder()) {
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1967,103 +2078,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             }
         }
 
-        private final OnClickListener itemMenuClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Deselect all messages
-                setSelectionState(false);
-
-                final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                final MenuBuilder menu = new MenuBuilder(MessageList.this);
-                getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
-
-                if (message.read) {
-                    menu.findItem(R.id.mark_as_read).setVisible(false);
-                } else {
-                    menu.findItem(R.id.mark_as_unread).setVisible(false);
-                }
-
-                if (message.flagged) {
-                    menu.findItem(R.id.flag).setVisible(false);
-                } else {
-                    menu.findItem(R.id.unflag).setVisible(false);
-                }
-
-                MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
-                popup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
-                        switch (item.getItemId()) {
-                            case R.id.reply: {
-                                onReply(message);
-                                break;
-                            }
-                            case R.id.reply_all: {
-                                onReplyAll(message);
-                                break;
-                            }
-                            case R.id.forward: {
-                                onForward(message);
-                                break;
-                            }
-                            case R.id.send_again: {
-                                onResendMessage(message);
-                                mSelectedCount = 0;
-                                break;
-                            }
-                            case R.id.same_sender: {
-                                MessageList.actionHandle(MessageList.this, "From " + message.sender,
-                                    message.senderAddress, false, null, null);
-                                break;
-                            }
-                            case R.id.delete: {
-                                onDelete(selection);
-                                break;
-                            }
-                            case R.id.mark_as_read: {
-                                setFlag(selection, Flag.SEEN, true);
-                                break;
-                            }
-                            case R.id.mark_as_unread: {
-                                setFlag(selection, Flag.SEEN, false);
-                                break;
-                            }
-                            case R.id.flag: {
-                                setFlag(selection, Flag.FLAGGED, true);
-                                break;
-                            }
-                            case R.id.unflag: {
-                                setFlag(selection, Flag.FLAGGED, false);
-                                break;
-                            }
-
-                            // only if the account supports this
-                            case R.id.archive: {
-                                onArchive(selection);
-                                break;
-                            }
-                            case R.id.spam: {
-                                onSpam(selection);
-                                break;
-                            }
-                            case R.id.move: {
-                                onMove(selection);
-                                break;
-                            }
-                            case R.id.copy: {
-                                onCopy(selection);
-                                break;
-                            }
-                        }
-
-                        return true;
-                    }
-                });
-                popup.show();
-            }
-        };
-
 
         @Override
         public int getCount() {
@@ -2116,15 +2130,12 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
-                holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
-                holder.itemMenu.setOnClickListener(itemMenuClickListener);
 
                 holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
                 holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
                 holder.preview.setLines(mPreviewLines);
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
-                holder.itemMenu.setFocusable(false);
 
                 view.setTag(holder);
             }
@@ -2185,8 +2196,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                               final MessageInfoHolder message) {
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
-            // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.itemMenu.setTag(position);
 
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
@@ -2298,7 +2307,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         public TextView time;
         public TextView date;
         public View chip;
-        public ImageButton itemMenu;
         public int position = -1;
 
         @Override
