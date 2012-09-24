@@ -35,13 +35,6 @@
         android:layout_width="fill_parent"
         android:nextFocusDown="@+id/next"
         />
-    <CheckBox
-        android:id="@+id/account_default"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="@string/account_setup_basics_default_label"
-        android:visibility="gone"
-        />
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dip"
