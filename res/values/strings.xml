@@ -313,6 +313,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>
     <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>
+
+    <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>
+    <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
+
     <string name="global_settings_show_contact_name_label">Show contact names</string>
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>

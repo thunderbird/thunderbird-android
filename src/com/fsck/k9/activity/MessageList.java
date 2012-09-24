@@ -297,6 +297,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     private SortType mSortType = SortType.SORT_DATE;
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
+    private boolean mSenderAboveSubject = false;
 
     private int mSelectedCount = 0;
 
@@ -806,6 +807,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
+        mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
         // TODO Add support for pull to fresh on searches.
         if(mQueryString == null) {
@@ -2125,13 +2127,18 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
             if (holder == null) {
                 holder = new MessageViewHolder();
-                holder.subject = (TextView) view.findViewById(R.id.subject);
-                holder.from = (TextView) view.findViewById(R.id.from);
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
 
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+                if (mSenderAboveSubject) {
+                    holder.from = (TextView) view.findViewById(R.id.subject);
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
+                } else {
+                    holder.subject = (TextView) view.findViewById(R.id.subject);
+                    holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+                }
+
                 holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
                 holder.preview.setLines(mPreviewLines);
@@ -2147,9 +2154,13 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
-                holder.subject.setText(getString(R.string.general_no_subject));
-                holder.subject.setTypeface(null, Typeface.NORMAL);
+                if (holder.subject != null) {
+                    holder.subject.setText(getString(R.string.general_no_subject));
+                    holder.subject.setTypeface(null, Typeface.NORMAL);
+                }
+
                 String noSender = getString(R.string.general_no_sender);
+
                 if (holder.preview != null) {
                     holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable) holder.preview.getText();
@@ -2192,15 +2203,17 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
          * @param message
          *            Never <code>null</code>.
          */
+
+
+
         private void bindView(final int position, final View view, final MessageViewHolder holder,
                               final MessageInfoHolder message) {
-            holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
+            int maybeBoldTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
 
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
             holder.position = -1;
-
 
             if (message.selected) {
 
@@ -2211,77 +2224,102 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
 
             }
-            // TODO: Make these colors part of the theme
-
 //            if (K9.getK9Theme() == K9.THEME_LIGHT) {
 //                // Light theme: light grey background for read messages
-//                view.setBackgroundColor(message.read ?  Color.rgb(229, 229, 229) : Color.rgb(255, 255, 255));
+//                view.setBackgroundColor(message.read ?
+//                        Color.rgb(230, 230, 230) : Color.rgb(255, 255, 255));
 //            } else {
 //                // Dark theme: dark grey background for unread messages
 //                view.setBackgroundColor(message.read ? 0 : Color.rgb(45, 45, 45));
 //            }
 
+            String subject = null;
+
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
-                holder.subject.setText(getText(R.string.general_no_subject));
+                subject = (String) getText(R.string.general_no_subject);
+
             } else {
-                holder.subject.setText(message.message.getSubject());
+                subject = message.message.getSubject();
             }
 
-            int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
+            // We'll get badge support soon --jrv
+//            if (holder.badge != null) {
+//                String email = message.counterpartyAddress;
+//                holder.badge.assignContactFromEmail(email, true);
+//                if (email != null) {
+//                    mContactsPictureLoader.loadContactPicture(email, holder.badge);
+//                }
+//            }
+
             if (holder.preview != null) {
                 /*
+                 * In the touchable UI, we have previews. Otherwise, we
+                 * have just a "from" line.
                  * Because text views can't wrap around each other(?) we
                  * compose a custom view containing the preview and the
                  * from.
                  */
 
+                CharSequence beforePreviewText = null;
+                if (mSenderAboveSubject) {
+                    beforePreviewText = subject;
+                } else {
+                    beforePreviewText = message.sender;
+                }
+
                 holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                                       .append(message.sender).append(" ").append(message.message.getPreview()),
+                                       .append(beforePreviewText).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
-                str.setSpan(new StyleSpan(senderTypeface),
-                            0,
-                            message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
-                            0,
-                            message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(new AbsoluteSizeSpan((mSenderAboveSubject ? mFontSizes.getMessageListSubject(): mFontSizes.getMessageListSender()), true),
+                            0, beforePreviewText.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                // TODO: Make these colors part of the theme
                 int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
                         Color.rgb(105, 105, 105) :
                         Color.rgb(160, 160, 160);
 
                 // set span for preview message.
                 str.setSpan(new ForegroundColorSpan(color), // How do I can specify the android.R.attr.textColorTertiary
-                            message.sender.length() + 1,
+                            beforePreviewText.length() + 1,
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
+            }
 
-                holder.from.setTypeface(null, senderTypeface);
+
+            if (holder.from != null ) {
+                holder.from.setTypeface(null, maybeBoldTypeface);
+                if (mSenderAboveSubject) {
+                    holder.from.setCompoundDrawablesWithIntrinsicBounds(
+                            message.answered ? mAnsweredIcon : null, // left
+                            null, // top
+                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                            null); // bottom
+
+                    holder.from.setText(message.sender);
+                } else {
+                    holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
+                }
+            }
+
+            if (holder.subject != null ) {
+                if (!mSenderAboveSubject) {
+                    holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                            message.answered ? mAnsweredIcon : null, // left
+                            null, // top
+                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                            null); // bottom
+                }
+
+                holder.subject.setTypeface(null, maybeBoldTypeface);
+                holder.subject.setText(subject);
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
-
-            Drawable statusHolder = null;
-            if (message.forwarded && message.answered) {
-                statusHolder = mForwardedAnsweredIcon;
-            } else if (message.answered) {
-                statusHolder = mAnsweredIcon;
-            } else if (message.forwarded) {
-                statusHolder = mForwardedIcon;
-            }
-            holder.subject.setCompoundDrawablesWithIntrinsicBounds(statusHolder, // left
-                    null, // top
-                    message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                    null); // bottom
             holder.position = position;
         }
+
 
         private String recipientSigil(MessageInfoHolder message) {
             if (message.message.toMe()) {

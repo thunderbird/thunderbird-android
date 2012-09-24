@@ -116,7 +116,11 @@
                 android:summary="@string/global_settings_show_correspondent_names_summary"
 
                 />
-
+              <CheckBoxPreference
+                  android:persistent="false"
+                 android:key="messagelist_sender_above_subject"
+                 android:title="@string/global_settings_sender_above_subject_label"
+                 android:summary="@string/global_settings_sender_above_subject_summary" />
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_show_contact_name"
