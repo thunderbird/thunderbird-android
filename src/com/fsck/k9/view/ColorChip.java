@@ -19,14 +19,14 @@ public class ColorChip {
         CIRCULAR.addCircle(8,8,7f,Path.Direction.CW);
         CIRCULAR.close();
 
-        RIGHT_POINTING.addArc(new RectF(0f,0f,15f,15f) , 90, 180);
-        RIGHT_POINTING.lineTo(16f,7f);
+        RIGHT_POINTING.addArc(new RectF(1f,1f,15f,15f) , 90, 180);
+        RIGHT_POINTING.lineTo(15f,8f);
         RIGHT_POINTING.lineTo(8f, 15f);
         RIGHT_POINTING.close();
 
-        LEFT_POINTING.addArc(new RectF(0f,0f,15f,15f) , 270, 180);
-        LEFT_POINTING.moveTo(8f, 0f);
-        LEFT_POINTING.lineTo(0f,7f);
+        LEFT_POINTING.addArc(new RectF(1f,1f,15f,15f) , 270, 180);
+        LEFT_POINTING.moveTo(8f, 1f);
+        LEFT_POINTING.lineTo(0f,8f);
         LEFT_POINTING.lineTo(8f, 15f);
         LEFT_POINTING.close();
 
@@ -43,10 +43,10 @@ public class ColorChip {
         STAR.lineTo(8f,0f);
         STAR.close();
 
-        CHECKMARK.moveTo(0f,10f);
-        CHECKMARK.lineTo(6f,16f);
-        CHECKMARK.moveTo(6f,15f);
-        CHECKMARK.lineTo(16f,2f);
+        CHECKMARK.moveTo(1f,10f);
+        CHECKMARK.lineTo(6f,14f);
+        CHECKMARK.lineTo(15f,2f);
+
     }
 
     private ShapeDrawable mDrawable;
@@ -64,6 +64,10 @@ public class ColorChip {
         if (messageRead) {
             // Read messages get an outlined circle
             mDrawable.getPaint().setStyle(Paint.Style.STROKE);
+        } else {
+            // Unread messages get filled, while retaining the outline, so that they stay the same size
+            mDrawable.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+
         }
         mDrawable.getPaint().setColor(color);
 
