@@ -267,7 +267,11 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        Random random = new Random((long)mAccountNumber + 4);
+        mChipColor = (random.nextInt(0x70) +
+                                  (random.nextInt(0x70) * 0xff) +
+                                  (random.nextInt(0x70) * 0xffff) +
+                                  0xff000000);
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -306,6 +310,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
+
+        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
