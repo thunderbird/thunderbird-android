@@ -315,6 +315,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
     <string name="global_settings_show_correspondent_names_label">Näytä yhteyshenkilöiden nimet</string>
     <string name="global_settings_show_correspondent_names_summary">Näytä yhteyshenkilöiden nimet sähköpostiosoitteen sijaan</string>
+
+    <string name="global_settings_sender_above_subject_label">Yhteyshenkilö aiheen yläpuolella</string>
+    <string name="global_settings_sender_above_subject_summary">Näytä yhteyshenkilöiden nimet aiherivin yläpuolella</string>
+
     <string name="global_settings_show_contact_name_label">Näytä yhteystietojen nimet</string>
     <string name="global_settings_show_contact_name_summary">Käytä vastaanottajien nimiä osoitekirjasta, kun käytettävissä</string>
     <string name="global_settings_registered_name_color_label">Väritä yhteystiedot</string>
