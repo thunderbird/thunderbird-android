@@ -1,14 +1,20 @@
 
 package com.fsck.k9.mail.store;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +23,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.helper.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
@@ -31,13 +36,14 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -78,8 +84,6 @@ public class LocalStore extends Store implements Serializable {
      * Immutable empty {@link String} array
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -142,80 +146,51 @@ public class LocalStore extends Store implements Serializable {
 
             db.beginTransaction();
             try {
-                // schema version 29 was when we moved to incremental updates
-                // in the case of a new db or a < v29 db, we blow away and start from scratch
-                if (db.getVersion() < 29) {
-
-                    db.execSQL("DROP TABLE IF EXISTS folders");
-                    db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
-                               + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
-                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT,"
-                               + "remote_name TEXT)");
-
-                    db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
-                    db.execSQL("DROP TABLE IF EXISTS messages");
-                    db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
-                               + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                               + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT, "
-                               + "mime_type TEXT)");
-
-                    db.execSQL("DROP TABLE IF EXISTS headers");
-                    db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                    db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
-
-                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
-                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                    db.execSQL("DROP TABLE IF EXISTS attachments");
-                    db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                               + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                               + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
-
-                    db.execSQL("DROP TABLE IF EXISTS pending_commands");
-                    db.execSQL("CREATE TABLE pending_commands " +
-                               "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-                    db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-                    db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
-                    db.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                    db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                               + "DELETE FROM headers where old.id = message_id; END;");
-                } else {
-                    // in the case that we're starting out at 29 or newer, run all the needed updates
-
-                    if (db.getVersion() < 30) {
-                        try {
-                            db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
-                        } catch (SQLiteException e) {
-                            if (! e.toString().startsWith("duplicate column name: deleted")) {
-                                throw e;
-                            }
-                        }
-                    }
-                    if (db.getVersion() < 31) {
+                try {
+                    // schema version 29 was when we moved to incremental updates
+                    // in the case of a new db or a < v29 db, we blow away and start from scratch
+                    if (db.getVersion() < 29) {
+    
+                        db.execSQL("DROP TABLE IF EXISTS folders");
+                        db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                                   + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                                   + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
+                                   + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT,"
+                                   + "remote_name TEXT)");
+    
+                        db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+                        db.execSQL("DROP TABLE IF EXISTS messages");
+                        db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
+                                   + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
+                                   + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT, "
+                                   + "mime_type TEXT)");
+    
+                        db.execSQL("DROP TABLE IF EXISTS headers");
+                        db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+    
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+                        db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
                         db.execSQL("DROP TABLE IF EXISTS attachments");
                         db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                                    + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
                                    + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
-
+    
                         db.execSQL("DROP TABLE IF EXISTS pending_commands");
                         db.execSQL("CREATE TABLE pending_commands " +
                                    "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
+    
                         db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
                         db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
+    
                         db.execSQL("DROP TRIGGER IF EXISTS delete_message");
                         db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
                                    + "DELETE FROM headers where old.id = message_id; END;");
                     } else {
                         // in the case that we're starting out at 29 or newer, run all the needed updates
-
+    
                         if (db.getVersion() < 30) {
                             try {
                                 db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
@@ -233,7 +208,7 @@ public class LocalStore extends Store implements Serializable {
                             db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
                         }
                         if (db.getVersion() < 33) {
-
+    
                             try {
                                 db.execSQL("ALTER TABLE messages ADD preview TEXT");
                             } catch (SQLiteException e) {
@@ -241,7 +216,7 @@ public class LocalStore extends Store implements Serializable {
                                     throw e;
                                 }
                             }
-
+    
                         }
                         if (db.getVersion() < 34) {
                             try {
@@ -273,7 +248,7 @@ public class LocalStore extends Store implements Serializable {
                                 Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
                             }
                         }
-
+    
                         // Database version 38 is solely to prune cached attachments now that we clear them better
                         if (db.getVersion() < 39) {
                             try {
@@ -282,7 +257,7 @@ public class LocalStore extends Store implements Serializable {
                                 Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
                             }
                         }
-
+    
                         // V40: Store the MIME type for a message.
                         if (db.getVersion() < 40) {
                             try {
@@ -291,7 +266,7 @@ public class LocalStore extends Store implements Serializable {
                                 Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
                             }
                         }
-
+    
                         if (db.getVersion() < 41) {
                             try {
                                 db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
@@ -305,7 +280,7 @@ public class LocalStore extends Store implements Serializable {
                                 }
                             }
                             Cursor cursor = null;
-
+    
                             try {
                                 SharedPreferences prefs = getPreferences();
                                 cursor = db.rawQuery("SELECT id, name FROM folders", null);
@@ -328,7 +303,7 @@ public class LocalStore extends Store implements Serializable {
                             try {
                                 long startTime = System.currentTimeMillis();
                                 SharedPreferences.Editor editor = getPreferences().edit();
-
+    
                                 List <? extends Folder >  folders = getPersonalNamespaces(true);
                                 for (Folder folder : folders) {
                                     if (folder instanceof LocalFolder) {
@@ -336,7 +311,7 @@ public class LocalStore extends Store implements Serializable {
                                         lFolder.save(editor);
                                     }
                                 }
-
+    
                                 editor.commit();
                                 long endTime = System.currentTimeMillis();
                                 Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
@@ -355,21 +330,21 @@ public class LocalStore extends Store implements Serializable {
                                     db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
                                     Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
                                 }
-
+    
                                 // Check if old (pre v3.800) localized outbox folder exists
                                 String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
                                 LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
                                 if (obsoleteOutbox.exists()) {
                                     // Get all messages from the localized outbox ...
                                     Message[] messages = obsoleteOutbox.getMessages(null, false);
-
+    
                                     if (messages.length > 0) {
                                         // ... and move them to the drafts folder (we don't want to
                                         // surprise the user by sending potentially very old messages)
                                         LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
                                         obsoleteOutbox.moveMessages(messages, drafts);
                                     }
-
+    
                                     // Now get rid of the localized outbox
                                     obsoleteOutbox.delete();
                                     obsoleteOutbox.delete(true);
@@ -378,24 +353,28 @@ public class LocalStore extends Store implements Serializable {
                                 Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
                             }
                         }
-                    }
-                    if (db.getVersion() < 44) {
-                        try {
-                            db.execSQL("ALTER TABLE folders ADD remote_name TEXT");
-                            // Mirror the name to the remote_name column for existing folders.
-                            db.execSQL("UPDATE folders SET remote_name = name");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to add remote_name column to folders");
+                        if (db.getVersion() < 44) {
+                            try {
+                                db.execSQL("ALTER TABLE folders ADD remote_name TEXT");
+                                // Mirror the name to the remote_name column for existing folders.
+                                db.execSQL("UPDATE folders SET remote_name = name");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to add remote_name column to folders");
+                            }
                         }
                     }
+                } catch (SQLiteException e) {
+                    Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
+                    db.setVersion(0);
+                    throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
                 }
-            } catch (SQLiteException e) {
-                Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
-                db.setVersion(0);
-                throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
+    
+                db.setVersion(DB_VERSION);
+                
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
-
-            db.setVersion(DB_VERSION);
 
             if (db.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
