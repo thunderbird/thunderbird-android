@@ -8,6 +8,7 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -72,6 +73,8 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
@@ -300,6 +303,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     private boolean mRemoteSearch = false;
     private String mSearchAccount = null;
     private String mSearchFolder = null;
+    private Future mRemoteSearchFuture = null;
     private boolean mIntegrate = false;
     private String[] mAccountUuids = null;
     private String[] mFolderNames = null;
@@ -983,7 +987,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
         if (mAdapter.isEmpty()) {
             if (mRemoteSearch) {
                 //TODO: Support flag based search
-                mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
+                mRemoteSearchFuture = mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
             } else if (mFolderName != null) {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
                 // Hide the archive button if we don't have an archive folder.
@@ -1583,6 +1587,36 @@ public class MessageList extends K9ListActivity implements OnItemClickListener {
     private void checkMail(Account account, String folderName) {
         mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
         mController.sendPendingMessages(account, mAdapter.mListener);
+    }
+
+    /**
+     * We need to do some special clean up when leaving a remote search result screen.  If no remote search is
+     * in progress, this method does nothing special.
+     */
+    @Override
+    public void onBackPressed() {
+        // If we represent a remote search, then kill that before going back.
+        if(mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
+            try {
+                Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
+                // Canceling the future stops any message fetches in progress.
+                final boolean cancelSuccess = mRemoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
+                if (!cancelSuccess) {
+                    Log.e(K9.LOG_TAG, "Could not cancel remote search future.");
+                }
+                // Closing the folder will kill off the connection if we're mid-search.
+                final Account searchAccount = Preferences.getPreferences(this).getAccount(mSearchAccount);
+                final Store remoteStore = searchAccount.getRemoteStore();
+                final Folder remoteFolder = remoteStore.getFolder(mSearchFolder);
+                remoteFolder.close();
+                // Send a remoteSearchFinished() message for good measure.
+                mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
+            } catch (Exception e) {
+                // Since the user is going back, log and squash any exceptions.
+                Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
+            }
+        }
+        super.onBackPressed();
     }
 
     @Override

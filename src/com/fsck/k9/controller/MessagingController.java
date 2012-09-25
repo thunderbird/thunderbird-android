@@ -1,4 +1,3 @@
-
 package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
@@ -16,13 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -790,7 +783,7 @@ public class MessagingController implements Runnable {
 
 
 
-    public void searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+    public Future searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
             String msg = "searchRemoteMessages ("
                          + "acct=" + acctUuid
@@ -800,7 +793,7 @@ public class MessagingController implements Runnable {
             Log.i(K9.LOG_TAG, msg);
         }
 
-        threadPool.execute(new Runnable() {
+        return threadPool.submit(new Runnable() {
             @Override
             public void run() {
                 searchRemoteMessagesSynchronous(acctUuid, folderName, query, requiredFlags, forbiddenFlags, listener);
@@ -852,11 +845,15 @@ public class MessagingController implements Runnable {
 
 
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not complete remote search", e);
-            if (listener != null) {
-                listener.remoteSearchFailed(acct, null, e.getMessage());
+            if (Thread.currentThread().isInterrupted()) {
+                Log.i(K9.LOG_TAG, "Caught exception on aborted remote search; safe to ignore.", e);
+            } else {
+                Log.e(K9.LOG_TAG, "Could not complete remote search", e);
+                if (listener != null) {
+                    listener.remoteSearchFailed(acct, null, e.getMessage());
+                }
+                addErrorMessage(acct, null, e);
             }
-            addErrorMessage(acct, null, e);
         } finally {
             if (listener != null) {
                 listener.remoteSearchFinished(acct, folderName, 0, extraResults);

@@ -820,7 +820,7 @@ public class ImapStore extends Store {
         private volatile boolean mExists;
         private ImapStore store = null;
         Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
-
+        private boolean mInSearch = false;
 
         public ImapFolder(ImapStore nStore, String name) {
             super(nStore.getAccount());
@@ -1000,7 +1000,13 @@ public class ImapStore extends Store {
             }
 
             synchronized (this) {
-                releaseConnection(mConnection);
+                // If we are mid-search and we get a close request, we gotta trash the connection.
+                if (mInSearch && mConnection != null) {
+                    Log.i(K9.LOG_TAG, "IMAP search was aborted, shutting down connection.");
+                    mConnection.close();
+                } else {
+                    releaseConnection(mConnection);
+                }
                 mConnection = null;
             }
         }
@@ -2307,11 +2313,11 @@ public class ImapStore extends Store {
                 open(OpenMode.READ_ONLY);
                 checkOpen();
 
-                //don't pass listener--we don't want to add messages until we've downloaded them
+                mInSearch = true;
+                // don't pass listener--we don't want to add messages until we've downloaded them
                 return search(searcher, null);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Exception caught during remote search", e);
-                throw new MessagingException("Error during search: " + e.toString());
+            } finally {
+                mInSearch = false;
             }
 
         }
