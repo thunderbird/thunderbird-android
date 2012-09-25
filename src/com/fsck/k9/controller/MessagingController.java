@@ -830,7 +830,7 @@ public class MessagingController implements Runnable {
                 throw new MessagingException("Folder not found");
             }
 
-            List<Message> messages = remoteStore.searchRemoteMessages(query, folderName, requiredFlags, forbiddenFlags);
+            List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
             if (listener != null) {
                 listener.remoteSearchServerQueryComplete(acct, folderName, messages.size());
             }

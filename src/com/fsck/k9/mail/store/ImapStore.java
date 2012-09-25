@@ -2213,6 +2213,108 @@ public class ImapStore extends Store {
             }
             return id;
         }
+
+        /**
+         * Search the remote ImapFolder.
+         * @param queryString String to query for.
+         * @param requiredFlags Mandatory flags
+         * @param forbiddenFlags Flags to exclude
+         * @return List of messages found
+         * @throws MessagingException On any error.
+         */
+        @Override
+        public List<Message> search(final String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
+            throws MessagingException {
+
+            if (!mAccount.allowRemoteSearch()) {
+                throw new MessagingException("Your settings do not allow remote searching of this account");
+            }
+
+            // Setup the searcher
+            final ImapSearcher searcher = new ImapSearcher() {
+                public List<ImapResponse> search() throws IOException, MessagingException {
+                    String imapQuery = "UID SEARCH ";
+                    if (requiredFlags != null) {
+                        for (Flag f : requiredFlags) {
+                            switch (f) {
+                                case DELETED:
+                                    imapQuery += "DELETED ";
+                                    break;
+
+                                case SEEN:
+                                    imapQuery += "SEEN ";
+                                    break;
+
+                                case ANSWERED:
+                                    imapQuery += "ANSWERED ";
+                                    break;
+
+                                case FLAGGED:
+                                    imapQuery += "FLAGGED ";
+                                    break;
+
+                                case DRAFT:
+                                    imapQuery += "DRAFT ";
+                                    break;
+
+                                case RECENT:
+                                    imapQuery += "RECENT ";
+                                    break;
+                            }
+                        }
+                    }
+                    if (forbiddenFlags != null) {
+                        for (Flag f : forbiddenFlags) {
+                            switch (f) {
+                                case DELETED:
+                                    imapQuery += "UNDELETED ";
+                                    break;
+
+                                case SEEN:
+                                    imapQuery += "UNSEEN ";
+                                    break;
+
+                                case ANSWERED:
+                                    imapQuery += "UNANSWERED ";
+                                    break;
+
+                                case FLAGGED:
+                                    imapQuery += "UNFLAGGED ";
+                                    break;
+
+                                case DRAFT:
+                                    imapQuery += "UNDRAFT ";
+                                    break;
+
+                                case RECENT:
+                                    imapQuery += "UNRECENT ";
+                                    break;
+                            }
+                        }
+                    }
+                    final String encodedQry = encodeString(queryString);
+                    if (mAccount.isRemoteSearchFullText()) {
+                        imapQuery += "TEXT " + encodedQry;
+                    } else {
+                        imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
+                    }
+                    return executeSimpleCommand(imapQuery);
+                }
+            };
+
+            // Execute the search
+            try {
+                open(OpenMode.READ_ONLY);
+                checkOpen();
+
+                //don't pass listener--we don't want to add messages until we've downloaded them
+                return search(searcher, null);
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Exception caught during remote search", e);
+                throw new MessagingException("Error during search: " + e.toString());
+            }
+
+        }
     }
 
     /**
@@ -3424,106 +3526,4 @@ public class ImapStore extends Store {
             return null;
         }
     }
-
-    @Override
-    public List<Message> searchRemoteMessages(final String queryString,
-            final String folderName,  final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
-
-        if (!mAccount.allowRemoteSearch()) {
-            throw new MessagingException("Your settings do not allow remote searching of this account");
-        }
-
-        final ImapFolder folder = (ImapFolder) getFolder(folderName);
-        if (folder == null) {
-            throw new MessagingException("Invalid folder specified");
-        }
-
-        try {
-            folder.open(OpenMode.READ_ONLY);
-            folder.checkOpen();
-
-
-            ImapSearcher searcher = new ImapSearcher() {
-                public List<ImapResponse> search() throws IOException, MessagingException {
-                    String imapQuery = "UID SEARCH ";
-                    if (requiredFlags != null) {
-                        for (Flag f : requiredFlags) {
-                            switch (f) {
-                            case DELETED:
-                                imapQuery += "DELETED ";
-                                break;
-
-                            case SEEN:
-                                imapQuery +=  "SEEN ";
-                                break;
-
-                            case ANSWERED:
-                                imapQuery += "ANSWERED ";
-                                break;
-
-                            case FLAGGED:
-                                imapQuery += "FLAGGED ";
-                                break;
-
-                            case DRAFT:
-                                imapQuery += "DRAFT ";
-                                break;
-
-                            case RECENT:
-                                imapQuery += "RECENT ";
-                                break;
-                            }
-                        }
-                    }
-                    if (forbiddenFlags != null) {
-                        for (Flag f : forbiddenFlags) {
-                            switch (f) {
-                            case DELETED:
-                                imapQuery += "UNDELETED ";
-                                break;
-
-                            case SEEN:
-                                imapQuery +=  "UNSEEN ";
-                                break;
-
-                            case ANSWERED:
-                                imapQuery += "UNANSWERED ";
-                                break;
-
-                            case FLAGGED:
-                                imapQuery += "UNFLAGGED ";
-                                break;
-
-                            case DRAFT:
-                                imapQuery += "UNDRAFT ";
-                                break;
-
-                            case RECENT:
-                                imapQuery += "UNRECENT ";
-                                break;
-                            }
-                        }
-                    }
-                    String encodedQry = encodeString(queryString);
-                    if (mAccount.isRemoteSearchFullText()) {
-                        imapQuery += "TEXT " + encodedQry;
-                    } else {
-                        imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
-                    }
-                    return folder.executeSimpleCommand(imapQuery);
-                }
-            };
-
-            //don't pass listener--we don't want to add messages until we've downloaded them
-            return folder.search(searcher, null);
-
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Exception caught during remote search", e);
-            throw new MessagingException("Error during search: " + e.toString());
-        }
-
-    }
-
-
-
 }
