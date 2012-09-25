@@ -1114,7 +1114,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                 holder.newMessageCount.setVisibility(View.GONE);
             }
 
-            if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
+            if (folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(Integer
                                                    .toString(folder.flaggedMessageCount));
                 holder.flaggedMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));

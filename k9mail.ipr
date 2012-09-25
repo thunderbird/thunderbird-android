@@ -389,7 +389,11 @@
     </option>
   </component>
   <component name="ProjectDictionaryState">
-    <dictionary name="achen" />
+    <dictionary name="achen">
+      <words>
+        <w>ringtone</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -481,17 +485,6 @@
         <root url="jar://$PROJECT_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/test/java" />
       </SOURCES>
     </library>
-    <library name="Maven: com.google.android:android:2.2.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/2.2.1/android-2.2.1-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: com.google.android:android:4.0.1.2">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.0.1.2/android-4.0.1.2.jar!/" />
@@ -501,6 +494,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.0.1.2/android-4.0.1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.android:android:4.1.1.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.1.1.4/android-4.1.1.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.1.1.4/android-4.1.1.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.1.1.4/android-4.1.1.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.google.android:support-v4:r7">

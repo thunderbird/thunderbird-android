@@ -167,11 +167,10 @@ public class K9 extends Application {
         NEVER
     }
 
-    private static boolean mMessageListStars = true;
-    private static boolean mMessageListCheckboxes = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
+    private static boolean mMessageListSenderAboveSubject = false;
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
@@ -436,9 +435,8 @@ public class K9 extends Application {
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
+        editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
-        editor.putBoolean("messageListStars", mMessageListStars);
-        editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
 
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
@@ -588,8 +586,7 @@ public class K9 extends Application {
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
+        mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
@@ -883,25 +880,17 @@ public class K9 extends Application {
         mMessageListPreviewLines = lines;
     }
 
-    public static boolean messageListStars() {
-        return mMessageListStars;
-    }
-
-    public static void setMessageListStars(boolean stars) {
-        mMessageListStars = stars;
-    }
-    public static boolean messageListCheckboxes() {
-        return mMessageListCheckboxes;
-    }
-
-    public static void setMessageListCheckboxes(boolean checkboxes) {
-        mMessageListCheckboxes = checkboxes;
-    }
-
     public static boolean showCorrespondentNames() {
         return mShowCorrespondentNames;
     }
 
+     public static boolean messageListSenderAboveSubject() {
+         return mMessageListSenderAboveSubject;
+     }
+
+    public static void setMessageListSenderAboveSubject(boolean sender) {
+         mMessageListSenderAboveSubject = sender;
+    }
     public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
         mShowCorrespondentNames = showCorrespondentNames;
     }

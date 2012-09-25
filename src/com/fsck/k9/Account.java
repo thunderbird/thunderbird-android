@@ -198,6 +198,7 @@ public class Account implements BaseAccount {
     private ColorChip mToMeReadColorChip;
     private ColorChip mFromMeUnreadColorChip;
     private ColorChip mFromMeReadColorChip;
+    private ColorChip mCheckmarkChip;
 
 
     /**
@@ -266,7 +267,11 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        Random random = new Random((long)mAccountNumber + 4);
+        mChipColor = (random.nextInt(0x70) +
+                                  (random.nextInt(0x70) * 0xff) +
+                                  (random.nextInt(0x70) * 0xffff) +
+                                  0xff000000);
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -305,6 +310,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
+
+        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -763,15 +770,21 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void cacheChips() {
-        mReadColorChip = new ColorChip(mChipColor, true, false, false, false);
-        mUnreadColorChip = new ColorChip(mChipColor, false, false, false, false);
-        mToMeReadColorChip = new ColorChip(mChipColor, true, true, false, false);
-        mToMeUnreadColorChip = new ColorChip(mChipColor, false,true, false, false);
-        mFromMeReadColorChip = new ColorChip(mChipColor, true, false, true, false);
-        mFromMeUnreadColorChip = new ColorChip(mChipColor, false, false, true, false);
-        mFlaggedReadColorChip = new ColorChip(mChipColor, true, false, false, true);
-        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, false, false, true);
+        mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
+        mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
     }
+
+    public ColorChip getCheckmarkChip() {
+        return mCheckmarkChip;
+    }
+
     public synchronized int getChipColor() {
         return mChipColor;
     }
@@ -809,7 +822,7 @@ public class Account implements BaseAccount {
     }
 
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor, false, false, false, false);
+        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
 

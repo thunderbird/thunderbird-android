@@ -86,23 +86,56 @@
 
     <!-- This is overridden because otherwise it deletes coverage.em after extraction, requiring
          another compile. Also, test.runner can be changed here instead of in ant.properties, and
-         the code to pull the results is integrated. Changes are commented because from looking at
-         r20-preview, this might break and need to be redone. -->
+         the code to pull the results is integrated. This likely needs to be updated with every SDK
+         SDK release. Copied from $ANDROID_SDK_HOME/tools/ant/build.xml, Android SDK Tools
+         Revision 20.0.3, and 21 RC4 is not changed. -->
     <target name="test" depends="-test-project-check"
                 description="OVERRIDE: Runs tests from the package defined in test.package property">
+        <property name="test.runner" value="com.zutubi.android.junitreport.JUnitReportTestRunner" /><!-- ASH changed from original -->
 
-        <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
+        <if condition="${project.is.test}">
+        <then>
+            <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
 
-        <property name="test.runner" value="com.zutubi.android.junitreport.JUnitReportTestRunner" /><!-- changed from original -->
+            <!-- Application package of the tested project extracted from its manifest file -->
+            <xpath input="${tested.project.absolute.dir}/AndroidManifest.xml"
+                    expression="/manifest/@package" output="tested.project.app.package" />
 
-        <!-- Application package of the tested project extracted from its manifest file -->
-        <xpath input="${tested.project.absolute.dir}/AndroidManifest.xml"
-                expression="/manifest/@package" output="tested.manifest.package" />
-        <xpath input="AndroidManifest.xml"
-                expression="/manifest/@package" output="manifest.package" />
+            <if condition="${emma.enabled}">
+                <then>
+                    <getprojectpaths projectPath="${tested.project.absolute.dir}"
+                            binOut="tested.project.out.absolute.dir"
+                            srcOut="tested.project.source.absolute.dir" />
+
+                    <getlibpath projectPath="${tested.project.absolute.dir}"
+                            libraryFolderPathOut="tested.project.lib.source.path"
+                            leaf="@{source.dir}" />
+
+                </then>
+            </if>
+
+        </then>
+        <else>
+            <!-- this is a test app, the tested package is the app's own package -->
+            <property name="tested.project.app.package" value="${project.app.package}" />
+
+            <if condition="${emma.enabled}">
+                <then>
+                    <property name="tested.project.out.absolute.dir" value="${out.absolute.dir}" />
+                    <property name="tested.project.source.absolute.dir" value="${source.absolute.dir}" />
+
+                    <getlibpath
+                            libraryFolderPathOut="tested.project.lib.source.path"
+                            leaf="@{source.dir}" />
+
+                </then>
+            </if>
+
+        </else>
+        </if>
 
         <property name="emma.dump.file"
-                value="/data/data/${tested.manifest.package}/coverage.ec" />
+                value="/data/data/${tested.project.app.package}/coverage.ec" />
 
         <if condition="${emma.enabled}">
             <then>
@@ -114,44 +147,51 @@
                            <arg value="${emma.dump.file}" />
                     </extra-instrument-args>
                 </run-tests-helper>
-                <echo>Downloading coverage file into project directory...</echo>
+                <echo level="info">Downloading coverage file into project directory...</echo>
                 <exec executable="${adb}" failonerror="true">
                     <arg line="${adb.device.arg}" />
                     <arg value="pull" />
                     <arg value="${emma.dump.file}" />
-                    <arg value="coverage.ec" />
+                    <arg path="${out.absolute.dir}/coverage.ec" />
                 </exec>
-                <echo>Extracting coverage report...</echo>
+                <echo level="info">Extracting coverage report...</echo>
+
+                <pathconvert property="tested.project.lib.source.path.value" refid="tested.project.lib.source.path">
+                    <firstmatchmapper>
+                        <regexpmapper from='^([^ ]*)( .*)$$' to='"\1\2"'/>
+                        <identitymapper/>
+                    </firstmatchmapper>
+                </pathconvert>
+
+
                 <emma>
-                    <report sourcepath="${tested.project.absolute.dir}/${source.dir}"
-                                      verbosity="${verbosity}">
+                    <report sourcepath="${tested.project.source.absolute.dir}:${tested.project.lib.source.path.value}"
+                            verbosity="${verbosity}">
                         <!-- TODO: report.dir or something like should be introduced if necessary -->
-                        <infileset dir=".">
-                            <include name="coverage.ec" />
-                            <include name="coverage.em" />
-                        </infileset>
+                        <infileset file="${out.absolute.dir}/coverage.ec" />
+                        <infileset file="${tested.project.out.absolute.dir}/coverage.em" />
                         <!-- TODO: reports in other, indicated by user formats -->
-                        <html outfile="coverage.html" />
-                        <xml outfile="coverage.xml" />
+                        <html outfile="${out.absolute.dir}/coverage.html" />
+                        <xml outfile="${out.absolute.dir}/coverage.xml" /><!-- ASH added for JUnitReportTestRunner -->
                    </report>
                 </emma>
-                <!-- commented out from original
-                <echo>Cleaning up temporary files...</echo>
-                <delete file="coverage.ec" />
-                <delete file="coverage.em" />
+                <!-- ASH commented out from original
+                <echo level="info">Cleaning up temporary files...</echo>
+                <delete file="${out.absolute.dir}/coverage.ec" />
+                <delete file="${out.absolute.dir}/coverage.em" />
                 -->
-                <echo>Saving the report file in ${basedir}/coverage/coverage.html</echo>
+                <echo level="info">Saving the report file in ${out.absolute.dir}/coverage.html</echo>
             </then>
             <else>
                 <run-tests-helper />
             </else>
         </if>
-        <!-- added for JUnitReportTestRunner: -->
+        <!-- ASH the rest added for JUnitReportTestRunner: -->
         <echo>Saving the JUnit test report as ${junit-file}</echo>
         <exec executable="${adb}" failonerror="true">
             <arg line="${adb.device.arg}"/>
             <arg value="pull" />
-            <arg value="/data/data/${tested.manifest.package}/files/junit-report.xml" />
+            <arg value="/data/data/${tested.project.app.package}/files/junit-report.xml" />
             <arg value="${junit-file}" />
         </exec>
     </target>

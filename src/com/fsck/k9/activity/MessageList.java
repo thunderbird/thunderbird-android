@@ -25,6 +25,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,10 +35,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
@@ -295,9 +297,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     private SortType mSortType = SortType.SORT_DATE;
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
+    private boolean mSenderAboveSubject = false;
 
-    private boolean mStars = true;
-    private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
     private FontSizes mFontSizes = K9.getFontSizes();
@@ -683,16 +684,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         // Enable gesture detection for MessageLists
         mGestureDetector = new GestureDetector(new SwipeGestureDetector(this, this));
 
-        // Enable context action bar behaviour
-        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
-                toggleMessageSelect(message);
-                return true;
-            }});
-
         // Correcting for screen rotation when in ActionMode
         mSelectedCount = getSelectionFromCheckboxes().size();
         if (mSelectedCount > 0) {
@@ -816,9 +807,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
-
-        mStars = K9.messageListStars();
-        mCheckboxes = K9.messageListCheckboxes();
+        mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
         // TODO Add support for pull to fresh on searches.
         if(mQueryString == null) {
@@ -1483,6 +1472,124 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         }
         }
     }
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+
+
+        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
+            switch (item.getItemId()) {
+                case R.id.reply: {
+                    onReply(message);
+                    break;
+                }
+                case R.id.reply_all: {
+                    onReplyAll(message);
+                    break;
+                }
+                case R.id.forward: {
+                    onForward(message);
+                    break;
+                }
+                case R.id.send_again: {
+                    onResendMessage(message);
+                    mSelectedCount = 0;
+                    break;
+                }
+                case R.id.same_sender: {
+                    MessageList.actionHandle(MessageList.this, "From " + message.sender,
+                        message.senderAddress, false, null, null);
+                    break;
+                }
+                case R.id.delete: {
+                    onDelete(selection);
+                    break;
+                }
+                case R.id.mark_as_read: {
+                    setFlag(selection, Flag.SEEN, true);
+                    break;
+                }
+                case R.id.mark_as_unread: {
+                    setFlag(selection, Flag.SEEN, false);
+                    break;
+                }
+                case R.id.flag: {
+                    setFlag(selection, Flag.FLAGGED, true);
+                    break;
+                }
+                case R.id.unflag: {
+                    setFlag(selection, Flag.FLAGGED, false);
+                    break;
+                }
+
+                // only if the account supports this
+                case R.id.archive: {
+                    onArchive(selection);
+                    break;
+                }
+                case R.id.spam: {
+                    onSpam(selection);
+                    break;
+                }
+                case R.id.move: {
+                    onMove(selection);
+                    break;
+                }
+                case R.id.copy: {
+                    onCopy(selection);
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+
+        if (message == null) {
+            return;
+        }
+
+        getMenuInflater().inflate(R.menu.message_list_item_context, menu);
+
+        menu.setHeaderTitle(message.message.getSubject());
+
+        if (message.read) {
+            menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
+        }
+
+        if (message.flagged) {
+            menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
+        }
+
+        Account account = message.message.getFolder().getAccount();
+        if (!mController.isCopyCapable(account)) {
+            menu.findItem(R.id.copy).setVisible(false);
+        }
+
+        if (!mController.isMoveCapable(account)) {
+            menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
+        if (!account.hasArchiveFolder()) {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+
+        if (!account.hasSpamFolder()) {
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1973,103 +2080,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             }
         }
 
-        private final OnClickListener itemMenuClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Deselect all messages
-                setSelectionState(false);
-
-                final MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                final MenuBuilder menu = new MenuBuilder(MessageList.this);
-                getSupportMenuInflater().inflate(R.menu.message_list_item_context, menu);
-
-                if (message.read) {
-                    menu.findItem(R.id.mark_as_read).setVisible(false);
-                } else {
-                    menu.findItem(R.id.mark_as_unread).setVisible(false);
-                }
-
-                if (message.flagged) {
-                    menu.findItem(R.id.flag).setVisible(false);
-                } else {
-                    menu.findItem(R.id.unflag).setVisible(false);
-                }
-
-                MenuPopup popup = new MenuPopup(MessageList.this, menu, v);
-                popup.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
-                        switch (item.getItemId()) {
-                            case R.id.reply: {
-                                onReply(message);
-                                break;
-                            }
-                            case R.id.reply_all: {
-                                onReplyAll(message);
-                                break;
-                            }
-                            case R.id.forward: {
-                                onForward(message);
-                                break;
-                            }
-                            case R.id.send_again: {
-                                onResendMessage(message);
-                                mSelectedCount = 0;
-                                break;
-                            }
-                            case R.id.same_sender: {
-                                MessageList.actionHandle(MessageList.this, "From " + message.sender,
-                                    message.senderAddress, false, null, null);
-                                break;
-                            }
-                            case R.id.delete: {
-                                onDelete(selection);
-                                break;
-                            }
-                            case R.id.mark_as_read: {
-                                setFlag(selection, Flag.SEEN, true);
-                                break;
-                            }
-                            case R.id.mark_as_unread: {
-                                setFlag(selection, Flag.SEEN, false);
-                                break;
-                            }
-                            case R.id.flag: {
-                                setFlag(selection, Flag.FLAGGED, true);
-                                break;
-                            }
-                            case R.id.unflag: {
-                                setFlag(selection, Flag.FLAGGED, false);
-                                break;
-                            }
-
-                            // only if the account supports this
-                            case R.id.archive: {
-                                onArchive(selection);
-                                break;
-                            }
-                            case R.id.spam: {
-                                onSpam(selection);
-                                break;
-                            }
-                            case R.id.move: {
-                                onMove(selection);
-                                break;
-                            }
-                            case R.id.copy: {
-                                onCopy(selection);
-                                break;
-                            }
-                        }
-
-                        return true;
-                    }
-                });
-                popup.show();
-            }
-        };
-
 
         @Override
         public int getCount() {
@@ -2117,28 +2127,22 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
             if (holder == null) {
                 holder = new MessageViewHolder();
-                holder.subject = (TextView) view.findViewById(R.id.subject);
-                holder.from = (TextView) view.findViewById(R.id.from);
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
-                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-                holder.itemMenu = (ImageButton) view.findViewById(R.id.item_menu);
-                holder.itemMenu.setOnClickListener(itemMenuClickListener);
 
-                if (mCheckboxes) {
-                    holder.selected.setVisibility(View.VISIBLE);
+                if (mSenderAboveSubject) {
+                    holder.from = (TextView) view.findViewById(R.id.subject);
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
+                } else {
+                    holder.subject = (TextView) view.findViewById(R.id.subject);
+                    holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
                 }
 
-                if (holder.selected != null) {
-                    holder.selected.setOnCheckedChangeListener(holder);
-                }
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
                 holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
                 holder.preview.setLines(mPreviewLines);
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
-                holder.itemMenu.setFocusable(false);
 
                 view.setTag(holder);
             }
@@ -2150,9 +2154,13 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
-                holder.subject.setText(getString(R.string.general_no_subject));
-                holder.subject.setTypeface(null, Typeface.NORMAL);
+                if (holder.subject != null) {
+                    holder.subject.setText(getString(R.string.general_no_subject));
+                    holder.subject.setTypeface(null, Typeface.NORMAL);
+                }
+
                 String noSender = getString(R.string.general_no_sender);
+
                 if (holder.preview != null) {
                     holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable) holder.preview.getText();
@@ -2175,11 +2183,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
-                holder.selected.setChecked(false);
-
-                if (!mCheckboxes) {
-                    holder.selected.setVisibility(View.GONE);
-                }
             }
 
 
@@ -2200,96 +2203,123 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
          * @param message
          *            Never <code>null</code>.
          */
+
+
+
         private void bindView(final int position, final View view, final MessageViewHolder holder,
                               final MessageInfoHolder message) {
-            holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
-            // XXX TODO there has to be some way to walk our view hierarchy and get this
-            holder.itemMenu.setTag(position);
+            int maybeBoldTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
 
             // So that the mSelectedCount is only incremented/decremented
             // when a user checks the checkbox (vs code)
             holder.position = -1;
-            holder.selected.setChecked(message.selected);
 
-            if (!mCheckboxes) {
-                holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
+            if (message.selected) {
+
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().getCheckmarkChip().drawable());
             }
 
-
-
+            else {
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
-            // TODO: Make these colors part of the theme
 
+            }
 //            if (K9.getK9Theme() == K9.THEME_LIGHT) {
 //                // Light theme: light grey background for read messages
-//                view.setBackgroundColor(message.read ?  Color.rgb(229, 229, 229) : Color.rgb(255, 255, 255));
+//                view.setBackgroundColor(message.read ?
+//                        Color.rgb(230, 230, 230) : Color.rgb(255, 255, 255));
 //            } else {
 //                // Dark theme: dark grey background for unread messages
 //                view.setBackgroundColor(message.read ? 0 : Color.rgb(45, 45, 45));
 //            }
 
+            String subject = null;
+
             if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
-                holder.subject.setText(getText(R.string.general_no_subject));
+                subject = (String) getText(R.string.general_no_subject);
+
             } else {
-                holder.subject.setText(message.message.getSubject());
+                subject = message.message.getSubject();
             }
 
-            int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
+            // We'll get badge support soon --jrv
+//            if (holder.badge != null) {
+//                String email = message.counterpartyAddress;
+//                holder.badge.assignContactFromEmail(email, true);
+//                if (email != null) {
+//                    mContactsPictureLoader.loadContactPicture(email, holder.badge);
+//                }
+//            }
+
             if (holder.preview != null) {
                 /*
+                 * In the touchable UI, we have previews. Otherwise, we
+                 * have just a "from" line.
                  * Because text views can't wrap around each other(?) we
                  * compose a custom view containing the preview and the
                  * from.
                  */
 
+                CharSequence beforePreviewText = null;
+                if (mSenderAboveSubject) {
+                    beforePreviewText = subject;
+                } else {
+                    beforePreviewText = message.sender;
+                }
+
                 holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                                       .append(message.sender).append(" ").append(message.message.getPreview()),
+                                       .append(beforePreviewText).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create a span section for the sender, and assign the correct font size and weight.
-                str.setSpan(new StyleSpan(senderTypeface),
-                            0,
-                            message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
-                            0,
-                            message.sender.length() + 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                str.setSpan(new AbsoluteSizeSpan((mSenderAboveSubject ? mFontSizes.getMessageListSubject(): mFontSizes.getMessageListSender()), true),
+                            0, beforePreviewText.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                // TODO: Make these colors part of the theme
                 int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
                         Color.rgb(105, 105, 105) :
                         Color.rgb(160, 160, 160);
 
                 // set span for preview message.
                 str.setSpan(new ForegroundColorSpan(color), // How do I can specify the android.R.attr.textColorTertiary
-                            message.sender.length() + 1,
+                            beforePreviewText.length() + 1,
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
+            }
 
-                holder.from.setTypeface(null, senderTypeface);
+
+            if (holder.from != null ) {
+                holder.from.setTypeface(null, maybeBoldTypeface);
+                if (mSenderAboveSubject) {
+                    holder.from.setCompoundDrawablesWithIntrinsicBounds(
+                            message.answered ? mAnsweredIcon : null, // left
+                            null, // top
+                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                            null); // bottom
+
+                    holder.from.setText(message.sender);
+                } else {
+                    holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
+                }
+            }
+
+            if (holder.subject != null ) {
+                if (!mSenderAboveSubject) {
+                    holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                            message.answered ? mAnsweredIcon : null, // left
+                            null, // top
+                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
+                            null); // bottom
+                }
+
+                holder.subject.setTypeface(null, maybeBoldTypeface);
+                holder.subject.setText(subject);
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
-
-            Drawable statusHolder = null;
-            if (message.forwarded && message.answered) {
-                statusHolder = mForwardedAnsweredIcon;
-            } else if (message.answered) {
-                statusHolder = mAnsweredIcon;
-            } else if (message.forwarded) {
-                statusHolder = mForwardedIcon;
-            }
-            holder.subject.setCompoundDrawablesWithIntrinsicBounds(statusHolder, // left
-                    null, // top
-                    message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                    null); // bottom
             holder.position = position;
         }
+
 
         private String recipientSigil(MessageInfoHolder message) {
             if (message.message.toMe()) {
@@ -2315,8 +2345,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         public TextView time;
         public TextView date;
         public View chip;
-        public CheckBox selected;
-        public ImageButton itemMenu;
         public int position = -1;
 
         @Override
@@ -2324,9 +2352,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             if (position != -1) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
                     toggleMessageSelect(message);
-                    if (!mCheckboxes) {
-                         selected.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                    }
 
 
             }
