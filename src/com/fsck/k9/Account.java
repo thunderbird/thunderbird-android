@@ -152,7 +152,6 @@ public class Account implements BaseAccount {
     private FolderMode mFolderPushMode;
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
-    private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
@@ -189,8 +188,21 @@ public class Account implements BaseAccount {
     private String mSecurityKey;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
+    private boolean mAlwaysShowCcBcc;
 
     private CryptoProvider mCryptoProvider = null;
+
+    private ColorChip mUnreadColorChip;
+    private ColorChip mReadColorChip;
+
+    private ColorChip mFlaggedUnreadColorChip;
+    private ColorChip mFlaggedReadColorChip;
+    private ColorChip mToMeUnreadColorChip;
+    private ColorChip mToMeReadColorChip;
+    private ColorChip mFromMeUnreadColorChip;
+    private ColorChip mFromMeReadColorChip;
+    private ColorChip mCheckmarkChip;
+
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -239,7 +251,6 @@ public class Account implements BaseAccount {
         mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
-        mSaveAllHeaders = true;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
@@ -259,7 +270,11 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        Random random = new Random((long)mAccountNumber + 4);
+        mChipColor = (random.nextInt(0x70) +
+                                  (random.nextInt(0x70) * 0xff) +
+                                  (random.nextInt(0x70) * 0xffff) +
+                                  0xff000000);
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -279,6 +294,7 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = false;
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
+        mAlwaysShowCcBcc = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -297,6 +313,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
+
+        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -318,7 +336,6 @@ public class Account implements BaseAccount {
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0) {
@@ -446,6 +463,10 @@ public class Account implements BaseAccount {
         mSyncKey = prefs.getString(mUuid + ".syncKey", "");
         mSecurityKey = prefs.getString(mUuid + ".securityKey", "");
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+
+        cacheChips();
+
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -526,6 +547,7 @@ public class Account implements BaseAccount {
             editor.remove(mUuid + ".enableMoveButtons");
             editor.remove(mUuid + ".hideMoveButtonsEnum");
             editor.remove(mUuid + ".markMessageAsReadOnView");
+            editor.remove(mUuid + ".alwaysShowCcBcc");
             for (String type : networkTypes) {
                 editor.remove(mUuid + ".useCompression." + type);
             }
@@ -630,7 +652,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
-        editor.putBoolean(mUuid + ".saveAllHeaders", mSaveAllHeaders);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
@@ -689,6 +710,8 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".syncKey", mSyncKey);
         editor.putString(mUuid + ".securityKey", mSecurityKey);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
+        editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
+        
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
         editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
@@ -773,6 +796,24 @@ public class Account implements BaseAccount {
 
     public synchronized void setChipColor(int color) {
         mChipColor = color;
+        cacheChips();
+
+    }
+
+    public synchronized void cacheChips() {
+        mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
+        mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
+    }
+
+    public ColorChip getCheckmarkChip() {
+        return mCheckmarkChip;
     }
 
     public synchronized int getChipColor() {
@@ -780,8 +821,39 @@ public class Account implements BaseAccount {
     }
 
 
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean fromMe, boolean messageFlagged) {
+
+        if (messageRead) {
+            if (messageFlagged) {
+                return mFlaggedReadColorChip;
+            } else if (toMe) {
+                return mToMeReadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeReadColorChip;
+            } else {
+                return mReadColorChip;
+            }
+
+        } else {
+            if (messageFlagged) {
+                return mFlaggedUnreadColorChip;
+            } else if (toMe) {
+                return mToMeUnreadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeUnreadColorChip;
+            } else {
+                return mUnreadColorChip;
+            }
+
+
+        }
+
+    }
+
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor);
+        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
 
@@ -1402,14 +1474,6 @@ public class Account implements BaseAccount {
         mPushPollOnConnect = pushPollOnConnect;
     }
 
-    public synchronized boolean saveAllHeaders() {
-        return mSaveAllHeaders;
-    }
-
-    public synchronized void setSaveAllHeaders(boolean saveAllHeaders) {
-        mSaveAllHeaders = saveAllHeaders;
-    }
-
     /**
      * Are we storing out localStore on the SD-card instead of the local device
      * memory?<br/>
@@ -1667,5 +1731,13 @@ public class Account implements BaseAccount {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
+    }
+
+    public synchronized boolean isAlwaysShowCcBcc() {
+        return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
     }
 }

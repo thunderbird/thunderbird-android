@@ -1,6 +1,15 @@
 
 package com.fsck.k9.mail;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.codec.EncoderUtil;
+import org.apache.james.mime4j.dom.address.Mailbox;
+import org.apache.james.mime4j.dom.address.MailboxList;
+import org.apache.james.mime4j.field.address.AddressBuilder;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -11,16 +20,8 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.StringUtils;
-import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.dom.address.Mailbox;
-import org.apache.james.mime4j.dom.address.MailboxList;
-import org.apache.james.mime4j.field.address.parser.AddressBuilder;
-import org.apache.james.mime4j.MimeException;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fsck.k9.helper.Utility;
 
 
 public class Address {
@@ -137,7 +138,8 @@ public class Address {
         }
         List<Address> addresses = new ArrayList<Address>();
         try {
-            MailboxList parsedList = AddressBuilder.parseAddressList(addressList).flatten();
+            MailboxList parsedList =  AddressBuilder.DEFAULT.parseAddressList(addressList).flatten();
+
             for (int i = 0, count = parsedList.size(); i < count; i++) {
                 org.apache.james.mime4j.dom.address.Address address = parsedList.get(i);
                 if (address instanceof Mailbox) {
@@ -145,7 +147,7 @@ public class Address {
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 } else {
                     Log.e(K9.LOG_TAG, "Unknown address type from Mime4J: "
-                          + address.getClass().toString());
+                            + address.getClass().toString());
                 }
             }
         } catch (MimeException pe) {

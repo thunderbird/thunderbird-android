@@ -1409,11 +1409,6 @@ public class EasStore extends Store {
         }
 
         @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
-        }
-
-        @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException {
             String[] uids = new String[messages.length];

@@ -4,7 +4,7 @@
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
-    <loadproperties srcFile="local.properties" />
+    <property file="local.properties" />
 
     <!-- The ant.properties file can be created by you. It is only edited by the
          'android' tool to add properties to it.
@@ -41,25 +41,23 @@
 
     <!-- quick check on sdk.dir -->
     <fail
-            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through an env var"
             unless="sdk.dir"
     />
 
-
-<!-- extension targets. Uncomment the ones where you want to do custom work
-     in between standard targets -->
-<!--
-    <target name="-pre-build">
-    </target>
-    <target name="-pre-compile">
-    </target>
-
-    /* This is typically used for code obfuscation.
-       Compiled code location: ${out.classes.absolute.dir}
-       If this is not done in place, override ${out.dex.input.absolute.dir} */
-    <target name="-post-compile">
-    </target>
--->
+    <!--
+        Import per project custom build rules if present at the root of the project.
+        This is the place to put custom intermediary targets such as:
+            -pre-build
+            -pre-compile
+            -post-compile (This is typically used for code obfuscation.
+                           Compiled code location: ${out.classes.absolute.dir}
+                           If this is not done in place, override ${out.dex.input.absolute.dir})
+            -post-package
+            -post-build
+            -pre-clean
+    -->
+    <import file="custom_rules.xml" optional="true" />
 
     <!-- Import the actual build file.
 
@@ -80,137 +78,201 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: custom -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
 
     <!-- K9 CUSTOM STUFF -->
- 
-     <!-- out folders for a parent project if this project is an instrumentation project -->
-     <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
-     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
- 
-     <!-- A bloody hack, but a useful and quick one -->
-     <target name="get-version">
-     <exec executable="perl" failonerror="true" outputproperty="version-name" errorproperty="version-error">
-         <!-- yes, ant needs &quot; for " in doublequoted strings. -->
-         <arg line="-ne'/android:versionName.*?=.*?&quot;(.*?)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
-     </exec>
-     <echo>Building version number ${version-name}</echo>
-     </target>
- 
-     <target name="get-version-from-git">
-     <exec executable="git" failonerror="true" outputproperty="version-name" errorproperty="version-error">
-         <arg line="describe --tags"/>
-     </exec>
-     <echo>Building version number ${version-name}</echo>
-     </target>
- 
-     <target name="set-version">
-         <echo>Setting version to ${version-name}</echo>
-         <fail unless="version-name">You can't set the version without passing -Dversion-name=1.234</fail>
-     <exec executable="perl" failonerror="true">
-         <arg line="-p -i.bak -e's/(?&lt;=android:versionName=&quot;)(.*?)(?=&quot;)/${version-name}/' AndroidManifest.xml"/>
-     </exec>
-     <exec executable="perl" failonerror="true">
-         <arg line="-p -i.bak -e's/(?&lt;=android:versionCode=&quot;)(\d+)(?=&quot;)/$1+1/e' AndroidManifest.xml" />
-     </exec>
-     </target>
- 
-     <!-- rules -->
-     <target name="bump-version" depends="set-version,commit-version">
-         <echo>Bumping K-9 to ${version-name}</echo>
-     </target>
- 
-     <target name="commit-version">
-     <exec executable="git" failonerror="true">
-         <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
-     </exec>
-     <exec executable="git" failonerror="true">
-         <arg line="tag ${version-name}"/>
-     </exec>
-     <exec executable="git" failonerror="true">
-         <arg line="push"/>
-     </exec>
-     <exec executable="git" failonerror="true">
-         <arg line="push origin tag ${version-name}"/>
-     </exec>
-     </target>
+
+    <!-- out folders for a parent project if this project is an instrumentation project -->
+    <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
+    <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
+
+    <target name="-get-version" depends="-get-version-name">
+        <echo>Building version number ${current-version-name}</echo>
+    </target>
+
+    <target name="-get-version-name">
+        <xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName" output="current-version-name" />
+    </target>
+
+    <target name="-get-version-code">
+        <xpath input="AndroidManifest.xml" expression="/manifest/@android:versionCode" output="current-version-code" />
+    </target>
+
+    <target name="-get-version-from-git">
+        <exec executable="git" failonerror="true" outputproperty="current-version-name" errorproperty="current-version-error">
+            <arg line="describe --tags" />
+        </exec>
+        <echo>Building version number ${current-version-name}</echo>
+    </target>
+
+    <target name="-auto-incr-version">
+        <regex property="major" input="${current-version-name}" regexp="(\d+)\.\d+" select="\1" />
+        <regex property="minor" input="${current-version-name}" regexp="\d+\.(\d+)" select="\1" />
+        <math result="minor" operand1="${minor}" operation="+" operand2="1" datatype="int"/>
+        <if.contrib>
+            <length string="${minor}" when="eq" length="1" />
+            <then>
+                <var name="minor" value="00${minor}" />
+            </then>
+            <elseif>
+                <length string="${minor}" when="eq" length="2" />
+                <then>
+                    <var name="minor" value="0${minor}" />
+                </then>
+            </elseif>
+        </if.contrib>
+        <regex property="version-name" input="${major}." regexp="(\d+.)" replace="\1${minor}" />
+    </target>
+
+    <target name="-set-version" depends="-get-version-name,-get-version-code">
+        <!-- pass -Dversion-name=4.200 to define the version instead of auto-incrementing it -->
+        <if.contrib>
+            <isset property="version-name" />
+            <else>
+                <runtarget target="-auto-incr-version" />
+            </else>
+        </if.contrib>
+
+        <echo>Setting version to ${version-name}</echo>
+        <replace file="AndroidManifest.xml"
+            token="android:versionName=&quot;${current-version-name}&quot;"
+            value="android:versionName=&quot;${version-name}&quot;" summary="true"
+        />
+
+        <math result="new-version-code" operand1="${current-version-code}" operation="+" operand2="1" datatype="int"/>
+        <replace file="AndroidManifest.xml"
+            token="android:versionCode=&quot;${current-version-code}&quot;"
+            value="android:versionCode=&quot;${new-version-code}&quot;" summary="true"
+        />
+    </target>
+
+    <!-- rules -->
+    <target name="bump-version" depends="-set-version,-commit-version">
+        <echo>Bumped K-9 to ${version-name}</echo>
+    </target>
+
+    <target name="-commit-version">
+        <exec executable="git" failonerror="true">
+            <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="tag ${version-name}" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="push" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="push origin tag ${version-name}" />
+        </exec>
+    </target>
 
     <!-- Create the output directories if they don't exist yet. -->
     <target name="rclib" depends="-compile">
         <echo>Creating library ${rclib} for remote control applications</echo>
         <jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
     </target>
-    <target name="upload" depends="clean,get-version,release">
+
+    <target name="upload" depends="clean,-get-version,release">
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
-        <exec executable="mv" failonerror="true">
-            <arg value="${out.final.file}" />
-            <arg value="bin/k9-${version-name}-release.apk" />
-        </exec>
+        <move file="${out.final.file}" tofile="bin/k9-${current-version-name}-release.apk" />
+        <property name="gcode-project" value="k9mail" />
         <exec executable="googlecode_upload.pl" failonerror="true">
             <arg value="--summary" />
-            <arg value="${ant.project.name} ${version-name}"/>
+            <arg value="${ant.project.name} ${current-version-name}" />
             <arg value="--project" />
-            <arg value="k9mail"/>
-            <arg value="--user"/>
+            <arg value="${gcode-project}" />
+            <arg value="--user" />
             <arg value="${gcode-user}" />
-            <arg value="--pass"/>
+            <arg value="--pass" />
             <arg value="${gcode-pass}" />
-            <arg value="--labels"/>
-            <arg value="Type-Installer"/>
-            <arg value="bin/k9-${version-name}-release.apk" />
+            <arg value="--labels" />
+            <arg value="Type-Installer" />
+            <arg value="bin/k9-${current-version-name}-release.apk" />
         </exec>
     </target>
- 
-    <!-- Install the package on the default emulator -->
-    <target name="install" depends="debug">
-        <echo>Installing ${out.debug.file} onto default emulator...</echo>
-        <exec executable="${adb}" failonerror="true">
-            <arg value="install" />
-            <arg path="${out.debug.file}" />
-        </exec>
-    </target>
-    <!-- Re-Install the package on the default emulator -->
-    <target name="reinstall" depends="debug">
-        <echo>Reinstalling ${out.debug.file} onto default emulator...</echo>
-        <exec executable="${adb}" failonerror="true">
-            <arg value="install" />
-            <arg value="-r" />
-            <arg path="${out.debug.file}" />
-        </exec>
-     </target>
+
     <target name="astyle">
-    <exec executable="astyle" failonerror="true">
-        <arg line="--style=java --indent=spaces=4 --indent-switches --max-instatement-indent=4 --brackets=attach --add-brackets --convert-tabs --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java' 'tests/src/com/fsck/k9/*.java'"/>
-    </exec>
-     </target>
-    <target name="help">
+        <exec executable="astyle" failonerror="true">
+            <arg line="--style=java --indent=spaces=4 --indent-switches --max-instatement-indent=4 --brackets=attach --add-brackets --convert-tabs --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java' 'tests/src/com/fsck/k9/*.java'" />
+        </exec>
+    </target>
+
+    <target name="help" depends="android_rules.help">
         <!-- displays starts at col 13
               |13                                                              80| -->
-        <echo>Android Ant Build. Available targets:</echo>
-        <echo>   help:      Displays this help.</echo> 
-        <echo>   debug:     Builds the application and sign it with a debug key.</echo>
-        <echo>   release:   Builds the application. The generated apk file must be</echo>
-        <echo>              signed before it is published.</echo>
-        <echo>   install:   Installs the debug package onto a running emulator or</echo>
-        <echo>              device. This can only be used if the application has </echo>
-        <echo>              not yet been installed.</echo>
-        <echo>   reinstall: Installs the debug package on a running emulator or</echo>
-        <echo>              device that already has the application.</echo>
-        <echo>              The signatures must match.</echo>
-        <echo>   uninstall: uninstall the application from a running emulator or</echo>
-        <echo>              device.</echo>
-        <echo>   bump-version: ant -Dversion-name=3.123</echo>
-        <echo>               Bumps the project version to 3.123,tags and commits it</echo>
-        <echo>   astyle:     Make K-9's source look like it's supposed to</echo>
-        <echo>   eclipse:    Apply template Eclipse settings</echo>
-     </target>
+        <echo>Additional targets:</echo>
+     <!--echo>   bump-version: ant -Dversion-name=3.123</echo>
+        <echo>              Bumps the project version to 3.123,tags and commits it.</echo>
+        <echo>              If version-name is not given, it will auto-increment.</echo>
+        <echo>   upload:    Uploads a new release to google code.</echo-->
+        <echo>   rclib:     Creates library for remote control applications.</echo>
+        <echo>   astyle:    Make K-9's source look like it's supposed to.</echo>
+        <echo>   eclipse:   Apply template Eclipse settings.</echo>
+        <echo>   javadoc:   Javadoc output to javadoc/. ANDROID_HOME environment</echo>
+        <echo>              variable must be set (i.e. /opt/android-sdk-linux/).</echo>
+        <echo>   lint-xml:  Lint output lint-results.xml.</echo>
+        <echo>   lint-html: Lint output to lint-results.html.</echo>
+        <echo>   monkey:    Runs monkey on the running emulator. Change the</echo>
+        <echo>              defaults -Dmonkey.seed=NUM and -Dmonkey.count=NUM</echo>
+        <echo>              from 0 and 200, respectively.</echo>
+    </target>
 
     <target name="eclipse" description="Apply template Eclipse settings">
         <copy todir=".settings">
-            <fileset dir="tools/eclipse-settings"/>
+            <fileset dir="tools/eclipse-settings" />
         </copy>
     </target>
 
-    <!-- END K-9 STUFF-->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <target name="monkey">
+        <xpath input="AndroidManifest.xml" expression="/manifest/@package" output="manifest.package" />
+        <property name="monkey.count" value="200" />
+        <property name="monkey.seed" value="0" /><!-- largest == 9223372036854775807 == 2**63 - 1 -->
+        <exec executable="${adb}" output="monkey.txt" failonerror="true">
+            <arg line="${adb.device.arg}" />
+            <arg value="-e" />
+            <arg value="shell" />
+            <arg value="monkey" />
+            <arg value="-p" />
+            <arg value="${manifest.package}" />
+            <arg value="-v" />
+            <arg value="-v" />
+            <arg value="-s" />
+            <arg value="${monkey.seed}" />
+            <arg value="${monkey.count}" />
+        </exec>
+    </target>
+
+    <target name="reg" depends="-get-version-code">
+        <regex property="branch" input="${env.GIT_BRANCH}" regexp="(?:.*/)?(.+)" select="\1" global="true"/>
+        <regex property="commit" input="${env.GIT_COMMIT}" regexp="([\da-fA-F]{10})" select="\1" global="true"/>
+        <math result="version-code" operand1="${current-version-code}" operation="+" operand2="1" datatype="int"/>
+        <echo message="branch = ${branch} ${commit} ${current-version-code} ${version-code}" />
+    </target>
+
+    <!-- this is for CloudBees. see tests/build.xml -->
+    <target name="-artifactd" depends="-set-debug-files, -artifact" />
+    <target name="-artifacti" depends="-set-instrumented-mode, -artifact" />
+    <target name="-artifact">
+        <regex property="branch" input="${env.GIT_BRANCH}" regexp="(?:.*/)?(.+)" select="\1" global="true" />
+        <regex property="commit" input="${env.GIT_COMMIT}" regexp="([\da-fA-F]{10})" select="\1" />
+
+        <copy file="${out.final.file}"
+              tofile="${out.dir}/${ant.project.name}-${branch}-${env.BUILD_ID}-${commit}-${env.BUILD_NUMBER}.apk"
+              verbose="on"
+        />
+    </target>
+
+    <target name="-pre-clean" description="Removes testing output and javadoc">
+        <delete file="monkey.txt" verbose="${verbose}" />
+        <delete file="lint-results.xml" verbose="${verbose}" />
+        <delete file="lint-results.html" verbose="${verbose}" />
+        <delete dir="lint-results_files" verbose="${verbose}" />
+        <delete dir="${javadoc-dir}" verbose="${verbose}" />
+    </target>
+
+    <!-- common to both build.xml and tests/build.xml -->
+    <import file="build_common.xml" />
+
+    <!-- END K-9 CUSTOM STUFF -->
 
 </project>

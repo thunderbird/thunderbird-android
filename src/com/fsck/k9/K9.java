@@ -81,6 +81,7 @@ public class K9 extends Application {
 
     private static String language = "";
     private static int theme = THEME_LIGHT;
+    private static int messageViewTheme = THEME_LIGHT;
 
     private static final FontSizes fontSizes = new FontSizes();
 
@@ -149,13 +150,21 @@ public class K9 extends Application {
     private static boolean mConfirmDelete = false;
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
-    private static boolean mConfirmMarkAllAsRead = true;
-    private static boolean mKeyguardPrivacy = false;
-    private static boolean mMessageListStars = true;
-    private static boolean mMessageListCheckboxes = false;
-    private static boolean mMessageListTouchable = false;
+
+    private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
+
+    /**
+     * Controls when to hide the subject in the notification area.
+     */
+    public enum NotificationHideSubject {
+        ALWAYS,
+        WHEN_LOCKED,
+        NEVER
+    }
+
     private static int mMessageListPreviewLines = 2;
     private static boolean mShowCorrespondentNames = true;
+    private static boolean mMessageListSenderAboveSubject = false;
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
@@ -165,17 +174,14 @@ public class K9 extends Application {
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
     private static boolean mUseVolumeKeysForListNavigation = false;
-    private static boolean mManageBack = false;
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
-    private static boolean compactLayouts = false;
     private static String mAttachmentDefaultPath = "";
 
     private static boolean mBatchButtonsMarkRead = true;
@@ -184,7 +190,7 @@ public class K9 extends Application {
     private static boolean mBatchButtonsMove = false;
     private static boolean mBatchButtonsFlag = true;
     private static boolean mBatchButtonsUnselect = true;
-    
+
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
     private static String mDeviceId = null;
@@ -406,8 +412,6 @@ public class K9 extends Application {
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
-        editor.putBoolean("manageBack", mManageBack);
-        editor.putBoolean("zoomControlsEnabled", mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -415,10 +419,8 @@ public class K9 extends Application {
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
+        editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
-        editor.putBoolean("messageListStars", mMessageListStars);
-        editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
-        editor.putBoolean("messageListTouchable", mMessageListTouchable);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
         editor.putBoolean("showContactName", mShowContactName);
@@ -434,16 +436,20 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsMove", mBatchButtonsMove);
         editor.putBoolean("batchButtonsFlag", mBatchButtonsFlag);
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
-        
+
         editor.putString("language", language);
         editor.putInt("theme", theme);
+        editor.putInt("messageViewTheme", messageViewTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
-        editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
-        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
-        editor.putBoolean("compactLayouts", compactLayouts);
+
+        editor.putString("sortTypeEnum", mSortType.name());
+        editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
+
+        editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
+
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putString("deviceId", mDeviceId);
         fontSizes.save(editor);
@@ -454,9 +460,6 @@ public class K9 extends Application {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
-        
-        mSortType = Account.DEFAULT_SORT_TYPE;
-        mSortAscending.put(Account.DEFAULT_SORT_TYPE, Account.DEFAULT_SORT_ASCENDING);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -537,13 +540,15 @@ public class K9 extends Application {
             @Override
             public void folderStatusChanged(Account account, String folderName,
                     int unreadMessageCount) {
-                updateUnreadWidget();
-            }
 
-            @Override
-            public void searchStats(final AccountStats stats) {
-                // let observers know a fetch occurred
-                K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
+                updateUnreadWidget();
+
+                // let observers know a change occurred
+                Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderName);
+                K9.this.sendBroadcast(intent);
+
             }
         });
 
@@ -558,17 +563,13 @@ public class K9 extends Application {
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
         mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
         mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mManageBack = sprefs.getBoolean("manageBack", false);
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
+        mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
         mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
@@ -586,14 +587,32 @@ public class K9 extends Application {
         mBatchButtonsMove = sprefs.getBoolean("batchButtonsMove", true);
         mBatchButtonsFlag = sprefs.getBoolean("batchButtonsFlag", true);
         mBatchButtonsUnselect = sprefs.getBoolean("batchButtonsUnselect", true);
-        
+
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
-        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
-        compactLayouts = sprefs.getBoolean("compactLayouts", false);
+
+        try {
+            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            mSortType = SortType.valueOf(value);
+        } catch (Exception e) {
+            mSortType = Account.DEFAULT_SORT_TYPE;
+        }
+
+        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        mSortAscending.put(mSortType, sortAscending);
+
+        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        if (notificationHideSubject == null) {
+            // If the "notificationHideSubject" setting couldn't be found, the app was probably
+            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
+            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+                    NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
+        } else {
+            sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        }
+
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         mDeviceId = sprefs.getString("deviceId", null);
         fontSizes.load(sprefs);
@@ -616,6 +635,8 @@ public class K9 extends Application {
             theme = THEME_LIGHT;
         }
         K9.setK9Theme(theme);
+
+        K9.setK9MessageViewTheme(sprefs.getInt("messageViewTheme", THEME_LIGHT));
     }
 
     private void maybeSetupStrictMode() {
@@ -680,12 +701,20 @@ public class K9 extends Application {
         return getK9ThemeResourceId(theme);
     }
 
+    public static int getK9MessageViewTheme() {
+        return messageViewTheme;
+    }
+
     public static int getK9Theme() {
         return theme;
     }
 
     public static void setK9Theme(int ntheme) {
         theme = ntheme;
+    }
+
+    public static void setK9MessageViewTheme(int nMessageViewTheme) {
+        messageViewTheme = nMessageViewTheme;
     }
 
     public static BACKGROUND_OPS getBackgroundOps() {
@@ -725,23 +754,6 @@ public class K9 extends Application {
     public static void setUseVolumeKeysForListNavigation(boolean enabled) {
         mUseVolumeKeysForListNavigation = enabled;
     }
-
-    public static boolean manageBack() {
-        return mManageBack;
-    }
-
-    public static void setManageBack(boolean manageBack) {
-        mManageBack = manageBack;
-    }
-
-    public static boolean zoomControlsEnabled() {
-        return mZoomControlsEnabled;
-    }
-
-    public static void setZoomControlsEnabled(boolean zoomControlsEnabled) {
-        mZoomControlsEnabled = zoomControlsEnabled;
-    }
-
 
     public static boolean mobileOptimizedLayout() {
         return mMobileOptimizedLayout;
@@ -832,14 +844,6 @@ public class K9 extends Application {
         mAnimations = animations;
     }
 
-    public static boolean messageListTouchable() {
-        return mMessageListTouchable;
-    }
-
-    public static void setMessageListTouchable(boolean touchy) {
-        mMessageListTouchable = touchy;
-    }
-
     public static int messageListPreviewLines() {
         return mMessageListPreviewLines;
     }
@@ -848,25 +852,17 @@ public class K9 extends Application {
         mMessageListPreviewLines = lines;
     }
 
-    public static boolean messageListStars() {
-        return mMessageListStars;
-    }
-
-    public static void setMessageListStars(boolean stars) {
-        mMessageListStars = stars;
-    }
-    public static boolean messageListCheckboxes() {
-        return mMessageListCheckboxes;
-    }
-
-    public static void setMessageListCheckboxes(boolean checkboxes) {
-        mMessageListCheckboxes = checkboxes;
-    }
-
     public static boolean showCorrespondentNames() {
         return mShowCorrespondentNames;
     }
 
+     public static boolean messageListSenderAboveSubject() {
+         return mMessageListSenderAboveSubject;
+     }
+
+    public static void setMessageListSenderAboveSubject(boolean sender) {
+         mMessageListSenderAboveSubject = sender;
+    }
     public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
         mShowCorrespondentNames = showCorrespondentNames;
     }
@@ -996,75 +992,56 @@ public class K9 extends Application {
         mConfirmSpam = confirm;
     }
 
-    public static boolean confirmMarkAllAsRead() {
-        return mConfirmMarkAllAsRead;
+    public static NotificationHideSubject getNotificationHideSubject() {
+        return sNotificationHideSubject;
     }
 
-    public static void setConfirmMarkAllAsRead(final boolean confirm) {
-        mConfirmMarkAllAsRead = confirm;
-    }
-
-    /**
-     * @return Whether privacy rules should be applied when system is locked
-     */
-    public static boolean keyguardPrivacy() {
-        return mKeyguardPrivacy;
-    }
-
-    public static void setKeyguardPrivacy(final boolean state) {
-        mKeyguardPrivacy = state;
-    }
-
-    public static boolean useCompactLayouts() {
-        return compactLayouts;
-    }
-
-    public static void setCompactLayouts(boolean compactLayouts) {
-        K9.compactLayouts = compactLayouts;
+    public static void setNotificationHideSubject(final NotificationHideSubject mode) {
+        sNotificationHideSubject = mode;
     }
 
     public static boolean batchButtonsMarkRead() {
-    	return mBatchButtonsMarkRead;
+        return mBatchButtonsMarkRead;
     }
     public static void setBatchButtonsMarkRead(final boolean state) {
-    	mBatchButtonsMarkRead = state;
+        mBatchButtonsMarkRead = state;
     }
-    
+
     public static boolean batchButtonsDelete() {
-    	return mBatchButtonsDelete;
+        return mBatchButtonsDelete;
     }
     public static void setBatchButtonsDelete(final boolean state) {
-    	mBatchButtonsDelete = state;
+        mBatchButtonsDelete = state;
     }
-    
+
     public static boolean batchButtonsArchive() {
-    	return mBatchButtonsArchive;
+        return mBatchButtonsArchive;
     }
     public static void setBatchButtonsArchive(final boolean state) {
-    	mBatchButtonsArchive = state;
+        mBatchButtonsArchive = state;
     }
-    
+
     public static boolean batchButtonsMove() {
-    	return mBatchButtonsMove;
+        return mBatchButtonsMove;
     }
     public static void setBatchButtonsMove(final boolean state) {
-    	mBatchButtonsMove = state;
+        mBatchButtonsMove = state;
     }
-    
+
     public static boolean batchButtonsFlag() {
-    	return mBatchButtonsFlag;
+        return mBatchButtonsFlag;
     }
     public static void setBatchButtonsFlag(final boolean state) {
-    	mBatchButtonsFlag = state;
+        mBatchButtonsFlag = state;
     }
-    
+
     public static boolean batchButtonsUnselect() {
-    	return mBatchButtonsUnselect;
+        return mBatchButtonsUnselect;
     }
     public static void setBatchButtonsUnselect(final boolean state) {
-    	mBatchButtonsUnselect = state;
+        mBatchButtonsUnselect = state;
     }
-    
+
     /**
      * Check if this system contains a buggy Gallery 3D package.
      *

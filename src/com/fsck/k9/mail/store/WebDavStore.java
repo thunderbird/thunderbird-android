@@ -70,8 +70,6 @@ public class WebDavStore extends Store {
     private static final short AUTH_TYPE_BASIC = 1;
     private static final short AUTH_TYPE_FORM_BASED = 2;
 
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
-
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
@@ -1851,11 +1849,6 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
-        }
-
-        @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException {
             String[] uids = new String[messages.length];
@@ -1993,11 +1986,6 @@ public class WebDavStore extends Store {
         @Override
         public boolean equals(Object o) {
             return false;
-        }
-
-        @Override
-        public int hashCode() {
-            return super.hashCode();
         }
 
         @Override

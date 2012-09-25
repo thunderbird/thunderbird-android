@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- === App-specific strings ============================================================= -->
+
+    <!-- This should make it easier for forks to change the branding -->
+
+    <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail测试版</string>
+
+    <string name="shortcuts_title">K-9账户</string>
+    <string name="unread_widget_label">K-9 Mail 未读</string>
+
+    <string name="remote_control_label">远程控制K-9 Mail</string>
+    <string name="remote_control_desc">运行这个程序控制K-9 Mail的行为和设置。</string>
+
+
+    <!-- Used in the about dialog -->
     <string name="app_authors">谷歌以及帮着遛K-9的小朋友们。</string>
-    <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
+
+
+    <!-- Welcome message -->
+    <string name="accounts_welcome">
+感谢安装K-9。K-9是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
+\n\n
+\nK-9改进的功能包括：
+\n * 利用IMAP IDEL进行Push mail
+\n * 更好的性能
+\n * 重新装入邮件
+\n * 邮件签名
+\n * 暗送给自己
+\n * 文件夹订阅
+\n * 同步全部文件夹
+\n * 可以编辑回件地址
+\n * 键盘快捷键
+\n * 更好的IMAP支持
+\n * 保存附件到SD卡
+\n * 清空垃圾箱
+\n * 邮件排序
+\n * 以及其他很多哦～
+\n
+\n请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
+\n
+\n请到http://k9mail.googlecode.com/提交错误报告、贡献新功能或提出您的问题。
+    </string>
+
+
+    <!-- Default signature -->
+    <string name="default_signature">-- \n抱歉暂时无法详细说明。这份邮件是使用安装有K-9 Mail的Android移动设备发送的。</string>
+
+
+
+    <!-- === App Store-specific strings ======================================================= -->
+
+    <string name="import_dialog_error_message">没有找到合适的应用来处理导入操作。请从安卓市场安装一款文件管理器</string>
+    <string name="open_market">打开市场</string>
+
+
+
+    <!-- === General strings ================================================================== -->
+
     <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">更新日志: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <string name="app_libraries">K-9 Mail包含如下来源的源代码： <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Emoji图标： <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">显示附件</string>
     <string name="read_attachment_desc">允许该程序读取附件。</string>
@@ -21,14 +77,11 @@
     <string name="accounts_title">账户</string>
     <string name="advanced">高级</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
-    <string name="shortcuts_title">K-9账户</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title">新邮件</string>
-    <string name="debug_title">调试</string>
     <string name="choose_folder_title">选择文件夹</string>
-    <string name="choose_color_title">选择颜色</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -40,15 +93,15 @@
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">\u0020（下次接收时间：<xliff:g id="nexttime">%s</xliff:g>）</string>
-    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
+    <string name="status_syncing_off">同步关闭</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">下一步</string> <!-- Used as part of a multi-step process -->
-    <!-- NEW: <string name="previous_action">Previous</string>--> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">上一步</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">确定</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">取消</string>
     <string name="send_action">发送</string>
-    <!-- NEW: <string name="send_again_action">Send Again</string>-->
+    <string name="send_again_action">重新发送</string>
     <string name="select_action">选择</string>
     <string name="deselect_action">取消选择</string>
     <string name="reply_action">回复</string>
@@ -60,8 +113,8 @@
     <string name="forward_action">转发</string>
     <string name="move_action">移动</string>
     <string name="continue_action">继续</string>
+    <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
-    <string name="remove_action">删除</string>
     <string name="discard_action">忽略</string>
     <string name="save_draft_action">保存为草稿</string>
     <string name="retry_action">重试</string>
@@ -70,6 +123,7 @@
     <string name="send_messages_action">发送</string>
     <string name="list_folders_action">全部文件夹</string>
     <string name="refresh_folders_action">刷新文件夹</string>
+    <string name="filter_folders_action">搜索文件夹</string>
     <string name="mark_all_as_read_action">标记全部邮件为已读</string>
     <string name="add_account_action">添加账户</string>
     <string name="compose_action">新邮件</string>
@@ -84,9 +138,6 @@
     <string name="clear_pending_action">取消挂起的操作（慎用）</string>
 
     <string name="accounts_action">账户</string>
-    <string name="back_to_accounts_action">◀</string>
-    <string name="back_to_folder_list_action">◀</string>
-    <string name="read_action">阅读</string>
     <string name="mark_as_read_action">标记为已读</string>
     <string name="send_alternate_action">共享</string>
     <string name="send_alternate_chooser_title">选择发件人</string>
@@ -102,39 +153,28 @@
     <string name="select_text_action">选择文本</string>
 
     <string name="mark_as_unread_action">标记为未读</string>
-    <string name="move_to_action">移动到</string>
-    <string name="folders_action">文件夹</string>
-    <string name="view_hide_details_action">显示/隐藏详细信息</string>
     <string name="add_cc_bcc_action">添加抄送/暗送</string>
-    <string name="edit_subject_action">编辑主题</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <string name="read_receipt">已读回执</string>
+    <string name="read_receipt_enabled">要求已读回执</string>
+    <string name="read_receipt_disabled">不要求已读回执</string>
     <string name="add_attachment_action">添加附件</string>
     <string name="add_attachment_action_image">添加图片附件</string>
     <string name="add_attachment_action_video">添加视频附件</string>
-    <string name="dump_settings_action">导出设置</string>
     <string name="empty_trash_action">清空垃圾箱</string>
     <string name="expunge_action">删除</string>
-    <!-- NEW: <string name="clear_local_folder_action">Clear local messages</string>-->
-    <string name="set_sort_action">选择排序方式</string>
-    <string name="reverse_sort_action">逆序</string>
+    <string name="clear_local_folder_action">清空本地邮件</string>
     <string name="about_action">关于</string>
 
     <string name="prefs_title">设置</string>
     <string name="accounts_context_menu_title">账户选项</string>
-    <string name="folder_context_menu_title">文件夹选项</string>
 
     <string name="general_no_subject">（无主题）</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <!-- NEW: <string name="general_no_date">No date</string>-->
+    <string name="general_no_date">无日期</string>
     <string name="general_no_sender">无发件人</string>
     <string name="status_loading">正在接收</string>
-    <string name="status_loading_folder">（正在接收<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>）</string>
     <string name="status_loading_more">正在加载邮件\u2026</string>
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">邮件未找到</string>
-    <string name="status_error">错误</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">正在发送</string> <!-- Used in Outbox when a message is currently sending -->
 
     <string name="status_loading_more_failed">再次尝试加载更多邮件</string>
 
@@ -152,11 +192,7 @@
     <string name="recreating_account">正在重建账户“<xliff:g id="account">%s</xliff:g>”</string>
 
     <string name="notification_new_title">您有新邮件</string>
-    <string name="notification_new_scrolling">您有来自<xliff:g id="sender">%s</xliff:g>的新邮件</string>
     <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt">您有<xliff:g id="new_message_count">%d</xliff:g>封新邮件（<xliff:g id="account">%s</xliff:g>）</string> <!-- 2 New Email(s) (someone@google.com) -->
-    <string name="notification_new_multi_account_fmt">于账户<xliff:g id="number_accounts">%d</xliff:g></string>
-    <string name="notification_unsent_title">邮件没有发送</string>
 
     <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">正在检查邮件</string>
@@ -181,38 +217,8 @@
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾邮件）</string>
 
     <string name="send_failure_subject">一些邮件没有成功发送</string>
-    <string name="send_failure_body_abbrev">请检查您的<xliff:g id="errorFolder">%s</xliff:g>以便获取更多信息。</string>
-    <string name="send_failure_body_fmt">K-9在试图发送一些邮件时遇到了问题。而且更加悲剧的是由于技术上的原因，K-9不清楚这些邮件有没有成功的发送。因此收件人可能已经收到了这些信息。\u000a\u000a遇到问题的邮件保存在发件箱里面并且被加了星标。在你取消了这些邮件的星标之后K-9将会试着再次发送这些邮件。长按“发件箱”并点击“发送邮件”以便再次发送。\u000A\u000a“<xliff:g id="errorFolder">%s</xliff:g>”文件夹有可能包含关于这些错误的细节信息。</string>
-
-    <string name="alert_header">K-9警报</string>
-    <string name="no_connection_alert">由于没有网络，同步和发送操作被挂起。</string>
 
     <string name="end_of_folder">没有其他邮件了</string>
-
-    <string name="accounts_welcome">
-感谢安装K-9。K-9是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
-\n
-\n\nK-9改进的功能包括：
-\n * 利用IMAP IDEL进行Push mail
-\n * 更好的性能
-\n * 重新装入邮件
-\n * 邮件签名
-\n * 暗送给自己
-\n * 文件夹订阅
-\n * 同步全部文件夹
-\n * 可以编辑回件地址
-\n * 键盘快捷键
-\n * 更好的IMAP支持
-\n * 保存附件到SD卡
-\n * 清空垃圾箱
-\n * 邮件排序
-\n * 以及其他很多哦～
-\n
-\n请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
-\n
-\n请到http://k9mail.googlecode.com/提交错误报告、贡献新功能或提出您的问题。
-
-</string>
 
     <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">启用调试日志</string>
@@ -220,41 +226,31 @@
     <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>
     <string name="debug_enable_sensitive_logging_summary">允许在日志中显示密码。</string>
 
-    <string name="combined_inbox_title">全部邮件</string>
-    <string name="combined_inbox_label">全部账户的最近邮件</string>
-    <string name="combined_inbox_list_title">全部邮件收件箱</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
-
-    <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g>
-                       <xliff:g id="unread_count">%s</xliff:g>
-                       <xliff:g id="polling">%s</xliff:g>
-                       <xliff:g id="sending">%s</xliff:g>
-                       <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">加载更多邮件</string>
     <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_list_delete_action">删除</string>
-    <string name="message_list_mark_read_action">标记为已读</string>
-    <string name="message_list_mark_unread_action">标记为未读</string>
-    <string name="message_list_flag_action">添加星标</string>
-    <string name="message_list_unflag_action">移除星标</string>
 
     <string name="message_compose_to_hint">收件人</string>
     <string name="message_compose_cc_hint">抄送</string>
     <string name="message_compose_bcc_hint">暗送</string>
     <string name="message_compose_subject_hint">主题</string>
     <string name="message_compose_content_hint">邮件内容</string>
+    <string name="message_compose_signature_hint">签名</string>
     <string name="message_compose_quote_header_separator">--------原始邮件--------</string>
     <string name="message_compose_quote_header_subject">主题：</string>
-    <!-- NEW: <string name="message_compose_quote_header_send_date">Sent:</string>-->
+    <string name="message_compose_quote_header_send_date">发送日期：</string>
     <string name="message_compose_quote_header_from">发件人：</string>
     <string name="message_compose_quote_header_to">收件人：</string>
     <string name="message_compose_quote_header_cc">抄送：</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n\n</string>
-    <string name="message_compose_quoted_text_label">引用文本</string>
     <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found.</string>-->
-    <string name="message_compose_downloading_attachments_toast">一些附件没有被下载。在这个邮件发送前会自动的下载这些附件。</string>
+    <string name="error_contact_address_not_found">没有找到收件地址。</string>
     <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
-    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
+    <string name="message_compose_show_quoted_text_action">引用文字</string>
+    <string name="message_compose_description_add_to">增加收件人（To）</string>
+    <string name="message_compose_description_add_cc">增加收件人（CC）</string>
+    <string name="message_compose_description_add_bcc">增加收件人（BCC）</string>
+    <string name="message_compose_description_delete_quoted_text">删除引用文本</string>
+    <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
 
     <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">收件人：</string>
@@ -266,39 +262,28 @@
     <string name="message_view_archive_action">归档</string>
     <string name="message_view_move_action">移动</string>
     <string name="message_view_spam_action">标记为垃圾</string>
-    <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">附件已经保存到SD卡：<xliff:g id="filename">%s</xliff:g>。</string>
     <string name="message_view_status_attachment_not_saved">无法将附件保存到SD卡。</string>
-    <string name="message_view_show_pictures_instructions">选择“显示图片”来显示签入的图片。</string>
     <string name="message_view_show_pictures_action">显示图片</string>
-    <string name="message_view_fetching_attachment_toast">正在接收附件。</string>
+    <string name="message_view_show_message_action">显示邮件</string>
+    <string name="message_view_show_attachments_action">显示附件</string>
+    <string name="message_view_show_more_attachments_action">更多&#8230;</string>
+    <string name="message_view_fetching_attachment_toast">正在接收附件</string>
     <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
-
     <string name="message_view_download_remainder">下载完整邮件</string>
+    <string name="message_view_downloading">正在下载…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">当前只下载了部分邮件的信息。如果需要下载全部邮件的信息，请在账户的收件服务器设置中选择“在手机上保存全部邮件的信息”。</string>
     <string name="message_no_additional_headers_available">全部邮件的信息都已经下载，但是当前没有额外的邮件信息可以显示。</string>
     <string name="message_additional_headers_retrieval_failed">从数据库或邮件服务器获取额外的邮件信息失败。</string>
 
-    <string name="mailbox_select_dlg_title">文件夹</string>
-    <string name="mailbox_select_dlg_new_mailbox_action">新文件夹</string>
-
-    <string name="new_mailbox_dlg_title">新文件夹名</string>
-
     <string name="folder_push_active_symbol">（推送）</string>
 
     <string name="from_same_sender">来自这个发件人的更多邮件</string>
 
-    <string name="message_copied_toast">邮件已拷贝</string>
-    <string name="message_moved_toast">邮件已移动</string>
-    <string name="message_deleted_toast">邮件已删除</string>
     <string name="message_discarded_toast">邮件已忽略</string>
     <string name="message_saved_toast">邮件已保存为草稿</string>
-    <string name="message_delete_failed">无法删除邮件</string>
-
-    <string name="about_header">关于<xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_version">版本：<xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">显示星标</string>
     <string name="global_settings_flag_summary">星标指示标记过的邮件</string>
@@ -306,9 +291,9 @@
     <string name="global_settings_checkbox_summary">总是显示多选框</string>
     <string name="global_settings_touchable_label">邮件预览</string>
     <string name="global_settings_touchable_summary">在列表中显示邮件预览</string>
-    <!-- NEW: <string name="global_settings_preview_lines_label">Preview lines</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
-    <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
+    <string name="global_settings_preview_lines_label">预览行数</string>
+    <string name="global_settings_show_correspondent_names_label">显示收件人姓名</string>
+    <string name="global_settings_show_correspondent_names_summary">如果可能则使用收件人姓名代替收件地址</string>
     <string name="global_settings_show_contact_name_label">显示联系人姓名</string>
     <string name="global_settings_show_contact_name_summary">如果可能则使用联系人姓名代替收件地址</string>
     <string name="global_settings_registered_name_color_label">使用颜色标记联系人</string>
@@ -319,31 +304,41 @@
     <string name="global_settings_messageview_fixedwidth_summary">使用定宽字体显示纯文本邮件</string>
     <string name="global_settings_messageview_return_to_list_label">删除后回到自动返回到列表</string>
     <string name="global_settings_messageview_return_to_list_summary">邮件删除后自动返回到邮件列表</string>
-    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
-    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+    <string name="global_settings_messageview_show_next_label">删除后显示下一封邮件</string>
+    <string name="global_settings_messageview_show_next_summary">邮件删除后自动显示下一封邮件</string>
 
     <string name="global_settings_confirm_actions_title">确认操作</string>
     <string name="global_settings_confirm_actions_summary">进行选择操作时总是显示一个对话框进行确认</string>
     <string name="global_settings_confirm_action_archive">归档</string>
-    <string name="global_settings_confirm_action_delete">删除（仅用于邮件视图）</string>
+    <string name="global_settings_confirm_action_delete">删除（仅在邮件视图里）</string>
+    <string name="global_settings_confirm_action_delete_starred">删除加星（仅在邮件视图里）</string>
     <string name="global_settings_confirm_action_spam">标记为垃圾</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
+    <string name="global_settings_confirm_action_mark_all_as_read">全部标记为已读</string>
     <string name="global_settings_confirm_action_send">发送</string>
 
-    <string name="global_settings_privacy_mode_title">锁屏通知</string>
-    <string name="global_settings_privacy_mode_summary">屏幕锁定时不要在通知栏中显示邮件主题</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
-    <!-- NEW: <string name="quiet_time">Quiet Time</string>-->
-    <!-- NEW: <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>-->
-    <!-- NEW: <string name="quiet_time_starts">Quiet Time starts</string>-->
-    <!-- NEW: <string name="quiet_time_ends">Quiet Time ends</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
+    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
+    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
+    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
+    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
+    <!-- NEW: <string name="global_settings_move">Move</string>-->
+    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
+    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+
+    <string name="quiet_time">安静时间</string>
+    <string name="quiet_time_description">禁止铃声，震动以及闪光</string>
+    <string name="quiet_time_starts">安静时间开始</string>
+    <string name="quiet_time_ends">安静时间结束</string>
 
     <string name="account_setup_basics_title">设置新账户</string>
     <string name="account_setup_basics_instructions">输入该账户的电子邮件地址：</string>
-    <string name="account_setup_basics_instructions2_fmt">（你还可以再添加<xliff:g id="number_accounts">%d</xliff:g>个账户）</string>
     <string name="account_setup_basics_email_hint">电子邮件地址</string>
-    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g>不是一个有效的电子邮件地址。</string>
-    <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g>已经添加。</string>
     <string name="account_setup_basics_password_hint">密码</string>
     <string name="account_setup_basics_default_label">默认使用这个账户发送邮件</string>
     <string name="account_setup_basics_manual_setup_action">手工设置</string>
@@ -352,17 +347,14 @@
     <string name="account_setup_check_settings_retr_info_msg">正在获取账户信息\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">正在检查收件服务器设置\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">正在检查发件服务器设置\u2026</string>
-    <!-- NEW: <string name="account_setup_check_settings_authenticate">Authenticating\u2026</string>-->
-    <!-- NEW: <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>-->
-    <string name="account_setup_check_settings_finishing_msg">正在完成最后的操作\u2026</string>
+    <string name="account_setup_check_settings_authenticate">正在验证用户\u2026</string>
+    <string name="account_setup_check_settings_fetch">正在获取账户设置\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">正在取消\u2026</string>
 
     <string name="account_setup_names_title">快要完成了！</string>
     <string name="account_setup_names_instructions">你的账户已经设置，并且正在接受邮件！</string>
     <string name="account_setup_names_account_name_label">为这个账户选择一个名称（可选项）：</string>
     <string name="account_setup_names_user_name_label">输入你的名字（将显示在发出的邮件中）：</string>
-
-    <string name="account_setup_finished_toast">你的账户已经设置完毕！\n\n正在接收邮件\u2026</string>
 
     <string name="account_setup_account_type_title">账户类型</string>
     <string name="account_setup_account_type_instructions">这个账户是什么类型的？</string>
@@ -387,7 +379,6 @@
 
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
-    <string name="account_setup_incoming_delete_policy_7days_label">7天后从服务器上删除</string>
     <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
     <string name="account_setup_incoming_delete_policy_markread_label">在服务器上将邮件标记为已读</string>
 
@@ -399,17 +390,17 @@
     <string name="account_setup_incoming_save_all_headers_title">下载邮件信息</string>
     <string name="account_setup_incoming_save_all_headers_label">在本地保存全部邮件的信息</string>
 
-    <!-- NEW: <string name="local_storage_provider_external_label">External storage (SD card)</string>-->
-    <!-- NEW: <string name="local_storage_provider_internal_label">Regular internal storage</string>-->
-    <!-- NEW: <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>-->
-    <!-- NEW: <string name="local_storage_provider_label">Storage location</string>-->
+    <string name="local_storage_provider_external_label">外部存储（SD卡）</string>
+    <string name="local_storage_provider_internal_label">正常内部存储</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s 额外的内部存储</string>
+    <string name="local_storage_provider_label">存储位置</string>
 
     <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
     <string name="account_setup_expunge_policy_immediately">立刻</string>
     <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
     <string name="account_setup_expunge_policy_manual">手动</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">自动检测IMAP命名空间</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP路径前缀</string>
 
     <string name="drafts_folder_label">草稿箱名称</string>
@@ -486,7 +477,6 @@
     <string name="idle_refresh_period_48min">四十八分钟一次</string>
     <string name="idle_refresh_period_60min">六十分钟一次</string>
 
-    <string name="account_setup_options_default_label">默认使用这个账户发送邮件</string>
     <string name="account_setup_options_notify_label">有新邮件时通知我</string>
     <string name="account_setup_options_notify_sync_label">检查新邮件时通知我</string>
 
@@ -499,7 +489,7 @@
     <string name="account_setup_options_mail_display_count_250">250封</string>
     <string name="account_setup_options_mail_display_count_500">500封</string>
     <string name="account_setup_options_mail_display_count_1000">1000封</string>
-    <!-- NEW: <string name="account_setup_options_mail_display_count_all">all messages</string>-->
+    <string name="account_setup_options_mail_display_count_all">所有邮件</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
 
@@ -512,7 +502,6 @@
 
     <string name="account_settings_push_advanced_title">高级</string>
     <string name="account_settings_title_fmt">通用设置</string>
-    <string name="account_settings_default">默认账户</string>
     <string name="account_settings_default_label">默认账户</string>
     <string name="account_settings_default_summary">默认使用这个账户发送邮件</string>
     <string name="account_settings_notify_label">新邮件通知</string>
@@ -520,13 +509,14 @@
     <string name="account_settings_email_label">您的电子邮件地址</string>
     <string name="account_settings_notify_summary">新邮件到达时在通知栏中显示通知</string>
     <string name="account_settings_notify_sync_summary">检查新邮件时在通知栏中显示通知</string>
-    <string name="account_settings_show_combined_label">显示全局收件箱</string>
     <string name="account_settings_notify_self_label">包括正在发送的邮件</string>
     <string name="account_settings_notify_self_summary">发送邮件时显示通知</string>
     <string name="account_settings_notification_opens_unread_label">点击通知后打开未读邮件</string>
     <string name="account_settings_notification_opens_unread_summary">点击通知后搜索未读邮件</string>
-    <!-- NEW: <string name="account_settings_notification_unread_count_label">Show unread count</string>-->
-    <!-- NEW: <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>-->
+    <string name="account_settings_notification_unread_count_label">显示未读邮件数量</string>
+    <string name="account_settings_notification_unread_count_summary">在通知栏显示未读邮件数量</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">邮件打开时标记为已读</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">当邮件打开时标记为已读</string>
 
     <string name="account_settings_enable_move_buttons_label">启用整理按钮</string>
     <string name="account_settings_enable_move_buttons_summary">显示归档、移动和标记为垃圾按钮</string>
@@ -538,26 +528,33 @@
 
     <string name="account_settings_composition">正在发送邮件</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+    <string name="account_settings_default_quoted_text_shown_label">回复时引用原文</string>
+    <string name="account_settings_default_quoted_text_shown_summary">回复时，原文将出现在您的回复中</string>
 
     <string name="account_settings_reply_after_quote_label">在引用的文本后进行回复</string>
     <string name="account_settings_reply_after_quote_summary">回复邮件时，原始邮件会显示在您的邮件的上方。</string>
 
-    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
-    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
-    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
+    <string name="account_settings_strip_signature_label">删除引文里的签名</string>
+    <string name="account_settings_strip_signature_summary">回复邮件时，引用文本的签名将会被删除</string>
 
-    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
-    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
+    <string name="account_settings_message_format_label">邮件格式</string>
+    <string name="account_settings_message_format_text">纯文本（图片和排版将被删除）</string>
+    <string name="account_settings_message_format_html">HTML（图片和排版将被保留）</string>
+    <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
 
-    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
 
-    <!-- NEW: <string name="account_settings_general_title">General settings</string>-->
+    <string name="account_settings_message_read_receipt_label">已读回执</string>
+    <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
+
+    <string name="account_settings_quote_style_label">回复时引用格式</string>
+    <string name="account_settings_quote_style_prefix">引用前缀（类似Gmail，Pine）</string>
+    <string name="account_settings_quote_style_header">引用头（类似Outlook，Yahoo!，Hotmail）</string>
+
+    <string name="account_settings_general_title">一般设置</string>
     <string name="account_settings_display_prefs_title">显示</string>
-    <string name="account_settings_sync">正在接受邮件</string>
+    <string name="account_settings_sync">正在接收邮件</string>
     <string name="account_settings_folders">文件夹</string>
     <string name="account_settings_message_lists">正在整理邮件</string>
     <string name="account_settings_message_view">正在显示邮件</string>
@@ -568,11 +565,12 @@
     <string name="account_settings_crypto_app_not_available">不可用</string>
     <string name="account_settings_crypto_auto_signature">自动签名</string>
     <string name="account_settings_crypto_auto_signature_summary">使用账户的电子邮件地址自动猜测签名密钥。</string>
+    <string name="account_settings_crypto_auto_encrypt">自动加密</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">如果找到收件人的公钥，则自动加密。</string>
 
     <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
-    <string name="account_settings_second_class_check_frequency_label">第二组检查频率</string>
 
-    <!-- NEW: <string name="account_settings_storage_title">Storage</string>-->
+    <string name="account_settings_storage_title">存储</string>
 
     <string name="account_settings_color_label">账户颜色</string>
     <string name="account_settings_color_summary">选择账户在文件夹和账户列表中显示时所使用的颜色</string>
@@ -668,11 +666,9 @@
     <string name="account_settings_incoming_summary">配置收件服务器</string>
     <string name="account_settings_outgoing_label">发件服务器</string>
     <string name="account_settings_outgoing_summary">配置发件（SMTP）服务器</string>
-    <string name="account_settings_add_account_label">添加另一个账户</string>
     <string name="account_settings_description_label">账户名称</string>
     <string name="account_settings_name_label">您的名字</string>
     <string name="notifications_title">通知</string>
-    <string name="account_settings_ring_summary">有新邮件时震铃</string>
     <string name="account_settings_vibrate_enable">震动</string>
     <string name="account_settings_vibrate_summary">有新邮件时震动</string>
     <string name="account_settings_vibrate_pattern_label">震动模式</string>
@@ -686,8 +682,6 @@
     <string name="account_settings_ringtone">新邮件铃声</string>
     <string name="account_settings_led_label">闪烁LED灯</string>
     <string name="account_settings_led_summary">有新邮件时闪烁LED灯</string>
-
-    <string name="account_settings_servers">服务器设置</string>
 
     <string name="account_settings_composition_title">撰写新邮件选项</string>
     <string name="account_settings_composition_label">撰写新邮件默认值</string>
@@ -704,7 +698,6 @@
     <string name="new_identity_action">新身份标识</string>
 
     <string name="account_settings_always_bcc_label">暗送全部邮件到</string>
-    <string name="account_settings_always_bcc_summary">将每一封发出邮件拷贝一份并发送到这个地址</string>
 
     <string name="manage_identities_edit_action">编辑</string>
     <string name="manage_identities_move_up_action">上移</string>
@@ -725,19 +718,14 @@
 
     <string name="account_settings_signature_use_label">使用签名</string>
     <string name="account_settings_signature_label">签名</string>
-    <string name="account_settings_signature_summary">将签名附加到每一封发出的邮件后面</string>
 
-    <string name="default_signature">-- \n抱歉暂时无法详细说明。这份邮件是使用安装有K-9 Mail的Android移动设备发送的。</string>
     <string name="default_identity_description">初始身份标识</string>
-    <string name="choose_identity">选择身份标识</string>
     <string name="choose_identity_title">选择身份标识</string>
     <string name="choose_account_title">选择账户/身份标识</string>
-    <!-- NEW: <string name="send_as">Send as</string>-->
+    <string name="send_as">发送为</string>
 
-    <string name="no_identities">请使用“账户设置”-&gt;“管理身份标识”来创建身份标识</string>
     <string name="no_removable_identity">您必须保留一个身份标识</string>
     <string name="identity_has_no_email">身份标识中必须包含电子邮件地址</string>
-    <string name="identity_will_not_be_saved">您的选择的身份标识以及签名不会随着草稿进行保存</string>
 
     <string name="sort_earliest_first">优先显示最早的邮件</string>
     <string name="sort_latest_first">优先显示最近的邮件</string>
@@ -754,12 +742,12 @@
 
     <string name="sort_by">排序方式</string>
     <string name="sort_by_date">日期</string>
+    <string name="sort_by_arrival">到达时间</string>
     <string name="sort_by_sender">发件人</string>
     <string name="sort_by_subject">主题</string>
     <string name="sort_by_flag">星标</string>
     <string name="sort_by_unread">已读/未读</string>
     <string name="sort_by_attach">附件</string>
-    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">删除账户</string>
     <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
@@ -771,11 +759,12 @@
     <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="provider_note_live">只有一些“高级账户”允许POP访问并允许该程序连接。如果您使用了正确的用户名和密码却仍旧无法登录，则您可能没有购买这些“高级账户”。请使用浏览器来访问这些账户。</string>
-    <!-- NEW: <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
+    <string name="provider_note_yahoojp">如果您想使用POP3，请在Yahoo mail的设置页面里设置允许POP3。</string>
+    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <string name="provider_note_naver">如果您想使用IMAP或者POP3，请在Naver mail的设置页面设置允许IMAP或者POP3。</string>
+    <string name="provider_note_hanmail">如果您想使用IMAP或者POP3，请在Hanmail(Daum) mail的设置页面设置允许IMAP或者POP3。</string>
+    <string name="provider_note_paran">如果您想使用IMAP或者POP3，请在Paran mail的设置页面设置允许IMAP或者POP3。</string>
+    <string name="provider_note_nate">如果您想使用IMAP或者POP3，请在Nate mail的设置页面设置允许IMAP或者POP3。</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
@@ -796,6 +785,8 @@
     4 - 显示全部文件夹\u000A
     Q - 返回全部账户\u000A
     S - 编辑账户设置</string>
+
+    <string name="folder_list_filter_hint">文件夹名字里包含</string>
 
     <string name="folder_list_display_mode_label">文件夹</string>
     <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -822,8 +813,6 @@
 
     <string name="settings_messageview_mobile_layout_label">单列布局</string>
     <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
-    <string name="settings_messageview_zoom_controls_label">系统放大控制</string>
-    <string name="settings_messageview_zoom_controls_summary">如果设备支持则启用放大插件或多点触摸放大</string>
 
     <string name="setting_language_system">系统默认值</string>
 
@@ -832,6 +821,7 @@
     <string name="background_ops_always">总是</string>
     <string name="background_ops_enabled">当“后台数据”被选中</string>
     <string name="background_ops_auto_sync">当“后台数据”&amp;“自动同步”被选中</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="no_message_seletected_toast">没有选择任何邮件</string>
 
@@ -841,7 +831,6 @@
       See Android SDK documentation for the class SimpleDateFormat.
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
-    <string name="date_format_iso8601">yyyy-MM-dd</string>
 
     <string name="batch_ops">批量操作</string>
     <string name="batch_delete_op">删除选中的邮件</string>
@@ -854,7 +843,6 @@
     <string name="batch_move_op">移动选中的邮件</string>
     <string name="batch_copy_op">拷贝选中的邮件</string>
     <string name="batch_flag_mode">星标模式</string>
-    <string name="batch_select_mode">选择模式</string>
     <string name="batch_plain_mode">水平模式</string>
     <string name="batch_select_all">选择全部</string>
     <string name="batch_deselect_all">清除全部选择</string>
@@ -873,16 +861,10 @@
     <string name="gestures_title">手势</string>
     <string name="gestures_summary">接收手势控制</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
-
     <string name="volume_navigation_title">音量键导航</string>
     <string name="volume_navigation_summary">利用音量键选择项目</string>
     <string name="volume_navigation_message">信息视图</string>
     <string name="volume_navigation_list">不同的列表视图</string>
-
-    <string name="manage_back_title">管理“返回”按钮</string>
-    <string name="manage_back_summary">每次点击“返回”按钮时都向上返回一个层次</string>
 
     <string name="start_integrated_inbox_title">从全局收件箱启动</string>
     <string name="start_integrated_inbox_summary">启动后显示全局收件箱</string>
@@ -893,8 +875,8 @@
     <string name="count_search_title">计算搜索结果的数量</string>
     <string name="count_search_summary">关闭该功能以便加快显示速度</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">隐藏特殊帐户</string>
+    <string name="hide_special_accounts_summary">隐藏统一的收件箱以及所有邮件帐户</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - 星标</string>
@@ -916,9 +898,6 @@
     <string name="account_settings_searchable_displayable">可显示的文件夹</string>
     <string name="account_settings_searchable_none">无</string>
 
-    <string name="remote_control_label">远程控制K-9 Mail</string>
-    <string name="remote_control_desc">运行这个程序控制K-9 Mail的行为和设置。</string>
-
     <string name="font_size_settings_title">字体大小</string>
     <string name="font_size_settings_description">配置字体大小</string>
 
@@ -934,7 +913,7 @@
     <string name="font_size_message_list_subject">主题</string>
     <string name="font_size_message_list_sender">发件人</string>
     <string name="font_size_message_list_date">日期</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">预览</string>
 
     <string name="font_size_message_view">邮件</string>
     <string name="font_size_message_view_sender">发件人</string>
@@ -945,6 +924,9 @@
     <string name="font_size_message_view_time">时间</string>
     <string name="font_size_message_view_date">日期</string>
     <string name="font_size_message_view_content">邮件内容</string>
+
+    <string name="font_size_message_compose">撰写邮件</string>
+    <string name="font_size_message_compose_input">文本输入框</string>
 
     <string name="font_size_tiniest">最小</string>
     <string name="font_size_tiny">更小</string>
@@ -987,7 +969,14 @@
     <string name="save_or_discard_draft_message_dlg_title">保存邮件草稿？</string>
     <string name="save_or_discard_draft_message_instructions_fmt">保存还是忽略这封邮件？</string>
 
-    <string name="charset_not_found">由于没有找到字符集“<xliff:g id="charset">%s</xliff:g>”，该邮件无法显示。</string>
+    <string name="confirm_discard_draft_message_title">舍弃该邮件？</string>
+    <string name="confirm_discard_draft_message">确定舍弃该邮件？</string>
+
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">拒绝保存草稿</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">拒绝保存标记为已加密的草稿</string>
+
+    <string name="continue_without_public_key_dlg_title">没有公钥，继续？</string>
+    <string name="continue_without_public_key_instructions_fmt">某些收件人没有保存的公钥，继续？</string>
 
     <string name="select_text_now">选择需要拷贝的文本。</string>
 
@@ -996,81 +985,102 @@
     <string name="dialog_confirm_delete_confirm_button">删除</string>
     <string name="dialog_confirm_delete_cancel_button">不要删除</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Do you really want to move this message to the spam folder?</item>
-        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+    <string name="dialog_confirm_spam_title">确认移动到垃圾邮件文件夹</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">确认移动该邮件到垃圾邮件文件夹？</item>
+        <item quantity="other">确认移动<xliff:g id="message_count">%1$d</xliff:g>邮件到垃圾邮件文件夹？</item>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">是</string>
+    <string name="dialog_confirm_spam_cancel_button">否</string>
 
-  Translators:
+    <string name="dialog_attachment_progress_title">正在下载附件</string>
 
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
+    <string name="debug_logging_enabled">启用调试日志（写入系统日志）</string>
 
-  Possible values for 'quantity': zero, one, two, few, many, other
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
+    <string name="error_unable_to_connect">无法连接</string>
 
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+    <string name="import_export_action">设置导入&amp;导出</string>
+    <string name="settings_export_account">导出账户设置</string>
+    <string name="settings_export_all">导出账户以及账户设定</string>
+    <string name="settings_import_dialog_title">导入</string>
+    <string name="settings_export_dialog_title">导出</string>
+    <string name="settings_import">导入设定</string>
+    <string name="settings_import_selection">导入选择</string>
+    <string name="settings_import_global_settings">全局设置</string>
+    <string name="settings_exporting">正在导出设置…</string>
+    <string name="settings_importing">正在导入设置…</string>
+    <string name="settings_import_scanning_file">正在扫描文件…</string>
+    <string name="settings_export_success">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
+    <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
+    <plurals name="settings_import_success">
+        <item quantity="one">单个账户</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 账户</item>
+    </plurals>
+    <string name="settings_export_failure">导出设置失败</string>
+    <string name="settings_import_failure">自<xliff:g id="filename">%s</xliff:g>导入设置失败</string>
+    <string name="settings_export_success_header">导出成功</string>
+    <string name="settings_export_failed_header">导出失败</string>
+    <string name="settings_import_success_header">导入成功</string>
+    <string name="settings_import_failed_header">导入失败</string>
+    <string name="settings_import_activate_account_header">激活账户</string>
+    <string name="settings_import_activate_account_intro">使用账户\"<xliff:g id="account">%s</xliff:g>\"，您需要提供<xliff:g id="server_passwords">%s</xliff:g></string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">服务器密码</item>
+        <item quantity="other">服务器密码</item>
+    </plurals>
+    <string name="settings_import_incoming_server">接收邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">发送邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="one">正在设置密码…</item>
+        <item quantity="other">正在设置密码…</item>
+    </plurals>
+    <string name="settings_import_use_incoming_server_password">使用接受邮件服务器的密码</string>
+    <string name="activate_account_action">激活</string>
 
-    </plurals>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="settings_unknown_version">无法处理版本为<xliff:g id="version">%s</xliff:g>的文件</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="account_unavailable">账户\"<xliff:g id="account">%s</xliff:g>\"不可用；请检查存储</string>
 
-    <string name="debug_logging_enabled">已经启用将调试日志写入Andorid日志系统</string>
+    <string name="settings_attachment_default_path">保存附件到…</string>
+    <string name="attachment_save_title">保存附件</string>
+    <string name="attachment_save_desc">没有找到文件管理器。该附件应保存到哪里？</string>
 
-    <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
-    <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
-    <!-- NEW: <string name="error_unable_to_connect">Unable to connect.</string>-->
+    <string name="manage_accounts_move_up_action">向上移动</string>
+    <string name="manage_accounts_move_down_action">向下移动</string>
+    <string name="manage_accounts_moving_message">正在移动账户…</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings...</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings...</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file...</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s.</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password...</item>
-        <item quantity="other">Setting passwords...</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+    <string name="unread_widget_select_account">显示未读数</string>
 
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
+    <string name="import_dialog_error_title">没有找到文件管理器</string>
+    <string name="close">关闭</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="webview_empty_message">没有文本</string>
 
-    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to...</string>-->
-    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="webview_contextmenu_link_view_action">浏览</string>
+    <string name="webview_contextmenu_link_share_action">分享链接</string>
+    <string name="webview_contextmenu_link_copy_action">复制链接到剪贴板</string>
+    <string name="webview_contextmenu_link_clipboard_label">链接</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account...</string>-->
+    <string name="webview_contextmenu_image_title">图片</string>
+    <string name="webview_contextmenu_image_view_action">浏览图片</string>
+    <string name="webview_contextmenu_image_save_action">保存图片</string>
+    <string name="webview_contextmenu_image_download_action">下载图片</string>
+    <string name="webview_contextmenu_image_copy_action">复制图片链接到剪贴板</string>
+    <string name="webview_contextmenu_image_clipboard_label">图片链接</string>
 
+    <string name="webview_contextmenu_phone_call_action">拨打号码</string>
+    <string name="webview_contextmenu_phone_save_action">保存号码到通讯录</string>
+    <string name="webview_contextmenu_phone_copy_action">复制号码到剪贴板</string>
+    <string name="webview_contextmenu_phone_clipboard_label">号码</string>
+
+    <string name="webview_contextmenu_email_send_action">发送邮件</string>
+    <string name="webview_contextmenu_email_save_action">保存到通讯录</string>
+    <string name="webview_contextmenu_email_copy_action">复制邮件地址到通讯录</string>
+    <string name="webview_contextmenu_email_clipboard_label">邮件地址</string>
+
+    <string name="image_saved_as">保存图片到文件 \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">保存图片失败</string>
 </resources>

@@ -214,7 +214,7 @@ public class Storage implements SharedPreferences {
     }
 
     protected void put(Map<String, String> insertables) {
-        String sql = "insert into preferences_storage (primkey, value) VALUES (?, ?)";
+        String sql = "INSERT INTO preferences_storage (primkey, value) VALUES (?, ?)";
         SQLiteStatement stmt = workingDB.get().compileStatement(sql);
 
         for (Map.Entry<String, String> entry : insertables.entrySet()) {

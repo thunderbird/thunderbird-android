@@ -122,10 +122,9 @@ public class MimeHeader {
     public boolean hasToBeEncoded(String text) {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if (c < 0x20 || 0x7e < c) { // non printable
-                if (c != 0x0a && c != 0x0d && c != 0x09) { // non LF/CR/TAB
-                    return true;
-                }
+            if ((c < 0x20 || 0x7e < c) && // non printable
+                    (c != 0x0a && c != 0x0d && c != 0x09)) { // non LF/CR/TAB
+                return true;
             }
         }
 

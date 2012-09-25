@@ -98,7 +98,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
         this.status = truncateStatus(folder.getStatus());
 
-        this.displayName = getDisplayName(context, folder);
+        this.displayName = getDisplayName(context, account, name);
     }
 
     /**
@@ -110,16 +110,15 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
      *
      * @param context
      *         A {@link Context} instance that is used to get the string resources.
-     * @param folder
-     *         The {@link Folder} instance for which to return the display name.
+     * @param account
+     *         The {@link Account} the folder belongs to.
+     * @param name
+     *         The name of the folder for which to return the display name.
      *
      * @return The localized name for the provided folder if it's a special folder or the original
      *         folder name if it's a non-special folder.
      */
-    public static String getDisplayName(Context context, Folder folder) {
-        Account account = folder.getAccount();
-        String name = folder.getName();
-
+    public static String getDisplayName(Context context, Account account, String name) {
         final String displayName;
         if (name.equals(account.getSpamFolderName())) {
             displayName = String.format(

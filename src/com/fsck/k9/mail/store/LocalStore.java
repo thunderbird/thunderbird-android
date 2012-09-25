@@ -81,21 +81,6 @@ public class LocalStore extends Store implements Serializable {
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
-    private static final Set<String> HEADERS_TO_SAVE;
-    static {
-        Set<String> set = new HashSet<String>();
-        set.add(K9.IDENTITY_HEADER);
-        set.add("To");
-        set.add("Cc");
-        set.add("From");
-        set.add("In-Reply-To");
-        set.add("References");
-        set.add(MimeHeader.HEADER_CONTENT_ID);
-        set.add(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        set.add("User-Agent");
-        HEADERS_TO_SAVE = Collections.unmodifiableSet(set);
-    }
-
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
@@ -155,6 +140,7 @@ public class LocalStore extends Store implements Serializable {
 
             AttachmentProvider.clear(mApplication);
 
+            db.beginTransaction();
             try {
                 // schema version 29 was when we moved to incremental updates
                 // in the case of a new db or a < v29 db, we blow away and start from scratch
@@ -212,156 +198,185 @@ public class LocalStore extends Store implements Serializable {
                     if (db.getVersion() < 31) {
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                    }
-                    if (db.getVersion() < 32) {
-                        db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
-                    }
-                    if (db.getVersion() < 33) {
+                        db.execSQL("DROP TABLE IF EXISTS attachments");
+                        db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                                   + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                                   + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
 
-                        try {
-                            db.execSQL("ALTER TABLE messages ADD preview TEXT");
-                        } catch (SQLiteException e) {
-                            if (! e.toString().startsWith("duplicate column name: preview")) {
-                                throw e;
-                            }
-                        }
+                        db.execSQL("DROP TABLE IF EXISTS pending_commands");
+                        db.execSQL("CREATE TABLE pending_commands " +
+                                   "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
 
-                    }
-                    if (db.getVersion() < 34) {
-                        try {
-                            db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
-                        } catch (SQLiteException e) {
-                            if (! e.getMessage().startsWith("duplicate column name: flagged_count")) {
-                                throw e;
-                            }
-                        }
-                    }
-                    if (db.getVersion() < 35) {
-                        try {
-                            db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
-                        }
-                    }
-                    if (db.getVersion() < 36) {
-                        try {
-                            db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
-                        }
-                    }
-                    if (db.getVersion() < 37) {
-                        try {
-                            db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
-                        }
-                    }
+                        db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+                        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
-                    // Database version 38 is solely to prune cached attachments now that we clear them better
-                    if (db.getVersion() < 39) {
-                        try {
-                            db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
-                        }
-                    }
+                        db.execSQL("DROP TRIGGER IF EXISTS delete_message");
+                        db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                                   + "DELETE FROM headers where old.id = message_id; END;");
+                    } else {
+                        // in the case that we're starting out at 29 or newer, run all the needed updates
 
-                    // V40: Store the MIME type for a message.
-                    if (db.getVersion() < 40) {
-                        try {
-                            db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
-                        }
-                    }
-
-                    if (db.getVersion() < 41) {
-                        try {
-                            db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
-                            db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
-                            db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
-                            db.execSQL("ALTER TABLE folders ADD push_class TEXT");
-                            db.execSQL("ALTER TABLE folders ADD display_class TEXT");
-                        } catch (SQLiteException e) {
-                            if (! e.getMessage().startsWith("duplicate column name:")) {
-                                throw e;
-                            }
-                        }
-                        Cursor cursor = null;
-
-                        try {
-
-                            SharedPreferences prefs = getPreferences();
-                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
-                            while (cursor.moveToNext()) {
-                                try {
-                                    int id = cursor.getInt(0);
-                                    String name = cursor.getString(1);
-                                    update41Metadata(db, prefs, id, name);
-                                } catch (Exception e) {
-                                    Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
+                        if (db.getVersion() < 30) {
+                            try {
+                                db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+                            } catch (SQLiteException e) {
+                                if (! e.toString().startsWith("duplicate column name: deleted")) {
+                                    throw e;
                                 }
                             }
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
-
-                        } finally {
-                            Utility.closeQuietly(cursor);
                         }
-                    }
-                    if (db.getVersion() == 41) {
-                        try {
-                            long startTime = System.currentTimeMillis();
-                            SharedPreferences.Editor editor = getPreferences().edit();
+                        if (db.getVersion() < 31) {
+                            db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                        }
+                        if (db.getVersion() < 32) {
+                            db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+                        }
+                        if (db.getVersion() < 33) {
 
-                            List <? extends Folder >  folders = getPersonalNamespaces(true);
-                            for (Folder folder : folders) {
-                                if (folder instanceof LocalFolder) {
-                                    LocalFolder lFolder = (LocalFolder)folder;
-                                    lFolder.save(editor);
+                            try {
+                                db.execSQL("ALTER TABLE messages ADD preview TEXT");
+                            } catch (SQLiteException e) {
+                                if (! e.toString().startsWith("duplicate column name: preview")) {
+                                    throw e;
                                 }
                             }
 
-                            editor.commit();
-                            long endTime = System.currentTimeMillis();
-                            Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
-                        } catch (Exception e) {
-                            Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
                         }
-                    }
-                    if (db.getVersion() < 43) {
-                        try {
-                            // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
-                            // "K9MAIL_INTERNAL_OUTBOX" (new)
-                            LocalFolder oldOutbox = new LocalFolder("OUTBOX");
-                            if (oldOutbox.exists()) {
-                                ContentValues cv = new ContentValues();
-                                cv.put("name", Account.OUTBOX);
-                                db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
-                                Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
+                        if (db.getVersion() < 34) {
+                            try {
+                                db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name: flagged_count")) {
+                                    throw e;
+                                }
                             }
+                        }
+                        if (db.getVersion() < 35) {
+                            try {
+                                db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
+                            }
+                        }
+                        if (db.getVersion() < 36) {
+                            try {
+                                db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
+                            }
+                        }
+                        if (db.getVersion() < 37) {
+                            try {
+                                db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
+                            }
+                        }
 
-                            // Check if old (pre v3.800) localized outbox folder exists
-                            String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
-                            LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
-                            if (obsoleteOutbox.exists()) {
-                                // Get all messages from the localized outbox ...
-                                Message[] messages = obsoleteOutbox.getMessages(null, false);
+                        // Database version 38 is solely to prune cached attachments now that we clear them better
+                        if (db.getVersion() < 39) {
+                            try {
+                                db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                            }
+                        }
 
-                                if (messages.length > 0) {
-                                    // ... and move them to the drafts folder (we don't want to
-                                    // surprise the user by sending potentially very old messages)
-                                    LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
-                                    obsoleteOutbox.moveMessages(messages, drafts);
+                        // V40: Store the MIME type for a message.
+                        if (db.getVersion() < 40) {
+                            try {
+                                db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
+                            }
+                        }
+
+                        if (db.getVersion() < 41) {
+                            try {
+                                db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
+                                db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
+                                db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
+                                db.execSQL("ALTER TABLE folders ADD push_class TEXT");
+                                db.execSQL("ALTER TABLE folders ADD display_class TEXT");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name:")) {
+                                    throw e;
+                                }
+                            }
+                            Cursor cursor = null;
+
+                            try {
+                                SharedPreferences prefs = getPreferences();
+                                cursor = db.rawQuery("SELECT id, name FROM folders", null);
+                                while (cursor.moveToNext()) {
+                                    try {
+                                        int id = cursor.getInt(0);
+                                        String name = cursor.getString(1);
+                                        update41Metadata(db, prefs, id, name);
+                                    } catch (Exception e) {
+                                        Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
+                                    }
+                                }
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
+                            } finally {
+                                Utility.closeQuietly(cursor);
+                            }
+                        }
+                        if (db.getVersion() == 41) {
+                            try {
+                                long startTime = System.currentTimeMillis();
+                                SharedPreferences.Editor editor = getPreferences().edit();
+
+                                List <? extends Folder >  folders = getPersonalNamespaces(true);
+                                for (Folder folder : folders) {
+                                    if (folder instanceof LocalFolder) {
+                                        LocalFolder lFolder = (LocalFolder)folder;
+                                        lFolder.save(editor);
+                                    }
                                 }
 
-                                // Now get rid of the localized outbox
-                                obsoleteOutbox.delete();
-                                obsoleteOutbox.delete(true);
+                                editor.commit();
+                                long endTime = System.currentTimeMillis();
+                                Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
+                            } catch (Exception e) {
+                                Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
                             }
-                        } catch (Exception e) {
-                            Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+                        }
+                        if (db.getVersion() < 43) {
+                            try {
+                                // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
+                                // "K9MAIL_INTERNAL_OUTBOX" (new)
+                                LocalFolder oldOutbox = new LocalFolder("OUTBOX");
+                                if (oldOutbox.exists()) {
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("name", Account.OUTBOX);
+                                    db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
+                                    Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
+                                }
+
+                                // Check if old (pre v3.800) localized outbox folder exists
+                                String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
+                                LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
+                                if (obsoleteOutbox.exists()) {
+                                    // Get all messages from the localized outbox ...
+                                    Message[] messages = obsoleteOutbox.getMessages(null, false);
+
+                                    if (messages.length > 0) {
+                                        // ... and move them to the drafts folder (we don't want to
+                                        // surprise the user by sending potentially very old messages)
+                                        LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
+                                        obsoleteOutbox.moveMessages(messages, drafts);
+                                    }
+
+                                    // Now get rid of the localized outbox
+                                    obsoleteOutbox.delete();
+                                    obsoleteOutbox.delete(true);
+                                }
+                            } catch (Exception e) {
+                                Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+                            }
                         }
                     }
                     if (db.getVersion() < 44) {
@@ -1618,13 +1633,13 @@ public class LocalStore extends Store implements Serializable {
                                                 mp.addBodyPart(bp);
                                             }
 
-                                            if (mAccount.getMessageFormat() == MessageFormat.HTML) {
+                                            if (mAccount.getMessageFormat() != MessageFormat.TEXT) {
                                                 if (htmlContent != null) {
                                                     TextBody body = new TextBody(htmlContent);
                                                     MimeBodyPart bp = new MimeBodyPart(body, "text/html");
                                                     mp.addBodyPart(bp);
                                                 }
-    
+
                                                 // If we have both text and html content and our MIME type
                                                 // isn't multipart/alternative, then corral them into a new
                                                 // multipart/alternative part and put that into the parent.
@@ -2340,12 +2355,9 @@ public class LocalStore extends Store implements Serializable {
             database.execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    boolean saveAllHeaders = mAccount.saveAllHeaders();
-                    boolean gotAdditionalHeaders = false;
 
                     deleteHeaders(id);
                     for (String name : message.getHeaderNames()) {
-                        if (saveAllHeaders || HEADERS_TO_SAVE.contains(name)) {
                             String[] values = message.getHeader(name);
                             for (String value : values) {
                                 ContentValues cv = new ContentValues();
@@ -2354,22 +2366,17 @@ public class LocalStore extends Store implements Serializable {
                                 cv.put("value", value);
                                 db.insert("headers", "name", cv);
                             }
-                        } else {
-                            gotAdditionalHeaders = true;
-                        }
                     }
 
-                    if (!gotAdditionalHeaders) {
-                        // Remember that all headers for this message have been saved, so it is
-                        // not necessary to download them again in case the user wants to see all headers.
-                        List<Flag> appendedFlags = new ArrayList<Flag>();
-                        appendedFlags.addAll(Arrays.asList(message.getFlags()));
-                        appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
+                    // Remember that all headers for this message have been saved, so it is
+                    // not necessary to download them again in case the user wants to see all headers.
+                    List<Flag> appendedFlags = new ArrayList<Flag>();
+                    appendedFlags.addAll(Arrays.asList(message.getFlags()));
+                    appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
-                        db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
-                                   new Object[]
-                                   { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
-                    }
+                    db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
+                               new Object[]
+                               { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
                     return null;
                 }
             });
@@ -2710,11 +2717,6 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public int hashCode() {
             return mRemoteName.hashCode();
-        }
-
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
         }
 
         private void deleteAttachments(final long messageId) throws MessagingException {
@@ -3308,10 +3310,8 @@ public class LocalStore extends Store implements Serializable {
 
                 if (!isSet(Flag.DELETED)) {
 
-                    if (flag == Flag.SEEN) {
-                        if (set != isSet(Flag.SEEN)) {
-                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
-                        }
+                    if (flag == Flag.SEEN && set != isSet(Flag.SEEN)) {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
                     }
 
                     if (flag == Flag.FLAGGED) {

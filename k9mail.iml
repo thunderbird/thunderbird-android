@@ -24,6 +24,8 @@
         <option name="RUN_PROGUARD" value="false" />
         <option name="PROGUARD_CFG_PATH" value="/proguard.cfg" />
         <resOverlayFolders />
+        <includeSystemProguardFile>false</includeSystemProguardFile>
+        <additionalNativeLibs />
       </configuration>
     </facet>
   </component>
@@ -36,72 +38,10 @@
       <sourceFolder url="file://$MODULE_DIR$/tests/src" isTestSource="true" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/apache-mime4j-dom-0.7-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/apache-mime4j-core-0.7-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/jutf7-1.0.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/jzlib-1.0.7.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/commons-io-2.0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/main/java" />
-          <root url="jar://$MODULE_DIR$/libs/htmlcleaner-2.2-all.zip!/HtmlCleaner/src/test/java" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/compile-only-libs/junit-4.8.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="compile-only-libs" level="project" />
+    <orderEntry type="module" module-name="ActionBarSherlock" />
+    <orderEntry type="module" module-name="Android-PullToRefresh" />
     <orderEntry type="inheritedJdk" />
   </component>
 </module>

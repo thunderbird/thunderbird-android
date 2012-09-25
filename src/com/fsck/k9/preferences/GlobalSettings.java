@@ -2,8 +2,10 @@ package com.fsck.k9.preferences;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,9 +14,12 @@ import java.util.TreeMap;
 import android.content.SharedPreferences;
 import android.os.Environment;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.R;
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.Settings.*;
 
@@ -43,17 +48,11 @@ public class GlobalSettings {
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("compactLayouts", Settings.versions(
-                new V(1, new BooleanSetting(false))
-                ));
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
-            ));
-        s.put("confirmMarkAllAsRead", Settings.versions(
-                new V(1, new BooleanSetting(false))
             ));
         s.put("confirmSpam", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -129,28 +128,17 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("keyguardPrivacy", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(12, null)
             ));
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
             ));
-        s.put("manageBack", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("measureAccounts", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));
-        s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
-            ));
-        s.put("messageListStars", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
-        s.put("messageListTouchable", Settings.versions(
-                new V(1, new BooleanSetting(false))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -182,11 +170,20 @@ public class GlobalSettings {
         s.put("showCorrespondentNames", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));
+        s.put("sortTypeEnum", Settings.versions(
+                new V(10, new EnumSetting(SortType.class, Account.DEFAULT_SORT_TYPE))
+            ));
+        s.put("sortAscending", Settings.versions(
+                new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+            ));
         s.put("startIntegratedInbox", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
         s.put("theme", Settings.versions(
                 new V(1, new ThemeSetting(K9.THEME_LIGHT))
+            ));
+        s.put("messageViewTheme", Settings.versions(
+                new V(16, new ThemeSetting(K9.THEME_LIGHT))
             ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
@@ -197,32 +194,34 @@ public class GlobalSettings {
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("zoomControlsEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(4, new BooleanSetting(true))
-            ));
         s.put("batchButtonsMarkRead", Settings.versions(
-        		new V(8, new BooleanSetting(true))
-        	));
+                new V(8, new BooleanSetting(true))
+            ));
         s.put("batchButtonsDelete", Settings.versions(
-        		new V(8, new BooleanSetting(true))
-        	));
+                new V(8, new BooleanSetting(true))
+            ));
         s.put("batchButtonsArchive", Settings.versions(
-        		new V(8, new BooleanSetting(false))
-        	));
+                new V(8, new BooleanSetting(false))
+            ));
         s.put("batchButtonsMove", Settings.versions(
-        		new V(8, new BooleanSetting(false))
-        	));
+                new V(8, new BooleanSetting(false))
+            ));
         s.put("batchButtonsFlag", Settings.versions(
-        		new V(8, new BooleanSetting(true))
-        	));
+                new V(8, new BooleanSetting(true))
+            ));
         s.put("batchButtonsUnselect", Settings.versions(
-        		new V(8, new BooleanSetting(true))
-        	));
+                new V(8, new BooleanSetting(true))
+            ));
+        s.put("notificationHideSubject", Settings.versions(
+                new V(12, new EnumSetting(NotificationHideSubject.class,
+                        NotificationHideSubject.NEVER))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        u.put(12, new SettingsUpgraderV12());
+
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -247,6 +246,27 @@ public class GlobalSettings {
             }
         }
         return result;
+    }
+
+    /**
+     * Upgrades the settings from version 11 to 12
+     *
+     * Map the 'keyguardPrivacy' value to the new NotificationHideSubject enum.
+     */
+    public static class SettingsUpgraderV12 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
+            if (keyguardPrivacy != null && keyguardPrivacy.booleanValue()) {
+                // current setting: only show subject when unlocked
+                settings.put("notificationHideSubject", NotificationHideSubject.WHEN_LOCKED);
+            } else {
+                // always show subject [old default]
+                settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
+            }
+            return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
+        }
     }
 
     /**

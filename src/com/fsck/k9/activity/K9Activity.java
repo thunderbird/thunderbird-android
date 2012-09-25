@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -15,10 +14,12 @@ import android.view.MotionEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+
+import com.actionbarsherlock.app.SherlockActivity;
 import com.fsck.k9.K9;
 
 
-public class K9Activity extends Activity {
+public class K9Activity extends SherlockActivity {
     protected static final int BEZEL_SWIPE_THRESHOLD = 20;
 
     protected GestureDetector mGestureDetector;
@@ -135,10 +136,31 @@ public class K9Activity extends Activity {
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
         private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
+
+        protected MotionEvent mLastOnDownEvent = null;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            mLastOnDownEvent = e;
+            return super.onDown(e);
+        }
+
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             // Do fling-detection if gestures are force-enabled or we have system-wide gestures enabled.
             if (gesturesEnabled || K9.gesturesEnabled()) {
+
+                // Apparently sometimes e1 is null
+                // Found a workaround here: http://stackoverflow.com/questions/4151385/
+                if (e1 == null) {
+                    e1 = mLastOnDownEvent;
+                }
+
+                // Make sure we avoid NullPointerExceptions
+                if (e1 == null || e2 == null) {
+                    return false;
+                }
+
                 // Calculate the minimum distance required for this to count as a swipe.
                 // Convert the constant dips to pixels.
                 final float mGestureScale = getResources().getDisplayMetrics().density;

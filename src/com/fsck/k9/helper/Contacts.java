@@ -1,15 +1,10 @@
 package com.fsck.k9.helper;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.content.Intent;
-import android.util.Log;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
 
 /**
@@ -36,43 +31,20 @@ public abstract class Contacts {
      * @return Appropriate {@link Contacts} instance for this device.
      */
     public static Contacts getInstance(Context context) {
+        Context appContext = context.getApplicationContext();
         if (sInstance == null) {
             /*
              * Check the version of the SDK we are running on. Choose an
              * implementation class designed for that version of the SDK.
              */
-            String className = null;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ECLAIR_MR1) {
                 /*
                  * The new API was introduced with SDK 5. But Android versions < 2.2
                  * need some additional code to be able to search for phonetic names.
                  */
-                className = "com.fsck.k9.helper.ContactsSdk5p";
+                sInstance = new ContactsSdk5p(appContext);
             } else {
-                className = "com.fsck.k9.helper.ContactsSdk5";
-            }
-
-            /*
-             * Find the required class by name and instantiate it.
-             */
-            try {
-                Class <? extends Contacts > clazz =
-                    Class.forName(className).asSubclass(Contacts.class);
-
-                Constructor <? extends Contacts > constructor = clazz.getConstructor(Context.class);
-                sInstance = constructor.newInstance(context);
-            } catch (ClassNotFoundException e) {
-                Log.e(K9.LOG_TAG, "Couldn't find class: " + className, e);
-            } catch (InstantiationException e) {
-                Log.e(K9.LOG_TAG, "Couldn't instantiate class: " + className, e);
-            } catch (IllegalAccessException e) {
-                Log.e(K9.LOG_TAG, "Couldn't access class: " + className, e);
-            } catch (NoSuchMethodException e) {
-                Log.e(K9.LOG_TAG, "Couldn't find constructor of class: " + className, e);
-            } catch (IllegalArgumentException e) {
-                Log.e(K9.LOG_TAG, "Wrong arguments for constructor of class: " + className, e);
-            } catch (InvocationTargetException e) {
-                Log.e(K9.LOG_TAG, "Couldn't invoke constructor of class: " + className, e);
+                sInstance = new ContactsSdk5(appContext);
             }
         }
 

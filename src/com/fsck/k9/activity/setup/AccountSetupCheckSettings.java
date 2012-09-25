@@ -326,11 +326,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 if (name.equalsIgnoreCase(storeURIHost) || name.equalsIgnoreCase(transportURIHost)) {
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
-                                } else if (name.startsWith("*.")) {
-                                    if (storeURIHost.endsWith(name.substring(2)) || transportURIHost.endsWith(name.substring(2))) {
-                                        //TODO: localize this string
-                                        altNamesText.append("Subject(alt): ").append(name).append(",...\n");
-                                    }
+                                } else if (name.startsWith("*.") && (
+                                            storeURIHost.endsWith(name.substring(2)) ||
+                                            transportURIHost.endsWith(name.substring(2)))) {
+                                    //TODO: localize this string
+                                    altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 }
                             }
                             chainInfo.append(altNamesText);

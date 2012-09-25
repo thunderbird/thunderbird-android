@@ -12,20 +12,25 @@ import com.fsck.k9.R;
 import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.fsck.k9.view.ColorPickerBox;
 
 
-public class ColorPickerDialog {
+public class ColorPickerDialog extends AlertDialog {
     private static final String TAG = ColorPickerDialog.class.getSimpleName();
+
+    private static final String BUNDLE_KEY_PARENT_BUNDLE = "parent";
+    private static final String BUNDLE_KEY_COLOR_OLD = "color_old";
+    private static final String BUNDLE_KEY_COLOR_NEW = "color_new";
+
 
     public interface OnColorChangedListener {
         void colorChanged(int color);
     }
 
-    AlertDialog dialog;
     OnColorChangedListener listener;
     View viewHue;
     ColorPickerBox viewBox;
@@ -44,13 +49,10 @@ public class ColorPickerDialog {
     float sizeUiPx; // diset di constructor
 
     public ColorPickerDialog(Context context, OnColorChangedListener listener, int color) {
+        super(context);
         this.listener = listener;
-        this.colorOld = color;
-        this.colorNew = color;
-        Color.colorToHSV(color, tmp01);
-        hue = tmp01[0];
-        sat = tmp01[1];
-        val = tmp01[2];
+
+        initColor(color);
 
         onedp = context.getResources().getDimension(R.dimen.colorpicker_onedp);
         sizeUiPx = sizeUiDp * onedp;
@@ -64,11 +66,7 @@ public class ColorPickerDialog {
         viewColorNew = view.findViewById(R.id.colorpicker_colorNew);
         viewSpyglass = (ImageView) view.findViewById(R.id.colorpicker_spyglass);
 
-        placeArrow();
-        placeSpyglass();
-        viewBox.setHue(hue);
-        viewColorOld.setBackgroundColor(color);
-        viewColorNew.setBackgroundColor(color);
+        updateView();
 
         viewHue.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -124,25 +122,69 @@ public class ColorPickerDialog {
             }
         });
 
-        dialog = new AlertDialog.Builder(context)
-        .setView(view)
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+        this.setView(view);
+        this.setButton(BUTTON_POSITIVE, context.getString(R.string.okay_action),
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (ColorPickerDialog.this.listener != null) {
                     ColorPickerDialog.this.listener.colorChanged(colorNew);
                 }
             }
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (ColorPickerDialog.this.listener != null) {
-                }
-            }
-        })
-        .create();
+        });
 
+        this.setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel_action), (OnClickListener) null);
+    }
+
+    private void updateView() {
+        placeArrow();
+        placeSpyglass();
+        viewBox.setHue(hue);
+        viewColorOld.setBackgroundColor(colorOld);
+        viewColorNew.setBackgroundColor(colorNew);
+    }
+
+    private void initColor(int color) {
+        colorNew = color;
+        colorOld = color;
+
+        Color.colorToHSV(color, tmp01);
+        hue = tmp01[0];
+        sat = tmp01[1];
+        val = tmp01[2];
+    }
+
+    public void setColor(int color) {
+        initColor(color);
+        updateView();
+    }
+
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle parentBundle = super.onSaveInstanceState();
+
+        Bundle savedInstanceState = new Bundle();
+        savedInstanceState.putBundle(BUNDLE_KEY_PARENT_BUNDLE, parentBundle);
+        savedInstanceState.putInt(BUNDLE_KEY_COLOR_OLD, colorOld);
+        savedInstanceState.putInt(BUNDLE_KEY_COLOR_NEW, colorNew);
+
+        return savedInstanceState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        Bundle parentBundle = savedInstanceState.getBundle(BUNDLE_KEY_PARENT_BUNDLE);
+        super.onRestoreInstanceState(parentBundle);
+
+        int color = savedInstanceState.getInt(BUNDLE_KEY_COLOR_NEW);
+
+        // Sets colorOld, colorNew to color and initializes hue, sat, val from color
+        initColor(color);
+
+        // Now restore the real colorOld value
+        colorOld = savedInstanceState.getInt(BUNDLE_KEY_COLOR_OLD);
+
+        updateView();
     }
 
     @SuppressWarnings("deprecation")
@@ -172,9 +214,5 @@ public class ColorPickerDialog {
         tmp01[1] = sat;
         tmp01[2] = val;
         return Color.HSVToColor(tmp01);
-    }
-
-    public void show() {
-        dialog.show();
     }
 }

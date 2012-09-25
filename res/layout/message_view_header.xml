@@ -44,7 +44,8 @@
                         android:textSize="10sp"
                         android:textStyle="bold"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:visibility="gone"/>
 
                     <!-- From -->
                     <LinearLayout
@@ -128,19 +129,51 @@
                 <!-- Date/Time + Icons -->
                 <LinearLayout
                     android:id="@+id/topright_container"
-                    android:layout_marginTop="2dip"
+                    android:layout_marginTop="6dip"
                     android:layout_marginRight="6dip"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:gravity="right">
+                    android:layout_gravity="right">
+                    <LinearLayout
+                        android:id="@+id/date_time_container"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="6dip"
+                        android:paddingRight="5dip"
+                            android:gravity="right"
+                        >
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:ellipsize="none"
+                            android:textSize="10sp"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:singleLine="true"
+                            android:ellipsize="none"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/icons_container"
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:layout_gravity="center_vertical|right">
 
                         <View
                             android:id="@+id/answered"
@@ -148,35 +181,21 @@
                             android:layout_height="22sp"
                             android:paddingRight="4dip"
                             android:background="@drawable/ic_email_answered_small"/>
-
+                        <View
+                            android:id="@+id/forwarded"
+                            android:layout_width="22sp"
+                            android:layout_height="22sp"
+                            android:paddingRight="4dip"
+                            android:background="@drawable/ic_email_forwarded_small"/>
                         <CheckBox
                             android:id="@+id/flagged"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            style="?android:attr/starStyle"/>
+                            android:button="@drawable/star"
+                            />
 
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:ellipsize="none"
-                        android:textSize="10sp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:singleLine="true"
-                        android:ellipsize="none"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                 </LinearLayout>
 

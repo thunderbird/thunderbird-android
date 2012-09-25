@@ -187,7 +187,6 @@ public class SmtpTransport extends Transport {
     String mPassword;
     String mAuthType;
     int mConnectionSecurity;
-    boolean mSecure;
     Socket mSocket;
     PeekableInputStream mIn;
     OutputStream mOut;
@@ -244,7 +243,6 @@ public class SmtpTransport extends Transport {
                                         }, new SecureRandom());
                         mSocket = sslContext.getSocketFactory().createSocket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                        mSecure = true;
                     } else {
                         mSocket = new Socket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -307,7 +305,6 @@ public class SmtpTransport extends Transport {
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = mSocket.getOutputStream();
-                    mSecure = true;
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.

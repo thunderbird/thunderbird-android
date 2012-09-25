@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.helper.DateFormatter;
@@ -33,6 +33,7 @@ import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.view.MessageWebView;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -52,26 +53,21 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_GESTURES = "gestures";
     private static final String PREFERENCE_VOLUME_NAVIGATION = "volumeNavigation";
-    private static final String PREFERENCE_MANAGE_BACK = "manage_back";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
-    private static final String PREFERENCE_PRIVACY_MODE = "privacy_mode";
+    private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts";
-    private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
-    private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
-    private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
+    private static final String PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT = "messagelist_sender_above_subject";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
-    private static final String PREFERENCE_COMPACT_LAYOUTS = "compact_layouts";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
-    private static final String PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED = "messageview_zoom_controls";
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
@@ -97,30 +93,25 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
     private CheckBoxListPreference mVolumeNavigation;
-    private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
-    private CheckBoxPreference mPrivacyMode;
+    private ListPreference mNotificationHideSubject;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mHideSpecialAccounts;
-    private CheckBoxPreference mTouchable;
     private ListPreference mPreviewLines;
-    private CheckBoxPreference mStars;
-    private CheckBoxPreference mCheckboxes;
+    private CheckBoxPreference mSenderAboveSubject;
     private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
-    private CheckBoxPreference mZoomControlsEnabled;
     private CheckBoxPreference mMobileOptimizedLayout;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
-    private CheckBoxPreference compactLayouts;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
@@ -188,15 +179,9 @@ public class Prefs extends K9PreferenceActivity {
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
 
-        compactLayouts = (CheckBoxPreference)findPreference(PREFERENCE_COMPACT_LAYOUTS);
-        compactLayouts.setChecked(K9.useCompactLayouts());
-
         mVolumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
         mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
         mVolumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
-
-        mManageBack = (CheckBoxPreference)findPreference(PREFERENCE_MANAGE_BACK);
-        mManageBack.setChecked(K9.manageBack());
 
         mStartIntegratedInbox = (CheckBoxPreference)findPreference(PREFERENCE_START_INTEGRATED_INBOX);
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
@@ -206,17 +191,15 @@ public class Prefs extends K9PreferenceActivity {
                                      getString(R.string.global_settings_confirm_action_delete),
                                      getString(R.string.global_settings_confirm_action_delete_starred),
                                      getString(R.string.global_settings_confirm_action_spam),
-                                     getString(R.string.global_settings_confirm_action_mark_all_as_read)
                                  });
         mConfirmActions.setCheckedItems(new boolean[] {
                                             K9.confirmDelete(),
                                             K9.confirmDeleteStarred(),
                                             K9.confirmSpam(),
-                                            K9.confirmMarkAllAsRead()
                                         });
 
-        mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
-        mPrivacyMode.setChecked(K9.keyguardPrivacy());
+        mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
+                K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -227,17 +210,12 @@ public class Prefs extends K9PreferenceActivity {
         mHideSpecialAccounts = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_SPECIAL_ACCOUNTS);
         mHideSpecialAccounts.setChecked(K9.isHideSpecialAccounts());
 
-        mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
-        mTouchable.setChecked(K9.messageListTouchable());
 
         mPreviewLines = setupListPreference(PREFERENCE_MESSAGELIST_PREVIEW_LINES,
                                             Integer.toString(K9.messageListPreviewLines()));
 
-        mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
-        mStars.setChecked(K9.messageListStars());
-
-        mCheckboxes = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CHECKBOXES);
-        mCheckboxes.setChecked(K9.messageListCheckboxes());
+        mSenderAboveSubject = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT);
+        mSenderAboveSubject.setChecked(K9.messageListSenderAboveSubject());
 
         mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
         mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
@@ -275,16 +253,13 @@ public class Prefs extends K9PreferenceActivity {
         mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
         mShowNext.setChecked(K9.messageViewShowNext());
 
-        mZoomControlsEnabled = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED);
-        mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
-
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (Build.VERSION.SDK_INT <= 7) {
+        if (!MessageWebView.isSingleColumnLayoutSupported()) {
             mMobileOptimizedLayout.setEnabled(false);
+            mMobileOptimizedLayout.setChecked(false);
+        } else {
+            mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         }
-
-
-        mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
@@ -315,6 +290,33 @@ public class Prefs extends K9PreferenceActivity {
 
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
+        // In ICS+ there is no 'background data' setting that apps can chose to ignore anymore. So
+        // we hide that option for "Background Sync".
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            CharSequence[] oldEntries = mBackgroundOps.getEntries();
+            CharSequence[] newEntries = new CharSequence[3];
+            // Use "When 'Auto-sync' is checked" instead of "When 'Background data' & 'Auto-sync'
+            // are checked" as description.
+            newEntries[0] = getString(R.string.background_ops_auto_sync_only);
+            newEntries[1] = oldEntries[2];
+            newEntries[2] = oldEntries[3];
+
+            CharSequence[] oldValues = mBackgroundOps.getEntryValues();
+            CharSequence[] newValues = new CharSequence[3];
+            newValues[0] = oldValues[1];
+            newValues[1] = oldValues[2];
+            newValues[2] = oldValues[3];
+
+            mBackgroundOps.setEntries(newEntries);
+            mBackgroundOps.setEntryValues(newValues);
+
+            // Since ConnectivityManager.getBackgroundDataSetting() always returns 'true' on ICS+
+            // we map WHEN_CHECKED to ALWAYS.
+            if (K9.getBackgroundOps() == K9.BACKGROUND_OPS.WHEN_CHECKED) {
+                mBackgroundOps.setValue(K9.BACKGROUND_OPS.ALWAYS.toString());
+                mBackgroundOps.setSummary(mBackgroundOps.getEntry());
+            }
+        }
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
@@ -354,7 +356,7 @@ public class Prefs extends K9PreferenceActivity {
                 }
             };
         });
-        
+
         mBatchButtonsMarkRead = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_MARK_READ);
         mBatchButtonsDelete = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_DELETE);
         mBatchButtonsArchive = (CheckBoxPreference)findPreference(PREFERENCE_BATCH_BUTTONS_ARCHIVE);
@@ -389,24 +391,20 @@ public class Prefs extends K9PreferenceActivity {
         K9.setK9Theme(mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT);
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
-        K9.setCompactLayouts(compactLayouts.isChecked());
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
-        K9.setManageBack(mManageBack.isChecked());
         K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
-        K9.setConfirmMarkAllAsRead(mConfirmActions.getCheckedItems()[3]);
-        K9.setKeyguardPrivacy(mPrivacyMode.isChecked());
+        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
+
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
         K9.setHideSpecialAccounts(mHideSpecialAccounts.isChecked());
-        K9.setMessageListTouchable(mTouchable.isChecked());
         K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
-        K9.setMessageListStars(mStars.isChecked());
-        K9.setMessageListCheckboxes(mCheckboxes.isChecked());
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
+        K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
@@ -425,7 +423,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setBatchButtonsFlag(mBatchButtonsFlag.isChecked());
         K9.setBatchButtonsUnselect(mBatchButtonsUnselect.isChecked());
 
-        K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
@@ -450,16 +447,6 @@ public class Prefs extends K9PreferenceActivity {
     protected void onPause() {
         saveSettings();
         super.onPause();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (K9.manageBack()) {
-            Accounts.listAccounts(this);
-            finish();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     private void onFontSizeSettings() {

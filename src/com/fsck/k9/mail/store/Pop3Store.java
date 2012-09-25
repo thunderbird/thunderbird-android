@@ -19,6 +19,7 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -886,11 +887,6 @@ public class Pop3Store extends Store {
                     throw me;
                 }
             }
-        }
-
-        @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
         }
 
         @Override

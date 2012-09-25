@@ -16,9 +16,8 @@ public class MessageInfoHolder {
     public String uid;
     public boolean read;
     public boolean answered;
+    public boolean forwarded;
     public boolean flagged;
-    public boolean downloaded;
-    public boolean partially_downloaded;
     public boolean dirty;
     public LocalMessage message;
     public FolderInfoHolder folder;

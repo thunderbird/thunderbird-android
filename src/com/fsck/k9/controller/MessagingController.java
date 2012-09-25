@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -156,6 +158,8 @@ public class MessagingController implements Runnable {
 
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
+
+    private static final Flag[] SYNC_FLAGS = new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED };
 
     private String createMessageKey(Account account, String folder, Message message) {
         return createMessageKey(account, folder, message.getUid());
@@ -1919,7 +1923,7 @@ public class MessagingController implements Runnable {
                 messageChanged = true;
             }
         } else {
-            for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED }) {
+            for (Flag flag : MessagingController.SYNC_FLAGS) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
@@ -2374,13 +2378,14 @@ public class MessagingController implements Runnable {
              * upto speed with the remote UIDs of remote destionation folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<String> remoteSrcUids = remoteUidMap.keySet();
-                Iterator<String> remoteSrcUidsIterator = remoteSrcUids.iterator();
+                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
+                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
 
-                while (remoteSrcUidsIterator.hasNext()) {
-                    String remoteSrcUid = remoteSrcUidsIterator.next();
+                while (remoteSrcEntriesIterator.hasNext()) {
+                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
+                    String remoteSrcUid = entry.getKey();
                     String localDestUid = localUidMap.get(remoteSrcUid);
-                    String newUid = remoteUidMap.get(remoteSrcUid);
+                    String newUid = entry.getValue();
 
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
@@ -2917,6 +2922,9 @@ public class MessagingController implements Runnable {
                         localFolder.fetch(new Message[] { message }, fp, null);
 
                         // Mark that this message is now fully synched
+                        if (account.isMarkMessageAsReadOnView()) {
+                            message.setFlag(Flag.SEEN, true);
+                        }
                         message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     }
 
@@ -3419,7 +3427,6 @@ public class MessagingController implements Runnable {
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
                             localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
-                        } else {
                         }
 
                         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -4330,8 +4337,13 @@ public class MessagingController implements Runnable {
 
         // If privacy mode active and keyguard active
         // OR
+        // GlobalPreference is ALWAYS hide subject
+        // OR
         // If we could not set a per-message notification, revert to a default message
-        if ((K9.keyguardPrivacy() && keyguardService.inKeyguardRestrictedInputMode()) || messageNotice.length() == 0) {
+        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
+                    keyguardService.inKeyguardRestrictedInputMode()) ||
+                (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
+                messageNotice.length() == 0) {
             messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 
@@ -4344,7 +4356,10 @@ public class MessagingController implements Runnable {
         builder.setTicker(messageNotice);
 
         final int unreadCount = previousUnreadMessageCount + newMessageCount.get();
-        if (account.isNotificationShowsUnreadCount()) {
+        if (account.isNotificationShowsUnreadCount() ||
+                // Honeycomb and newer don't show the number as overlay on the notification icon.
+                // However, the number will appear in the detailed notification view.
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             builder.setNumber(unreadCount);
         }
         

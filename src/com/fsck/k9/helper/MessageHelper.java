@@ -59,9 +59,8 @@ public class MessageHelper {
 
             target.read = message.isSet(Flag.SEEN);
             target.answered = message.isSet(Flag.ANSWERED);
+            target.forwarded = message.isSet(Flag.FORWARDED);
             target.flagged = message.isSet(Flag.FLAGGED);
-            target.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-            target.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
 
             Address[] addrs = message.getFrom();
 
@@ -86,7 +85,7 @@ public class MessageHelper {
 
             target.uid = message.getUid();
 
-            target.account = account.getDescription();
+            target.account = account.getUuid();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getRemoteName() + "/" + m.getUid();
 
         } catch (MessagingException me) {

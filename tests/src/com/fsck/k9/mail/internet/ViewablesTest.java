@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import android.test.AndroidTestCase;
+
+import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -28,7 +30,7 @@ public class ViewablesTest extends AndroidTestCase {
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>" +
                 "</body></html>";
@@ -90,13 +92,13 @@ public class ViewablesTest extends AndroidTestCase {
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText1 +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; " +
                         "border-bottom: 1px solid #000\"></p>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText2 +
                 "</pre>" +
                 "</body></html>";
@@ -107,8 +109,9 @@ public class ViewablesTest extends AndroidTestCase {
     }
 
     public void testTextPlusRfc822Message() throws MessagingException {
+    	K9Activity.setLanguage(getContext(), "en");
         Locale.setDefault(Locale.US);
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
         String bodyText = "Some text here";
         String innerBodyText = "Hey there. I'm inside a message/rfc822 (inline) attachment.";
@@ -149,14 +152,14 @@ public class ViewablesTest extends AndroidTestCase {
                 "\n\n" +
                 "From: from@example.com" + "\n" +
                 "To: to@example.com" + "\n" +
-                "Sent: Sat Mar 17 00:00:00 GMT+00:00 2012" + "\n" +
+                "Sent: Sat Mar 17 00:00:00 GMT+01:00 2012" + "\n" +
                 "Subject: Subject" + "\n" +
                 "\n" +
                 innerBodyText;
         String expectedHtml =
                 "<html><head/><body>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 bodyText +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
@@ -170,14 +173,14 @@ public class ViewablesTest extends AndroidTestCase {
                 "<td>to@example.com</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Sent:</th>" +
-                "<td>Sat Mar 17 00:00:00 GMT+00:00 2012</td>" +
+                "<td>Sat Mar 17 00:00:00 GMT+01:00 2012</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Subject:</th>" +
                 "<td>Subject</td>" +
                 "</tr>" +
                 "</table>" +
                 "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif\">" +
+                        "font-family: sans-serif; margin-top: 0px\">" +
                 innerBodyText +
                 "</pre>" +
                 "</body></html>";
