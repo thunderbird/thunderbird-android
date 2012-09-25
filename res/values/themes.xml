@@ -25,6 +25,7 @@
         <item name="iconActionUnflag">@drawable/ic_action_unflag_light</item>
         <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_light</item>
         <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_light</item>
+        <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_light</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
         <item name="iconMenuClear">@drawable/ic_menu_clear</item>
@@ -67,6 +68,7 @@
         <item name="iconActionUnflag">@drawable/ic_action_unflag_dark</item>
         <item name="iconActionMarkAsRead">@drawable/ic_action_mark_as_read_dark</item>
         <item name="iconActionMarkAsUnread">@drawable/ic_action_mark_as_unread_dark</item>
+        <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_dark</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
         <item name="iconMenuClear">@drawable/ic_menu_clear</item>

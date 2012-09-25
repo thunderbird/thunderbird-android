@@ -25,6 +25,7 @@
         <attr name="iconActionUnflag" format="reference" />
         <attr name="iconActionMarkAsRead" format="reference" />
         <attr name="iconActionMarkAsUnread" format="reference" />
+        <attr name="iconActionRemoteSearch" format="reference" />
         <attr name="iconMenuAdd" format="reference" />
         <attr name="iconMenuAttachment" format="reference" />
         <attr name="iconMenuClear" format="reference" />
