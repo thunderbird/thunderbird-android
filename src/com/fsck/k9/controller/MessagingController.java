@@ -896,11 +896,11 @@ public class MessagingController implements Runnable {
     }
 
     public void loadSearchResultsSynchronous(List<Message> messages, LocalFolder localFolder, Folder remoteFolder, MessagingListener listener) throws MessagingException {
-        FetchProfile fp_header = new FetchProfile();
-        fp_header.add(FetchProfile.Item.FLAGS);
-        fp_header.add(FetchProfile.Item.ENVELOPE);
-        FetchProfile fp_structure = new FetchProfile();
-        fp_structure.add(FetchProfile.Item.STRUCTURE);
+        final FetchProfile header = new FetchProfile();
+        header.add(FetchProfile.Item.FLAGS);
+        header.add(FetchProfile.Item.ENVELOPE);
+        final FetchProfile structure = new FetchProfile();
+        structure.add(FetchProfile.Item.STRUCTURE);
 
         int i = 0;
         for (Message message : messages) {
@@ -908,9 +908,9 @@ public class MessagingController implements Runnable {
             LocalMessage localMsg = localFolder.getMessage(message.getUid());
 
             if (localMsg == null) {
-                remoteFolder.fetch(new Message [] {message}, fp_header, null);
+                remoteFolder.fetch(new Message [] {message}, header, null);
                 //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
-                remoteFolder.fetch(new Message [] {message}, fp_structure, null);
+                remoteFolder.fetch(new Message [] {message}, structure, null);
                 localFolder.appendMessages(new Message [] {message});
                 localMsg = localFolder.getMessage(message.getUid());
             }
