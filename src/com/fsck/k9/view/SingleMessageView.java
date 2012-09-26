@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -108,7 +109,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private String mText;
 
 
-    public void initialize(Activity activity) {
+    public void initialize(Fragment fragment) {
+        Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mMessageContentView.configure();
@@ -128,7 +130,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
-        mCryptoView.setActivity(activity);
+        mCryptoView.setFragment(fragment);
         mCryptoView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
         mShowMessageAction = findViewById(R.id.show_message);
@@ -157,7 +159,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mHeaderPlaceHolder.removeView(mHeaderContainer);
             // the HTC version of WebView tries to force the background of the
             // titlebar, which is really unfair.
-            mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
+//            mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);

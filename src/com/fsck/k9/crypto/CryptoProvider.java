@@ -3,6 +3,7 @@ package com.fsck.k9.crypto;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 import com.fsck.k9.mail.Message;
 
@@ -19,10 +20,12 @@ abstract public class CryptoProvider {
     abstract public boolean isSigned(Message message);
     abstract public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
             Intent data, PgpData pgpData);
+    abstract public boolean onDecryptActivityResult(CryptoDecryptCallback callback,
+            int requestCode, int resultCode, Intent data, PgpData pgpData);
     abstract public boolean selectSecretKey(Activity activity, PgpData pgpData);
     abstract public boolean selectEncryptionKeys(Activity activity, String emails, PgpData pgpData);
     abstract public boolean encrypt(Activity activity, String data, PgpData pgpData);
-    abstract public boolean decrypt(Activity activity, String data, PgpData pgpData);
+    abstract public boolean decrypt(Fragment fragment, String data, PgpData pgpData);
     abstract public long[] getSecretKeyIdsFromEmail(Context context, String email);
     abstract public long[] getPublicKeyIdsFromEmail(Context context, String email);
     abstract public boolean hasSecretKeyForEmail(Context context, String email);
@@ -37,5 +40,9 @@ abstract public class CryptoProvider {
         }
 
         return None.createInstance();
+    }
+
+    public interface CryptoDecryptCallback {
+        void onDecryptDone(PgpData pgpData);
     }
 }
