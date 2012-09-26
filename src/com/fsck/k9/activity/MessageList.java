@@ -2027,7 +2027,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                 uid = message.getUid();
                 if (uid != null && (holder.uid == uid || uid.equals(holder.uid))) {
                     folder = message.getFolder();
-                     if (holder.folder.name.equals(folder.getName()) &&
+                     if (holder.folder.name.equals(folder.getRemoteName()) &&
                              holder.account.equals(folder.getAccount().getUuid())) {
                          return holder;
                      }
