@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.fragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +85,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9ListActivity implements OnItemClickListener,
+public class MessageListFragment extends K9ListActivity implements OnItemClickListener,
         OnSwipeGestureListener {
 
     /**
