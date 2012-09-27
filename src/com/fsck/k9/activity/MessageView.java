@@ -12,6 +12,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.misc.SwipeGestureDetector;
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
@@ -28,14 +30,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 
-public class MessageView extends K9FragmentActivity implements MessageViewFragmentListener {
+public class MessageView extends K9FragmentActivity implements MessageViewFragmentListener,
+        OnSwipeGestureListener {
 
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
@@ -71,15 +73,11 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
     private Menu mMenu;
 
     /**
-     * Screen width in pixels.
-     *
-     * <p>
      * Used to detect right-to-left bezel swipes.
-     * </p>
      *
      * @see #onSwipeRightToLeft(MotionEvent, MotionEvent)
      */
-    private int mScreenWidthInPixels;
+    private int mRightBezelThreshold;
 
 
     @Override
@@ -92,10 +90,13 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
         initializeActionBar();
         setTitle("");
 
-        mScreenWidthInPixels = getResources().getDisplayMetrics().widthPixels;
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        mRightBezelThreshold = screenWidth - SwipeGestureDetector.BEZEL_SWIPE_THRESHOLD;
 
         // Enable gesture detection for MessageViews
-        mGestureDetector = new GestureDetector(new MyGestureDetector(false));
+        if (K9.gesturesEnabled()) {
+            setupGestureDetector(this);
+        }
 
         final Intent intent = getIntent();
 
@@ -409,8 +410,8 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
      * Handle a right-to-left swipe starting at the edge of the screen as "move to next message."
      */
     @Override
-    protected void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        if ((int) e1.getRawX() > mScreenWidthInPixels - BEZEL_SWIPE_THRESHOLD) {
+    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
+        if ((int) e1.getRawX() > mRightBezelThreshold) {
             onNext();
         }
     }
@@ -420,8 +421,8 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
      * "move to previous message."
      */
     @Override
-    protected void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        if ((int) e1.getRawX() < BEZEL_SWIPE_THRESHOLD) {
+    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
+        if ((int) e1.getRawX() < SwipeGestureDetector.BEZEL_SWIPE_THRESHOLD) {
             onPrevious();
         }
     }

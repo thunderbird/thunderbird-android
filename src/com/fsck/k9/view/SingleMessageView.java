@@ -32,7 +32,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -159,7 +159,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mHeaderPlaceHolder.removeView(mHeaderContainer);
             // the HTC version of WebView tries to force the background of the
             // titlebar, which is really unfair.
-//            mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
+            mHeaderContainer.setBackgroundColor(((K9ActivityMagic)activity).getThemeBackgroundColor());
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);

@@ -12,7 +12,7 @@ import android.preference.Preference;
 public class K9PreferenceActivity extends SherlockPreferenceActivity {
     @Override
     public void onCreate(Bundle icicle) {
-        K9Activity.setLanguage(this, K9.getK9Language());
+        K9ActivityCommon.setLanguage(this, K9.getK9Language());
 
         if (Build.VERSION.SDK_INT >= 6 && Build.VERSION.SDK_INT < 14) {
             // There's a display bug in all supported Android versions before 4.0 (SDK 14) which
@@ -88,5 +88,4 @@ public class K9PreferenceActivity extends SherlockPreferenceActivity {
             return false;
         }
     }
-
 }

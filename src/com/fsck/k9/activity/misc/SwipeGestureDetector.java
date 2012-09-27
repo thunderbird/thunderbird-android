@@ -2,17 +2,22 @@ package com.fsck.k9.activity.misc;
 
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 
 
 public class SwipeGestureDetector extends SimpleOnGestureListener {
+    public static final int BEZEL_SWIPE_THRESHOLD = 20;
+
     private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
     private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
+
 
     private final OnSwipeGestureListener mListener;
     private int mMinVelocity;
     private int mMaxOffPath;
     private MotionEvent mLastOnDownEvent = null;
+
 
     public SwipeGestureDetector(Context context, OnSwipeGestureListener listener) {
         super();
@@ -80,8 +85,35 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
     }
 
 
+    /**
+     * A listener that will be notified when a right to left or left to right swipe has been
+     * detected.
+     */
     public interface OnSwipeGestureListener {
+        /**
+         * Called when a swipe from right to left is handled by {@link MyGestureDetector}.
+         *
+         * <p>See {@link OnGestureListener#onFling(MotionEvent, MotionEvent, float, float)}
+         * for more information on the {@link MotionEvent}s being passed.</p>
+         *
+         * @param e1
+         *         First down motion event that started the fling.
+         * @param e2
+         *         The move motion event that triggered the current onFling.
+         */
         void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2);
+
+        /**
+         * Called when a swipe from left to right is handled by {@link MyGestureDetector}.
+         *
+         * <p>See {@link OnGestureListener#onFling(MotionEvent, MotionEvent, float, float)}
+         * for more information on the {@link MotionEvent}s being passed.</p>
+         *
+         * @param e1
+         *         First down motion event that started the fling.
+         * @param e2
+         *         The move motion event that triggered the current onFling.
+         */
         void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2);
     }
 }
