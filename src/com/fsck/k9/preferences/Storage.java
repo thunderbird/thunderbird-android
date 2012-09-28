@@ -321,7 +321,11 @@ public class Storage implements SharedPreferences {
         if (val == null) {
             return defValue;
         }
-        return Float.parseFloat(val);
+        try{
+        	return Float.parseFloat(val);
+        } catch (NumberFormatException nfe){
+            return defValue;
+        }
     }
 
     //@Override
@@ -330,7 +334,11 @@ public class Storage implements SharedPreferences {
         if (val == null) {
             return defValue;
         }
-        return Integer.parseInt(val);
+        try {
+        	return Integer.parseInt(val);
+        } catch (NumberFormatException nfe){
+            return defValue;
+        }
     }
 
     //@Override
@@ -339,7 +347,11 @@ public class Storage implements SharedPreferences {
         if (val == null) {
             return defValue;
         }
-        return Long.parseLong(val);
+        try{
+        	return Long.parseLong(val);
+        } catch (NumberFormatException nfe){
+        	return defValue;
+        }
     }
 
     //@Override
