@@ -1521,7 +1521,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     @Override
     public void onBackPressed() {
         // If we represent a remote search, then kill that before going back.
-        if(mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
+        if (mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
             try {
                 Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
                 // Canceling the future stops any message fetches in progress.
