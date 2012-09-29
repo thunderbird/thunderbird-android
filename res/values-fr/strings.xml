@@ -98,6 +98,8 @@ http://k9mail.googlecode.com/ (en anglais)
 
     <string name="about_title_fmt">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Comptes</string>
+    <string name="welcome_message_title">Bienvenue sur K-9 Mail!</string>
+    <string name="folders_title">Dossiers</string>
     <string name="advanced">Avancé</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
 
@@ -118,6 +120,8 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="status_next_poll">\u0020(Prochaine récup. à <xliff:g id="nexttime">%s</xliff:g>)</string>
     <string name="status_syncing_off">\u0020(synchronisation désactivée)</string>
 
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
+    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g> sélectionné(s)</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Suivant</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Précédent</string> <!-- Used as part of a multi-step process -->
@@ -135,6 +139,8 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="delete_all_action">Vider le dossier</string>
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
+    <string name="move_or_copy_action">Déplacer ou Copier</string>
+    <string name="single_message_options_action">Options de message</string>
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
@@ -146,7 +152,7 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="send_messages_action">Envoyer les messages</string>
     <string name="list_folders_action">Liste des dossiers</string>
     <string name="refresh_folders_action">Rafraîchir les dossiers</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Chercher dossier</string>
     <string name="mark_all_as_read_action">Marquer tous les messages comme lus</string>
     <string name="add_account_action">Ajouter un compte</string>
     <string name="compose_action">Composer</string>
@@ -175,6 +181,9 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="show_full_header_action">Montrer l\'entête complète</string>
     <string name="hide_full_header_action">Masquer l\'entête complète</string>
     <string name="select_text_action">Sélection de texte</string>
+
+    <string name="message_view_theme_action_dark">Basculer sur le thème foncé</string>
+    <string name="message_view_theme_action_light">Basculer sur le thème clair</string>
 
     <string name="mark_as_unread_action">Marquer comme non lu</string>
     <string name="add_cc_bcc_action">Ajouter Cc/Cci</string>
@@ -324,6 +333,10 @@ de plus</string>
     <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
     <string name="global_settings_show_correspondent_names_label">Afficher le nom des correspondants</string>
     <string name="global_settings_show_correspondent_names_summary">Afficher le nom des correspondants plutôt que leurs adresses e-mail</string>
+
+    <string name="global_settings_sender_above_subject_label">Correspondants au-dessus de l\'objet</string>
+    <string name="global_settings_sender_above_subject_summary">Afficher les noms des correspondants au dessus de la ligne d\'objet, plutôt qu\'en dessous</string>
+
     <string name="global_settings_show_contact_name_label">Utiliser les noms du carnet d\'adresses</string>
     <string name="global_settings_show_contact_name_summary">Utiliser en priorité les noms du carnet d\'adresses</string>
     <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
