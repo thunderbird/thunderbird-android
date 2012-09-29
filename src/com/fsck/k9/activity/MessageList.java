@@ -19,6 +19,8 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -324,6 +326,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
     private ActionMode mActionMode;
     private View mActionBarProgressView;
     private Bundle mState = null;
+
+    private Boolean mHasConnectivity;
 
     /**
      * Relevant messages for the current context when we have to remember the
@@ -890,6 +894,18 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             }
         }
 
+        // Check if we have connectivity.  Cache the value.
+        if (mHasConnectivity == null) {
+            final ConnectivityManager connectivityManager =
+                (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+            final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                mHasConnectivity = true;
+            } else {
+                mHasConnectivity = false;
+            }
+        }
+
         if (mQueryString == null) {
             mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
                 @Override
@@ -897,7 +913,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
                     checkMail(mAccount, mFolderName);
                 }
             });
-        } else if (allowRemoteSearch && !mRemoteSearch && !mIntegrate) {
+        } else if (allowRemoteSearch && !mRemoteSearch && !mIntegrate && mHasConnectivity) {
             // mQueryString != null is implied if we get this far.
             mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
                 @Override
@@ -1607,7 +1623,14 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             return true;
         }
         case R.id.search_remote: {
-            onRemoteSearchRequested(true);
+            // Remote search is useless without the network.
+            if (mHasConnectivity) {
+                onRemoteSearchRequested(true);
+            } else {
+                final Toast unavailableToast =
+                    Toast.makeText(context, getText(R.string.remote_search_unavailable_no_network), Toast.LENGTH_SHORT);
+                unavailableToast.show();
+            }
             return true;
         }
         }

@@ -1146,4 +1146,5 @@ http://k9mail.googlecode.com/
     <string name="action_remote_search">Search messages on server</string>
     <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>
     <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
+    <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>
 </resources>
