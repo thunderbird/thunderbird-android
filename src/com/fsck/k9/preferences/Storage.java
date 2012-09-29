@@ -321,9 +321,10 @@ public class Storage implements SharedPreferences {
         if (val == null) {
             return defValue;
         }
-        try{
-        	return Float.parseFloat(val);
-        } catch (NumberFormatException nfe){
+        try {
+            return Float.parseFloat(val);
+        } catch (NumberFormatException nfe) {
+            Log.e(K9.LOG_TAG, "Could not parse float", nfe);
             return defValue;
         }
     }
@@ -335,8 +336,9 @@ public class Storage implements SharedPreferences {
             return defValue;
         }
         try {
-        	return Integer.parseInt(val);
-        } catch (NumberFormatException nfe){
+            return Integer.parseInt(val);
+        } catch (NumberFormatException nfe) {
+            Log.e(K9.LOG_TAG, "Could not parse int", nfe);
             return defValue;
         }
     }
@@ -347,10 +349,11 @@ public class Storage implements SharedPreferences {
         if (val == null) {
             return defValue;
         }
-        try{
-        	return Long.parseLong(val);
-        } catch (NumberFormatException nfe){
-        	return defValue;
+        try {
+            return Long.parseLong(val);
+        } catch (NumberFormatException nfe) {
+            Log.e(K9.LOG_TAG, "Could not parse long", nfe);
+            return defValue;
         }
     }
 
