@@ -1,7 +1,11 @@
 
 package com.fsck.k9.helper;
 
+import android.app.Application;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
@@ -642,5 +646,24 @@ public class Utility {
      */
     public static String sanitizeFilename(String filename) {
         return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
+    }
+
+    /**
+     * Check to see if we have network connectivity.
+     * @param app Current application (Hint: see if your base class has a getApplication() method.)
+     * @return true if we have connectivity, false otherwise.
+     */
+    public static boolean hasConnectivity(final Application app) {
+        final ConnectivityManager connectivityManager =
+            (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager == null) {
+            return false;
+        }
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

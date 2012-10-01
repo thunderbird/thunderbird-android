@@ -19,8 +19,6 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -896,14 +894,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
-            final ConnectivityManager connectivityManager =
-                (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
-            final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-                mHasConnectivity = true;
-            } else {
-                mHasConnectivity = false;
-            }
+            mHasConnectivity = Utility.hasConnectivity(getApplication());
         }
 
         if (mQueryString == null) {

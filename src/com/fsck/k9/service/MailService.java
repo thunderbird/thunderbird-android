@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -19,6 +17,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Pusher;
 
 public class MailService extends CoreService {
@@ -89,20 +88,17 @@ public class MailService extends CoreService {
         boolean oldIsSyncDisabled = isSyncDisabled();
         ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
         boolean doBackground = true;
-        boolean hasConnectivity = false;
+        boolean backgroundData = false;
 
+        final boolean hasConnectivity = Utility.hasConnectivity(getApplication());
         if (connectivityManager != null) {
-            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-            if (netInfo != null) {
-                State state = netInfo.getState();
-                hasConnectivity = state == State.CONNECTED;
-            }
-            boolean backgroundData = connectivityManager.getBackgroundDataSetting();
-            boolean autoSync = ContentResolver.getMasterSyncAutomatically();
+            backgroundData = connectivityManager.getBackgroundDataSetting();
+        }
+        boolean autoSync = ContentResolver.getMasterSyncAutomatically();
 
-            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
+        K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
 
-            switch (bOps) {
+        switch (bOps) {
             case NEVER:
                 doBackground = false;
                 break;
@@ -115,8 +111,6 @@ public class MailService extends CoreService {
             case WHEN_CHECKED_AUTO_SYNC:
                 doBackground = backgroundData & autoSync;
                 break;
-            }
-
         }
 
         syncBlocked = !(doBackground && hasConnectivity);
