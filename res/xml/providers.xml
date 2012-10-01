@@ -148,6 +148,11 @@
         <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
     </provider>
+    <provider id="outlook" label="Windows Live Outlook" domain="outlook.com"
+            note="@string/provider_note_live">
+        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    </provider>
     <provider id="msn" label="Windows Live Hotmail Plus" domain="msn.com"
             note="@string/provider_note_live">
         <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
