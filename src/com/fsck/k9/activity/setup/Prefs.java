@@ -85,6 +85,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ATTACHMENT_DEF_PATH = "attachment_default_path";
+    private static final String PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR = "messagelist_background_as_unread_indicator";
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
     private ListPreference mLanguage;
@@ -124,6 +125,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mBatchButtonsMove;
     private CheckBoxPreference mBatchButtonsFlag;
     private CheckBoxPreference mBatchButtonsUnselect;
+    private CheckBoxPreference mBackgroundAsUnreadIndicator;
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -222,6 +224,9 @@ public class Prefs extends K9PreferenceActivity {
 
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
+
+        mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
+        mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
 
         mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
         mChangeContactNameColor.setChecked(K9.changeContactNameColor());
@@ -406,6 +411,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
+        K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());

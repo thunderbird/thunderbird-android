@@ -2493,14 +2493,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
 
             }
-//            if (K9.getK9Theme() == K9.THEME_LIGHT) {
-//                // Light theme: light grey background for read messages
-//                view.setBackgroundColor(message.read ?
-//                        Color.rgb(230, 230, 230) : Color.rgb(255, 255, 255));
-//            } else {
-//                // Dark theme: dark grey background for unread messages
-//                view.setBackgroundColor(message.read ? 0 : Color.rgb(45, 45, 45));
-//            }
+
+            if (K9.useBackgroundAsUnreadIndicator()) {
+                int res = (message.read) ? R.attr.messageListReadItemBackgroundColor :
+                        R.attr.messageListUnreadItemBackgroundColor;
+
+                TypedValue outValue = new TypedValue();
+                getTheme().resolveAttribute(res, outValue, true);
+                view.setBackgroundColor(outValue.data);
+            }
 
             String subject = null;
 

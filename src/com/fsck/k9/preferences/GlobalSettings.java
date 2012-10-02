@@ -216,6 +216,9 @@ public class GlobalSettings {
                 new V(12, new EnumSetting(NotificationHideSubject.class,
                         NotificationHideSubject.NEVER))
             ));
+        s.put("useBackgroundAsUnreadIndicator", Settings.versions(
+                new V(19, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

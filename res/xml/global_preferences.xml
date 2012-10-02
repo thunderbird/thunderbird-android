@@ -137,6 +137,12 @@
                 android:dependency="messagelist_show_contact_name"
                 />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_background_as_unread_indicator"
+                android:title="@string/global_settings_background_as_unread_indicator_label"
+                android:summary="@string/global_settings_background_as_unread_indicator_summary"
+                />
 
         </PreferenceCategory>
 

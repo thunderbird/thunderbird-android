@@ -204,6 +204,8 @@ public class K9 extends Application {
     private static SortType mSortType;
     private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
+    private static boolean sUseBackgroundAsUnreadIndicator = true;
+
     /**
      * The MIME type(s) of attachments we're willing to view.
      */
@@ -469,6 +471,7 @@ public class K9 extends Application {
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
+        editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
         fontSizes.save(editor);
     }
 
@@ -637,6 +640,7 @@ public class K9 extends Application {
         }
 
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
         fontSizes.load(sprefs);
 
         try {
@@ -1116,4 +1120,11 @@ public class K9 extends Application {
         mSortAscending.put(sortType, sortAscending);
     }
 
+    public static synchronized boolean useBackgroundAsUnreadIndicator() {
+        return sUseBackgroundAsUnreadIndicator;
+    }
+
+    public static synchronized void setUseBackgroundAsUnreadIndicator(boolean enabled) {
+        sUseBackgroundAsUnreadIndicator = enabled;
+    }
 }
