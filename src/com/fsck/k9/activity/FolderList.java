@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.text.Editable;
+import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
@@ -1163,6 +1164,10 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             if (K9.wrapFolderNames()) {
                 holder.folderName.setEllipsize(null);
                 holder.folderName.setSingleLine(false);
+            }
+            else {
+                holder.folderName.setEllipsize(TruncateAt.START);
+                holder.folderName.setSingleLine(true);
             }
             holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
 
