@@ -1757,11 +1757,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
         menu.setHeaderTitle(message.message.getSubject());
 
         if (message.read) {
-            menu.findItem(R.id.mark_as_read).setTitle(R.string.mark_as_unread_action);
+            menu.findItem(R.id.mark_as_read).setVisible(false);
+        } else {
+            menu.findItem(R.id.mark_as_unread).setVisible(false);
         }
 
         if (message.flagged) {
-            menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
+            menu.findItem(R.id.flag).setVisible(false);
+        } else {
+            menu.findItem(R.id.unflag).setVisible(false);
         }
 
         Account account = message.message.getFolder().getAccount();
