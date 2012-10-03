@@ -743,7 +743,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ταξινόμηση κατά…</string>
     <string name="sort_by_date">Ημερομηνία</string>
-    <string name="sort_by_arrival">Άφιξη</string>-->
+    <string name="sort_by_arrival">Άφιξη</string>
     <string name="sort_by_sender">Αποστολέα</string>
     <string name="sort_by_subject">Θέμα</string>
     <string name="sort_by_flag">Αστέρι</string>
