@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 Mail Учётные записи</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 Непрочитанное</string>
 
     <string name="remote_control_label">Дистанционное управление K-9 Mail</string>
     <string name="remote_control_desc">Позволяет этому приложению управлеть деятельностью и настройками K-9 Mail.</string>
@@ -26,20 +26,20 @@
 Добро пожаловать на K-9 Mail настройки.  K-9 Mail это программа электронной почты для Android операционных систем с открытым исходным кодом, первоначально основанная на стандартной программе Android Mail.
 \n\n
 \n Улучшенные возможности программы K-9 Mail включают:
-\n * Push mail при использовании IMAP IDLE
-\n * Более высокая скорость
-\n * Систематизация сообщений
-\n * Электронные подписи в почте
-\n * СК Себе
-\n * Подписки к папкам
-\n * Синхронизация всех папок
-\n * Конфигурация возвратного адреса
-\n * Сочетания клавиш на аппаратной клавиатуре
-\n * Лучшая поддержка для IMAP
-\n * Сохранение вложений на SD карту
-\n * Очистка Корзины
-\n * Сортировка сообщений
-\n * … и более
+\n * push mail при использовании IMAP IDLE;
+\n * более высокая скорость;
+\n * систематизация сообщений;
+\n * электронные подписи в почте;
+\n * СК Себе;
+\n * подписки к папкам
+\n * синхронизация всех папок;
+\n * конфигурация возвратного адреса;
+\n * сочетания клавиш на аппаратной клавиатуре;
+\n * лучшая поддержка для IMAP;
+\n * сохранение вложений на SD карту;
+\n * очистка Корзины;
+\n * сортировка сообщений;
+\n * … и более.
 \n
 \nОбратите внимание, что К-9 не поддерживает большинство бесплатных адресов Hotmail и, как большинство других почтовых программ, имеет некоторые причуды при общении с Microsoft Exchange.
 \n
@@ -55,8 +55,8 @@ http://k9mail.googlecode.com/
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">Нет подходящего приложения для импортирования. Пожалуйста, установите файловый менеджер из Google Play.</string>
+    <string name="open_market">Открыть Play Store</string>
 
 
 
@@ -114,7 +114,7 @@ http://k9mail.googlecode.com/
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
     <string name="continue_action">Продолжить</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Назад</string>
     <string name="done_action">Завершено</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Отбросить</string>
     <string name="save_draft_action">Сохранить как черновик</string>
@@ -124,7 +124,7 @@ http://k9mail.googlecode.com/
     <string name="send_messages_action">Отправить сообщения</string>
     <string name="list_folders_action">Список папок</string>
     <string name="refresh_folders_action">Обновить список папок</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Найти дирректорию</string>
     <string name="mark_all_as_read_action">Отметить все сообщения как прочитанные</string>
     <string name="add_account_action">Добавить адрес</string>
     <string name="compose_action">Написать новое письмо</string>
@@ -236,7 +236,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">СК</string>
     <string name="message_compose_subject_hint">Тема</string>
     <string name="message_compose_content_hint">Текст сообщения</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Подпись</string>
     <string name="message_compose_quote_header_separator">-------- Исходное сообщение --------</string>
     <string name="message_compose_quote_header_subject">Тема:</string>
     <string name="message_compose_quote_header_send_date">Послано:</string>
@@ -248,11 +248,11 @@ http://k9mail.googlecode.com/
     <string name="error_contact_address_not_found">Не найден адрес почты.</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>
     <string name="message_compose_show_quoted_text_action">Цитировать сообщение</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_description_add_to">Добавить получателя (To)</string>
+    <string name="message_compose_description_add_cc">Добавить получателя (CC)</string>
+    <string name="message_compose_description_add_bcc">Добавить получателя (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Удалить цитируемый текст</string>
+    <string name="message_compose_description_edit_quoted_text">Исправить цитируемый текст</string>
 
     <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Для:</string>
@@ -267,13 +267,13 @@ http://k9mail.googlecode.com/
     <string name="message_view_status_attachment_saved">Вложение сохранено на карту SD под именем <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Не удалось сохранить вложение на карту SD.</string>
     <string name="message_view_show_pictures_action">Показать картинки</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <string name="message_view_show_message_action">Показать мообщение</string>
+    <string name="message_view_show_attachments_action">Показать вложение</string>
+    <string name="message_view_show_more_attachments_action">Далее&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Загрузка вложения.</string>
     <string name="message_view_no_viewer">Приложение просмотра не найдено для <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Загрузить сообщение целиком</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Загрузка…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Не все заголовки были загружены или сохранены. Выберите \"Сохранять заголовки локально\" в настройках входящего сервера, чтобы использовать эту возможность.</string>
@@ -313,25 +313,25 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_actions_summary">Показывать диалог при совершении действий</string>
     <string name="global_settings_confirm_action_archive">Архивировать</string>
     <string name="global_settings_confirm_action_delete">Удалить (только представление сообщения)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Удалить отмеченные (message view only)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Пометить как прочитанное</string>
     <string name="global_settings_confirm_action_send">Послать</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Скрыть тему в оповещениях</string>
+    <string name="global_settings_notification_hide_subject_never">Никогда</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Когда устройство заблокировано</string>
+    <string name="global_settings_notification_hide_subject_always">Всегда</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
+    <string name="global_settings_batch_buttons">Кнопки групповой обработки</string>
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_mark_read">Пометить как прочитанное/непрочитанное</string>
+    <string name="global_settings_delete">Удалить</string>
+    <string name="global_settings_archive">Переместить в архив</string>
+    <string name="global_settings_archive_disabled_reason">Отсутствует папка архива.</string>
+    <string name="global_settings_move">Переместить</string>
+    <string name="global_settings_flag">Флаг</string>
+    <string name="global_settings_unselect">Снять выделение</string>
 
     <string name="quiet_time">Время тишины</string>
     <string name="quiet_time_description">Запретить сигнал, вибрацию и мигание в ночное время</string>
@@ -517,8 +517,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Искать непрочитанные сообщения, когда уведомление открыто</string>
     <string name="account_settings_notification_unread_count_label">Показать количество непрочитанных</string>
     <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в строке уведомлений.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Отметить сообщение как прочитанное при открытии</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение как прочитанное при открытии для просмотра</string>
 
     <string name="account_settings_enable_move_buttons_label">Разрешить кнопки переноса сообщений</string>
     <string name="account_settings_enable_move_buttons_summary">Показывает кнопки: Архив, Переместить и Спам.</string>
@@ -536,16 +536,16 @@ http://k9mail.googlecode.com/
     <string name="account_settings_reply_after_quote_label">Отвечать после цитаты</string>
     <string name="account_settings_reply_after_quote_summary">Располагать цитату выше ответа.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <string name="account_settings_strip_signature_label">Отбросить подпись в цитируемом сообщении</string>
+    <string name="account_settings_strip_signature_summary">При ответет на сообщение подпись в цитируемом сообщении будет отброшена</string>
 
     <string name="account_settings_message_format_label">Формат сообщения</string>
     <string name="account_settings_message_format_text">Обычный текст (изображения и форматирование не сохраняется)</string>
     <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <string name="account_settings_message_format_auto">Автоматически (простой текст, если ответа не на сообщение в формате HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">AВсегда отображать CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Всегда отображать поле ввода CC/BCC</string>
 
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
@@ -567,8 +567,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_crypto_app_not_available">Не доступна</string>
     <string name="account_settings_crypto_auto_signature">Автоподпись</string>
     <string name="account_settings_crypto_auto_signature_summary">Использовать e-mail учётной записи для формирования ключа подписи.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
+    <string name="account_settings_crypto_auto_encrypt">Автоматическое шифрование</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Автоматическая настройка шифрования, если открытый ключ соответствует получателю</string>
 
     <string name="account_settings_mail_check_frequency_label">Частота опроса папок</string>
 
@@ -744,7 +744,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Сортировка по…</string>
     <string name="sort_by_date">Дате</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Получению</string>
     <string name="sort_by_sender">Отправителю</string>
     <string name="sort_by_subject">Теме</string>
     <string name="sort_by_flag">Звёздам</string>
@@ -764,7 +764,7 @@ http://k9mail.googlecode.com/
         с верными данными подключения, то ваш почтовый ящик не имеет такого доступа.
         Воспользуйтесь мобильной версией Yahoo! Mail для получения сообщений.</string>
     <string name="provider_note_yahoojp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использование POP3 на странице настроек почты Yahoo.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <string name="provider_note_auonejp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использовать IMAP или POP3 на странице настроек вашей почты.</string>
     <string name="provider_note_naver">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Naver.</string>
     <string name="provider_note_hanmail">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Hanmail(Daum).</string>
     <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
@@ -791,7 +791,7 @@ http://k9mail.googlecode.com/
     Q - Вернуться к списку ящиков\u000A
     S - Редактировать настройки ящика</string>
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">имя папки содержит</string>
 
     <string name="folder_list_display_mode_label">Папки</string>
     <string name="folder_list_display_mode_all">Показывать все папки</string>
@@ -826,7 +826,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Всегда</string>
     <string name="background_ops_enabled">Когда \'Фоновый режим\' включён</string>
     <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Когда выбрана \'Автосинхронизация\'</string>
 
     <string name="no_message_seletected_toast">Никаких сообщений не выбранно</string>
 
@@ -930,8 +930,8 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_date">Дата</string>
     <string name="font_size_message_view_content">Тело сообщения</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Поле сообщения</string>
+    <string name="font_size_message_compose_input">Поля ввода текста</string>
 
     <string name="font_size_tiniest">Самый крочшечный</string>
     <string name="font_size_tiny">Крошечный</string>
@@ -974,14 +974,14 @@ http://k9mail.googlecode.com/
     <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Сохранить или уничтожить сообщение?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Отбросить сообщение?</string>
+    <string name="confirm_discard_draft_message">Вы уверены, что хотите отбросить это сообщение?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Не сохранять черновик сообщения.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Не сохранять черновик сообщения помеченного как зашифрованное.</string>
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Продолжить без открытого ключа?</string>
+    <string name="continue_without_public_key_instructions_fmt">Один или несколько получателей не имеют открытого ключа. Продолжить?</string>
 
     <string name="select_text_now">Выберите текс для копирования.</string>
 
@@ -1070,35 +1070,35 @@ http://k9mail.googlecode.com/
     <string name="manage_accounts_move_down_action">Переместить вниз</string>
     <string name="manage_accounts_moving_message">Перемещение учётной записи…</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+    <string name="unread_widget_select_account">Показать количество непрочитанных для…</string>
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="import_dialog_error_title">Требуется файловый менеджер</string>
+    <string name="close">Закрыть</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">К следующему</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Открыть для просмотра</string>
+    <string name="webview_contextmenu_link_share_action">Поделиться ссылкой</string>
+    <string name="webview_contextmenu_link_copy_action">Скопировать ссылку в буфер обмена</string>
+    <string name="webview_contextmenu_link_clipboard_label">Ссылка</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Изображение</string>
+    <string name="webview_contextmenu_image_view_action">Просмотреть изображение</string>
+    <string name="webview_contextmenu_image_save_action">Сохранить изображение</string>
+    <string name="webview_contextmenu_image_download_action">Скачать изображение</string>
+    <string name="webview_contextmenu_image_copy_action">Скопировать URL изображения в буфер обмена</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL изображения</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Телефонный номер</string>
+    <string name="webview_contextmenu_phone_save_action">Сохранить в контакты</string>
+    <string name="webview_contextmenu_phone_copy_action">Скопировать телефонный номер в буфер обмена</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Телефонный номер</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Отправить письмо</string>
+    <string name="webview_contextmenu_email_save_action">Сохранить в контакты</string>
+    <string name="webview_contextmenu_email_copy_action">Скопировать email адрес в буфер обмена</string>
+    <string name="webview_contextmenu_email_clipboard_label">Email адрес</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Сохранить изображение как \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Не удалось сохранить изображение.</string>
 </resources>
