@@ -238,7 +238,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">Ιδ κοιν</string>
     <string name="message_compose_subject_hint">Θέμα</string>
     <string name="message_compose_content_hint">Κείμενο μηνύματος</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Υπογραφή</string>
     <string name="message_compose_quote_header_separator">-------- Πρωτότυπο μήνυμα --------</string>
     <string name="message_compose_quote_header_subject">Θέμα:</string>
     <string name="message_compose_quote_header_send_date">Αποστολή:</string>
@@ -250,11 +250,11 @@ http://k9mail.googlecode.com/
     <string name="error_contact_address_not_found">Δεν βρέθηκαν διευθύνσεις ηλεκτρονικού ταχυδρομείου.</string>
     <string name="message_compose_attachments_skipped_toast">Μερικά συνημμένα δεν μπορούν να προωθηθούν γιατί δεν έχουν κατεβεί.</string>
     <string name="message_compose_show_quoted_text_action">Παράθεση μηνύματος</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_description_add_to">Προσθήκη παραλήπτη (Προς)</string>
+    <string name="message_compose_description_add_cc">Προσθήκη παραλήπτη (Συν.)</string>
+    <string name="message_compose_description_add_bcc">Προσθήκη παραλήπτη (Ιδ. συν.)</string>
+    <string name="message_compose_description_delete_quoted_text">Αφαίρεση κειμένου προηγ. μηνύματος</string>
+    <string name="message_compose_description_edit_quoted_text">Αλλαγή κειμένου προηγ. μηνύματος</string>
 
     <string name="message_view_from_format">Από: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Προς:</string>
@@ -275,7 +275,7 @@ http://k9mail.googlecode.com/
     <string name="message_view_fetching_attachment_toast">Ανάσυρση συνημμένου</string>
     <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Κατεβαίνει…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Δεν έχουν κατεβεί ή αποθηκευτεί όλες οι επικεφαλίδες. Επιλέξτε \'Αποθήκευση όλων των επικεφαλίδων τοπικά\' στις ρυθμίσεις εξυπηρέτη εισερχόμενων του λογαριασμού για να το ενεργοποιήσετε στο μέλλον.</string>
@@ -320,20 +320,20 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_mark_all_as_read">Σήμανση ως αναγνωσμέων</string>
     <string name="global_settings_confirm_action_send">Αποστολή</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
+    <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
+    <string name="global_settings_notification_hide_subject_always">Πάντοτε</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Πλήκτρα ομάδας μηνυμάτων</string>
+    <string name="global_settings_batch_buttons_summary">Προσαρμογή πλήκτρων ομάδας μηνυμάτων</string>
+    <string name="global_settings_mark_read">Αναγνωσμένο/μη αναγν.</string>
+    <string name="global_settings_delete">Διαγραφή</string>
+    <string name="global_settings_archive">Αρχειοθέτηση</string>
+    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελλο αρχειοθέτησης</string>
+    <string name="global_settings_move">Μετακίνηση</string>
+    <string name="global_settings_flag">Σημαία</string>
+    <string name="global_settings_unselect">Απο-επιλογή</string>
 
     <string name="quiet_time">Ώρες ησυχίας</string>
     <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα, και αναβοσβήσιμο τη νύχτα</string>
@@ -519,8 +519,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
     <string name="account_settings_notification_unread_count_label">Προβολή πλήθους μη αναγνωσμένων</string>
     <string name="account_settings_notification_unread_count_summary">Προβολή πλήθους μη αναγνωσμένων μηνυμάτων στη γραμμή κατάστασης.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
 
     <string name="account_settings_enable_move_buttons_label">Ενεργοποίηση πλήκτρων αρχειοθέτησης</string>
     <string name="account_settings_enable_move_buttons_summary">Προβολή πλήκτρων Αρχειοθέτηση, Μετακίνηση και Σκουπίδια.</string>
@@ -546,8 +546,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο εκτός αν απαντά σε μήνυμα HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή κοινοποιήσεων/ιδ. κοιν.</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Πάντα προβολή πεδίου κειμένου κοινοποιήσεων/ιδ. κοιν.</string>
 
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
@@ -693,11 +693,8 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_identities_label">Ρύθμιση ταυτοτήτων</string>
     <string name="account_settings_identities_summary">Ορισμός εναλλακτικών διευθύνσεων \'Από\' και υπογραφών</string>
-
     <string name="manage_identities_title">Ρύθμιση ταυτοτήτων</string>
-
     <string name="manage_identities_context_menu_title">Ρύθμιση ταυτότητας</string>
-
     <string name="edit_identity_title">Διόρθωση ταυτότητας</string>
     <string name="new_identity_action">Νέα ταυτότητα</string>
 
@@ -746,7 +743,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ταξινόμηση κατά…</string>
     <string name="sort_by_date">Ημερομηνία</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Άφιξη</string>-->
     <string name="sort_by_sender">Αποστολέα</string>
     <string name="sort_by_subject">Θέμα</string>
     <string name="sort_by_flag">Αστέρι</string>
@@ -768,7 +765,7 @@ http://k9mail.googlecode.com/
         \'Plus\' λογαριασμό. Ανοίξτε τον σελιδομετρητή ιστοσελίδων για να προσπελάσετε
         τέτοιους λογαριασμούς ταχυδρομείου.</string>
     <string name="provider_note_yahoojp">Αν θέλετε να χρησιμοποιήσετε POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση POP3 στη σελίδα ρυθμίσεων του Yahoo mail.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <string name="provider_note_auonejp">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του au one mail.</string>
     <string name="provider_note_naver">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Naver.</string>
     <string name="provider_note_hanmail">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Hanmail(Daum).</string>
     <string name="provider_note_paran">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Paran.</string>
@@ -830,7 +827,7 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Πάντοτε</string>
     <string name="background_ops_enabled">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\'</string>
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
 
     <string name="no_message_seletected_toast">Δεν επιλέχθηκε μήνυμα</string>
 
@@ -1077,30 +1074,30 @@ http://k9mail.googlecode.com/
     <string name="import_dialog_error_title">Λείπει εφαρμογή επόπτη αρχείων</string>
     <string name="close">Κλείσιμο</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Κενό μήνυμα</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Άνοιγμα για προβολή</string>
+    <string name="webview_contextmenu_link_share_action">Κοινοποίηση συνδέσμου</string>
+    <string name="webview_contextmenu_link_copy_action">Αντιγραφή συνδέσμου στο clipboard</string>
+    <string name="webview_contextmenu_link_clipboard_label">Σύνδεσμος</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Εικόνα</string>
+    <string name="webview_contextmenu_image_view_action">Προβολή εικόνας</string>
+    <string name="webview_contextmenu_image_save_action">Αποθήκευση εικόνας</string>
+    <string name="webview_contextmenu_image_download_action">Κατέβασμα εικόνας</string>
+    <string name="webview_contextmenu_image_copy_action">Αντιγραφή διεύθυνσης εικόνας στο clipboard</string>
+    <string name="webview_contextmenu_image_clipboard_label">Διεύθυνση εικόνας</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Κλήση αριθμού</string>
+    <string name="webview_contextmenu_phone_save_action">Αποθήκευση στις Επαφές</string>
+    <string name="webview_contextmenu_phone_copy_action">Αντιγραφή του αριθμού στο clipboard</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Αριθμός τηλεφώνου</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Αποστολή μηνύματος</string>
+    <string name="webview_contextmenu_email_save_action">Αποθήκευση στις Επαφές</string>
+    <string name="webview_contextmenu_email_copy_action">Αντιγραφή διεύθυνσης μηνύματος στο clipboard</string>
+    <string name="webview_contextmenu_email_clipboard_label">Διεύθυνση μηνύματος</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Αποθήκευση μηνύματος ως \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Αποτυχία αποθήκευσης της εικόνας</string>
 </resources>
