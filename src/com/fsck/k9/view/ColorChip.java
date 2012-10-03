@@ -10,42 +10,48 @@ public class ColorChip {
     public static final Path CIRCULAR = new Path();
     public static final Path LEFT_POINTING = new Path();
     public static final Path RIGHT_POINTING = new Path();
+    public static final Path RIGHT_NOTCH = new Path();
     public static final Path STAR = new Path();
     public static final Path CHECKMARK = new Path();
 
 
     static {
 
-        CIRCULAR.addCircle(8,8,7f,Path.Direction.CW);
+        CIRCULAR.addCircle(160,160,70f,Path.Direction.CW);
         CIRCULAR.close();
 
-        RIGHT_POINTING.addArc(new RectF(1f,1f,15f,15f) , 90, 180);
-        RIGHT_POINTING.lineTo(15f,8f);
-        RIGHT_POINTING.lineTo(8f, 15f);
+        RIGHT_POINTING.addArc(new RectF(80f,80f,240f,240f) , 90, 180);
+        RIGHT_POINTING.arcTo(new RectF(160f,0f,320f,160f), 180,   -90);
+        RIGHT_POINTING.arcTo(new RectF(160f,160f,320f,320f), 270,-90);
         RIGHT_POINTING.close();
 
-        LEFT_POINTING.addArc(new RectF(1f,1f,15f,15f) , 270, 180);
-        LEFT_POINTING.moveTo(8f, 1f);
-        LEFT_POINTING.lineTo(0f,8f);
-        LEFT_POINTING.lineTo(8f, 15f);
+        RIGHT_NOTCH.addArc(new RectF(80f,80f,240f,240f) , 90, 180);
+        RIGHT_NOTCH.arcTo(new RectF(160f,0f,320f,160f), 180,   -90);
+        RIGHT_NOTCH.arcTo(new RectF(160f,160f,320f,320f), 270,-90);
+        RIGHT_NOTCH.close();
+
+        LEFT_POINTING.addArc(new RectF(80f,80f,240f,240f) , 90, -180);
+        LEFT_POINTING.arcTo(new RectF(00f,00f,160f,160f), 0,  90);
+        LEFT_POINTING.arcTo(new RectF(00f,160f,160f,320f), 270,90);
         LEFT_POINTING.close();
 
-        STAR.moveTo(8f,0f);
-        STAR.lineTo(11f,5f);
-        STAR.lineTo(16f,6f);
-        STAR.lineTo(12f,10f);
-        STAR.lineTo(14f,16f);
-        STAR.lineTo(8f,13f);
-        STAR.lineTo(2f,16f);
-        STAR.lineTo(4f,10f);
-        STAR.lineTo(0f,6f);
-        STAR.lineTo(5f,5f);
-        STAR.lineTo(8f,0f);
+        STAR.moveTo(140f,60f);
+        STAR.lineTo(170f,110f);
+        STAR.lineTo(220f,120f);
+        STAR.lineTo(180f,160f);
+        STAR.lineTo(200f,220f);
+        STAR.lineTo(140f,190f);
+        STAR.lineTo(80f,220f);
+        STAR.lineTo(100f,160f);
+        STAR.lineTo(60f,120f);
+        STAR.lineTo(110f,110f);
+        STAR.lineTo(140f,60f);
         STAR.close();
 
-        CHECKMARK.moveTo(1f,10f);
-        CHECKMARK.lineTo(6f,14f);
-        CHECKMARK.lineTo(15f,2f);
+
+        CHECKMARK.moveTo(10f,160f);
+        CHECKMARK.lineTo(120f,280f);
+        CHECKMARK.lineTo(300f,40f);
 
     }
 
@@ -54,12 +60,16 @@ public class ColorChip {
 
     public ColorChip(int color, boolean messageRead, Path shape) {
 
-        mDrawable = new ShapeDrawable(new PathShape(shape, 16f, 16f));
+        if (shape.equals(STAR)) {
+            mDrawable = new ShapeDrawable(new PathShape(shape, 280f, 280f));
 
-        if (shape.equals(CHECKMARK)) {
-            mDrawable.getPaint().setStrokeWidth(3);
         } else {
-            mDrawable.getPaint().setStrokeWidth(1);
+            mDrawable = new ShapeDrawable(new PathShape(shape, 320f, 320f));
+        }
+        if (shape.equals(CHECKMARK)) {
+            mDrawable.getPaint().setStrokeWidth(30);
+        } else {
+            mDrawable.getPaint().setStrokeWidth(10);
         }
         if (messageRead) {
             // Read messages get an outlined circle

@@ -212,6 +212,8 @@ public class Account implements BaseAccount {
     private ColorChip mFlaggedReadColorChip;
     private ColorChip mToMeUnreadColorChip;
     private ColorChip mToMeReadColorChip;
+    private ColorChip mCcMeUnreadColorChip;
+    private ColorChip mCcMeReadColorChip;
     private ColorChip mFromMeUnreadColorChip;
     private ColorChip mFromMeReadColorChip;
     private ColorChip mCheckmarkChip;
@@ -800,6 +802,8 @@ public class Account implements BaseAccount {
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
         mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
         mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mCcMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_NOTCH);
+        mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
         mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
         mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
@@ -816,14 +820,15 @@ public class Account implements BaseAccount {
     }
 
 
-    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean fromMe, boolean messageFlagged) {
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe, boolean fromMe, boolean messageFlagged) {
 
         if (messageRead) {
             if (messageFlagged) {
                 return mFlaggedReadColorChip;
             } else if (toMe) {
                 return mToMeReadColorChip;
-
+            } else if (ccMe) {
+                return mCcMeReadColorChip;
             } else if (fromMe) {
                 return mFromMeReadColorChip;
             } else {
@@ -835,7 +840,8 @@ public class Account implements BaseAccount {
                 return mFlaggedUnreadColorChip;
             } else if (toMe) {
                 return mToMeUnreadColorChip;
-
+            } else if (ccMe) {
+                return mCcMeUnreadColorChip;
             } else if (fromMe) {
                 return mFromMeUnreadColorChip;
             } else {

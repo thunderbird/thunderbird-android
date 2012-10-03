@@ -2490,7 +2490,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
             }
 
             else {
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), false, message.flagged).drawable());
+            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), message.message.ccMe(), message.message.fromMe(), message.flagged).drawable());
 
             }
 
