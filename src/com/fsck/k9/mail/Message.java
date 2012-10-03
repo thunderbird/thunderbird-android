@@ -146,6 +146,7 @@ public abstract class Message implements Part, Body {
     public abstract boolean toMe();
     public abstract boolean ccMe();
     public abstract boolean bccMe();
+    public abstract boolean fromMe();
     public abstract long getId();
 
     public abstract String getPreview();

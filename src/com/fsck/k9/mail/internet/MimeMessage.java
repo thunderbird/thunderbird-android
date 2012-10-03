@@ -605,6 +605,10 @@ public class MimeMessage extends Message {
         return false;
     }
 
+    public boolean fromMe() {
+        return false;
+    }
+
     public long getId() {
         return Long.parseLong(mUid); //or maybe .mMessageId?
     }

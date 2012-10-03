@@ -2919,8 +2919,13 @@ public class LocalStore extends Store implements Serializable {
 
         private boolean mToMeCalculated = false;
         private boolean mCcMeCalculated = false;
+        private boolean mFromMeCalculated = false;
         private boolean mToMe = false;
         private boolean mCcMe = false;
+        private boolean mFromMe = false;
+
+
+
 
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
@@ -3117,6 +3122,16 @@ public class LocalStore extends Store implements Serializable {
             mMessageDirty = true;
         }
 
+
+        public boolean fromMe() {
+            if (!mFromMeCalculated) {
+                if (mAccount.isAnIdentity(getFrom())) {
+                    mFromMe = true;
+                    mFromMeCalculated = true;
+                }
+            }
+            return mFromMe;
+        }
 
 
         public boolean toMe() {
