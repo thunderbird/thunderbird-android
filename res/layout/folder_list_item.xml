@@ -12,10 +12,10 @@
 
     <View
         android:id="@+id/chip"
-        android:layout_width="16dip"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:layout_marginTop="2dip"
         android:layout_marginBottom="1dip"
-        android:layout_height="16dip"
         android:layout_marginLeft="8dip"
         android:layout_marginRight="6dip"
         android:layout_centerVertical="true"
