@@ -1,19 +1,20 @@
 package com.fsck.k9.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import java.lang.reflect.Method;
+import com.nobu_games.android.view.web.TitleBarWebView;
 
-public class MessageWebView extends WebView {
+public class MessageWebView extends TitleBarWebView {
 
 
     /**
@@ -23,6 +24,27 @@ public class MessageWebView extends WebView {
      * to call the method.
      */
     public static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
+
+    /**
+     * Check whether the single column layout algorithm can be used on this version of Android.
+     *
+     * <p>
+     * Single column layout was broken on Android < 2.2 (see
+     * <a href="http://code.google.com/p/android/issues/detail?id=5024">issue 5024</a>).
+     * </p>
+     *
+     * <p>
+     * Android versions >= 3.0 have problems with unclickable links when single column layout is
+     * enabled (see
+     * <a href="http://code.google.com/p/android/issues/detail?id=34886">issue 34886</a>
+     * in Android's bug tracker, and
+     * <a href="http://code.google.com/p/k9mail/issues/detail?id=3820">issue 3820</a>
+     * in K-9 Mail's bug tracker).
+     */
+    public static boolean isSingleColumnLayoutSupported() {
+        return (Build.VERSION.SDK_INT > 7 && Build.VERSION.SDK_INT < 11);
+    }
+
 
     public MessageWebView(Context context) {
         super(context);
@@ -72,7 +94,7 @@ public class MessageWebView extends WebView {
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
         this.setLongClickable(true);
 
-        if (K9.getK9Theme() == K9.THEME_DARK) {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
             // Black theme should get a black webview background
             // we'll set the background of the messages on load
             this.setBackgroundColor(0xff000000);
@@ -81,33 +103,23 @@ public class MessageWebView extends WebView {
         final WebSettings webSettings = this.getSettings();
 
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        disableDisplayZoomControls();
+
         webSettings.setJavaScriptEnabled(false);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
-        if (K9.zoomControlsEnabled()) {
-            webSettings.setBuiltInZoomControls(true);
-        }
-
-        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
-        // administratively disable it
-        if (Build.VERSION.SDK_INT > 7 && K9.mobileOptimizedLayout()) {
+        if (isSingleColumnLayoutSupported() && K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         } else {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
-        /*
-         * Build.VERSION.SDK is deprecated cause it just returns the
-         * "its raw String representation"
-         *  http://developer.android.com/reference/android/os/Build.VERSION_CODES.html#GINGERBREAD
-         *  http://developer.android.com/reference/android/os/Build.VERSION.html#SDK
-         */
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
-
+        disableOverscrolling();
 
         webSettings.setTextSize(K9.getFontSizes().getMessageViewContent());
 
@@ -116,9 +128,31 @@ public class MessageWebView extends WebView {
 
     }
 
+    /**
+     * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
+     */
+    @TargetApi(11)
+    private void disableDisplayZoomControls() {
+        if (Build.VERSION.SDK_INT >= 11) {
+            PackageManager pm = getContext().getPackageManager();
+            boolean supportsMultiTouch =
+                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+                    pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+
+            getSettings().setDisplayZoomControls(!supportsMultiTouch);
+        }
+    }
+
+    @TargetApi(9)
+    private void disableOverscrolling() {
+        if (Build.VERSION.SDK_INT >= 9) {
+            setOverScrollMode(OVER_SCROLL_NEVER);
+        }
+    }
+
     public void setText(String text, String contentType) {
         String content = text;
-        if (K9.getK9Theme() == K9.THEME_DARK)  {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK)  {
             // It's a little wrong to just throw in the <style> before the opening <html>
             // but it's less wrong than trying to edit the html stream
             content = "<style>* { background: black ! important; color: white !important }" +
@@ -146,15 +180,4 @@ public class MessageWebView extends WebView {
         }
     }
 
-    public void wrapSetTitleBar(final View title) {
-        try {
-            Class<?> webViewClass = Class.forName("android.webkit.WebView");
-            Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
-            setEmbeddedTitleBar.invoke(this, title);
-        }
-
-        catch (Exception e) {
-            Log.v(K9.LOG_TAG, "failed to find the  setEmbeddedTitleBar method",e);
-        }
-    }
 }

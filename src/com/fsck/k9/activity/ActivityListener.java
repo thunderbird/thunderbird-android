@@ -23,7 +23,14 @@ public class ActivityListener extends MessagingListener {
 
 
     public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat) {
-        String operation = null;
+    String operation = getOperation(context, timeFormat);
+        return context.getString(R.string.activity_header_format, activityPrefix,
+                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
+                                 operation);
+    }
+
+    public String getOperation(Context context, DateFormat timeFormat){
+        String operation;
         String progress = null;
         if (mLoadingAccountDescription  != null
                 || mSendingAccountDescription != null
@@ -54,6 +61,8 @@ public class ActivityListener extends MessagingListener {
                 operation = context.getString(R.string.status_processing_account, mProcessingAccountDescription,
                                               mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
                                               progress);
+            } else {
+                operation = "";
             }
         } else {
             long nextPollTime = MailService.getNextPollTime();
@@ -66,11 +75,7 @@ public class ActivityListener extends MessagingListener {
             }
         }
 
-        return context.getString(R.string.activity_header_format, activityPrefix,
-                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
-                                 operation);
-
-
+        return operation;
     }
 
     public void informUserOfStatus() {

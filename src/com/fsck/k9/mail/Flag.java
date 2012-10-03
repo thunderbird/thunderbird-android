@@ -11,6 +11,7 @@ public enum Flag {
     FLAGGED,
     DRAFT,
     RECENT,
+    FORWARDED,
 
     /*
      * The following flags are for internal library use only.

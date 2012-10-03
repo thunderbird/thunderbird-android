@@ -14,10 +14,10 @@
 
     <View
         android:id="@+id/chip"
-        android:layout_width="6dip"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="2dip"
-        android:layout_marginBottom="1dip"
+        android:layout_width="16dip"
+        android:layout_height="16dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="6dip"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:background="@android:color/transparent" />
@@ -33,10 +33,10 @@
 
         <ImageButton
             android:id="@+id/folders"
-            android:layout_alignParentTop="true" 
-            android:layout_gravity="top"
+            android:gravity="center_vertical"
             android:focusable="false"
-            android:background="@drawable/ic_show_folders"
+            android:layout_marginRight="3dip"
+            android:background="?attr/iconFolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />

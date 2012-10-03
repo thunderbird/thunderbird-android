@@ -54,11 +54,8 @@ public class ImapUtility {
             for (String item : setItems) {
                 if (item.indexOf(':') == -1) {
                     // simple item
-                    try {
-                        Integer.parseInt(item); // Don't need the value; just ensure it's valid
+                    if (isNumberValid(item)) {
                         list.add(item);
-                    } catch (NumberFormatException e) {
-                        Log.d(K9.LOG_TAG, "Invalid UID value", e);
                     }
                 } else {
                     // range
@@ -91,23 +88,46 @@ public class ImapUtility {
             if (range != null) {
                 int colonPos = range.indexOf(':');
                 if (colonPos > 0) {
-                    int first  = Integer.parseInt(range.substring(0, colonPos));
-                    int second = Integer.parseInt(range.substring(colonPos + 1));
-                    if (first < second) {
-                        for (int i = first; i <= second; i++) {
-                            list.add(Integer.toString(i));
+                    long first  = Long.parseLong(range.substring(0, colonPos));
+                    long second = Long.parseLong(range.substring(colonPos + 1));
+                    if (is32bitValue(first) && is32bitValue(second)) {
+                        if (first < second) {
+                            for (long i = first; i <= second; i++) {
+                                list.add(Long.toString(i));
+                            }
+                        } else {
+                            for (long i = first; i >= second; i--) {
+                                list.add(Long.toString(i));
+                            }
                         }
                     } else {
-                        for (int i = first; i >= second; i--) {
-                            list.add(Integer.toString(i));
-                        }
+                        Log.d(K9.LOG_TAG, "Invalid range: " + range);
                     }
                 }
             }
         } catch (NumberFormatException e) {
-            Log.d(K9.LOG_TAG, "Invalid range value", e);
+            Log.d(K9.LOG_TAG, "Invalid range value: " + range, e);
         }
 
         return list;
+    }
+
+    private static boolean isNumberValid(String number) {
+        try {
+            long value = Long.parseLong(number);
+            if (is32bitValue(value)) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            // do nothing
+        }
+
+        Log.d(K9.LOG_TAG, "Invalid UID value: " + number);
+
+        return false;
+    }
+
+    private static boolean is32bitValue(long value) {
+        return ((value & ~0xFFFFFFFFL) == 0L);
     }
 }

@@ -33,6 +33,9 @@ public class AccountSettings {
         s.put("alwaysBcc", Settings.versions(
                 new V(11, new StringSetting(""))
             ));
+        s.put("alwaysShowCcBcc", Settings.versions(
+                new V(13, new BooleanSetting(false))
+            ));
         s.put("archiveFolderName", Settings.versions(
                 new V(1, new StringSetting("Archive"))
             ));
@@ -159,9 +162,6 @@ public class AccountSettings {
         s.put("ringtone", Settings.versions(
                 new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
             ));
-        s.put("saveAllHeaders", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
         s.put("searchableFolders", Settings.versions(
                 new V(1, new EnumSetting(Account.Searchable.class, Account.Searchable.ALL))
             ));
@@ -214,6 +214,16 @@ public class AccountSettings {
         s.put("vibrateTimes", Settings.versions(
                 new V(1, new IntegerResourceSetting(5,
                 R.array.account_settings_vibrate_times_label))
+            ));
+        s.put("allowRemoteSearch", Settings.versions(
+                new V(18, new BooleanSetting(true))
+            ));
+        s.put("remoteSearchNumResults", Settings.versions(
+                new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                R.array.account_settings_remote_search_num_results_values))
+            ));
+        s.put("remoteSearchFullText", Settings.versions(
+                new V(18, new BooleanSetting(false))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

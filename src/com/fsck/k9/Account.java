@@ -1,6 +1,18 @@
 
 package com.fsck.k9;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -18,7 +30,6 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.view.ColorChip;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -69,6 +80,7 @@ public class Account implements BaseAccount {
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
+    public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
@@ -153,7 +165,6 @@ public class Account implements BaseAccount {
     private FolderMode mFolderPushMode;
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
-    private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
@@ -187,8 +198,24 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
+    private boolean mAlwaysShowCcBcc;
+    private boolean mAllowRemoteSearch;
+    private boolean mRemoteSearchFullText;
+    private int mRemoteSearchNumResults;
 
     private CryptoProvider mCryptoProvider = null;
+
+    private ColorChip mUnreadColorChip;
+    private ColorChip mReadColorChip;
+
+    private ColorChip mFlaggedUnreadColorChip;
+    private ColorChip mFlaggedReadColorChip;
+    private ColorChip mToMeUnreadColorChip;
+    private ColorChip mToMeReadColorChip;
+    private ColorChip mFromMeUnreadColorChip;
+    private ColorChip mFromMeReadColorChip;
+    private ColorChip mCheckmarkChip;
+
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -237,7 +264,6 @@ public class Account implements BaseAccount {
         mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
-        mSaveAllHeaders = true;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
@@ -257,7 +283,11 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        Random random = new Random((long)mAccountNumber + 4);
+        mChipColor = (random.nextInt(0x70) +
+                                  (random.nextInt(0x70) * 0xff) +
+                                  (random.nextInt(0x70) * 0xffff) +
+                                  0xff000000);
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -275,8 +305,12 @@ public class Account implements BaseAccount {
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
+        mAllowRemoteSearch = false;
+        mRemoteSearchFullText = false;
+        mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
+        mAlwaysShowCcBcc = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -295,6 +329,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
+
+        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -316,7 +352,6 @@ public class Account implements BaseAccount {
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0) {
@@ -440,8 +475,16 @@ public class Account implements BaseAccount {
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
+        mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
+        mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
+
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+
+        cacheChips();
+
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -473,7 +516,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".alwaysBcc");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".pushPollOnConnect");
-        editor.remove(mUuid + ".saveAllHeaders");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".latestOldMessageSeenTime");
@@ -526,6 +568,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
+        editor.remove(mUuid + ".alwaysShowCcBcc");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -632,7 +675,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
-        editor.putBoolean(mUuid + ".saveAllHeaders", mSaveAllHeaders);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
@@ -687,8 +729,12 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
         editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
+        editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
+        editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
+        editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
+        editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -745,6 +791,24 @@ public class Account implements BaseAccount {
 
     public synchronized void setChipColor(int color) {
         mChipColor = color;
+        cacheChips();
+
+    }
+
+    public synchronized void cacheChips() {
+        mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
+        mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
+    }
+
+    public ColorChip getCheckmarkChip() {
+        return mCheckmarkChip;
     }
 
     public synchronized int getChipColor() {
@@ -752,8 +816,39 @@ public class Account implements BaseAccount {
     }
 
 
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean fromMe, boolean messageFlagged) {
+
+        if (messageRead) {
+            if (messageFlagged) {
+                return mFlaggedReadColorChip;
+            } else if (toMe) {
+                return mToMeReadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeReadColorChip;
+            } else {
+                return mReadColorChip;
+            }
+
+        } else {
+            if (messageFlagged) {
+                return mFlaggedUnreadColorChip;
+            } else if (toMe) {
+                return mToMeUnreadColorChip;
+
+            } else if (fromMe) {
+                return mFromMeUnreadColorChip;
+            } else {
+                return mUnreadColorChip;
+            }
+
+
+        }
+
+    }
+
     public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor);
+        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
 
@@ -1374,14 +1469,6 @@ public class Account implements BaseAccount {
         mPushPollOnConnect = pushPollOnConnect;
     }
 
-    public synchronized boolean saveAllHeaders() {
-        return mSaveAllHeaders;
-    }
-
-    public synchronized void setSaveAllHeaders(boolean saveAllHeaders) {
-        mSaveAllHeaders = saveAllHeaders;
-    }
-
     /**
      * Are we storing out localStore on the SD-card instead of the local device
      * memory?<br/>
@@ -1562,6 +1649,22 @@ public class Account implements BaseAccount {
         mCryptoAutoEncrypt = cryptoAutoEncrypt;
     }
 
+    public boolean allowRemoteSearch() {
+        return mAllowRemoteSearch;
+    }
+
+    public void setAllowRemoteSearch(boolean val) {
+        mAllowRemoteSearch = val;
+    }
+
+    public int getRemoteSearchNumResults() {
+        return mRemoteSearchNumResults;
+    }
+
+    public void setRemoteSearchNumResults(int val) {
+        mRemoteSearchNumResults = (val >= 0 ? val : 0);
+    }
+
     public String getInboxFolderName() {
         return mInboxFolderName;
     }
@@ -1624,4 +1727,21 @@ public class Account implements BaseAccount {
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
     }
+
+    public synchronized boolean isAlwaysShowCcBcc() {
+        return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
+    }
+    public boolean isRemoteSearchFullText() {
+        return mRemoteSearchFullText;
+    }
+
+    public void setRemoteSearchFullText(boolean val) {
+        mRemoteSearchFullText = val;
+    }
+
+
 }

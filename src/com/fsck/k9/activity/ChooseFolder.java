@@ -14,10 +14,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -142,7 +143,7 @@ public class ChooseFolder extends K9ListActivity {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_PROGRESS: {
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                    setSupportProgressBarIndeterminateVisibility(msg.arg1 != 0);
                     break;
                 }
                 case MSG_SET_SELECTED_FOLDER: {
@@ -170,7 +171,7 @@ public class ChooseFolder extends K9ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.folder_select_option, menu);
+        getSupportMenuInflater().inflate(R.menu.folder_select_option, menu);
         return true;
     }
 
@@ -296,7 +297,9 @@ public class ChooseFolder extends K9ListActivity {
             }
             Account.FolderMode aMode = mMode;
             Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
-            ArrayList<String> localFolders = new ArrayList<String>();
+
+            List<String> newFolders = new ArrayList<String>();
+            List<String> topFolders = new ArrayList<String>();
 
             for (Folder folder : folders) {
                 String name = folder.getName();
@@ -325,33 +328,34 @@ public class ChooseFolder extends K9ListActivity {
                             folder.getName(), me);
                 }
 
-                localFolders.add(folder.getName());
-
+                if (folder.isInTopGroup()) {
+                    topFolders.add(name);
+                } else {
+                    newFolders.add(name);
+                }
             }
+
+            final Comparator<String> comparator = new Comparator<String>() {
+                @Override
+                public int compare(String s1, String s2) {
+                    int ret = s1.compareToIgnoreCase(s2);
+                    return (ret != 0) ? ret : s1.compareTo(s2);
+                }
+            };
+
+            Collections.sort(topFolders, comparator);
+            Collections.sort(newFolders, comparator);
+
+            List<String> localFolders = new ArrayList<String>(newFolders.size() +
+                    topFolders.size() + ((mShowOptionNone) ? 1 : 0));
 
             if (mShowOptionNone) {
                 localFolders.add(K9.FOLDER_NONE);
             }
 
-            Collections.sort(localFolders, new Comparator<String>() {
-                @Override
-                public int compare(String aName, String bName) {
-                    if (K9.FOLDER_NONE.equalsIgnoreCase(aName)) {
-                        return -1;
-                    }
-                    if (K9.FOLDER_NONE.equalsIgnoreCase(bName)) {
-                        return 1;
-                    }
-                    if (mAccount.getInboxFolderName().equalsIgnoreCase(aName)) {
-                        return -1;
-                    }
-                    if (mAccount.getInboxFolderName().equalsIgnoreCase(bName)) {
-                        return 1;
-                    }
+            localFolders.addAll(topFolders);
+            localFolders.addAll(newFolders);
 
-                    return aName.compareToIgnoreCase(bName);
-                }
-            });
             int selectedFolder = -1;
 
             /*

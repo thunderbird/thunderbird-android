@@ -1,6 +1,7 @@
 package com.fsck.k9.mail;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
@@ -146,10 +147,15 @@ public abstract class Folder {
 
     public abstract String getName();
 
-    public abstract Flag[] getPermanentFlags();
 
     /**
-     *
+     * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
+     * new keywords may be created
+     */
+    protected boolean mCanCreateKeywords = false;
+
+    /**
+     * 
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is
@@ -220,5 +226,10 @@ public abstract class Folder {
 
     public Account getAccount() {
         return mAccount;
+    }
+
+    public List<Message> search(String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
+        throws MessagingException {
+        throw new MessagingException("K-9 does not support searches on this folder type");
     }
 }

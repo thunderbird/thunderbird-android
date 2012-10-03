@@ -2,6 +2,8 @@ package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
+import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
@@ -73,8 +75,13 @@ public class DateFormatter {
 
     public static String getFormat(Context context) {
         if (sChosenFormat == null) {
-            Preferences prefs = Preferences.getPreferences(context);
-            sChosenFormat = prefs.getPreferences().getString(PREF_KEY, DEFAULT_FORMAT);
+            try {
+                Preferences prefs = Preferences.getPreferences(context);
+                sChosenFormat = prefs.getPreferences().getString(PREF_KEY, DEFAULT_FORMAT);
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Couldn't load date format from preferences; using default.", e);
+                sChosenFormat = DEFAULT_FORMAT;
+            }
         }
         return sChosenFormat;
     }

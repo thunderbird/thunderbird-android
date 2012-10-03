@@ -35,5 +35,8 @@ public class MimeUtilityTest extends AndroidTestCase {
 
         result = MimeUtility.getHeaderParameter("name=\"\"", "name");
         assertEquals("", result);
+
+        result = MimeUtility.getHeaderParameter("text/html ; charset=\"windows-1251\"", null);
+        assertEquals("text/html", result);
     }
 }
