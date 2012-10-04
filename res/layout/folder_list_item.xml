@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center_vertical"
@@ -33,8 +33,6 @@
             android:id="@+id/folder_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="start"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
