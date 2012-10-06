@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handmark.pulltorefresh.library.PullToRefreshListView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="5"
+    android:background="?android:attr/colorBackground"
+    android:cacheColorHint="?android:attr/colorBackground" />

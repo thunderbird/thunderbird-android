@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,18 +10,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.Activity;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
@@ -28,9 +30,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,7 +47,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -59,34 +60,77 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.FolderSettings;
-import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.activity.ActivityListener;
+import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.FolderInfoHolder;
+import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.StorageManager;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
-/**
- * MessageList is the primary user interface for the program. This Activity
- * shows a list of messages.
- * From this Activity the user can perform all standard message operations.
- */
-public class MessageListFragment extends K9ListActivity implements OnItemClickListener,
-        OnSwipeGestureListener {
+public class MessageListFragment extends SherlockFragment implements OnItemClickListener,
+        ConfirmationDialogFragmentListener {
+
+    public static MessageListFragment newInstance(Account account, String folderName) {
+        MessageListFragment fragment = new MessageListFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_ACCOUNT, account.getUuid());
+        args.putString(ARG_FOLDER, folderName);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static MessageListFragment newInstance(String title, String[] accountUuids,
+            String[] folderNames, String queryString, Flag[] flags,
+            Flag[] forbiddenFlags, boolean integrate) {
+
+        MessageListFragment fragment = new MessageListFragment();
+
+        Bundle args = new Bundle();
+        args.putStringArray(ARG_ACCOUNT_UUIDS, accountUuids);
+        args.putStringArray(ARG_FOLDER_NAMES, folderNames);
+        args.putString(ARG_QUERY, queryString);
+        if (flags != null) {
+            args.putString(ARG_QUERY_FLAGS, Utility.combine(flags, ','));
+        }
+        if (forbiddenFlags != null) {
+            args.putString(ARG_FORBIDDEN_FLAGS, Utility.combine(forbiddenFlags, ','));
+        }
+        args.putBoolean(ARG_INTEGRATE, integrate);
+        args.putString(ARG_TITLE, title);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static MessageListFragment newInstance(String searchAccount, String searchFolder,
+            String queryString, boolean remoteSearch) {
+        MessageListFragment fragment = new MessageListFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_SEARCH_ACCOUNT, searchAccount);
+        args.putString(ARG_SEARCH_FOLDER, searchFolder);
+        args.putString(ARG_QUERY, queryString);
+        args.putBoolean(ARG_REMOTE_SEARCH, remoteSearch);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -234,18 +278,20 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
-    private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_FOLDER  = "folder";
-    private static final String EXTRA_REMOTE_SEARCH = "com.fsck.k9.remote_search";
-    private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
-    private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
-    private static final String EXTRA_QUERY_FLAGS = "queryFlags";
-    private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
-    private static final String EXTRA_INTEGRATE = "integrate";
-    private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
-    private static final String EXTRA_FOLDER_NAMES = "folderNames";
-    private static final String EXTRA_TITLE = "title";
-    private static final String EXTRA_LIST_POSITION = "listPosition";
+    private static final String ARG_ACCOUNT = "account";
+    private static final String ARG_FOLDER  = "folder";
+    private static final String ARG_REMOTE_SEARCH = "remote_search";
+    private static final String ARG_QUERY = "query";
+    private static final String ARG_SEARCH_ACCOUNT = "search_account";
+    private static final String ARG_SEARCH_FOLDER = "search_folder";
+    private static final String ARG_QUERY_FLAGS = "queryFlags";
+    private static final String ARG_FORBIDDEN_FLAGS = "forbiddenFlags";
+    private static final String ARG_INTEGRATE = "integrate";
+    private static final String ARG_ACCOUNT_UUIDS = "accountUuids";
+    private static final String ARG_FOLDER_NAMES = "folderNames";
+    private static final String ARG_TITLE = "title";
+
+    private static final String STATE_LIST_POSITION = "listPosition";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -319,7 +365,6 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
-    private ActionBar mActionBar;
     private ActionMode mActionMode;
     private View mActionBarProgressView;
     private Bundle mState = null;
@@ -333,37 +378,17 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
      */
     private List<MessageInfoHolder> mActiveMessages;
 
-    private Context context;
-
     /* package visibility for faster inner class access */
-    MessageHelper mMessageHelper = MessageHelper.getInstance(this);
-
-    private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
-
-    private TextView mActionBarTitle;
-    private TextView mActionBarSubTitle;
-    private TextView mActionBarUnread;
+    MessageHelper mMessageHelper;
 
     private ActionModeCallback mActionModeCallback = new ActionModeCallback();
 
-    private final class StorageListenerImplementation implements StorageManager.StorageListener {
-        @Override
-        public void onUnmount(String providerId) {
-            if (mAccount != null && providerId.equals(mAccount.getLocalStorageProviderId())) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        onAccountUnavailable();
-                    }
-                });
-            }
-        }
 
-        @Override
-        public void onMount(String providerId) {
-            // no-op
-        }
-    }
+    private MessageListFragmentListener mFragmentListener;
+
+
+    private DateFormat mTimeFormat;
+
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -381,6 +406,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         private static final int ACTION_FOLDER_LOADING = 4;
         private static final int ACTION_REFRESH_TITLE = 5;
         private static final int ACTION_PROGRESS = 6;
+
 
         public void removeMessage(MessageReference messageReference) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGE,
@@ -411,10 +437,11 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
 
         public void updateFooter(final String message, final boolean showProgress) {
-            runOnUiThread(new Runnable() {
+            //TODO: use message
+            post(new Runnable() {
                 @Override
                 public void run() {
-                    MessageList.this.updateFooter(message, showProgress);
+                    updateFooter(message, showProgress);
                 }
             });
         }
@@ -463,16 +490,16 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 case ACTION_FOLDER_LOADING: {
                     String folder = (String) msg.obj;
                     boolean loading = (msg.arg1 == 1);
-                    MessageList.this.folderLoading(folder, loading);
+                    MessageListFragment.this.folderLoading(folder, loading);
                     break;
                 }
                 case ACTION_REFRESH_TITLE: {
-                    MessageList.this.refreshTitle();
+                    MessageListFragment.this.refreshTitle();
                     break;
                 }
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
-                    MessageList.this.progress(progress);
+                    MessageListFragment.this.progress(progress);
                     break;
                 }
             }
@@ -508,7 +535,10 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             }
         }
 
-        return new ComparatorChain<MessageInfoHolder>(chain);
+        // build the comparator chain
+        final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
+
+        return chainComparator;
     }
 
     private void folderLoading(String folder, boolean loading) {
@@ -538,47 +568,57 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             }
         }
 
-        setSupportProgress(level);
+        mFragmentListener.setMessageListProgress(level);
     }
 
     private void setWindowTitle() {
         // regular folder content display
         if (mFolderName != null) {
-            String displayName = FolderInfoHolder.getDisplayName(MessageList.this, mAccount,
+            Activity activity = getActivity();
+            String displayName = FolderInfoHolder.getDisplayName(activity, mAccount,
                 mFolderName);
 
-            mActionBarTitle.setText(displayName);
+            mFragmentListener.setMessageListTitle(displayName);
 
-            String operation = mAdapter.mListener.getOperation(MessageList.this, getTimeFormat()).trim();
+            String operation = mAdapter.mListener.getOperation(activity, getTimeFormat()).trim();
             if (operation.length() < 1) {
-                mActionBarSubTitle.setText(mAccount.getEmail());
+                mFragmentListener.setMessageListSubTitle(mAccount.getEmail());
             } else {
-                mActionBarSubTitle.setText(operation);
+                mFragmentListener.setMessageListSubTitle(operation);
             }
         } else if (mQueryString != null) {
             // query result display.  This may be for a search folder as opposed to a user-initiated search.
             if (mTitle != null) {
                 // This was a search folder; the search folder has overridden our title.
-                mActionBarTitle.setText(mTitle);
+                mFragmentListener.setMessageListTitle(mTitle);
             } else {
                 // This is a search result; set it to the default search result line.
-                mActionBarTitle.setText(getString(R.string.search_results));
+                mFragmentListener.setMessageListTitle(getString(R.string.search_results));
             }
+
+            mFragmentListener.setMessageListSubTitle(null);
         }
 
         // set unread count
         if (mUnreadMessageCount == 0) {
-            mActionBarUnread.setVisibility(View.GONE);
+            mFragmentListener.setUnreadCount(0);
         } else {
             if (mQueryString != null && mTitle == null) {
                 // This is a search result.  The unread message count is easily confused
                 // with total number of messages in the search result, so let's hide it.
-                mActionBarUnread.setVisibility(View.GONE);
+                mFragmentListener.setUnreadCount(0);
             } else {
-                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
-                mActionBarUnread.setVisibility(View.VISIBLE);
+                mFragmentListener.setUnreadCount(mUnreadMessageCount);
             }
         }
+    }
+
+    private void setupFormats() {
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
+    }
+
+    private DateFormat getTimeFormat() {
+        return mTimeFormat;
     }
 
     private void progress(final boolean progress) {
@@ -597,74 +637,6 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
     }
 
-    public static void actionHandleFolder(Context context, Account account, String folder) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (folder != null) {
-            intent.putExtra(EXTRA_FOLDER, folder);
-        }
-        context.startActivity(intent);
-    }
-
-    public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (folder != null) {
-            intent.putExtra(EXTRA_FOLDER, folder);
-        }
-        return intent;
-    }
-
-    public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(SearchManager.QUERY, queryString);
-        if (flags != null) {
-            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(flags, ','));
-        }
-        if (forbiddenFlags != null) {
-            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(forbiddenFlags, ','));
-        }
-        intent.putExtra(EXTRA_INTEGRATE, integrate);
-        intent.putExtra(EXTRA_TITLE, title);
-        context.startActivity(intent);
-    }
-
-    /**
-     * Creates and returns an intent that opens Unified Inbox or All Messages screen.
-     */
-    public static Intent actionHandleAccountIntent(Context context, String title,
-            SearchSpecification searchSpecification) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(SearchManager.QUERY, searchSpecification.getQuery());
-        if (searchSpecification.getRequiredFlags() != null) {
-            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(searchSpecification.getRequiredFlags(), ','));
-        }
-        if (searchSpecification.getForbiddenFlags() != null) {
-            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(searchSpecification.getForbiddenFlags(), ','));
-        }
-        intent.putExtra(EXTRA_INTEGRATE, searchSpecification.isIntegrate());
-        intent.putExtra(EXTRA_ACCOUNT_UUIDS, searchSpecification.getAccountUuids());
-        intent.putExtra(EXTRA_FOLDER_NAMES, searchSpecification.getFolderNames());
-        intent.putExtra(EXTRA_TITLE, title);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        return intent;
-    }
-
-    public static void actionHandle(Context context, String title,
-                                    SearchSpecification searchSpecification) {
-        Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
-        context.startActivity(intent);
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (view == mFooterView) {
@@ -672,7 +644,8 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             } else if (mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null) {
                 int numResults = mAdapter.mExtraSearchResults.size();
-                Account account = Preferences.getPreferences(this).getAccount(mSearchAccount);
+                Context appContext = getActivity().getApplicationContext();
+                Account account = Preferences.getPreferences(appContext).getAccount(mSearchAccount);
                 if (account == null) {
                     mHandler.updateFooter("", false);
                     return;
@@ -700,82 +673,70 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        context = this;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.message_list);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
-
-        // need this for actionbar initialization
-        mQueryString = getIntent().getStringExtra(SearchManager.QUERY);
-
-        mPullToRefreshView = (PullToRefreshListView) findViewById(R.id.message_list);
-
-        mInflater = getLayoutInflater();
-        mActionBar = getSupportActionBar();
-        initializeActionBar();
-        initializeLayout();
-
-        mPreviewLines = K9.messageListPreviewLines();
-
-        initializeMessageList(getIntent(), true);
-        mListView.setVerticalFadingEdgeEnabled(false);
-
-        // Enable gesture detection for MessageLists
-        setupGestureDetector(this);
-
-        // Correcting for screen rotation when in ActionMode
-        mSelectedCount = getSelectionFromCheckboxes().size();
-        if (mSelectedCount > 0) {
-            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
-            updateActionModeTitle();
+        try {
+            mFragmentListener = (MessageListFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.getClass() +
+                    " must implement MessageListFragmentListener");
         }
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
-        setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
-        initializeMessageList(intent, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mController = MessagingController.getInstance(getActivity().getApplication());
+
+        mPreviewLines = K9.messageListPreviewLines();
+
+        decodeArguments();
     }
 
-    private void initializeMessageList(Intent intent, boolean create) {
-        mQueryString = intent.getStringExtra(SearchManager.QUERY);
-        mFolderName = null;
-        mRemoteSearch = false;
-        mSearchAccount = null;
-        mSearchFolder = null;
-        if (mQueryString != null) {
-            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                //Query was received from Search Dialog
-                Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
-                if (appData != null) {
-                    mSearchAccount = appData.getString(EXTRA_SEARCH_ACCOUNT);
-                    mSearchFolder = appData.getString(EXTRA_SEARCH_FOLDER);
-                    mRemoteSearch = appData.getBoolean(EXTRA_REMOTE_SEARCH);
-                }
-            } else {
-                mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
-                mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
 
-            }
-        }
+        mInflater = inflater;
 
-        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
+        View view = inflater.inflate(R.layout.message_list_fragment, container, false);
 
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mActionBarProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
-        if (mAccount != null && !mAccount.isAvailable(this)) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
-            onAccountUnavailable();
-            return;
-        }
+        mPullToRefreshView = (PullToRefreshListView) view.findViewById(R.id.message_list);
 
+        initializeLayout();
+        mListView.setVerticalFadingEdgeEnabled(false);
 
+        return view;
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
+        mMessageHelper = MessageHelper.getInstance(getActivity());
+
+        initializeMessageList();
+    }
+
+    private void decodeArguments() {
+        Bundle args = getArguments();
+
+        mQueryString = args.getString(SearchManager.QUERY);
+        mFolderName = args.getString(ARG_FOLDER);
+        mRemoteSearch = args.getBoolean(ARG_REMOTE_SEARCH, false);
+        mSearchAccount = args.getString(ARG_SEARCH_ACCOUNT);
+        mSearchFolder = args.getString(ARG_SEARCH_FOLDER);
+
+        String accountUuid = args.getString(ARG_ACCOUNT);
+
+        Context appContext = getActivity().getApplicationContext();
+        mAccount = Preferences.getPreferences(appContext).getAccount(accountUuid);
+
+        String queryFlags = args.getString(ARG_QUERY_FLAGS);
         if (queryFlags != null) {
             String[] flagStrings = queryFlags.split(",");
             mQueryFlags = new Flag[flagStrings.length];
@@ -783,7 +744,8 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 mQueryFlags[i] = Flag.valueOf(flagStrings[i]);
             }
         }
-        String forbiddenFlags = intent.getStringExtra(EXTRA_FORBIDDEN_FLAGS);
+
+        String forbiddenFlags = args.getString(ARG_FORBIDDEN_FLAGS);
         if (forbiddenFlags != null) {
             String[] flagStrings = forbiddenFlags.split(",");
             mForbiddenFlags = new Flag[flagStrings.length];
@@ -791,38 +753,25 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 mForbiddenFlags[i] = Flag.valueOf(flagStrings[i]);
             }
         }
-        mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
-        mAccountUuids = intent.getStringArrayExtra(EXTRA_ACCOUNT_UUIDS);
-        mFolderNames = intent.getStringArrayExtra(EXTRA_FOLDER_NAMES);
-        mTitle = intent.getStringExtra(EXTRA_TITLE);
 
-        // Take the initial folder into account only if we are *not* restoring
-        // the activity already.
-        if (mFolderName == null && mQueryString == null) {
-            mFolderName = mAccount.getAutoExpandFolderName();
-        }
+        mIntegrate = args.getBoolean(ARG_INTEGRATE, false);
+        mAccountUuids = args.getStringArray(ARG_ACCOUNT_UUIDS);
+        mFolderNames = args.getStringArray(ARG_FOLDER_NAMES);
+        mTitle = args.getString(ARG_TITLE);
+    }
 
+    private void initializeMessageList() {
         mAdapter = new MessageListAdapter();
-        restorePreviousData();
 
         if (mFolderName != null) {
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
-        // Hide "Load up to x more" footer for local search views
-        mFooterView.setVisibility((mQueryString != null && !mRemoteSearch) ? View.GONE : View.VISIBLE);
+        // Hide "Load up to x more" footer for search views
+        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
 
-        mController = MessagingController.getInstance(getApplication());
+        mController = MessagingController.getInstance(getActivity().getApplication());
         mListView.setAdapter(mAdapter);
-    }
-
-    private void restorePreviousData() {
-        final ActivityState previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null) {
-            mAdapter.restoreMessages(previousData.messages);
-            mActiveMessages = previousData.activeMessages;
-        }
     }
 
     @Override
@@ -830,13 +779,11 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         super.onPause();
         mController.removeListener(mAdapter.mListener);
         saveListState();
-
-        StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
     }
 
     public void saveListState() {
         mState = new Bundle();
-        mState.putInt(EXTRA_LIST_POSITION, mListView.getSelectedItemPosition());
+        mState.putInt(STATE_LIST_POSITION, mListView.getSelectedItemPosition());
     }
 
     public void restoreListState() {
@@ -844,7 +791,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             return;
         }
 
-        int pos = mState.getInt(EXTRA_LIST_POSITION, ListView.INVALID_POSITION);
+        int pos = mState.getInt(STATE_LIST_POSITION, ListView.INVALID_POSITION);
 
         if (pos >= mListView.getCount()) {
             pos = mListView.getCount() - 1;
@@ -866,22 +813,13 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     public void onResume() {
         super.onResume();
 
-        if (mAccount != null && !mAccount.isAvailable(this)) {
-            onAccountUnavailable();
-            return;
-        }
+        setupFormats();
 
+        Context appContext = getActivity().getApplicationContext();
 
-        if (!(this instanceof Search)) {
-            //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
-            //when returning from search results
-            Search.setActive(false);
-        }
-
-        StorageManager.getInstance(getApplication()).addListener(mStorageListener);
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
-        final Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        final Preferences prefs = Preferences.getPreferences(appContext);
 
         boolean allowRemoteSearch = false;
         if (mSearchAccount != null) {
@@ -893,14 +831,22 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
 
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
-            mHasConnectivity = Utility.hasConnectivity(getApplication());
+            final ConnectivityManager connectivityManager =
+                (ConnectivityManager) getActivity().getApplication().getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+            final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                mHasConnectivity = true;
+            } else {
+                mHasConnectivity = false;
+            }
         }
 
         if (mQueryString == null) {
             mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
                 @Override
                 public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                    checkMail(mAccount, mFolderName);
+                    checkMail();
                 }
             });
         } else if (allowRemoteSearch && !mRemoteSearch && !mIntegrate && mHasConnectivity) {
@@ -938,9 +884,8 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
 
         for (Account accountWithNotification : accountsWithNotification) {
-            mController.notifyAccountCancel(this, accountWithNotification);
+            mController.notifyAccountCancel(appContext, accountWithNotification);
         }
-
 
         if (mAdapter.isEmpty()) {
             if (mRemoteSearch) {
@@ -957,23 +902,24 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 // Don't show the archive button if this is a search.
 //                mBatchArchiveButton.setVisibility(View.GONE);
             }
+
         } else {
             // reread the selected date format preference in case it has changed
             mMessageHelper.refresh();
 
             mAdapter.markAllMessagesAsDirty();
 
-            new Thread() {
-                @Override
-                public void run() {
-                    if (!mRemoteSearch) {
+            if (!mRemoteSearch) {
+                new Thread() {
+                    @Override
+                    public void run() {
                         if (mFolderName != null) {
-                            mController.listLocalMessagesSynchronous(mAccount, mFolderName, mAdapter.mListener);
+                            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
                         } else if (mQueryString != null) {
                             mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
                         }
 
-                        runOnUiThread(new Runnable() {
+                        mHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 mAdapter.pruneDirtyMessages();
@@ -982,10 +928,10 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                             }
                         });
                     }
-                }
 
+                }
+                .start();
             }
-            .start();
         }
 
         if (mAccount != null && mFolderName != null && !mRemoteSearch) {
@@ -993,22 +939,6 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
 
         refreshTitle();
-    }
-
-    private void initializeActionBar() {
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setCustomView(R.layout.actionbar_custom);
-
-        View customView = mActionBar.getCustomView();
-        mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-        mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
-
-        if (mQueryString != null) {
-            mActionBarSubTitle.setVisibility(View.GONE);
-        }
-
-        mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void initializeLayout() {
@@ -1023,245 +953,41 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         registerForContextMenu(mListView);
     }
 
-
-    /**
-     * Container for values to be kept while the device configuration is
-     * modified at runtime (keyboard, orientation, etc.) and Android restarts
-     * this activity.
-     *
-     * @see MessageList#onRetainNonConfigurationInstance()
-     * @see MessageList#getLastNonConfigurationInstance()
-     */
-    static class ActivityState {
-        public List<MessageInfoHolder> messages;
-        public List<MessageInfoHolder> activeMessages;
-    }
-
-    /* (non-Javadoc)
-     *
-     * Method overridden for proper typing within this class (the return type is
-     * more specific than the super implementation)
-     *
-     * @see android.app.Activity#onRetainNonConfigurationInstance()
-     */
-    @Override
-    public ActivityState onRetainNonConfigurationInstance() {
-        final ActivityState state = new ActivityState();
-        state.messages = mAdapter.getMessages();
-        state.activeMessages = mActiveMessages;
-        return state;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * Method overridden for proper typing within this class (the return type is
-     * more specific than the super implementation)
-     *
-     * @see android.app.Activity#getLastNonConfigurationInstance()
-     */
-    @Override
-    public ActivityState getLastNonConfigurationInstance() {
-        return (ActivityState) super.getLastNonConfigurationInstance();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Shortcuts that work no matter what is selected
-        switch (keyCode) {
-
-            // messagelist is actually a K9Activity, not a K9ListActivity
-            // This saddens me greatly, but to support volume key navigation
-            // in MessageView, we implement this bit of wrapper code
-        case KeyEvent.KEYCODE_VOLUME_UP: {
-            if (K9.useVolumeKeysForListNavigationEnabled()) {
-                int currentPosition = mListView.getSelectedItemPosition();
-                if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode()) {
-                    currentPosition = mListView.getFirstVisiblePosition();
-                }
-                if (currentPosition > 0) {
-                    mListView.setSelection(currentPosition - 1);
-                }
-                return true;
-            }
-            return false;
-        }
-        case KeyEvent.KEYCODE_VOLUME_DOWN: {
-            if (K9.useVolumeKeysForListNavigationEnabled()) {
-                int currentPosition = mListView.getSelectedItemPosition();
-                if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode()) {
-                    currentPosition = mListView.getFirstVisiblePosition();
-                }
-
-                if (currentPosition < mListView.getCount()) {
-                    mListView.setSelection(currentPosition + 1);
-                }
-                return true;
-            }
-            return false;
-        }
-        case KeyEvent.KEYCODE_C: {
-            onCompose();
-            return true;
-        }
-        case KeyEvent.KEYCODE_Q: {
-            onShowFolderList();
-            return true;
-        }
-        case KeyEvent.KEYCODE_O: {
-            onCycleSort();
-            return true;
-        }
-        case KeyEvent.KEYCODE_I: {
-            changeSort(mSortType);
-            return true;
-        }
-        case KeyEvent.KEYCODE_H: {
-            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
-            toast.show();
-            return true;
-        }
-        }
-
-        //Shortcuts that only work when a message is selected
-        boolean retval = true;
-        int position = mListView.getSelectedItemPosition();
-        try {
-            if (position >= 0) {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-
-                final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
-
-                if (message != null) {
-                    switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL: {
-                        onDelete(selection);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_S: {
-                        toggleMessageSelect(message);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_D: {
-                        onDelete(selection);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_G: {
-                        setFlag(selection, Flag.FLAGGED, !message.flagged);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_M: {
-                        onMove(selection);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_V: {
-                        onArchive(selection);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_Y: {
-                        onCopy(selection);
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_Z: {
-                        setFlag(selection, Flag.SEEN, !message.read);
-                        return true;
-                    }
-                    }
-                }
-            }
-        } finally {
-            retval = super.onKeyDown(keyCode, event);
-        }
-        return retval;
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled()) {
-            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Swallowed key up.");
-                return true;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
     private void onOpenMessage(MessageInfoHolder message) {
-        if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName())) {
-            MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
-        } else {
-            // Need to get the list before the sort starts
-            ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
-
-            for (MessageInfoHolder holder : mAdapter.getMessages()) {
-                MessageReference ref = holder.message.makeMessageReference();
-                messageRefs.add(ref);
-            }
-
-            MessageReference ref = message.message.makeMessageReference();
-            Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
-
-            MessageView.actionView(this, ref, messageRefs, getIntent().getExtras());
-        }
-
-        /*
-         * We set read=true here for UI performance reasons. The actual value
-         * will get picked up on the refresh when the Activity is resumed but
-         * that may take a second or so and we don't want this to show and
-         * then go away. I've gone back and forth on this, and this gives a
-         * better UI experience, so I am putting it back in.
-         */
-        if (!message.read) {
-            message.read = true;
-        }
+        mFragmentListener.openMessage(message.message.makeMessageReference());
     }
 
-    private void onAccounts() {
-        Accounts.listAccounts(this);
-        finish();
-    }
-
-    private void onShowFolderList() {
-        FolderList.actionHandleAccount(this, mAccount);
-        finish();
-    }
-
-    private void onCompose() {
+    public void onCompose() {
         if (mQueryString != null) {
             /*
              * If we have a query string, we don't have an account to let
              * compose start the default action.
              */
-            MessageCompose.actionCompose(this, null);
+            mFragmentListener.onCompose(null);
         } else {
-            MessageCompose.actionCompose(this, mAccount);
+            mFragmentListener.onCompose(mAccount);
         }
     }
 
-    private void onReply(MessageInfoHolder holder) {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false, null);
+    public void onReply(MessageInfoHolder holder) {
+        mFragmentListener.onReply(holder.message);
     }
 
-    private void onReplyAll(MessageInfoHolder holder) {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true, null);
+    public void onReplyAll(MessageInfoHolder holder) {
+        mFragmentListener.onReplyAll(holder.message);
     }
 
-    private void onForward(MessageInfoHolder holder) {
-        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
+    public void onForward(MessageInfoHolder holder) {
+        mFragmentListener.onForward(holder.message);
     }
 
-    private void onResendMessage(MessageInfoHolder message) {
-        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
+    public void onResendMessage(MessageInfoHolder holder) {
+        mFragmentListener.onResendMessage(holder.message);
     }
 
-    private void onEditPrefs() {
-        Prefs.actionPrefs(this);
-    }
-
-    private void onEditAccount() {
-        AccountSettings.actionSettings(this, mAccount);
+    public void changeSort(SortType sortType) {
+        Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
+        changeSort(sortType, sortAscending);
     }
 
     /**
@@ -1270,44 +996,18 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
      *                        where we pull the account and folder info used for the next search.
      */
     public void onRemoteSearchRequested(final boolean fromLocalSearch) {
-        final Bundle appData = new Bundle();
+        String searchAccount;
+        String searchFolder;
+
         if (fromLocalSearch) {
-            appData.putString(EXTRA_SEARCH_ACCOUNT, mSearchAccount);
-            appData.putString(EXTRA_SEARCH_FOLDER, mSearchFolder);
+            searchAccount = mSearchAccount;
+            searchFolder = mSearchFolder;
         } else {
-            appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-            appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
+            searchAccount = mAccount.getUuid();
+            searchFolder = mCurrentFolder.name;
         }
-        appData.putBoolean(EXTRA_REMOTE_SEARCH, true);
 
-        final Intent intent = new Intent(Intent.ACTION_SEARCH);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(SearchManager.QUERY, mQueryString);
-        intent.putExtra(SearchManager.APP_DATA, appData);
-        intent.setComponent(new ComponentName(context.getApplicationContext(), MessageList.class));
-        context.startActivity(intent);
-    }
-
-
-    @Override
-    public boolean onSearchRequested() {
-        // If this search was started from a MessageList of a single folder, pass along that folder info
-        // so that we can enable remote search.
-        if (mAccount != null && mCurrentFolder != null) {
-            final Bundle appData = new Bundle();
-            appData.putString(EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-            appData.putString(EXTRA_SEARCH_FOLDER, mCurrentFolder.name);
-            startSearch(null, false, appData, false);
-        } else {
-            // TODO Handle the case where we're searching from within a search result.
-            startSearch(null, false, null, false);
-        }
-        return true;
-    }
-
-    private void changeSort(SortType sortType) {
-        Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
-        changeSort(sortType, sortAscending);
+        mFragmentListener.remoteSearch(searchAccount, searchFolder, mQueryString);
     }
 
     /**
@@ -1323,7 +1023,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     private void changeSort(SortType sortType, Boolean sortAscending) {
         mSortType = sortType;
 
-        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+        Preferences prefs = Preferences.getPreferences(getActivity().getApplicationContext());
         Account account = getCurrentAccount(prefs);
 
         if (account != null) {
@@ -1360,13 +1060,13 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     private void reSort() {
         int toastString = mSortType.getToast(mSortAscending);
 
-        Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT);
         toast.show();
 
         mAdapter.sortMessages();
     }
 
-    private void onCycleSort() {
+    public void onCycleSort() {
         SortType[] sorts = SortType.values();
         int curIndex = 0;
 
@@ -1400,8 +1100,8 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
@@ -1437,145 +1137,51 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
     }
 
+    public void onExpunge() {
+        if (mCurrentFolder != null) {
+            onExpunge(mAccount, mCurrentFolder.name);
+        }
+    }
 
     private void onExpunge(final Account account, String folderName) {
         mController.expunge(account, folderName, null);
     }
 
-    @Override
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-        case R.id.dialog_confirm_spam:
-            return ConfirmationDialog.create(this, id,
-                                             R.string.dialog_confirm_spam_title,
-                                             "" /* text is refreshed by #onPrepareDialog(int, Dialog) below */,
-                                             R.string.dialog_confirm_spam_confirm_button,
-                                             R.string.dialog_confirm_spam_cancel_button,
-            new Runnable() {
-                @Override
-                public void run() {
-                    onSpamConfirmed(mActiveMessages);
-                    // No further need for this reference
-                    mActiveMessages = null;
-                }
-            }, new Runnable() {
-                @Override
-                public void run() {
-                    // event for cancel, we don't need this reference any more
-                    mActiveMessages = null;
-                }
-            });
-        }
+    private void showDialog(int dialogId) {
+        DialogFragment fragment;
+        switch (dialogId) {
+            case R.id.dialog_confirm_spam: {
+                String title = getString(R.string.dialog_confirm_spam_title);
 
-        return super.onCreateDialog(id);
-    }
+                int selectionSize = mActiveMessages.size();
+                String message = getResources().getQuantityString(
+                        R.plurals.dialog_confirm_spam_message, selectionSize,
+                        Integer.valueOf(selectionSize));
 
-    /*
-     * (non-Javadoc)
-     *
-     * Android happens to invoke this method even if the given dialog is not
-     * shown (eg. a dismissed dialog) as part of the automatic activity
-     * reloading following a configuration change (orientation, keyboard,
-     * locale, etc.).
-     */
-    @Override
-    public void onPrepareDialog(final int id, final Dialog dialog) {
-        switch (id) {
-        case R.id.dialog_confirm_spam: {
-            // mActiveMessages can be null if Android restarts the activity
-            // while this dialog is not actually shown (but was displayed at
-            // least once)
-            if (mActiveMessages != null) {
-                final int selectionSize = mActiveMessages.size();
-                final String message;
-                message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, selectionSize,
-                          Integer.valueOf(selectionSize));
-                ((AlertDialog) dialog).setMessage(message);
+                String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                        confirmText, cancelText);
+                break;
             }
-            break;
-        }
-        default: {
-            super.onPrepareDialog(id, dialog);
-        }
-        }
-    }
-
-    private void onToggleFlag(MessageInfoHolder messageInfo) {
-        Message message = messageInfo.message;
-        Folder folder = message.getFolder();
-        Account account = folder.getAccount();
-        String folderName = folder.getName();
-
-        mController.setFlag(account, folderName, new Message[] { message }, Flag.FLAGGED,
-                !messageInfo.flagged);
-
-        messageInfo.flagged = !messageInfo.flagged;
-        mAdapter.sortMessages();
-
-        computeBatchDirection();
-    }
-
-    private void checkMail(Account account, String folderName) {
-        mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
-        mController.sendPendingMessages(account, mAdapter.mListener);
-    }
-
-    /**
-     * We need to do some special clean up when leaving a remote search result screen.  If no remote search is
-     * in progress, this method does nothing special.
-     */
-    @Override
-    public void onBackPressed() {
-        // If we represent a remote search, then kill that before going back.
-        if (mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
-            try {
-                Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
-                // Canceling the future stops any message fetches in progress.
-                final boolean cancelSuccess = mRemoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
-                if (!cancelSuccess) {
-                    Log.e(K9.LOG_TAG, "Could not cancel remote search future.");
-                }
-                // Closing the folder will kill off the connection if we're mid-search.
-                final Account searchAccount = Preferences.getPreferences(this).getAccount(mSearchAccount);
-                final Store remoteStore = searchAccount.getRemoteStore();
-                final Folder remoteFolder = remoteStore.getFolder(mSearchFolder);
-                remoteFolder.close();
-                // Send a remoteSearchFinished() message for good measure.
-                mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
-            } catch (Exception e) {
-                // Since the user is going back, log and squash any exceptions.
-                Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
+            default: {
+                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
             }
         }
-        super.onBackPressed();
+
+        fragment.setTargetFragment(this, dialogId);
+        fragment.show(getFragmentManager(), getDialogTag(dialogId));
+    }
+
+    private String getDialogTag(int dialogId) {
+        return String.format("dialog-%d", dialogId);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-        case android.R.id.home: {
-            if (mIntegrate) {
-                // If we were in one of the integrated mailboxes (think All Mail or Integrated Inbox), then
-                // go to accounts.
-                onAccounts();
-            } else if (mQueryString != null) {
-                // We did a search of some sort.  Go back to wherever the user searched from.
-                onBackPressed();
-            } else {
-                // In a standard message list of a folder.  Go to folder list.
-                onShowFolderList();
-            }
-            return true;
-        }
-        case R.id.compose: {
-            onCompose();
-            return true;
-        }
-        case R.id.check_mail: {
-            checkMail(mAccount, mFolderName);
-            return true;
-        }
         case R.id.set_sort_date: {
             changeSort(SortType.SORT_DATE);
             return true;
@@ -1608,21 +1214,6 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             setSelectionState(true);
             return true;
         }
-        case R.id.app_settings: {
-            onEditPrefs();
-            return true;
-        }
-        case R.id.search_remote: {
-            // Remote search is useless without the network.
-            if (mHasConnectivity) {
-                onRemoteSearchRequested(true);
-            } else {
-                final Toast unavailableToast =
-                    Toast.makeText(context, getText(R.string.remote_search_unavailable_no_network), Toast.LENGTH_SHORT);
-                unavailableToast.show();
-            }
-            return true;
-        }
         }
 
         if (mQueryString != null) {
@@ -1633,17 +1224,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
 
         switch (itemId) {
         case R.id.send_messages: {
-            mController.sendPendingMessages(mAccount, mAdapter.mListener);
-            return true;
-        }
-        case R.id.folder_settings: {
-            if (mFolderName != null) {
-                FolderSettings.actionSettings(this, mAccount, mFolderName);
-            }
-            return true;
-        }
-        case R.id.account_settings: {
-            onEditAccount();
+            onSendPendingMessages();
             return true;
         }
         case R.id.expunge: {
@@ -1657,6 +1238,11 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
         }
     }
+
+    public void onSendPendingMessages() {
+        mController.sendPendingMessages(mAccount, mAdapter.mListener);
+    }
+
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -1683,8 +1269,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                     break;
                 }
                 case R.id.same_sender: {
-                    MessageList.actionHandle(MessageList.this, "From " + message.sender,
-                        message.senderAddress, false, null, null);
+                    mFragmentListener.showMoreFromSameSender(message.senderAddress);
                     break;
                 }
                 case R.id.delete: {
@@ -1742,7 +1327,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             return;
         }
 
-        getMenuInflater().inflate(R.menu.message_list_item_context, menu);
+        getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
         menu.setHeaderTitle(message.message.getSubject());
 
@@ -1779,70 +1364,11 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
-        mRefreshMenuItem = menu.findItem(R.id.check_mail);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        if (mQueryString != null || mIntegrate) {
-            menu.findItem(R.id.expunge).setVisible(false);
-            menu.findItem(R.id.check_mail).setVisible(false);
-            menu.findItem(R.id.send_messages).setVisible(false);
-            menu.findItem(R.id.folder_settings).setVisible(false);
-            menu.findItem(R.id.account_settings).setVisible(false);
-            // If this is an explicit local search, show the option to search the cloud.
-
-            final Preferences prefs = Preferences.getPreferences(getApplicationContext());
-
-            boolean allowRemoteSearch = false;
-            if (mSearchAccount != null) {
-                final Account searchAccount = prefs.getAccount(mSearchAccount);
-                if (searchAccount != null) {
-                    allowRemoteSearch = searchAccount.allowRemoteSearch();
-                }
-            }
-
-            if (allowRemoteSearch && mQueryString != null && !mRemoteSearch && !mIntegrate && mSearchFolder != null) {
-                menu.findItem(R.id.search_remote).setVisible(true);
-            }
-        } else {
-            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName())) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            } else {
-                menu.findItem(R.id.send_messages).setVisible(false);
-            }
-
-            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name)) {
-                menu.findItem(R.id.expunge).setVisible(false);
-            }
-
-            if (!mController.isMoveCapable(mAccount)) {
-                // FIXME: Really we want to do this for all local-only folders
-                if (mCurrentFolder != null &&
-                        !mAccount.getInboxFolderName().equals(mCurrentFolder.name)) {
-                    menu.findItem(R.id.check_mail).setVisible(false);
-                }
-                menu.findItem(R.id.expunge).setVisible(false);
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
         // Handle right-to-left as an un-select
         handleSwipe(e1, false);
     }
 
-    @Override
     public void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
         // Handle left-to-right as a select.
         handleSwipe(e1, true);
@@ -1875,9 +1401,9 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
 
                 if (numTotal > 0 && numDone < numTotal) {
-                    setSupportProgress(Window.PROGRESS_END / numTotal * numDone);
+                    mFragmentListener.setMessageListProgress(Window.PROGRESS_END / numTotal * numDone);
                 } else {
-                    setSupportProgress(Window.PROGRESS_END);
+                    mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
                 }
 
                 mHandler.addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
@@ -1886,9 +1412,10 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             @Override
             public void remoteSearchFailed(Account acct, String folder, final String err) {
                 //TODO: Better error handling
-                runOnUiThread(new Runnable() {
+                mHandler.post(new Runnable() {
+                    @Override
                     public void run() {
-                        Toast.makeText(getApplication(),  err, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), err, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -1909,7 +1436,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 } else {
                     mHandler.updateFooter("", false);
                 }
-                setSupportProgress(Window.PROGRESS_END);
+                mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
 
             }
 
@@ -1921,7 +1448,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 } else {
                     mHandler.updateFooter(getString(R.string.remote_search_downloading, numResults), true);
                 }
-                setSupportProgress(Window.PROGRESS_START);
+                mFragmentListener.setMessageListProgress(Window.PROGRESS_START);
             }
 
             @Override
@@ -2212,7 +1739,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                         if (updateForMe(account, folderName)) {
                             m = new MessageInfoHolder();
                             FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                    MessageList.this, messageFolder, messageAccount);
+                                    getActivity(), messageFolder, messageAccount);
                             messageHelper.populate(m, message, folderInfoHolder, messageAccount);
                             messagesToAdd.add(m);
                         } else {
@@ -2222,7 +1749,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                                 } else {
                                     m = new MessageInfoHolder();
                                     FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                            MessageList.this, messageFolder, messageAccount);
+                                            getActivity(), messageFolder, messageAccount);
                                     messageHelper.populate(m, message, folderInfoHolder,
                                             messageAccount);
                                     messagesToAdd.add(m);
@@ -2231,7 +1758,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                         }
                     } else {
                         m.dirty = false; // as we reload the message, unset its dirty flag
-                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(MessageList.this,
+                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(getActivity(),
                                 messageFolder, account);
                         messageHelper.populate(m, message, folderInfoHolder, account);
                         needsSort = true;
@@ -2328,7 +1855,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             try {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(context, local_folder, account);
+                return new FolderInfoHolder(getActivity(), local_folder, account);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
                 return null;
@@ -2489,7 +2016,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                         R.attr.messageListUnreadItemBackgroundColor;
 
                 TypedValue outValue = new TypedValue();
-                getTheme().resolveAttribute(res, outValue, true);
+                getActivity().getTheme().resolveAttribute(res, outValue, true);
                 view.setBackgroundColor(outValue.data);
             }
 
@@ -2706,7 +2233,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
 
         if (selected) {
             mSelectedCount = mAdapter.getCount();
-            mActionMode = MessageList.this.startActionMode(mActionModeCallback);
+            mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
             updateActionModeTitle();
             computeSelectAllVisibility();
             computeBatchDirection();
@@ -2725,7 +2252,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 return;
             }
         } else {
-            mActionMode = startActionMode(mActionModeCallback);
+            mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
         }
 
         if (holder.selected) {
@@ -2803,6 +2330,8 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
         }
         mController.setFlag(messageList, flag, newState);
         mAdapter.sortMessages();
+
+        computeBatchDirection();
     }
 
     /**
@@ -2852,7 +2381,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
      * @see #startActivityForResult(Intent, int)
      */
     private void displayFolderChoice(final int requestCode, final Folder folder, final List<MessageInfoHolder> holders) {
-        final Intent intent = new Intent(this, ChooseFolder.class);
+        final Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, folder.getAccount().getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
@@ -2934,7 +2463,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             }
             // message check
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
+                final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                                                    Toast.LENGTH_LONG);
                 toast.show();
                 return false;
@@ -3032,7 +2561,7 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                 return;
             }
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message,
+                final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                                                    Toast.LENGTH_LONG);
                 toast.show();
 
@@ -3053,13 +2582,6 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
                                      null);
         }
     }
-
-    protected void onAccountUnavailable() {
-        finish();
-        // TODO inform user about account unavailability using Toast
-        Accounts.listAccounts(this);
-    }
-
 
     /**
      * Return the currently "open" account if available.
@@ -3229,22 +2751,18 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             }
             case R.id.mark_as_read: {
                 setFlag(selection, Flag.SEEN, true);
-                computeBatchDirection();
                 break;
             }
             case R.id.mark_as_unread: {
                 setFlag(selection, Flag.SEEN, false);
-                computeBatchDirection();
                 break;
             }
             case R.id.flag: {
                 setFlag(selection, Flag.FLAGGED, true);
-                computeBatchDirection();
                 break;
             }
             case R.id.unflag: {
                 setFlag(selection, Flag.FLAGGED, false);
-                computeBatchDirection();
                 break;
             }
             case R.id.select_all: {
@@ -3281,5 +2799,246 @@ public class MessageListFragment extends K9ListActivity implements OnItemClickLi
             return true;
         }
     }
-}
 
+    @Override
+    public void doPositiveClick(int dialogId) {
+        switch (dialogId) {
+            case R.id.dialog_confirm_spam: {
+                onSpamConfirmed(mActiveMessages);
+                // No further need for this reference
+                mActiveMessages = null;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void doNegativeClick(int dialogId) {
+        switch (dialogId) {
+            case R.id.dialog_confirm_spam: {
+                // No further need for this reference
+                mActiveMessages = null;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void dialogCancelled(int dialogId) {
+        doNegativeClick(dialogId);
+    }
+
+    public void checkMail() {
+        mController.synchronizeMailbox(mAccount, mFolderName, mAdapter.mListener, null);
+        mController.sendPendingMessages(mAccount, mAdapter.mListener);
+    }
+
+    /**
+     * We need to do some special clean up when leaving a remote search result screen.  If no remote search is
+     * in progress, this method does nothing special.
+     */
+    @Override
+    public void onStop() {
+        // If we represent a remote search, then kill that before going back.
+        if (mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
+            try {
+                Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
+                // Canceling the future stops any message fetches in progress.
+                final boolean cancelSuccess = mRemoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
+                if (!cancelSuccess) {
+                    Log.e(K9.LOG_TAG, "Could not cancel remote search future.");
+                }
+                // Closing the folder will kill off the connection if we're mid-search.
+                Context appContext = getActivity().getApplicationContext();
+                final Account searchAccount = Preferences.getPreferences(appContext).getAccount(mSearchAccount);
+                final Store remoteStore = searchAccount.getRemoteStore();
+                final Folder remoteFolder = remoteStore.getFolder(mSearchFolder);
+                remoteFolder.close();
+                // Send a remoteSearchFinished() message for good measure.
+                mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
+            } catch (Exception e) {
+                // Since the user is going back, log and squash any exceptions.
+                Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
+            }
+        }
+        super.onStop();
+    }
+
+    public ArrayList<MessageReference> getMessageReferences() {
+        ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
+
+        for (MessageInfoHolder holder : mAdapter.getMessages()) {
+            MessageReference ref = holder.message.makeMessageReference();
+            messageRefs.add(ref);
+        }
+
+        return messageRefs;
+    }
+
+    public void selectAll() {
+        setSelectionState(true);
+    }
+
+    public void onMoveUp() {
+        int currentPosition = mListView.getSelectedItemPosition();
+        if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode()) {
+            currentPosition = mListView.getFirstVisiblePosition();
+        }
+        if (currentPosition > 0) {
+            mListView.setSelection(currentPosition - 1);
+        }
+    }
+
+    public void onMoveDown() {
+        int currentPosition = mListView.getSelectedItemPosition();
+        if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode()) {
+            currentPosition = mListView.getFirstVisiblePosition();
+        }
+
+        if (currentPosition < mListView.getCount()) {
+            mListView.setSelection(currentPosition + 1);
+        }
+    }
+
+    public interface MessageListFragmentListener {
+        void setMessageListProgress(int level);
+        void remoteSearch(String searchAccount, String searchFolder, String queryString);
+        void showMoreFromSameSender(String senderAddress);
+        void onResendMessage(Message message);
+        void onForward(Message message);
+        void onReply(Message message);
+        void onReplyAll(Message message);
+        void openMessage(MessageReference messageReference);
+        void setMessageListTitle(String title);
+        void setMessageListSubTitle(String subTitle);
+        void setUnreadCount(int unread);
+        void onCompose(Account account);
+        boolean startSearch(Account account, String folderName);
+    }
+
+    public void onReverseSort() {
+        changeSort(mSortType);
+    }
+
+    private MessageInfoHolder getSelection() {
+        return (MessageInfoHolder) mListView.getSelectedItem();
+    }
+
+    public void onDelete() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            onDelete(Collections.singletonList(message));
+        }
+    }
+
+    public void toggleMessageSelect() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            toggleMessageSelect(message);
+        }
+    }
+
+    public void onToggleFlag() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            setFlag(Collections.singletonList(message), Flag.FLAGGED, !message.flagged);
+        }
+    }
+
+    public void onMove() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            onMove(Collections.singletonList(message));
+        }
+    }
+
+    public void onArchive() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            onArchive(Collections.singletonList(message));
+        }
+    }
+
+    public void onCopy() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            onCopy(Collections.singletonList(message));
+        }
+    }
+
+    public void onToggleRead() {
+        MessageInfoHolder message = getSelection();
+        if (message != null) {
+            setFlag(Collections.singletonList(message), Flag.SEEN, !message.read);
+        }
+    }
+
+    public boolean isSearchQuery() {
+        return (mQueryString != null || mIntegrate);
+    }
+
+    public boolean isOutbox() {
+        return (mFolderName != null && mFolderName.equals(mAccount.getOutboxFolderName()));
+    }
+
+    public boolean isErrorFolder() {
+        return K9.ERROR_FOLDER_NAME.equals(mFolderName);
+    }
+
+    public boolean isRemoteFolder() {
+        if (isSearchQuery() || isOutbox() || isErrorFolder()) {
+            return false;
+        }
+
+        if (!mController.isMoveCapable(mAccount)) {
+            // For POP3 accounts only the Inbox is a remote folder.
+            return (mFolderName != null && !mFolderName.equals(mAccount.getInboxFolderName()));
+        }
+
+        return true;
+    }
+
+    public boolean isAccountExpungeCapable() {
+        try {
+            return (mAccount != null && mAccount.getRemoteStore().isExpungeCapable());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void onRemoteSearch() {
+        // Remote search is useless without the network.
+        if (mHasConnectivity) {
+            onRemoteSearchRequested(true);
+        } else {
+            Toast.makeText(getActivity(), getText(R.string.remote_search_unavailable_no_network),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean isRemoteSearch() {
+        return mRemoteSearch;
+    }
+
+    public boolean isRemoteSearchAllowed() {
+        if (!isSearchQuery() || mRemoteSearch || mSearchFolder == null || mSearchAccount == null) {
+            return false;
+        }
+
+        Context appContext = getActivity().getApplicationContext();
+        final Preferences prefs = Preferences.getPreferences(appContext);
+
+        boolean allowRemoteSearch = false;
+        final Account searchAccount = prefs.getAccount(mSearchAccount);
+        if (searchAccount != null) {
+            allowRemoteSearch = searchAccount.allowRemoteSearch();
+        }
+
+        return allowRemoteSearch;
+    }
+
+    public boolean onSearchRequested() {
+        String folderName = (mCurrentFolder != null) ? mCurrentFolder.name : null;
+        return mFragmentListener.startSearch(mAccount, folderName);
+   }
+}
