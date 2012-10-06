@@ -69,7 +69,7 @@ public class ColorChip {
         if (shape.equals(CHECKMARK)) {
             mDrawable.getPaint().setStrokeWidth(30);
         } else {
-            mDrawable.getPaint().setStrokeWidth(10);
+            mDrawable.getPaint().setStrokeWidth(20);
         }
         if (messageRead) {
             // Read messages get an outlined circle
