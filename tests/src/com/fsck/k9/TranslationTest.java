@@ -1,6 +1,6 @@
 package com.fsck.k9;
 
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.helper.DateFormatter;
 
 import android.content.Context;
@@ -29,7 +29,7 @@ public class TranslationTest extends AndroidTestCase {
 		String[] languages = res.getStringArray(R.array.supported_languages);
 
 		for (String lang : languages) {
-			K9Activity.setLanguage(mContext, lang);
+			K9ActivityCommon.setLanguage(mContext, lang);
 
 			action.runWithLanguage(mContext, lang);
 		}

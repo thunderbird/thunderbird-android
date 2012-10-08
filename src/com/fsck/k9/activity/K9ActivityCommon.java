@@ -8,6 +8,7 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.helper.StringUtils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -36,7 +37,7 @@ public class K9ActivityCommon {
         return new K9ActivityCommon(activity);
     }
 
-    public static void setLanguage(Activity activity, String language) {
+    public static void setLanguage(Context context, String language) {
         Locale locale;
         if (StringUtils.isNullOrEmpty(language)) {
             locale = Locale.getDefault();
@@ -49,7 +50,7 @@ public class K9ActivityCommon {
 
         Configuration config = new Configuration();
         config.locale = locale;
-        Resources resources = activity.getResources();
+        Resources resources = context.getResources();
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
