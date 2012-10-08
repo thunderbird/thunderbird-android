@@ -440,12 +440,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Save will attempt to replace the message in the given folder with the updated version.
      * Discard will delete the message from the given folder.
      * @param context
-     * @param account
      * @param message
      */
-    public static void actionEditDraft(Context context, Account account, Message message) {
+    public static void actionEditDraft(Context context, MessageReference messageReference) {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
+        i.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
         i.setAction(ACTION_EDIT_DRAFT);
         context.startActivity(i);
     }
