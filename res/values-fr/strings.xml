@@ -1155,7 +1155,7 @@ de plus</string>
     <string name="action_remote_search">Rechercher des messages distant</string>
     <string name="pull_to_refresh_remote_search_from_local_search_pull">Tirez pour la recherche distante…</string>
     <string name="pull_to_refresh_remote_search_from_local_search_release">Relâchez pour la recherche distante…</string>
-    <string name="remote_search_unavailable_no_network">La recherche à distance n'est pas disponible sans connexion au réseau.</string>
+    <string name="remote_search_unavailable_no_network">La recherche à distance n\'est pas disponible sans connexion au réseau.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Utiliser le fond comme indicateur de lecture</string>
     <string name="global_settings_background_as_unread_indicator_summary">Montrer les messages lus et non lus avec différentes couleurs de fond</string>
