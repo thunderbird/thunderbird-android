@@ -748,4 +748,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         return true;
     }
+
+    @Override
+    public void showThread(Account account, String folderName, long threadRootId) {
+        MessageListFragment fragment = MessageListFragment.newInstance(account, folderName,
+                threadRootId);
+
+        addMessageListFragment(fragment);
+    }
 }

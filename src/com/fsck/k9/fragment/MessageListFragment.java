@@ -76,6 +76,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -89,6 +90,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Bundle args = new Bundle();
         args.putString(ARG_ACCOUNT, account.getUuid());
         args.putString(ARG_FOLDER, folderName);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static MessageListFragment newInstance(Account account, String folderName,
+            long threadRootId) {
+        MessageListFragment fragment = new MessageListFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_ACCOUNT, account.getUuid());
+        args.putString(ARG_FOLDER, folderName);
+        args.putLong(ARG_THREAD_ID, threadRootId);
         fragment.setArguments(args);
 
         return fragment;
@@ -290,6 +304,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_ACCOUNT_UUIDS = "accountUuids";
     private static final String ARG_FOLDER_NAMES = "folderNames";
     private static final String ARG_TITLE = "title";
+    private static final String ARG_THREAD_ID = "thread_id";
 
     private static final String STATE_LIST_POSITION = "listPosition";
 
@@ -388,6 +403,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
 
     private DateFormat mTimeFormat;
+
+    //TODO: make this a setting
+    private boolean mThreadViewEnabled = true;
+
+    private long mThreadId;
 
 
     /**
@@ -667,6 +687,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
         if (mSelectedCount > 0) {
             toggleMessageSelect(message);
+        } else if (((LocalMessage) message.message).getThreadCount() > 1) {
+            Folder folder = message.message.getFolder();
+            long rootId = ((LocalMessage) message.message).getRootId();
+            mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
         } else {
             onOpenMessage(message);
         }
@@ -730,6 +754,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mRemoteSearch = args.getBoolean(ARG_REMOTE_SEARCH, false);
         mSearchAccount = args.getString(ARG_SEARCH_ACCOUNT);
         mSearchFolder = args.getString(ARG_SEARCH_FOLDER);
+        mThreadId = args.getLong(ARG_THREAD_ID, -1);
 
         String accountUuid = args.getString(ARG_ACCOUNT);
 
@@ -892,7 +917,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 //TODO: Support flag based search
                 mRemoteSearchFuture = mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
             } else if (mFolderName != null) {
-                mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+                mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener, mThreadViewEnabled, mThreadId);
+
                 // Hide the archive button if we don't have an archive folder.
                 if (!mAccount.hasArchiveFolder()) {
 //                    mBatchArchiveButton.setVisibility(View.GONE);
@@ -914,7 +940,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     @Override
                     public void run() {
                         if (mFolderName != null) {
-                            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+                            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener, mThreadViewEnabled, mThreadId);
                         } else if (mQueryString != null) {
                             mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
                         }
@@ -1929,6 +1955,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
                 holder.preview.setLines(mPreviewLines);
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
+                holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
                 view.setTag(holder);
             }
@@ -2028,6 +2055,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             } else {
                 subject = message.message.getSubject();
             }
+
+            int threadCount = ((LocalMessage) message.message).getThreadCount();
+            if (threadCount > 1) {
+                holder.threadCount.setText(Integer.toString(threadCount));
+                holder.threadCount.setVisibility(View.VISIBLE);
+            } else {
+                holder.threadCount.setVisibility(View.GONE);
+            }
+
 
             // We'll get badge support soon --jrv
 //            if (holder.badge != null) {
@@ -2133,6 +2169,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public int position = -1;
+        public TextView threadCount;
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -2902,6 +2939,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public interface MessageListFragmentListener {
         void setMessageListProgress(int level);
+        void showThread(Account account, String folderName, long rootId);
         void remoteSearch(String searchAccount, String searchFolder, String queryString);
         void showMoreFromSameSender(String senderAddress);
         void onResendMessage(Message message);

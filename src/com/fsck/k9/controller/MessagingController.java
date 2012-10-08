@@ -517,13 +517,16 @@ public class MessagingController implements Runnable {
      * @param account
      * @param folder
      * @param listener
+     * @param threaded
+     * @param threadId
      * @throws MessagingException
      */
-    public void listLocalMessages(final Account account, final String folder, final MessagingListener listener) {
+    public void listLocalMessages(final Account account, final String folder,
+            final MessagingListener listener, final boolean threaded, final long threadId) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                listLocalMessagesSynchronous(account, folder, listener);
+                listLocalMessagesSynchronous(account, folder, listener, threaded, threadId);
             }
         });
     }
@@ -535,9 +538,12 @@ public class MessagingController implements Runnable {
      * @param account
      * @param folder
      * @param listener
+     * @param threaded
+     * @param threadId
      * @throws MessagingException
      */
-    public void listLocalMessagesSynchronous(final Account account, final String folder, final MessagingListener listener) {
+    public void listLocalMessagesSynchronous(final Account account, final String folder,
+            final MessagingListener listener, boolean threaded, long threadId) {
 
         for (MessagingListener l : getListeners(listener)) {
             l.listLocalMessagesStarted(account, folder);
@@ -588,10 +594,15 @@ public class MessagingController implements Runnable {
             //Purging followed by getting requires 2 DB queries.
             //TODO: Fix getMessages to allow auto-pruning at visible limit?
             localFolder.purgeToVisibleLimit(null);
-            localFolder.getMessages(
-                retrievalListener,
-                false // Skip deleted messages
-            );
+
+            if (threadId != -1) {
+                localFolder.getMessagesInThread(threadId, retrievalListener);
+            } else if (threaded) {
+                localFolder.getThreadedMessages(retrievalListener);
+            } else {
+                localFolder.getMessages(retrievalListener, false);
+            }
+
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
 

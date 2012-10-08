@@ -45,14 +45,32 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_below="@+id/subject"
+        android:layout_toLeftOf="@+id/thread_count"
         android:layout_marginLeft="1dip"
         android:layout_marginBottom="3dip"
-        android:layout_marginRight="16dip"
-        android:layout_alignParentRight="true"
+        android:layout_marginRight="3dip"
         android:bufferType="spannable"
         android:singleLine="false"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/thread_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dip"
+        android:layout_marginRight="12dip"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/subject"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:paddingTop="2dip"
+        android:paddingBottom="2dip"
+        android:background="#50000000"
+        android:focusable="false" />
+
+
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
@@ -64,8 +82,5 @@
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary" />
-
-
-
 
 </RelativeLayout>
