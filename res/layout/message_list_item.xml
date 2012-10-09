@@ -23,6 +23,16 @@
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
         android:background="@android:color/transparent" />
+        <CheckBox
+            android:id="@+id/selected_checkbox"
+            android:layout_width="36dip"
+            android:layout_below="@+id/chip"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_height="fill_parent"
+            android:focusable="false"
+            android:gravity="bottom|center"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView

@@ -40,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
@@ -359,6 +360,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
     private boolean mSenderAboveSubject = false;
+    private boolean mCheckboxes = true;
 
     private int mSelectedCount = 0;
 
@@ -691,6 +693,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mController = MessagingController.getInstance(getActivity().getApplication());
 
         mPreviewLines = K9.messageListPreviewLines();
+        mCheckboxes = K9.messageListCheckboxes();
 
         decodeArguments();
     }
@@ -1915,7 +1918,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 holder = new MessageViewHolder();
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
+                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
+                if (mCheckboxes) {
+                    holder.selected.setVisibility(View.VISIBLE);
+                }
+
+                if (holder.selected != null) {
+                    holder.selected.setOnCheckedChangeListener(holder);
+                }
+
 
                 if (mSenderAboveSubject) {
                     holder.from = (TextView) view.findViewById(R.id.subject);
@@ -1969,6 +1981,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
+                holder.selected.setChecked(false);
+
+                if (!mCheckboxes) {
+                    holder.selected.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2001,13 +2018,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             // when a user checks the checkbox (vs code)
             holder.position = -1;
 
-            if (message.selected) {
+            holder.selected.setChecked(message.selected);
 
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().getCheckmarkChip().drawable());
+            if (!mCheckboxes && message.selected) {
+
+                holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().getCheckmarkChip().drawable());
             }
 
             else {
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), message.message.ccMe(), message.message.fromMe(), message.flagged).drawable());
+                holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), message.message.ccMe(), message.message.fromMe(), message.flagged).drawable());
 
             }
 
@@ -2132,6 +2151,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView time;
         public TextView date;
         public View chip;
+        public CheckBox selected;
         public int position = -1;
 
         @Override
