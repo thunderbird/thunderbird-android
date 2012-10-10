@@ -410,6 +410,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private long mThreadId;
 
 
+    private Context mContext;
+
+
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
@@ -634,7 +637,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void setupFormats() {
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
 
     private DateFormat getTimeFormat() {
@@ -699,6 +702,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        mContext = activity.getApplicationContext();
 
         try {
             mFragmentListener = (MessageListFragmentListener) activity;
@@ -1449,7 +1454,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             @Override
             public void remoteSearchStarted(Account acct, String folder) {
                 mHandler.progress(true);
-                mHandler.updateFooter(getString(R.string.remote_search_sending_query), true);
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query), true);
             }
 
 
@@ -1458,7 +1463,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 mHandler.progress(false);
                 if (extraResults != null && extraResults.size() > 0) {
                     mExtraSearchResults = extraResults;
-                    mHandler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
+                    mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
                 } else {
                     mHandler.updateFooter("", false);
                 }
@@ -1470,9 +1475,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
                 mHandler.progress(true);
                 if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
-                    mHandler.updateFooter(getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
+                    mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
                 } else {
-                    mHandler.updateFooter(getString(R.string.remote_search_downloading, numResults), true);
+                    mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults), true);
                 }
                 mFragmentListener.setMessageListProgress(Window.PROGRESS_START);
             }
@@ -1765,7 +1770,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                         if (updateForMe(account, folderName)) {
                             m = new MessageInfoHolder();
                             FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                    getActivity(), messageFolder, messageAccount);
+                                    mContext, messageFolder, messageAccount);
                             messageHelper.populate(m, message, folderInfoHolder, messageAccount);
 
                             if (verifyAgainstSearch) {
@@ -1804,7 +1809,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                                 } else {
                                     m = new MessageInfoHolder();
                                     FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                            getActivity(), messageFolder, messageAccount);
+                                            mContext, messageFolder, messageAccount);
                                     messageHelper.populate(m, message, folderInfoHolder,
                                             messageAccount);
                                     messagesToAdd.add(m);
@@ -1813,7 +1818,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                         }
                     } else {
                         m.dirty = false; // as we reload the message, unset its dirty flag
-                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(getActivity(),
+                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(mContext,
                                 messageFolder, account);
                         messageHelper.populate(m, message, folderInfoHolder, account);
                         needsSort = true;
@@ -1921,7 +1926,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             try {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(getActivity(), local_folder, account);
+                return new FolderInfoHolder(mContext, local_folder, account);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
                 return null;
@@ -2241,17 +2246,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mCurrentFolder != null && mAccount != null) {
             if (mCurrentFolder.loading) {
                 final boolean showProgress = true;
-                updateFooter(getString(R.string.status_loading_more), showProgress);
+                updateFooter(mContext.getString(R.string.status_loading_more), showProgress);
             } else {
                 String message;
                 if (!mCurrentFolder.lastCheckFailed) {
                     if (mAccount.getDisplayCount() == 0) {
-                        message = getString(R.string.message_list_load_more_messages_action);
+                        message = mContext.getString(R.string.message_list_load_more_messages_action);
                     } else {
-                        message = String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount());
+                        message = String.format(mContext.getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount());
                     }
                 } else {
-                    message = getString(R.string.status_loading_more_failed);
+                    message = mContext.getString(R.string.status_loading_more_failed);
                 }
                 final boolean showProgress = false;
                 updateFooter(message, showProgress);
