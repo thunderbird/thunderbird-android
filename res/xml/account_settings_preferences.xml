@@ -174,12 +174,6 @@
             android:entryValues="@array/account_setup_expunge_policy_values"
             android:dialogTitle="@string/account_setup_expunge_policy_label" />
 
-        <CheckBoxPreference
-            android:persistent="false"
-            android:title="@string/account_setup_incoming_save_all_headers_title"
-            android:key="account_save_all_headers"
-            android:summary="@string/account_setup_incoming_save_all_headers_label" />
-
         <PreferenceScreen
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"
