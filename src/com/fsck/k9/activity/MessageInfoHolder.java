@@ -24,6 +24,7 @@ public class MessageInfoHolder {
     public boolean selected;
     public String account;
     public String uri;
+    public int threadCount;
 
     // Empty constructor for comparison
     public MessageInfoHolder() {

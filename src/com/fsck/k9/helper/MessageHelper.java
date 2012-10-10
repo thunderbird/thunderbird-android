@@ -17,6 +17,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.helper.DateFormatter;
 
 public class MessageHelper {
@@ -85,6 +86,8 @@ public class MessageHelper {
 
             target.account = account.getUuid();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + message.getFolder().getName() + "/" + message.getUid();
+
+            target.threadCount = ((LocalMessage) message).getThreadCount();
 
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);

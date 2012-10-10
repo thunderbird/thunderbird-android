@@ -687,7 +687,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
         if (mSelectedCount > 0) {
             toggleMessageSelect(message);
-        } else if (((LocalMessage) message.message).getThreadCount() > 1) {
+        } else if (message.threadCount > 1) {
             Folder folder = message.message.getFolder();
             long rootId = ((LocalMessage) message.message).getRootId();
             mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
@@ -1767,7 +1767,36 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                             FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
                                     getActivity(), messageFolder, messageAccount);
                             messageHelper.populate(m, message, folderInfoHolder, messageAccount);
-                            messagesToAdd.add(m);
+
+                            if (verifyAgainstSearch) {
+                                LocalMessage localMessage = (LocalMessage) message;
+
+                                if (mThreadId != -1) {
+                                    if (localMessage.getRootId() == mThreadId ||
+                                            localMessage.getId() == mThreadId) {
+                                        messagesToAdd.add(m);
+                                    }
+                                } else if (mThreadViewEnabled) {
+                                    long threadId = localMessage.getRootId();
+                                    if (threadId == -1) {
+                                        threadId = localMessage.getId();
+                                    }
+
+                                    MessageInfoHolder threadPlaceHolder = getThread(threadId);
+                                    if (threadPlaceHolder == null) {
+                                        messagesToAdd.add(m);
+                                    } else if (m.compareDate.after(threadPlaceHolder.compareDate)) {
+                                        messagesToRemove.add(threadPlaceHolder);
+                                        messagesToAdd.add(m);
+                                    } else {
+                                        threadPlaceHolder.threadCount = m.threadCount;
+                                    }
+                                } else {
+                                    messagesToAdd.add(m);
+                                }
+                            } else {
+                                messagesToAdd.add(m);
+                            }
                         } else {
                             if (mQueryString != null) {
                                 if (verifyAgainstSearch) {
@@ -1870,6 +1899,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                         holder.folder.name.equals(messageReference.folderName) &&
                         holder.account.equals(messageReference.accountUuid)) {
                      return holder;
+                }
+            }
+
+            return null;
+        }
+
+        private MessageInfoHolder getThread(long threadId) {
+            for (MessageInfoHolder holder : mMessages) {
+                LocalMessage localMessage = (LocalMessage) holder.message;
+                if (localMessage.getId() == threadId || localMessage.getRootId() == threadId) {
+                    return holder;
                 }
             }
 
@@ -2056,7 +2096,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 subject = message.message.getSubject();
             }
 
-            int threadCount = ((LocalMessage) message.message).getThreadCount();
+            int threadCount = message.threadCount;
             if (threadCount > 1) {
                 holder.threadCount.setText(Integer.toString(threadCount));
                 holder.threadCount.setVisibility(View.VISIBLE);
