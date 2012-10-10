@@ -2102,7 +2102,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             int threadCount = message.threadCount;
-            if (threadCount > 1) {
+            if (mThreadId == -1 && threadCount > 1) {
                 holder.threadCount.setText(Integer.toString(threadCount));
                 holder.threadCount.setVisibility(View.VISIBLE);
             } else {
