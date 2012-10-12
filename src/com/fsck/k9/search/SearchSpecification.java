@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.fsck.k9.search;
 
 import com.fsck.k9.mail.Flag;
 

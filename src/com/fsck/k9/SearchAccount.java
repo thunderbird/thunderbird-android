@@ -6,6 +6,7 @@ import java.util.UUID;
 import android.content.Context;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.search.SearchSpecification;
 
 /**
  * This is a meta-Account that represents one or more accounts with filters on them.  The filter specification
