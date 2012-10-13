@@ -2,7 +2,10 @@ package com.fsck.k9.search;
 
 import java.util.UUID;
 
+import android.content.Context;
+
 import com.fsck.k9.BaseAccount;
+import com.fsck.k9.R;
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as
@@ -10,6 +13,24 @@ import com.fsck.k9.BaseAccount;
  */
 public class SearchAccount implements BaseAccount {
 
+    // create the all messages search ( all accounts is default when none specified )
+	public static SearchAccount createAllMessagesAccount(Context context) {
+        String name = context.getString(R.string.search_all_messages_title);
+        LocalSearch tmpSearch = new LocalSearch(name);
+        return new SearchAccount(tmpSearch, name, 
+        		context.getString(R.string.search_all_messages_detail));
+	}
+	
+
+	// create the unified inbox meta account ( all accounts is default when none specified )
+	public static SearchAccount createUnifiedInboxAccount(Context context) {
+        String name = context.getString(R.string.integrated_inbox_title);
+        LocalSearch tmpSearch = new LocalSearch(name);
+        tmpSearch.addAllowedFolder(SearchSpecification.GENERIC_INBOX_NAME);
+        return new SearchAccount(tmpSearch, name,
+        		context.getString(R.string.integrated_inbox_detail));
+	}
+	
     private String mEmail = null;
     private String mDescription = null;
     private LocalSearch mSearch = null;
