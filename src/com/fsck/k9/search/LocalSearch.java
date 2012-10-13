@@ -153,8 +153,13 @@ public class LocalSearch implements SearchSpecification {
 	 * @return New top AND node, new root.
 	 */
 	public ConditionsTreeNode and(SearchCondition condition) {
-		ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-		return and(tmp);
+		try {
+			ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+			return and(tmp);
+		} catch (Exception e) {
+			// impossible
+			return null;
+		}
 	}
 	
 	/**
@@ -163,22 +168,17 @@ public class LocalSearch implements SearchSpecification {
 	 * 
 	 * @param node Node to 'AND' with.
 	 * @return New top AND node, new root.
+	 * @throws Exception 
 	 */
-	public ConditionsTreeNode and(ConditionsTreeNode node) {
-		try {
-			mLeafSet.add(node);
-			
-			if (mConditions == null) {
-				mConditions = node;
-				return node;
-			}
-			
-			mConditions = mConditions.and(node);
-			return mConditions;
-		} catch (Exception e) {
-			// IMPOSSIBLE!
-			return null;
+	public ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
+		mLeafSet.addAll(node.getLeafSet());
+		
+		if (mConditions == null) {
+			mConditions = node;
+			return node;
 		}
+		
+		return mConditions.and(node);
 	}
 	
 	/**
@@ -189,8 +189,13 @@ public class LocalSearch implements SearchSpecification {
 	 * @return New top OR node, new root.
 	 */
 	public ConditionsTreeNode or(SearchCondition condition) {
-		ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-		return or(tmp);
+		try {
+			ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+			return or(tmp);
+		} catch (Exception e) {
+			// impossible
+			return null;
+		}
 	}
 	
 	/**
@@ -199,22 +204,17 @@ public class LocalSearch implements SearchSpecification {
 	 * 
 	 * @param node Node to 'OR' with.
 	 * @return New top OR node, new root.
+	 * @throws Exception 
 	 */
-	public ConditionsTreeNode or(ConditionsTreeNode node) {
-		try {
-			mLeafSet.add(node);
-			
-			if (mConditions == null) {
-				mConditions = node;
-				return node;
-			}
-			
-			mConditions = mConditions.or(node);
-			return mConditions;
-		} catch (Exception e) {
-			// IMPOSSIBLE!
-			return null;
+	public ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
+		mLeafSet.addAll(node.getLeafSet());
+		
+		if (mConditions == null) {
+			mConditions = node;
+			return node;
 		}
+		
+		return mConditions.or(node);
 	}
 	
 	/**
