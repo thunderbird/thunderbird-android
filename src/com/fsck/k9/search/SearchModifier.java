@@ -6,13 +6,13 @@ import com.fsck.k9.mail.Flag;
 /**
  * This enum represents filtering parameters used by {@link com.fsck.k9.search.SearchAccount}.
  */
-enum SearchModifier {
+public enum SearchModifier {
     FLAGGED(R.string.flagged_modifier, new Flag[]{Flag.FLAGGED}, null),
     UNREAD(R.string.unread_modifier, null, new Flag[]{Flag.SEEN});
 
-    final int resId;
-    final Flag[] requiredFlags;
-    final Flag[] forbiddenFlags;
+    public final int resId;
+    public final Flag[] requiredFlags;
+    public final Flag[] forbiddenFlags;
 
     SearchModifier(int nResId, Flag[] nRequiredFlags, Flag[] nForbiddenFlags) {
         resId = nResId;
