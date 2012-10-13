@@ -3160,8 +3160,11 @@ public class MessagingController implements Runnable {
         builder.setContentTitle(mApplication.getString(R.string.notification_bg_send_title));
         builder.setContentText(account.getDescription());
 
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
-                account.getInboxFolderName());
+        LocalSearch search = new LocalSearch(account.getInboxFolderName());
+        search.addAllowedFolder(account.getInboxFolderName());
+        search.addAccountUuid(account.getUuid());
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, true, true);
+        
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);
 
@@ -3243,8 +3246,11 @@ public class MessagingController implements Runnable {
                 mApplication.getString(R.string.notification_bg_title_separator) +
                 folder.getName());
 
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
-                account.getInboxFolderName());
+        LocalSearch search = new LocalSearch(account.getInboxFolderName());
+        search.addAllowedFolder(account.getInboxFolderName());
+        search.addAccountUuid(account.getUuid());
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, true, true);
+        
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);
 

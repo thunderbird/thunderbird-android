@@ -302,7 +302,7 @@ public class MessageProvider extends ContentProvider {
             final SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(getContext());
             final MessagingController msgController = MessagingController.getInstance(K9.app);
 
-            msgController.searchLocalMessages(integratedInboxAccount, null,
+            msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch(),
                                               new MesssageInfoHolderRetrieverListener(queue));
 
             final List<MessageInfoHolder> holders = queue.take();
