@@ -298,7 +298,7 @@ public class LocalSearch implements SearchSpecification {
      * @return Name of the search.
      */
     public String getName() {
-        return mName;
+        return (mName == null ? "" : mName);
     }
 	
     /**
