@@ -34,7 +34,11 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.ATTRIBUTE;
+import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
 
 
 /**
@@ -44,84 +48,34 @@ import com.fsck.k9.search.SearchSpecification;
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
         OnBackStackChangedListener, OnSwipeGestureListener {
-    private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_FOLDER  = "folder";
+	
+	// for this activity
+    private static final String EXTRA_SEARCH = "search";
+
+    // used for remote search
     private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
-    private static final String EXTRA_QUERY_FLAGS = "queryFlags";
-    private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
-    private static final String EXTRA_INTEGRATE = "integrate";
-    private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
-    private static final String EXTRA_FOLDER_NAMES = "folderNames";
-    private static final String EXTRA_TITLE = "title";
 
-
-    public static void actionHandleFolder(Context context, Account account, String folder) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (folder != null) {
-            intent.putExtra(EXTRA_FOLDER, folder);
-        }
-        context.startActivity(intent);
+    public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask) {
+        actionDisplaySearch(context, search, newTask, true);
     }
-
-    public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
+    
+    public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
+        context.startActivity(intentDisplaySearch(context, search, newTask, clearTop));
+    }
+    
+    public static Intent intentDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (folder != null) {
-            intent.putExtra(EXTRA_FOLDER, folder);
+        intent.putExtra(EXTRA_SEARCH, search);
+        
+        if (clearTop) {
+        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
+        if (newTask) {
+        	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        
         return intent;
-    }
-
-    public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(SearchManager.QUERY, queryString);
-        if (flags != null) {
-            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(flags, ','));
-        }
-        if (forbiddenFlags != null) {
-            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(forbiddenFlags, ','));
-        }
-        intent.putExtra(EXTRA_INTEGRATE, integrate);
-        intent.putExtra(EXTRA_TITLE, title);
-        context.startActivity(intent);
-    }
-
-    /**
-     * Creates and returns an intent that opens Unified Inbox or All Messages screen.
-     */
-    public static Intent actionHandleAccountIntent(Context context, String title,
-            SearchSpecification searchSpecification) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(SearchManager.QUERY, searchSpecification.getQuery());
-        if (searchSpecification.getRequiredFlags() != null) {
-            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(searchSpecification.getRequiredFlags(), ','));
-        }
-        if (searchSpecification.getForbiddenFlags() != null) {
-            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(searchSpecification.getForbiddenFlags(), ','));
-        }
-        intent.putExtra(EXTRA_INTEGRATE, searchSpecification.isIntegrate());
-        intent.putExtra(EXTRA_ACCOUNT_UUIDS, searchSpecification.getAccountUuids());
-        intent.putExtra(EXTRA_FOLDER_NAMES, searchSpecification.getFolderNames());
-        intent.putExtra(EXTRA_TITLE, title);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        return intent;
-    }
-
-    public static void actionHandle(Context context, String title,
-                                    SearchSpecification searchSpecification) {
-        Intent intent = actionHandleAccountIntent(context, title, searchSpecification);
-        context.startActivity(intent);
     }
 
 
@@ -131,30 +85,21 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private TextView mActionBarTitle;
     private TextView mActionBarSubTitle;
     private TextView mActionBarUnread;
-    private String mTitle;
     private Menu mMenu;
 
     private MessageListFragment mMessageListFragment;
 
     private Account mAccount;
-    private String mQueryString;
     private String mFolderName;
-    private Flag[] mQueryFlags;
-    private Flag[] mForbiddenFlags;
-    private String mSearchAccount = null;
-    private String mSearchFolder = null;
-    private boolean mIntegrate;
-    private String[] mAccountUuids;
-    private String[] mFolderNames;
-
-
+	private LocalSearch mSearch;
+    private boolean mSingleFolderMode;
+    private boolean mSingleAccountMode;
+    private boolean mIsRemote;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_list);
-
-        // need this for actionbar initialization
-        mQueryString = getIntent().getStringExtra(SearchManager.QUERY);
 
         mActionBar = getSupportActionBar();
         initializeActionBar();
@@ -171,76 +116,56 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            if (mQueryString == null) {
-                mMessageListFragment = MessageListFragment.newInstance(mAccount, mFolderName);
-            } else if (mSearchAccount != null) {
-                mMessageListFragment = MessageListFragment.newInstance(mSearchAccount,
-                        mSearchFolder, mQueryString, false);
-            } else {
-                mMessageListFragment = MessageListFragment.newInstance(mTitle, mAccountUuids,
-                        mFolderNames, mQueryString, mQueryFlags, mForbiddenFlags, mIntegrate);
-            }
+            mMessageListFragment = MessageListFragment.newInstance(mSearch, mIsRemote);
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
     }
 
     private void decodeExtras(Intent intent) {
-        mQueryString = intent.getStringExtra(SearchManager.QUERY);
-        mFolderName = null;
-        mSearchAccount = null;
-        mSearchFolder = null;
-        if (mQueryString != null) {
+    	// check if this intent comes from the system search ( remote )
+    	if (intent.getStringExtra(SearchManager.QUERY) != null) {
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
-                    mSearchAccount = appData.getString(EXTRA_SEARCH_ACCOUNT);
-                    mSearchFolder = appData.getString(EXTRA_SEARCH_FOLDER);
+                    mSearch = new LocalSearch();
+                    mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
+                    mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                    
+                    String query = intent.getStringExtra(SearchManager.QUERY);
+                    mSearch.or(new SearchCondition(SEARCHFIELD.SENDER, ATTRIBUTE.CONTAINS, query));
+                    mSearch.or(new SearchCondition(SEARCHFIELD.SUBJECT, ATTRIBUTE.CONTAINS, query));
+                    
+                    mIsRemote = true;
                 }
-            } else {
-                mSearchAccount = intent.getStringExtra(EXTRA_SEARCH_ACCOUNT);
-                mSearchFolder = intent.getStringExtra(EXTRA_SEARCH_FOLDER);
             }
+        } else {
+        	// regular LocalSearch object was passed
+        	mSearch = intent.getParcelableExtra(EXTRA_SEARCH);      	
         }
 
-        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
-
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-
-        if (mAccount != null && !mAccount.isAvailable(this)) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
-            onAccountUnavailable();
-            return;
-        }
-
-        String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
-        if (queryFlags != null) {
-            String[] flagStrings = queryFlags.split(",");
-            mQueryFlags = new Flag[flagStrings.length];
-            for (int i = 0; i < flagStrings.length; i++) {
-                mQueryFlags[i] = Flag.valueOf(flagStrings[i]);
-            }
-        }
-        String forbiddenFlags = intent.getStringExtra(EXTRA_FORBIDDEN_FLAGS);
-        if (forbiddenFlags != null) {
-            String[] flagStrings = forbiddenFlags.split(",");
-            mForbiddenFlags = new Flag[flagStrings.length];
-            for (int i = 0; i < flagStrings.length; i++) {
-                mForbiddenFlags[i] = Flag.valueOf(flagStrings[i]);
-            }
-        }
-        mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
-        mAccountUuids = intent.getStringArrayExtra(EXTRA_ACCOUNT_UUIDS);
-        mFolderNames = intent.getStringArrayExtra(EXTRA_FOLDER_NAMES);
-        mTitle = intent.getStringExtra(EXTRA_TITLE);
-
-        // Take the initial folder into account only if we are *not* restoring
-        // the activity already.
-        if (mFolderName == null && mQueryString == null) {
-            mFolderName = mAccount.getAutoExpandFolderName();
-        }
+	    String[] accounts = mSearch.getAccountUuids();
+	    mSingleAccountMode = ( accounts != null && accounts.length == 1 
+	    		&& !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS));
+	    mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
+	    
+	    if (mSingleAccountMode) {
+		    mAccount = Preferences.getPreferences(this).getAccount(accounts[0]);
+		    
+		    if (mAccount != null && !mAccount.isAvailable(this)) {
+		        Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+		        onAccountUnavailable();
+		        return;
+		    }
+	    }
+	    
+	    if (mSingleFolderMode) {
+	    	mFolderName = mSearch.getFolderNames().get(0);
+	    }
+	    
+	    // now we know if we are in single account mode and need a subtitle
+	    mActionBarSubTitle.setVisibility((!mSingleFolderMode) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -275,10 +200,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
         mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
-
-        if (mQueryString != null) {
-            mActionBarSubTitle.setVisibility(View.GONE);
-        }
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -407,17 +328,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     fragmentManager.popBackStack();
-                } else if (mIntegrate) {
-                    // If we were in one of the integrated mailboxes (think All Mail or Integrated Inbox), then
-                    // go to accounts.
-                    onAccounts();
-                } else if (mQueryString != null) {
-                    // We did a search of some sort.  Go back to wherever the user searched from.
-                    onBackPressed();
-                } else {
-                    // In a standard message list of a folder.  Go to folder list.
-                    onShowFolderList();
-                }
+                } else if (!mSingleFolderMode) {
+            		onBackPressed();
+            	} else {
+            		onShowFolderList();
+            	}
                 return true;
             }
             case R.id.compose: {
@@ -470,7 +385,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
         }
 
-        if (mQueryString != null) {
+        if (!mSingleFolderMode) {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
             return false;
@@ -534,7 +449,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.select_all).setVisible(true);
             menu.findItem(R.id.settings).setVisible(true);
 
-            if (mMessageListFragment.isSearchQuery()) {
+            if (!mSingleAccountMode) {
                 menu.findItem(R.id.expunge).setVisible(false);
                 menu.findItem(R.id.check_mail).setVisible(false);
                 menu.findItem(R.id.send_messages).setVisible(false);
@@ -666,8 +581,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showMoreFromSameSender(String senderAddress) {
-        MessageListFragment fragment = MessageListFragment.newInstance("From " + senderAddress,
-                null, null, senderAddress, null, null, false);
+    	LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
+    	tmpSearch.addAccountUuids(mSearch.getAccountUuids());
+    	tmpSearch.and(SEARCHFIELD.SENDER, senderAddress, ATTRIBUTE.CONTAINS);
+    	
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
 
         addMessageListFragment(fragment);
     }
@@ -716,8 +634,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void remoteSearch(String searchAccount, String searchFolder, String queryString) {
-        MessageListFragment fragment = MessageListFragment.newInstance(searchAccount, searchFolder,
-                queryString, true);
+        MessageListFragment fragment = MessageListFragment.newInstance(mSearch, true);
 
         addMessageListFragment(fragment);
     }
@@ -751,9 +668,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showThread(Account account, String folderName, long threadRootId) {
-        MessageListFragment fragment = MessageListFragment.newInstance(account, folderName,
-                threadRootId);
-
+    	LocalSearch tmpSearch = new LocalSearch();
+    	tmpSearch.addAccountUuids(mSearch.getAccountUuids());
+    	tmpSearch.and(SEARCHFIELD.THREAD_ROOT, String.valueOf(threadRootId), ATTRIBUTE.EQUALS);
+    	
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
         addMessageListFragment(fragment);
     }
 }
