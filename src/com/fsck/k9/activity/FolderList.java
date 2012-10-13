@@ -67,6 +67,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.search.SearchModifier;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.service.MailService;
 

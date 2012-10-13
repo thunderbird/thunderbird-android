@@ -1,10 +1,10 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.search;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Flag;
 
 /**
- * This enum represents filtering parameters used by {@link com.fsck.k9.SearchAccount}.
+ * This enum represents filtering parameters used by {@link com.fsck.k9.search.SearchAccount}.
  */
 enum SearchModifier {
     FLAGGED(R.string.flagged_modifier, new Flag[]{Flag.FLAGGED}, null),

@@ -21,7 +21,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.SearchAccount;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageList;
@@ -34,6 +33,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.search.SearchAccount;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
