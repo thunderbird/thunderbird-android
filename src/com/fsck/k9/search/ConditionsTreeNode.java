@@ -142,6 +142,24 @@ public class ConditionsTreeNode implements Parcelable{
 	}
 	
 	/**
+	 * Convenience method.
+	 * Adds the provided condition as the second argument of an AND 
+	 * clause to this node.
+	 * 
+	 * @param condition Condition to 'AND' with.
+	 * @return New top AND node, new root.
+	 */
+	public ConditionsTreeNode and(SearchCondition condition) {
+		try {
+			ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+			return and(tmp);
+		} catch (Exception e) {
+			// impossible
+			return null;
+		}
+	}
+	
+	/**
 	 * Adds the expression as the second argument of an OR 
 	 * clause to this node.
 	 * 
@@ -151,6 +169,24 @@ public class ConditionsTreeNode implements Parcelable{
 	 */
 	public ConditionsTreeNode or(ConditionsTreeNode expr) throws Exception {
 		return add(expr, OPERATOR.OR);
+	}
+	
+	/**
+	 * Convenience method.
+	 * Adds the provided condition as the second argument of an OR 
+	 * clause to this node.
+	 * 
+	 * @param condition Condition to 'OR' with.
+	 * @return New top OR node, new root.
+	 */
+	public ConditionsTreeNode or(SearchCondition condition) {
+		try {
+			ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+			return or(tmp);
+		} catch (Exception e) {
+			// impossible
+			return null;
+		}
 	}
 	
 	/**
