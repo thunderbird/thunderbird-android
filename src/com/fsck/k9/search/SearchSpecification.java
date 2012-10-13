@@ -90,7 +90,7 @@ public interface SearchSpecification extends Parcelable {
         SUBJECT("subject"), DATE("date"), UID("uid"), FLAG("flags"),
         SENDER("sender_list"), TO("to_list"), CC("cc_list"), FOLDER("folder_id"),
         BCC("bcc_list"), REPLY_TO("reply_to_list"), MESSAGE("text_content"),
-        ATTACHMENT_COUNT("attachment_count"), DELETED("deleted");
+        ATTACHMENT_COUNT("attachment_count"), DELETED("deleted"), THREAD_ROOT("thread_root");
 
         private String dbName;
         
