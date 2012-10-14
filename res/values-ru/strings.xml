@@ -31,7 +31,7 @@
 \n * систематизация сообщений;
 \n * электронные подписи в почте;
 \n * СК Себе;
-\n * подписки к папкам
+\n * подписки к папкам;
 \n * синхронизация всех папок;
 \n * конфигурация возвратного адреса;
 \n * сочетания клавиш на аппаратной клавиатуре;
@@ -324,7 +324,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_notification_hide_subject_always">Всегда</string>
 
     <string name="global_settings_batch_buttons">Кнопки групповой обработки</string>
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
+    <string name="global_settings_batch_buttons_summary">Настройка списка кнопок групповой обработки</string>
     <string name="global_settings_mark_read">Пометить как прочитанное/непрочитанное</string>
     <string name="global_settings_delete">Удалить</string>
     <string name="global_settings_archive">Переместить в архив</string>
@@ -463,18 +463,18 @@ http://k9mail.googlecode.com/
     <string name="account_setup_options_mail_check_frequency_3hour">Раз в 3 часа</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Раз в 6 часов</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Раз в 12 часов</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Раз в 24 часа</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Раз в сутки</string>
 
     <string name="push_poll_on_connect_label">Запрашивать при соединении с Push Mail</string>
     <string name="account_setup_options_enable_push_label">Использовать Push Mail</string>
     <string name="account_setup_options_enable_push_summary">Если ваш сервер поддерживает такую возможность, новые сообщения появляются мгновенно. Эта опция может существенно улучшить или ухудшить скорость и эффективность всей системы.</string>
     <string name="idle_refresh_period_label">Обновлять неактивное соединение</string>
     <string name="idle_refresh_period_1min">Раз в минуту</string>
-    <string name="idle_refresh_period_2min">Раз в 2 минут</string>
-    <string name="idle_refresh_period_3min">Раз в 3 минут</string>
+    <string name="idle_refresh_period_2min">Раз в 2 минуты</string>
+    <string name="idle_refresh_period_3min">Раз в 3 минуты</string>
     <string name="idle_refresh_period_6min">Раз в 6 минут</string>
     <string name="idle_refresh_period_12min">Раз в 12 минут</string>
-    <string name="idle_refresh_period_24min">Раз в 24 минут</string>
+    <string name="idle_refresh_period_24min">Раз в 24 минуты</string>
     <string name="idle_refresh_period_36min">Раз в 36 минут</string>
     <string name="idle_refresh_period_48min">Раз в 48 минут</string>
     <string name="idle_refresh_period_60min">Раз в час</string>
@@ -605,8 +605,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_age_1">за 2 последних дня</string>
     <string name="account_settings_message_age_2">за 3 последних дня</string>
     <string name="account_settings_message_age_7">за последнюю неделю</string>
-    <string name="account_settings_message_age_14">за 2 последних недели</string>
-    <string name="account_settings_message_age_21">за 3 последних недели</string>
+    <string name="account_settings_message_age_14">за 2 последние недели</string>
+    <string name="account_settings_message_age_21">за 3 последние недели</string>
     <string name="account_settings_message_age_1_month">за последний месяц</string>
     <string name="account_settings_message_age_2_months">за 2 последних месяца</string>
     <string name="account_settings_message_age_3_months">за 3 последних месяца</string>
