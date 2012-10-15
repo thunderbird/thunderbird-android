@@ -155,7 +155,7 @@ http://k9mail.googlecode.com/
     <string name="select_text_action">Selecionar texto</string>
 
     <string name="mark_as_unread_action">Marcar como não lida</string>
-    <string name="add_cc_bcc_action">Incluir Cc/Bcc</string>
+    <string name="add_cc_bcc_action">Incluir CC/CCO</string>
     <string name="read_receipt">Confirmação de leitura</string>
     <string name="read_receipt_enabled">Confirmação de leitura será requisitada</string>
     <string name="read_receipt_disabled">Confirmação de leitura não será requisitada</string>
@@ -746,7 +746,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ordenar por…</string>
     <string name="sort_by_date">Data</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <!-- NEW: <string name="sort_by_arrival">Recebimento</string>-->
     <string name="sort_by_sender">Remetente</string>
     <string name="sort_by_subject">Assunto</string>
     <string name="sort_by_flag">Favorito</string>
@@ -787,7 +787,7 @@ http://k9mail.googlecode.com/
     - Retornar à pastas\u000AS - Selecionar/desselecionar</string>
 
     <string name="folder_list_help_key">
-    1 - Mostrar apenas pastar de Primeira Classe\u000A
+    1 - Mostrar apenas pastas de Primeira Classe\u000A
     2 - Mostrar pastas de Primeira e Segunda Classe\u000A
     3 - Mostar todas exceto as de Segunda Classe\u000A
     4 - Mostar todas as pastas\u000A
