@@ -261,7 +261,7 @@ public class LocalSearch implements SearchSpecification {
          *  		- do and on root of it & rest of search
          *  		- do or between folder nodes
          */
-        and(new SearchCondition(SEARCHFIELD.FOLDER, ATTRIBUTE.EQUALS, name));
+        mConditions = and(new SearchCondition(SEARCHFIELD.FOLDER, ATTRIBUTE.EQUALS, name));
     }
 
     /*
