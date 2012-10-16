@@ -746,7 +746,7 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ordenar por…</string>
     <string name="sort_by_date">Data</string>
-    <!-- NEW: <string name="sort_by_arrival">Recebimento</string>-->
+    <string name="sort_by_arrival">Recebimento</string>
     <string name="sort_by_sender">Remetente</string>
     <string name="sort_by_subject">Assunto</string>
     <string name="sort_by_flag">Favorito</string>
@@ -827,9 +827,9 @@ http://k9mail.googlecode.com/
     <string name="background_ops_label">Sincronização em segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_enabled">Quando \'Dados de segundo plado\' estiver checado</string>
-    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano e auto-sinc estiverem checados</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">Quando a auto-sinc estiver ligada</string>-->
+    <string name="background_ops_enabled">Quando \'Dados de segundo plano\' estiver checado</string>
+    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' e \'Auto-sinc\' estiverem checados</string>
+    <string name="background_ops_auto_sync_only">Quando a \'Auto-sinc\' estiver ligada</string>
 
     <string name="no_message_seletected_toast">Nenhuma mensagem selecionada</string>
 
@@ -921,7 +921,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_list_subject">Assunto</string>
     <string name="font_size_message_list_sender">Remetente</string>
     <string name="font_size_message_list_date">Data</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Previsualizar</string>-->
+    <string name="font_size_message_list_preview">Previsualizar</string>
 
     <string name="font_size_message_view">Mensagens</string>
     <string name="font_size_message_view_sender">Remetente</string>
@@ -933,8 +933,8 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_date">Data</string>
     <string name="font_size_message_view_content">Corpo da mensagem</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Composição de mensagem</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Campos de entrada de texto</string>-->
+    <string name="font_size_message_compose">Composição de mensagem</string>
+    <string name="font_size_message_compose_input">Campos de entrada de texto</string>
 
     <string name="font_size_tiniest">Minúsculo</string>
     <string name="font_size_tiny">Pequenino</string>
@@ -977,14 +977,14 @@ http://k9mail.googlecode.com/
     <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Salvar ou descartar esta mensagem?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Descartar mensagens?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>-->
+    <string name="confirm_discard_draft_message_title">Descartar mensagens?</string>
+    <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Recusar salvamento de rascunho.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Recusar salvamento de rascunho de mensagem encriptada.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Recusar salvamento de rascunho.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Recusar salvamento de rascunho de mensagem encriptada.</string>
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continuar sem chave pública?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">Um ou mais destinatários não tem chave pública. Continuar?</string>-->
+    <string name="continue_without_public_key_dlg_title">Continuar sem chave pública?</string>
+    <string name="continue_without_public_key_instructions_fmt">Um ou mais destinatários não tem chave pública. Continuar?</string>
 
     <string name="select_text_now">Selecione o texto para copiar.</string>
 
@@ -993,11 +993,11 @@ http://k9mail.googlecode.com/
     <string name="dialog_confirm_delete_confirm_button">Excluir</string>
     <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirma mover para a pasta de spam</string>-->
-    <!-- NEW: <plurals name="dialog_confirm_spam_message">
+    <string name="dialog_confirm_spam_title">Confirma mover para a pasta de spam</string>
+    <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
         <item quantity="other">Deseja mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
-
+<!--
   Translators:
 
   Please review how to handle pluralization for your language at (1) and ajust
@@ -1006,49 +1006,49 @@ http://k9mail.googlecode.com/
   Possible values for 'quantity': zero, one, two, few, many, other
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Sim</string>
+    <string name="dialog_confirm_spam_cancel_button">Nãoo</string>
 
-    </plurals>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Sim</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">Nãoo</string>-->
-
-    <!-- NEW: <string name="dialog_attachment_progress_title">Baixando anexo</string>-->
+    <string name="dialog_attachment_progress_title">Baixando anexo</string>
 
     <string name="debug_logging_enabled">O log de depuração para o sistema Android foi habilitado</string>
 
-    <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
-    <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Não é possível conectar.</string>
 
-    <!-- NEW: <string name="import_export_action">Importar ou exportar configurações</string>-->
-    <!-- NEW: <string name="settings_export_account">Exportar configurações de conta</string>-->
-    <!-- NEW: <string name="settings_export_all">Exportar configurações e contas</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Importar</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Exportar</string>-->
-    <!-- NEW: <string name="settings_import">Importar configurações</string>-->
-    <!-- NEW: <string name="settings_import_selection">Importar seleção</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Configurações globais</string>-->
-    <!-- NEW: <string name="settings_exporting">Exportando…</string>-->
-    <!-- NEW: <string name="settings_importing">Importando…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Buscando arquivo…</string>-->
-    <!-- NEW: <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Importada <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
+    <string name="import_export_action">Importar ou exportar configurações</string>
+    <string name="settings_export_account">Exportar configurações de conta</string>
+    <string name="settings_export_all">Exportar configurações e contas</string>
+    <string name="settings_import_dialog_title">Importar</string>
+    <string name="settings_export_dialog_title">Exportar</string>
+    <string name="settings_import">Importar configurações</string>
+    <string name="settings_import_selection">Importar seleção</string>
+    <string name="settings_import_global_settings">Configurações globais</string>
+    <string name="settings_exporting">Exportando…</string>
+    <string name="settings_importing">Importando…</string>
+    <string name="settings_import_scanning_file">Buscando arquivo…</string>
+    <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Importada <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
+    <plurals name="settings_import_success">
         <item quantity="one">1 conta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Falha na exportação</string>-->
-    <!-- NEW: <string name="settings_import_failure">Falha na importação via <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Exportação concluída</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Falha na export</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Importação realizada</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Falha na importação</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Ativar conta</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">Para poder usar a conta \"<xliff:g id="account">%s</xliff:g>\" você deve fornecer <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
+    </plurals>
+    <string name="settings_export_failure">Falha na exportação</string>
+    <string name="settings_import_failure">Falha na importação via <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Exportação concluída</string>
+    <string name="settings_export_failed_header">Falha na export</string>
+    <string name="settings_import_success_header">Importação realizada</string>
+    <string name="settings_import_failed_header">Falha na importação</string>
+    <string name="settings_import_activate_account_header">Ativar conta</string>
+    <string name="settings_import_activate_account_intro">Para poder usar a conta \"<xliff:g id="account">%s</xliff:g>\" você deve fornecer <xliff:g id="server_passwords">%s</xliff:g>.</string>
+    <plurals name="settings_import_server_passwords">
         <item quantity="one">senha do servidor</item>
         <item quantity="other">senhas do servidor</item>
-    </plurals>-->
+    </plurals>
     <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <plurals name="settings_import_setting_passwords">
@@ -1062,43 +1062,43 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
 
-    <!-- NEW: <string name="settings_attachment_default_path">Salvar anexos para…</string>-->
-    <!-- NEW: <string name="attachment_save_title">Salvar anexo</string>-->
-    <!-- NEW: <string name="attachment_save_desc">Nenhum explorador de arquivos encontrado. Deseja salvar este anexo?</string>-->
+    <string name="settings_attachment_default_path">Salvar anexos para…</string>
+    <string name="attachment_save_title">Salvar anexo</string>
+    <string name="attachment_save_desc">Nenhum explorador de arquivos encontrado. Deseja salvar este anexo?</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Mover para cima</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Mover para baixo</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Movendo conta…</string>-->
+    <string name="manage_accounts_move_up_action">Mover para cima</string>
+    <string name="manage_accounts_move_down_action">Mover para baixo</string>
+    <string name="manage_accounts_moving_message">Movendo conta…</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Exibir contagem de não lidos para…</string>-->
+    <string name="unread_widget_select_account">Exibir contagem de não lidos para…</string>
 
-    <!-- NEW: <string name="import_dialog_error_title">Explorador de Arquivos Ausente</string>-->
-    <!-- NEW: <string name="close">Fechar</string>-->
+    <string name="import_dialog_error_title">Explorador de Arquivos Ausente</string>
+    <string name="close">Fechar</string>
 
-    <!-- NEW: <string name="webview_empty_message">Nenhum texto</string>-->
+    <string name="webview_empty_message">Nenhum texto</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Abrir para visualizar</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Compartilhar link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copiar link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Abrir para visualizar</string>
+    <string name="webview_contextmenu_link_share_action">Compartilhar link</string>
+    <string name="webview_contextmenu_link_copy_action">Copiar link</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Imagem</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">Ver imagem</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Salvar imagem</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Baixar imagem</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copiar URL da imagem</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">URL da imagem</string>-->
+    <string name="webview_contextmenu_image_title">Imagem</string>
+    <string name="webview_contextmenu_image_view_action">Ver imagem</string>
+    <string name="webview_contextmenu_image_save_action">Salvar imagem</string>
+    <string name="webview_contextmenu_image_download_action">Baixar imagem</string>
+    <string name="webview_contextmenu_image_copy_action">Copiar URL da imagem</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL da imagem</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Chamar número</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Salvar como contato</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copiar número telefônico</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Número</string>-->
+    <string name="webview_contextmenu_phone_call_action">Chamar número</string>
+    <string name="webview_contextmenu_phone_save_action">Salvar como contato</string>
+    <string name="webview_contextmenu_phone_copy_action">Copiar número telefônico</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Número</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Enviar email</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Salvar nos contatos</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copiar endereço de email</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Endereço email</string>-->
+    <string name="webview_contextmenu_email_send_action">Enviar email</string>
+    <string name="webview_contextmenu_email_save_action">Salvar nos contatos</string>
+    <string name="webview_contextmenu_email_copy_action">Copiar endereço de email</string>
+    <string name="webview_contextmenu_email_clipboard_label">Endereço email</string>
 
-    <!-- NEW: <string name="image_saved_as">Imagem salva como \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Falha ao salvar imagem.</string>-->
+    <string name="image_saved_as">Imagem salva como \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Falha ao salvar imagem.</string>
 </resources>
