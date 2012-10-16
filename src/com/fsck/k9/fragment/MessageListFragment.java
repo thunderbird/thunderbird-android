@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -82,8 +81,15 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
+import com.fsck.k9.search.ConditionsTreeNode;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.ATTRIBUTE;
+import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -124,67 +130,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int THREAD_PARENT_COLUMN = 13;
 
 
-    public static MessageListFragment newInstance(Account account, String folderName) {
+    public static MessageListFragment newInstance(LocalSearch search, boolean remoteSearch) {
         MessageListFragment fragment = new MessageListFragment();
-
         Bundle args = new Bundle();
-        args.putString(ARG_ACCOUNT, account.getUuid());
-        args.putString(ARG_FOLDER, folderName);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    public static MessageListFragment newInstance(Account account, String folderName,
-            long threadRootId) {
-        MessageListFragment fragment = new MessageListFragment();
-
-        Bundle args = new Bundle();
-        args.putString(ARG_ACCOUNT, account.getUuid());
-        args.putString(ARG_FOLDER, folderName);
-        args.putLong(ARG_THREAD_ID, threadRootId);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    public static MessageListFragment newInstance(String title, String[] accountUuids,
-            String[] folderNames, String queryString, Flag[] flags,
-            Flag[] forbiddenFlags, boolean integrate) {
-
-        MessageListFragment fragment = new MessageListFragment();
-
-        Bundle args = new Bundle();
-        args.putStringArray(ARG_ACCOUNT_UUIDS, accountUuids);
-        args.putStringArray(ARG_FOLDER_NAMES, folderNames);
-        args.putString(ARG_QUERY, queryString);
-        if (flags != null) {
-            args.putString(ARG_QUERY_FLAGS, Utility.combine(flags, ','));
-        }
-        if (forbiddenFlags != null) {
-            args.putString(ARG_FORBIDDEN_FLAGS, Utility.combine(forbiddenFlags, ','));
-        }
-        args.putBoolean(ARG_INTEGRATE, integrate);
-        args.putString(ARG_TITLE, title);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    public static MessageListFragment newInstance(String searchAccount, String searchFolder,
-            String queryString, boolean remoteSearch) {
-        MessageListFragment fragment = new MessageListFragment();
-
-        Bundle args = new Bundle();
-        args.putString(ARG_SEARCH_ACCOUNT, searchAccount);
-        args.putString(ARG_SEARCH_FOLDER, searchFolder);
-        args.putString(ARG_QUERY, queryString);
+        args.putParcelable(ARG_SEARCH, search);
         args.putBoolean(ARG_REMOTE_SEARCH, remoteSearch);
         fragment.setArguments(args);
-
         return fragment;
     }
-
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -327,20 +280,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
-    private static final String ARG_ACCOUNT = "account";
-    private static final String ARG_FOLDER  = "folder";
-    private static final String ARG_REMOTE_SEARCH = "remote_search";
-    private static final String ARG_QUERY = "query";
-    private static final String ARG_SEARCH_ACCOUNT = "search_account";
-    private static final String ARG_SEARCH_FOLDER = "search_folder";
-    private static final String ARG_QUERY_FLAGS = "queryFlags";
-    private static final String ARG_FORBIDDEN_FLAGS = "forbiddenFlags";
-    private static final String ARG_INTEGRATE = "integrate";
-    private static final String ARG_ACCOUNT_UUIDS = "accountUuids";
-    private static final String ARG_FOLDER_NAMES = "folderNames";
-    private static final String ARG_TITLE = "title";
-    private static final String ARG_THREAD_ID = "thread_id";
-
+    private static final String ARG_SEARCH = "searchObject";
+    private static final String ARG_REMOTE_SEARCH = "remoteSearch";
     private static final String STATE_LIST_POSITION = "listPosition";
 
     /**
@@ -391,17 +332,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     /**
      * If we're doing a search, this contains the query string.
      */
-    private String mQueryString;
-    private Flag[] mQueryFlags = null;
-    private Flag[] mForbiddenFlags = null;
     private boolean mRemoteSearch = false;
-    private String mSearchAccount = null;
-    private String mSearchFolder = null;
     private Future mRemoteSearchFuture = null;
-    private boolean mIntegrate = false;
-    private String[] mAccountUuids = null;
-    private String[] mFolderNames = null;
+
     private String mTitle;
+    private LocalSearch mSearch = null;
+    private boolean mSingleAccountMode;
+    private boolean mSingleFolderMode;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -591,7 +528,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private void setWindowTitle() {
         // regular folder content display
-        if (mFolderName != null) {
+        if (mSingleFolderMode) {
             Activity activity = getActivity();
             String displayName = FolderInfoHolder.getDisplayName(activity, mAccount,
                 mFolderName);
@@ -604,7 +541,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             } else {
                 mFragmentListener.setMessageListSubTitle(operation);
             }
-        } else if (mQueryString != null) {
+        } else {
             // query result display.  This may be for a search folder as opposed to a user-initiated search.
             if (mTitle != null) {
                 // This was a search folder; the search folder has overridden our title.
@@ -621,8 +558,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mUnreadMessageCount == 0) {
             mFragmentListener.setUnreadCount(0);
         } else {
-            if (mQueryString != null && mTitle == null) {
-                // This is a search result.  The unread message count is easily confused
+            if (!mSingleFolderMode && mTitle == null) {
+                // The unread message count is easily confused
                 // with total number of messages in the search result, so let's hide it.
                 mFragmentListener.setUnreadCount(0);
             } else {
@@ -668,7 +605,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     updateFooter("", false);
                     return;
                 }
-                int limit = account.getRemoteSearchNumResults();
+                int limit = mAccount.getRemoteSearchNumResults();
                 List<Message> toProcess = mAdapter.mExtraSearchResults;
                 if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
@@ -677,7 +614,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     mAdapter.mExtraSearchResults = null;
                     updateFooter("", false);
                 }
-                mController.loadSearchResults(account, mSearchFolder, toProcess, mAdapter.mListener);
+                mController.loadSearchResults(mAccount, mCurrentFolder.name, toProcess, mListener);
             }*/
             return;
         }
@@ -755,40 +692,26 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void decodeArguments() {
         Bundle args = getArguments();
 
-        mQueryString = args.getString(SearchManager.QUERY);
-        mFolderName = args.getString(ARG_FOLDER);
         mRemoteSearch = args.getBoolean(ARG_REMOTE_SEARCH, false);
-        mSearchAccount = args.getString(ARG_SEARCH_ACCOUNT);
-        mSearchFolder = args.getString(ARG_SEARCH_FOLDER);
-        mThreadId = args.getLong(ARG_THREAD_ID, -1);
-
-        String accountUuid = args.getString(ARG_ACCOUNT);
+        mSearch = args.getParcelable(ARG_SEARCH);
+        mTitle = args.getString(mSearch.getName());
 
         Context appContext = getActivity().getApplicationContext();
-        mAccount = Preferences.getPreferences(appContext).getAccount(accountUuid);
+        String[] accounts = mSearch.getAccountUuids();
 
-        String queryFlags = args.getString(ARG_QUERY_FLAGS);
-        if (queryFlags != null) {
-            String[] flagStrings = queryFlags.split(",");
-            mQueryFlags = new Flag[flagStrings.length];
-            for (int i = 0; i < flagStrings.length; i++) {
-                mQueryFlags[i] = Flag.valueOf(flagStrings[i]);
-            }
+        mSingleAccountMode = false;
+        if (accounts != null && accounts.length == 1
+                && !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+            mSingleAccountMode = true;
+            mAccount = Preferences.getPreferences(appContext).getAccount(accounts[0]);
         }
 
-        String forbiddenFlags = args.getString(ARG_FORBIDDEN_FLAGS);
-        if (forbiddenFlags != null) {
-            String[] flagStrings = forbiddenFlags.split(",");
-            mForbiddenFlags = new Flag[flagStrings.length];
-            for (int i = 0; i < flagStrings.length; i++) {
-                mForbiddenFlags[i] = Flag.valueOf(flagStrings[i]);
-            }
+        mSingleFolderMode = false;
+        if (mSingleAccountMode && (mSearch.getFolderNames().size() == 1)) {
+            mSingleFolderMode = true;
+            mFolderName = mSearch.getFolderNames().get(0);
+            mCurrentFolder = getFolder(mFolderName, mAccount);
         }
-
-        mIntegrate = args.getBoolean(ARG_INTEGRATE, false);
-        mAccountUuids = args.getStringArray(ARG_ACCOUNT_UUIDS);
-        mFolderNames = args.getStringArray(ARG_FOLDER_NAMES);
-        mTitle = args.getString(ARG_TITLE);
     }
 
     private void initializeMessageList() {
@@ -799,7 +722,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         // Hide "Load up to x more" footer for search views
-        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
+        mFooterView.setVisibility((!mSingleFolderMode) ? View.GONE : View.VISIBLE);
 
         mController = MessagingController.getInstance(getActivity().getApplication());
         mListView.setAdapter(mAdapter);
@@ -868,14 +791,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         final Preferences prefs = Preferences.getPreferences(appContext);
 
-        boolean allowRemoteSearch = false;
-        if (mSearchAccount != null) {
-            final Account searchAccount = prefs.getAccount(mSearchAccount);
-            if (searchAccount != null) {
-                allowRemoteSearch = searchAccount.allowRemoteSearch();
-            }
-        }
-
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
             final ConnectivityManager connectivityManager =
@@ -889,24 +804,26 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
-        if (mQueryString == null) {
-            mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-                @Override
-                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                    checkMail();
-                }
-            });
-        } else if (allowRemoteSearch && !mRemoteSearch && !mIntegrate && mHasConnectivity) {
-            // mQueryString != null is implied if we get this far.
-            mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-                @Override
-                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                    mPullToRefreshView.onRefreshComplete();
-                    onRemoteSearchRequested(true);
-                }
-            });
-            mPullToRefreshView.setPullLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_pull));
-            mPullToRefreshView.setReleaseLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_release));
+        if (mSingleFolderMode) {
+            if (!mAccount.allowRemoteSearch()) {
+                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+                    @Override
+                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                        checkMail();
+                    }
+                });
+            // TODO this has to go! find better remote search integration
+            } else {
+                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+                    @Override
+                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                        mPullToRefreshView.onRefreshComplete();
+                        onRemoteSearchRequested();
+                    }
+                });
+                mPullToRefreshView.setPullLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_pull));
+                mPullToRefreshView.setReleaseLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_release));
+            }
         } else {
             mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
@@ -916,7 +833,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         //Cancel pending new mail notifications when we open an account
         Account[] accountsWithNotification;
 
-        Account account = getCurrentAccount(prefs);
+        Account account = mAccount;
 
         if (account != null) {
             accountsWithNotification = new Account[] { account };
@@ -933,56 +850,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         for (Account accountWithNotification : accountsWithNotification) {
             mController.notifyAccountCancel(appContext, accountWithNotification);
         }
-
-        /*
-        if (mAdapter.isEmpty()) {
-            if (mRemoteSearch) {
-                //TODO: Support flag based search
-                mRemoteSearchFuture = mController.searchRemoteMessages(mSearchAccount, mSearchFolder, mQueryString, null, null, mAdapter.mListener);
-            } else if (mFolderName != null) {
-                mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener, mThreadViewEnabled, mThreadId);
-
-                // Hide the archive button if we don't have an archive folder.
-                if (!mAccount.hasArchiveFolder()) {
-//                    mBatchArchiveButton.setVisibility(View.GONE);
-                }
-            } else if (mQueryString != null) {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-                // Don't show the archive button if this is a search.
-//                mBatchArchiveButton.setVisibility(View.GONE);
-            }
-
-        } else {
-            // reread the selected date format preference in case it has changed
-            mMessageHelper.refresh();
-
-            mAdapter.markAllMessagesAsDirty();
-
-            if (!mRemoteSearch) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        if (mFolderName != null) {
-                            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener, mThreadViewEnabled, mThreadId);
-                        } else if (mQueryString != null) {
-                            mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-                        }
-
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mAdapter.pruneDirtyMessages();
-                                mAdapter.notifyDataSetChanged();
-                                restoreListState();
-                            }
-                        });
-                    }
-
-                }
-                .start();
-            }
-        }
-        */
 
         if (mAccount != null && mFolderName != null && !mRemoteSearch) {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mListener);
@@ -1009,7 +876,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void onCompose() {
-        if (mQueryString != null) {
+        if (!mSingleAccountMode) {
             /*
              * If we have a query string, we don't have an account to let
              * compose start the default action.
@@ -1043,22 +910,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     /**
      * User has requested a remote search.  Setup the bundle and start the intent.
-     * @param fromLocalSearch true if this is being called from a local search result screen.  This affects
-     *                        where we pull the account and folder info used for the next search.
      */
-    public void onRemoteSearchRequested(final boolean fromLocalSearch) {
+    public void onRemoteSearchRequested() {
         String searchAccount;
         String searchFolder;
 
-        if (fromLocalSearch) {
-            searchAccount = mSearchAccount;
-            searchFolder = mSearchFolder;
-        } else {
-            searchAccount = mAccount.getUuid();
-            searchFolder = mCurrentFolder.name;
-        }
+        searchAccount = mAccount.getUuid();
+        searchFolder = mCurrentFolder.name;
 
-        mFragmentListener.remoteSearch(searchAccount, searchFolder, mQueryString);
+        mFragmentListener.remoteSearch(searchAccount, searchFolder, mSearch.getRemoteSearchArguments());
     }
 
     /**
@@ -1075,7 +935,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mSortType = sortType;
 
         Preferences prefs = Preferences.getPreferences(getActivity().getApplicationContext());
-        Account account = getCurrentAccount(prefs);
+        Account account = mAccount;
 
         if (account != null) {
             account.setSortType(mSortType);
@@ -1262,7 +1122,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
         }
 
-        if (mQueryString != null) {
+        if (!mSingleAccountMode) {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
             return false;
@@ -1559,38 +1419,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         @Override
-        public void listLocalMessagesStarted(Account account, String folder) {
-            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                mHandler.progress(true);
-                if (folder != null) {
-                    mHandler.folderLoading(folder, true);
-                }
-            }
-        }
-
-        @Override
-        public void listLocalMessagesFailed(Account account, String folder, String message) {
-            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                mHandler.sortMessages();
-                mHandler.progress(false);
-                if (folder != null) {
-                    mHandler.folderLoading(folder, false);
-                }
-            }
-        }
-
-        @Override
-        public void listLocalMessagesFinished(Account account, String folder) {
-            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                mHandler.sortMessages();
-                mHandler.progress(false);
-                if (folder != null) {
-                    mHandler.folderLoading(folder, false);
-                }
-            }
-        }
-
-        @Override
         public void searchStats(AccountStats stats) {
             mUnreadMessageCount = stats.unreadMessageCount;
             super.searchStats(stats);
@@ -1605,6 +1433,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         private boolean updateForMe(Account account, String folder) {
+            //FIXME
             return ((account.equals(mAccount) && folder.equals(mFolderName)));
         }
     }
@@ -2277,7 +2106,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *
      * @return The {@code Account} all displayed messages belong to.
      */
-    private Account getCurrentAccount(Preferences prefs) {
+    //TODO: remove
+    /*private Account getCurrentAccount(Preferences prefs) {
         Account account = null;
         if (mQueryString != null && !mIntegrate && mAccountUuids != null &&
                 mAccountUuids.length == 1) {
@@ -2288,7 +2118,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         return account;
-    }
+    }*/
 
 
     class ActionModeCallback implements ActionMode.Callback {
@@ -2306,7 +2136,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mFlag = menu.findItem(R.id.flag);
             mUnflag = menu.findItem(R.id.unflag);
 
-            if (mQueryString != null) {
+            // we don't support cross account actions atm
+            if (!mSingleAccountMode) {
                 // show all
                 menu.findItem(R.id.move).setVisible(true);
                 menu.findItem(R.id.archive).setVisible(true);
@@ -2347,9 +2178,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             inflater.inflate(R.menu.message_list_context, menu);
 
             // check capabilities
-            if (mQueryString == null) {
-                setContextCapabilities(mAccount, menu);
-            }
+            setContextCapabilities(mAccount, menu);
 
             return true;
         }
@@ -2367,33 +2196,32 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
              * TODO get rid of this when we finally split the messagelist into
              * a folder content display and a search result display
              */
-            if (mQueryString != null) {
+            if (!mSingleAccountMode) {
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.copy).setVisible(false);
 
                 menu.findItem(R.id.archive).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
 
-                return;
-            }
+            } else {
+                // hide unsupported
+                if (!mController.isCopyCapable(mAccount)) {
+                    menu.findItem(R.id.copy).setVisible(false);
+                }
 
-            // hide unsupported
-            if (!mController.isCopyCapable(mAccount)) {
-                menu.findItem(R.id.copy).setVisible(false);
-            }
+                if (!mController.isMoveCapable(mAccount)) {
+                    menu.findItem(R.id.move).setVisible(false);
+                    menu.findItem(R.id.archive).setVisible(false);
+                    menu.findItem(R.id.spam).setVisible(false);
+                }
 
-            if (!mController.isMoveCapable(mAccount)) {
-                menu.findItem(R.id.move).setVisible(false);
-                menu.findItem(R.id.archive).setVisible(false);
-                menu.findItem(R.id.spam).setVisible(false);
-            }
+                if (!mAccount.hasArchiveFolder()) {
+                    menu.findItem(R.id.archive).setVisible(false);
+                }
 
-            if (!mAccount.hasArchiveFolder()) {
-                menu.findItem(R.id.archive).setVisible(false);
-            }
-
-            if (!mAccount.hasSpamFolder()) {
-                menu.findItem(R.id.spam).setVisible(false);
+                if (!mAccount.hasSpamFolder()) {
+                    menu.findItem(R.id.spam).setVisible(false);
+                }
             }
         }
 
@@ -2527,7 +2355,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onStop() {
         // If we represent a remote search, then kill that before going back.
-        if (mSearchAccount != null && mSearchFolder != null && mRemoteSearchFuture != null) {
+        if (isRemoteSearch() && mRemoteSearchFuture != null) {
             try {
                 Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
                 // Canceling the future stops any message fetches in progress.
@@ -2536,13 +2364,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Log.e(K9.LOG_TAG, "Could not cancel remote search future.");
                 }
                 // Closing the folder will kill off the connection if we're mid-search.
-                Context appContext = getActivity().getApplicationContext();
-                final Account searchAccount = Preferences.getPreferences(appContext).getAccount(mSearchAccount);
-                final Store remoteStore = searchAccount.getRemoteStore();
-                final Folder remoteFolder = remoteStore.getFolder(mSearchFolder);
+                final Account searchAccount = mAccount;
+                final Folder remoteFolder = mCurrentFolder.folder;
                 remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
-                //mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
+                //mAdapter.mListener.remoteSearchFinished(searchAccount, mCurrentFolder.name, 0, null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
@@ -2664,7 +2490,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onToggleFlag() {
         Message message = getSelectedMessage();
         if (message != null) {
-            System.out.println("FLAGGED: " + message.isSet(Flag.FLAGGED));
             setFlag(message, Flag.FLAGGED, !message.isSet(Flag.FLAGGED));
         }
     }
@@ -2698,7 +2523,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public boolean isSearchQuery() {
-        return (mQueryString != null || mIntegrate);
+        return (mSearch.getRemoteSearchArguments() != null || !mSingleAccountMode);
     }
 
     public boolean isOutbox() {
@@ -2733,7 +2558,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onRemoteSearch() {
         // Remote search is useless without the network.
         if (mHasConnectivity) {
-            onRemoteSearchRequested(true);
+            onRemoteSearchRequested();
         } else {
             Toast.makeText(getActivity(), getText(R.string.remote_search_unavailable_no_network),
                     Toast.LENGTH_SHORT).show();
@@ -2745,7 +2570,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public boolean isRemoteSearchAllowed() {
-        if (!isSearchQuery() || mRemoteSearch || mSearchFolder == null || mSearchAccount == null) {
+        if (!isSearchQuery() || mRemoteSearch || !mSingleFolderMode) {
             return false;
         }
 
@@ -2753,7 +2578,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         final Preferences prefs = Preferences.getPreferences(appContext);
 
         boolean allowRemoteSearch = false;
-        final Account searchAccount = prefs.getAccount(mSearchAccount);
+        final Account searchAccount = mAccount;
         if (searchAccount != null) {
             allowRemoteSearch = searchAccount.allowRemoteSearch();
         }

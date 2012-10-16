@@ -62,8 +62,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchAccount;
-import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -80,6 +78,10 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.search.SearchModifier;
+import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -424,8 +426,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-        unreadAccount = SearchAccount.createAllMessagesAccount(this);
+    	// create the unified inbox meta account ( all accounts is default when none specified )
+        String name = getString(R.string.integrated_inbox_title);
+        LocalSearch tmpSearch = new LocalSearch(name);
+        tmpSearch.addAllowedFolder(SearchSpecification.GENERIC_INBOX_NAME);
+        integratedInboxAccount = new SearchAccount(tmpSearch, name,
+        		getString(R.string.integrated_inbox_detail));
+        
+        // create the all messages search ( all accounts is default when none specified )
+        name = getString(R.string.search_all_messages_title);
+        tmpSearch = new LocalSearch(name);
+        unreadAccount = new SearchAccount(tmpSearch, name, 
+        		getString(R.string.search_all_messages_detail)); 	
     }
 
     @SuppressWarnings("unchecked")
@@ -550,7 +562,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 pendingWork.put(account, "true");
                 final SearchAccount searchAccount = (SearchAccount)account;
 
-                MessagingController.getInstance(getApplication()).searchLocalMessages(searchAccount, null, new MessagingListener() {
+                MessagingController.getInstance(getApplication())
+                	.searchLocalMessages(searchAccount.getRelatedSearch(), new MessagingListener() {
                     @Override
                     public void searchStats(AccountStats stats) {
                         mListener.accountStatusChanged(searchAccount, stats);
@@ -607,7 +620,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private boolean onOpenAccount(BaseAccount account) {
         if (account instanceof SearchAccount) {
             SearchAccount searchAccount = (SearchAccount)account;
-            MessageList.actionHandle(this, searchAccount.getDescription(), searchAccount);
+            MessageList.actionDisplaySearch(this, searchAccount.getRelatedSearch(), false);
         } else {
             Account realAccount = (Account)account;
             if (!realAccount.isEnabled()) {
@@ -624,8 +637,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
                 FolderList.actionHandleAccount(this, realAccount);
             } else {
-                MessageList.actionHandleFolder(this, realAccount, realAccount.getAutoExpandFolderName());
-            }
+            	LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
+            	search.addAllowedFolder(realAccount.getAutoExpandFolderName());
+            	search.addAccountUuid(realAccount.getUuid());
+                MessageList.actionDisplaySearch(this, search, true);}
         }
         return true;
     }
@@ -1769,49 +1784,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
         @Override
         public void onClick(View v) {
-            String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
+            final String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
+            LocalSearch search = null;
+            
             if (account instanceof SearchAccount) {
-                SearchAccount searchAccount = (SearchAccount)account;
-
-                MessageList.actionHandle(Accounts.this,
-                                         description, "", searchAccount.isIntegrate(),
-                                         combine(searchAccount.getRequiredFlags(), searchModifier.requiredFlags),
-                                         combine(searchAccount.getForbiddenFlags(), searchModifier.forbiddenFlags));
+            	search = ((SearchAccount) account).getRelatedSearch();
+            	search.setName(description);
             } else {
-                SearchSpecification searchSpec = new SearchSpecification() {
-                    @Override
-                    public String[] getAccountUuids() {
-                        return new String[] { account.getUuid() };
-                    }
-
-                    @Override
-                    public Flag[] getForbiddenFlags() {
-                        return searchModifier.forbiddenFlags;
-                    }
-
-                    @Override
-                    public String getQuery() {
-                        return "";
-                    }
-
-                    @Override
-                    public Flag[] getRequiredFlags() {
-                        return searchModifier.requiredFlags;
-                    }
-
-                    @Override
-                    public boolean isIntegrate() {
-                        return false;
-                    }
-
-                    @Override
-                    public String[] getFolderNames() {
-                        return null;
-                    }
-
-                };
-                MessageList.actionHandle(Accounts.this, description, searchSpec);
+            	search = new LocalSearch(description);
+            	search.addAccountUuid(account.getUuid());
             }
+            
+			search.allRequiredFlags(searchModifier.requiredFlags);
+			search.allForbiddenFlags(searchModifier.forbiddenFlags);
+        	MessageList.actionDisplaySearch(Accounts.this, search, false);
         }
 
     }
