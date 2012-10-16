@@ -216,7 +216,7 @@ http://k9mail.googlecode.com/
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Rascunhos)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Lixo)</string>
-    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviado)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviados)</string>
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivo)</string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
@@ -250,11 +250,11 @@ http://k9mail.googlecode.com/
     <string name="error_contact_address_not_found">Não foi possível encontrar o endereço de e-mail.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
     <string name="message_compose_show_quoted_text_action">Mensagem citada</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <!-- NEW: <string name="message_compose_description_add_to">Adicionar destinatário (Para)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_cc">Adicionar destinatário (CC)</string>-->
+    <!-- NEW: <string name="message_compose_description_add_bcc">Adicionar destinatário (BCC)</string>-->
+    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>-->
+    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>-->
 
     <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
@@ -269,10 +269,10 @@ http://k9mail.googlecode.com/
     <string name="message_view_status_attachment_saved">Anexo salvo no cartão de memória como <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Impossível salvar anexo no cartão de memória.</string>
     <string name="message_view_show_pictures_action">Mostrar imagens</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
-    <string name="message_view_fetching_attachment_toast">Buscando anexo.</string>
+    <!-- NEW: <string name="message_view_show_message_action">Exibir mensagem</string>-->
+    <!-- NEW: <string name="message_view_show_attachments_action">Exibir anexos</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">Mais&#8230;</string>-->
+    <string name="message_view_fetching_attachment_toast">Buscando anexo</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Transferir mensagem completa</string>
     <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
@@ -315,25 +315,25 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_actions_summary">Mostrar diálogo sempre quando for disparada uma ação</string>
     <string name="global_settings_confirm_action_archive">Arquivo</string>
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Excluir marcados com estrela (visualização apenas)</string>-->
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Marcar todas como lidas</string>
     <string name="global_settings_confirm_action_send">Enviar</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Ocultar assunto nas notificações</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Nunca</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">Com o telefone bloqueado</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Sempre</string>-->
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons">Botões de lote</string>-->
+    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configurar botões de lote na tela de mensagens</string>-->
+    <!-- NEW: <string name="global_settings_mark_read">Marcar como lida/não lida</string>-->
+    <!-- NEW: <string name="global_settings_delete">Excluir</string>-->
+    <!-- NEW: <string name="global_settings_archive">Arquivar</string>-->
+    <!-- NEW: <string name="global_settings_archive_disabled_reason">Nenhuma pasta de arquivo.</string>-->
+    <!-- NEW: <string name="global_settings_move">Mover</string>-->
+    <!-- NEW: <string name="global_settings_flag">Bandeira</string>-->
+    <!-- NEW: <string name="global_settings_unselect">Deselecionar</string>-->
 
     <string name="quiet_time">Período de silêncio</string>
     <string name="quiet_time_description">Desabilitar sons, vibração e luz indicadora à noite</string>
@@ -519,8 +519,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
     <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
     <string name="account_settings_notification_unread_count_summary">Mostrar o número de mensagens não lidas na barra de notificação.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensagem como lida ao abrir</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida ao abrir e visualizar</string>-->
 
     <string name="account_settings_enable_move_buttons_label">Habilitar botão de ações</string>
     <string name="account_settings_enable_move_buttons_summary">Mostrar botões de Arquivar, Mover e Span.</string>
@@ -546,8 +546,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/BCC</string>-->
 
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
@@ -569,7 +569,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_crypto_app_not_available">não disponível</string>
     <string name="account_settings_crypto_auto_signature">Auto-login</string>
     <string name="account_settings_crypto_auto_signature_summary">Use o endereço de e-mail da conta para escolher assinatura.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
+    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encriptar</string>-->
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação de e-mail</string>
@@ -1009,7 +1009,7 @@ http://k9mail.googlecode.com/
 -->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sim</string>
-    <string name="dialog_confirm_spam_cancel_button">Nãoo</string>
+    <string name="dialog_confirm_spam_cancel_button">Não</string>
 
     <string name="dialog_attachment_progress_title">Baixando anexo</string>
 
