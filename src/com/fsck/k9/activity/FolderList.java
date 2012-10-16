@@ -622,9 +622,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     }
 
     private void onOpenFolder(String folder) {
-    	LocalSearch search = new LocalSearch(folder);
-    	search.addAccountUuid(mAccount.getUuid());
-    	search.addAllowedFolder(folder);
+        LocalSearch search = new LocalSearch(folder);
+        search.addAccountUuid(mAccount.getUuid());
+        search.addAllowedFolder(folder);
         MessageList.actionDisplaySearch(this, search, false);
     }
 
@@ -1265,18 +1265,18 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             final String description = getString(R.string.search_title,
                                            getString(R.string.message_list_title, account.getDescription(), displayName),
                                            getString(searchModifier.resId));
-            
-        	LocalSearch search = new LocalSearch(description);
-        	try {
-				search.allRequiredFlags(searchModifier.requiredFlags);
-	        	search.allForbiddenFlags(searchModifier.forbiddenFlags);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	search.addAllowedFolder(folderName);
-        	search.addAccountUuid(account.getUuid());
-        	MessageList.actionDisplaySearch(FolderList.this, search, false);
+
+            LocalSearch search = new LocalSearch(description);
+            try {
+                search.allRequiredFlags(searchModifier.requiredFlags);
+                search.allForbiddenFlags(searchModifier.forbiddenFlags);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            search.addAllowedFolder(folderName);
+            search.addAccountUuid(account.getUuid());
+            MessageList.actionDisplaySearch(FolderList.this, search, false);
         }
     }
 
@@ -1285,11 +1285,11 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         LocalSearch search = new LocalSearch(description);
         search.addAccountUuid(account.getUuid());
         try {
-			search.allRequiredFlags(new Flag[]{Flag.SEEN});
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            search.allRequiredFlags(new Flag[]{Flag.SEEN});
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }

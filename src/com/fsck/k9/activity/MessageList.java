@@ -48,8 +48,8 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
         OnBackStackChangedListener, OnSwipeGestureListener {
-	
-	// for this activity
+
+    // for this activity
     private static final String EXTRA_SEARCH = "search";
 
     // used for remote search
@@ -59,22 +59,22 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask) {
         actionDisplaySearch(context, search, newTask, true);
     }
-    
+
     public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
         context.startActivity(intentDisplaySearch(context, search, newTask, clearTop));
     }
-    
+
     public static Intent intentDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_SEARCH, search);
-        
+
         if (clearTop) {
-        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
         if (newTask) {
-        	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        
+
         return intent;
     }
 
@@ -91,11 +91,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private Account mAccount;
     private String mFolderName;
-	private LocalSearch mSearch;
+    private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
     private boolean mIsRemote;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +123,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void decodeExtras(Intent intent) {
-    	// check if this intent comes from the system search ( remote )
-    	if (intent.getStringExtra(SearchManager.QUERY) != null) {
+        // check if this intent comes from the system search ( remote )
+        if (intent.getStringExtra(SearchManager.QUERY) != null) {
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
@@ -132,40 +132,40 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     mSearch = new LocalSearch();
                     mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
                     mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
-                    
+
                     String query = intent.getStringExtra(SearchManager.QUERY);
                     mSearch.or(new SearchCondition(SEARCHFIELD.SENDER, ATTRIBUTE.CONTAINS, query));
                     mSearch.or(new SearchCondition(SEARCHFIELD.SUBJECT, ATTRIBUTE.CONTAINS, query));
-                    
+
                     mIsRemote = true;
                 }
             }
         } else {
-        	// regular LocalSearch object was passed
-        	mSearch = intent.getParcelableExtra(EXTRA_SEARCH);      	
+            // regular LocalSearch object was passed
+            mSearch = intent.getParcelableExtra(EXTRA_SEARCH);
         }
 
-	    String[] accounts = mSearch.getAccountUuids();
-	    mSingleAccountMode = ( accounts != null && accounts.length == 1 
-	    		&& !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS));
-	    mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
-	    
-	    if (mSingleAccountMode) {
-		    mAccount = Preferences.getPreferences(this).getAccount(accounts[0]);
-		    
-		    if (mAccount != null && !mAccount.isAvailable(this)) {
-		        Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
-		        onAccountUnavailable();
-		        return;
-		    }
-	    }
-	    
-	    if (mSingleFolderMode) {
-	    	mFolderName = mSearch.getFolderNames().get(0);
-	    }
-	    
-	    // now we know if we are in single account mode and need a subtitle
-	    mActionBarSubTitle.setVisibility((!mSingleFolderMode) ? View.GONE : View.VISIBLE);
+        String[] accounts = mSearch.getAccountUuids();
+        mSingleAccountMode = ( accounts != null && accounts.length == 1
+                && !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS));
+        mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
+
+        if (mSingleAccountMode) {
+            mAccount = Preferences.getPreferences(this).getAccount(accounts[0]);
+
+            if (mAccount != null && !mAccount.isAvailable(this)) {
+                Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+                onAccountUnavailable();
+                return;
+            }
+        }
+
+        if (mSingleFolderMode) {
+            mFolderName = mSearch.getFolderNames().get(0);
+        }
+
+        // now we know if we are in single account mode and need a subtitle
+        mActionBarSubTitle.setVisibility((!mSingleFolderMode) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -329,10 +329,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     fragmentManager.popBackStack();
                 } else if (!mSingleFolderMode) {
-            		onBackPressed();
-            	} else {
-            		onShowFolderList();
-            	}
+                    onBackPressed();
+                } else {
+                    onShowFolderList();
+                }
                 return true;
             }
             case R.id.compose: {
@@ -581,10 +581,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showMoreFromSameSender(String senderAddress) {
-    	LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
-    	tmpSearch.addAccountUuids(mSearch.getAccountUuids());
-    	tmpSearch.and(SEARCHFIELD.SENDER, senderAddress, ATTRIBUTE.CONTAINS);
-    	
+        LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
+        tmpSearch.addAccountUuids(mSearch.getAccountUuids());
+        tmpSearch.and(SEARCHFIELD.SENDER, senderAddress, ATTRIBUTE.CONTAINS);
+
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
 
         addMessageListFragment(fragment);
@@ -668,10 +668,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showThread(Account account, String folderName, long threadRootId) {
-    	LocalSearch tmpSearch = new LocalSearch();
-    	tmpSearch.addAccountUuids(mSearch.getAccountUuids());
-    	tmpSearch.and(SEARCHFIELD.THREAD_ROOT, String.valueOf(threadRootId), ATTRIBUTE.EQUALS);
-    	
+        LocalSearch tmpSearch = new LocalSearch();
+        tmpSearch.addAccountUuids(mSearch.getAccountUuids());
+        tmpSearch.and(SEARCHFIELD.THREAD_ROOT, String.valueOf(threadRootId), ATTRIBUTE.EQUALS);
+
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
         addMessageListFragment(fragment);
     }

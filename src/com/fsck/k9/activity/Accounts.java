@@ -426,18 +426,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-    	// create the unified inbox meta account ( all accounts is default when none specified )
+        // create the unified inbox meta account ( all accounts is default when none specified )
         String name = getString(R.string.integrated_inbox_title);
         LocalSearch tmpSearch = new LocalSearch(name);
         tmpSearch.addAllowedFolder(SearchSpecification.GENERIC_INBOX_NAME);
         integratedInboxAccount = new SearchAccount(tmpSearch, name,
-        		getString(R.string.integrated_inbox_detail));
-        
+                getString(R.string.integrated_inbox_detail));
+
         // create the all messages search ( all accounts is default when none specified )
         name = getString(R.string.search_all_messages_title);
         tmpSearch = new LocalSearch(name);
-        unreadAccount = new SearchAccount(tmpSearch, name, 
-        		getString(R.string.search_all_messages_detail)); 	
+        unreadAccount = new SearchAccount(tmpSearch, name,
+                getString(R.string.search_all_messages_detail));
     }
 
     @SuppressWarnings("unchecked")
@@ -563,7 +563,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 final SearchAccount searchAccount = (SearchAccount)account;
 
                 MessagingController.getInstance(getApplication())
-                	.searchLocalMessages(searchAccount.getRelatedSearch(), new MessagingListener() {
+                    .searchLocalMessages(searchAccount.getRelatedSearch(), new MessagingListener() {
                     @Override
                     public void searchStats(AccountStats stats) {
                         mListener.accountStatusChanged(searchAccount, stats);
@@ -637,9 +637,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
                 FolderList.actionHandleAccount(this, realAccount);
             } else {
-            	LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
-            	search.addAllowedFolder(realAccount.getAutoExpandFolderName());
-            	search.addAccountUuid(realAccount.getUuid());
+                LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
+                search.addAllowedFolder(realAccount.getAutoExpandFolderName());
+                search.addAccountUuid(realAccount.getUuid());
                 MessageList.actionDisplaySearch(this, search, true);}
         }
         return true;
@@ -1786,18 +1786,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         public void onClick(View v) {
             final String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
             LocalSearch search = null;
-            
+
             if (account instanceof SearchAccount) {
-            	search = ((SearchAccount) account).getRelatedSearch();
-            	search.setName(description);
+                search = ((SearchAccount) account).getRelatedSearch();
+                search.setName(description);
             } else {
-            	search = new LocalSearch(description);
-            	search.addAccountUuid(account.getUuid());
+                search = new LocalSearch(description);
+                search.addAccountUuid(account.getUuid());
             }
-            
-			search.allRequiredFlags(searchModifier.requiredFlags);
-			search.allForbiddenFlags(searchModifier.forbiddenFlags);
-        	MessageList.actionDisplaySearch(Accounts.this, search, false);
+
+            search.allRequiredFlags(searchModifier.requiredFlags);
+            search.allForbiddenFlags(searchModifier.forbiddenFlags);
+            MessageList.actionDisplaySearch(Accounts.this, search, false);
         }
 
     }
