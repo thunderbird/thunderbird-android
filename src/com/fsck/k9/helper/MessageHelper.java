@@ -108,4 +108,28 @@ public class MessageHelper {
         mDateFormat = DateFormatter.getDateFormat(mContext);
         mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
+
+    public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
+
+        CharSequence displayName;
+        if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
+            CharSequence to = Address.toFriendly(toAddrs, contactHelper);
+            displayName = new SpannableStringBuilder(
+                    mContext.getString(R.string.message_to_label)).append(to);
+        } else {
+            displayName = Address.toFriendly(fromAddrs, contactHelper);
+        }
+
+        return displayName;
+    }
+
+    public boolean toMe(Account account, Address[] toAddrs) {
+        for (Address address : toAddrs) {
+            if (account.isAnIdentity(address)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -49,7 +49,7 @@ public class LockableDatabase {
      * Workaround exception wrapper used to keep the inner exception generated
      * in a {@link DbCallback}.
      */
-    protected static class WrappedException extends RuntimeException {
+    public static class WrappedException extends RuntimeException {
         /**
          *
          */

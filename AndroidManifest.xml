@@ -402,6 +402,11 @@ otherwise it would make K-9 start at the wrong time
             android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
             android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
             />
+        <provider
+            android:name="com.fsck.k9.provider.EmailProvider"
+            android:authorities="org.k9mail.provider.email"
+            android:exported="false"
+            />
 
         <receiver
             android:name=".provider.UnreadWidgetProvider"

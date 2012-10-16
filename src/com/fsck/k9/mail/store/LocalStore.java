@@ -3976,4 +3976,7 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
+    public LockableDatabase getDatabase() {
+        return database;
+    }
 }

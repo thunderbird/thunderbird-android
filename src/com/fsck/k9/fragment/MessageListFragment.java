@@ -4,8 +4,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -15,20 +15,26 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -39,9 +45,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -66,23 +69,60 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.MessageHelper;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
 public class MessageListFragment extends SherlockFragment implements OnItemClickListener,
-        ConfirmationDialogFragmentListener {
+        ConfirmationDialogFragmentListener, LoaderCallbacks<Cursor> {
+
+    private static final String[] PROJECTION = {
+        MessageColumns.ID,
+        MessageColumns.UID,
+        MessageColumns.INTERNAL_DATE,
+        MessageColumns.SUBJECT,
+        MessageColumns.DATE,
+        MessageColumns.SENDER_LIST,
+        MessageColumns.TO_LIST,
+        MessageColumns.CC_LIST,
+        MessageColumns.FLAGS,
+        MessageColumns.ATTACHMENT_COUNT,
+        MessageColumns.FOLDER_ID,
+        MessageColumns.PREVIEW,
+        MessageColumns.THREAD_ROOT,
+        MessageColumns.THREAD_PARENT
+    };
+
+    private static final int ID_COLUMN = 0;
+    private static final int UID_COLUMN = 1;
+    private static final int INTERNAL_DATE_COLUMN = 2;
+    private static final int SUBJECT_COLUMN = 3;
+    private static final int DATE_COLUMN = 4;
+    private static final int SENDER_LIST_COLUMN = 5;
+    private static final int TO_LIST_COLUMN = 6;
+    private static final int CC_LIST_COLUMN = 7;
+    private static final int FLAGS_COLUMN = 8;
+    private static final int ATTACHMENT_COUNT_COLUMN = 9;
+    private static final int FOLDER_ID_COLUMN = 10;
+    private static final int PREVIEW_COLUMN = 11;
+    private static final int THREAD_ROOT_COLUMN = 12;
+    private static final int THREAD_PARENT_COLUMN = 13;
+
 
     public static MessageListFragment newInstance(Account account, String folderName) {
         MessageListFragment fragment = new MessageListFragment();
@@ -283,11 +323,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     }
 
-    /**
-     * Immutable empty {@link Message} array
-     */
-    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
-
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -376,6 +411,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSenderAboveSubject = false;
 
     private int mSelectedCount = 0;
+    private SparseBooleanArray mSelected;
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
@@ -391,7 +427,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * chosen messages between user interactions (eg. Selecting a folder for
      * move operation)
      */
-    private List<MessageInfoHolder> mActiveMessages;
+    private Message[] mActiveMessages;
 
     /* package visibility for faster inner class access */
     MessageHelper mMessageHelper;
@@ -412,6 +448,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private Context mContext;
 
+    private final ActivityListener mListener = new MessageListActivityListener();
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -423,19 +460,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * perform the operation in the calling thread.</p>
      */
     class MessageListHandler extends Handler {
-        private static final int ACTION_REMOVE_MESSAGE = 1;
-        private static final int ACTION_RESET_UNREAD_COUNT = 2;
-        private static final int ACTION_SORT_MESSAGES = 3;
-        private static final int ACTION_FOLDER_LOADING = 4;
-        private static final int ACTION_REFRESH_TITLE = 5;
-        private static final int ACTION_PROGRESS = 6;
+        private static final int ACTION_SORT_MESSAGES = 1;
+        private static final int ACTION_FOLDER_LOADING = 2;
+        private static final int ACTION_REFRESH_TITLE = 3;
+        private static final int ACTION_PROGRESS = 4;
 
-
-        public void removeMessage(MessageReference messageReference) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOVE_MESSAGE,
-                    messageReference);
-            sendMessage(msg);
-        }
 
         public void sortMessages() {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_SORT_MESSAGES);
@@ -469,43 +498,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             });
         }
 
-        public void changeMessageUid(final MessageReference ref, final String newUid) {
-            // Instead of explicitly creating a container to be able to pass both arguments in a
-            // Message we post a Runnable to the message queue.
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.changeMessageUid(ref, newUid);
-                }
-            });
-        }
-
-        public void addOrUpdateMessages(final Account account, final String folderName,
-                final List<Message> providedMessages, final boolean verifyAgainstSearch) {
-            // We copy the message list because it's later modified by MessagingController
-            final List<Message> messages = new ArrayList<Message>(providedMessages);
-
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.addOrUpdateMessages(account, folderName, messages,
-                            verifyAgainstSearch);
-                }
-            });
-        }
-
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-                case ACTION_REMOVE_MESSAGE: {
-                    MessageReference messageReference = (MessageReference) msg.obj;
-                    mAdapter.removeMessage(messageReference);
-                    break;
-                }
-                case ACTION_RESET_UNREAD_COUNT: {
-                    mAdapter.resetUnreadCount();
-                    break;
-                }
                 case ACTION_SORT_MESSAGES: {
                     mAdapter.sortMessages();
                     break;
@@ -581,10 +576,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void setWindowProgress() {
         int level = Window.PROGRESS_END;
 
-        if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0) {
-            int divisor = mAdapter.mListener.getFolderTotal();
+        if (mCurrentFolder != null && mCurrentFolder.loading && mListener.getFolderTotal() > 0) {
+            int divisor = mListener.getFolderTotal();
             if (divisor != 0) {
-                level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
+                level = (Window.PROGRESS_END / divisor) * (mListener.getFolderCompleted()) ;
                 if (level > Window.PROGRESS_END) {
                     level = Window.PROGRESS_END;
                 }
@@ -603,7 +598,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             mFragmentListener.setMessageListTitle(displayName);
 
-            String operation = mAdapter.mListener.getOperation(activity, getTimeFormat()).trim();
+            String operation = mListener.getOperation(activity, getTimeFormat()).trim();
             if (operation.length() < 1) {
                 mFragmentListener.setMessageListSubTitle(mAccount.getEmail());
             } else {
@@ -664,13 +659,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (view == mFooterView) {
             if (mCurrentFolder != null && !mRemoteSearch) {
-                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
-            } else if (mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null) {
+                mController.loadMoreMessages(mAccount, mFolderName, null);
+            } /*else if (mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null) {
                 int numResults = mAdapter.mExtraSearchResults.size();
                 Context appContext = getActivity().getApplicationContext();
                 Account account = Preferences.getPreferences(appContext).getAccount(mSearchAccount);
                 if (account == null) {
-                    mHandler.updateFooter("", false);
+                    updateFooter("", false);
                     return;
                 }
                 int limit = account.getRemoteSearchNumResults();
@@ -680,22 +675,26 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     mAdapter.mExtraSearchResults = mAdapter.mExtraSearchResults.subList(limit, mAdapter.mExtraSearchResults.size());
                 } else {
                     mAdapter.mExtraSearchResults = null;
-                    mHandler.updateFooter("", false);
+                    updateFooter("", false);
                 }
                 mController.loadSearchResults(account, mSearchFolder, toProcess, mAdapter.mListener);
-            }
+            }*/
             return;
         }
 
-        final MessageInfoHolder message = (MessageInfoHolder) parent.getItemAtPosition(position);
+        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
         if (mSelectedCount > 0) {
-            toggleMessageSelect(message);
-        } else if (message.threadCount > 1) {
-            Folder folder = message.message.getFolder();
-            long rootId = ((LocalMessage) message.message).getRootId();
-            mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
+            toggleMessageSelect(position);
+//        } else if (message.threadCount > 1) {
+//            Folder folder = message.message.getFolder();
+//            long rootId = ((LocalMessage) message.message).getRootId();
+//            mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
         } else {
-            onOpenMessage(message);
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = mAccount.getUuid();
+            ref.folderName = mCurrentFolder.name;
+            ref.uid = cursor.getString(UID_COLUMN);
+            onOpenMessage(ref);
         }
     }
 
@@ -749,6 +748,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mMessageHelper = MessageHelper.getInstance(getActivity());
 
         initializeMessageList();
+
+        getLoaderManager().initLoader(0, null, this);
     }
 
     private void decodeArguments() {
@@ -794,7 +795,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mAdapter = new MessageListAdapter();
 
         if (mFolderName != null) {
-            mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
+            mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
         // Hide "Load up to x more" footer for search views
@@ -804,10 +805,26 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setAdapter(mAdapter);
     }
 
+    private FolderInfoHolder getFolder(String folder, Account account) {
+        LocalFolder local_folder = null;
+        try {
+            LocalStore localStore = account.getLocalStore();
+            local_folder = localStore.getFolder(folder);
+            return new FolderInfoHolder(mContext, local_folder, account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
+            return null;
+        } finally {
+            if (local_folder != null) {
+                local_folder.close();
+            }
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        mController.removeListener(mAdapter.mListener);
+        mController.removeListener(mListener);
         saveListState();
     }
 
@@ -894,7 +911,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
 
-        mController.addListener(mAdapter.mListener);
+        mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account
         Account[] accountsWithNotification;
@@ -917,6 +934,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mController.notifyAccountCancel(appContext, accountWithNotification);
         }
 
+        /*
         if (mAdapter.isEmpty()) {
             if (mRemoteSearch) {
                 //TODO: Support flag based search
@@ -964,9 +982,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 .start();
             }
         }
+        */
 
         if (mAccount != null && mFolderName != null && !mRemoteSearch) {
-            mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
+            mController.getFolderUnreadMessageCount(mAccount, mFolderName, mListener);
         }
 
         refreshTitle();
@@ -980,12 +999,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setScrollingCacheEnabled(false);
         mListView.setOnItemClickListener(this);
         mListView.addFooterView(getFooterView(mListView));
+        //mListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         registerForContextMenu(mListView);
     }
 
-    private void onOpenMessage(MessageInfoHolder message) {
-        mFragmentListener.openMessage(message.message.makeMessageReference());
+    private void onOpenMessage(MessageReference reference) {
+        mFragmentListener.openMessage(reference);
     }
 
     public void onCompose() {
@@ -1000,20 +1020,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    public void onReply(MessageInfoHolder holder) {
-        mFragmentListener.onReply(holder.message);
+    public void onReply(Message message) {
+        mFragmentListener.onReply(message);
     }
 
-    public void onReplyAll(MessageInfoHolder holder) {
-        mFragmentListener.onReplyAll(holder.message);
+    public void onReplyAll(Message message) {
+        mFragmentListener.onReplyAll(message);
     }
 
-    public void onForward(MessageInfoHolder holder) {
-        mFragmentListener.onForward(holder.message);
+    public void onForward(Message message) {
+        mFragmentListener.onForward(message);
     }
 
-    public void onResendMessage(MessageInfoHolder holder) {
-        mFragmentListener.onResendMessage(holder.message);
+    public void onResendMessage(Message message) {
+        mFragmentListener.onResendMessage(message);
     }
 
     public void changeSort(SortType sortType) {
@@ -1117,17 +1137,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         changeSort(sorts[curIndex]);
     }
 
-    /**
-     * @param holders
-     *            Never {@code null}.
-     */
-    private void onDelete(final List<MessageInfoHolder> holders) {
-        final List<Message> messagesToRemove = new ArrayList<Message>();
-        for (MessageInfoHolder holder : holders) {
-            messagesToRemove.add(holder.message);
-        }
-        mAdapter.removeMessages(holders);
-        mController.deleteMessages(messagesToRemove.toArray(EMPTY_MESSAGE_ARRAY), null);
+    private void onDelete(Message message) {
+        onDelete(new Message[] { message });
+    }
+
+    private void onDelete(Message[] messages) {
+        mController.deleteMessages(messages, null);
     }
 
     @Override
@@ -1144,22 +1159,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-            final List<MessageInfoHolder> holders = mActiveMessages;
+            final Message[] messages = mActiveMessages;
 
             if (destFolderName != null) {
 
                 mActiveMessages = null; // don't need it any more
 
-                final Account account = holders.get(0).message.getFolder().getAccount();
+                final Account account = messages[0].getFolder().getAccount();
                 account.setLastSelectedFolderName(destFolderName);
 
                 switch (requestCode) {
                 case ACTIVITY_CHOOSE_FOLDER_MOVE:
-                    move(holders, destFolderName);
+                    move(messages, destFolderName);
                     break;
 
                 case ACTIVITY_CHOOSE_FOLDER_COPY:
-                    copy(holders, destFolderName);
+                    copy(messages, destFolderName);
                     break;
                 }
             }
@@ -1184,7 +1199,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             case R.id.dialog_confirm_spam: {
                 String title = getString(R.string.dialog_confirm_spam_title);
 
-                int selectionSize = mActiveMessages.size();
+                int selectionSize = mActiveMessages.length;
                 String message = getResources().getQuantityString(
                         R.plurals.dialog_confirm_spam_message, selectionSize,
                         Integer.valueOf(selectionSize));
@@ -1242,7 +1257,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return true;
         }
         case R.id.select_all: {
-            setSelectionState(true);
+            selectAll();
             return true;
         }
         }
@@ -1271,110 +1286,144 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void onSendPendingMessages() {
-        mController.sendPendingMessages(mAccount, mAdapter.mListener);
+        mController.sendPendingMessages(mAccount, null);
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+        int adapterPosition = listViewToAdapterPosition(info.position);
+        Message message = getMessageAtPosition(adapterPosition);
 
-
-        final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
-            switch (item.getItemId()) {
-                case R.id.reply: {
-                    onReply(message);
-                    break;
+        switch (item.getItemId()) {
+            case R.id.reply: {
+                onReply(message);
+                break;
+            }
+            case R.id.reply_all: {
+                onReplyAll(message);
+                break;
+            }
+            case R.id.forward: {
+                onForward(message);
+                break;
+            }
+            case R.id.send_again: {
+                onResendMessage(message);
+                mSelectedCount = 0;
+                break;
+            }
+            case R.id.same_sender: {
+                Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+                String senderAddress = getSenderAddressFromCursor(cursor);
+                if (senderAddress != null) {
+                    mFragmentListener.showMoreFromSameSender(senderAddress);
                 }
-                case R.id.reply_all: {
-                    onReplyAll(message);
-                    break;
-                }
-                case R.id.forward: {
-                    onForward(message);
-                    break;
-                }
-                case R.id.send_again: {
-                    onResendMessage(message);
-                    mSelectedCount = 0;
-                    break;
-                }
-                case R.id.same_sender: {
-                    mFragmentListener.showMoreFromSameSender(message.senderAddress);
-                    break;
-                }
-                case R.id.delete: {
-                    onDelete(selection);
-                    break;
-                }
-                case R.id.mark_as_read: {
-                    setFlag(selection, Flag.SEEN, true);
-                    break;
-                }
-                case R.id.mark_as_unread: {
-                    setFlag(selection, Flag.SEEN, false);
-                    break;
-                }
-                case R.id.flag: {
-                    setFlag(selection, Flag.FLAGGED, true);
-                    break;
-                }
-                case R.id.unflag: {
-                    setFlag(selection, Flag.FLAGGED, false);
-                    break;
-                }
-
-                // only if the account supports this
-                case R.id.archive: {
-                    onArchive(selection);
-                    break;
-                }
-                case R.id.spam: {
-                    onSpam(selection);
-                    break;
-                }
-                case R.id.move: {
-                    onMove(selection);
-                    break;
-                }
-                case R.id.copy: {
-                    onCopy(selection);
-                    break;
-                }
+                break;
+            }
+            case R.id.delete: {
+                onDelete(message);
+                break;
+            }
+            case R.id.mark_as_read: {
+                setFlag(message, Flag.SEEN, true);
+                break;
+            }
+            case R.id.mark_as_unread: {
+                setFlag(message, Flag.SEEN, false);
+                break;
+            }
+            case R.id.flag: {
+                setFlag(message, Flag.FLAGGED, true);
+                break;
+            }
+            case R.id.unflag: {
+                setFlag(message, Flag.FLAGGED, false);
+                break;
             }
 
-            return true;
+            // only if the account supports this
+            case R.id.archive: {
+                onArchive(message);
+                break;
+            }
+            case R.id.spam: {
+                onSpam(message);
+                break;
+            }
+            case R.id.move: {
+                onMove(message);
+                break;
+            }
+            case R.id.copy: {
+                onCopy(message);
+                break;
+            }
         }
 
+        return true;
+    }
+
+
+    private String getSenderAddressFromCursor(Cursor cursor) {
+        String fromList = cursor.getString(SENDER_LIST_COLUMN);
+        Address[] fromAddrs = Address.unpack(fromList);
+        return (fromAddrs.length > 0) ? fromAddrs[0].getAddress() : null;
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(info.position);
+        Cursor cursor = (Cursor) mListView.getItemAtPosition(info.position);
 
-        if (message == null) {
+        if (cursor == null) {
             return;
         }
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
-        menu.setHeaderTitle(message.message.getSubject());
+        //TODO: get account from cursor
+        Account account = mAccount;
 
-        if (message.read) {
+        String subject = cursor.getString(SUBJECT_COLUMN);
+        String flagList = cursor.getString(FLAGS_COLUMN);
+        String[] flags = flagList.split(",");
+        boolean read = false;
+        boolean flagged = false;
+        for (int i = 0, len = flags.length; i < len; i++) {
+            try {
+                switch (Flag.valueOf(flags[i])) {
+                    case SEEN: {
+                        read = true;
+                        break;
+                    }
+                    case FLAGGED: {
+                        flagged = true;
+                        break;
+                    }
+                    default: {
+                        // We don't care about the other flags
+                    }
+                }
+            } catch (Exception e) { /* ignore */ }
+        }
+
+        menu.setHeaderTitle(subject);
+
+        if (read) {
             menu.findItem(R.id.mark_as_read).setVisible(false);
         } else {
             menu.findItem(R.id.mark_as_unread).setVisible(false);
         }
 
-        if (message.flagged) {
+        if (flagged) {
             menu.findItem(R.id.flag).setVisible(false);
         } else {
             menu.findItem(R.id.unflag).setVisible(false);
         }
 
-        Account account = message.message.getFolder().getAccount();
         if (!mController.isCopyCapable(account)) {
             menu.findItem(R.id.copy).setVisible(false);
         }
@@ -1413,209 +1462,155 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
         int[] listPosition = new int[2];
         mListView.getLocationOnScreen(listPosition);
-        int position = mListView.pointToPosition((int) downMotion.getRawX() - listPosition[0], (int) downMotion.getRawY() - listPosition[1]);
-        if (position != AdapterView.INVALID_POSITION) {
-            final MessageInfoHolder message = (MessageInfoHolder) mListView.getItemAtPosition(position);
-            toggleMessageSelect(message);
+
+        int listX = (int) downMotion.getRawX() - listPosition[0];
+        int listY = (int) downMotion.getRawY() - listPosition[1];
+
+        int listViewPosition = mListView.pointToPosition(listX, listY);
+
+        toggleMessageSelect(listViewPosition);
+    }
+
+    private int listViewToAdapterPosition(int position) {
+        if (position > 0 && position <= mAdapter.getCount()) {
+            return position - 1;
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
+    class MessageListActivityListener extends ActivityListener {
+        @Override
+        public void remoteSearchFailed(Account acct, String folder, final String err) {
+            //TODO: Better error handling
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), err, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @Override
+        public void remoteSearchStarted(Account acct, String folder) {
+            mHandler.progress(true);
+            mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query), true);
+        }
+
+
+        @Override
+        public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {
+            mHandler.progress(false);
+            if (extraResults != null && extraResults.size() > 0) {
+                mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
+            } else {
+                mHandler.updateFooter("", false);
+            }
+            mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
+
+        }
+
+        @Override
+        public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
+            mHandler.progress(true);
+            if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
+            } else {
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults), true);
+            }
+            mFragmentListener.setMessageListProgress(Window.PROGRESS_START);
+        }
+
+        @Override
+        public void informUserOfStatus() {
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxStarted(Account account, String folder) {
+            if (updateForMe(account, folder)) {
+                mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+            }
+            super.synchronizeMailboxStarted(account, folder);
+        }
+
+        @Override
+        public void synchronizeMailboxFinished(Account account, String folder,
+        int totalMessagesInMailbox, int numNewMessages) {
+
+            if (updateForMe(account, folder)) {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+        }
+
+        @Override
+        public void synchronizeMailboxFailed(Account account, String folder, String message) {
+
+            if (updateForMe(account, folder)) {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            super.synchronizeMailboxFailed(account, folder, message);
+        }
+
+        @Override
+        public void listLocalMessagesStarted(Account account, String folder) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.progress(true);
+                if (folder != null) {
+                    mHandler.folderLoading(folder, true);
+                }
+            }
+        }
+
+        @Override
+        public void listLocalMessagesFailed(Account account, String folder, String message) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null) {
+                    mHandler.folderLoading(folder, false);
+                }
+            }
+        }
+
+        @Override
+        public void listLocalMessagesFinished(Account account, String folder) {
+            if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null) {
+                    mHandler.folderLoading(folder, false);
+                }
+            }
+        }
+
+        @Override
+        public void searchStats(AccountStats stats) {
+            mUnreadMessageCount = stats.unreadMessageCount;
+            super.searchStats(stats);
+        }
+
+        @Override
+        public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
+            if (updateForMe(account, folder)) {
+                mUnreadMessageCount = unreadMessageCount;
+            }
+            super.folderStatusChanged(account, folder, unreadMessageCount);
+        }
+
+        private boolean updateForMe(Account account, String folder) {
+            return ((account.equals(mAccount) && folder.equals(mFolderName)));
         }
     }
 
-    class MessageListAdapter extends BaseAdapter {
-        private final List<MessageInfoHolder> mMessages =
-                Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
-        public List<Message> mExtraSearchResults;
-
-        private final ActivityListener mListener = new ActivityListener() {
-
-            @Override
-            public void remoteSearchAddMessage(Account account, String folderName, Message message, final int numDone, final int numTotal) {
-
-                if (numTotal > 0 && numDone < numTotal) {
-                    mFragmentListener.setMessageListProgress(Window.PROGRESS_END / numTotal * numDone);
-                } else {
-                    mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
-                }
-
-                mHandler.addOrUpdateMessages(account, folderName, Collections.singletonList(message), false);
-            }
-
-            @Override
-            public void remoteSearchFailed(Account acct, String folder, final String err) {
-                //TODO: Better error handling
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), err, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-
-            @Override
-            public void remoteSearchStarted(Account acct, String folder) {
-                mHandler.progress(true);
-                mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query), true);
-            }
-
-
-            @Override
-            public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {
-                mHandler.progress(false);
-                if (extraResults != null && extraResults.size() > 0) {
-                    mExtraSearchResults = extraResults;
-                    mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
-                } else {
-                    mHandler.updateFooter("", false);
-                }
-                mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
-
-            }
-
-            @Override
-            public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
-                mHandler.progress(true);
-                if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
-                    mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
-                } else {
-                    mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults), true);
-                }
-                mFragmentListener.setMessageListProgress(Window.PROGRESS_START);
-            }
-
-            @Override
-            public void informUserOfStatus() {
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxStarted(Account account, String folder) {
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(true);
-                    mHandler.folderLoading(folder, true);
-                }
-                super.synchronizeMailboxStarted(account, folder);
-            }
-
-            @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
-            int totalMessagesInMailbox, int numNewMessages) {
-
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
-                }
-                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-            }
-
-            @Override
-            public void synchronizeMailboxFailed(Account account, String folder, String message) {
-
-                if (updateForMe(account, folder)) {
-                    mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
-                }
-                super.synchronizeMailboxFailed(account, folder, message);
-            }
-
-            @Override
-            public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
-                mHandler.addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
-            }
-
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
-                mHandler.removeMessage(message.makeMessageReference());
-            }
-
-            @Override
-            public void listLocalMessagesStarted(Account account, String folder) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.progress(true);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, true);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesFailed(Account account, String folder, String message) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesFinished(Account account, String folder) {
-                if ((mQueryString != null && folder == null) || (account != null && account.equals(mAccount))) {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null) {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
-                mHandler.removeMessage(message.makeMessageReference());
-            }
-
-            @Override
-            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
-                mHandler.addOrUpdateMessages(account, folder, messages, false);
-            }
-
-            @Override
-            public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
-                mHandler.addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
-            }
-
-            @Override
-            public void searchStats(AccountStats stats) {
-                mUnreadMessageCount = stats.unreadMessageCount;
-                super.searchStats(stats);
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-                if (updateForMe(account, folder)) {
-                    mUnreadMessageCount = unreadMessageCount;
-                }
-                super.folderStatusChanged(account, folder, unreadMessageCount);
-            }
-
-            @Override
-            public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = account.getUuid();
-                ref.folderName = folder;
-                ref.uid = oldUid;
-
-                mHandler.changeMessageUid(ref, newUid);
-            }
-        };
-
-        private boolean updateForMe(Account account, String folder) {
-            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public List<MessageInfoHolder> getMessages() {
-            return mMessages;
-        }
-
-        public void restoreMessages(List<MessageInfoHolder> messages) {
-            mMessages.addAll(messages);
-        }
+    class MessageListAdapter extends CursorAdapter {
 
         private Drawable mAttachmentIcon;
         private Drawable mForwardedIcon;
@@ -1623,58 +1618,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private Drawable mForwardedAnsweredIcon;
 
         MessageListAdapter() {
+            super(getActivity(), null, 0);
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_email_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_answered_small);
             mForwardedIcon = getResources().getDrawable(R.drawable.ic_email_forwarded_small);
             mForwardedAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
-        }
-
-        public void markAllMessagesAsDirty() {
-            for (MessageInfoHolder holder : mMessages) {
-                holder.dirty = true;
-            }
-        }
-
-        public void pruneDirtyMessages() {
-            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-
-            for (MessageInfoHolder holder : mMessages) {
-                if (holder.dirty) {
-                    messagesToRemove.add(holder);
-                }
-            }
-            removeMessages(messagesToRemove);
-        }
-
-        public void removeMessage(MessageReference messageReference) {
-            MessageInfoHolder holder = getMessage(messageReference);
-            if (holder == null) {
-                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " +
-                        messageReference.uid);
-            } else {
-                removeMessages(Collections.singletonList(holder));
-            }
-        }
-
-        public void removeMessages(final List<MessageInfoHolder> messages) {
-            if (messages.isEmpty()) {
-                return;
-            }
-
-            for (MessageInfoHolder message : messages) {
-                if (message != null && (mFolderName == null || (
-                        message.folder != null &&
-                        message.folder.name.equals(mFolderName)))) {
-                    if (message.selected && mSelectedCount > 0) {
-                        mSelectedCount--;
-                    }
-                    mMessages.remove(message);
-                }
-            }
-            resetUnreadCount();
-
-            notifyDataSetChanged();
-            computeSelectAllVisibility();
         }
 
         /**
@@ -1682,517 +1630,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
          * @param selected Selection state to set.
          */
         public void setSelectionForAllMesages(final boolean selected) {
-            for (MessageInfoHolder message : mMessages) {
-                message.selected = selected;
-            }
+            //TODO: implement
 
-            notifyDataSetChanged();
-        }
-
-        public void addMessages(final List<MessageInfoHolder> messages) {
-            if (messages.isEmpty()) {
-                return;
-            }
-
-            final boolean wasEmpty = mMessages.isEmpty();
-
-            for (final MessageInfoHolder message : messages) {
-                if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName))) {
-                    int index = Collections.binarySearch(mMessages, message, getComparator());
-
-                    if (index < 0) {
-                        index = (index * -1) - 1;
-                    }
-
-                    mMessages.add(index, message);
-                }
-            }
-
-            if (wasEmpty) {
-                mListView.setSelection(0);
-            }
-            resetUnreadCount();
-
-            notifyDataSetChanged();
-            computeSelectAllVisibility();
-        }
-
-        public void changeMessageUid(MessageReference ref, String newUid) {
-            MessageInfoHolder holder = getMessage(ref);
-            if (holder != null) {
-                holder.uid = newUid;
-                holder.message.setUid(newUid);
-            }
-        }
-
-        public void resetUnreadCount() {
-            if (mQueryString != null) {
-                int unreadCount = 0;
-
-                for (MessageInfoHolder holder : mMessages) {
-                    unreadCount += holder.read ? 0 : 1;
-                }
-
-                mUnreadMessageCount = unreadCount;
-                refreshTitle();
-            }
+            //notifyDataSetChanged();
         }
 
         public void sortMessages() {
-            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+            //TODO: implement
 
-            Collections.sort(mMessages, chainComparator);
-
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
         }
 
-        public void addOrUpdateMessages(final Account account, final String folderName,
-                final List<Message> messages, final boolean verifyAgainstSearch) {
-
-            boolean needsSort = false;
-            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-            List<Message> messagesToSearch = new ArrayList<Message>();
-
-            // cache field into local variable for faster access for JVM without JIT
-            final MessageHelper messageHelper = mMessageHelper;
-
-            for (Message message : messages) {
-                MessageInfoHolder m = getMessage(message);
-                if (message.isSet(Flag.DELETED)) {
-                    if (m != null) {
-                        messagesToRemove.add(m);
-                    }
-                } else {
-                    final Folder messageFolder = message.getFolder();
-                    final Account messageAccount = messageFolder.getAccount();
-                    if (m == null) {
-                        if (updateForMe(account, folderName)) {
-                            m = new MessageInfoHolder();
-                            FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                    mContext, messageFolder, messageAccount);
-                            messageHelper.populate(m, message, folderInfoHolder, messageAccount);
-
-                            if (verifyAgainstSearch) {
-                                LocalMessage localMessage = (LocalMessage) message;
-
-                                if (mThreadId != -1) {
-                                    if (localMessage.getRootId() == mThreadId ||
-                                            localMessage.getId() == mThreadId) {
-                                        messagesToAdd.add(m);
-                                    }
-                                } else if (mThreadViewEnabled) {
-                                    long threadId = localMessage.getRootId();
-                                    if (threadId == -1) {
-                                        threadId = localMessage.getId();
-                                    }
-
-                                    MessageInfoHolder threadPlaceHolder = getThread(threadId);
-                                    if (threadPlaceHolder == null) {
-                                        messagesToAdd.add(m);
-                                    } else if (m.compareDate.after(threadPlaceHolder.compareDate)) {
-                                        messagesToRemove.add(threadPlaceHolder);
-                                        messagesToAdd.add(m);
-                                    } else {
-                                        threadPlaceHolder.threadCount = m.threadCount;
-                                    }
-                                } else {
-                                    messagesToAdd.add(m);
-                                }
-                            } else {
-                                messagesToAdd.add(m);
-                            }
-                        } else {
-                            if (mQueryString != null) {
-                                if (verifyAgainstSearch) {
-                                    messagesToSearch.add(message);
-                                } else {
-                                    m = new MessageInfoHolder();
-                                    FolderInfoHolder folderInfoHolder = new FolderInfoHolder(
-                                            mContext, messageFolder, messageAccount);
-                                    messageHelper.populate(m, message, folderInfoHolder,
-                                            messageAccount);
-                                    messagesToAdd.add(m);
-                                }
-                            }
-                        }
-                    } else {
-                        m.dirty = false; // as we reload the message, unset its dirty flag
-                        FolderInfoHolder folderInfoHolder = new FolderInfoHolder(mContext,
-                                messageFolder, account);
-                        messageHelper.populate(m, message, folderInfoHolder, account);
-                        needsSort = true;
-                    }
-                }
-            }
-
-            if (!messagesToSearch.isEmpty()) {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames,
-                        messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate,
-                        mQueryFlags, mForbiddenFlags,
-                new MessagingListener() {
-                    @Override
-                    public void listLocalMessagesAddMessages(Account account, String folder,
-                            List<Message> messages) {
-                        mHandler.addOrUpdateMessages(account, folder, messages, false);
-                    }
-                });
-            }
-
-            if (!messagesToRemove.isEmpty()) {
-                removeMessages(messagesToRemove);
-            }
-
-            if (!messagesToAdd.isEmpty()) {
-                addMessages(messagesToAdd);
-            }
-
-            if (needsSort) {
-                sortMessages();
-                resetUnreadCount();
-            }
-        }
-
-        /**
-         * Find a specific message in the message list.
-         *
-         * <p><strong>Note:</strong>
-         * This method was optimized because it is called a lot. Don't change it unless you know
-         * what you are doing.</p>
-         *
-         * @param message
-         *         A {@link Message} instance describing the message to look for.
-         *
-         * @return The corresponding {@link MessageInfoHolder} instance if the message was found in
-         *         the message list. {@code null} otherwise.
-         */
-        private MessageInfoHolder getMessage(Message message) {
-            String uid;
-            Folder folder;
-            for (MessageInfoHolder holder : mMessages) {
-                uid = message.getUid();
-                if (uid != null && (holder.uid == uid || uid.equals(holder.uid))) {
-                    folder = message.getFolder();
-                     if (holder.folder.name.equals(folder.getName()) &&
-                             holder.account.equals(folder.getAccount().getUuid())) {
-                         return holder;
-                     }
-                }
-            }
-
-            return null;
-        }
-
-        /**
-         * Find a specific message in the message list.
-         *
-         * <p><strong>Note:</strong>
-         * This method was optimized because it is called a lot. Don't change it unless you know
-         * what you are doing.</p>
-         *
-         * @param messageReference
-         *         A {@link MessageReference} instance describing the message to look for.
-         *
-         * @return The corresponding {@link MessageInfoHolder} instance if the message was found in
-         *         the message list. {@code null} otherwise.
-         */
-        private MessageInfoHolder getMessage(MessageReference messageReference) {
-            String uid;
-            for (MessageInfoHolder holder : mMessages) {
-                uid = messageReference.uid;
-                if ((holder.uid == uid || uid.equals(holder.uid)) &&
-                        holder.folder.name.equals(messageReference.folderName) &&
-                        holder.account.equals(messageReference.accountUuid)) {
-                     return holder;
-                }
-            }
-
-            return null;
-        }
-
-        private MessageInfoHolder getThread(long threadId) {
-            for (MessageInfoHolder holder : mMessages) {
-                LocalMessage localMessage = (LocalMessage) holder.message;
-                if (localMessage.getId() == threadId || localMessage.getRootId() == threadId) {
-                    return holder;
-                }
-            }
-
-            return null;
-        }
-
-        public FolderInfoHolder getFolder(String folder, Account account) {
-            LocalFolder local_folder = null;
-            try {
-                LocalStore localStore = account.getLocalStore();
-                local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(mContext, local_folder, account);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
-                return null;
-            } finally {
-                if (local_folder != null) {
-                    local_folder.close();
-                }
-            }
-        }
-
-
-        @Override
-        public int getCount() {
-            return mMessages.size();
-        }
-
-        @Override
-        public long getItemId(int position) {
-            try {
-                MessageInfoHolder messageHolder = (MessageInfoHolder) getItem(position);
-                if (messageHolder != null) {
-                    return messageHolder.message.getId();
-                }
-            } catch (Exception e) {
-                Log.i(K9.LOG_TAG, "getItemId(" + position + ") ", e);
-            }
-            return -1;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            try {
-                if (position < mMessages.size()) {
-                    return mMessages.get(position);
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mMessages.size(), e);
-            }
-            return null;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            MessageInfoHolder message = (MessageInfoHolder) getItem(position);
-            View view;
-
-            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
-                view = convertView;
-            } else {
-                view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                view.setId(R.layout.message_list_item);
-            }
-
-            MessageViewHolder holder = (MessageViewHolder) view.getTag();
-
-            if (holder == null) {
-                holder = new MessageViewHolder();
-                holder.date = (TextView) view.findViewById(R.id.date);
-                holder.chip = view.findViewById(R.id.chip);
-                holder.preview = (TextView) view.findViewById(R.id.preview);
-
-                if (mSenderAboveSubject) {
-                    holder.from = (TextView) view.findViewById(R.id.subject);
-                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
-                } else {
-                    holder.subject = (TextView) view.findViewById(R.id.subject);
-                    holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
-                }
-
-                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
-
-                holder.preview.setLines(mPreviewLines);
-                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
-                holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
-
-                view.setTag(holder);
-            }
-
-            if (message != null) {
-                bindView(position, view, holder, message);
-            } else {
-                // This branch code is triggered when the local store
-                // hands us an invalid message
-
-                holder.chip.getBackground().setAlpha(0);
-                if (holder.subject != null) {
-                    holder.subject.setText(getString(R.string.general_no_subject));
-                    holder.subject.setTypeface(null, Typeface.NORMAL);
-                }
-
-                String noSender = getString(R.string.general_no_sender);
-
-                if (holder.preview != null) {
-                    holder.preview.setText(noSender, TextView.BufferType.SPANNABLE);
-                    Spannable str = (Spannable) holder.preview.getText();
-
-                    str.setSpan(new StyleSpan(Typeface.NORMAL),
-                                0,
-                                noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    str.setSpan(new AbsoluteSizeSpan(mFontSizes.getMessageListSender(), true),
-                                0,
-                                noSender.length(),
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                } else {
-                    holder.from.setText(noSender);
-                    holder.from.setTypeface(null, Typeface.NORMAL);
-                    holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                }
-
-                holder.date.setText(getString(R.string.general_no_date));
-
-                //WARNING: Order of the next 2 lines matter
-                holder.position = -1;
-            }
-
-
-            return view;
-        }
-
-        /**
-         * Associate model data to view object.
-         *
-         * @param position
-         *            The position of the item within the adapter's data set of
-         *            the item whose view we want.
-         * @param view
-         *            Main view component to alter. Never <code>null</code>.
-         * @param holder
-         *            Convenience view holder - eases access to <tt>view</tt>
-         *            child views. Never <code>null</code>.
-         * @param message
-         *            Never <code>null</code>.
-         */
-
-
-
-        private void bindView(final int position, final View view, final MessageViewHolder holder,
-                              final MessageInfoHolder message) {
-
-            int maybeBoldTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
-
-            // So that the mSelectedCount is only incremented/decremented
-            // when a user checks the checkbox (vs code)
-            holder.position = -1;
-
-            if (message.selected) {
-
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().getCheckmarkChip().drawable());
-            }
-
-            else {
-            holder.chip.setBackgroundDrawable(message.message.getFolder().getAccount().generateColorChip(message.read,message.message.toMe(), message.message.ccMe(), message.message.fromMe(), message.flagged).drawable());
-
-            }
-
-            if (K9.useBackgroundAsUnreadIndicator()) {
-                int res = (message.read) ? R.attr.messageListReadItemBackgroundColor :
-                        R.attr.messageListUnreadItemBackgroundColor;
-
-                TypedValue outValue = new TypedValue();
-                getActivity().getTheme().resolveAttribute(res, outValue, true);
-                view.setBackgroundColor(outValue.data);
-            }
-
-            String subject = null;
-
-            if ((message.message.getSubject() == null) || message.message.getSubject().equals("")) {
-                subject = (String) getText(R.string.general_no_subject);
-
-            } else {
-                subject = message.message.getSubject();
-            }
-
-            int threadCount = message.threadCount;
-            if (mThreadId == -1 && threadCount > 1) {
-                holder.threadCount.setText(Integer.toString(threadCount));
-                holder.threadCount.setVisibility(View.VISIBLE);
-            } else {
-                holder.threadCount.setVisibility(View.GONE);
-            }
-
-
-            // We'll get badge support soon --jrv
-//            if (holder.badge != null) {
-//                String email = message.counterpartyAddress;
-//                holder.badge.assignContactFromEmail(email, true);
-//                if (email != null) {
-//                    mContactsPictureLoader.loadContactPicture(email, holder.badge);
-//                }
-//            }
-
-            if (holder.preview != null) {
-                /*
-                 * In the touchable UI, we have previews. Otherwise, we
-                 * have just a "from" line.
-                 * Because text views can't wrap around each other(?) we
-                 * compose a custom view containing the preview and the
-                 * from.
-                 */
-
-                CharSequence beforePreviewText = null;
-                if (mSenderAboveSubject) {
-                    beforePreviewText = subject;
-                } else {
-                    beforePreviewText = message.sender;
-                }
-
-                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message))
-                                       .append(beforePreviewText).append(" ").append(message.message.getPreview()),
-                                       TextView.BufferType.SPANNABLE);
-                Spannable str = (Spannable)holder.preview.getText();
-
-                // Create a span section for the sender, and assign the correct font size and weight.
-                str.setSpan(new AbsoluteSizeSpan((mSenderAboveSubject ? mFontSizes.getMessageListSubject(): mFontSizes.getMessageListSender()), true),
-                            0, beforePreviewText.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
-                        Color.rgb(105, 105, 105) :
-                        Color.rgb(160, 160, 160);
-
-                // set span for preview message.
-                str.setSpan(new ForegroundColorSpan(color), // How do I can specify the android.R.attr.textColorTertiary
-                            beforePreviewText.length() + 1,
-                            str.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-
-            if (holder.from != null ) {
-                holder.from.setTypeface(null, maybeBoldTypeface);
-                if (mSenderAboveSubject) {
-                    holder.from.setCompoundDrawablesWithIntrinsicBounds(
-                            message.answered ? mAnsweredIcon : null, // left
-                            null, // top
-                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                            null); // bottom
-
-                    holder.from.setText(message.sender);
-                } else {
-                    holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender));
-                }
-            }
-
-            if (holder.subject != null ) {
-                if (!mSenderAboveSubject) {
-                    holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                            message.answered ? mAnsweredIcon : null, // left
-                            null, // top
-                            message.message.hasAttachments() ? mAttachmentIcon : null, // right
-                            null); // bottom
-                }
-
-                holder.subject.setTypeface(null, maybeBoldTypeface);
-                holder.subject.setText(subject);
-            }
-
-            holder.date.setText(message.getDate(mMessageHelper));
-            holder.position = position;
-        }
-
-
-        private String recipientSigil(MessageInfoHolder message) {
-            if (message.message.toMe()) {
+        private String recipientSigil(boolean toMe, boolean ccMe) {
+            if (toMe) {
                 return getString(R.string.messagelist_sent_to_me_sigil);
-            } else if (message.message.ccMe()) {
+            } else if (ccMe) {
                 return getString(R.string.messagelist_sent_cc_me_sigil);
             } else {
                 return "";
@@ -2200,31 +1652,212 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         @Override
-        public boolean hasStableIds() {
-            return true;
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            View view = mInflater.inflate(R.layout.message_list_item, parent, false);
+            view.setId(R.layout.message_list_item);
+
+            MessageViewHolder holder = new MessageViewHolder();
+            holder.date = (TextView) view.findViewById(R.id.date);
+            holder.chip = view.findViewById(R.id.chip);
+            holder.preview = (TextView) view.findViewById(R.id.preview);
+
+            if (mSenderAboveSubject) {
+                holder.from = (TextView) view.findViewById(R.id.subject);
+                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
+            } else {
+                holder.subject = (TextView) view.findViewById(R.id.subject);
+                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+            }
+
+            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
+
+            holder.preview.setLines(mPreviewLines);
+            holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
+            holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
+
+            view.setTag(holder);
+
+            return view;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            //TODO: make this work for search results
+            Account account = mAccount;
+
+            String fromList = cursor.getString(SENDER_LIST_COLUMN);
+            String toList = cursor.getString(TO_LIST_COLUMN);
+            String ccList = cursor.getString(CC_LIST_COLUMN);
+            Address[] fromAddrs = Address.unpack(fromList);
+            Address[] toAddrs = Address.unpack(toList);
+            Address[] ccAddrs = Address.unpack(ccList);
+
+            boolean fromMe = mMessageHelper.toMe(account, fromAddrs);
+            boolean toMe = mMessageHelper.toMe(account, toAddrs);
+            boolean ccMe = mMessageHelper.toMe(account, ccAddrs);
+
+            CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
+
+            Date sentDate = new Date(cursor.getLong(DATE_COLUMN));
+            String displayDate = mMessageHelper.formatDate(sentDate);
+
+            String preview = cursor.getString(PREVIEW_COLUMN);
+            if (preview == null) {
+                preview = "";
+            }
+
+            String subject = cursor.getString(SUBJECT_COLUMN);
+            if (StringUtils.isNullOrEmpty(subject)) {
+                subject = getString(R.string.general_no_subject);
+            }
+
+            int threadCount = 0;    //TODO: get thread count from cursor
+
+            String flagList = cursor.getString(FLAGS_COLUMN);
+            String[] flags = flagList.split(",");
+            boolean read = false;
+            boolean flagged = false;
+            boolean answered = false;
+            boolean forwarded = false;
+            for (int i = 0, len = flags.length; i < len; i++) {
+                try {
+                    switch (Flag.valueOf(flags[i])) {
+                        case SEEN: {
+                            read = true;
+                            break;
+                        }
+                        case FLAGGED: {
+                            flagged = true;
+                            break;
+                        }
+                        case ANSWERED: {
+                            answered = true;
+                            break;
+                        }
+                        case FORWARDED: {
+                            forwarded = true;
+                            break;
+                        }
+                        default: {
+                            // We don't care about the other flags
+                        }
+                    }
+                } catch (Exception e) { /* ignore */ }
+            }
+
+            boolean hasAttachments = (cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0);
+
+            MessageViewHolder holder = (MessageViewHolder) view.getTag();
+
+            int maybeBoldTypeface = (read) ? Typeface.NORMAL : Typeface.BOLD;
+
+            int adapterPosition = cursor.getPosition();
+            boolean selected = mSelected.get(adapterPosition, false);
+
+            if (selected) {
+                holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
+            } else {
+                holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
+                        fromMe, flagged).drawable());
+            }
+
+            // Background indicator
+            if (K9.useBackgroundAsUnreadIndicator()) {
+                int res = (read) ? R.attr.messageListReadItemBackgroundColor :
+                        R.attr.messageListUnreadItemBackgroundColor;
+
+                TypedValue outValue = new TypedValue();
+                getActivity().getTheme().resolveAttribute(res, outValue, true);
+                view.setBackgroundColor(outValue.data);
+            }
+
+            // Thread count
+            if (mThreadId == -1 && threadCount > 1) {
+                holder.threadCount.setText(Integer.toString(threadCount));
+                holder.threadCount.setVisibility(View.VISIBLE);
+            } else {
+                holder.threadCount.setVisibility(View.GONE);
+            }
+
+            CharSequence beforePreviewText = (mSenderAboveSubject) ? subject : displayName;
+
+            String sigil = recipientSigil(toMe, ccMe);
+
+            holder.preview.setText(
+                    new SpannableStringBuilder(sigil)
+                        .append(beforePreviewText)
+                        .append(" ")
+                        .append(preview), TextView.BufferType.SPANNABLE);
+
+            Spannable str = (Spannable)holder.preview.getText();
+
+            // Create a span section for the sender, and assign the correct font size and weight
+            int fontSize = (mSenderAboveSubject) ?
+                    mFontSizes.getMessageListSubject():
+                    mFontSizes.getMessageListSender();
+
+            AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
+            str.setSpan(span, 0, beforePreviewText.length() + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            //TODO: make this part of the theme
+            int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
+                    Color.rgb(105, 105, 105) :
+                    Color.rgb(160, 160, 160);
+
+            // Set span (color) for preview message
+            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + 1,
+                    str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            Drawable statusHolder = null;
+            if (forwarded && answered) {
+                statusHolder = mForwardedAnsweredIcon;
+            } else if (answered) {
+                statusHolder = mAnsweredIcon;
+            } else if (forwarded) {
+                statusHolder = mForwardedIcon;
+            }
+
+            if (holder.from != null ) {
+                holder.from.setTypeface(null, maybeBoldTypeface);
+                if (mSenderAboveSubject) {
+                    holder.from.setCompoundDrawablesWithIntrinsicBounds(
+                            statusHolder, // left
+                            null, // top
+                            hasAttachments ? mAttachmentIcon : null, // right
+                            null); // bottom
+
+                    holder.from.setText(displayName);
+                } else {
+                    holder.from.setText(new SpannableStringBuilder(sigil).append(displayName));
+                }
+            }
+
+            if (holder.subject != null ) {
+                if (!mSenderAboveSubject) {
+                    holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                            statusHolder, // left
+                            null, // top
+                            hasAttachments ? mAttachmentIcon : null, // right
+                            null); // bottom
+                }
+
+                holder.subject.setTypeface(null, maybeBoldTypeface);
+                holder.subject.setText(subject);
+            }
+
+            holder.date.setText(displayDate);
         }
     }
 
-    class MessageViewHolder
-        implements OnCheckedChangeListener {
+    class MessageViewHolder {
         public TextView subject;
         public TextView preview;
         public TextView from;
         public TextView time;
         public TextView date;
         public View chip;
-        public int position = -1;
         public TextView threadCount;
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (position != -1) {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-                    toggleMessageSelect(message);
-
-
-            }
-        }
     }
 
 
@@ -2286,23 +1919,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView main;
     }
 
-    private void setAllSelected(boolean isSelected) {
-        mSelectedCount = 0;
-
-        for (MessageInfoHolder holder : mAdapter.getMessages()) {
-            holder.selected = isSelected;
-            mSelectedCount += (isSelected ? 1 : 0);
-        }
-
-        computeBatchDirection();
-        mAdapter.notifyDataSetChanged();
-
-        if (isSelected) {
-            updateActionModeTitle();
-            computeSelectAllVisibility();
-        }
-    }
-
     /**
      * Set selection state for all messages.
      *
@@ -2311,40 +1927,54 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *         action mode is finished.
      */
     private void setSelectionState(boolean selected) {
-        mAdapter.setSelectionForAllMesages(selected);
-
         if (selected) {
             mSelectedCount = mAdapter.getCount();
-            mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+            for (int i = 0, end = mSelectedCount; i < end; i++) {
+                mSelected.put(i, true);
+            }
+
+            if (mActionMode == null) {
+                mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+            }
+            computeBatchDirection();
             updateActionModeTitle();
             computeSelectAllVisibility();
-            computeBatchDirection();
         } else {
+            mSelected.clear();
             mSelectedCount = 0;
             if (mActionMode != null) {
                 mActionMode.finish();
+                mActionMode = null;
             }
         }
+
+        mAdapter.notifyDataSetChanged();
     }
 
-    private void toggleMessageSelect(final MessageInfoHolder holder){
+    private void toggleMessageSelect(int listViewPosition) {
+        int adapterPosition = listViewToAdapterPosition(listViewPosition);
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return;
+        }
+
+        boolean selected = mSelected.get(adapterPosition, false);
+        mSelected.put(adapterPosition, !selected);
+
         if (mActionMode != null) {
-            if (mSelectedCount == 1 && holder.selected) {
+            if (mSelectedCount == 1 && selected) {
                 mActionMode.finish();
+                mActionMode = null;
                 return;
             }
         } else {
             mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
         }
 
-        if (holder.selected) {
-            holder.selected = false;
+        if (selected) {
             mSelectedCount -= 1;
         } else {
-            holder.selected = true;
             mSelectedCount += 1;
         }
-        mAdapter.notifyDataSetChanged();
 
         computeBatchDirection();
         updateActionModeTitle();
@@ -2353,6 +1983,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mActionMode.invalidate();
 
         computeSelectAllVisibility();
+
+        mAdapter.notifyDataSetChanged();
     }
 
     private void updateActionModeTitle() {
@@ -2367,6 +1999,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean isBatchFlag = false;
         boolean isBatchRead = false;
 
+        /*
         for (MessageInfoHolder holder : mAdapter.getMessages()) {
             if (holder.selected) {
                 if (!holder.flagged) {
@@ -2381,39 +2014,29 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
             }
         }
+        */
+        //TODO: implement
 
         mActionModeCallback.showMarkAsRead(isBatchRead);
         mActionModeCallback.showFlag(isBatchFlag);
     }
 
-    /**
-     * @param holders
-     *            Messages to update. Never {@code null}.
-     * @param flag
-     *            Flag to be updated on the specified messages. Never
-     *            {@code null}.
-     * @param newState
-     *            State to set for the given flag.
-     */
-    private void setFlag(final List<MessageInfoHolder> holders, final Flag flag, final boolean newState) {
-        if (holders.isEmpty()) {
+    private void setFlag(Message message, final Flag flag, final boolean newState) {
+        setFlag(new Message[] { message }, flag, newState);
+    }
+
+    private void setFlag(Message[] messages, final Flag flag, final boolean newState) {
+        if (messages.length == 0) {
             return;
         }
-        final Message[] messageList = new Message[holders.size()];
-        int i = 0;
-        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++) {
-            final MessageInfoHolder holder = iterator.next();
-            messageList[i] = holder.message;
-            if (flag == Flag.SEEN) {
-                holder.read = newState;
-            } else if (flag == Flag.FLAGGED) {
-                holder.flagged = newState;
-            }
-        }
-        mController.setFlag(messageList, flag, newState);
-        mAdapter.sortMessages();
+
+        mController.setFlag(messages, flag, newState);
 
         computeBatchDirection();
+    }
+
+    private void onMove(Message message) {
+        onMove(new Message[] { message });
     }
 
     /**
@@ -2422,13 +2045,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders
      *            Never {@code null}.
      */
-    private void onMove(final List<MessageInfoHolder> holders) {
-        if (!checkCopyOrMovePossible(holders, FolderOperation.MOVE)) {
+    private void onMove(Message[] messages) {
+        if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) {
             return;
         }
 
-        final Folder folder = holders.size() == 1 ? holders.get(0).message.getFolder() : mCurrentFolder.folder;
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder, holders);
+        final Folder folder = messages.length == 1 ? messages[0].getFolder() : mCurrentFolder.folder;
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder, messages);
+    }
+
+    private void onCopy(Message message) {
+        onCopy(new Message[] { message });
     }
 
     /**
@@ -2437,13 +2064,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders
      *            Never {@code null}.
      */
-    private void onCopy(final List<MessageInfoHolder> holders) {
-        if (!checkCopyOrMovePossible(holders, FolderOperation.COPY)) {
+    private void onCopy(Message[] messages) {
+        if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) {
             return;
         }
 
-        final Folder folder = holders.size() == 1 ? holders.get(0).message.getFolder() : mCurrentFolder.folder;
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder, holders);
+        final Folder folder = messages.length == 1 ? messages[0].getFolder() : mCurrentFolder.folder;
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder, messages);
     }
 
     /**
@@ -2462,41 +2089,45 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *            {@code null}.
      * @see #startActivityForResult(Intent, int)
      */
-    private void displayFolderChoice(final int requestCode, final Folder folder, final List<MessageInfoHolder> holders) {
+    private void displayFolderChoice(final int requestCode, final Folder folder, final Message[] messages) {
         final Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, folder.getAccount().getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
         // remember the selected messages for #onActivityResult
-        mActiveMessages = holders;
+        mActiveMessages = messages;
         startActivityForResult(intent, requestCode);
     }
 
-    /**
-     * @param holders
-     *            Never {@code null}.
-     */
-    private void onArchive(final List<MessageInfoHolder> holders) {
-        final String folderName = holders.get(0).message.getFolder().getAccount().getArchiveFolderName();
+    private void onArchive(final Message message) {
+        onArchive(new Message[] { message });
+    }
+
+    private void onArchive(final Message[] messages) {
+        final String folderName = messages[0].getFolder().getAccount().getArchiveFolderName();
         if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
             return;
         }
         // TODO one should separate messages by account and call move afterwards
         // (because each account might have a specific Archive folder name)
-        move(holders, folderName);
+        move(messages, folderName);
+    }
+
+    private void onSpam(Message message) {
+        onSpam(new Message[] { message });
     }
 
     /**
      * @param holders
      *            Never {@code null}.
      */
-    private void onSpam(final List<MessageInfoHolder> holders) {
+    private void onSpam(Message[] messages) {
         if (K9.confirmSpam()) {
             // remember the message selection for #onCreateDialog(int)
-            mActiveMessages = holders;
+            mActiveMessages = messages;
             showDialog(R.id.dialog_confirm_spam);
         } else {
-            onSpamConfirmed(holders);
+            onSpamConfirmed(messages);
         }
     }
 
@@ -2504,14 +2135,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders
      *            Never {@code null}.
      */
-    private void onSpamConfirmed(final List<MessageInfoHolder> holders) {
-        final String folderName = holders.get(0).message.getFolder().getAccount().getSpamFolderName();
+    private void onSpamConfirmed(Message[] messages) {
+        final String folderName = messages[0].getFolder().getAccount().getSpamFolderName();
         if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
             return;
         }
         // TODO one should separate messages by account and call move afterwards
         // (because each account might have a specific Spam folder name)
-        move(holders, folderName);
+        move(messages, folderName);
     }
 
     private static enum FolderOperation {
@@ -2528,23 +2159,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *
      * @return <code>true</code> if operation is possible
      */
-    private boolean checkCopyOrMovePossible(final List<MessageInfoHolder> holders, final FolderOperation operation) {
-        if (holders.isEmpty()) {
+    private boolean checkCopyOrMovePossible(final Message[] messages, final FolderOperation operation) {
+        if (messages.length == 0) {
             return false;
         }
+
         boolean first = true;
-        for (final MessageInfoHolder holder : holders) {
-            final Message message = holder.message;
+        for (final Message message : messages) {
             if (first) {
                 first = false;
                 // account check
                 final Account account = message.getFolder().getAccount();
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
+                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) ||
+                        (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
                     return false;
                 }
             }
             // message check
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
+            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
+                    (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
                 final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                                                    Toast.LENGTH_LONG);
                 toast.show();
@@ -2555,41 +2188,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * Helper method to get a List of message ready to be processed. This implementation will return a list containing the sole argument.
-     *
-     * @param holder Never {@code null}.
-     * @return Never {@code null}.
-     */
-    private List<MessageInfoHolder> getSelectionFromMessage(final MessageInfoHolder holder) {
-        final List<MessageInfoHolder> selection = Collections.singletonList(holder);
-        return selection;
-    }
-
-    /**
-     * Helper method to get a List of message ready to be processed. This implementation will iterate over messages and choose the checked ones.
-     *
-     * @return Never {@code null}.
-     */
-    private List<MessageInfoHolder> getSelectionFromCheckboxes() {
-        final List<MessageInfoHolder> selection = new ArrayList<MessageInfoHolder>();
-
-        for (final MessageInfoHolder holder : mAdapter.getMessages()) {
-            if (holder.selected) {
-                selection.add(holder);
-            }
-        }
-
-        return selection;
-    }
-
-    /**
      * Copy the specified messages to the specified folder.
      *
      * @param holders Never {@code null}.
      * @param destination Never {@code null}.
      */
-    private void copy(final List<MessageInfoHolder> holders, final String destination) {
-        copyOrMove(holders, destination, FolderOperation.COPY);
+    private void copy(Message[] messages, final String destination) {
+        copyOrMove(messages, destination, FolderOperation.COPY);
     }
 
     /**
@@ -2598,8 +2203,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders Never {@code null}.
      * @param destination Never {@code null}.
      */
-    private void move(final List<MessageInfoHolder> holders, final String destination) {
-        copyOrMove(holders, destination, FolderOperation.MOVE);
+    private void move(Message[] messages, final String destination) {
+        copyOrMove(messages, destination, FolderOperation.MOVE);
     }
 
     /**
@@ -2616,7 +2221,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param operation
      *            Never {@code null}.
      */
-    private void copyOrMove(final List<MessageInfoHolder> holders, final String destination, final FolderOperation operation) {
+    private void copyOrMove(Message[] messages, final String destination, final FolderOperation operation) {
         if (K9.FOLDER_NONE.equalsIgnoreCase(destination)) {
             return;
         }
@@ -2625,10 +2230,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Account account = null;
         String folderName = null;
 
-        final List<Message> messages = new ArrayList<Message>(holders.size());
+        List<Message> outMessages = new ArrayList<Message>();
 
-        for (final MessageInfoHolder holder : holders) {
-            final Message message = holder.message;
+        for (Message message : messages) {
             if (first) {
                 first = false;
                 folderName = message.getFolder().getName();
@@ -2652,15 +2256,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 // message isn't synchronized
                 return;
             }
-            messages.add(message);
+            outMessages.add(message);
         }
 
         if (operation == FolderOperation.MOVE) {
-            mController.moveMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
+            mController.moveMessages(account, folderName, outMessages.toArray(new Message[outMessages.size()]), destination,
                                      null);
-            mAdapter.removeMessages(holders);
         } else {
-            mController.copyMessages(account, folderName, messages.toArray(new Message[messages.size()]), destination,
+            mController.copyMessages(account, folderName, outMessages.toArray(new Message[outMessages.size()]), destination,
                                      null);
         }
     }
@@ -2715,11 +2318,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                  *  TODO think of a better way then looping over all
                  *  messages.
                  */
-                final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+                Message[] messages = getCheckedMessages();
                 Account account;
 
-                for (MessageInfoHolder holder : selection) {
-                    account = holder.message.getFolder().getAccount();
+                for (Message message : messages) {
+                    account = message.getFolder().getAccount();
                     setContextCapabilities(account, menu);
                 }
 
@@ -2735,7 +2338,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mMarkAsUnread = null;
             mFlag = null;
             mUnflag = null;
-            setAllSelected(false);
+            setSelectionState(false);
         }
 
         @Override
@@ -2816,7 +2419,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            final List<MessageInfoHolder> selection = getSelectionFromCheckboxes();
+            Message[] messages = getCheckedMessages();
 
             /*
              * In the following we assume that we can't move or copy
@@ -2827,49 +2430,51 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
              */
             switch (item.getItemId()) {
             case R.id.delete: {
-                onDelete(selection);
+                onDelete(messages);
+
+                //FIXME
                 mSelectedCount = 0;
                 break;
             }
             case R.id.mark_as_read: {
-                setFlag(selection, Flag.SEEN, true);
+                setFlag(messages, Flag.SEEN, true);
                 break;
             }
             case R.id.mark_as_unread: {
-                setFlag(selection, Flag.SEEN, false);
+                setFlag(messages, Flag.SEEN, false);
                 break;
             }
             case R.id.flag: {
-                setFlag(selection, Flag.FLAGGED, true);
+                setFlag(messages, Flag.FLAGGED, true);
                 break;
             }
             case R.id.unflag: {
-                setFlag(selection, Flag.FLAGGED, false);
+                setFlag(messages, Flag.FLAGGED, false);
                 break;
             }
             case R.id.select_all: {
-                setAllSelected(true);
+                selectAll();
                 break;
             }
 
             // only if the account supports this
             case R.id.archive: {
-                onArchive(selection);
+                onArchive(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.spam: {
-                onSpam(selection);
+                onSpam(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.move: {
-                onMove(selection);
+                onMove(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.copy: {
-                onCopy(selection);
+                onCopy(messages);
                 mSelectedCount = 0;
                 break;
             }
@@ -2911,8 +2516,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void checkMail() {
-        mController.synchronizeMailbox(mAccount, mFolderName, mAdapter.mListener, null);
-        mController.sendPendingMessages(mAccount, mAdapter.mListener);
+        mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+        mController.sendPendingMessages(mAccount, mListener);
     }
 
     /**
@@ -2937,7 +2542,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 final Folder remoteFolder = remoteStore.getFolder(mSearchFolder);
                 remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
-                mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
+                //mAdapter.mListener.remoteSearchFinished(searchAccount, mSearchFolder, 0, null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
@@ -2949,10 +2554,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public ArrayList<MessageReference> getMessageReferences() {
         ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
+        /*
         for (MessageInfoHolder holder : mAdapter.getMessages()) {
             MessageReference ref = holder.message.makeMessageReference();
             messageRefs.add(ref);
         }
+        */
+        //TODO: implement
 
         return messageRefs;
     }
@@ -3003,56 +2611,89 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         changeSort(mSortType);
     }
 
-    private MessageInfoHolder getSelection() {
-        return (MessageInfoHolder) mListView.getSelectedItem();
+    private Message getSelectedMessage() {
+        int listViewPosition = mListView.getSelectedItemPosition();
+        int adapterPosition = listViewToAdapterPosition(listViewPosition);
+
+        return getMessageAtPosition(adapterPosition);
+    }
+
+    private Message getMessageAtPosition(int adapterPosition) {
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return null;
+        }
+
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        String uid = cursor.getString(UID_COLUMN);
+
+        //TODO: get account and folder from cursor
+        Folder folder = mCurrentFolder.folder;
+
+        try {
+            return folder.getMessage(uid);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Something went wrong while fetching a message", e);
+        }
+
+        return null;
+    }
+
+    private Message[] getCheckedMessages() {
+        Message[] messages = new Message[mSelectedCount];
+        int out = 0;
+        for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+            if (mSelected.get(position, false)) {
+                messages[out++] = getMessageAtPosition(position);
+            }
+        }
+
+        return messages;
     }
 
     public void onDelete() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            onDelete(Collections.singletonList(message));
+            onDelete(new Message[] { message });
         }
     }
 
     public void toggleMessageSelect() {
-        MessageInfoHolder message = getSelection();
-        if (message != null) {
-            toggleMessageSelect(message);
-        }
+        toggleMessageSelect(mListView.getSelectedItemPosition());
     }
 
     public void onToggleFlag() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            setFlag(Collections.singletonList(message), Flag.FLAGGED, !message.flagged);
+            System.out.println("FLAGGED: " + message.isSet(Flag.FLAGGED));
+            setFlag(message, Flag.FLAGGED, !message.isSet(Flag.FLAGGED));
         }
     }
 
     public void onMove() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            onMove(Collections.singletonList(message));
+            onMove(message);
         }
     }
 
     public void onArchive() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            onArchive(Collections.singletonList(message));
+            onArchive(message);
         }
     }
 
     public void onCopy() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            onCopy(Collections.singletonList(message));
+            onCopy(message);
         }
     }
 
     public void onToggleRead() {
-        MessageInfoHolder message = getSelection();
+        Message message = getSelectedMessage();
         if (message != null) {
-            setFlag(Collections.singletonList(message), Flag.SEEN, !message.read);
+            setFlag(message, Flag.SEEN, !message.isSet(Flag.SEEN));
         }
     }
 
@@ -3124,4 +2765,39 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String folderName = (mCurrentFolder != null) ? mCurrentFolder.name : null;
         return mFragmentListener.startSearch(mAccount, folderName);
    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String accountUuid = mAccount.getUuid();
+
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages");
+
+        long folderId = 0;
+        try {
+            LocalFolder folder = (LocalFolder) mCurrentFolder.folder;
+            folder.open(OpenMode.READ_ONLY);
+            folderId = folder.getId();
+        } catch (MessagingException e) {
+            //FIXME
+            e.printStackTrace();
+        }
+
+        String selection = MessageColumns.FOLDER_ID + "=?";
+        String[] selectionArgs = { Long.toString(folderId) };
+
+        return new CursorLoader(getActivity(), uri, PROJECTION, selection, selectionArgs,
+                MessageColumns.DATE + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mSelected = new SparseBooleanArray(data.getCount());
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mSelected = null;
+        mAdapter.swapCursor(null);
+    }
 }
