@@ -44,9 +44,7 @@
 \n
 \nVegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot és még sok más klienst. Történnek furcsaságok, ha Microsoft Exchange-el kommunikál.
 \n
-\nHibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel http://k9mail.googlecode.com/\n
-\n
-Magyarította: Deák Tamás (maya98) és RootRulez\n
+\nHibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel http://k9mail.googlecode.com/
     </string>
 
 
@@ -334,7 +332,7 @@ Magyarította: Deák Tamás (maya98) és RootRulez\n
     <string name="global_settings_mark_read">Olvasottnak/olvasatlannak jelöl</string>
     <string name="global_settings_delete">Törlés</string>
     <string name="global_settings_archive">Áthelyezés az archívumba</string>
-     <string name="global_settings_archive_disabled_reason">Nincs archívum mappa.</string>
+    <string name="global_settings_archive_disabled_reason">Nincs archívum mappa.</string>
     <string name="global_settings_move">Áthelyezés</string>
     <!-- NEW: <string name="global_settings_flag">Flag</string>-->
     <string name="global_settings_unselect">Kijelölés megszüntetése</string>
