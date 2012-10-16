@@ -64,10 +64,10 @@ public class GlobalSettings {
                 new V(1, new DateFormatSetting(DateFormatter.DEFAULT_FORMAT))
             ));
         s.put("enableDebugLogging", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false))
             ));
         s.put("enableSensitiveLogging", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false))
             ));
         s.put("fontSizeAccountDescription", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.SMALL))
