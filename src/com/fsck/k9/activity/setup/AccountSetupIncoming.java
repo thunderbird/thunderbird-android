@@ -62,6 +62,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
 
     private int[] mAccountPorts;
+    private int mSavedPort = -1;
     private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -294,6 +295,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
+            mSavedPort = settings.port;
+
             for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
                 if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
@@ -306,12 +309,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
-            }
-
-            if (settings.port != -1) {
-                mPortView.setText(Integer.toString(settings.port));
-            } else {
-                updatePortFromSecurityType();
             }
 
             mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
@@ -338,7 +335,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void updatePortFromSecurityType() {
-        if (mAccountPorts != null) {
+        if (mSavedPort != -1) {
+            /*
+             * The mSecurityTypeView has just been initialized, triggering its
+             * onItemSelected() listener for the first time. We now initialize
+             * mPortView.
+             */
+            mPortView.setText(Integer.toString(mSavedPort));
+            mSavedPort = -1;  // Initialize mPortView just once.
+        } else if (mAccountPorts != null) {
             int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             mPortView.setText(Integer.toString(mAccountPorts[securityType]));
         }

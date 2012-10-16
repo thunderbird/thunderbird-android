@@ -58,6 +58,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private EditText mPasswordView;
     private EditText mServerView;
     private EditText mPortView;
+    private int mSavedPort = -1;
     private CheckBox mRequireLoginView;
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
@@ -224,6 +225,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
 
 
+            mSavedPort = uri.getPort();
+
             for (int i = 0; i < smtpSchemes.length; i++) {
                 if (smtpSchemes[i].equals(uri.getScheme())) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
@@ -232,12 +235,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
-            }
-
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
-            } else {
-                updatePortFromSecurityType();
             }
 
             validateFields();
@@ -268,8 +265,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     private void updatePortFromSecurityType() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        mPortView.setText(Integer.toString(smtpPorts[securityType]));
+        if (mSavedPort != -1) {
+            /*
+             * The mSecurityTypeView has just been initialized, triggering its
+             * onItemSelected() listener for the first time. We now initialize
+             * mPortView.
+             */
+            mPortView.setText(Integer.toString(mSavedPort));
+            mSavedPort = -1;  // Initialize mPortView just once.
+        } else {
+            int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+            mPortView.setText(Integer.toString(smtpPorts[securityType]));
+        }
     }
 
     @Override
